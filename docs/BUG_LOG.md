@@ -14,7 +14,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013 (1) | Shape-diverse native memory trajectory and resumable finite runs (pending) |
+| resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
 ## V-015 — CLOSED: transient receipt replacement denied before child launch
@@ -54,7 +54,7 @@ a named green run. An unrun gate leaves the entry OPEN.
   exact2+6+3+3 state/optimizer/RNG/evaluation trajectory. Parent script only
   bootstraps; traceback of actual model work is compiled from the archive.
 
-## V-013 — OPEN: two-step square admission missed long diverse-shape memory
+## V-013 — CLOSED: two-step square admission missed long diverse-shape memory
 
 - Symptom: runs/m2-stream-learn768-r2-job.json failed1 at324.600s,565/768
   updates saved in finite ledgers; next backward denied599,040B allocation.
@@ -64,13 +64,22 @@ a named green run. An unrun gate leaves the entry OPEN.
   variable-shape/native-cache behavior. Native oneDNN cache is a hypothesis,
   not established cause. Torch model/data/loss code retains no tensor cache.
 - Detection class: resource-profile.
-- Planned instrument: query native backend cache before policy change; bound
-  native caches if causal, record per-Job memory trajectory; periodic recovery
-  and exact global-step replay; diverse finite run must pass640MiB before
-  closure. Old square admission alone cannot prove long diverse memory safety.
+- Instrument: pre-import16-entry native cache request with controlled eviction
+  evidence (default repeated shape hit vs bounded miss); raw Job memory every16
+  updates, periodic recovery and exact global-step replay. Native capacity query
+  is not exported; exact attribution of every allocation remains unmeasured.
+  A square-only profile is plumbing evidence, not a general long-memory claim.
 - Failure evidence remains in runs/m2-stream-learn768-r2/{code,curve.jsonl,
   training.jsonl,evaluations.jsonl}; original stderr lines map to archived trainer,
   not later parent text (V-014). No automatic restart or cap increase.
+- Green gate: docs/evidence/m2-stream-learn768-r3/analysis.json and scope.json,
+  complete768 at unchanged640MiB,458.494s inner/459.718s outer. Peak519,782,400B,
+  second-half growth2,748,416B <=predeclared32MiB. All565 old recorded loss/terms/
+  gradient norms and data/pixel/label recipes match exactly; package/sampler/lock
+  unchanged. Final recovery768 and every-final-tensor reload exact. Curator
+  replayed768 samples+27 saved probes. Inference weights d183a22a... retained.
+  This closes the observed finite resource failure; no baseline model tensors
+  survived and no untested longer-run or model-accuracy claim is made.
 
 ## V-012 — CLOSED: recovery harness imported unbounded library thread pools
 

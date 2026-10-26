@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "checks": {
+    "native_complete768_same640MiB": true,
+    "unchanged_neural_render_data_and_lock": true,
+    "exact565_loss_terms_gradient_norm_prefix": true,
+    "exact565_data_recipe_pixel_label_prefix": true,
+    "recovery_snapshot768": true,
+    "all_final_tensors_reload_exact": true,
+    "second_half_raw_peak_growth_at_most32MiB": true
+  },
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "baseline_catalogue_sha256": "a7f6e06437906380fd4ddc14b97a6492c8f6f2165a6bd853ee62b54a0d63ebae",
+  "weights_sha256": "d183a22afcbe0e08d64b59bc1bd3cb2c337bd58e1d4d048f6406407943f43a74",
+  "steps": 768,
+  "prefix_records": 565,
+  "first_curve_difference": null,
+  "first_data_difference": null,
+  "baseline_weights_available": false,
+  "baseline_raw_peak_job_commit_bytes": 704634880,
+  "candidate_raw_peak_job_commit_bytes": 519782400,
+  "raw_peak_at384": 517033984,
+  "second_half_raw_peak_growth_bytes": 2748416,
+  "growth_threshold_bytes": 33554432,
+  "memory_samples": 49,
+  "elapsed_seconds": 458.49429119999695,
+  "metrics": {
+    "initial_training_probe": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "loss": 6.760215653313531,
+      "exact_locked_boards": 0,
+      "cell_accuracy": 0.6883333292272356,
+      "mean_geometry_error_cells": 5.443683942159017,
+      "exact_known_layers": 0,
+      "known_layers": 18
+    },
+    "initial_development": {
+      "images": 18,
+      "ancestry_groups": 6,
+      "loss": 6.6425230503082275,
+      "exact_locked_boards": 0,
+      "cell_accuracy": 0.7241666747464074,
+      "mean_geometry_error_cells": 3.8251761264271207,
+      "exact_known_layers": 0,
+      "known_layers": 36
+    },
+    "final_training_probe": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "loss": 4.197572549184163,
+      "exact_locked_boards": 0,
+      "cell_accuracy": 0.7950000100665622,
+      "mean_geometry_error_cells": 3.0098905165990195,
+      "exact_known_layers": 12,
+      "known_layers": 18
+    },
+    "development": {
+      "images": 18,
+      "ancestry_groups": 6,
+      "loss": 3.755535840988159,
+      "exact_locked_boards": 0,
+      "cell_accuracy": 0.8822222153345743,
+      "mean_geometry_error_cells": 1.852207945452796,
+      "exact_known_layers": 0,
+      "known_layers": 36
+    }
+  },
+  "analyzer_sha256": "b6c93e9ae038305bb7d3208d8326dcdcc7dde4da830ad6342e171e49eb7435f2",
+  "scope": "Finite768-step native memory/recovery gate and exact565 recorded prefix. No old model tensors survived; no real-image, whole-state, release or untested-long-run claim."
+}

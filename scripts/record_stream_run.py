@@ -116,6 +116,15 @@ def main():
     for suffix in ("-job.json", ".log", ".stderr.log"):
         source = ROOT/"runs"/(args.name+suffix)
         shutil.copyfile(source, evidence/source.name)
+    comparison_status = None
+    if (run/"analysis.json").exists():
+        if (run/"analysis.json").stat().st_size > 64*1024:
+            raise ValueError("comparison analysis byte budget exceeded")
+        comparison = json.loads((run/"analysis.json").read_text())
+        if comparison["weights_sha256"] != summary["checkpoint_sha256"] or comparison["source_catalogue_sha256"] != summary["catalogue_sha256"]:
+            raise ValueError("comparison is for another artifact/source")
+        shutil.copyfile(run/"analysis.json", evidence/"analysis.json")
+        comparison_status = comparison["status"]
     scope = {"status": "passed", "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "source_catalogue_sha256": archive["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
              "replayed_training_samples": len(rows), "verified_saved_probe_images": probe_images,
@@ -123,6 +132,7 @@ def main():
              "source_archive": str(code), "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
              "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
              "training_snapshot_identity_verified": recovery_manifest is not None,
+             "comparison_status": comparison_status,
              "curator_sha256": digest(Path(__file__)), "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": "passed", "replayed_samples": len(rows), "verified_probe_images": probe_images, "scope": str(evidence/"scope.json")}))

@@ -10,13 +10,11 @@ Current priority: M2 learning and resource characterization. The pilot is not
 selected as the release model. The accuracy configuration remains unprofiled
 and untrained. No complete screenshot parser or real-image accuracy is claimed.
 
-1. Finish the finite768-step diverse-shape memory/learning study at the unchanged
-   640MiB ceiling. V-013 is OPEN: an earlier run failed after565 updates despite
-   passing a two-step square profile. The candidate bounds the native oneDNN
-   cache, saves recovery every64updates, and records raw memory every16updates.
-   Require complete native pass, exact565 recorded loss/gradient/data prefix,
-   final recovery/inference identity and <=32MiB second-half raw peak growth.
-   See CONTINUATION_STATE.md for the exact live handle, paths and next command.
+1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
+   519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,
+   final recovery/inference parity and full recipe replay. V-013 CLOSED.
+   Development is still0/18 exact boards,0/36 known layers and1.85-cell geometry
+   error; M2 learning remains OPEN. See the named analysis below.
 2. Characterize the actual accuracy-sized model separately under a small explicit
    native ceiling first. Adequately train fresh states/positions, measure board,
    geometry and independent active/ghost errors, and repair the learning failure
@@ -44,7 +42,7 @@ Verified foundations and their limits:
 | Scratch encoder/lattice/axial cell reader, independent locked/type/active/ghost heads, safe checkpoints | docs/evidence/m2-numerics/numerical.json;85 checks on named original sources | Accurate converged whole-state model; larger configuration |
 | Fixed-data learning16/128/saved511 | docs/evidence/m2-learn16/, m2-learn128/, m2-learn512/ | Saved511/512 fits6 boards but layers10/12 and geometry.4106 fail joint fit; dev0/6 |
 | Local single-cell reading | docs/evidence/m2-local-reading/scope.json |36/36 probability direction, only20/36 targets and18/36 changed boards exact; two unrelated changes |
-| Streaming source/data integrity | Frozen catalogues and per-step recipes; docs/evidence/m2-stream-probe/ is historical | A two-step square profile alone did not characterize long varied-shape memory |
+| Streaming diverse memory/learning | docs/evidence/m2-stream-learn768-r3/analysis.json and scope.json | Resource gate green; dev0/18 boards,0/36 layers; no real/whole-state quality |
 | CPU resource/recovery contracts | docs/evidence/v015-contracts/scope.json;29 scoped checks on f583792 | Not a whole-suite or model-accuracy claim |
 | Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
 | Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |

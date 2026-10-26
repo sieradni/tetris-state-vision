@@ -69,10 +69,14 @@ development remains 0/6. Its partial status and errors are retained under
 docs/evidence/m2-learn512/; it is not a completed 512-step or quality gate.
 
 The next [streaming curriculum](docs/M2_STREAMING.md) generates fresh states and
-positions without caching tensors. Each run imports a verified source snapshot
-and requires matching resource admission before longer training. Fourteen new
-checks plus a real 512×512 one-step/checkpoint/replay gate pass; this establishes
-the training pipeline, not model quality.
+positions without caching tensors. Runs execute a verified source archive,
+require matching resource admission and save resumable model/Adam/RNG state.
+Twenty-nine scoped contract checks and an exact six-update versus3+resume3
+native gate pass. A complete768-update study now passes the unchanged640MiB
+memory gate, including its exact565-record failure prefix and2.6MiB second-half
+peak growth. Development still has0/18 exact boards and1.85-cell mean geometry
+error. [Evidence](docs/evidence/m2-stream-learn768-r3/analysis.json) establishes
+resource/recovery progress; M2 learning and whole-state quality remain open.
 
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or

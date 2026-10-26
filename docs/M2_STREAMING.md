@@ -54,11 +54,14 @@ docs/evidence/v015-contracts/scope.json; these are not a whole-suite claim.
 Current six-development-group warm characterization:
 docs/evidence/m2-stream-resume-probe/scope.json,18.986s inner/20.422s outer,
 549,130,240B raw peak under640MiB, recovery plus every-final-tensor parity.
-Catalogue121fd05a... admits matching sources/settings. The active768 study and
-its exact launch/PIDs are in CONTINUATION_STATE.md. Its predeclared gate also
-requires exact565 prior recorded loss/gradient/data prefix and <=32MiB
-second-half raw peak growth. No failed/partial result becomes complete by
-curation, and no synthetic result establishes real screenshot accuracy.
+Catalogue121fd05a... admits matching sources/settings. The768 study completed:
+docs/evidence/m2-stream-learn768-r3/analysis.json,458.494s inner,519,782,400B
+raw peak under640MiB. Exact565 prior recorded loss/gradient/data prefix and
+2,748,416B second-half peak growth pass the predeclared32MiB gate; recovery768
+and all-final-tensor reload exact. Full768 sample+27 probe replay passes. V-013
+is CLOSED. Development0/18 exact boards and1.85-cell geometry still fail the
+learning objective. No failed/partial result becomes complete by curation, and
+no synthetic result establishes real screenshot accuracy.
 
 All output/receipt paths must be new. Use hidden detached launches with logs,
 explicit RAM/wall/update caps and the current guarded supervisor. Never invoke
