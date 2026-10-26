@@ -10,10 +10,28 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
 | provenance | V-003 (1) | Computed hashes and byte comparison |
-| test-instrument | V-004 (1) | Native allocation admission plus raw counters |
+| test-instrument | V-004, V-011 (2) | Native admission/raw counters; resident optimizer-state backward characterization |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
+
+## V-011 — OPEN: resource profile covered only a cold optimizer backward
+
+- Symptom: source inspection found the one-step square admission performed its
+  only backward before AdamW allocated moment tensors. No resource failure or
+  host crash is claimed. Installed Torch2.14.1 adam.py initializes exp_avg and
+  exp_avg_sq inside _init_group during the first optimizer.step().
+- Root cause: input shape coverage was mistaken for training memory coverage;
+  the cold backward and final evaluation never combined saved backward tensors
+  with resident optimizer state.
+- Detection class: test-instrument.
+- Instrument: version2 requires two optimizer steps on the same512-square frame;
+  before the second forward, every trainable parameter must have both full-size
+  moment tensors and step1. Record their bytes and completed warm backward.
+  Reject cold/old/partial profiles, missing state and smaller warm input.
+  Native Job cap and V-010 pressure monitoring remain unconditional.
+- Pending gates: focused cold-admission tripwires and actual two-step native
+  profile. Old one-step receipts remain historical evidence, never new admission.
 
 ## V-010 — CLOSED: bounded job ignored system-wide commit pressure
 

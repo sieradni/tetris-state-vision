@@ -33,19 +33,22 @@ def arguments(argv=None):
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
         parser.error("evaluation interval 1..1024 and development groups 3..12 required")
-    if args.profile_square and (args.steps != 1 or args.admission is not None):
-        parser.error("square resource profile is one optimizer step without prior admission")
+    if args.profile_square and (args.steps != 2 or args.admission is not None):
+        parser.error("square resource profile requires two optimizer steps without prior admission")
     if not args.profile_square and args.admission is None:
-        parser.error("a matching one-step square resource admission is required")
+        parser.error("a matching warm-optimizer square resource admission is required")
     return args
 
 
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha):
-    if (summary.get("status") != "complete" or summary.get("steps") != 1 or not summary.get("profile_square") or
+    warm = summary.get("warm_optimizer_backward", {})
+    if (summary.get("status") != "complete" or summary.get("steps") != 2 or not summary.get("profile_square") or
+            summary.get("resource_profile_version") != 2 or warm.get("step") != 2 or warm.get("input_pixels") != 512**2 or
+            not warm.get("all_parameters_initialized") or not warm.get("backward_completed") or warm.get("state_bytes", 0) <= 0 or
             not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
             any(summary.get(key) != value for key, value in {"max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
-            job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != 1):
-        raise ValueError("complete square one-step resource admission required")
+            job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != 2):
+        raise ValueError("complete two-step square warm-optimizer resource admission required")
     if (summary["catalogue_sha256"] != catalogue or summary["model_kind"] != model or summary["config"] != config or
             summary["job_ceiling_bytes"] != ceiling or job["memory_bytes"] != ceiling or
             summary["development_groups"] < development_groups or not summary["cpu_only"] or
@@ -103,6 +106,7 @@ def main(argv=None):
     model = TetrisStateNet(config)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
     maximum_pixels, evaluation_identities = 0, {}
+    warm_optimizer_backward = None
 
     def prepare(case):
         nonlocal maximum_pixels
@@ -167,15 +171,35 @@ def main(argv=None):
         for step in range(1, args.steps+1):
             if time.monotonic()-started >= args.wall_seconds:
                 break
-            case = sample_case((step-1)//3, (step-1) % 3, "training", args.seed, profile_square=args.profile_square)
+            # Both characterization steps must use the maximum shape. Step two
+            # includes Adam's moment tensors, allocated lazily by the first step.
+            group, view = (0, 0) if args.profile_square else ((step-1)//3, (step-1) % 3)
+            case = sample_case(group, view, "training", args.seed, profile_square=args.profile_square)
             prepared, target = prepare(case)
             model.train()
             optimizer.zero_grad(set_to_none=True)
+            if args.profile_square and step == 2:
+                parameters = [p for p in model.parameters() if p.requires_grad]
+                initialized = all(
+                    p in optimizer.state and all(
+                        key in optimizer.state[p] and optimizer.state[p][key].shape == p.shape
+                        for key in ("exp_avg", "exp_avg_sq"))
+                    and float(optimizer.state[p]["step"]) == 1 for p in parameters)
+                if not parameters or not initialized:
+                    raise RuntimeError("resource profile requires resident Adam state for every trainable parameter")
+                warm_optimizer_backward = {
+                    "step": step, "input_pixels": prepared.pixels.shape[-2]*prepared.pixels.shape[-1],
+                    "parameter_tensors": len(parameters), "all_parameters_initialized": initialized,
+                    "state_bytes": sum(value.numel()*value.element_size() for state in optimizer.state.values()
+                                       for value in state.values() if torch.is_tensor(value)),
+                    "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
             loss, terms = joint_loss(output, target)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()
+            if args.profile_square and step == 2:
+                warm_optimizer_backward["backward_completed"] = True
             norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1., error_if_nonfinite=True)
             optimizer.step()
             completed = step
@@ -208,6 +232,7 @@ def main(argv=None):
     if any(not torch.equal(expected[key], actual[key]) for key in expected):
         raise RuntimeError("saved checkpoint changes a final output tensor")
     summary = {"status": "complete" if completed == args.steps else "wall_partial", "steps": completed, "requested_steps": args.steps,
+               "resource_profile_version": 2, "warm_optimizer_backward": warm_optimizer_backward,
                "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
                "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
                "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0, "fresh_parent_groups": (completed+2)//3,

@@ -57,6 +57,9 @@ docs/evidence/m2-stream-probe/scope.json. No longer curriculum has run. Next
 system commit pressure admission/monitoring is now green on13 scoped checks
 (docs/evidence/v010/scope.json); next a fresh resource characterization and fresh-state learning study
 and separate accuracy-configuration resource profile; see M2_STREAMING.md.
+V-011 source review found cold one-step admission missed resident optimizer
+moments during backward. Version2 requires two square steps and rejects cold
+receipts; four protocol tests pass, actual warm characterization pending.
 
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;

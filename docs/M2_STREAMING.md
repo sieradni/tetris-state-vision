@@ -30,16 +30,19 @@ ignored local `runs/`; curated receipts retain their identities.
 
 Resource admission is explicit. `--model pilot` uses the 647,098-parameter
 configuration; `--model accuracy` selects the larger research configuration.
-Neither silently substitutes for the other. First run exactly one optimizer step
-with `--profile-square`, which supplies a real fully visible 512×512 source
-frame. A longer run requires `--admission PATH` naming a completed square probe
+Neither silently substitutes for the other. First run exactly two optimizer steps
+with `--profile-square`, which repeats a real fully visible 512×512 source
+frame. Version2 verifies full-size Adam moments for every trainable parameter
+before the second forward, and records their bytes and the completed backward.
+Adam lazily allocates moments during the first update, so a cold one-step probe
+does not cover warm training memory (V-011). A longer run requires `--admission PATH` naming a completed warm square probe
 with the same source catalogue, model configuration, CPU settings and memory
 ceiling, and enough development groups. Wall-partial probes and failed native
 receipts cannot admit training. Limits: 1..4096 steps, at most 1800 inner seconds,
 one CPU thread, 3..12 development ancestry groups. The outer launcher still
 supplies independent wall, memory and declared work caps.
 
-The verified one-step command was:
+The historical one-step command was (not current admission):
 
 ```text
 run_bounded.py --memory-mib 1024 --wall-seconds 150 --work-items 1
@@ -67,7 +70,9 @@ are not accepted by this completion curator.
 
 The system pressure guard now passes 13 pressure/native/admission checks; V-010
 is CLOSED. See [RESOURCE_GUARD.md](RESOURCE_GUARD.md). The old probe cannot admit
-the strengthened current driver. Next: re-characterize its source
+the strengthened current driver. Four focused version2 admission fixtures pass
+in runs/v011-stream-tests.stderr.log; actual warm resource characterization is
+still pending, so V-011 remains OPEN. Next: re-characterize its source
 catalogue, then measure fresh-state learning. Profile the accuracy model
 separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
 release gates remain open.

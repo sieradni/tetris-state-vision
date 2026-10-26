@@ -24,7 +24,8 @@ Verified checkpoints:
   under128MiB/45s. docs/evidence/m3-component-targets/scope.json. No component
   model/head/loss/runtime integration yet. M3 is not complete.
 
-All V-001..V-010 CLOSED on named gates. Default runner reserves launch headroom
+V-001..V-010 CLOSED on named gates; V-011 OPEN pending actual warm profile.
+Default runner reserves launch headroom
 and polls real GetPerformanceInfo counters every.2s, with native Job cap/wall/
 work limits. Threshold31,368,351,744B commit and2GiB minimum physical available
 on this machine; never bypass/relax it or use a pre-pressure archived supervisor.
@@ -38,18 +39,31 @@ question about lower-memory availability is still pending; no app-close or
 other-job modification permission assumed. Actual OS state, not elapsed time
 or an old receipt, governs launch. All test supervisors/children terminal.
 
-Next selected task: current-source square resource characterization with a LOWER
-640MiB ceiling; prior measured peak~524MiB, expected <600MiB. Same model/input.
-Native640MiB /150s outer /110s inner /one optimizer step /one CPU thread.
-Command, hidden detached with logs:
-scripts/run_bounded.py --memory-mib640 --wall-seconds150 --work-items1
---receipt runs/m2-stream-guard-probe-job.json -- .venv/Scripts/python.exe
-scripts/train_m2_stream.py --output runs/m2-stream-guard-probe --model pilot
---steps1 --profile-square --wall-seconds110 --development-groups6
-Logs runs/m2-stream-guard-probe.log/.stderr.log. Receipt/output not launched yet;
-check fresh names and verify exact PID after spawn. All pressure/native/admission
-gates are now green. If the OS guard parks, preserve receipt and wait for genuine
-headroom; no bypass. Keep641/other caps below default clamp; no unlimited runs.
+Latest one-step attempt is terminal: runs/m2-stream-guard-probe-job.json,
+supervisor3684 verified gone, memory_pressure125 before any child at32.63GB
+commit. No model work ran; receipt/logs retained. No receipt path reuse.
+
+Selected acceptance-gated task: repair cold optimizer resource admission.
+Installed Torch adam.py initializes moment tensors inside the first step;
+the one-step profile did not cover backward with resident Adam state (V-011).
+Todo: require two full512-square steps; record complete optimizer-state coverage
+and warm backward; reject old/cold profiles; run focused protocol tripwires;
+then fresh native640MiB /150s outer /110s inner /2steps /one CPU-thread pilot.
+Expected <600MiB based on prior549MB peak plus~5MB moment state. Guard remains
+GetPerformanceInfo/.2s plus nativeJob cap. Name fresh run/receipt
+m2-stream-warm-probe; write exact launch/PIDs before waiting. No launch until
+actual OS headroom permits it. Prior V-004 requires actual admission/raw counters,
+V-007 exact native Job identity, V-010 system pressure/failure closure; all remain.
+V-003 catalogue/weight identity stays exact. No neural/loss math change.
+Four focused protocol checks GREEN: runs/v011-stream-tests.stderr.log,
+.232s /53,690,368B under128MiB/30s. Not yet a warm-memory characterization.
+Profile launch command, hidden with runs/m2-stream-warm-probe.log/.stderr.log:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib640
+--wall-seconds150 --work-items2 --receipt runs/m2-stream-warm-probe-job.json
+-- .venv/Scripts/python.exe scripts/train_m2_stream.py
+--output runs/m2-stream-warm-probe --model pilot --steps2 --profile-square
+--wall-seconds110 --development-groups6. Record PID after spawn, then inspect
+progress/receipt, verify terminal process tree, curate and commit if green.
 
 Then characterize actual multi-step admission/streaming and adequately train on
 fresh states. A long run may be interrupted by renewed host pressure; periodic
