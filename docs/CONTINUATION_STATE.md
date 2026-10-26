@@ -113,6 +113,13 @@ receipt runs/m2-stream-recovery-gate-r2-job.json. Substitute that fresh name in
 the command above; verify exact process tree, then native proof and all deaths.
 LAUNCHED r2:22172/24172 exact supervisor commands verified. Inspect same root
 progress/receipt; do not restart on an observation timeout.
+R2 COMPLETE/GREEN: proof.json exact data/terms/gradients/evaluations/model/Adam/
+RNG; inference weights f5145621... identical continuous6 vs3+resume3. Child max
+554,541,056B/640MiB; outer590,663,680B/1GiB. V-014/V-015 CLOSED on named gates;
+V-013 remains OPEN. Catalogue121fd05a... includes7 helper scripts. Verify root
+processes gone, then curate17 training records+72 saved probes under128MiB/45s,
+89 verifications; expected<90MiB. Receipt runs/recovery-gate-evidence-job.json,
+command record_stream_recovery.py --name m2-stream-recovery-gate-r2.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.

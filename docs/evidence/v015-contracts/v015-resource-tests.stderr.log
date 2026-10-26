@@ -1,0 +1,11 @@
+test_ceiling_above_machine_clamp_is_refused_before_spawn (test_resources.ResourceGuardTests.test_ceiling_above_machine_clamp_is_refused_before_spawn) ... ok
+test_cpu_library_limits_override_host_before_child_imports (test_resources.ResourceGuardTests.test_cpu_library_limits_override_host_before_child_imports) ... ok
+test_kernel_denies_allocation_over_small_job_ceiling (test_resources.ResourceGuardTests.test_kernel_denies_allocation_over_small_job_ceiling) ... ok
+test_wall_timeout_kills_child_and_grandchild_with_durable_receipt (test_resources.ResourceGuardTests.test_wall_timeout_kills_child_and_grandchild_with_durable_receipt) ... ok
+test_worker_queries_named_ceiling_beneath_another_nested_job (test_resources.ResourceGuardTests.test_worker_queries_named_ceiling_beneath_another_nested_job) ... ok
+test_worker_refuses_a_forged_job_identity (test_resources.ResourceGuardTests.test_worker_refuses_a_forged_job_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 3.124s
+
+OK

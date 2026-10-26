@@ -1,0 +1,9 @@
+test_archived_tree_can_be_captured_again_for_replay (test_source_snapshot.SourceSnapshotTests.test_archived_tree_can_be_captured_again_for_replay) ... ok
+test_byte_budget_fails_before_archive_creation (test_source_snapshot.SourceSnapshotTests.test_byte_budget_fails_before_archive_creation) ... ok
+test_mutated_and_extra_importable_source_are_rejected (test_source_snapshot.SourceSnapshotTests.test_mutated_and_extra_importable_source_are_rejected) ... ok
+test_parent_edits_do_not_change_archived_imports_or_nested_identity (test_source_snapshot.SourceSnapshotTests.test_parent_edits_do_not_change_archived_imports_or_nested_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.248s
+
+OK

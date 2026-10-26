@@ -1,0 +1,8 @@
+test_persistent_denial_is_finite_and_preserves_old_pointer_and_new_bytes (test_atomic_write.AtomicWriteTests.test_persistent_denial_is_finite_and_preserves_old_pointer_and_new_bytes) ... ok
+test_transient_sharing_denial_retries_then_publishes_complete_bytes (test_atomic_write.AtomicWriteTests.test_transient_sharing_denial_retries_then_publishes_complete_bytes) ... ok
+test_unrelated_io_errors_are_not_retried (test_atomic_write.AtomicWriteTests.test_unrelated_io_errors_are_not_retried) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.030s
+
+OK

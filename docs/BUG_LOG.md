@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory and resumable finite runs (pending) |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-015 — OPEN: transient receipt replacement denied before child launch
+## V-015 — CLOSED: transient receipt replacement denied before child launch
 
 - Symptom: recovery-gate profile2/full6 passed, then partial Job failed before
   child on WinError5 replacing partial-job.tmp -> partial-job.json. Error-path
@@ -32,10 +32,13 @@ a named green run. An unrun gate leaves the entry OPEN.
   before durable admission receipt. Prior complete snapshot pointer survives.
   Source archive includes helper; diagnostics inspect failed receipt before
   looking for a nonexistent worker summary.
-- Pending gates: three injected-IO tripwires, recovery7/resources6/source4/
-  admission4 and fresh native14-update integration. Earlier partial gate is red.
+- Green gates: docs/evidence/v015-contracts/scope.json, f583792's atomic3,
+  recovery7/resources6/pressure5/source4/admission4 =29 scoped checks. Native
+  runs/m2-stream-recovery-gate-r2/proof.json PASSED2+6+3+3, exact model/Adam/RNG,
+  losses/gradients/data/evaluation and all child deaths; outer peak590,663,680B
+  under1GiB, child max554,541,056B under640MiB. Earlier partial gate stays red.
 
-## V-014 — OPEN: traceback read edited parent trainer lines
+## V-014 — CLOSED: traceback read edited parent trainer lines
 
 - Symptom: failed learn768-r2 trace names curve.write/final_step for line numbers
   whose original frozen trainer performed loss.backward. Parent source was
@@ -43,10 +46,13 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Root cause: model/sampler imports were frozen, but trainer main was compiled
   with the parent file path. Traceback linecache read the later file text.
 - Detection class: provenance.
-- Planned instrument: bootstrap archives source then loads/executes trainer main
+- Instrument: bootstrap archives source then loads/executes trainer main
   from its verified archive; saved driver path and native integration gate pin
   archive identity. Preserve original archived lines when reading old trace.
-- Gate pending; no green closure claimed.
+- Green gate: runs/m2-stream-recovery-gate-r2/proof.json, all four child driver
+  source paths lie in verified archives; identical catalogue121fd05a... and
+  exact2+6+3+3 state/optimizer/RNG/evaluation trajectory. Parent script only
+  bootstraps; traceback of actual model work is compiled from the archive.
 
 ## V-013 — OPEN: two-step square admission missed long diverse-shape memory
 

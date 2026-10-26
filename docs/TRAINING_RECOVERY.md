@@ -1,9 +1,10 @@
 # Exact CPU training recovery
 
 `scripts/training_snapshot.py` is the verified primitive. Its streaming-driver
-integration is implemented but awaiting the native2+6+3+3 equivalence gate.
+integration now passes the native2+6+3+3 equivalence gate.
 Periodic snapshots, explicit global-step resume and a finite new-update cap
-are candidates; no integrated recovery success is claimed yet.
+are verified on that finite gate; long diverse-shape memory remains a separate
+open requirement (V-013).
 Seven runtime fixtures now pass: runs/training-snapshot-tests-r3.stderr.log,
 7/7 in4.103s,332,562,432B raw peak under512MiB/45s. Earlier attempts parked
 on host pressure; r2 hit an OpenBLAS import allocation failure before tests.
@@ -57,3 +58,11 @@ a second full-square warm backward. Source execution itself is bound to the
 archive, fixing V-014's misleading parent-file traceback lines. The CPU worker
 requests a16-entry oneDNN cache before import; controlled cache-hit/miss logs
 verify eviction behavior, but V-013's long diverse-shape memory gate is OPEN.
+
+Native gate: runs/m2-stream-recovery-gate-r2/proof.json, source catalogue
+121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
+Six continuous updates and3+resume3 match data, loss terms, gradients, evaluation
+results, every model/optimizer tensor and CPU RNG exactly. Inference weight SHA
+f5145621be3ea9650e5126250d80baa568aec1e7748f66e9f2dd5834e5730f51 is identical
+for both. Partial status remains explicit. Child max554,541,056B under640MiB;
+outer590,663,680B under1GiB. Each native child process was verified dead.
