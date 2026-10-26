@@ -1,6 +1,18 @@
 # Current checkpoint — 2026-10-26
 
-Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal BLOCKED.
+Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote.
+User replied that unused apps can be closed; actual OS commit now30,000,771,072B,
+enough for the next native512MiB gate. Work resumed on that reply; goal service
+last reported BLOCKED (its resume is user-controlled). Fresh blocked audit reset.
+Selected task: verify isolated recovery primitive before any driver integration.
+Hidden detached command: .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib512 --wall-seconds45 --work-items7
+--receipt runs/training-snapshot-tests-r2.json -- .venv/Scripts/python.exe
+-m unittest discover -s tests -p test_training_snapshot.py -v.
+Logs runs/training-snapshot-tests-r2.log/.stderr.log. Expected<450MiB;
+native Job cap plus OS pressure guard. Record exact PID/tree after spawn,
+inspect terminal receipt/log, curate only on green, then review/commit.
+Below is retained historical context; latest launch status is this paragraph.
 No vision process running before the next launch. No run data deleted.
 Last progress was warm-profile verification and the isolated recovery draft.
 Previous/current continuations: no implementation progress; RAM blocker persists.
