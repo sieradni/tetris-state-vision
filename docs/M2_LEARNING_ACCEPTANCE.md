@@ -134,3 +134,33 @@ states/positions, with matched clean/no-grid and visible single-cell variants,
 separate held-out seeds, no cached tensor growth and no user-image labels.
 Keep the accuracy-sized configuration as a separately profiled candidate. The
 small pilot, ghost/geometry failures and complete-state requirements remain open.
+
+## Fresh-state study at768 updates
+
+The source-frozen pilot completed768 updates across256 ancestry groups. The
+finite resource/recovery gate passes at640MiB:519,782,400B raw peak,2,748,416B
+second-half growth, exact565 recorded loss/gradient/data prefix from the prior
+failed run, final recovery/inference identity and full sample/probe replay.
+Evidence: docs/evidence/m2-stream-learn768-r3/analysis.json and scope.json.
+
+| Final diagnostic | Training probes | Development |
+|---|---:|---:|
+| Images / ancestry groups |9 /3 |18 /6 |
+| Exact locked boards |0/9 |0/18 |
+| Cell accuracy |.7950 |.8822 |
+| Exact known active/ghost layers |12/18 |0/36 |
+| Mean geometry error, cells |3.0099 |1.8522 |
+| Loss |4.1976 |3.7555 |
+
+These probes differ from the earlier fixed6-image pilot; their scores are not
+an architecture ranking. Lower loss/cell improvement still fail exact state.
+The first larger7,694,010-parameter configuration separately passes a1GiB warm
+resource profile; its first128-update optimization diagnostic is distinct from
+adequately converged scratch evaluation. It must retain explicit wall partial
+status and resume the same source/recipe/optimizer rather than reset learning.
+
+A planned oracle-lattice intervention deliberately supplies supported synthetic
+geometry only in a separate diagnostic forward, to distinguish localization
+from cell-reading effects. It cannot be reported as automatic parser accuracy,
+an upper bound or a production correction. Weights and ordinary output must
+remain unchanged, and ordinary scores must reproduce the saved artifact first.

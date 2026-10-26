@@ -78,6 +78,19 @@ oracle-lattice intervention to separate geometry/local-reading failure, only on
 the saved synthetic pilot artifact; never production inference/training truth.
 V-003/V-014 bind frozen source/weights; V-001/002/005/006 require full supported
 geometry and keep layers separate; no hidden targets or model weights changed.
+First larger segment TERMINAL: wall_partial93/128, checkpoint93 saved,
+300.558s update-loop/331.040s outer,917,159,936B under1GiB. Verify process
+tree gone before next heavy job; never call it complete128. Resume35 updates
+into a fresh output after the short pilot geometry diagnostic.
+Oracle source is syntax-green, runtime pending. Native768MiB/120s/54forwards,
+expected<600MiB, no training, fixed27 saved pilot probes, source121fd05a...:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib768
+--wall-seconds120 --work-items54 --receipt runs/m2-stream-pilot-geometry-job.json
+-- .venv/Scripts/python.exe scripts/probe_stream_geometry.py
+--run m2-stream-learn768-r3 --output runs/m2-stream-pilot-geometry.
+Hidden logs .log/.stderr.log. Check ordinary metrics reproduce saved values,
+weights unchanged and intervention restored. Any oracle score is diagnostic
+only, never automatic accuracy. After it ends, resume larger93+35 exactly.
 
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;
