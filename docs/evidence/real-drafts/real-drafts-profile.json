@@ -1,0 +1,22 @@
+{
+  "supervisor_pid": 20268,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/profile_corpus.py",
+    "data/real-pilot-drafts/manifest.jsonl",
+    "--output",
+    "runs/real-drafts-overview",
+    "--max-records",
+    "200"
+  ],
+  "memory_bytes": 536870912,
+  "wall_seconds": 120.0,
+  "work_items": 200,
+  "job_name": "Local\\TetrisStateVision-0d35932f311f45398f8e1a59d1ca4f41",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 13.398,
+  "child_pid": 2572,
+  "peak_job_commit_bytes": 117035008
+}

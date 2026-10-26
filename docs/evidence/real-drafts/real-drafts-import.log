@@ -1,0 +1,8 @@
+{"supervisor_pid": 7260, "command": [".venv/Scripts/python.exe", "scripts/corpus_tools.py", "--max-records", "200", "--max-asset-mib", "128", "init", "--image-root", "C:/Users/micha/Code/tetrguide/data/raw_screenshots", "--output", "data/real-pilot-drafts"], "memory_bytes": 536870912, "wall_seconds": 180.0, "work_items": 200, "job_name": "Local\\TetrisStateVision-1f90cf339168458fa8755e61c8d7a08f", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{
+  "status": "created",
+  "drafts": 166,
+  "eligible": 0,
+  "manifest": "C:\\Users\\micha\\Code\\tetris-state-vision\\data\\real-pilot-drafts\\manifest.jsonl"
+}
+{"supervisor_pid": 7260, "command": [".venv/Scripts/python.exe", "scripts/corpus_tools.py", "--max-records", "200", "--max-asset-mib", "128", "init", "--image-root", "C:/Users/micha/Code/tetrguide/data/raw_screenshots", "--output", "data/real-pilot-drafts"], "memory_bytes": 536870912, "wall_seconds": 180.0, "work_items": 200, "job_name": "Local\\TetrisStateVision-1f90cf339168458fa8755e61c8d7a08f", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "passed", "exit_code": 0, "elapsed_seconds": 4.504, "child_pid": 29604, "peak_job_commit_bytes": 118034432}

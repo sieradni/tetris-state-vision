@@ -38,8 +38,10 @@ M0/M4 corpus tooling is verified on 26 adversarial integrity fixtures, including
 actual guarded CLI audit/seal/verify: docs/evidence/corpus-integrity-final/scope.json.
 Draft-only import, independent review/permission declarations, session/ancestry/
 skin/renderer groups, pixel duplicates and externally pinned held-out identity
-are enforced. No real images have been admitted, no human review is claimed,
-and the optimizer does not consume this manifest. See docs/CORPUS.md.
+are enforced. The user-approved 166-image screenshot folder is imported as an
+unlabeled stress set with seven private contact sheets. No real images have been
+admitted, no human review is claimed, and the optimizer does not consume this
+manifest. See docs/CORPUS.md and docs/REAL_STRESS_SET.md.
 
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact

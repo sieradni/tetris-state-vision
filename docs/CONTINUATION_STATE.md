@@ -13,16 +13,18 @@ runs/corpus-curation-r3.json. The earlier 25-case scope is historical.
 Todo complete: bounded admission, draft/review/permission policy, grouping and
 duplicates, externally pinned held-out seals, adversarial/actual CLI gates.
 See docs/CORPUS.md. Model/math/pilot code was not changed.
-User authorized the 166 images in neighboring tetrguide/data/raw_screenshots;
-correct board answers are uncertain. Use as unlabeled real-world stress set.
-Next after this commit: draft-only reference import to data/real-pilot-drafts,
-expected <256 MiB, native 512 MiB / 180 s / <=200 records, <=128 MiB encoded
-assets. Input currently 166 files / 35,553,531 bytes. No annotations or training.
-Receipt runs/real-drafts-import.json, logs runs/real-drafts-import.log and
-.stderr.log. Exact command: corpus_tools.py --max-records 200 --max-asset-mib
-128 init --image-root C:/Users/micha/Code/tetrguide/data/raw_screenshots --output
-data/real-pilot-drafts, under run_bounded.py. Verify PID, audit eligible=0.
-No real images imported yet. Never reuse legacy
+User authorized the 166 images in neighboring tetrguide/data/raw_screenshots,
+warning correct board answers are uncertain. Imported as draft references to
+data/real-pilot-drafts/manifest.jsonl; 35,553,531 B, no exact pixel duplicates,
+0 eligible and no annotations/permissions. Import 4.504 s / peak 118,034,432 B;
+audit 3.966 s / 117,944,320 B; profile 13.398 s / 117,035,008 B. Each ran under
+512 MiB with wall/work caps. Supervisor/child PIDs 7260/29604, 23216/29052 and
+20268/2572 verified exited. Seven private pages + metadata at
+runs/real-drafts-overview/. Representative pages 1, 4, 7 visually checked.
+All import/audit/profile/curation todos complete. Aggregate receipts/source/page
+hashes: docs/evidence/real-drafts/scope.json; raw per-frame data/images stay
+ignored/private. See docs/REAL_STRESS_SET.md. No board correctness claim.
+No real images admitted for training. Never reuse legacy
 detector labels as full-state ground truth; they mix active and locked in some
 cases. Tool tests contain invented fixtures only. Real training requires a
 separate reviewed-data integration; the existing optimizer is synthetic-only.

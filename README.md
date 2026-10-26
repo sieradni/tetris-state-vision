@@ -71,3 +71,5 @@ Local real-image preparation and audit are described in [docs/CORPUS.md](docs/CO
 Imports stay drafts until independently reviewed and permitted. Hashes, related
 image groups and externally pinned held-out snapshots protect benchmark identity;
 these structural checks are not evidence of label correctness or model accuracy.
+The user-approved 166-image folder is retained as an [unlabeled stress set](docs/REAL_STRESS_SET.md),
+with seven local overview pages and no board answers or training admission.

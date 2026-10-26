@@ -79,3 +79,7 @@ operating-system write protection.
 The current optimizer driver still consumes only its small deterministic
 synthetic pilot. It does not consume this manifest or any real image. Real-data
 training requires a separate acceptance-gated integration and a reviewed corpus.
+
+The user-approved local 166-image folder is now imported as drafts only; its
+purpose, private overview and verified aggregate receipt are in
+[REAL_STRESS_SET.md](REAL_STRESS_SET.md). Board answers are explicitly uncertain.
