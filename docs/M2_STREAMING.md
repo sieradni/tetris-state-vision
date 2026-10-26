@@ -81,3 +81,11 @@ warm protocol and replays2 samples plus27 probes; fixture evidence has separate
 named source scope. Next: measure fresh-state learning. Profile the accuracy model
 separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
 release gates remain open.
+
+Current pre-import CPU policy now has22 scoped recovery/resource gates
+(`docs/evidence/v012/scope.json`). A fresh warm probe on that runner passed:
+`docs/evidence/m2-stream-thread-probe/scope.json`,17.936s/591,368,192B raw peak
+under640MiB; full Adam state and all-final-tensor reload exact. Weight SHA is
+identical to the previous warm probe. Current catalogue a7f6e064... admits the
+matching640MiB CPU envelope; the planned768-update fresh-state study is separate
+learning evidence and must retain its own completion/partial status.

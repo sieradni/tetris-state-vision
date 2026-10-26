@@ -44,9 +44,24 @@ backward with full Adam state and all-final-tensor reload parity. Then use that
 matching admission for a new768-step run name (previous learn768 parked125,
 no child; never reuse receipt). Frozen code archive permits independent source
 work while a run uses those exact archived imports.
-LAUNCHED profile: shim20240/supervisor9292/child-shim17984/worker18532,
-all exact command lines verified live. Inspect its progress and terminal receipt
-next; no second heavy job while it runs. Source frozen at current catalogue.
+Profile COMPLETE:20240/9292/17984/18532 verified gone.17.936s inner/19.134s
+outer,591,368,192B under640MiB; full warm Adam state, all-final-tensor exact.
+Curated docs/evidence/m2-stream-thread-probe/scope.json;2 samples+27 probes
+replayed. Catalogue a7f6e06437906380fd4ddc14b97a6492c8f6f2165a6bd853ee62b54a0d63ebae.
+Weights32f49c3b... equal earlier warm probe, despite changed CPU-pool startup.
+
+NEXT hidden detached768 study, expected<600MiB, native640MiB/660s outer/600s
+inner, one CPU thread, finite768updates; current frozen catalogue admission:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib640
+--wall-seconds660 --work-items768 --receipt runs/m2-stream-learn768-r2-job.json
+-- .venv/Scripts/python.exe scripts/train_m2_stream.py
+--output runs/m2-stream-learn768-r2 --model pilot --steps768 --wall-seconds600
+--development-groups6 --admission runs/m2-stream-thread-probe.
+Logs runs/m2-stream-learn768-r2.log/.stderr.log. Record exact PID/tree, inspect
+progress/terminal receipt; preserve wall/pressure partial status. Require saved
+weights, all-final parity and full ledger/probe replay before complete claim.
+Independent work while running: recovery integration source, not model math;
+archive insulates running trainer. Commit source before any wait.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
