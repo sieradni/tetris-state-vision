@@ -69,12 +69,12 @@ def main():
             process = subprocess.Popen(command, stdout=log, stderr=stderr, cwd=ROOT)
             (output/"progress.json").write_text(json.dumps({"case": name, "supervisor_pid": process.pid})+"\n")
             actual = process.wait(timeout=105)
-        job, summary = json_read(receipt), json_read(run/"summary.json")
-        progress = json_read(run/"progress.json")
-        for pid in (process.pid, job["supervisor_pid"], job["child_pid"], progress["pid"]):
-            verify_dead(pid)
+        job = json_read(receipt)
         if actual != expected or job["exit_code"] != expected or job["status"] != ("passed" if expected == 0 else "failed"):
             raise RuntimeError(f"gate case failed: {name}: {job}")
+        summary, progress = json_read(run/"summary.json"), json_read(run/"progress.json")
+        for pid in (process.pid, job["supervisor_pid"], job["child_pid"], progress["pid"]):
+            verify_dead(pid)
         if job["memory_bytes"] != 640*1024**2 or job["work_items"] != updates or summary["updates_this_run"] != updates:
             raise ValueError("gate resource/work envelope differs")
         if (summary["status"] != ("complete" if expected == 0 else "step_partial") or

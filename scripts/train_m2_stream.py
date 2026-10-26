@@ -12,6 +12,7 @@ import time
 
 from probe_model import bounded_job_snapshot, require_bounded_job
 from source_snapshot import capture_source, verify_source
+from atomic_write import replace_retry
 
 ROOT = Path(__file__).resolve().parents[1]
 NATIVE_CACHE_LIMITS = {"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"}
@@ -70,7 +71,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
 def atomic_json(path, value):
     temporary = path.with_suffix(".tmp")
     temporary.write_text(json.dumps(value, indent=2, allow_nan=False)+"\n", encoding="utf-8")
-    temporary.replace(path)
+    replace_retry(temporary, path)
 
 
 def main(argv=None, *, _archive=None, _started=None):
@@ -87,7 +88,7 @@ def main(argv=None, *, _archive=None, _started=None):
         # cannot read later parent edits. This stays in the same native Job/PID.
         sys.path[:0] = [str(code/"scripts"), str(code)]
         sys.dont_write_bytecode = True
-        for name in ("probe_model", "source_snapshot"):
+        for name in ("probe_model", "source_snapshot", "atomic_write", "run_bounded"):
             sys.modules.pop(name, None)
         spec = importlib.util.spec_from_file_location("frozen_training_driver", code/"scripts/train_m2_stream.py")
         driver = importlib.util.module_from_spec(spec)

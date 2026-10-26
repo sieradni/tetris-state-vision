@@ -19,6 +19,7 @@ import subprocess
 import sys
 import time
 import uuid
+from atomic_write import replace_retry
 
 CPU_LIBRARY_THREADS = dict.fromkeys(("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
                                     "OPENBLAS_DEFAULT_NUM_THREADS", "GOTO_NUM_THREADS"), "1")
@@ -177,7 +178,7 @@ def main() -> int:
                      elapsed_seconds=round(time.monotonic() - started, 3))
         temporary = args.receipt.with_suffix(".tmp")
         temporary.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
-        temporary.replace(args.receipt)
+        replace_retry(temporary, args.receipt)
 
     try:
         job_name = "Local\\TetrisStateVision-"+uuid.uuid4().hex

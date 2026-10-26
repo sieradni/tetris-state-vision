@@ -15,6 +15,25 @@ a named green run. An unrun gate leaves the entry OPEN.
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory and resumable finite runs (pending) |
+| windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-015 — OPEN: transient receipt replacement denied before child launch
+
+- Symptom: recovery-gate profile2/full6 passed, then partial Job failed before
+  child on WinError5 replacing partial-job.tmp -> partial-job.json. Error-path
+  receipt publication succeeded immediately afterward. Root gate failed1 at
+  37.676s. All owned processes terminal; no host crash.
+- Root cause: atomic rename can encounter a short-lived Windows sharing/access
+  denial. The locking owner is unknown; no antivirus cause is claimed. No retry
+  existed, so a transient denial aborted an otherwise valid launch.
+- Detection class: windows-persistence.
+- Instrument: shared atomic replace helper, at most6 attempts/150ms total sleep
+  for WinError5/32/33 only. Persistent/other IO errors still fail closed; no child
+  before durable admission receipt. Prior complete snapshot pointer survives.
+  Source archive includes helper; diagnostics inspect failed receipt before
+  looking for a nonexistent worker summary.
+- Pending gates: three injected-IO tripwires, recovery7/resources6/source4/
+  admission4 and fresh native14-update integration. Earlier partial gate is red.
 
 ## V-014 — OPEN: traceback read edited parent trainer lines
 

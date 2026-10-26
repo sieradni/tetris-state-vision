@@ -100,6 +100,17 @@ inside each archive, step_partial3 explicit and resumed full6. Long memory gate
 and accuracy configuration still pending; no simple square-only quality claim.
 LAUNCHED recovery gate:14436/1772 exact supervisor commands verified. Inspect
 its progress/child receipts and terminal proof next; no other heavy vision job.
+That first gate is TERMINAL/red: profile2/full6 passed; partial never spawned
+because atomic receipt replacement hit WinError5 (V-015 OPEN). All matching
+processes verified absent; no retry of same output. Shared replace helper now
+retries only Windows5/32/33, max6attempts/150ms, preserving prior complete bytes.
+Atomic3/recovery7/native6/pressure5/admission4/source4 =29 scoped cases GREEN
+on current candidate; runs/v015-*-tests.*. V-013/V-014/V-015 remain OPEN until
+their named runtime gates pass. No cap raised, no native guard bypass.
+NEXT fresh gate uses the SAME1GiB/420s/14-update envelope and serialized640MiB
+children, new root runs/m2-stream-recovery-gate-r2, logs .log/.stderr.log and
+receipt runs/m2-stream-recovery-gate-r2-job.json. Substitute that fresh name in
+the command above; verify exact process tree, then native proof and all deaths.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.

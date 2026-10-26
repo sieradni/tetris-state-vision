@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import re
 import uuid
+from atomic_write import replace_retry
 
 MAX_TENSORS = 256*1024**2
 MAX_LEDGER = 16*1024**2
@@ -35,7 +36,7 @@ def _write_json(path, value):
         stream.write(_json_bytes(value))
         stream.flush()
         os.fsync(stream.fileno())
-    temporary.replace(path)
+    replace_retry(temporary, path)
 
 
 def _digest(path, limit):
