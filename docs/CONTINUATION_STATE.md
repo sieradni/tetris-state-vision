@@ -146,6 +146,13 @@ Logs .log/.stderr.log; checkpoint latest-training.json plus generation dirs.
 Record PID/tree and do independent pure analysis/receipt work while it runs.
 No source changes to captured files until its launch; later parent code cannot
 affect archived main/imports. Never relaunch on a polling timeout.
+LAUNCHED r3:28692/25064/14404/26064 all exact commands verified. Progress137/
+768 at91.108s, recovery checkpoint128 saved. Source121fd05a..., no restart.
+Independent analyzer scripts/analyze_stream_memory.py now syntax-green;
+implements predeclared same640MiB complete768, exact565 record/data prefix,
+unchanged package/sampler/lock and second-half raw peak growth <=32MiB. Run
+only after terminal complete; report actual fixed-probe metrics without a quality
+claim. Preserve no-baseline-weights limitation and every raw counter.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
