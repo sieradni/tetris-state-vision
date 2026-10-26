@@ -1,0 +1,23 @@
+{
+  "milestone": "M2 one-image checkpoint inspection",
+  "base_commit": "e6adce882ae3d52ae197396a9af5fbdd5d7f365e",
+  "model_sources_commit": "8d9d0f2",
+  "training_driver_commit": "e6adce8",
+  "core_model_delta_to_8d9": "empty (verified with git diff)",
+  "model_sha256": "56d23804eec0861d11ab1c08941a95cab4d38516e2db4e56ebc9d126e9bb0b4a",
+  "input_sha256": "7DE03368D9FC069B7058202793643367518857CAFF92D6631DFAA42D1C090BC3",
+  "output_sha256": "A00A46E41D4911F8CF11F12CB0F0EFC5E4A8906F9C7A8FA6C1BA9BA4DD4491C3",
+  "focused_tests": 7,
+  "artifact_call": "m2-inspection-job.json",
+  "schema_validation": "m2-inspection-validate.json",
+  "verified_sources": {
+    "src/tetris_vision/runtime.py": "914714B6F067FF49B9BD3CC6774C0D990A043089EDCB8B10B9E32BA34C58003A",
+    "scripts/inspect_m2_checkpoint.py": "4BE3BB8AF7F3744E2D10765D935F98B2D7B4636979F37E69D897716A28D9B5BF",
+    "tests/test_runtime.py": "0870DED80DF4BDDD5BED3D24132ACA3E4DF565FA8BC12041F6BFC0DB850BD7DF",
+    "src/tetris_vision/model.py": "C864F4FFAF1EA87AACCAF20E16D8F9C87602ACDEAB9A41E94327149E9FE5B83C",
+    "src/tetris_vision/preprocess.py": "51142D968FD04E7D1676B58B924138C8C7BBCB2A63B2825FDF2DA4CB3C50E6BF",
+    "src/tetris_vision/losses.py": "BCFF465D5CA64738DF7834C8E5A68F247FD5067B6AC36211CFB62098B93F469F",
+    "src/tetris_vision/checkpoint.py": "9EA62E545104258D69E47FCF5FC5FB33AF27179BFABF959592AEB2F9A3360F6E"
+  },
+  "claim": "Typed review-only output; no image-correctness or complete-state claim"
+}

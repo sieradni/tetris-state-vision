@@ -1,0 +1,12 @@
+test_absent_active_requires_observed_spawn_margin (test_runtime.RuntimeContractTests.test_absent_active_requires_observed_spawn_margin) ... ok
+test_bottom_first_asymmetric_cells_survive_json_serialization (test_runtime.RuntimeContractTests.test_bottom_first_asymmetric_cells_survive_json_serialization) ... ok
+test_joint_pose_selection_respects_shape_capacity_without_clamping_cells (test_runtime.RuntimeContractTests.test_joint_pose_selection_respects_shape_capacity_without_clamping_cells) ... ok
+test_piece_guess_never_deletes_locked_cells_or_forces_semantic_type (test_runtime.RuntimeContractTests.test_piece_guess_never_deletes_locked_cells_or_forces_semantic_type) ... ok
+test_saved_checkpoint_drives_public_one_image_api_and_never_accepts (test_runtime.RuntimeContractTests.test_saved_checkpoint_drives_public_one_image_api_and_never_accepts) ... ok
+test_source_alpha_hole_cannot_be_a_known_cell (test_runtime.RuntimeContractTests.test_source_alpha_hole_cannot_be_a_known_cell) ... ok
+test_unknown_registration_masks_every_canonical_output (test_runtime.RuntimeContractTests.test_unknown_registration_masks_every_canonical_output) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.579s
+
+OK

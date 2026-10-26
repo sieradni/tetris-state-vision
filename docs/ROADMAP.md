@@ -28,6 +28,12 @@ error remains 1.43 cells and development exact boards are 0/6. The M2 learning
 gate remains OPEN. Receipt docs/evidence/m2-learn16/receipt.json; next is a priced
 128-step controlled comparison, not a release-quality claim.
 
+The M2 artifact now has a one-image inspection API with typed review-only output.
+Seven focused contracts and one actual checkpoint/JSON validation are green;
+docs/evidence/m2-runtime/scope.json. The encoder/model/loss/preprocessing/loader
+sources remain unchanged from 8d9d0f2; the new caller does not participate in the
+next optimizer comparison. Queue/hold remain explicitly unresolved.
+
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact
    solver/colored-state evaluation; annotation policy. Gate: adversarial fixtures.

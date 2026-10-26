@@ -1,0 +1,1085 @@
+{
+  "board": {
+    "rows": [
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "S",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "S",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "I",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "S",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "S",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "S",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": "L",
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": true,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ],
+      [
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        },
+        {
+          "occupied": false,
+          "semantic": null,
+          "visibility": "visible"
+        }
+      ]
+    ],
+    "lattice": {
+      "origin": [
+        76.16403198242188,
+        584.4402465820312
+      ],
+      "u": [
+        20.089859008789062,
+        0.0
+      ],
+      "v": [
+        0.0,
+        -19.307886123657227
+      ]
+    }
+  },
+  "active": {
+    "status": "absent",
+    "piece": null,
+    "cells": []
+  },
+  "ghost": {
+    "status": "absent",
+    "piece": null,
+    "cells": []
+  },
+  "queue": {
+    "items": [],
+    "visibility": "unknown",
+    "end_observed": false,
+    "start_observed": false
+  },
+  "hold": {
+    "status": "unknown",
+    "piece": null
+  },
+  "decision": "needs_review",
+  "schema_version": "1.1",
+  "producer": "TetrisStateNet-M2-uncalibrated",
+  "model_id": "56d23804eec0861d11ab1c08941a95cab4d38516e2db4e56ebc9d126e9bb0b4a",
+  "player": 0
+}

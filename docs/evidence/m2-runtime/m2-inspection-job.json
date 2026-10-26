@@ -1,0 +1,23 @@
+{
+  "supervisor_pid": 8660,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/inspect_m2_checkpoint.py",
+    "--checkpoint",
+    "runs/m2-learn16/checkpoint",
+    "--image",
+    "runs/m2-learn16/development/20361026-dense-clean.png",
+    "--output",
+    "runs/m2-inspection/state.json"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 60.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-eed87aa5f6ae45cda6bd7dbff4862cee",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 2.687,
+  "child_pid": 29988,
+  "peak_job_commit_bytes": 297144320
+}

@@ -57,5 +57,12 @@ but geometry remained imprecise and development exact boards were 0/6. The weigh
 are retained locally at runs/m2-learn16/checkpoint/ with a checksum manifest.
 See docs/M2_LEARNING_ACCEPTANCE.md before interpreting or extending this result.
 
+The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
+`tetris_vision.runtime`. It uses the full image, always returns needs_review (or
+unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with
+scripts/inspect_m2_checkpoint.py; its real 16-step-artifact call and seven focused
+contracts are scoped in docs/evidence/m2-runtime/. The resulting JSON is there
+as state.json. This path is for inspection, not automatic solver input.
+
 The design source is archived in docs/research/Tetris_Vision_Research.md.
 See docs/ROADMAP.md for milestones and docs/ANNOTATION.md for label semantics.
