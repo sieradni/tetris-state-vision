@@ -61,8 +61,22 @@ Hidden detached command, logs runs/m2-stream-learn768.log/.stderr.log:
 --output runs/m2-stream-learn768 --model pilot --steps768 --wall-seconds600
 --development-groups6 --admission runs/m2-stream-warm-probe.
 Do not launch if actual OS headroom insufficient. Record/verify PID after spawn.
+Attempt terminal: shim29620/supervisor30048 verified gone; admission refused
+before child at30,864,125,952B commit plus640MiB reservation. Receipt125,
+runs/m2-stream-learn768-job.json; no output directory. No retry loop.
 Prior V-003 catalogue/weight identity,V-004 raw counters,V-007 exact Job and
 V-010 pressure closure remain armed. No neural/loss math change.
+
+Next source task: isolated exact CPU training-snapshot primitive, not yet wired
+into the source-frozen driver. Acceptance: interrupted+resumed6-step AdamW/dropout
+matches continuous6-step model/optimizer/RNG; reject source/recipe/hash/cursor
+mismatch; publish latest pointer only after complete artifact and ledger hashes.
+Todo: implement helper; adversarial contracts; native bounded gate; review/commit.
+Architecture review: V-003 hashes/identity require source+recipe and byte-prefix
+binding; V-004/V-007 preserve actual native readback/accounting; V-010 pressure
+kill can interrupt writes, so pointer is the last commit; V-011 requires a new
+warm resource profile after eventual driver integration. Visibility bugs remain
+untouched: no model inputs/targets or active/locked/queue rules change.
 
 Then characterize actual multi-step admission/streaming and adequately train on
 fresh states. A long run may be interrupted by renewed host pressure; periodic
