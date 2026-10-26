@@ -91,6 +91,24 @@ expected<600MiB, no training, fixed27 saved pilot probes, source121fd05a...:
 Hidden logs .log/.stderr.log. Check ordinary metrics reproduce saved values,
 weights unchanged and intervention restored. Any oracle score is diagnostic
 only, never automatic accuracy. After it ends, resume larger93+35 exactly.
+Oracle COMPLETE:54 forwards/15.506s inner/16.816s outer,415,694,848B/768MiB;
+ordinary metrics exactly reproduced, weights unchanged, temporary decoder
+restored. Correct grid still0 exact boards; train cell.795->.8333, dev.8822->
+.8583; layers unchanged12/18 and0/36. Conditional intervention only, not an
+accuracy ceiling or deployed correction. All matching processes verified gone.
+
+NEXT resume35 into runs/m2-stream-accuracy128-r2: same source/recipe/model/Adam/
+RNG and global target128. Expected<950MiB, native1GiB/360s/35updates,
+worker inner300s, one CPU. Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib1024
+--wall-seconds360 --work-items35 --receipt runs/m2-stream-accuracy128-r2-job.json
+-- .venv/Scripts/python.exe scripts/train_m2_stream.py
+--output runs/m2-stream-accuracy128-r2 --model accuracy --steps128
+--max-new-steps35 --wall-seconds300 --development-groups6 --checkpoint-every64
+--admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy128.
+Hidden logs .log/.stderr.log; verify exact PID/tree and saved parent cursor93.
+Curator must preserve parent wall_partial93 receipt, snapshot/hash/ledger-prefix
+provenance and resumed35 count, not describe second Job as128updates.
 
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;
