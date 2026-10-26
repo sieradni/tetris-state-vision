@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "updates": {
+    "profile": 2,
+    "continuous": 6,
+    "partial": 3,
+    "resumed": 3
+  },
+  "partial_status": "step_partial",
+  "global_steps": 6,
+  "exact_data_ledger": true,
+  "exact_loss_terms_gradient_curve": true,
+  "exact_evaluations": true,
+  "exact_model_optimizer_rng": true,
+  "all_final_tensors_reload_exact": true,
+  "weights_sha256": {
+    "profile": "32f49c3b187863596e2781fc70acec3386b1deab4ed5897c99e426d1514bb8ca",
+    "continuous": "f5145621be3ea9650e5126250d80baa568aec1e7748f66e9f2dd5834e5730f51",
+    "partial": "74811adbe237cf81a12ae37fd88bd386f900fbcc2f1b8e81770f79abd09c85e5",
+    "resumed": "f5145621be3ea9650e5126250d80baa568aec1e7748f66e9f2dd5834e5730f51"
+  },
+  "child_peak_job_commit_bytes": {
+    "profile": 554541056,
+    "continuous": 505053184,
+    "partial": 491487232,
+    "resumed": 502403072
+  },
+  "orchestrator_sha256": "12d14b769531846a7aa2524c5cf44c7715ca4fe82af64e15102bf5ec896b92aa",
+  "claim": "Finite source-frozen stream recovery equivalence only; no accuracy or release acceptance."
+}

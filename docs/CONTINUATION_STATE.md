@@ -120,6 +120,19 @@ V-013 remains OPEN. Catalogue121fd05a... includes7 helper scripts. Verify root
 processes gone, then curate17 training records+72 saved probes under128MiB/45s,
 89 verifications; expected<90MiB. Receipt runs/recovery-gate-evidence-job.json,
 command record_stream_recovery.py --name m2-stream-recovery-gate-r2.
+Curator GREEN:17 training records and72 saved probe rasters/annotations replayed
+exactly; docs/evidence/m2-stream-recovery-gate-r2/scope.json. Root and matching
+children verified gone. Next: separate profile with6development groups, matching
+the failed study's probe envelope (gate's3-group profile cannot admit6).
+Native640MiB/150s/2updates, expected<600MiB; worker inner110s, pilot512-square.
+Fresh name m2-stream-resume-probe; receipt runs/m2-stream-resume-probe-job.json,
+logs .log/.stderr.log; use train_m2_stream.py --output runs/m2-stream-resume-probe
+--model pilot --steps2 --profile-square --wall-seconds110 --development-groups6.
+Then new768 study at640MiB, periodic snapshots64,900s inner/960s outer, one CPU.
+Predeclared V-013 gate: native complete768, all565 old optimizer/data prefix
+records exact (excluding elapsed time), recovery snapshot768 + reload parity,
+memory trajectory every16updates; second-half raw peak growth <=32MiB. Raw
+historical accounting is preserved, never clamped. No general accuracy claim.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.

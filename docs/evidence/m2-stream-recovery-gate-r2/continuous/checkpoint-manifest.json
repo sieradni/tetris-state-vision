@@ -1,0 +1,98 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M2",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576
+  },
+  "weights_sha256": "f5145621be3ea9650e5126250d80baa568aec1e7748f66e9f2dd5834e5730f51",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 647098,
+  "metadata": {
+    "trained_steps": 6,
+    "catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+    "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "system_pressure_guard": "GetPerformanceInfo/0.2s",
+    "runtime_source_sha256": "95211a0d82d7a4ed250eecdbd8d8a102703c904e2a091f56f3a9100781f4104f",
+    "model_kind": "pilot",
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r2\\continuous",
+      "model": "pilot",
+      "steps": 6,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 60.0,
+      "evaluate_every": 3,
+      "development_groups": 3,
+      "profile_square": false,
+      "admission": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r2\\profile",
+      "checkpoint_every": 3,
+      "resume_from": null,
+      "max_new_steps": 6
+    },
+    "stream_ledger_sha256": "b69121f1f14f8fcfc65ade8ce66a027d3234aa35767089603e5bbe992df6bc4f",
+    "cpu_only": true,
+    "resume": null,
+    "latest_training_snapshot": {
+      "format": "tetris-vision-training-snapshot",
+      "version": 1,
+      "generation": "step-000006-e9408cb9229f43d5a5cfa99890060960",
+      "manifest_sha256": "96d5f90e14fe5a119771757999247715b02029ea0833f3795847d50ba46b8752"
+    },
+    "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r2\\continuous\\code\\scripts\\train_m2_stream.py",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "recovery_contract": {
+      "catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+      "config": {
+        "widths": [
+          16,
+          32,
+          64,
+          96
+        ],
+        "dimension": 64,
+        "heads": 4,
+        "blocks": 2,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576
+      },
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "weight_decay": 0.01,
+      "steps": 6,
+      "max_side": 512,
+      "development_groups": 3,
+      "evaluate_every": 3,
+      "checkpoint_every": 3,
+      "profile_square": false,
+      "threads": 1,
+      "rng": "torch_cpu_only",
+      "native_cache_limits": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      }
+    },
+    "updates_this_run": 6
+  }
+}
