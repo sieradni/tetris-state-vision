@@ -1,0 +1,7 @@
+{
+  "sources": {
+    "tests/test_corpus_tools.py": "942dbf86bfdb108c9a13488751367e56c617013465aadbc012ef93a4efc84c24",
+    "scripts/corpus_tools.py": "d3881cf1226694d6426dc0e5d28de32df3f32ea42e7e2a0b5d708dde6948305f"
+  },
+  "base_commit": "28a78b4db0745a5c612dfdfff4e4d0c6606d3dec"
+}

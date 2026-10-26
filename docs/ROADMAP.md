@@ -34,6 +34,13 @@ docs/evidence/m2-runtime/scope.json. The encoder/model/loss/preprocessing/loader
 sources remain unchanged from 8d9d0f2; the new caller does not participate in the
 next optimizer comparison. Queue/hold remain explicitly unresolved.
 
+M0/M4 corpus tooling is verified on 26 adversarial integrity fixtures, including
+actual guarded CLI audit/seal/verify: docs/evidence/corpus-integrity-final/scope.json.
+Draft-only import, independent review/permission declarations, session/ancestry/
+skin/renderer groups, pixel duplicates and externally pinned held-out identity
+are enforced. No real images have been admitted, no human review is claimed,
+and the optimizer does not consume this manifest. See docs/CORPUS.md.
+
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact
    solver/colored-state evaluation; annotation policy. Gate: adversarial fixtures.

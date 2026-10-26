@@ -1,0 +1,31 @@
+test_actual_cli_under_named_job_audits_seals_and_verifies (test_corpus_tools.CorpusContractTests.test_actual_cli_under_named_job_audits_seals_and_verifies) ... ok
+test_ambiguous_partial_board_cannot_label_off_image_cells (test_corpus_tools.CorpusContractTests.test_ambiguous_partial_board_cannot_label_off_image_cells) ... ok
+test_cli_missing_job_identity_refuses_before_corpus_output (test_corpus_tools.CorpusContractTests.test_cli_missing_job_identity_refuses_before_corpus_output) ... ok
+test_duplicate_ids_do_not_inflate_admitted_count (test_corpus_tools.CorpusContractTests.test_duplicate_ids_do_not_inflate_admitted_count) ... ok
+test_duplicate_pixels_across_encodings_cannot_inflate_sample_count (test_corpus_tools.CorpusContractTests.test_duplicate_pixels_across_encodings_cannot_inflate_sample_count) ... ok
+test_geometry_registration_and_image_bounds (test_corpus_tools.CorpusContractTests.test_geometry_registration_and_image_bounds) ... ok
+test_group_leakage_for_each_required_axis (test_corpus_tools.CorpusContractTests.test_group_leakage_for_each_required_axis) ... ok
+test_import_is_draft_only_and_preserves_source_and_existing_output (test_corpus_tools.CorpusContractTests.test_import_is_draft_only_and_preserves_source_and_existing_output) ... ok
+test_invisible_rgb_is_not_an_independent_image (test_corpus_tools.CorpusContractTests.test_invisible_rgb_is_not_an_independent_image) ... ok
+test_legacy_schema_and_wrong_population_are_rejected (test_corpus_tools.CorpusContractTests.test_legacy_schema_and_wrong_population_are_rejected) ... ok
+test_malformed_rows_report_failure_without_crashing (test_corpus_tools.CorpusContractTests.test_malformed_rows_report_failure_without_crashing) ... ok
+test_model_proposal_cannot_self_promote (test_corpus_tools.CorpusContractTests.test_model_proposal_cannot_self_promote) ... ok
+test_modified_image_and_annotation_are_detected (test_corpus_tools.CorpusContractTests.test_modified_image_and_annotation_are_detected) ... ok
+test_new_training_leak_invalidates_existing_seal (test_corpus_tools.CorpusContractTests.test_new_training_leak_invalidates_existing_seal) ... ok
+test_nonobject_annotation_and_malformed_declarations_fail_closed (test_corpus_tools.CorpusContractTests.test_nonobject_annotation_and_malformed_declarations_fail_closed) ... ok
+test_path_escape_is_refused (test_corpus_tools.CorpusContractTests.test_path_escape_is_refused) ... ok
+test_permission_claim_requires_evidence (test_corpus_tools.CorpusContractTests.test_permission_claim_requires_evidence) ... ok
+test_permission_is_specific_to_use (test_corpus_tools.CorpusContractTests.test_permission_is_specific_to_use) ... ok
+test_record_asset_pixel_and_line_budgets (test_corpus_tools.CorpusContractTests.test_record_asset_pixel_and_line_budgets) ... ok
+test_review_is_independent_human_and_timestamped (test_corpus_tools.CorpusContractTests.test_review_is_independent_human_and_timestamped) ... ok
+test_reviewed_permitted_record_is_admitted (test_corpus_tools.CorpusContractTests.test_reviewed_permitted_record_is_admitted) ... ok
+test_same_group_within_one_split_and_client_holdout (test_corpus_tools.CorpusContractTests.test_same_group_within_one_split_and_client_holdout) ... ok
+test_seal_rejects_record_changes_but_allows_unrelated_training_additions (test_corpus_tools.CorpusContractTests.test_seal_rejects_record_changes_but_allows_unrelated_training_additions) ... ok
+test_seal_requires_review_permission_and_external_identity (test_corpus_tools.CorpusContractTests.test_seal_requires_review_permission_and_external_identity) ... ok
+test_strict_json_rejects_duplicate_fields_nonfinite_and_nonobjects (test_corpus_tools.CorpusContractTests.test_strict_json_rejects_duplicate_fields_nonfinite_and_nonobjects) ... ok
+test_unresolved_groups_are_never_eligible (test_corpus_tools.CorpusContractTests.test_unresolved_groups_are_never_eligible) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 3.620s
+
+OK

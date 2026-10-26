@@ -36,7 +36,8 @@ The schema is enforced by state.py constructors and the `validate` CLI.
 - `accepted` requires supported geometry and known occupancy/components. It
   permits unknown per-cell semantic types; colored scoring separately declares
   type identifiability. `needs_review`, `no_board`, and `unsupported` are explicit.
-  Model ID is null for annotations and synthetic labels: no weights exist yet.
+  Model ID is null for annotations and synthetic labels; model predictions name
+  their actual weight identity. A reviewed correction is a separate annotation.
 
 ## Renderer identifiability policy and limits
 
@@ -85,6 +86,7 @@ group and split (80/10/10 hash buckets). Tiny demos are not expected to populate
 all splits. Future real data needs session/video/replay/ancestry and held-out
 client/skin/renderer families together; this initial split alone does not achieve
 family holdout. No user image or correction becomes a label without review.
-Human pilot/baseline, cluster-aware uncertainty, calibration and sealed final test
-are pending. Image-level Wilson intervals are diagnostic only, with independence
+The local review/admission and held-out identity workflow is in
+[CORPUS.md](CORPUS.md). Actual human pilot/baseline, cluster-aware uncertainty,
+calibration and a sealed real final test are pending. Image-level Wilson intervals are diagnostic only, with independence
 limits explicitly returned. Self-comparison is never a model accuracy result.

@@ -66,3 +66,8 @@ as state.json. This path is for inspection, not automatic solver input.
 
 The design source is archived in docs/research/Tetris_Vision_Research.md.
 See docs/ROADMAP.md for milestones and docs/ANNOTATION.md for label semantics.
+
+Local real-image preparation and audit are described in [docs/CORPUS.md](docs/CORPUS.md).
+Imports stay drafts until independently reviewed and permitted. Hashes, related
+image groups and externally pinned held-out snapshots protect benchmark identity;
+these structural checks are not evidence of label correctness or model accuracy.

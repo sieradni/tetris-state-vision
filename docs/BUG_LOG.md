@@ -12,6 +12,36 @@ a named green run. An unrun gate leaves the entry OPEN.
 | provenance | V-003 (1) | Computed hashes and byte comparison |
 | test-instrument | V-004 (1) | Native allocation admission plus raw counters |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
+| corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
+
+## V-009 — CLOSED: ambiguous corpus labels admitted off-image known cells
+
+- Symptom: final review found full-board bounds were checked only for readable
+  records; an ambiguous partial board could claim certainty outside the raster.
+- Root cause: geometry existence was mistaken for evidence that each known cell
+  lies inside the image. This repeats V-001/V-006's visibility boundary in the
+  separate real-corpus admission path, without changing renderer/model policy.
+- Detection class: corpus-admission.
+- Instrument: each known cell needs all four corners in the source; same-raster
+  empty/occupied off-image declarations both fail, unknown cropped cells pass.
+- Green gate: docs/evidence/corpus-integrity-final/corpus-fixtures-r3.stderr.log,
+  26/26 in 3.620 s, including the same-raster off-image certainty fixture.
+  scope.json pins the final code/test hashes and native 256 MiB / 60 s receipt.
+
+## V-008 — CLOSED: malformed corpus rows broke the audit report
+
+- Symptom: pre-gate review found report() called .get on arbitrary JSON rows;
+  an invalid duplicate ID could also inflate eligible split counts.
+- Root cause: reporting trusted the input shapes rejected by validation and
+  counted row occurrences instead of successfully admitted identities.
+- Detection class: corpus-admission.
+- Instrument: malformed declaration/report fixtures, unique admitted identity
+  counts, strict JSON duplicate/nonfinite rejection. The corpus cannot seal
+  while any validation error remains.
+- Green gate: docs/evidence/corpus-integrity/corpus-fixtures-r2.stderr.log,
+  25/25 in 4.499 s, including malformed declarations/reporting and duplicate ID
+  count. The actual guarded audit/seal/verify CLI also passed. Source identity and
+  the 256 MiB / 60 s / 25-case receipt are in the same directory's scope.json.
 
 ## V-001 — CLOSED: latent geometry survived ambiguous crops
 

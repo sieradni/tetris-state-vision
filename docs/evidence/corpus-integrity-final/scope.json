@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "tests": 26,
+  "base_commit": "28a78b4db0745a5c612dfdfff4e4d0c6606d3dec",
+  "sources": {
+    "scripts/corpus_tools.py": "d3881cf1226694d6426dc0e5d28de32df3f32ea42e7e2a0b5d708dde6948305f",
+    "tests/test_corpus_tools.py": "942dbf86bfdb108c9a13488751367e56c617013465aadbc012ef93a4efc84c24"
+  },
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "peak_job_commit_bytes": 62005248,
+  "scope": "Structural admission, grouping, pixel identity, review/permission declarations, held-out identity and actual guarded CLI.",
+  "not_claimed": "Real-image labeling, human review authenticity, perceptual near-duplicate discovery, dataset permission or model accuracy.",
+  "raw_receipts": [
+    "corpus-fixtures-r3.json",
+    "corpus-fixtures-r3.log",
+    "corpus-fixtures-r3.stderr.log"
+  ],
+  "curator_sha256": "0dbdcd034a3fc84328dfad62719efbfc08416c2f16da4ffa1031860c610140a0",
+  "current_base_commit": "28a78b4db0745a5c612dfdfff4e4d0c6606d3dec"
+}
