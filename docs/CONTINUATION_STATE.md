@@ -98,6 +98,8 @@ Verify exact process tree after spawn; inspect proof/receipt and death. Success
 requires data/terms/gradients/evaluation/model/Adam/RNG equality, source paths
 inside each archive, step_partial3 explicit and resumed full6. Long memory gate
 and accuracy configuration still pending; no simple square-only quality claim.
+LAUNCHED recovery gate:14436/1772 exact supervisor commands verified. Inspect
+its progress/child receipts and terminal proof next; no other heavy vision job.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
