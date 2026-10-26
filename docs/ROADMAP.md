@@ -28,6 +28,13 @@ error remains 1.43 cells and development exact boards are 0/6. The M2 learning
 gate remains OPEN. Receipt docs/evidence/m2-learn16/receipt.json; next is a priced
 128-step controlled comparison, not a release-quality claim.
 
+The 128-step comparison has now run: exact first-16 optimizer prefix and identical
+data, lower training loss (.3498) but still only the empty 2/6 boards exact.
+Development remains 0/6; known layer accuracy worsens to 0/12. Source/weight
+identity and per-case errors: docs/evidence/m2-learn128/comparison.json. Next is
+the finite 512-step training-fit diagnostic defined in M2_LEARNING_ACCEPTANCE.md;
+M2 learning and broad generalization remain open.
+
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;
 docs/evidence/m2-runtime/scope.json. The encoder/model/loss/preprocessing/loader

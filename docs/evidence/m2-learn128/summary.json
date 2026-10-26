@@ -1,0 +1,299 @@
+{
+  "status": "complete",
+  "steps": 128,
+  "requested_steps": 128,
+  "initial_training": {
+    "images": 6,
+    "loss": 4.476723472277324,
+    "terms": {
+      "geometry": 1.2392246921857197,
+      "occupancy": 0.5969366282224655,
+      "semantic": 1.633163849512736,
+      "visibility": 0.911357581615448,
+      "registration": 0.7194185256958008,
+      "layers": 2.0494661728541055,
+      "layer_visibility": 0.8480430344740549,
+      "pose": 2.351332902908325
+    },
+    "cell_accuracy": 0.7616666654745737,
+    "exact_locked_boards": 0,
+    "mean_geometry_error_cells": 2.629751900831858,
+    "exact_known_layers": 0,
+    "known_layers": 12,
+    "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+  },
+  "final_training": {
+    "images": 6,
+    "loss": 0.34976944886147976,
+    "terms": {
+      "geometry": 0.08343212989469369,
+      "occupancy": 0.08167935212259181,
+      "semantic": 0.34857239822546643,
+      "visibility": 0.008064188400870384,
+      "registration": 0.019067478521416586,
+      "layers": 0.005794526179367192,
+      "layer_visibility": 0.0032690366248668092,
+      "pose": 0.3480696678161621
+    },
+    "cell_accuracy": 0.9641666611035665,
+    "exact_locked_boards": 2,
+    "mean_geometry_error_cells": 0.36448700229326886,
+    "exact_known_layers": 10,
+    "known_layers": 12,
+    "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+  },
+  "development": {
+    "images": 6,
+    "loss": 13.782456159591675,
+    "terms": {
+      "geometry": 0.43320253243048984,
+      "occupancy": 1.5183921133478482,
+      "semantic": 2.3716209332148233,
+      "visibility": 0.005648097217393418,
+      "registration": 0.002603173634270206,
+      "layers": 13.85326075553894,
+      "layer_visibility": 0.0023670248636638767,
+      "pose": 17.234684308369953
+    },
+    "cell_accuracy": 0.9158333440621694,
+    "exact_locked_boards": 0,
+    "mean_geometry_error_cells": 1.3768402238686879,
+    "exact_known_layers": 0,
+    "known_layers": 12,
+    "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+  },
+  "evaluations": [
+    {
+      "step": 0,
+      "training": {
+        "images": 6,
+        "loss": 4.476723472277324,
+        "terms": {
+          "geometry": 1.2392246921857197,
+          "occupancy": 0.5969366282224655,
+          "semantic": 1.633163849512736,
+          "visibility": 0.911357581615448,
+          "registration": 0.7194185256958008,
+          "layers": 2.0494661728541055,
+          "layer_visibility": 0.8480430344740549,
+          "pose": 2.351332902908325
+        },
+        "cell_accuracy": 0.7616666654745737,
+        "exact_locked_boards": 0,
+        "mean_geometry_error_cells": 2.629751900831858,
+        "exact_known_layers": 0,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 16,
+      "training": {
+        "images": 6,
+        "loss": 1.6125822861989338,
+        "terms": {
+          "geometry": 0.5116100509961446,
+          "occupancy": 0.22482806676998734,
+          "semantic": 0.8170847694079081,
+          "visibility": 0.045204811419049896,
+          "registration": 0.41007032493750256,
+          "layers": 0.6734671692053477,
+          "layer_visibility": 0.051557762548327446,
+          "pose": 0.8337246576944987
+        },
+        "cell_accuracy": 0.9116666714350382,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 1.4252994358539581,
+        "exact_known_layers": 8,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 32,
+      "training": {
+        "images": 6,
+        "loss": 0.9479959284265836,
+        "terms": {
+          "geometry": 0.36323277403910953,
+          "occupancy": 0.17004546507572135,
+          "semantic": 0.7105191648006439,
+          "visibility": 0.007448642262412856,
+          "registration": 0.15888920923074087,
+          "layers": 0.25301849469542503,
+          "layer_visibility": 0.003559077114914544,
+          "pose": 0.2724176049232483
+        },
+        "cell_accuracy": 0.9083333313465118,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 0.9777422621846199,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 48,
+      "training": {
+        "images": 6,
+        "loss": 0.8293667336304983,
+        "terms": {
+          "geometry": 0.2853906663755576,
+          "occupancy": 0.24994235093860576,
+          "semantic": 0.6364775002002716,
+          "visibility": 0.002461555316775351,
+          "registration": 0.021116262922684353,
+          "layers": 0.007936971752011837,
+          "layer_visibility": 0.0004305179603865857,
+          "pose": 0.4997750719388326
+        },
+        "cell_accuracy": 0.9191666642824808,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 0.8839932332436243,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 64,
+      "training": {
+        "images": 6,
+        "loss": 1.0718014165759087,
+        "terms": {
+          "geometry": 0.3206932495037715,
+          "occupancy": 0.12589739193208516,
+          "semantic": 0.5618690550327301,
+          "visibility": 0.0031517704095070562,
+          "registration": 0.006010374752804637,
+          "layers": 0.7578842615087827,
+          "layer_visibility": 0.00121750407303504,
+          "pose": 0.41282588243484497
+        },
+        "cell_accuracy": 0.9366666674613953,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 1.2029561003049214,
+        "exact_known_layers": 6,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 80,
+      "training": {
+        "images": 6,
+        "loss": 0.8654002298911413,
+        "terms": {
+          "geometry": 0.503763809800148,
+          "occupancy": 0.16111186673515476,
+          "semantic": 0.5395705513656139,
+          "visibility": 0.002869492226939959,
+          "registration": 0.009035105972240368,
+          "layers": 0.00620247857295908,
+          "layer_visibility": 0.0007227020266024434,
+          "pose": 0.23749536275863647
+        },
+        "cell_accuracy": 0.921666661898295,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 1.279025415579478,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 96,
+      "training": {
+        "images": 6,
+        "loss": 0.5881760058303674,
+        "terms": {
+          "geometry": 0.2812883146107197,
+          "occupancy": 0.1301857538492186,
+          "semantic": 0.4396660818407933,
+          "visibility": 0.005534629987475152,
+          "registration": 0.009730116231366992,
+          "layers": 0.004409513048206766,
+          "layer_visibility": 0.0002380626813192066,
+          "pose": 0.24281991521517435
+        },
+        "cell_accuracy": 0.940833330154419,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 0.947324146827062,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 112,
+      "training": {
+        "images": 6,
+        "loss": 0.48478048170606297,
+        "terms": {
+          "geometry": 0.21464146673679352,
+          "occupancy": 0.08771189742158943,
+          "semantic": 0.3537157674630483,
+          "visibility": 0.004916374439441522,
+          "registration": 0.0057263768976554275,
+          "layers": 0.002082909185295042,
+          "layer_visibility": 0.0006728385111879712,
+          "pose": 0.36051128307978314
+        },
+        "cell_accuracy": 0.9633333285649618,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 0.7258435934782028,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    },
+    {
+      "step": 128,
+      "training": {
+        "images": 6,
+        "loss": 0.34976944886147976,
+        "terms": {
+          "geometry": 0.08343212989469369,
+          "occupancy": 0.08167935212259181,
+          "semantic": 0.34857239822546643,
+          "visibility": 0.008064188400870384,
+          "registration": 0.019067478521416586,
+          "layers": 0.005794526179367192,
+          "layer_visibility": 0.0032690366248668092,
+          "pose": 0.3480696678161621
+        },
+        "cell_accuracy": 0.9641666611035665,
+        "exact_locked_boards": 2,
+        "mean_geometry_error_cells": 0.36448700229326886,
+        "exact_known_layers": 10,
+        "known_layers": 12,
+        "note": "Uncalibrated raw-head synthetic diagnostics; not automatic full-state accuracy."
+      }
+    }
+  ],
+  "tensor_cache_bytes": 17252352,
+  "max_tensor_cache_bytes": 67108864,
+  "threads": 1,
+  "max_worker_processes": 0,
+  "max_prefetch": 0,
+  "cpu_only": true,
+  "elapsed_seconds": 49.37582470000052,
+  "checkpoint_sha256": "46787c4f236c421dc7b3eb693665c1c8d09688c28f7330a28c2d0abe8907967e",
+  "checkpoint_round_trip_exact": true,
+  "trained_steps": 128,
+  "runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+  "script_sha256": "ab92f8b2389a75f2d5f3f347d795e9135933e30f6932f88e886af2323e3ee30b",
+  "arguments": {
+    "output": "runs\\m2-learn128",
+    "steps": 128,
+    "states": 3,
+    "max_side": 384,
+    "threads": 1,
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "wall_seconds": 150.0,
+    "evaluate_every": 16
+  },
+  "manifest_sha256": "e6bd6d3220a47d3bf769d0ee5c8c1bc613dad8e97892498035a1044983f6e11f",
+  "claim": "Bounded scratch-learning diagnostic; no complete-state or real-image acceptance."
+}

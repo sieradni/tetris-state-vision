@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "base_commit": "5051562d734026b56dbc67c2a9c0597d0463644e",
+  "weight_sha256": "46787c4f236c421dc7b3eb693665c1c8d09688c28f7330a28c2d0abe8907967e",
+  "analysis_sha256": "64e60ee567b53f16432b6fbb8d42ea2a6d964df8b4e998715c09351faafe0ef1",
+  "analysis_script_sha256": "dcdd72a10b74dc647320fbfafda0c62ad3decfe873957b0b404edb4e49223f8c",
+  "admitted_source_hashes": {
+    "scripts/train_m2_pilot.py": "ab92f8b2389a75f2d5f3f347d795e9135933e30f6932f88e886af2323e3ee30b",
+    "src/tetris_vision/model.py": "c864f4ffaf1ea87aaccaf20e16d8f9c87602acdeab9a41e94327149e9fe5b83c",
+    "src/tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "src/tetris_vision/checkpoint.py": "9ea62e545104258d69e47fcf5fc5fb33af27179bfabf959592aeb2f9a3360f6e",
+    "src/tetris_vision/losses.py": "bcff465d5ca64738df7834c8e5a68f247fd5067b6ac36211cfb62098b93f469f"
+  },
+  "source_delta_since_initial_pilot": [
+    "src/tetris_vision/runtime.py"
+  ],
+  "delta_effect": "Unused runtime caller only; optimizer/model/loss/preprocess/checkpoint identical.",
+  "prefix_steps_exact": 16,
+  "manifest_identical": true,
+  "analysis_peak_job_commit_bytes": 811859968,
+  "scope": "Same data, initialization and optimizer prefix; independent checkpoint confusion/layer counts agree with run summary. Not real or complete-state accuracy.",
+  "curator_sha256": "51341e00e384005d90b5d1d2abe577b74bb1a70a89b1e0bf7f6cd5b6cc2e671e"
+}

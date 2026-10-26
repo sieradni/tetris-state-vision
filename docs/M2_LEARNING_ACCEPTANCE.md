@@ -36,3 +36,44 @@ Evaluate the evidence in order:
 Still required later: broad scene/skin/background variation, queue/hold joint
 state, ambiguous transitions, reviewed real data, controlled model comparisons,
 calibration, exact exported artifact parity and named latency/resource gates.
+
+## Controlled 128-step result
+
+`docs/evidence/m2-learn128/comparison.json` proves byte-identical data manifest,
+unchanged optimizer driver, identical initialization metrics and exact equality
+of all first-16 step losses/terms/gradient norms/sample IDs. The aggregate source
+digest changed only because the unused runtime caller was added; the model,
+loss, preprocessing and checkpoint sources stayed unchanged. Weights SHA256 is
+46787c4f236c421dc7b3eb693665c1c8d09688c28f7330a28c2d0abe8907967e.
+
+| Diagnostic | 16 steps | 128 steps |
+|---|---:|---:|
+| Training loss | 1.6126 | .3498 |
+| Training exact locked boards | 2/6 | 2/6 |
+| Training mean geometry error, cells | 1.4253 | .3645 |
+| Training exact known active/ghost layers | 8/12 | 10/12 |
+| Development loss | 5.2027 | 13.7825 |
+| Development exact locked boards | 0/6 | 0/6 |
+| Development mean geometry error, cells | 1.1470 | 1.3768 |
+| Development exact known layers | 4/12 | 0/12 |
+
+The two exact training boards are the empty clean/no-grid pair. The independent
+checkpoint analysis finds training TP/FP/FN/TN = 105/36/7/1052; development =
+104/71/30/995. High cell accuracy hides incorrect complete boards, particularly
+sparse inputs. The [error image](../examples/m2-learn128-locked-errors.png) and
+per-case layer/geometry records are curated with the run. Development refinement
+can worsen the lattice, so lower training geometry error is not generalization.
+Six images in either split are only three matched-appearance ancestry groups.
+
+Resource receipt: 128 steps completed in 50.537 s under 1 GiB / 180 s / one
+thread; raw peak Job commit 479,604,736 B. Independent 12-image checkpoint analysis
+passed in 5.892 s, raw peak 811,859,968 B under 1 GiB / 60 s. Its peak exceeded
+the <512 MiB forecast, not the enforced ceiling; budget later analyses at
+<900 MiB with the same cap. The checkpoint reload remains exact.
+
+M2 learning acceptance remains OPEN. Next is a 512-step finite memorization
+check on the same cases, initialized from the same seed (not resumed). The
+predeclared training-fit diagnostic is 6/6 exact locked boards, 12/12 known
+active/ghost layers and mean geometry error <.25 cells. Passing it does not
+establish development, unseen-family, complete-state or real-image quality.
+If it fails, inspect per-case sampling/gradients/targets before extending time.

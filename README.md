@@ -57,6 +57,12 @@ but geometry remained imprecise and development exact boards were 0/6. The weigh
 are retained locally at runs/m2-learn16/checkpoint/ with a checksum manifest.
 See docs/M2_LEARNING_ACCEPTANCE.md before interpreting or extending this result.
 
+The controlled 128-step study reproduces the first 16 steps exactly. Training
+loss decreases, but only the empty training boards are exact and development
+boards remain 0/6. [Per-cell errors](examples/m2-learn128-locked-errors.png) and
+docs/evidence/m2-learn128/comparison.json record this failure to fit nonempty
+boards precisely; no screenshot accuracy is established.
+
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
 unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with

@@ -1,0 +1,16 @@
+{
+  "milestone": "M2 finite scratch-learning pilot",
+  "steps": 128,
+  "base_commit": "5051562d734026b56dbc67c2a9c0597d0463644e",
+  "runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+  "driver_sha256": "ab92f8b2389a75f2d5f3f347d795e9135933e30f6932f88e886af2323e3ee30b",
+  "weights_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-learn128\\checkpoint\\weights.pt",
+  "weights_sha256": "46787c4f236c421dc7b3eb693665c1c8d09688c28f7330a28c2d0abe8907967e",
+  "data_images_verified": 12,
+  "curve_steps_verified": 128,
+  "checkpoint_round_trip_exact": true,
+  "raw_peak_job_bytes": 479604736,
+  "admission_tests": "m2-train-admission.log: 2 passed; common numerical gate remains 85 checks at 8d9d0f2",
+  "not_achieved": "Complete-state parsing, precise generalization, real-image quality, calibration or release",
+  "artifact_policy": "Weights/data stay in retained runs/; receipts/hashes/previews are committed."
+}

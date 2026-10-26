@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "step": 128,
+  "requested_steps": 128,
+  "job_ceiling_bytes": 1073741824,
+  "pid": 25716,
+  "threads": 1,
+  "elapsed_seconds": 47.16300140000021,
+  "loss": 0.8950194120407104,
+  "summary": "summary.json",
+  "checkpoint": "checkpoint/manifest.json"
+}

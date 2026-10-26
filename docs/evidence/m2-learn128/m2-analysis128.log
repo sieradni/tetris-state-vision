@@ -1,0 +1,50 @@
+{"supervisor_pid": 25200, "command": [".venv/Scripts/python.exe", "scripts/analyze_m2_pilot.py", "--run", "runs/m2-learn128", "--baseline", "runs/m2-learn16", "--output", "runs/m2-analysis128"], "memory_bytes": 1073741824, "wall_seconds": 60.0, "work_items": 12, "job_name": "Local\\TetrisStateVision-ad8655ee109e439fab8373e83843f4cd", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{
+  "status": "passed",
+  "controlled_repeat": {
+    "identical_manifest": true,
+    "identical_driver": true,
+    "identical_initial_metrics": true,
+    "prefix_steps": 16,
+    "prefix_exact": true,
+    "baseline_runtime_source_sha256": "f118a2394e298db8a7ccb4b233ab130b053c613a52fef449bd665fa8f299d712",
+    "run_runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+    "note": "Aggregate hash delta from unused runtime.py requires the separately recorded source diff; exact prefix is checked, not assumed.",
+    "same_seed": true,
+    "same_states": true,
+    "same_max_side": true,
+    "same_threads": true,
+    "same_learning_rate": true
+  },
+  "aggregates": {
+    "training": {
+      "tp": 105,
+      "fp": 36,
+      "fn": 7,
+      "tn": 1052,
+      "images": 6,
+      "ancestry_groups": 3,
+      "exact_locked_boards": 2,
+      "mean_geometry_error_cells": 0.36448700229326886,
+      "exact_known_layers": 10,
+      "cell_accuracy": 0.9641666666666666,
+      "occupied_precision": 0.7446808510638298,
+      "occupied_recall": 0.9375
+    },
+    "development": {
+      "tp": 104,
+      "fp": 71,
+      "fn": 30,
+      "tn": 995,
+      "images": 6,
+      "ancestry_groups": 3,
+      "exact_locked_boards": 0,
+      "mean_geometry_error_cells": 1.3768402238686879,
+      "exact_known_layers": 0,
+      "cell_accuracy": 0.9158333333333334,
+      "occupied_precision": 0.5942857142857143,
+      "occupied_recall": 0.7761194029850746
+    }
+  }
+}
+{"supervisor_pid": 25200, "command": [".venv/Scripts/python.exe", "scripts/analyze_m2_pilot.py", "--run", "runs/m2-learn128", "--baseline", "runs/m2-learn16", "--output", "runs/m2-analysis128"], "memory_bytes": 1073741824, "wall_seconds": 60.0, "work_items": 12, "job_name": "Local\\TetrisStateVision-ad8655ee109e439fab8373e83843f4cd", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "passed", "exit_code": 0, "elapsed_seconds": 5.892, "child_pid": 17312, "peak_job_commit_bytes": 811859968}
