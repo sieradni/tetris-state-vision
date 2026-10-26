@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "source_base_commit": "331ac582e029ed017c895f4a514e9868f2f9d89f",
+  "curation_base_commit": "331ac582e029ed017c895f4a514e9868f2f9d89f",
+  "runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+  "probe_script_sha256": "5450ddf56363e81aa846dcd82c5c4ee2765a2a7d7ca14a788484066af8564a9e",
+  "weight_sha256": "ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf",
+  "result_sha256": "dc3273cba6c33a2f19ab9f7f1ae5babcf99df284a5c8562cabffb2f8f0fbef2f",
+  "aggregate": {
+    "baseline_exact_boards": 6,
+    "baseline_images": 6,
+    "single_cell_trials": 36,
+    "distinct_intervention_groups": 18,
+    "targeted_correct": 20,
+    "exact_counterfactual_boards": 18,
+    "unrelated_changed_cells": 2,
+    "correct_direction_probability_changes": 36,
+    "forwards": 42,
+    "max_forwards": 54
+  },
+  "native_peak_job_commit_bytes": 816402432,
+  "scope": "Same-layout visible single-cell interventions; no oracle input. All other supported fields/raster regions checked unchanged. Matched appearances are dependent, not independent test images.",
+  "not_claimed": "Independent real examples, complete-state accuracy, a completed512-step run or adequate learning.",
+  "next_direction": "Broader state/position training with the same visibility contracts; preserve layer/geometry failures as open acceptance."
+}

@@ -1,0 +1,17 @@
+{"supervisor_pid": 17332, "command": [".venv/Scripts/python.exe", "scripts/probe_local_reading.py", "--run", "runs/m2-learn512", "--output", "runs/m2-local512-result.json"], "memory_bytes": 1073741824, "wall_seconds": 120.0, "work_items": 54, "job_name": "Local\\TetrisStateVision-09a1d2f38eb741758b1826d55c23f0e2", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{
+  "status": "passed",
+  "aggregate": {
+    "baseline_exact_boards": 6,
+    "baseline_images": 6,
+    "single_cell_trials": 36,
+    "distinct_intervention_groups": 18,
+    "targeted_correct": 20,
+    "exact_counterfactual_boards": 18,
+    "unrelated_changed_cells": 2,
+    "correct_direction_probability_changes": 36,
+    "forwards": 42,
+    "max_forwards": 54
+  }
+}
+{"supervisor_pid": 17332, "command": [".venv/Scripts/python.exe", "scripts/probe_local_reading.py", "--run", "runs/m2-learn512", "--output", "runs/m2-local512-result.json"], "memory_bytes": 1073741824, "wall_seconds": 120.0, "work_items": 54, "job_name": "Local\\TetrisStateVision-09a1d2f38eb741758b1826d55c23f0e2", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "passed", "exit_code": 0, "elapsed_seconds": 7.937, "child_pid": 4476, "peak_job_commit_bytes": 816402432}

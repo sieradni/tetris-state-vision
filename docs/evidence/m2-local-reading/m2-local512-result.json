@@ -1,0 +1,955 @@
+{
+  "status": "passed",
+  "aggregate": {
+    "baseline_exact_boards": 6,
+    "baseline_images": 6,
+    "single_cell_trials": 36,
+    "distinct_intervention_groups": 18,
+    "targeted_correct": 20,
+    "exact_counterfactual_boards": 18,
+    "unrelated_changed_cells": 2,
+    "correct_direction_probability_changes": 36,
+    "forwards": 42,
+    "max_forwards": 54
+  },
+  "cases": [
+    {
+      "sample_id": "20261026-dense-clean",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.5914505124092102
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.6194169521331787
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.38941502571105957
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.3851655423641205
+    },
+    {
+      "sample_id": "20261028-empty-clean",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.22875072062015533
+    },
+    {
+      "sample_id": "20261028-empty-no_grid",
+      "exact_baseline_board": true,
+      "baseline_geometry_error_cells": 0.2493562251329422
+    }
+  ],
+  "trials": [
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        7,
+        6
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        252,
+        455,
+        270,
+        473
+      ],
+      "raster_pixels_sha256": "27edb7cad3b46cfaf97253ac62094617718d0ee777cd2ca0ff5f88c45dda8b1b",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 1.718168391562358e-06,
+      "probability_after": 0.9992196559906006,
+      "signed_probability_delta": 0.999217937822209,
+      "lattice_drift_cells": 0.011552632786333561
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        0,
+        10
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        112,
+        375,
+        130,
+        393
+      ],
+      "raster_pixels_sha256": "37bd28998698069afa8eab88c51b834fd6f1148552a50ae9de78c2b1763fcf01",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 7.105239637894556e-05,
+      "probability_after": 0.9563829302787781,
+      "signed_probability_delta": 0.9563118778823991,
+      "lattice_drift_cells": 0.007379722781479359
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        4,
+        8
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        192,
+        415,
+        210,
+        433
+      ],
+      "raster_pixels_sha256": "e9dcb2c38cf1ed3c77bf3d424f4617b82049f30aea7028c9003c3f82327eeca5",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.313413642696105e-05,
+      "probability_after": 0.2258368879556656,
+      "signed_probability_delta": 0.22581375381923863,
+      "lattice_drift_cells": 0.029289482161402702
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        1,
+        9
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        132,
+        395,
+        150,
+        413
+      ],
+      "raster_pixels_sha256": "01d02f446a99b79513db1bf372d0144646fbdd3fdf1532bd5a37ba47ab2de1c3",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.0732195480377413e-05,
+      "probability_after": 0.9994490742683411,
+      "signed_probability_delta": 0.9994283420728607,
+      "lattice_drift_cells": 0.014831283129751682
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        8,
+        7
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        272,
+        435,
+        290,
+        453
+      ],
+      "raster_pixels_sha256": "261121b4252fad8dc77218cdf0708bbbb26455711c7373170aa87f77231ca933",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9992974996566772,
+      "probability_after": 2.658539597177878e-05,
+      "signed_probability_delta": 0.9992709142607055,
+      "lattice_drift_cells": 0.01623021438717842
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        6,
+        1
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        232,
+        555,
+        250,
+        573
+      ],
+      "raster_pixels_sha256": "3787c90a674455050a396c3ef34873aba5d449d1f312a19fc4cae9e25062d960",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9995840191841125,
+      "probability_after": 0.7831851840019226,
+      "signed_probability_delta": 0.21639883518218994,
+      "lattice_drift_cells": 0.003178670769557357
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        3,
+        2
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        172,
+        535,
+        190,
+        553
+      ],
+      "raster_pixels_sha256": "8e045548bbf0ce7969a1f39695831146c67220f262493b53a9540dd8692bcd80",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9996752738952637,
+      "probability_after": 0.00019255973165854812,
+      "signed_probability_delta": 0.9994827141636051,
+      "lattice_drift_cells": 0.0681350901722908
+    },
+    {
+      "sample_id": "20261026-dense-clean",
+      "seed": 20261026,
+      "skin": "clean",
+      "cell": [
+        4,
+        7
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        192,
+        435,
+        210,
+        453
+      ],
+      "raster_pixels_sha256": "263b789873845041c8af9c33078e8f3a46bba06be676a9a7c9825457af0657e5",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9995915293693542,
+      "probability_after": 0.007295697927474976,
+      "signed_probability_delta": 0.9922958314418793,
+      "lattice_drift_cells": 0.021755283698439598
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        7,
+        6
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        252,
+        455,
+        270,
+        473
+      ],
+      "raster_pixels_sha256": "1cbd12dbb8028abea0d7a268f829340a542c2c614d82df3853589994fc81df0a",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 1.4368383745022584e-06,
+      "probability_after": 0.9989461302757263,
+      "signed_probability_delta": 0.9989446934373518,
+      "lattice_drift_cells": 0.015788089483976364
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        0,
+        10
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        112,
+        375,
+        130,
+        393
+      ],
+      "raster_pixels_sha256": "c6cbfd9b614b664aaf7beba3e6b1da67683c33142c3fbaae27a332b1fa5e2226",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 4.936616460327059e-05,
+      "probability_after": 0.9247968196868896,
+      "signed_probability_delta": 0.9247474535222864,
+      "lattice_drift_cells": 0.008564898744225502
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        4,
+        8
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        192,
+        415,
+        210,
+        433
+      ],
+      "raster_pixels_sha256": "86cb20cf9435d3806a0fe23b4aa68d57b39e0a82d8ce66f78d0c6dcea4c9ced9",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 1.7906389985000715e-05,
+      "probability_after": 0.21649596095085144,
+      "signed_probability_delta": 0.21647805456086644,
+      "lattice_drift_cells": 0.028011560440063477
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        1,
+        9
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        132,
+        395,
+        150,
+        413
+      ],
+      "raster_pixels_sha256": "80d845f45be2419338253ce1dff34c6a555839588adfc727447d8737f18f3985",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 1.3191952348279301e-05,
+      "probability_after": 0.9992783665657043,
+      "signed_probability_delta": 0.9992651746133561,
+      "lattice_drift_cells": 0.015135176479816437
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        8,
+        7
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        272,
+        435,
+        290,
+        453
+      ],
+      "raster_pixels_sha256": "6b73eea2d56aad63b6f252c001f39899787fb2b51b1da09696cae35143c577dd",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9990665316581726,
+      "probability_after": 1.750586488924455e-05,
+      "signed_probability_delta": 0.9990490257932834,
+      "lattice_drift_cells": 0.015350635163486004
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        6,
+        1
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        232,
+        555,
+        250,
+        573
+      ],
+      "raster_pixels_sha256": "b4bf8569ee0f51bdc5f82fdf53bb593e1b04351a0a4bd6dc1ff980e1a5cc3947",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9994218349456787,
+      "probability_after": 0.7531718611717224,
+      "signed_probability_delta": 0.2462499737739563,
+      "lattice_drift_cells": 0.004171786829829216
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        3,
+        2
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        172,
+        535,
+        190,
+        553
+      ],
+      "raster_pixels_sha256": "00adeb55fc1ed6f488dd2459e79cc26575e3c45c9b81a2c06de62648a27c2c31",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9995368719100952,
+      "probability_after": 0.00016556309128645808,
+      "signed_probability_delta": 0.9993713088188088,
+      "lattice_drift_cells": 0.09558773040771484
+    },
+    {
+      "sample_id": "20261026-dense-no_grid",
+      "seed": 20261026,
+      "skin": "no_grid",
+      "cell": [
+        4,
+        7
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        192,
+        435,
+        210,
+        453
+      ],
+      "raster_pixels_sha256": "3a3208823107511267352447951c90d23bf85b7532dcc058943b7f1b0bcff5ef",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9995170831680298,
+      "probability_after": 0.006724084261804819,
+      "signed_probability_delta": 0.992792998906225,
+      "lattice_drift_cells": 0.019834676757454872
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        6,
+        5
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        469,
+        202,
+        487
+      ],
+      "raster_pixels_sha256": "149e59e8f844ec5b8245a3ac9eb404c8316d607cbd448e944bd4e9a43314fbe3",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 8.513013017363846e-05,
+      "probability_after": 0.9495506882667542,
+      "signed_probability_delta": 0.9494655581365805,
+      "lattice_drift_cells": 0.016504472121596336
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        5,
+        13
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        164,
+        309,
+        182,
+        327
+      ],
+      "raster_pixels_sha256": "644e0f875b5340fa5d43b1ef4b097af1bf0799918173e2322c7e3391d0791b45",
+      "targeted_correct": true,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 1,
+      "probability_before": 2.1826233933097683e-05,
+      "probability_after": 0.8034335374832153,
+      "signed_probability_delta": 0.8034117112492822,
+      "lattice_drift_cells": 0.0029402258805930614
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        9,
+        11
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        244,
+        349,
+        262,
+        367
+      ],
+      "raster_pixels_sha256": "a52b000088f0195b2e529e0e3c3332c8d3656d99ac936668fd56729c7020d889",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.601802407298237e-05,
+      "probability_after": 0.19207006692886353,
+      "signed_probability_delta": 0.19204404890479054,
+      "lattice_drift_cells": 0.008182888850569725
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        1,
+        11
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        84,
+        349,
+        102,
+        367
+      ],
+      "raster_pixels_sha256": "34a9ef2f5f2c9bfc7c73a1535e6b49065a36b54b9bf64ddba867f264c139c093",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.867806753987679e-06,
+      "probability_after": 0.6433806419372559,
+      "signed_probability_delta": 0.6433767741305019,
+      "lattice_drift_cells": 0.019469333812594414
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        4,
+        2
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        144,
+        529,
+        162,
+        547
+      ],
+      "raster_pixels_sha256": "6052005daa44632b4cc69df4b5d34739b2baaf9ae95d159a0bd352a6442ee04b",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9999301433563232,
+      "probability_after": 0.0012155227595940232,
+      "signed_probability_delta": 0.9987146205967292,
+      "lattice_drift_cells": 0.05334809795022011
+    },
+    {
+      "sample_id": "20261027-sparse-clean",
+      "seed": 20261027,
+      "skin": "clean",
+      "cell": [
+        6,
+        1
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        184,
+        549,
+        202,
+        567
+      ],
+      "raster_pixels_sha256": "f5b6429b5a2b9fc236702a632c1164b4d1d7858f041e4abd69576aef4c23b9ae",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9999138116836548,
+      "probability_after": 0.9242584705352783,
+      "signed_probability_delta": 0.07565534114837646,
+      "lattice_drift_cells": 0.34249910712242126
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        6,
+        5
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        469,
+        202,
+        487
+      ],
+      "raster_pixels_sha256": "63991e11a4815487878dc23497e76e9c14aa9bed5b0a782ccb87b47c60145630",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 9.99556650640443e-05,
+      "probability_after": 0.9495511054992676,
+      "signed_probability_delta": 0.9494511498342035,
+      "lattice_drift_cells": 0.013800837099552155
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        5,
+        13
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        164,
+        309,
+        182,
+        327
+      ],
+      "raster_pixels_sha256": "113b636ddee5c44d5533c1216d57d22c7159eaf10a1af6a16365ecbc4edbc21d",
+      "targeted_correct": true,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 1,
+      "probability_before": 2.3712746042292565e-05,
+      "probability_after": 0.8008612990379333,
+      "signed_probability_delta": 0.8008375862918911,
+      "lattice_drift_cells": 0.0027483981102705
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        9,
+        11
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        244,
+        349,
+        262,
+        367
+      ],
+      "raster_pixels_sha256": "59d8aa9b3afbd1a3943a1e11c8c8eecebecbff68bbef933973feeefc8d6c4ca2",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.6663419703254476e-05,
+      "probability_after": 0.11212731897830963,
+      "signed_probability_delta": 0.11210065555860638,
+      "lattice_drift_cells": 0.00588834285736084
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        1,
+        11
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        84,
+        349,
+        102,
+        367
+      ],
+      "raster_pixels_sha256": "55bfb4d77f327bd0875427bc878059de498773c255ae85a5587373ce42b9b7e6",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.845466835628031e-06,
+      "probability_after": 0.5049998760223389,
+      "signed_probability_delta": 0.5049960305555032,
+      "lattice_drift_cells": 0.014431766234338284
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        4,
+        2
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        144,
+        529,
+        162,
+        547
+      ],
+      "raster_pixels_sha256": "60542091ad3c3fe8196eb23991632de7048ee0162c4ac2873d60de78fb97ef68",
+      "targeted_correct": true,
+      "exact_counterfactual_board": true,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.9999265670776367,
+      "probability_after": 0.0008451749454252422,
+      "signed_probability_delta": 0.9990813921322115,
+      "lattice_drift_cells": 0.06163249909877777
+    },
+    {
+      "sample_id": "20261027-sparse-no_grid",
+      "seed": 20261027,
+      "skin": "no_grid",
+      "cell": [
+        6,
+        1
+      ],
+      "before": true,
+      "after": false,
+      "raster_changed_bbox": [
+        184,
+        549,
+        202,
+        567
+      ],
+      "raster_pixels_sha256": "0782b5078e54c93a407b043bf4dcee9d841ef62b62b43263afa8abeefb100846",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 0.999910831451416,
+      "probability_after": 0.8131033778190613,
+      "signed_probability_delta": 0.18680745363235474,
+      "lattice_drift_cells": 0.3664683997631073
+    },
+    {
+      "sample_id": "20261028-empty-clean",
+      "seed": 20261028,
+      "skin": "clean",
+      "cell": [
+        1,
+        6
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        118,
+        429,
+        138,
+        449
+      ],
+      "raster_pixels_sha256": "b55ff11b28dc4a488dbedc8150ebedaccf2dd6beb1c198edf02e42e1fea94068",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.222703437444352e-09,
+      "probability_after": 0.09967108815908432,
+      "signed_probability_delta": 0.09967108493638088,
+      "lattice_drift_cells": 0.02015455812215805
+    },
+    {
+      "sample_id": "20261028-empty-clean",
+      "seed": 20261028,
+      "skin": "clean",
+      "cell": [
+        5,
+        3
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        206,
+        495,
+        226,
+        515
+      ],
+      "raster_pixels_sha256": "be20712ada1e11b7484a1728c23e5077e77e871652ccd85e44afafb7d219f500",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.096307210626037e-09,
+      "probability_after": 0.005735590122640133,
+      "signed_probability_delta": 0.005735587026332922,
+      "lattice_drift_cells": 0.00785208959132433
+    },
+    {
+      "sample_id": "20261028-empty-clean",
+      "seed": 20261028,
+      "skin": "clean",
+      "cell": [
+        4,
+        3
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        495,
+        204,
+        515
+      ],
+      "raster_pixels_sha256": "319e9f43fb6b9487b15d77401168c73ea20ace05b98e1b25177b7885a347470b",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 4.038330114752853e-09,
+      "probability_after": 0.06918447464704514,
+      "signed_probability_delta": 0.06918447060871502,
+      "lattice_drift_cells": 0.5720915198326111
+    },
+    {
+      "sample_id": "20261028-empty-clean",
+      "seed": 20261028,
+      "skin": "clean",
+      "cell": [
+        4,
+        4
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        473,
+        204,
+        493
+      ],
+      "raster_pixels_sha256": "e677773dcd0500f7eddd0c546504b8804b2ba093384d10935e14b813be66b530",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.41361042263577e-09,
+      "probability_after": 0.28077423572540283,
+      "signed_probability_delta": 0.2807742333117924,
+      "lattice_drift_cells": 0.038851406425237656
+    },
+    {
+      "sample_id": "20261028-empty-no_grid",
+      "seed": 20261028,
+      "skin": "no_grid",
+      "cell": [
+        1,
+        6
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        118,
+        429,
+        138,
+        449
+      ],
+      "raster_pixels_sha256": "6ca22df38207e5ab0eaf174b384e580772e8f60fdf212d9beb0c09869934d8b8",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.3269442756278522e-09,
+      "probability_after": 0.09968693554401398,
+      "signed_probability_delta": 0.0996869322170697,
+      "lattice_drift_cells": 0.020286817103624344
+    },
+    {
+      "sample_id": "20261028-empty-no_grid",
+      "seed": 20261028,
+      "skin": "no_grid",
+      "cell": [
+        5,
+        3
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        206,
+        495,
+        226,
+        515
+      ],
+      "raster_pixels_sha256": "0a831cc6dee87af738926213e47bdb8ec5d6ae7871fdead68f761b99708773ab",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.435395079520731e-09,
+      "probability_after": 0.002412493107840419,
+      "signed_probability_delta": 0.0024124896724453393,
+      "lattice_drift_cells": 0.009589789435267448
+    },
+    {
+      "sample_id": "20261028-empty-no_grid",
+      "seed": 20261028,
+      "skin": "no_grid",
+      "cell": [
+        4,
+        3
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        495,
+        204,
+        515
+      ],
+      "raster_pixels_sha256": "4ccd35811cc5ce23b5fb077a55f8f200ac546a9cd72a4071ba24852e3910a30d",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 3.5001002096635148e-09,
+      "probability_after": 0.06672704964876175,
+      "signed_probability_delta": 0.06672704614866154,
+      "lattice_drift_cells": 0.5325967669487
+    },
+    {
+      "sample_id": "20261028-empty-no_grid",
+      "seed": 20261028,
+      "skin": "no_grid",
+      "cell": [
+        4,
+        4
+      ],
+      "before": false,
+      "after": true,
+      "raster_changed_bbox": [
+        184,
+        473,
+        204,
+        493
+      ],
+      "raster_pixels_sha256": "6c916341912cb26214bd1321776a4d2d636b564d0499504ecc955ae1f32c67ad",
+      "targeted_correct": false,
+      "exact_counterfactual_board": false,
+      "unrelated_prediction_changes": 0,
+      "probability_before": 2.8270004115427128e-09,
+      "probability_after": 0.16112086176872253,
+      "signed_probability_delta": 0.16112085894172212,
+      "lattice_drift_cells": 0.030677571892738342
+    }
+  ],
+  "checkpoint_sha256": "ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf",
+  "runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+  "script_sha256": "5450ddf56363e81aa846dcd82c5c4ee2765a2a7d7ca14a788484066af8564a9e",
+  "source_run_status": "wall_partial",
+  "completed_training_steps": 511,
+  "scope": "Same-layout visible single-cell interventions; no oracle input. All other supported fields/raster regions checked unchanged. Matched appearances are dependent, not independent test images."
+}

@@ -109,3 +109,28 @@ checkpoint analysis 4.717 s and 811,851,776 B under 1 GiB / 60 s. A new unrelate
 release build began after launch; no further training was started alongside it.
 Weights remain at runs/m2-learn512/checkpoint/weights.pt, SHA256
 ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf.
+
+## Local reading interventions
+
+`docs/evidence/m2-local-reading/scope.json` records a 42-forward probe on the
+same saved artifact: six exactly reproduced baselines and 36 single-cell
+counterfactuals (18 distinct changes, each with two matched appearances).
+The probe verifies the baseline pixels/labels, one changed supported cell,
+unchanged other components/geometry and a raster delta contained inside that
+cell. It excludes active/ghost footprints. Ground-truth geometry is never passed
+to model.forward. No hidden-label policy changes or parser corrections occur.
+
+Every intervention moves the target occupancy probability in the right direction,
+but only 20/36 changed cells and 18/36 complete changed boards are correct.
+Insertions: 12/24 targeted, 10/24 exact boards; removals: 8/12 for both.
+Two unrelated predictions change. These dependent, selected synthetic cases
+are a functional probe, not an accuracy estimate. They show partial local
+reading with residual state/position bias; exact training boards alone are weak
+evidence of a general reader. The 42 forwards took 7.937 s, raw peak 816,402,432 B
+under 1 GiB / 120 s / at most 54 forwards, one CPU thread.
+
+Next engineering direction: bounded streaming generation of substantially more
+states/positions, with matched clean/no-grid and visible single-cell variants,
+separate held-out seeds, no cached tensor growth and no user-image labels.
+Keep the accuracy-sized configuration as a separately profiled candidate. The
+small pilot, ghost/geometry failures and complete-state requirements remain open.

@@ -39,7 +39,11 @@ The next study saved a wall-partial checkpoint at 511/512 steps. Exact first 128
 prefix confirms control. Locked training boards are 6/6, but known layers 10/12
 and geometry .4106 cells fail the predeclared fit criterion; development 0/6.
 docs/evidence/m2-learn512/comparison.json records partial status and provenance.
-Next: fixed-layout single-cell interventions, then a targeted model/data change.
+Fixed-layout single-cell probe now ran: all36 probability changes correct in
+direction, only20/36 targeted cells and18/36 changed boards correct; two unrelated
+cells changed. docs/evidence/m2-local-reading/scope.json. Next: streaming
+state/position diversity and explicit resource profiling of the accuracy model;
+layer/geometry fit and complete-state requirements remain open.
 
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;

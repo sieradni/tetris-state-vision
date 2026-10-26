@@ -43,6 +43,22 @@ checked. Recheck authority before any next training; don't touch their processes
 Small one-thread diagnostic can run within1GiB/120s/<=54 forwards; expected
 <900MiB from measured checkpoint analysis, with a hard1GiB ceiling. No job
 launched yet; write exact command/log/receipt/PID before waiting.
+Partial-study milestone committed at 331ac58. Local-reading probe now written.
+Launch command under run_bounded.py --memory-mib1024 --wall-seconds120
+--work-items54 --receipt runs/m2-local512-job.json -- .venv/Scripts/python.exe
+scripts/probe_local_reading.py --run runs/m2-learn512 --output
+runs/m2-local512-result.json. Logs runs/m2-local512.log/.stderr.log; source
+identity pinned before launch to runs/m2-local512-admission.json. Expected
+<900 MiB, hard 1 GiB, <=54 forwards, one CPU thread. No source model changes.
+Supervisor 17332 verified by exact command line after launch. Inspect terminal
+receipt before any retry. Admission/log/output paths above are unique/durable.
+Probe COMPLETE: 42 forwards, 7.937 s, raw peak 816,402,432 B under 1 GiB.
+Supervisor17332 and child4476 verified exited. Six baselines exactly reproduce;
+36 interventions/18 dependent groups: direction36/36, targeted20/36, complete
+changed boards18/36, two unrelated changed cells. All label/raster/role-isolation
+assertions passed. Curated docs/evidence/m2-local-reading/scope.json. No general
+accuracy claim. Next source task: bounded fresh-state/position curriculum and
+streaming trainer; core/visibility unchanged, no tensor cache, held-out seeds.
 
 Earlier gates:85 core/model/resource at8d9d0f2;2 optimizer admission;7 runtime
 plus actual one-image API;26 corpus;3 partial-evidence. Separate scoped runs,
