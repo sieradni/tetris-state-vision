@@ -71,6 +71,37 @@ no authorization to close apps, change another job or relax the guard assumed.
 Source candidate can be checkpointed with its explicit partial verification;
 remaining pressure5/resource5/stream-admission3 tests must run in a real admitted
 window. No retries while above threshold; keep useful source work independent.
+Source candidate checkpointed locally with only admission verification; V-010
+remains OPEN. Byte-exact before-failure stderr intentionally includes one trailing
+space; source/docs whitespace check excludes raw evidence and passed.
+
+Independent M3 source slice while RAM is unavailable: pure queue/hold target
+projection, not model training or a public schema change. Pre-change review:
+V-005 requires no canonical index/EOS/count from unknown queue start or unseen
+tail; absent differs from visible-empty; unknown middle indices retained.
+V-001/002/006/009 preserve current image-supported State values and never infer
+hidden labels or use board geometry to fill panel identities. V-003 reproducible
+source remains recorded; V-004/007/V-010 resource gates are untouched.
+Plan: capacity64 plus one EOS position, masked slots, independent status/identity
+targets, explicit refusal of undersized capacity; paired identical-raster hidden
+queue/hold fixtures required by standing visibility contract. Then tests under
+128MiB/30s when the real guard admits them. No component head/loss wired yet.
+Pure src/tetris_vision/component_targets.py and8 tests now written, not run.
+Targets retain unknown-middle positions/presence, mask unseen-start indices,
+supervise EOS/count only with both observed endpoints, distinguish absent/empty,
+separate hold status/type, and refuse identified model output as labels.
+Paired-raster fixture changes wholly hidden queue length/types and hold identity;
+output targets must remain equal and unknown. These new labels are not consumed
+by the current M2 trainer. Added module changes aggregate source digest only;
+past artifacts keep their named commits/frozen source catalogue.
+M3 source contract manually reviewed and documented in M3_COMPONENT_TARGETS.md;
+eight tests remain UNRUN, no model head/loss integration. Preserve as a draft.
+Next admitted sequence: v010-pressure-tests-r2 (5 cases,256MiB/45s), then
+v010-resource-tests (5,256MiB/45s), v010-stream-admission-tests (3,128MiB/30s),
+m3-component-targets-tests (8,128MiB/30s), each with matching .log/.stderr.log.
+The first pressure receipt name is already occupied by a safe pre-child park;
+never overwrite/reuse it. Recheck real OS memory and exact heavy process state,
+not an old receipt or intent. Current host is still above31.4GB stop point.
 
 The new streaming driver's source catalogue includes run_bounded.py, so a guard
 change invalidates the old one-step admission for future studies. Re-profile

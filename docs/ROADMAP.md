@@ -45,6 +45,11 @@ cells changed. docs/evidence/m2-local-reading/scope.json. Next: streaming
 state/position diversity and explicit resource profiling of the accuracy model;
 layer/geometry fit and complete-state requirements remain open.
 
+An independent M3 target-contract draft preserves queue unknowns, explicit EOS
+anchors and hold status/type separation. Eight fixtures, including paired hidden
+queue/hold rasters, are written but unrun under current host memory pressure.
+No head/loss/runtime integration yet. docs/M3_COMPONENT_TARGETS.md.
+
 Streaming curriculum/source freezing is implemented and verified: 14 sampler/
 archive/admission checks and one actual 512-square optimizer/resource probe,
 all-final-tensor reload parity, replayed pixels/labels for 28 recorded samples.
