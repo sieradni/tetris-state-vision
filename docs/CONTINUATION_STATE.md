@@ -5,11 +5,10 @@ user's lower-memory reply; goal service last reported BLOCKED (user-controlled
 resume). Previous blocked audit reset: actual host commit fell from31.7GB to
 20.6GB. No project job running; no run data deleted. Neural math unchanged.
 
-Selected task: fresh warm admission, then768-step fresh-state learning study.
-Todo: commit/curate22 scoped gates; current-runner square profile; finite study;
-exact ledger/probe replay and metrics; commit. Then integrate verified recovery
-primitive with an exact uninterrupted/resumed stream gate and fresh resource
-characterization. No recovery is wired into the trainer yet.
+Selected task: exact native stream-recovery integration gate. New periodic
+snapshots/global resume, archived driver execution, native cache16 and memory
+trajectory are source candidates. Admission4/source4 green; integration pending.
+V-013/V-014 OPEN; all earlier V-001..V-012 CLOSED. Do not claim fixed long RAM.
 
 Latest verified work:
 - Recovery7 GREEN: runs/training-snapshot-tests-r3.stderr.log,4.103s,
@@ -62,6 +61,43 @@ progress/terminal receipt; preserve wall/pressure partial status. Require saved
 weights, all-final parity and full ledger/probe replay before complete claim.
 Independent work while running: recovery integration source, not model math;
 archive insulates running trainer. Commit source before any wait.
+Study TERMINAL:17284/14732/3508/5096 verified gone; failed native allocation at
+324.600s,565 completed updates, no final weights. OS21.09GB healthy. Retain raw
+peak704,634,880B (V-004 caveat) and all ledgers. No restart of old driver.
+Traceback source text read edited parent lines (V-014); original bytecode and
+archive identify actual backward. New bootstrap executes archived trainer main.
+Native cache query is not DLL-exported. Controlled19-convolution exercises at
+default vs16 show final repeated shape cache_hit vs cache_miss; zero outputs
+exact, no count API claim. runs/native-cache-{default,bounded16}-exercise.*.
+Candidate fixes oneDNN cache limit16 before import and records raw Job peak
+every16steps; exact causal contribution to565 failure remains unmeasured.
+
+Recovery integration acceptance plan (source work during frozen study):
+periodic model/Adam/RNG snapshots with committed ledger prefixes; explicit resume
+in a fresh output, global step retains sample order; bounded new-update partial
+status. Exact continuous6 vs3+resume3 must match every loss/gradient term, recipes,
+model/optimizer/RNG and evaluation tensors. Version3 resource profile includes
+snapshot load and warm backward; old catalogues cannot admit it.
+Prior bugs: V-003 source/weight hashes and exact recipe contract bind recovery;
+V-004 raw Job counters retained; V-007 exact native identity unchanged;
+V-010 partial writes publish pointer last and pressure still kills owned Job;
+V-011 profile includes resident moments during second full-size backward;
+V-012 runner pre-import library policy remains. Visibility bugs untouched:
+no rendering, hidden targets or neural/loss math changes. No unverified resumed
+training beyond the finite integration gate. Source archive includes new helper.
+
+NEXT exact recovery gate, hidden detached: native1GiB parent/420s/14updates,
+expected<750MiB; four SERIAL640MiB child Jobs,90s each, steps2+6+3+3. No other
+vision job is live. Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib1024
+--wall-seconds420 --work-items14 --receipt runs/m2-stream-recovery-gate-job.json
+-- .venv/Scripts/python.exe scripts/probe_stream_recovery.py
+--output runs/m2-stream-recovery-gate.
+Logs runs/m2-stream-recovery-gate.log/.stderr.log, state child progress.json.
+Verify exact process tree after spawn; inspect proof/receipt and death. Success
+requires data/terms/gradients/evaluation/model/Adam/RNG equality, source paths
+inside each archive, step_partial3 explicit and resumed full6. Long memory gate
+and accuracy configuration still pending; no simple square-only quality claim.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.

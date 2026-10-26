@@ -13,7 +13,7 @@ import time
 from run_bounded import Extended
 
 
-def require_bounded_job():
+def bounded_job_snapshot():
     if os.name != "nt":
         raise RuntimeError("Windows Job Object enforcement required")
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -39,9 +39,13 @@ def require_bounded_job():
             raise ctypes.WinError(ctypes.get_last_error())
         if snapshot.basic.flags & 0x2200 != 0x2200 or not 0 < snapshot.job_memory <= 2*1024**3:
             raise RuntimeError("use run_bounded.py with <=2 GiB aggregate commit and a wall cap")
-        return snapshot.job_memory
+        return {"memory_bytes": snapshot.job_memory, "peak_job_commit_bytes": snapshot.peak_job}
     finally:
         kernel.CloseHandle(job)
+
+
+def require_bounded_job():
+    return bounded_job_snapshot()["memory_bytes"]
 
 
 def main():

@@ -41,7 +41,7 @@ def main():
     archive = verify_source(code, summary["catalogue_sha256"])
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
-    if summary.get("resource_profile_version") == 2 and summary["profile_square"]:
+    if summary.get("resource_profile_version", 0) >= 2 and summary["profile_square"]:
         from train_m2_stream import validate_admission
         validate_admission(summary, job, catalogue=archive["catalogue_sha256"],
                            model=summary["model_kind"], config=summary["config"],
@@ -54,6 +54,25 @@ def main():
     manifest = json.loads((run/"checkpoint/manifest.json").read_text())
     if digest(run/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("weight checksum mismatch")
+    recovery_manifest = None
+    if summary.get("resource_profile_version", 0) >= 3:
+        pointer = json.loads((run/"latest-training.json").read_text())
+        generation = pointer.get("generation", "")
+        if (not re.fullmatch(r"step-[0-9]{6}-[0-9a-f]{32}", generation) or
+                pointer != summary["latest_training_snapshot"] or pointer != manifest["metadata"]["latest_training_snapshot"]):
+            raise ValueError("training recovery pointer identity differs")
+        folder = run/"training-snapshots"/generation
+        if not folder.resolve().is_relative_to(run) or digest(folder/"manifest.json", 64*1024) != pointer["manifest_sha256"]:
+            raise ValueError("training recovery manifest identity differs")
+        recovery_manifest = json.loads((folder/"manifest.json").read_text())
+        if (recovery_manifest["step"] != summary["steps"] or recovery_manifest["contract"] != summary["recovery_contract"] or
+                digest(folder/"tensors.pt", 256*1024**2) != recovery_manifest["tensors_sha256"]):
+            raise ValueError("training recovery artifact/recipe identity differs")
+        if set(recovery_manifest["ledgers"]) != {"curve.jsonl", "training.jsonl", "evaluations.jsonl"}:
+            raise ValueError("training recovery ledger set differs")
+        for name, cursor in recovery_manifest["ledgers"].items():
+            if (run/name).stat().st_size != cursor["bytes"] or digest(run/name, 16*1024**2) != cursor["sha256"]:
+                raise ValueError("complete-run recovery ledger prefix differs")
     ledger = run/"training.jsonl"
     if digest(ledger, 16*1024**2) != summary["stream_ledger_sha256"] or not 1 <= summary["steps"] <= 4096:
         raise ValueError("stream ledger budget/identity mismatch")
@@ -85,8 +104,15 @@ def main():
     evidence.mkdir(exist_ok=False)
     for name in ("summary.json", "progress.json", "training.jsonl", "curve.jsonl", "evaluations.jsonl", "training-probe.jsonl", "development-probe.jsonl"):
         shutil.copyfile(run/name, evidence/name)
+    if summary.get("resource_profile_version", 0) >= 3:
+        if (run/"memory.jsonl").stat().st_size > 1024**2:
+            raise ValueError("memory trajectory byte budget exceeded")
+        shutil.copyfile(run/"memory.jsonl", evidence/"memory.jsonl")
     shutil.copyfile(code/"source.json", evidence/"source-manifest.json")
     shutil.copyfile(run/"checkpoint/manifest.json", evidence/"checkpoint-manifest.json")
+    if recovery_manifest is not None:
+        shutil.copyfile(run/"latest-training.json", evidence/"latest-training.json")
+        (evidence/"training-snapshot-manifest.json").write_text(json.dumps(recovery_manifest, indent=2)+"\n")
     for suffix in ("-job.json", ".log", ".stderr.log"):
         source = ROOT/"runs"/(args.name+suffix)
         shutil.copyfile(source, evidence/source.name)
@@ -96,6 +122,7 @@ def main():
              "native_peak_job_commit_bytes": job["peak_job_commit_bytes"], "all_final_tensors_reload_exact": True,
              "source_archive": str(code), "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
              "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
+             "training_snapshot_identity_verified": recovery_manifest is not None,
              "curator_sha256": digest(Path(__file__)), "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": "passed", "replayed_samples": len(rows), "verified_probe_images": probe_images, "scope": str(evidence/"scope.json")}))

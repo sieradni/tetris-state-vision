@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 import shutil
 
-SCRIPTS = ("train_m2_stream.py", "m2_stream_data.py", "source_snapshot.py", "probe_model.py", "run_bounded.py")
+SCRIPTS = ("train_m2_stream.py", "m2_stream_data.py", "source_snapshot.py", "probe_model.py", "run_bounded.py",
+           "training_snapshot.py")
 
 
 def sha(path):
@@ -68,7 +69,7 @@ def verify_source(root, expected_catalogue=None):
     if path.stat().st_size > 128*1024:
         raise ValueError("source manifest byte budget exceeded")
     record = json.loads(path.read_text())
-    if record["format"] != "tetris-vision-training-source" or record["version"] != 1 or not 1 <= len(record["files"]) <= 135:
+    if record["format"] != "tetris-vision-training-source" or record["version"] != 1 or not 1 <= len(record["files"]) <= 128+len(SCRIPTS)+2:
         raise ValueError("unsupported source manifest")
     digest = catalogue_digest(record["files"])
     if digest != record["catalogue_sha256"] or expected_catalogue is not None and digest != expected_catalogue:

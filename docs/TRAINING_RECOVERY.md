@@ -1,7 +1,9 @@
 # Exact CPU training recovery
 
-`scripts/training_snapshot.py` is a separate, not-yet-integrated primitive.
-The streaming driver still saves its inference checkpoint only at the end.
+`scripts/training_snapshot.py` is the verified primitive. Its streaming-driver
+integration is implemented but awaiting the native2+6+3+3 equivalence gate.
+Periodic snapshots, explicit global-step resume and a finite new-update cap
+are candidates; no integrated recovery success is claimed yet.
 Seven runtime fixtures now pass: runs/training-snapshot-tests-r3.stderr.log,
 7/7 in4.103s,332,562,432B raw peak under512MiB/45s. Earlier attempts parked
 on host pressure; r2 hit an OpenBLAS import allocation failure before tests.
@@ -42,3 +44,16 @@ corrupt tensors/manifest, changed recipe/parameter order and modified/truncated
 ledger prefixes, and check finite budgets. Driver integration then needs its
 own exact data-prefix equivalence and a new warm resource characterization;
 the existing frozen streaming admission does not cover that future change.
+
+The driver candidate writes a snapshot every64updates and at a controlled exit.
+`--resume-from RUN` restores the committed global step and three ledger prefixes
+into a fresh output; `--max-new-steps N` creates explicit `step_partial` status
+when a finite segment ends before the global `--steps` target. Wall exits keep
+`wall_partial`. Source/recipe/runtime mismatch still refuses recovery. Snapshot
+publication during a native kill leaves the previous pointer selected.
+
+Version3 resource characterization includes actual snapshot save/load parity and
+a second full-square warm backward. Source execution itself is bound to the
+archive, fixing V-014's misleading parent-file traceback lines. The CPU worker
+requests a16-entry oneDNN cache before import; controlled cache-hit/miss logs
+verify eviction behavior, but V-013's long diverse-shape memory gate is OPEN.

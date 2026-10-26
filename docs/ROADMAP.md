@@ -70,6 +70,12 @@ exposed V-012. Pre-import thread policy is now verified: recovery7 plus native
 resources6/pressure5/admission4 green on named runs. The recovery primitive is
 verified; driver integration remains open. Next: fresh warm admission and a
 fresh-state study, then the exact driver recovery gate.
+That fresh study reached565/768 updates before a native640MiB allocation failure;
+no final weights survived (V-013 OPEN). A two-step square gate is insufficient
+long diverse-shape memory evidence. The recovery-driver candidate now adds
+periodic snapshots/global resume, archive execution (V-014 OPEN), raw memory
+trajectory and finite native cache16. Next is exact2+6+3+3 recovery integration,
+then the diverse finite memory/learning gate at the unchanged640MiB ceiling.
 
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;

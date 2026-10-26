@@ -17,7 +17,8 @@ class StreamAdmissionTests(unittest.TestCase):
         base = ["--output", "unused", "--model", "pilot", "--steps", "2", "--profile-square"]
         for flag, value in (("--steps", "0"), ("--steps", "4097"), ("--seed", "-1"),
                             ("--wall-seconds", "nan"), ("--learning-rate", "inf"),
-                            ("--evaluate-every", "0"), ("--development-groups", "13")):
+                            ("--evaluate-every", "0"), ("--development-groups", "13"),
+                            ("--checkpoint-every", "0"), ("--max-new-steps", "4097")):
             with self.subTest(flag=flag), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 arguments([*base, flag, value])
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
@@ -27,7 +28,9 @@ class StreamAdmissionTests(unittest.TestCase):
     def admission(self):
         config = {"dimension": 64}
         summary = {"status": "complete", "steps": 2, "profile_square": True, "checkpoint_round_trip_exact": True,
-                   "resource_profile_version": 2, "warm_optimizer_backward": {"step": 2, "input_pixels": 512**2,
+                   "resource_profile_version": 3, "training_recovery_profile_exact": True,
+                   "native_cache_limits": {"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"},
+                   "warm_optimizer_backward": {"step": 2, "input_pixels": 512**2,
                    "all_parameters_initialized": True, "state_bytes": 100, "backward_completed": True},
                    "max_input_pixels_seen": 512**2, "max_side": 512, "threads": 1, "workers": 0, "prefetch": 0,
                    "tensor_cache_bytes": 0, "catalogue_sha256": "fixture", "model_kind": "pilot", "config": config,
@@ -48,6 +51,8 @@ class StreamAdmissionTests(unittest.TestCase):
                              ("tensor_cache_bytes", 100), ("checkpoint_round_trip_exact", False)):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 validate_admission({**summary, field: value}, job, **expected)
+        with self.assertRaises(ValueError):
+            validate_admission({**summary, "native_cache_limits": {}}, job, **expected)
         for field, value in (("supervisor_script_sha256", "old-supervisor"), ("system_pressure_guard", None)):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 validate_admission(summary, {**job, field: value}, **expected)
@@ -56,7 +61,7 @@ class StreamAdmissionTests(unittest.TestCase):
 
     def test_cold_or_incomplete_optimizer_profiles_cannot_admit_a_study(self):
         summary, job, expected = self.admission()
-        for field, value in (("steps", 1), ("resource_profile_version", 1), ("warm_optimizer_backward", {})):
+        for field, value in (("steps", 1), ("resource_profile_version", 2), ("training_recovery_profile_exact", False), ("warm_optimizer_backward", {})):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 validate_admission({**summary, field: value}, job, **expected)
         for field, value in (("step", 1), ("input_pixels", 384**2), ("all_parameters_initialized", False),

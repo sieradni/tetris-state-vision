@@ -9,11 +9,43 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
-| provenance | V-003 (1) | Computed hashes and byte comparison |
+| provenance | V-003, V-014 (2) | Computed hashes/byte comparison; archived trainer execution and source paths |
 | test-instrument | V-004, V-011, V-012 (3) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy and live child tripwire in AGENTS.md |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
+| resource-profile | V-013 (1) | Shape-diverse native memory trajectory and resumable finite runs (pending) |
+
+## V-014 — OPEN: traceback read edited parent trainer lines
+
+- Symptom: failed learn768-r2 trace names curve.write/final_step for line numbers
+  whose original frozen trainer performed loss.backward. Parent source was
+  edited during the run; all executed module bytecode remained the old version.
+- Root cause: model/sampler imports were frozen, but trainer main was compiled
+  with the parent file path. Traceback linecache read the later file text.
+- Detection class: provenance.
+- Planned instrument: bootstrap archives source then loads/executes trainer main
+  from its verified archive; saved driver path and native integration gate pin
+  archive identity. Preserve original archived lines when reading old trace.
+- Gate pending; no green closure claimed.
+
+## V-013 — OPEN: two-step square admission missed long diverse-shape memory
+
+- Symptom: runs/m2-stream-learn768-r2-job.json failed1 at324.600s,565/768
+  updates saved in finite ledgers; next backward denied599,040B allocation.
+  Raw Job peak704,634,880B under readback640MiB (V-004 accounting caveat), OS
+  commit21.09GB, no pressure stop or host crash. No final weights were saved.
+- Root cause: one maximum-shape warm step did not characterize long-running
+  variable-shape/native-cache behavior. Native oneDNN cache is a hypothesis,
+  not established cause. Torch model/data/loss code retains no tensor cache.
+- Detection class: resource-profile.
+- Planned instrument: query native backend cache before policy change; bound
+  native caches if causal, record per-Job memory trajectory; periodic recovery
+  and exact global-step replay; diverse finite run must pass640MiB before
+  closure. Old square admission alone cannot prove long diverse memory safety.
+- Failure evidence remains in runs/m2-stream-learn768-r2/{code,curve.jsonl,
+  training.jsonl,evaluations.jsonl}; original stderr lines map to archived trainer,
+  not later parent text (V-014). No automatic restart or cap increase.
 
 ## V-012 — CLOSED: recovery harness imported unbounded library thread pools
 
