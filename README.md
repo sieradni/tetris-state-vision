@@ -29,8 +29,9 @@ The CLI defaults to the diverse profile (variable source geometry and queue flow
 `--profile foundation` retains the original five-family pilot configuration.
 
 The variable-layout preview is [examples/layout-diversity.png](examples/layout-diversity.png),
-with explicit [queue layouts](examples/queue-flows.png). Its 67-check verification
-and source hashes are in docs/evidence/m1/layout.json.
+with explicit [queue layouts](examples/queue-flows.png). Its 67-check milestone
+receipt is in docs/evidence/m1/layout.json. The later canonical-frame repair is
+verified by 69 checks under docs/evidence/v006/ (current contract gate).
 
 The first preview is [examples/montage.png](examples/montage.png); representative
 complete and cropped states are in examples/. The state API is

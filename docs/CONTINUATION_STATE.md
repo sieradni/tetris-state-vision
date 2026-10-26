@@ -1,42 +1,41 @@
 # Current checkpoint — 2026-10-25
 
-Repository: C:/Users/micha/Code/tetris-state-vision, local Git only, no remote.
-Goal: complete as much of the standalone model project as possible, thoroughly,
-with local commits at verified milestones. Goal remains active.
+Repository C:/Users/micha/Code/tetris-state-vision; local Git, no remote.
+Active goal: complete as much of the standalone model project as possible,
+thoroughly, with verified local commits. Goal remains active.
 
-M1 layout/panel diversity is verified:
-- [x] Variable canvas, board position/scale, panel geometry and icon scale.
-- [x] Vertical/horizontal/wrapped queues; all piece types/rotations; lengths 0..10.
-- [x] Independent preview palettes/skins; absent panels; explicit occlusions.
-- [x] Image-supported queue span/start; no hidden count or type support leakage.
-- [x] Schema 1.1, conservative 1.0 reader and solver refusal on unknown queue start.
-- [x] Standing identical-raster equivalence instrument promoted by V-005.
-- [x] 67 tests green; 30-image montage and three visible-flow specimens inspected.
+Completed milestones:
+- f5ed97f: state/data foundation (46 checks on those sources, historical).
+- 3cd063b: variable layouts/panels and observation-only queue spans (67 checks,
+  30-image montage + three explicit visible queue flows; docs/evidence/m1/).
+- V-006 repair: canonical active/ghost poses require supported board geometry.
+  Reproduction 1 failed / 21 at docs/evidence/v006/v006-before.stderr.log;
+  fixed full gate 69/69 in 3.685 s at v006-after.stderr.log. Limits 512 MiB /
+  90 s / 69 cases, raw peak 154,918,912 B. Source hashes in scope.json.
+  Legacy 1.0 cropped annotation masks cells/layers; invalid 1.1 pose is refused.
+  These source changes supersede M1's cropped annotation policy; retain old
+  receipts on their own sources, never as verification of the repair.
 
-Current receipt: docs/evidence/m1/layout.json, named sources and raw run logs.
-Tests: m1-fixtures-r2, 67/67 in 3.497 s, 512 MiB / 90 s / 67 cases,
-raw Job peak 155,123,712 B. Demo: m1-demo, 30 images / 6 groups, 256 MiB /
-60 s / 30 images, 1.106 s, raw peak 64,815,104 B. Curation m1-evidence:
-256 MiB / 30 s / 33 image records/specimens, rc=0 in 0.494 s,
-raw peak 79,020,032 B. All recorded supervisors/children have exited.
-Preview examples/layout-diversity.png and examples/queue-flows.png.
-V-005 closes on its own named green run. Original f5ed97f/foundation evidence is
-history on its own sources; do not cite it as verification of the new renderer.
+Active M2 task: scratch lattice-query prototype, docs/MODEL_PROTOTYPE.md.
+Optional CPU dependency setup PASSED: runs/m2-setup.json, rc=0 in 70.658 s,
+190,705,664 B peak under 1 GiB / 600 s / one uv sync. torch 2.14.1+cpu,
+numpy 2.5.4 installed in .venv; pyproject.toml, uv.lock and prototype design remain
+owned M2 work pending their own verified checkpoint. No model source/training yet.
 
-Next acceptance-gated task: M2 scratch-model prototype. Add optional CPU PyTorch
-runtime, preserve full-image aspect ratio and valid-pixel mask, implement shared
-multiscale encoder, learned lattice and bounded cell sampling, independent
-occupancy/type/active/ghost heads, then a tiny memory/wall/step-capped numerical
-and learning pilot before scaling. Queue/hold joint heads follow, with unknown
-labels masked. Record code/data/config/checkpoint identity and finite resources.
+Next: implement preprocessing + valid-pixel mask, shared multiscale encoder,
+learned one-board lattice, bounded cell samples/axial context and independent
+occupancy/type/observability/active/ghost heads. Characterize import and tiny
+forward/backward under a small Windows Job before any longer learning pilot.
+Queue/hold, controlled real data, export and release gates remain open.
 
-Pre-change bug review for M2: V-001 requires correctly transformed pixel centers
-and no geometry/canonical-cell training on unregistered crops. V-002 requires
-independent occupancy/type and locked/active/ghost targets. V-003 requires computed
-checkpoint/source hashes. V-004 requires the native Job guard and raw counters.
-V-005 requires observation-only losses and unknown queue starts/counts preserved.
+Resource note: other owner's tetrguide release build was live at last check
+(cargo 30444/18252, rustc 23704). Recheck exact current process state before a
+substantial training job; do source/modest verification work meanwhile. Do not
+kill or alter that work. Setup/reproduction/full-gate supervisors and children
+are verified exited; no vision background work is running.
 
-No model training or background work is running. Real-image pilot/baseline,
-calibration, sealed accuracy gate, export and inference latency remain unmeasured.
-Source brief remains byte-exact under docs/research/Tetris_Vision_Research.md.
-No neighboring engine files, binaries or run data were changed.
+Bug interactions: V-001/V-006 require one supported coordinate system for all
+canonical targets; V-002 keeps occupancy/type/layers independent; V-003 requires
+computed hashes; V-004 retains native memory enforcement and raw counters;
+V-005 requires observation-only targets and paired-raster equivalence tests.
+No engine files, binaries or run data changed. Real-image accuracy unmeasured.

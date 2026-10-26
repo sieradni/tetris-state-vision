@@ -15,6 +15,9 @@ The schema is enforced by state.py constructors and the `validate` CLI.
 - Active and ghost have separate status, semantic identity and canonical four-
   cell footprint. Unobserved components have null identity and no latent cells.
   Locked occupancy is never derived by subtracting either component.
+  An observed canonical active/ghost footprint requires supported board geometry,
+  including on needs_review states. Historical 1.0 unregistered crops are read
+  with all canonical cells/layers masked; malformed 1.1 annotations are rejected.
 - Queue items are future previews, preserving every unknown middle index.
   Visibility is visible/absent/cropped/unknown. `end_observed` refers to the
   visible panel's endpoint, never the hidden future randomizer. Absent queue

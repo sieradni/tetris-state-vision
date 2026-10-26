@@ -8,7 +8,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 
 | Detection class | Entries | Standing instrument |
 |---|---|---|
-| visibility-contract | V-001, V-002, V-005 (3) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
+| visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
 | provenance | V-003 (1) | Computed hashes and byte comparison |
 | test-instrument | V-004 (1) | Native allocation admission plus raw counters |
 
@@ -82,3 +82,22 @@ a named green run. An unrun gate leaves the entry OPEN.
   including all twelve ObservationEquivalenceTests; receipt
   docs/evidence/m1/layout.json names source hashes. Thirty demo records and three
   explicit visible-flow images verified by m1-evidence.json (rc=0).
+
+## V-006 — CLOSED: unregistered crop retained canonical active pose
+
+- Symptom: M2 target review found that board rows/geometry were masked after loss
+  of coordinate anchors but the separately observed active/ghost footprints were
+  still indexed in the latent original board frame.
+- Root cause: layer visibility was decided before registration; canonical pose
+  observability was never gated on a supported coordinate system.
+- Detection class: visibility-contract.
+- Instrument: identical crops from boards shifted by one cell, with compensating
+  active columns, must yield equal unknown poses. Registration now gates every
+  canonical layer target, not only locked rows.
+- Reproduction: docs/evidence/v006/v006-before.stderr.log, 1 failed / 21 tests,
+  equal pixels but active columns 2/3 differed in the emitted state.
+- Green gate: docs/evidence/v006/v006-after.stderr.log, 69/69 in 3.685 s.
+  Public constructors now reject observed canonical layers without geometry;
+  the historical 1.0 cropped example migrates to masked cells/layers. Scope and
+  source hashes are in docs/evidence/v006/scope.json. M1 receipts remain history
+  on 3cd063b's pre-repair sources; old affected 1.1 annotations are rejected.

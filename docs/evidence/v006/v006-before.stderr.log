@@ -1,0 +1,35 @@
+test_all_queue_flows_preserve_repeats_and_order (test_layout.LayoutIntegrityTests.test_all_queue_flows_preserve_repeats_and_order) ... ok
+test_all_rotations_and_piece_types_have_valid_active_targets (test_layout.LayoutIntegrityTests.test_all_rotations_and_piece_types_have_valid_active_targets) ... ok
+test_historical_schema_is_read_conservatively (test_layout.LayoutIntegrityTests.test_historical_schema_is_read_conservatively) ... ok
+test_independent_oracle_across_three_source_scales (test_layout.LayoutIntegrityTests.test_independent_oracle_across_three_source_scales) ... ok
+test_independent_preview_skin_cannot_supply_board_palette_mapping (test_layout.LayoutIntegrityTests.test_independent_preview_skin_cannot_supply_board_palette_mapping) ... ok
+test_randomized_layouts_are_bounded_and_nonoverlapping (test_layout.LayoutIntegrityTests.test_randomized_layouts_are_bounded_and_nonoverlapping) ... ok
+test_source_panel_overlap_is_explicitly_refused (test_layout.LayoutIntegrityTests.test_source_panel_overlap_is_explicitly_refused) ... ok
+test_varied_sampler_covers_types_lengths_and_absence (test_layout.LayoutIntegrityTests.test_varied_sampler_covers_types_lengths_and_absence) ... ok
+test_cropped_hold_does_not_leak_identity (test_layout.ObservationEquivalenceTests.test_cropped_hold_does_not_leak_identity) ... ok
+test_fully_cropped_queue_does_not_leak_length_or_identity (test_layout.ObservationEquivalenceTests.test_fully_cropped_queue_does_not_leak_length_or_identity) ... ok
+test_header_only_crop_cannot_distinguish_empty_and_hidden_queue (test_layout.ObservationEquivalenceTests.test_header_only_crop_cannot_distinguish_empty_and_hidden_queue) ... ok
+test_invisible_active_layer_does_not_reveal_presence_or_mask_position (test_layout.ObservationEquivalenceTests.test_invisible_active_layer_does_not_reveal_presence_or_mask_position) ... ok
+test_invisible_ghost_layer_does_not_reveal_presence_or_mask_position (test_layout.ObservationEquivalenceTests.test_invisible_ghost_layer_does_not_reveal_presence_or_mask_position) ... ok
+test_occluded_hold_cannot_reveal_empty_or_piece (test_layout.ObservationEquivalenceTests.test_occluded_hold_cannot_reveal_empty_or_piece) ... ok
+test_occluded_locked_cell_is_not_a_known_removal (test_layout.ObservationEquivalenceTests.test_occluded_locked_cell_is_not_a_known_removal) ... ok
+test_occluded_middle_preview_keeps_unknown_index (test_layout.ObservationEquivalenceTests.test_occluded_middle_preview_keeps_unknown_index) ... ok
+test_unanchored_empty_board_does_not_reveal_latent_origin (test_layout.ObservationEquivalenceTests.test_unanchored_empty_board_does_not_reveal_latent_origin) ... ok
+test_unregistered_crop_cannot_reveal_canonical_active_column (test_layout.ObservationEquivalenceTests.test_unregistered_crop_cannot_reveal_canonical_active_column) ... FAIL
+test_unseen_queue_prefix_does_not_recover_latent_items (test_layout.ObservationEquivalenceTests.test_unseen_queue_prefix_does_not_recover_latent_items) ... ok
+test_unseen_queue_suffix_does_not_recover_latent_count (test_layout.ObservationEquivalenceTests.test_unseen_queue_suffix_does_not_recover_latent_count) ... ok
+test_unseen_spawn_piece_and_absent_piece_have_same_uncertainty (test_layout.ObservationEquivalenceTests.test_unseen_spawn_piece_and_absent_piece_have_same_uncertainty) ... ok
+
+======================================================================
+FAIL: test_unregistered_crop_cannot_reveal_canonical_active_column (test_layout.ObservationEquivalenceTests.test_unregistered_crop_cannot_reveal_canonical_active_column)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\tests\test_layout.py", line 101, in test_unregistered_crop_cannot_reveal_canonical_active_column
+    self.assertEqual(left.state, right.state)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Visio[11734 chars]ls=((3, 14), (4, 14), (4, 15), (5, 14))), ghos[275 chars]er=0) != Visio[11734 chars]ls=((2, 14), (3, 14), (3, 15), (4, 14))), ghos[275 chars]er=0)
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.476s
+
+FAILED (failures=1)

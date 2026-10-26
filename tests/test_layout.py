@@ -1,4 +1,5 @@
 from dataclasses import replace
+from pathlib import Path
 import unittest
 
 from tetris_vision.layout import Layout, sample_layout
@@ -91,6 +92,16 @@ class ObservationEquivalenceTests(unittest.TestCase):
         scene = sample_scene(8, "empty")
         self.assert_equivalent(scene, replace(scene, ghost=None), Appearance(ghost_alpha=0))
 
+    def test_unregistered_crop_cannot_reveal_canonical_active_column(self):
+        scene = replace(sample_scene(8, "empty"), active=Pose("T", 3, 14), ghost=None)
+        shifted = replace(scene, active=Pose("T", 2, 14))
+        style = Appearance(crop=(100, 90, 240, 490))
+        left = render(scene, style)
+        right = render(shifted, style, replace(Layout(), board_left=84))
+        self.assertEqual(left.image.tobytes(), right.image.tobytes())
+        self.assertEqual(left.state, right.state)
+        self.assertEqual(left.state.active.status, "unknown")
+
 
 class LayoutIntegrityTests(unittest.TestCase):
     def test_independent_oracle_across_three_source_scales(self):
@@ -179,6 +190,13 @@ class LayoutIntegrityTests(unittest.TestCase):
         migrated = VisionState.from_dict(state)
         self.assertEqual(migrated.schema_version, "1.1")
         self.assertTrue(migrated.queue.start_observed)
+
+    def test_original_cropped_example_migrates_without_latent_pose_or_cells(self):
+        artifact = Path(__file__).resolve().parents[1]/"examples/state-cropped.json"
+        state = VisionState.from_json(artifact.read_text())
+        self.assertEqual(state.active.status, "unknown")
+        self.assertIsNone(state.board.lattice)
+        self.assertTrue(all(cell.occupied is None for row in state.board.rows for cell in row))
 
     def test_source_panel_overlap_is_explicitly_refused(self):
         with self.assertRaisesRegex(ValueError, "overlap"):

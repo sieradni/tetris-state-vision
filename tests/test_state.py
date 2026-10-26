@@ -65,6 +65,8 @@ class StateContractTests(unittest.TestCase):
             replace(self.state, active=FallingPiece("unknown"))
         with self.assertRaises(ValueError):
             replace(self.state, board=replace(self.state.board, lattice=None))
+        with self.assertRaisesRegex(ValueError, "canonical piece pose"):
+            replace(self.state, board=replace(self.state.board, lattice=None), decision="needs_review")
 
     def test_footprint_must_match_piece(self):
         with self.assertRaises(ValueError):

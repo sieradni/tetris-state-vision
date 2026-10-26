@@ -1,0 +1,14 @@
+{
+  "defect": "V-006",
+  "base_commit": "3cd063b674b3806b3680963c930543397a22b1cb",
+  "before": "v006-before.stderr.log: 1 failed / 21",
+  "after": "v006-after.stderr.log: 69 passed",
+  "verified_sources": {
+    "src/tetris_vision/observe.py": "78D37AED039911E33C25D5D69DA4D831A44097C074DD4CA9B87979BC8B62E6C4",
+    "src/tetris_vision/state.py": "C67513EDFA023562FC7B1C77E3CE73EF5EBF49E99465E8F8906AC69811161190",
+    "tests/test_layout.py": "77A8C3B4F3445D4A8AB994E3DDF63952B8F4D31ED1EB7DBE3F8978E61A5CA3DF",
+    "tests/test_state.py": "CE43C5983D237B62940A320C4810BA7F7F76D05581E843E25FBD800597A0CA10"
+  },
+  "limits": "512 MiB aggregate Job / 90 s / 69 finite tests",
+  "claim": "Canonical pose visibility repair only; no model or real-image accuracy claim"
+}

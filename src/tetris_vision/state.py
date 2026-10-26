@@ -146,6 +146,9 @@ class VisionState:
         check(type(self.player) is int and self.player >= 0, "invalid player index")
         check(self.decision != "accepted" or self.board is not None, "accepted state needs board")
         check(self.decision != "no_board" or self.board is None, "no_board contradicts board")
+        check(not any(layer.status == "observed" for layer in (self.active, self.ghost)) or
+              self.board is not None and self.board.lattice is not None,
+              "canonical piece pose requires supported board geometry")
         if self.decision == "accepted":
             check(self.board.lattice is not None, "accepted state needs image-supported geometry")
             check(all(cell.occupied is not None for row in self.board.rows for cell in row),
@@ -170,9 +173,10 @@ class VisionState:
     def from_dict(cls, document):
         try:
             fields = dict(document)
+            legacy = fields.get("schema_version") == "1.0"
             # Read historical annotations without silently claiming a cropped
             # queue's first visible item is the next item. Writes always use 1.1.
-            if fields.get("schema_version") == "1.0":
+            if legacy:
                 fields["schema_version"] = SCHEMA_VERSION
             board = fields.pop("board")
             if board is not None:
@@ -187,6 +191,14 @@ class VisionState:
             ghost = dict(fields.pop("ghost"))
             for layer in (active, ghost):
                 layer["cells"] = tuple(tuple(cell) for cell in layer.get("cells", ()))
+            if legacy and board is not None and board.lattice is None:
+                # v1 annotations predate the shared canonical-frame invariant.
+                # Preserve the file; read it with masked targets, not latent pose.
+                active, ghost = {"status": "unknown"}, {"status": "unknown"}
+                visibility = "cropped" if any(cell.visibility == "cropped" for row in board.rows for cell in row) else "hidden"
+                board = Board(tuple(tuple(Cell(None, visibility=visibility) for _ in row) for row in board.rows), None)
+                if fields.get("decision") == "accepted":
+                    fields["decision"] = "needs_review"
             queue = dict(fields.pop("queue"))
             queue["items"] = tuple(Icon(**item) for item in queue["items"])
             return cls(board=board, active=FallingPiece(**active), ghost=FallingPiece(**ghost),

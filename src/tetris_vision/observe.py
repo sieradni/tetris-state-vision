@@ -93,6 +93,10 @@ def observe(scene, style, layout):
         uncertain.update((c, r) for c, r in scene.ghost.cells if 0 <= r < 20 and scene.locked[r][c] is not None)
     has_anchor = style.grid or style.border or style.board_alpha >= 128
     registered = has_anchor and full(layout.board_box)
+    if not registered:
+        # Piece type may still be visually suggested, but this schema's observed
+        # layer promises a canonical footprint. Never expose latent indexing.
+        active, ghost = FallingPiece("unknown"), FallingPiece("unknown")
     rows = []
     for r, row in enumerate(scene.locked):
         labels = []
