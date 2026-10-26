@@ -111,6 +111,8 @@ NEXT fresh gate uses the SAME1GiB/420s/14-update envelope and serialized640MiB
 children, new root runs/m2-stream-recovery-gate-r2, logs .log/.stderr.log and
 receipt runs/m2-stream-recovery-gate-r2-job.json. Substitute that fresh name in
 the command above; verify exact process tree, then native proof and all deaths.
+LAUNCHED r2:22172/24172 exact supervisor commands verified. Inspect same root
+progress/receipt; do not restart on an observation timeout.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
