@@ -64,6 +64,10 @@ Profile launch command, hidden with runs/m2-stream-warm-probe.log/.stderr.log:
 --output runs/m2-stream-warm-probe --model pilot --steps2 --profile-square
 --wall-seconds110 --development-groups6. Record PID after spawn, then inspect
 progress/receipt, verify terminal process tree, curate and commit if green.
+LAUNCHED m2-stream-warm-probe: shim27800 /supervisor31056 /child-shim26384 /
+worker23216, all exact commands verified. Inspect its terminal receipt next.
+Protocol4-test evidence curated at docs/evidence/v011-protocol/scope.json,
+source322e055; actual profile still pending. No other vision job launched.
 
 Then characterize actual multi-step admission/streaming and adequately train on
 fresh states. A long run may be interrupted by renewed host pressure; periodic
