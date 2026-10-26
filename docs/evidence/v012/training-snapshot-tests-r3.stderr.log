@@ -1,0 +1,12 @@
+test_changed_recipe_or_parameter_order_is_rejected (test_training_snapshot.TrainingSnapshotTests.test_changed_recipe_or_parameter_order_is_rejected) ... ok
+test_interrupted_publication_preserves_previous_complete_generation (test_training_snapshot.TrainingSnapshotTests.test_interrupted_publication_preserves_previous_complete_generation) ... ok
+test_ledger_appends_are_ignored_but_committed_prefix_changes_fail (test_training_snapshot.TrainingSnapshotTests.test_ledger_appends_are_ignored_but_committed_prefix_changes_fail) ... ok
+test_manifest_identity_and_pointer_path_cannot_be_substituted (test_training_snapshot.TrainingSnapshotTests.test_manifest_identity_and_pointer_path_cannot_be_substituted) ... ok
+test_resumed_adam_dropout_matches_continuous_model_optimizer_and_rng (test_training_snapshot.TrainingSnapshotTests.test_resumed_adam_dropout_matches_continuous_model_optimizer_and_rng) ... ok
+test_snapshot_bounds_and_optimizer_ownership_are_enforced (test_training_snapshot.TrainingSnapshotTests.test_snapshot_bounds_and_optimizer_ownership_are_enforced) ... ok
+test_tensor_corruption_fails_before_model_mutation (test_training_snapshot.TrainingSnapshotTests.test_tensor_corruption_fails_before_model_mutation) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 4.103s
+
+OK

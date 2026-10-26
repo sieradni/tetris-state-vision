@@ -37,7 +37,8 @@ a named green run. An unrun gate leaves the entry OPEN.
   runs/v012-resource-tests.stderr.log6/6 in3.116s (includes host8->child1),
   v012-pressure-tests.stderr.log5/5 in2.147s and v012-admission-tests.stderr.log
   4/4 in.275s. All22 checks are separate scoped gates, not a whole-suite claim.
-  Curate committed-source scope next. Runner SHA/catalogue changes invalidate
+  Committed-source scope: docs/evidence/v012/scope.json (7cbc68c).
+  Runner SHA/catalogue changes invalidate
   old live admission; fresh two-step warm characterization before training.
 
 ## V-011 — CLOSED: resource profile covered only a cold optimizer backward

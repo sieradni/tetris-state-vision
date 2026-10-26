@@ -47,3 +47,12 @@ The old streaming square characterization remains historical evidence of its
 exact source catalogue. Use a fresh output/receipt to
 re-profile the changed catalogue before longer learning. A pressure park is not
 a crash, completed learning run or accuracy gate. Preserve its receipt/logs.
+
+The runner also sets one-thread OMP/MKL/OpenBLAS defaults in the child environment
+before launch, overriding inherited host settings and recording them in the
+receipt. Setting Torch threads after import did not prevent an OpenBLAS import
+allocation failure (V-012). The repaired same512MiB recovery harness passes7
+cases; the live child tripwire verifies host8 becomes child1 before imports.
+Native resources6/pressure5/admission4 also pass on the changed runner, with
+committed-source scope in `docs/evidence/v012/scope.json`. This CPU policy does
+not replace the native ceiling or the OS pressure guard.

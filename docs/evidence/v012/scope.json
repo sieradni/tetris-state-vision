@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "source_base_commit": "7cbc68c0877d27b48b9dc7b0e5d4db7277f1ed1e",
+  "sources": {
+    "scripts/run_bounded.py": "6f46c8389de696d9fcddc00803675e3eb1898494369bb6e0c3fec1034d912a6f",
+    "scripts/training_snapshot.py": "36a91b7fcda68b8eb901e9c917b9dac61bc5651ad0546d2dcab22a1fc91c6e35",
+    "scripts/train_m2_stream.py": "5128159fbf342e9fb14f0ada4edeb0a7e4a6c569a0b2a6a66cc69478582642bb",
+    "tests/test_training_snapshot.py": "cae475bc0ec14a618c8f6b14b0c924ad9b7fba9b7a44939f4e365fbea3f7a416",
+    "tests/test_resources.py": "afed12041f23fd984d7afa7318e797d0dded800e1f7a59d1633a9715102e038c",
+    "tests/test_pressure_guard.py": "3ce3bb6245def55c5a2d12f09201232e74c6023f558290a0097683960a1a78fe",
+    "tests/test_stream_driver.py": "ea7ee50e1185bf71245daa012d746a245a99db1868d5486f58cb3c160060dccf",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "AGENTS.md": "073aecc9681d5db274e330298811738cf9a8c9a5fe2a0d0a99311039e586fce6"
+  },
+  "gates": [
+    {
+      "stem": "training-snapshot-tests-r3",
+      "tests": 7,
+      "raw_peak_job_commit_bytes": 332562432
+    },
+    {
+      "stem": "v012-resource-tests",
+      "tests": 6,
+      "raw_peak_job_commit_bytes": 151027712
+    },
+    {
+      "stem": "v012-pressure-tests",
+      "tests": 5,
+      "raw_peak_job_commit_bytes": 75378688
+    },
+    {
+      "stem": "v012-admission-tests",
+      "tests": 4,
+      "raw_peak_job_commit_bytes": 52604928
+    }
+  ],
+  "tests_across_scoped_runs": 22,
+  "supervisor_script_sha256": "6f46c8389de696d9fcddc00803675e3eb1898494369bb6e0c3fec1034d912a6f",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

@@ -6,6 +6,7 @@ Seven runtime fixtures now pass: runs/training-snapshot-tests-r3.stderr.log,
 7/7 in4.103s,332,562,432B raw peak under512MiB/45s. Earlier attempts parked
 on host pressure; r2 hit an OpenBLAS import allocation failure before tests.
 V-012's pre-import thread policy repaired that harness at the same ceiling.
+Committed-source scope and raw logs: `docs/evidence/v012/scope.json` (7cbc68c).
 
 The verified primitive's recovery boundary contains model tensors, complete AdamW state,
 Torch CPU randomness, module training modes and the completed global step.

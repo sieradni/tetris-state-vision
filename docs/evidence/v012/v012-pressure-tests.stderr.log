@@ -1,0 +1,10 @@
+test_commit_admission_refuses_before_spawn (test_pressure_guard.PressureGuardTests.test_commit_admission_refuses_before_spawn) ... ok
+test_counter_query_failure_kills_owned_tree (test_pressure_guard.PressureGuardTests.test_counter_query_failure_kills_owned_tree) ... ok
+test_os_snapshot_reports_machine_not_small_nested_job (test_pressure_guard.PressureGuardTests.test_os_snapshot_reports_machine_not_small_nested_job) ... ok
+test_pressure_policy_boundaries_and_invalid_counters (test_pressure_guard.PressureGuardTests.test_pressure_policy_boundaries_and_invalid_counters) ... ok
+test_pressure_stops_child_and_grandchild (test_pressure_guard.PressureGuardTests.test_pressure_stops_child_and_grandchild) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.147s
+
+OK

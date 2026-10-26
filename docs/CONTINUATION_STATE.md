@@ -27,6 +27,9 @@ Latest verified work:
   pressure guard remain armed. Never use a historical pre-pressure supervisor.
   Fresh source catalogue/profile required: old admission cannot admit new runner.
 - All V-001..V-012 closed on named gates. Gate curation pending current commit.
+- V-012/recovery evidence now curated: docs/evidence/v012/scope.json,
+  exact source7cbc68c,22 scoped cases, all hashes checked. Primitive only;
+  streaming recovery integration remains open.
 
 Next hidden detached launch, expected<600MiB, native640MiB/150s outer/110s inner,
 2 optimizer steps, one CPU thread; guard parks on OS pressure or counter failure:
@@ -41,6 +44,9 @@ backward with full Adam state and all-final-tensor reload parity. Then use that
 matching admission for a new768-step run name (previous learn768 parked125,
 no child; never reuse receipt). Frozen code archive permits independent source
 work while a run uses those exact archived imports.
+LAUNCHED profile: shim20240/supervisor9292/child-shim17984/worker18532,
+all exact command lines verified live. Inspect its progress and terminal receipt
+next; no second heavy job while it runs. Source frozen at current catalogue.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
