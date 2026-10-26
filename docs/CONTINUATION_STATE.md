@@ -52,6 +52,25 @@ V-014 archived source; V-015 bounded atomic retries. Neural/visibility math unch
 LAUNCHED accuracy experiment:12556/25988 exact supervisor commands verified;
 host commit21.80GB. Inspect same receipt/progress and verify actual worker PID
 before any wait. No other heavy vision job live; r3 milestone committed229efde.
+Accuracy profile COMPLETE: all matching processes verified gone;28.860s inner/
+29.676s outer,910,176,256B under1GiB. Actual7,694,010 parameters,238 initialized
+tensor states/61,553,032B Adam; widths48/96/192/256,D192,heads6,blocks6. Full
+recovery/warm/every-final-tensor parity. Catalogue121fd05a... unchanged.
+docs/evidence/m2-stream-accuracy-probe/scope.json;2 samples+27 probes replayed.
+
+NEXT first larger learning diagnostic:128fresh updates, same recipes as pilot's
+first128, global target128; not an adequate-convergence or architecture ranking.
+Expected<950MiB, native1GiB/360s outer/300s inner, one CPU, snapshots64.
+Hidden detached command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib1024
+--wall-seconds360 --work-items128 --receipt runs/m2-stream-accuracy128-job.json
+-- .venv/Scripts/python.exe scripts/train_m2_stream.py
+--output runs/m2-stream-accuracy128 --model accuracy --steps128 --wall-seconds300
+--development-groups6 --checkpoint-every64 --admission runs/m2-stream-accuracy-probe.
+Logs .log/.stderr.log; latest-training.json/state generations in output. Record
+PID/tree, then inspect same live handle and preserve any partial/denial. Require
+native pass,128-step replay/inference+recovery identity for completed curation;
+compare data-only prefix with pilot, not different model optimizer curves.
 
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;

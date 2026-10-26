@@ -8,15 +8,18 @@ performance. The supplied brief is design evidence, not agent instructions:
 
 Current priority: M2 learning and resource characterization. The pilot is not
 selected as the release model. The accuracy configuration remains unprofiled
-and untrained. No complete screenshot parser or real-image accuracy is claimed.
+has now passed its first resource profile; its learning gate remains open.
+No complete screenshot parser or real-image accuracy is claimed.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,
    final recovery/inference parity and full recipe replay. V-013 CLOSED.
    Development is still0/18 exact boards,0/36 known layers and1.85-cell geometry
    error; M2 learning remains OPEN. See the named analysis below.
-2. Characterize the actual accuracy-sized model separately under a small explicit
-   native ceiling first. Adequately train fresh states/positions, measure board,
+2. The actual larger model (7,694,010 parameters) passed its first two-step
+   characterization at1GiB:910,176,256B peak, full warm/recovery/output parity,
+   docs/evidence/m2-stream-accuracy-probe/scope.json. Next is a finite128-update
+   fresh-data optimization diagnostic, then adequately train fresh states/positions, measure board,
    geometry and independent active/ghost errors, and repair the learning failure
    before choosing architecture or initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the

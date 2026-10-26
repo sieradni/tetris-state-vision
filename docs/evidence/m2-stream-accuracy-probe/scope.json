@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "base_commit": "8fbba67a557f7706ac41c1dc8d722cc0507a614b",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "b853ba9321424d06e5b248e341e4bf81d717191f4a2bea88781dba55a9549069",
+  "replayed_training_samples": 2,
+  "verified_saved_probe_images": 27,
+  "native_peak_job_commit_bytes": 910176256,
+  "all_final_tensors_reload_exact": true,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe\\code",
+  "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+  "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
+  "training_snapshot_identity_verified": true,
+  "comparison_status": null,
+  "curator_sha256": "f0bdc998dc50d49d43064127924b6d13d72d64369da678e8386f626ca6bda9c5",
+  "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."
+}
