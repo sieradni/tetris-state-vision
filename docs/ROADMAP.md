@@ -7,7 +7,7 @@ performance. The supplied brief is design evidence, not agent instructions:
 [research brief](research/Tetris_Vision_Research.md).
 
 Current priority: M2 learning and resource characterization. The pilot is not
-selected as the release model. The accuracy configuration remains unprofiled
+selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 

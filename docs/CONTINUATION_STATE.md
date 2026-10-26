@@ -71,6 +71,13 @@ Logs .log/.stderr.log; latest-training.json/state generations in output. Record
 PID/tree, then inspect same live handle and preserve any partial/denial. Require
 native pass,128-step replay/inference+recovery identity for completed curation;
 compare data-only prefix with pilot, not different model optimizer curves.
+LAUNCHED larger128:20552/6384 exact supervisor commands verified. Inspect same
+progress/receipt and verify real worker before waiting. Model/config/source
+121fd05a...; no parallel heavy vision job. Independent source work: diagnostic
+oracle-lattice intervention to separate geometry/local-reading failure, only on
+the saved synthetic pilot artifact; never production inference/training truth.
+V-003/V-014 bind frozen source/weights; V-001/002/005/006 require full supported
+geometry and keep layers separate; no hidden targets or model weights changed.
 
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;
