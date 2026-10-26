@@ -2,7 +2,9 @@
 
 Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal ACTIVE.
 No vision process running before the next launch. No run data deleted.
-Previous/current goal turns made concrete progress, not repeated blocked turns.
+Previous goal turn made concrete progress (warm profile verified, recovery draft).
+Current continuation: no implementation progress; same RAM blocker revalidated.
+Fresh consecutive no-progress blocked audit count1; goal remains ACTIVE.
 
 Verified checkpoints:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
@@ -81,6 +83,12 @@ with NEW receipt/log stem training-snapshot-tests-r2 after genuine headroom.
 Even96MiB syntax harness parked before child: runs/training-snapshot-syntax.json.
 No syntax/runtime success is claimed. Preserve this isolated source as a draft
 checkpoint; do not integrate or admit it until its seven actual fixtures pass.
+Latest continuation also refused a64MiB/15s/two-file syntax-only harness before
+child: runs/training-snapshot-syntax-r2.json, supervisor28620, receipt125,
+commit31,379,595,264B >stop31,368,351,744B; follow-up actual31,427,129,344B.
+No vision workers live at the initial scan; supervisor28620 verified gone. No job
+started and no code changed. All substantive training/recovery gates require a
+lower-memory external state; no guard bypass, no unverified integration.
 Architecture review: V-003 hashes/identity require source+recipe and byte-prefix
 binding; V-004/V-007 preserve actual native readback/accounting; V-010 pressure
 kill can interrupt writes, so pointer is the last commit; V-011 requires a new
