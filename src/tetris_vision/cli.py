@@ -16,6 +16,7 @@ def main(argv=None):
     demo.add_argument("--output", type=Path, required=True)
     demo.add_argument("--count", type=int, default=3)
     demo.add_argument("--seed", type=int, default=20261025)
+    demo.add_argument("--profile", choices=("foundation", "diverse"), default="diverse")
     score = commands.add_parser("evaluate", help="score predictions against a manifest; missing predictions fail")
     score.add_argument("--manifest", type=Path, required=True)
     score.add_argument("--predictions", type=Path, required=True)
@@ -25,7 +26,7 @@ def main(argv=None):
         print(json.dumps({"valid": True, "schema_version": state.schema_version, "decision": state.decision}))
     elif args.command == "generate":
         from .dataset import generate
-        print(json.dumps(generate(args.output, count=args.count, seed=args.seed)))
+        print(json.dumps(generate(args.output, count=args.count, seed=args.seed, profile=args.profile)))
     else:
         from .evaluate import Example, evaluate
         examples = []

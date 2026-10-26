@@ -26,7 +26,7 @@ def to_solver_input(state: VisionState, *, hold_available: bool) -> SolverInput:
         raise IncompleteState("unknown locked occupancy")
     if state.active.status != "observed":
         raise IncompleteState("current piece is unresolved; the first preview is not current")
-    if state.queue.visibility != "visible" or any(item.status != "observed" for item in state.queue.items):
+    if state.queue.visibility != "visible" or not state.queue.start_observed or any(item.status != "observed" for item in state.queue.items):
         raise IncompleteState("queue is absent, cropped or contains unknown slots")
     if state.hold.status not in {"empty", "observed"}:
         raise IncompleteState("hold panel is absent or unreadable")

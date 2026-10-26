@@ -6,6 +6,12 @@ constraints in ROADMAP.md, not fixes claimed by this repository.
 Every new fix entry needs symptom, root cause, detection class, instrument and
 a named green run. An unrun gate leaves the entry OPEN.
 
+| Detection class | Entries | Standing instrument |
+|---|---|---|
+| visibility-contract | V-001, V-002, V-005 (3) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
+| provenance | V-003 (1) | Computed hashes and byte comparison |
+| test-instrument | V-004 (1) | Native allocation admission plus raw counters |
+
 ## V-001 — CLOSED: latent geometry survived ambiguous crops
 
 - Symptom: first fixtures (runs/fixtures-r1.stderr.log) failed
@@ -58,3 +64,21 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Green gate: docs/evidence/fixtures-r3.stderr.log, 44/44; repeated on
   docs/evidence/fixtures-final.stderr.log, 46/46, including native admission and
   child/grandchild death. Raw accounting behavior remains documented above.
+
+## V-005 — CLOSED: cropped components leaked latent queue length and labels
+
+- Symptom: pre-change review found that a queue wholly outside the crop still
+  emitted one unknown token per latent preview. Absent/cropped hold, unseen spawn
+  pieces and remapped preview support had related observation-boundary gaps.
+- Root cause: v1 constructed labels from latent component presence/length before
+  deriving which evidence survived capture; global row indices survived loss of
+  their coordinate anchors.
+- Detection class: visibility-contract (third entry, standing instrument promoted).
+- Instrument: centralized observe.py; queue visible-span trimming and explicit
+  start_observed; schema 1.1 reads historical 1.0 conservatively; independent
+  preview palettes cannot provide board type support. Crops losing registration
+  mask canonical rows. Paired-raster equivalence fixtures are mandatory in AGENTS.
+- Green gate: docs/evidence/m1/m1-fixtures-r2.stderr.log, 67/67 in 3.497 s,
+  including all twelve ObservationEquivalenceTests; receipt
+  docs/evidence/m1/layout.json names source hashes. Thirty demo records and three
+  explicit visible-flow images verified by m1-evidence.json (rc=0).

@@ -1,0 +1,51 @@
+{
+  "milestone": "M1 source-layout and panel diversity",
+  "schema_version": "1.1",
+  "recorded_utc": "2026-10-26T06:40:44.651848+00:00",
+  "base_commit": "f5ed97ffbc59241a797209f0d0d6a4d717c6f49e",
+  "runtime_source_sha256": "087fd98054abe78d921bf79d1323690a57f08f06da52207d06c9b45c012ce2aa",
+  "uv_lock_sha256": "6fa052a1b27b389b2c30855cadeddbbb5db147d604087e83f9743c663332fe1c",
+  "tests": 67,
+  "test_seconds": 3.497,
+  "test_receipt": "m1-fixtures-r2.json",
+  "demo_images": 30,
+  "independent_groups": 6,
+  "decisions": {
+    "accepted": 18,
+    "needs_review": 12
+  },
+  "flow_metadata_in_random_demo": {
+    "horizontal": 20,
+    "wrapped": 5,
+    "vertical": 5
+  },
+  "explicit_visible_queue_flow_examples": [
+    "vertical",
+    "horizontal",
+    "wrapped"
+  ],
+  "verified_sources": {
+    "scripts/record_foundation.py": "9025281a10e88189325430d2a97941e150d16acf004e7da0c79e9f2afb7fa54f",
+    "scripts/record_layout_milestone.py": "d041ab25bfe8c2809096b37b21e8656cc0f4189982e245d23c53ef61297fe030",
+    "scripts/run_bounded.py": "e25cbc0552fec3b5ec7e5beddead8993267e4dc3dac427a062350942366a3ab6",
+    "src/tetris_vision/__init__.py": "dcab05443008e0c3591ec28c796b42ecee7333182bef65dcf5b8add9415b42a1",
+    "src/tetris_vision/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/tetris_vision/adapter.py": "d3e543962381259c6d4562ae9054a04d91b14a9a753148fe13be1459af10e734",
+    "src/tetris_vision/cli.py": "362b61870751a57918189026ab5675757c21afbca616d7b0d1500f4026792ed5",
+    "src/tetris_vision/dataset.py": "daee2bd5e287dd087de44e5d58e05a9a4d1ba6a3439340ee838d2c4d6ea993c8",
+    "src/tetris_vision/evaluate.py": "00fa3b0531a8baa87aa4b1a195bb65aa330dd1a52015f363fedcdd4c05833025",
+    "src/tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "src/tetris_vision/observe.py": "08599a9e9b9b8dce6e77caaa40a63d3b283a40eb750d29bee552f13af3b5d48c",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "src/tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "src/tetris_vision/state.py": "cb109b1af4209fec5a617dd3a21f2bd318ac335db3c6e84899f0b6ce308d7094",
+    "tests/test_dataset.py": "b0aa41de8fcb345a60d03d2ea7e09b5a6fa28b63c6450e402ba7ec71ec99ad80",
+    "tests/test_evaluate.py": "174df9a65a37bee9ea49681921c2c05d3226a8074f3f0e1b1172aeb82c1db9a4",
+    "tests/test_layout.py": "b0cc5c0954ea5db1b7c9c6bcb93b2be95c6f13a4c0e43bea616348fe966f8d23",
+    "tests/test_render.py": "8b3cfb6f422b6c043a7615be3b184d346bb11db7b8c4da3f17c58b43d76fbc03",
+    "tests/test_resources.py": "75b20c2b5f2ae2d2ae9803e8f73acb6b5521c89a44bf9aa5357424df8159fe3c",
+    "tests/test_state.py": "1aaa656b7c37108d7b0462dc44b1d94328995ae45a3058ac1545efd9ca0a2b81"
+  },
+  "limits": "One axis-aligned board; controlled skins/backgrounds; no real-image accuracy claim.",
+  "visual_review": "Thirty-image montage inspected; explicit queue-flow full images reviewed separately."
+}

@@ -7,7 +7,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw, __version__ as pillow_version
 
 from . import __version__
-from .render import families, render, sample_scene
+from .layout import Layout, sample_layout
+from .render import diverse_families, families, render, sample_scene
 from .state import check
 
 
@@ -36,8 +37,9 @@ def overlay(image, state):
     return result
 
 
-def generate(output: Path, *, count: int = 3, seed: int = 20261025):
+def generate(output: Path, *, count: int = 3, seed: int = 20261025, profile="foundation"):
     check(type(count) is int and 1 <= count <= 64, "group count must be 1..64 (five images each)")
+    check(profile in {"foundation", "diverse"}, "unknown generation profile")
     # No append/reuse: an interrupted dataset is evidence, not an overwrite target.
     output.mkdir(parents=True, exist_ok=False)
     records = []
@@ -49,20 +51,24 @@ def generate(output: Path, *, count: int = 3, seed: int = 20261025):
             density = ("empty", "sparse", "dense")[index % 3]
             scene_seed = seed + index
             group_id = f"state-{scene_seed}-{density}"
-            scene = sample_scene(scene_seed, density)
-            for column, (family, style) in enumerate(families(scene_seed).items()):
-                sample_id = f"{group_id}-{family}"
+            scene = sample_scene(scene_seed, density, varied=profile == "diverse")
+            layout = sample_layout(scene_seed+1000, len(scene.queue)) if profile == "diverse" else Layout()
+            styles = diverse_families(scene_seed, scene, layout) if profile == "diverse" else families(scene_seed)
+            for column, (family, style) in enumerate(styles.items()):
+                sample_id = f"{group_id}-{profile}-{family}"
                 item_dir = output / sample_id
                 item_dir.mkdir()
-                result = render(scene, style)
+                result = render(scene, style, layout)
                 result.image.save(item_dir / "image.png")
                 (item_dir / "state.json").write_text(result.state.to_json(), encoding="utf-8")
-                (item_dir / "latent.json").write_text(json.dumps({"scene": asdict(scene), "appearance": asdict(style)},
+                (item_dir / "latent.json").write_text(json.dumps({"scene": asdict(scene), "appearance": asdict(style),
+                                                                "layout": asdict(layout)},
                                                                indent=2) + "\n", encoding="utf-8")
                 for name, mask in result.layer_masks.items():
                     mask.save(item_dir / f"mask-{name}.png")
                 record = {"sample_id": sample_id, "group_id": group_id, "family": family,
                           "split": split_group(group_id), "density": density, "seed": scene_seed,
+                          "profile": profile, "queue_flow": layout.queue_flow,
                           "generator_version": __version__, "image": f"{sample_id}/image.png",
                           "generator_source_sha256": source_hash, "pillow_version": pillow_version,
                           "state": f"{sample_id}/state.json", "latent": f"{sample_id}/latent.json",
@@ -77,7 +83,7 @@ def generate(output: Path, *, count: int = 3, seed: int = 20261025):
                 caption.text((column*240+8, index*294+6), f"{density} / {family}", fill=(225, 233, 248))
                 caption.text((column*240+8, index*294+276), result.state.decision, fill=(172, 188, 211))
     montage.save(output / "montage.png")
-    receipt = {"status": "complete", "groups": count, "images": len(records), "seed": seed,
+    receipt = {"status": "complete", "groups": count, "images": len(records), "seed": seed, "profile": profile,
                "generator_version": __version__, "max_groups": 64, "max_image_pixels": 1536**2,
                "generator_source_sha256": source_hash, "pillow_version": pillow_version,
                "note": "Synthetic annotation/label-integrity pilot; no trained model or real-image score."}

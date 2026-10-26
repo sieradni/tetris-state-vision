@@ -25,12 +25,20 @@ checks the contract. `evaluate --manifest manifest.jsonl --predictions answers.j
 scores predictions of the form `{"sample_id":"...","state":{...}}`; missing
 answers fail on readable images. Invoke those through the same bounded launcher.
 
+The CLI defaults to the diverse profile (variable source geometry and queue flow).
+`--profile foundation` retains the original five-family pilot configuration.
+
+The variable-layout preview is [examples/layout-diversity.png](examples/layout-diversity.png),
+with explicit [queue layouts](examples/queue-flows.png). Its 67-check verification
+and source hashes are in docs/evidence/m1/layout.json.
+
 The first preview is [examples/montage.png](examples/montage.png); representative
 complete and cropped states are in examples/. The state API is
 `tetris_vision.state.VisionState`; strict conversion is
 `tetris_vision.adapter.to_solver_input(state, hold_available=...)`.
 
-The curated verification receipt is docs/evidence/foundation.json. No engine
+The original foundation receipt is docs/evidence/foundation.json (f5ed97f's
+sources, preserved as historical evidence). No engine
 runtime, detector, downloaded weights or existing user images are dependencies.
 
 The design source is archived in docs/research/Tetris_Vision_Research.md.

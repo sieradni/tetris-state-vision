@@ -7,7 +7,7 @@ import math
 
 PIECES = frozenset("IOTSZJL")
 CELL_TYPES = PIECES | {"G"}
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 
 
 def check(condition: bool, message: str):
@@ -110,16 +110,21 @@ class Queue:
     items: tuple[Icon, ...]
     visibility: str = "visible"
     end_observed: bool = True
+    start_observed: bool | None = None
 
     def __post_init__(self):
+        if self.start_observed is None:
+            object.__setattr__(self, "start_observed", self.visibility == "visible")
         check(self.visibility in {"visible", "absent", "cropped", "unknown"}, "invalid queue visibility")
         check(type(self.end_observed) is bool, "boolean end flag required")
+        check(type(self.start_observed) is bool, "boolean start flag required")
         check(len(self.items) <= 64, "queue capacity exceeded (64)")
         check(all(item.status in {"observed", "unknown", "cropped"} for item in self.items),
               "queue slots cannot be empty/absent; retain an unknown slot")
         check(self.visibility != "absent" or (not self.items and not self.end_observed),
               "absent queue is not known empty")
         check(not self.end_observed or self.visibility == "visible", "unseen endpoint cannot be known")
+        check(self.visibility != "absent" or not self.start_observed, "absent queue has no known start")
 
 
 @dataclass(frozen=True)
@@ -151,6 +156,8 @@ class VisionState:
                   self.queue.visibility in {"visible", "absent"} and
                   all(icon.status == "observed" for icon in self.queue.items),
                   "unknown components need review")
+            check(self.queue.visibility != "visible" or self.queue.start_observed,
+                  "unknown queue start needs review")
 
     def to_dict(self):
         # JSON normalization ensures callers see the same arrays as file readers.
@@ -163,6 +170,10 @@ class VisionState:
     def from_dict(cls, document):
         try:
             fields = dict(document)
+            # Read historical annotations without silently claiming a cropped
+            # queue's first visible item is the next item. Writes always use 1.1.
+            if fields.get("schema_version") == "1.0":
+                fields["schema_version"] = SCHEMA_VERSION
             board = fields.pop("board")
             if board is not None:
                 board = dict(board)

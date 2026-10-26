@@ -25,3 +25,10 @@ def is_piece_shape(piece, cells):
             return True
         shape = tuple((-r, c) for c, r in shape)
     return False
+
+
+def rotated_shape(piece, rotation=0):
+    shape = SHAPES[piece]
+    for _ in range(rotation % 4):
+        shape = tuple((-r, c) for c, r in shape)
+    return normalize(shape)

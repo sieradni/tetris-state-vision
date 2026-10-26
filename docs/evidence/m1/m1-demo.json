@@ -1,0 +1,26 @@
+{
+  "supervisor_pid": 3664,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "tetris_vision",
+    "generate",
+    "--profile",
+    "diverse",
+    "--count",
+    "6",
+    "--seed",
+    "20261025",
+    "--output",
+    "runs/m1-demo"
+  ],
+  "memory_bytes": 268435456,
+  "wall_seconds": 60.0,
+  "work_items": 30,
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 1.106,
+  "child_pid": 25860,
+  "peak_job_commit_bytes": 64815104
+}

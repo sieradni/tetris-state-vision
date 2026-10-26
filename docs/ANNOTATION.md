@@ -1,4 +1,4 @@
-# State and annotation policy — schema 1.0
+# State and annotation policy — schema 1.1
 
 `VisionState` is the authoritative rich JSON format. A latent renderer record
 is stored in another file and is never passed off as an image-supported label.
@@ -21,6 +21,11 @@ The schema is enforced by state.py constructors and the `validate` CLI.
   and a visible panel with zero slots are different labels. Capacity: 64 output
   slots; initial renderer capacity: 10. Exceeding capacity raises an explicit
   error; there is no silent truncation.
+  `start_observed` establishes that the visible sequence begins with the next
+  preview. When false, list order is relative to the visible span: never infer
+  unseen leading or trailing counts. Fully unseen panels produce an unknown
+  queue with no items. The solver refuses an unresolved start. Historical 1.0
+  JSON is read conservatively and serialized as 1.1; archives remain unchanged.
 - Hold distinguishes observed piece, confirmed empty panel, absent, cropped
   and unknown. Hold availability and lock timing are not inferred. Solver
   conversion requires caller-supplied hold availability and refuses missing or
@@ -32,13 +37,14 @@ The schema is enforced by state.py constructors and the `validate` CLI.
 
 ## Renderer identifiability policy and limits
 
-The initial renderer is a label-integrity pilot, not adequate training coverage.
-It supports one 10x20 axis-aligned board at a fixed source layout, bottom-first
-spawn-margin poses, flat/bevel/outline skins, independent layer alpha, simple
-backgrounds, absent panels, crops, noninteger resize and limited blur. Queue is
-vertical and unrotated; no wrapped/horizontal layouts, photographs, multi-board
-scenes, animation, perspective or arbitrary occluders yet. Shadows/glow, linear
-blending and independent preview palettes are future renderer families. Compositing
+The renderer is a label-integrity pilot, not complete training coverage. The
+foundation profile retains the original source layout. The diverse profile varies
+canvas, board origin/spacing, panel positions, icon scale, vertical/horizontal/
+wrapped queue order, all piece types/rotations, queue length 0..10, and panel
+absence. It adds independent preview palette/skin, board/queue/hold occlusion,
+simple backgrounds, crops, noninteger resize and limited blur. One 10x20 axis-
+aligned board is supported. Photographs, multi-board scenes, animation,
+perspective, shadows/glow and linear blending remain future families. Compositing
 currently uses Pillow's straight-alpha sRGB behavior; masks contain per-layer
 alpha before occlusion, not proof of final semantic observability.
 
@@ -46,12 +52,18 @@ Known pilot families use distinct skin conventions for locked/active/ghost.
 That convention is not asserted for real clients. When layer cues are disabled,
 matching-pixel active-versus-locked scenes both produce the same unknown labels.
 Monochrome locked fragments retain occupancy with unknown types. Remapped types
-without observed queue/hold/active shape support remain unknown. Canonical
+without observed queue/hold/active shape support remain unknown. Independent
+preview palettes never provide a board mapping automatically. Canonical
 unpermuted palettes are a declared identifiable renderer family, not a runtime
 color-threshold rule. Zero/weak alpha, small scale and strong blur conservatively
 mask targets. Partial minos/icons are unknown rather than completed from memory.
 The thresholds are pilot annotation rules, not calibrated human recoverability.
 Real-frame ambiguity requires independent review before training or evaluation.
+Loss of row/column registration masks all canonical cells, even locally visible
+ones: a visible block without an origin is not a known canonical cell. Unseen
+spawn state and fully invisible layers retain uncertainty independently of their
+latent presence or footprint. New policies require identical-raster equivalence
+fixtures, promoted to a standing rule by V-005.
 
 ## Evaluation and split policy
 

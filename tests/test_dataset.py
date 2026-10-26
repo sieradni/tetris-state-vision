@@ -69,6 +69,15 @@ class DatasetTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "checksum mismatch"):
                 main(["evaluate", "--manifest", str(root/"manifest.jsonl"), "--predictions", str(predictions)])
 
+    def test_diverse_generation_has_layout_and_profile_provenance(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            root = Path(scratch)/"diverse"
+            generate(root, count=1, seed=7, profile="diverse")
+            records = [json.loads(line) for line in (root/"manifest.jsonl").read_text().splitlines()]
+            self.assertTrue(all(record["profile"] == "diverse" for record in records))
+            self.assertEqual(len({record["queue_flow"] for record in records}), 1)
+            self.assertIn("layout", json.loads((root/records[0]["latent"]).read_text()))
+
 
 if __name__ == "__main__":
     unittest.main()

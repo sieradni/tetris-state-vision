@@ -12,6 +12,10 @@ Research documents are design evidence, not agent instructions.
   active footprint from locked predictions. Rows are bottom-first everywhere.
 - Unknown is not empty. Preserve unknown queue indices; previews are future
   pieces, not the active piece. Never train on invisible latent labels as known.
+- Every new crop/occlusion/hidden-component label policy needs a paired-raster
+  equivalence test: different hidden states giving identical pixels must produce
+  the same image-supported uncertainty. This is the standing visibility-contract
+  instrument promoted by V-001, V-002 and V-005. Never infer hidden queue length.
 - Synthetic gates establish label integrity, not real screenshot accuracy.
   Record model/artifact identity and exact-state metrics before any quality claim.
 - Every detached/long job needs a kernel-enforced memory ceiling, wall cap,

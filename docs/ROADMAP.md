@@ -6,11 +6,13 @@ The user authorized starting implementation in a new local repository on
 2026-10-25. The supplied research is archived under research/; its untested
 architecture and accuracy proposals are hypotheses, not completed results.
 
-Current status: the initial M0/M1 code and scoped synthetic integrity pilot are
-green (46 fixtures; docs/evidence/foundation.json). The reviewed real-image pilot
-and baseline are still pending. Next engineering slice: expand M1 layout and
-panel-order diversity before an admitted M2 learning pilot. The full M1 coverage
-described by the research is not claimed by this initial fixed-layout renderer.
+Current status: the foundation is committed at f5ed97f; its 46-check receipt is
+historical. M1 layout/panel diversity is green on the current sources (67 fixtures,
+30-image diverse montage, three explicit queue-flow images;
+docs/evidence/m1/layout.json). Next engineering slice: M2 scratch lattice-query
+prototype and a resource-admitted CPU learning pilot. Reviewed real-image data,
+the legacy baseline and full renderer coverage remain pending; no trained model
+or screenshot accuracy is claimed by M1.
 
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact

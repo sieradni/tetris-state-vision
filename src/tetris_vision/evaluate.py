@@ -14,7 +14,7 @@ def semantic_key(state: VisionState, *, colored=False, ghost=False):
     rows = tuple(tuple((cell.occupied, cell.semantic) if colored else cell.occupied
                        for cell in row) for row in state.board.rows)
     piece_key = lambda layer: (layer.status, layer.piece, tuple(sorted(layer.cells)))
-    queue = (state.queue.visibility, state.queue.end_observed,
+    queue = (state.queue.visibility, state.queue.start_observed, state.queue.end_observed,
              tuple((item.status, item.piece) for item in state.queue.items))
     key = (state.player, rows, piece_key(state.active), queue, (state.hold.status, state.hold.piece))
     return key + (piece_key(state.ghost),) if ghost else key

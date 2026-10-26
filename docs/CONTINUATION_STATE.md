@@ -1,46 +1,42 @@
 # Current checkpoint — 2026-10-25
 
-The user asked to begin the supplied standalone Tetris vision project in a new
-repository. This repository is C:/Users/micha/Code/tetris-state-vision, local Git
-only, no remote. The neighboring tetrguide repository was left untouched.
+Repository: C:/Users/micha/Code/tetris-state-vision, local Git only, no remote.
+Goal: complete as much of the standalone model project as possible, thoroughly,
+with local commits at verified milestones. Goal remains active.
 
-Completed initial M0/M1 milestone:
-- [x] Rich state contract, explicit unknown/empty/absent/cropped semantics.
-- [x] Bottom-first lattice; independent locked/active/ghost outputs.
-- [x] Strict solver adapter: active once; explicit temporal hold availability.
-- [x] Exact solver/colored/all-layer evaluation; readable refusals fail.
-- [x] Deterministic layered renderer; same-state appearance groups; masked
-  ambiguous targets; separate latent records; finite generation CLI.
-- [x] Independent 200-cell pixel oracle, crop/resize and ambiguity fixtures,
-  CLI integration and real Windows memory/deadline/process-tree enforcement.
-- [x] Fifteen demo images / three ancestry groups; montage visually inspected.
-- [x] Exact source/lock/brief checksums, raw logs and named bug closure gates.
+M1 layout/panel diversity is verified:
+- [x] Variable canvas, board position/scale, panel geometry and icon scale.
+- [x] Vertical/horizontal/wrapped queues; all piece types/rotations; lengths 0..10.
+- [x] Independent preview palettes/skins; absent panels; explicit occlusions.
+- [x] Image-supported queue span/start; no hidden count or type support leakage.
+- [x] Schema 1.1, conservative 1.0 reader and solver refusal on unknown queue start.
+- [x] Standing identical-raster equivalence instrument promoted by V-005.
+- [x] 67 tests green; 30-image montage and three visible-flow specimens inspected.
 
-Verification: 46/46 tests in 2.462 s. Receipt docs/evidence/fixtures-final.json;
-log docs/evidence/fixtures-final.stderr.log. Aggregate ceiling 512 MiB, wall 90 s,
-46 finite checks; raw Windows peak 155,201,536 B. Memory/deadline probes use
-nested small Jobs; a historical peak can include disputed accounting, so raw
-values are preserved and native allocation denial is verified independently.
-Demo: docs/evidence/demo-r1.json, 256 MiB / 60 s / 15 images, 0.623 s,
-raw peak 48,103,424 B. Preview examples/montage.png; complete/cropped JSON examples
-alongside it. Overall record: docs/evidence/foundation.json. Evidence curation
-passed in 0.285 s at a 256 MiB / 30 s / 15-record budget.
+Current receipt: docs/evidence/m1/layout.json, named sources and raw run logs.
+Tests: m1-fixtures-r2, 67/67 in 3.497 s, 512 MiB / 90 s / 67 cases,
+raw Job peak 155,123,712 B. Demo: m1-demo, 30 images / 6 groups, 256 MiB /
+60 s / 30 images, 1.106 s, raw peak 64,815,104 B. Curation m1-evidence:
+256 MiB / 30 s / 33 image records/specimens, rc=0 in 0.494 s,
+raw peak 79,020,032 B. All recorded supervisors/children have exited.
+Preview examples/layout-diversity.png and examples/queue-flows.png.
+V-005 closes on its own named green run. Original f5ed97f/foundation evidence is
+history on its own sources; do not cite it as verification of the new renderer.
 
-No background processes or training are running. Failed first fixture runs are
-retained, their four defects closed on named green evidence in BUG_LOG.md.
-No model weights, real-image accuracy, reviewed screenshot pilot, legacy baseline,
-training throughput or inference latency have been measured. This is one fixed
-layout with five controlled appearance families, not full training coverage.
+Next acceptance-gated task: M2 scratch-model prototype. Add optional CPU PyTorch
+runtime, preserve full-image aspect ratio and valid-pixel mask, implement shared
+multiscale encoder, learned lattice and bounded cell sampling, independent
+occupancy/type/active/ghost heads, then a tiny memory/wall/step-capped numerical
+and learning pilot before scaling. Queue/hold joint heads follow, with unknown
+labels masked. Record code/data/config/checkpoint identity and finite resources.
 
-Next acceptance-gated task: M1 layout/panel diversity. Parameterize board/cell
-scale and panel geometry; add horizontal/wrapped and repeated queues, independent
-preview skins and absence/crop counterfactuals. Gate transformed coordinates and
-semantic layer masks with independent pixel fixtures and inspect new montages.
-Then implement the scratch lattice-query prototype and characterize a tiny
-memory/wall/step-capped learning pilot before scaling. Read ANNOTATION.md and
-BUG_LOG.md before changing geometry, visibility or evaluator semantics.
+Pre-change bug review for M2: V-001 requires correctly transformed pixel centers
+and no geometry/canonical-cell training on unregistered crops. V-002 requires
+independent occupancy/type and locked/active/ghost targets. V-003 requires computed
+checkpoint/source hashes. V-004 requires the native Job guard and raw counters.
+V-005 requires observation-only losses and unknown queue starts/counts preserved.
 
-Source brief: docs/research/Tetris_Vision_Research.md, byte-identical to supplied
-Downloads document. SHA256:
-`4FE67034E8FD183849E27B8DB099A0E12798DB6E5E9CA6FBBFA94493990658F3`.
-Git history records the local milestone identity; nothing is pushed or published.
+No model training or background work is running. Real-image pilot/baseline,
+calibration, sealed accuracy gate, export and inference latency remain unmeasured.
+Source brief remains byte-exact under docs/research/Tetris_Vision_Research.md.
+No neighboring engine files, binaries or run data were changed.
