@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "base_commit": "6c93394fc282c0053c7836c26b75e066d0d9dffe",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "32f49c3b187863596e2781fc70acec3386b1deab4ed5897c99e426d1514bb8ca",
+  "replayed_training_samples": 2,
+  "verified_saved_probe_images": 27,
+  "native_peak_job_commit_bytes": 549130240,
+  "all_final_tensors_reload_exact": true,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-resume-probe\\code",
+  "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+  "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
+  "training_snapshot_identity_verified": true,
+  "curator_sha256": "b5095e161acc0102c34220396342671a00082cf5421e027e639716d79c343294",
+  "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."
+}

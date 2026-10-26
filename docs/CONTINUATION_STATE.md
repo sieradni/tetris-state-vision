@@ -133,6 +133,19 @@ Predeclared V-013 gate: native complete768, all565 old optimizer/data prefix
 records exact (excluding elapsed time), recovery snapshot768 + reload parity,
 memory trajectory every16updates; second-half raw peak growth <=32MiB. Raw
 historical accounting is preserved, never clamped. No general accuracy claim.
+Profile COMPLETE:18100/12044 and matching worker processes verified gone,
+18.986s inner/20.422s outer,549,130,240B under640MiB. Source catalogue121fd05a...
+and full recovery/warm parity; docs/evidence/m2-stream-resume-probe/scope.json.
+NEXT hidden detached study, expected<600MiB, one CPU, native640MiB/960s/768:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib640
+--wall-seconds960 --work-items768 --receipt runs/m2-stream-learn768-r3-job.json
+-- .venv/Scripts/python.exe scripts/train_m2_stream.py
+--output runs/m2-stream-learn768-r3 --model pilot --steps768 --wall-seconds900
+--development-groups6 --checkpoint-every64 --admission runs/m2-stream-resume-probe.
+Logs .log/.stderr.log; checkpoint latest-training.json plus generation dirs.
+Record PID/tree and do independent pure analysis/receipt work while it runs.
+No source changes to captured files until its launch; later parent code cannot
+affect archived main/imports. Never relaunch on a polling timeout.
 
 Retained learning evidence:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
