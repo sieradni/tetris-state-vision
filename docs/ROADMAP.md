@@ -62,6 +62,12 @@ moments during backward. Version2 requires two square steps and rejects cold
 receipts; four protocol tests and actual warm characterization pass. All142
 trainable tensor states resident, warm512-square backward complete;594,829,312B
 raw peak under640MiB. docs/evidence/m2-stream-warm-probe/scope.json. V-011 CLOSED.
+The subsequent768-step study parked before launch on OS reservation pressure.
+An isolated CPU AdamW recovery primitive and seven fixtures are drafted in
+scripts/training_snapshot.py/tests/test_training_snapshot.py. Their harness also
+parked before child; no runtime verification or driver integration is claimed.
+Next: actual seven-case bounded recovery gate when host headroom permits it,
+then driver integration/exact stream-resume gate and renewed warm admission.
 
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;

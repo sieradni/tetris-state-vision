@@ -72,6 +72,15 @@ into the source-frozen driver. Acceptance: interrupted+resumed6-step AdamW/dropo
 matches continuous6-step model/optimizer/RNG; reject source/recipe/hash/cursor
 mismatch; publish latest pointer only after complete artifact and ledger hashes.
 Todo: implement helper; adversarial contracts; native bounded gate; review/commit.
+Helper and7 fixtures now drafted; NOT integrated/verified. First harness
+runs/training-snapshot-tests.json parked before child125 at31.014GB commit plus
+512MiB reservation; supervisor21112 terminal, no fixture ran. No retry loop.
+docs/TRAINING_RECOVERY.md describes proposed contract. Next actual command is
+native512MiB/45s/7cases unittest discover -s tests -p test_training_snapshot.py -v,
+with NEW receipt/log stem training-snapshot-tests-r2 after genuine headroom.
+Even96MiB syntax harness parked before child: runs/training-snapshot-syntax.json.
+No syntax/runtime success is claimed. Preserve this isolated source as a draft
+checkpoint; do not integrate or admit it until its seven actual fixtures pass.
 Architecture review: V-003 hashes/identity require source+recipe and byte-prefix
 binding; V-004/V-007 preserve actual native readback/accounting; V-010 pressure
 kill can interrupt writes, so pointer is the last commit; V-011 requires a new
