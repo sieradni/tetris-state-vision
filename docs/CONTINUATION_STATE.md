@@ -49,6 +49,10 @@ Contract review: V-003 source/artifact; V-004 raw counters; V-007 exact Job;
 V-010 pressure; V-011 warm state; V-012 pools; V-013 native caches/long shape;
 V-014 archived source; V-015 bounded atomic retries. Neural/visibility math unchanged.
 
+LAUNCHED accuracy experiment:12556/25988 exact supervisor commands verified;
+host commit21.80GB. Inspect same receipt/progress and verify actual worker PID
+before any wait. No other heavy vision job live; r3 milestone committed229efde.
+
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;
 locked/active/ghost separate and bottom-first. API stays review-only. User's166
