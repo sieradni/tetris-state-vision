@@ -59,7 +59,9 @@ system commit pressure admission/monitoring is now green on13 scoped checks
 and separate accuracy-configuration resource profile; see M2_STREAMING.md.
 V-011 source review found cold one-step admission missed resident optimizer
 moments during backward. Version2 requires two square steps and rejects cold
-receipts; four protocol tests pass, actual warm characterization pending.
+receipts; four protocol tests and actual warm characterization pass. All142
+trainable tensor states resident, warm512-square backward complete;594,829,312B
+raw peak under640MiB. docs/evidence/m2-stream-warm-probe/scope.json. V-011 CLOSED.
 
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;

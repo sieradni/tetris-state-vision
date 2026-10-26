@@ -24,7 +24,13 @@ Verified checkpoints:
   under128MiB/45s. docs/evidence/m3-component-targets/scope.json. No component
   model/head/loss/runtime integration yet. M3 is not complete.
 
-V-001..V-010 CLOSED on named gates; V-011 OPEN pending actual warm profile.
+V-001..V-011 CLOSED on named gates. V-011 protocol4 green on322e055, actual
+warm512-square2-step profile GREEN:9.553s /594,829,312B under640MiB,142
+initialized parameter tensors,5,177,352B resident Adam state, all-final-tensor
+reload exact. docs/evidence/m2-stream-warm-probe/scope.json; catalogue
+42148a03905297502d6a36e02622087f808b8c36cc10883474a4b1bd84b8770b.
+Both training samples and27 saved probes replayed exactly. PIDs27800/31056/
+26384/23216 verified gone. Curator no longer attaches old fixture logs to new runs.
 Default runner reserves launch headroom
 and polls real GetPerformanceInfo counters every.2s, with native Job cap/wall/
 work limits. Threshold31,368,351,744B commit and2GiB minimum physical available
@@ -32,7 +38,7 @@ on this machine; never bypass/relax it or use a pre-pressure archived supervisor
 Five pressure fixtures proved actual child/grandchild/venv-worker death on
 pressure and counter failure, using tiny Jobs, plus real global counters.
 The13 green checks and8 component checks are separate scoped runs, not a
-whole-suite or accuracy claim. Current total distinct checks150 across scopes.
+whole-suite or accuracy claim. Current total distinct checks151 across scopes.
 
 A safe window opened (no cargo/rustc at last check; committed~30.6GB). User async
 question about lower-memory availability is still pending; no app-close or
@@ -43,31 +49,20 @@ Latest one-step attempt is terminal: runs/m2-stream-guard-probe-job.json,
 supervisor3684 verified gone, memory_pressure125 before any child at32.63GB
 commit. No model work ran; receipt/logs retained. No receipt path reuse.
 
-Selected acceptance-gated task: repair cold optimizer resource admission.
-Installed Torch adam.py initializes moment tensors inside the first step;
-the one-step profile did not cover backward with resident Adam state (V-011).
-Todo: require two full512-square steps; record complete optimizer-state coverage
-and warm backward; reject old/cold profiles; run focused protocol tripwires;
-then fresh native640MiB /150s outer /110s inner /2steps /one CPU-thread pilot.
-Expected <600MiB based on prior549MB peak plus~5MB moment state. Guard remains
-GetPerformanceInfo/.2s plus nativeJob cap. Name fresh run/receipt
-m2-stream-warm-probe; write exact launch/PIDs before waiting. No launch until
-actual OS headroom permits it. Prior V-004 requires actual admission/raw counters,
-V-007 exact native Job identity, V-010 system pressure/failure closure; all remain.
-V-003 catalogue/weight identity stays exact. No neural/loss math change.
-Four focused protocol checks GREEN: runs/v011-stream-tests.stderr.log,
-.232s /53,690,368B under128MiB/30s. Not yet a warm-memory characterization.
-Profile launch command, hidden with runs/m2-stream-warm-probe.log/.stderr.log:
+Selected acceptance-gated task: actual fresh-state learning,768steps/256ancestry
+groups. No quality threshold asserted from this engineering diagnostic. Compare
+initial/final fixed27probes with exact board/layer/geometry metrics; require finite
+ledger replay, native pass and checkpoint parity before curating as complete.
+Expected peak <600MiB, same admitted640MiB envelope and one CPU thread.
+Hidden detached command, logs runs/m2-stream-learn768.log/.stderr.log:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib640
---wall-seconds150 --work-items2 --receipt runs/m2-stream-warm-probe-job.json
+--wall-seconds660 --work-items768 --receipt runs/m2-stream-learn768-job.json
 -- .venv/Scripts/python.exe scripts/train_m2_stream.py
---output runs/m2-stream-warm-probe --model pilot --steps2 --profile-square
---wall-seconds110 --development-groups6. Record PID after spawn, then inspect
-progress/receipt, verify terminal process tree, curate and commit if green.
-LAUNCHED m2-stream-warm-probe: shim27800 /supervisor31056 /child-shim26384 /
-worker23216, all exact commands verified. Inspect its terminal receipt next.
-Protocol4-test evidence curated at docs/evidence/v011-protocol/scope.json,
-source322e055; actual profile still pending. No other vision job launched.
+--output runs/m2-stream-learn768 --model pilot --steps768 --wall-seconds600
+--development-groups6 --admission runs/m2-stream-warm-probe.
+Do not launch if actual OS headroom insufficient. Record/verify PID after spawn.
+Prior V-003 catalogue/weight identity,V-004 raw counters,V-007 exact Job and
+V-010 pressure closure remain armed. No neural/loss math change.
 
 Then characterize actual multi-step admission/streaming and adequately train on
 fresh states. A long run may be interrupted by renewed host pressure; periodic

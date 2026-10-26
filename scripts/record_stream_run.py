@@ -41,6 +41,12 @@ def main():
     archive = verify_source(code, summary["catalogue_sha256"])
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
+    if summary.get("resource_profile_version") == 2 and summary["profile_square"]:
+        from train_m2_stream import validate_admission
+        validate_admission(summary, job, catalogue=archive["catalogue_sha256"],
+                           model=summary["model_kind"], config=summary["config"],
+                           ceiling=summary["job_ceiling_bytes"], development_groups=summary["development_groups"],
+                           supervisor_sha=archive["files"]["scripts/run_bounded.py"])
     from PIL import Image
     from m2_stream_data import sample_case
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
@@ -84,14 +90,12 @@ def main():
     for suffix in ("-job.json", ".log", ".stderr.log"):
         source = ROOT/"runs"/(args.name+suffix)
         shutil.copyfile(source, evidence/source.name)
-    for stem in ("m2-stream-data-tests-r2", "m2-source-tests-r2", "m2-stream-driver-tests"):
-        for suffix in (".json", ".log", ".stderr.log"):
-            shutil.copyfile(ROOT/"runs"/(stem+suffix), evidence/(stem+suffix))
     scope = {"status": "passed", "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "source_catalogue_sha256": archive["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
              "replayed_training_samples": len(rows), "verified_saved_probe_images": probe_images,
              "native_peak_job_commit_bytes": job["peak_job_commit_bytes"], "all_final_tensors_reload_exact": True,
              "source_archive": str(code), "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+             "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
              "curator_sha256": digest(Path(__file__)), "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": "passed", "replayed_samples": len(rows), "verified_probe_images": probe_images, "scope": str(evidence/"scope.json")}))

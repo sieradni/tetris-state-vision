@@ -15,7 +15,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 
-## V-011 — OPEN: resource profile covered only a cold optimizer backward
+## V-011 — CLOSED: resource profile covered only a cold optimizer backward
 
 - Symptom: source inspection found the one-step square admission performed its
   only backward before AdamW allocated moment tensors. No resource failure or
@@ -30,8 +30,13 @@ a named green run. An unrun gate leaves the entry OPEN.
   moment tensors and step1. Record their bytes and completed warm backward.
   Reject cold/old/partial profiles, missing state and smaller warm input.
   Native Job cap and V-010 pressure monitoring remain unconditional.
-- Pending gates: focused cold-admission tripwires and actual two-step native
-  profile. Old one-step receipts remain historical evidence, never new admission.
+- Green gates: docs/evidence/v011-protocol/v011-stream-tests.stderr.log,
+  4/4 in .232s, source322e055; docs/evidence/m2-stream-warm-probe/summary.json,
+  two512-square steps in9.553s (outer10.394s), raw Job peak594,829,312B under
+  640MiB. All142 trainable parameter tensors had moment state (5,177,352B)
+  before the second forward; warm backward completed, every final tensor reload
+  exact. Curator replayed2 training samples and27 saved probes and revalidated
+  version2 admission against the frozen runner. Old cold receipts stay historical.
 
 ## V-010 — CLOSED: bounded job ignored system-wide commit pressure
 

@@ -71,8 +71,13 @@ are not accepted by this completion curator.
 The system pressure guard now passes 13 pressure/native/admission checks; V-010
 is CLOSED. See [RESOURCE_GUARD.md](RESOURCE_GUARD.md). The old probe cannot admit
 the strengthened current driver. Four focused version2 admission fixtures pass
-in runs/v011-stream-tests.stderr.log; actual warm resource characterization is
-still pending, so V-011 remains OPEN. Next: re-characterize its source
-catalogue, then measure fresh-state learning. Profile the accuracy model
+in docs/evidence/v011-protocol/; actual warm resource characterization passed:
+docs/evidence/m2-stream-warm-probe/scope.json. Two square steps,142 initialized
+parameter tensors,5,177,352B optimizer state;9.553s /594,829,312B raw peak under
+640MiB, all-final-tensor reload exact. V-011 CLOSED. Catalogue
+42148a03905297502d6a36e02622087f808b8c36cc10883474a4b1bd84b8770b
+admits only matching sources/settings/ceiling. The completion curator verifies
+warm protocol and replays2 samples plus27 probes; fixture evidence has separate
+named source scope. Next: measure fresh-state learning. Profile the accuracy model
 separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
 release gates remain open.
