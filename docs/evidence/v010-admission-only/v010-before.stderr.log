@@ -1,0 +1,15 @@
+test_commit_admission_refuses_before_spawn (test_pressure_guard.PressureGuardTests.test_commit_admission_refuses_before_spawn) ... FAIL
+
+======================================================================
+FAIL: test_commit_admission_refuses_before_spawn (test_pressure_guard.PressureGuardTests.test_commit_admission_refuses_before_spawn)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\tests\test_pressure_guard.py", line 57, in test_commit_admission_refuses_before_spawn
+    self.assertEqual(child.returncode, 125, child.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 125 : 
+
+----------------------------------------------------------------------
+Ran 1 test in 0.374s
+
+FAILED (failures=1)

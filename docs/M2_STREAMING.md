@@ -57,15 +57,18 @@ all 27 saved probe images/annotations using the archived sampler, with exact
 identities. Evidence: `docs/evidence/m2-stream-probe/scope.json`.
 
 An archived runner can be replayed directly from `RUN/code/scripts/` through the
-same bounded supervisor; source capture accepts the archived package layout as
+current guarded supervisor; do not invoke a historical pre-V-010 supervisor.
+Source capture accepts the archived package layout as
 well as the repository layout. Dependencies must still match its archived lock.
 `scripts/record_stream_run.py` verifies a completed run's finite ledgers, source
 catalogue, generated pixels/labels and weight identity before curating evidence.
 All output paths are exclusive. Inner-wall partial runs keep partial status and
 are not accepted by this completion curator.
 
-Next: add system commit pressure admission/polling to the supervisor before a
-longer study at the current host load, re-characterize the resulting source
+The system pressure candidate now refuses real high-commit launches, but native
+runtime tripwires remain unrun while the host is above its stop point. See
+[RESOURCE_GUARD.md](RESOURCE_GUARD.md); V-010 is OPEN. The old probe cannot admit
+the strengthened current driver. Next: verify the guard and re-characterize its source
 catalogue, then measure fresh-state learning. Profile the accuracy model
 separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
 release gates remain open.

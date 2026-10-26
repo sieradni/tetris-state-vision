@@ -13,6 +13,27 @@ a named green run. An unrun gate leaves the entry OPEN.
 | test-instrument | V-004 (1) | Native allocation admission plus raw counters |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
+| resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
+
+## V-010 — OPEN: bounded job ignored system-wide commit pressure
+
+- Symptom: runs/v010-before.stderr.log, synthetic critical OS counter still
+  launched the child and exited0; expected refusal125. No host-scale allocation
+  or actual crash occurred. A real host snapshot was near30.9 GB commit.
+- Root cause: per-Job cap/wall timeout existed, but the supervisor never read
+  system commit/available RAM and blocked in one long wait until child exit.
+- Detection class: resource-pressure.
+- Instrument: PSAPI GetPerformanceInfo page-to-byte counters, independent of
+  nested Job identity; unconditional .2s polling, full ceiling reservation at
+  launch, early commit/available-RAM thresholds, durable receipt then complete
+  owned-Job termination. Counter failures fail closed; no opt-out. Synthetic
+  tripwires use tiny real Jobs and verify actual child/grandchild PIDs died.
+- References: https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getperformanceinfo
+  and https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-performance_information.
+- Partial evidence: docs/evidence/v010-admission-only/scope.json records the red
+  before case and a real OS-pressure refusal with the native cap armed. The
+  pressure harness parked before executing tests; this is not a green suite.
+- Green gate: pending pressure/resource/stream-admission suites; defect OPEN.
 
 ## V-009 — CLOSED: ambiguous corpus labels admitted off-image known cells
 

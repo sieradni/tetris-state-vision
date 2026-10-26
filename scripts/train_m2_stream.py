@@ -40,7 +40,7 @@ def arguments(argv=None):
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha):
     if (summary.get("status") != "complete" or summary.get("steps") != 1 or not summary.get("profile_square") or
             not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
             any(summary.get(key) != value for key, value in {"max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
@@ -48,7 +48,9 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
         raise ValueError("complete square one-step resource admission required")
     if (summary["catalogue_sha256"] != catalogue or summary["model_kind"] != model or summary["config"] != config or
             summary["job_ceiling_bytes"] != ceiling or job["memory_bytes"] != ceiling or
-            summary["development_groups"] < development_groups or not summary["cpu_only"]):
+            summary["development_groups"] < development_groups or not summary["cpu_only"] or
+            summary.get("system_pressure_guard") != "GetPerformanceInfo/0.2s" or job.get("system_pressure_guard") != "GetPerformanceInfo/0.2s" or
+            summary.get("supervisor_script_sha256") != supervisor_sha or job.get("supervisor_script_sha256") != supervisor_sha):
         raise ValueError("source/config/input/CPU/memory envelope differs from resource admission")
 
 
@@ -68,6 +70,9 @@ def main(argv=None):
     atomic_json(args.output/"progress.json", progress)
     code = args.output/"code"
     archive = capture_source(ROOT, code)
+    supervisor_sha = archive["files"]["scripts/run_bounded.py"]
+    if os.environ.get("TETRIS_VISION_SYSTEM_GUARD") != "GetPerformanceInfo/0.2s" or os.environ.get("TETRIS_VISION_SUPERVISOR_SHA256") != supervisor_sha:
+        raise RuntimeError("supervisor source/OS pressure guard does not match the archived runner")
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     os.environ["OMP_NUM_THREADS"] = "1"
@@ -94,7 +99,7 @@ def main(argv=None):
         validate_admission(json.loads((admit/"summary.json").read_text()),
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
-                           ceiling=ceiling, development_groups=args.development_groups)
+                           ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha)
     model = TetrisStateNet(config)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
     maximum_pixels, evaluation_identities = 0, {}
@@ -190,6 +195,7 @@ def main(argv=None):
     final_train, final_dev = evaluate("training", 3), evaluate("development", args.development_groups)
     verify_source(code, archive["catalogue_sha256"])
     metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
+                "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
                 "runtime_source_sha256": source_digest(), "model_kind": args.model,
                 "arguments": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
                 "stream_ledger_sha256": file_digest(args.output/"training.jsonl"), "cpu_only": torch.version.cuda is None}

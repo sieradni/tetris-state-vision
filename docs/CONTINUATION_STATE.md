@@ -43,6 +43,34 @@ distinct from historical Job peak; V-007 exact named Job still verifies worker
 membership, global counters must not use implicit Job identity. V-001/002/005/
 006/009 targets unchanged; V-008 malformed declarations stay fail closed.
 Record any fixed resource defect in BUG_LOG with named green gate.
+Before-change test now written: tests/test_pressure_guard.py synthetic critical
+OS counter must refuse child launch, with a real96MiB native cap. Old runner
+never queries it. Planned reproduction: one filtered test under128MiB/30s,
+runs/v010-before.json/.log/.stderr.log. Expected <96MiB; no large allocations.
+After fix: default threshold min(physical minus min(2GiB,physical/8),90% OS
+commit limit), available-physical floor same reserve; reserve full job ceiling
+before launch; poll every .2s. Counter failures fail closed. No opt-out.
+V-010 OPEN: before gate reproduced child launch despite synthetic critical
+pressure (runs/v010-before.stderr.log, one assertion failure). Supervisor fix
+written; native cap unchanged, OS snapshots/default reservation/.2s polling
+and source/guard identity exported. Next: pressure5 + existing resource5 suites,
+small real Jobs; don't launch a learning job until these are green.
+Streaming admission now also requires supervisor SHA/OS-guard identity to match
+the source catalogue and actual probe receipt; old/no-pressure supervisors fail.
+Next gate: pressure5 under256MiB/45s/5 cases, expected <192MiB, receipt
+runs/v010-pressure-tests.json/.log/.stderr.log. Existing resource5 follows under
+same envelope at runs/v010-resource-tests.*. Driver3 re-run after protocol change
+under128MiB/30s at runs/v010-stream-admission-tests.*. No neural study yet.
+Pressure harness launch PARKED at actual32,116,695,040 B commit against stop
+31,368,351,744 B; no child created, zero tests executed. Supervisor30924 verified
+exited. docs/evidence/v010-admission-only/scope.json preserves before-red + actual
+refusal, status partial. V-010 remains OPEN; no native runtime kill gate green.
+Current observed commit later32,797,134,848 B; cargo20160/22104 and rustc30468
+last confirmed live. User async question pending about a lower-memory window;
+no authorization to close apps, change another job or relax the guard assumed.
+Source candidate can be checkpointed with its explicit partial verification;
+remaining pressure5/resource5/stream-admission3 tests must run in a real admitted
+window. No retries while above threshold; keep useful source work independent.
 
 The new streaming driver's source catalogue includes run_bounded.py, so a guard
 change invalidates the old one-step admission for future studies. Re-profile

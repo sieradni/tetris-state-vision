@@ -29,9 +29,11 @@ class StreamAdmissionTests(unittest.TestCase):
         summary = {"status": "complete", "steps": 1, "profile_square": True, "checkpoint_round_trip_exact": True,
                    "max_input_pixels_seen": 512**2, "max_side": 512, "threads": 1, "workers": 0, "prefetch": 0,
                    "tensor_cache_bytes": 0, "catalogue_sha256": "fixture", "model_kind": "pilot", "config": config,
-                   "job_ceiling_bytes": 1024**3, "development_groups": 6, "cpu_only": True}
-        job = {"status": "passed", "exit_code": 0, "work_items": 1, "memory_bytes": 1024**3}
-        expected = {"catalogue": "fixture", "model": "pilot", "config": config, "ceiling": 1024**3, "development_groups": 6}
+                   "job_ceiling_bytes": 1024**3, "development_groups": 6, "cpu_only": True,
+                   "supervisor_script_sha256": "supervisor-fixture", "system_pressure_guard": "GetPerformanceInfo/0.2s"}
+        job = {"status": "passed", "exit_code": 0, "work_items": 1, "memory_bytes": 1024**3,
+               "supervisor_script_sha256": "supervisor-fixture", "system_pressure_guard": "GetPerformanceInfo/0.2s"}
+        expected = {"catalogue": "fixture", "model": "pilot", "config": config, "ceiling": 1024**3, "development_groups": 6, "supervisor_sha": "supervisor-fixture"}
         return summary, job, expected
 
     def test_incomplete_or_different_envelopes_never_admit_long_training(self):
@@ -44,6 +46,9 @@ class StreamAdmissionTests(unittest.TestCase):
                              ("tensor_cache_bytes", 100), ("checkpoint_round_trip_exact", False)):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 validate_admission({**summary, field: value}, job, **expected)
+        for field, value in (("supervisor_script_sha256", "old-supervisor"), ("system_pressure_guard", None)):
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                validate_admission(summary, {**job, field: value}, **expected)
         with self.assertRaises(ValueError):
             validate_admission(summary, {**job, "status": "wall_timeout", "exit_code": 124}, **expected)
 

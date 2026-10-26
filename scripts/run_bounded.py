@@ -9,6 +9,8 @@ from __future__ import annotations
 import argparse
 import ctypes
 from ctypes import wintypes
+from functools import lru_cache
+import hashlib
 import json
 import math
 import os
@@ -43,6 +45,59 @@ class MemoryStatus(ctypes.Structure):
         (name, ctypes.c_uint64) for name in
         ("physical", "available", "page", "available_page", "virtual",
          "available_virtual", "extended")]
+
+
+class PerformanceInfo(ctypes.Structure):
+    _fields_ = [("cb", wintypes.DWORD)] + [(name, ctypes.c_size_t) for name in
+        ("commit", "commit_limit", "commit_peak", "physical", "available_physical",
+         "system_cache", "kernel_total", "kernel_paged", "kernel_nonpaged", "page_size")] + [
+        (name, wintypes.DWORD) for name in ("handles", "processes", "threads")]
+
+
+@lru_cache(maxsize=1)
+def _performance_reader():
+    if os.name != "nt":
+        raise RuntimeError("Windows OS commit counters required")
+    library = ctypes.WinDLL("kernel32", use_last_error=True)
+    reader = library.K32GetPerformanceInfo
+    reader.argtypes = [ctypes.POINTER(PerformanceInfo), wintypes.DWORD]
+    reader.restype = wintypes.BOOL
+    return library, reader
+
+
+def system_memory_snapshot():
+    # PSAPI reports system pages, independently of the current/nested Job.
+    info = PerformanceInfo()
+    info.cb = ctypes.sizeof(info)
+    if not _performance_reader()[1](ctypes.byref(info), info.cb):
+        raise ctypes.WinError(ctypes.get_last_error())
+    if not info.page_size or not info.physical or not info.commit_limit:
+        raise RuntimeError("invalid OS performance counters")
+    return {"commit_bytes": info.commit*info.page_size,
+            "commit_limit_bytes": info.commit_limit*info.page_size,
+            "physical_bytes": info.physical*info.page_size,
+            "available_physical_bytes": info.available_physical*info.page_size,
+            "counter_source": "GetPerformanceInfo"}
+
+
+def pressure_status(snapshot, reserved_bytes=0):
+    fields = ("commit_bytes", "commit_limit_bytes", "physical_bytes", "available_physical_bytes")
+    if any(type(snapshot.get(key)) is not int or snapshot[key] < 0 for key in fields):
+        raise ValueError("invalid OS memory counter types/ranges")
+    physical = snapshot["physical_bytes"]
+    if not physical or not snapshot["commit_limit_bytes"] or snapshot["available_physical_bytes"] > physical or type(reserved_bytes) is not int or reserved_bytes < 0:
+        raise ValueError("invalid OS memory counter bounds/reservation")
+    reserve = min(2*1024**3, physical//8)
+    stop_commit = min(physical-reserve, snapshot["commit_limit_bytes"]*9//10)
+    reason = None
+    if snapshot["available_physical_bytes"] < reserve:
+        reason = "physical_pressure"
+    elif snapshot["commit_bytes"] >= stop_commit:
+        reason = "os_commit_pressure"
+    elif snapshot["commit_bytes"]+reserved_bytes >= stop_commit:
+        reason = "os_commit_reservation"
+    return {"reason": reason, "stop_commit_bytes": stop_commit,
+            "minimum_available_physical_bytes": reserve, "reserved_job_bytes": reserved_bytes}
 
 
 def arm_job(memory_bytes: int, name: str | None = None):
@@ -125,23 +180,44 @@ def main() -> int:
         kernel, job, peak = arm_job(state["memory_bytes"], job_name)
         state["job_name"] = job_name
         state["guard"] = "readback-verified Windows aggregate Job commit + kill-on-close"
+        state["supervisor_script_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        state["system_pressure_guard"] = "GetPerformanceInfo/0.2s"
+        state["system_at_admission"] = system_memory_snapshot()
+        state["system_pressure"] = pressure_status(state["system_at_admission"], state["memory_bytes"])
+
+        def park(status, code):
+            state["peak_job_commit_bytes"] = peak()
+            receipt(status, code)
+            print(json.dumps(state), flush=True)
+            # The supervisor is a member too: persist BEFORE native termination.
+            if not kernel.TerminateJobObject(job, code):
+                raise ctypes.WinError(ctypes.get_last_error())
+            return code
+
+        if state["system_pressure"]["reason"] is not None:
+            return park("memory_pressure", 125)
         receipt("admitted")
         print(json.dumps(state), flush=True)
         child_environment = dict(os.environ)
         child_environment["TETRIS_VISION_JOB_NAME"] = job_name
+        child_environment["TETRIS_VISION_SUPERVISOR_SHA256"] = state["supervisor_script_sha256"]
+        child_environment["TETRIS_VISION_SYSTEM_GUARD"] = state["system_pressure_guard"]
         process = subprocess.Popen(command, stdin=subprocess.DEVNULL, env=child_environment)
         state["child_pid"] = process.pid
         receipt("running")
-        try:
-            code = process.wait(timeout=max(0.001, args.wall_seconds - (time.monotonic() - started)))
-        except subprocess.TimeoutExpired:
-            state["peak_job_commit_bytes"] = peak()
-            receipt("wall_timeout", 124)
-            sys.stdout.flush()
-            # Supervisor is in the Job too: record terminal state BEFORE killing.
-            if not kernel.TerminateJobObject(job, 124):
-                raise ctypes.WinError(ctypes.get_last_error())
-            return 124
+        while process.poll() is None:
+            remaining = args.wall_seconds-(time.monotonic()-started)
+            if remaining <= 0:
+                return park("wall_timeout", 124)
+            state["last_system_memory"] = system_memory_snapshot()
+            state["system_pressure"] = pressure_status(state["last_system_memory"])
+            if state["system_pressure"]["reason"] is not None:
+                return park("memory_pressure", 125)
+            try:
+                process.wait(timeout=min(.2, remaining))
+            except subprocess.TimeoutExpired:
+                pass
+        code = process.returncode
         state["peak_job_commit_bytes"] = peak()
         receipt("passed" if code == 0 else "failed", code)
         print(json.dumps(state), flush=True)

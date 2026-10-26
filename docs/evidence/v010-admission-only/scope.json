@@ -1,0 +1,20 @@
+{
+  "status": "partial",
+  "open_bug": "V-010",
+  "source_base_commit": "6970ca86744f8a139a456432aece60ac001c9a28",
+  "supervisor_script_sha256": "635e764afdd1cac41b46057122deeed987f1a8345c262477cf1782671088867b",
+  "pre_fix_supervisor_sha256": "6f1ee574d902d3df3c08cdfa83c6e3f736e08055a3119cbca00fe4c8a0090921",
+  "verified": [
+    "Pre-change synthetic-critical counter still launched child: failing assertion preserved",
+    "Real GetPerformanceInfo counters caused pre-child native Job parking",
+    "Supervisor 30924 verified absent"
+  ],
+  "unrun": [
+    "pressure_guard 5 cases: parent parked before tests started",
+    "existing resource 5 regression cases",
+    "stream admission 3 strengthened protocol cases"
+  ],
+  "host_commit_bytes": 32116695040,
+  "stop_commit_bytes": 31368351744,
+  "limitation": "Runtime pressure/failure child-tree termination remains unverified; V-010 stays OPEN"
+}
