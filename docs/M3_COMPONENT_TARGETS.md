@@ -1,9 +1,11 @@
-# Queue/hold target contract — verification pending
+# Queue/hold target contract
 
 `component_targets.py` is a pure projection of validated schema 1.1 observation
 fields for a future joint decoder. No component head, loss or runtime decoding
-is wired yet. Eight fixtures are written but have not run while the host guard
-is parking jobs. This is a reviewed source draft, not a green M3 milestone.
+is wired yet. Eight fixtures passed in .013 s under a 128 MiB /45 s Job,
+including paired identical-raster queue/hold uncertainty. Named logs and source
+hashes: docs/evidence/m3-component-targets/scope.json. This proves the target
+contract, not complete M3 modeling or accuracy.
 
 Queue token IDs represent seven piece types and EOS; -1 is masked uncertainty.
 There are at most 64 visible item positions plus one extra EOS position.
@@ -36,8 +38,7 @@ V-006 visibility instrument. Other fixtures cover unknown middle slots, missing
 starts/tails, absence versus visible-empty, all hold statuses, capacity64 and
 model-output refusal.
 
-Next: run these eight fixtures inside a 128 MiB /30 s Job when the real host
-guard admits it. Then add bounded shared role/index queries and joint losses,
+Next: add bounded shared role/index queries and joint losses,
 preserving legacy checkpoint behavior and keeping all inference review-only
 until quality/calibration gates run. Model architecture work should follow the
-verified target contract, not assume the unrun tests are green.
+verified target contract and retain its paired-raster uncertainty fixtures.

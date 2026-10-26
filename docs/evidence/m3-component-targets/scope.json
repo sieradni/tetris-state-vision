@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "source_base_commit": "64e582caa61cedfdddaf09194335d945d82178fa",
+  "sources": {
+    "src/tetris_vision/component_targets.py": "a432ea78bb1a3c312fb29aa2e271389fbe4a914ae78dafff1837622479c10671",
+    "src/tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "src/tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "tests/test_component_targets.py": "9649dc3bf6ea5c2386bcf51c2d27d876c98a18b8fdaa44973f6d20f31c4a8174"
+  },
+  "gates": [
+    {
+      "stem": "m3-component-targets-tests",
+      "tests": 8,
+      "raw_peak_job_commit_bytes": 41533440
+    }
+  ],
+  "tests_across_scoped_runs": 8,
+  "supervisor_script_sha256": "635e764afdd1cac41b46057122deeed987f1a8345c262477cf1782671088867b",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

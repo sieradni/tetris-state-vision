@@ -1,126 +1,74 @@
 # Current checkpoint — 2026-10-26
 
 Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal ACTIVE.
-No vision background process running; no run data deleted. This turn made
-concrete progress (controlled learning, local-reading probe, streaming pipeline).
+No vision process running before the next launch. No run data deleted.
+Previous/current goal turns made concrete progress, not repeated blocked turns.
 
-Verified milestones:
-- 421de02: 128 steps, exact first-16 optimizer prefix; training exact boards2/6,
-  development0/6. docs/evidence/m2-learn128/comparison.json.
-- 331ac58: inner wall saved511/512 steps, explicitly wall_partial/exit2. Exact
-  first128 prefix. Training boards6/6 but layers10/12, geometry.4106 cells fail
-  declared joint fit; development0/6 and0/12. Ghost row15 vs target10 on dense
-  clean/no-grid. docs/evidence/m2-learn512/comparison.json. Weight SHA256
-  ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf.
-- 72cde65: fixed-layout reading probe, 42 forwards, 36 visible one-cell changes/
-  18 matched groups. Direction36/36, targeted20/36, exact changed boards18/36,
-  two unrelated cells changed. docs/evidence/m2-local-reading/scope.json.
-- Streaming pipeline now verified, ready to commit: 7 sampler +4 archive +3
-  admission fixtures, plus real 512x512 one-step profile; source/model imports
-  bind to the verified run archive, no tensor cache, all-final-tensor reload
-  exact. 9.717s / raw peak549,154,816 B under1GiB/150s/one optimizer step.
-  Curator re-rendered1 training +27 saved probe frames/labels exactly.
-  docs/evidence/m2-stream-probe/scope.json; docs/M2_STREAMING.md. Model/loss/
-  preprocess/render/visibility unchanged. Accuracy configuration not profiled.
-  Supervisor24324/launcher7672/worker29788 verified exited.
+Verified checkpoints:
+- 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
+- 331ac58 saved511/512 inner-wall partial: exact128 prefix, training boards6/6,
+  layers10/12 and geometry.4106 cells fail joint fit; development0/6 and0/12.
+  Weight ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf
+  retained at runs/m2-learn512/checkpoint/. Do not call completed512.
+- 72cde65 local reading: 36 changes/18 matched groups, direction36/36,
+  targeted20/36, exact changed boards18/36; two unrelated cells changed.
+- 6970ca8 streaming: fresh state/position triplets, frozen verified imports,
+  zero tensor cache, all-final-tensor checkpoint parity. One512-square step:
+  9.717s /549,154,816B under1GiB.14 source/sampler/admission checks. Source
+  catalogue now changed; this historical probe cannot admit current long runs.
+- f9ab4a6 pressure candidate; 53abb77 VERIFIED and V-010 CLOSED: pressure5,
+  native-resource5, strengthened stream-admission3, all green on named logs in
+  docs/evidence/v010/. Actual pressure park also preserved separately.
+  Supervisor SHA635e764afdd1cac41b46057122deeed987f1a8345c262477cf1782671088867b.
+- 64e582c component target source; now8 fixtures GREEN, .013s /41,533,440B
+  under128MiB/45s. docs/evidence/m3-component-targets/scope.json. No component
+  model/head/loss/runtime integration yet. M3 is not complete.
 
-Next selected task: supervisor system-wide commit-pressure admission and polling
-before longer learning studies. Host at last check: committed30,895,226,880 B,
-available11,370,631,168 B; another owner's Rust build remains live (last cargo
-30968/31372, rustc24260, recheck authority). Do not touch their processes.
-Do not start another substantial learning study at this pressure without a
-guard. Small bounded tests/source work remain available.
+All V-001..V-010 CLOSED on named gates. Default runner reserves launch headroom
+and polls real GetPerformanceInfo counters every.2s, with native Job cap/wall/
+work limits. Threshold31,368,351,744B commit and2GiB minimum physical available
+on this machine; never bypass/relax it or use a pre-pressure archived supervisor.
+Five pressure fixtures proved actual child/grandchild/venv-worker death on
+pressure and counter failure, using tiny Jobs, plus real global counters.
+The13 green checks and8 component checks are separate scoped runs, not a
+whole-suite or accuracy claim. Current total distinct checks150 across scopes.
 
-Plan: read docs/BUG_LOG.md and official Windows GetPerformanceInfo contracts;
-query OS commit independently of nested Jobs; reserve configured headroom at
-launch, poll well before wall/snapshot cadence, write a terminal receipt then
-kill the complete owned Job on pressure. No env/CLI opt-out. Preserve native
-aggregate cap and all wall/work limits. Add a synthetic pressure tripwire using
-tiny real Jobs, prove child/grandchild death without allocating large memory,
-and ensure global OS counters aren't mistaken for nested Job counters.
-Prior interactions: V-003 computed source hashes; V-004 current OS pressure is
-distinct from historical Job peak; V-007 exact named Job still verifies worker
-membership, global counters must not use implicit Job identity. V-001/002/005/
-006/009 targets unchanged; V-008 malformed declarations stay fail closed.
-Record any fixed resource defect in BUG_LOG with named green gate.
-Before-change test now written: tests/test_pressure_guard.py synthetic critical
-OS counter must refuse child launch, with a real96MiB native cap. Old runner
-never queries it. Planned reproduction: one filtered test under128MiB/30s,
-runs/v010-before.json/.log/.stderr.log. Expected <96MiB; no large allocations.
-After fix: default threshold min(physical minus min(2GiB,physical/8),90% OS
-commit limit), available-physical floor same reserve; reserve full job ceiling
-before launch; poll every .2s. Counter failures fail closed. No opt-out.
-V-010 OPEN: before gate reproduced child launch despite synthetic critical
-pressure (runs/v010-before.stderr.log, one assertion failure). Supervisor fix
-written; native cap unchanged, OS snapshots/default reservation/.2s polling
-and source/guard identity exported. Next: pressure5 + existing resource5 suites,
-small real Jobs; don't launch a learning job until these are green.
-Streaming admission now also requires supervisor SHA/OS-guard identity to match
-the source catalogue and actual probe receipt; old/no-pressure supervisors fail.
-Next gate: pressure5 under256MiB/45s/5 cases, expected <192MiB, receipt
-runs/v010-pressure-tests.json/.log/.stderr.log. Existing resource5 follows under
-same envelope at runs/v010-resource-tests.*. Driver3 re-run after protocol change
-under128MiB/30s at runs/v010-stream-admission-tests.*. No neural study yet.
-Pressure harness launch PARKED at actual32,116,695,040 B commit against stop
-31,368,351,744 B; no child created, zero tests executed. Supervisor30924 verified
-exited. docs/evidence/v010-admission-only/scope.json preserves before-red + actual
-refusal, status partial. V-010 remains OPEN; no native runtime kill gate green.
-Current observed commit later32,797,134,848 B; cargo20160/22104 and rustc30468
-last confirmed live. User async question pending about a lower-memory window;
-no authorization to close apps, change another job or relax the guard assumed.
-Source candidate can be checkpointed with its explicit partial verification;
-remaining pressure5/resource5/stream-admission3 tests must run in a real admitted
-window. No retries while above threshold; keep useful source work independent.
-Source candidate checkpointed locally with only admission verification; V-010
-remains OPEN. Byte-exact before-failure stderr intentionally includes one trailing
-space; source/docs whitespace check excludes raw evidence and passed.
+A safe window opened (no cargo/rustc at last check; committed~30.6GB). User async
+question about lower-memory availability is still pending; no app-close or
+other-job modification permission assumed. Actual OS state, not elapsed time
+or an old receipt, governs launch. All test supervisors/children terminal.
 
-Independent M3 source slice while RAM is unavailable: pure queue/hold target
-projection, not model training or a public schema change. Pre-change review:
-V-005 requires no canonical index/EOS/count from unknown queue start or unseen
-tail; absent differs from visible-empty; unknown middle indices retained.
-V-001/002/006/009 preserve current image-supported State values and never infer
-hidden labels or use board geometry to fill panel identities. V-003 reproducible
-source remains recorded; V-004/007/V-010 resource gates are untouched.
-Plan: capacity64 plus one EOS position, masked slots, independent status/identity
-targets, explicit refusal of undersized capacity; paired identical-raster hidden
-queue/hold fixtures required by standing visibility contract. Then tests under
-128MiB/30s when the real guard admits them. No component head/loss wired yet.
-Pure src/tetris_vision/component_targets.py and8 tests now written, not run.
-Targets retain unknown-middle positions/presence, mask unseen-start indices,
-supervise EOS/count only with both observed endpoints, distinguish absent/empty,
-separate hold status/type, and refuse identified model output as labels.
-Paired-raster fixture changes wholly hidden queue length/types and hold identity;
-output targets must remain equal and unknown. These new labels are not consumed
-by the current M2 trainer. Added module changes aggregate source digest only;
-past artifacts keep their named commits/frozen source catalogue.
-M3 source contract manually reviewed and documented in M3_COMPONENT_TARGETS.md;
-eight tests remain UNRUN, no model head/loss integration. Preserve as a draft.
-Next admitted sequence: v010-pressure-tests-r2 (5 cases,256MiB/45s), then
-v010-resource-tests (5,256MiB/45s), v010-stream-admission-tests (3,128MiB/30s),
-m3-component-targets-tests (8,128MiB/30s), each with matching .log/.stderr.log.
-The first pressure receipt name is already occupied by a safe pre-child park;
-never overwrite/reuse it. Recheck real OS memory and exact heavy process state,
-not an old receipt or intent. Current host is still above31.4GB stop point.
+Next selected task: current-source square resource characterization with a LOWER
+640MiB ceiling; prior measured peak~524MiB, expected <600MiB. Same model/input.
+Native640MiB /150s outer /110s inner /one optimizer step /one CPU thread.
+Command, hidden detached with logs:
+scripts/run_bounded.py --memory-mib640 --wall-seconds150 --work-items1
+--receipt runs/m2-stream-guard-probe-job.json -- .venv/Scripts/python.exe
+scripts/train_m2_stream.py --output runs/m2-stream-guard-probe --model pilot
+--steps1 --profile-square --wall-seconds110 --development-groups6
+Logs runs/m2-stream-guard-probe.log/.stderr.log. Receipt/output not launched yet;
+check fresh names and verify exact PID after spawn. All pressure/native/admission
+gates are now green. If the OS guard parks, preserve receipt and wait for genuine
+headroom; no bypass. Keep641/other caps below default clamp; no unlimited runs.
 
-The new streaming driver's source catalogue includes run_bounded.py, so a guard
-change invalidates the old one-step admission for future studies. Re-profile
-with a NEW output/receipt after guard verification; preserve the existing run.
-Then use matching --admission for a finite fresh-state study, with one CPU thread,
-native <=1GiB for pilot, explicit work/wall caps. Actual 512-square pilot peak
-~524MiB provides the first estimate; accuracy-sized candidate needs separate
-bounded characterization. Source archives let parent model work continue during
-a longer run; archived helpers and lock are pinned, no live-source drift.
+Then characterize actual multi-step admission/streaming and adequately train on
+fresh states. A long run may be interrupted by renewed host pressure; periodic
+resumable checkpoints are the next mechanism if needed, not a guard opt-out.
+Accuracy-sized configuration is explicit but still unprofiled/untrained. Give it
+a separate bounded characterization; do not select the pilot as release model.
 
-Earlier gates:85 core/model/resource at8d9d0f2;2 optimizer admission;7 runtime
-plus actual one-image API;26 corpus;3 partial-evidence;14 stream contracts.
-These are separate scopes, not one unified137. V-001..V-009 CLOSED on named logs.
+M3 next: bounded shared role/index queries and losses after verified labels;
+legacy artifact parity and review-only output remain required. Prior visibility
+bugs V-001/002/005/006/009 require paired-raster masking, no guessed active-cell
+subtraction and no hidden queue length. V-003 source/weight identity and
+V-004/V-007/V-010 native/global resource instruments stay armed.
+Old neural math files unchanged; added component_targets.py changes aggregate
+source digest. Past artifacts retain named commits/frozen source catalogues.
+
+User-approved166 uncertain-answer screenshots remain unlabeled drafts at
+data/real-pilot-drafts/manifest.jsonl, zero training/scoring eligibility. Seven
+private overview pages in runs/real-drafts-overview/, aggregate receipts in
+docs/evidence/real-drafts/scope.json. Never use legacy guesses as board truth.
 Env .venv0.3.0, Torch2.14.1+cpu/NumPy2.5.4/Pillow12.3.0.
-
-User-approved166 uncertain-answer screenshots remain unlabeled drafts only at
-data/real-pilot-drafts/manifest.jsonl, zero training/scoring eligibility.
-Seven private pages in runs/real-drafts-overview/. Aggregate receipts in
-docs/evidence/real-drafts/scope.json. Never treat legacy labels/proposals as truth.
-
-M2 broad learning, M3 queue/hold joint state, accuracy-sized model, diverse data,
-reviewed real pilot/baseline, calibration/export/release remain OPEN.
+M2 broad learning, M3 full joint state, broad data, real reviewed pilot/baseline,
+calibration/export/release remain OPEN. Whole goal not achieved.
