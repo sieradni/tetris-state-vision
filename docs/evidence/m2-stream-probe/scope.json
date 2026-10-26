@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "base_commit": "72cde65d4ac27289771589ae9e94f36a6f9416fd",
+  "source_catalogue_sha256": "9b41313b8a13dd1ce95ab96caa943b275c5b5957958cf1374c3d405a3448453b",
+  "weights_sha256": "c7315cde38d1edde0bf1d5c2eee625e81a9a603ff4f712636bd8292eadc9bfbc",
+  "replayed_training_samples": 1,
+  "verified_saved_probe_images": 27,
+  "native_peak_job_commit_bytes": 549154816,
+  "all_final_tensors_reload_exact": true,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-probe\\code",
+  "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+  "curator_sha256": "55e83f35bb3359b9eacf3064a109daf5a7eb769e1440a8cb7fcf567ca0e38969",
+  "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."
+}

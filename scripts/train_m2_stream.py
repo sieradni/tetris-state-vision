@@ -1,0 +1,221 @@
+"""Finite, source-frozen CPU curriculum. Resource profile required before a study."""
+import argparse
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import sys
+import time
+
+from probe_model import require_bounded_job
+from source_snapshot import capture_source, verify_source
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def arguments(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--model", choices=("pilot", "accuracy"), required=True)
+    parser.add_argument("--steps", type=int, required=True)
+    parser.add_argument("--seed", type=int, default=20261026)
+    parser.add_argument("--learning-rate", type=float, default=.001)
+    parser.add_argument("--wall-seconds", type=float, default=300)
+    parser.add_argument("--evaluate-every", type=int, default=128)
+    parser.add_argument("--development-groups", type=int, default=6)
+    parser.add_argument("--profile-square", action="store_true")
+    parser.add_argument("--admission", type=Path)
+    args = parser.parse_args(argv)
+    if not 1 <= args.steps <= 4096 or not 0 <= args.seed <= 2**31-1:
+        parser.error("steps 1..4096 and finite nonnegative seed required")
+    if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
+        parser.error("wall budget (0,1800] and learning rate (0,.01] required")
+    if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
+        parser.error("evaluation interval 1..1024 and development groups 3..12 required")
+    if args.profile_square and (args.steps != 1 or args.admission is not None):
+        parser.error("square resource profile is one optimizer step without prior admission")
+    if not args.profile_square and args.admission is None:
+        parser.error("a matching one-step square resource admission is required")
+    return args
+
+
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups):
+    if (summary.get("status") != "complete" or summary.get("steps") != 1 or not summary.get("profile_square") or
+            not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
+            any(summary.get(key) != value for key, value in {"max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
+            job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != 1):
+        raise ValueError("complete square one-step resource admission required")
+    if (summary["catalogue_sha256"] != catalogue or summary["model_kind"] != model or summary["config"] != config or
+            summary["job_ceiling_bytes"] != ceiling or job["memory_bytes"] != ceiling or
+            summary["development_groups"] < development_groups or not summary["cpu_only"]):
+        raise ValueError("source/config/input/CPU/memory envelope differs from resource admission")
+
+
+def atomic_json(path, value):
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(value, indent=2, allow_nan=False)+"\n", encoding="utf-8")
+    temporary.replace(path)
+
+
+def main(argv=None):
+    args = arguments(argv)
+    ceiling = require_bounded_job()
+    args.output = args.output.resolve()
+    args.output.mkdir(parents=True, exist_ok=False)
+    started = time.monotonic()
+    progress = {"status": "capturing_source", "pid": os.getpid(), "step": 0, "requested_steps": args.steps}
+    atomic_json(args.output/"progress.json", progress)
+    code = args.output/"code"
+    archive = capture_source(ROOT, code)
+    sys.path[:0] = [str(code/"scripts"), str(code)]
+    sys.dont_write_bytecode = True
+    os.environ["OMP_NUM_THREADS"] = "1"
+    os.environ["MKL_NUM_THREADS"] = "1"
+    import torch
+    from dataclasses import asdict
+    from m2_stream_data import sample_case
+    from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
+    from tetris_vision.dataset import source_digest
+    from tetris_vision.losses import diagnostic_metrics, joint_loss, targets_for
+    from tetris_vision.model import ModelConfig, TetrisStateNet
+    from tetris_vision.preprocess import prepare_image
+    import tetris_vision.model as model_module
+    if not Path(model_module.__file__).resolve().is_relative_to(code) or not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
+        raise RuntimeError("runtime did not import from the verified source archive")
+    torch.set_num_threads(1)
+    torch.set_num_interop_threads(1)
+    torch.use_deterministic_algorithms(True)
+    torch.manual_seed(args.seed)
+    config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
+    config_json = json.loads(json.dumps(asdict(config)))
+    if args.admission is not None:
+        admit = args.admission.resolve()
+        validate_admission(json.loads((admit/"summary.json").read_text()),
+                           json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
+                           catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
+                           ceiling=ceiling, development_groups=args.development_groups)
+    model = TetrisStateNet(config)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
+    maximum_pixels, evaluation_identities = 0, {}
+
+    def prepare(case):
+        nonlocal maximum_pixels
+        prepared = prepare_image(case.frame.image, max_side=512)
+        maximum_pixels = max(maximum_pixels, prepared.pixels.shape[-2]*prepared.pixels.shape[-1])
+        if maximum_pixels > 512**2:
+            raise ValueError("512-square input budget exceeded")
+        target = targets_for(case.frame.state, prepared)
+        if int(target["known"].sum()) != 200:
+            raise ValueError("curriculum input admission requires all 200 visible locked cells")
+        return prepared, target
+
+    @torch.no_grad()
+    def evaluate(split, groups, persist=False):
+        model.eval()
+        records, per_case = [], []
+        for group in range(groups):
+            for view in range(3):
+                case = sample_case(group, view, split, args.seed)
+                prepared, target = prepare(case)
+                output = model(prepared.pixels[None], prepared.valid[None])
+                loss, _ = joint_loss(output, target)
+                layers_right = layers_known = 0
+                for layer in range(2):
+                    if not bool(target["layer_known"][0, layer]):
+                        continue
+                    layers_known += 1
+                    final = output["final"]
+                    right = int(final["layer_type"][0, layer].argmax()) == int(target["layer_type"][0, layer]) and bool(final["layer_known"][0, layer] > 0)
+                    if bool(target["pose_known"][0, layer]):
+                        right = (right and int(final["pose_column"][0, layer].argmax()) == int(target["column"][0, layer]) and
+                                 int(final["pose_row"][0, layer].argmax()) == int(target["row"][0, layer]) and
+                                 bool(target["rotations"][0, layer, final["pose_rotation"][0, layer].argmax()]))
+                    layers_right += int(right)
+                per_case.append({"sample_id": case.record["sample_id"], "loss": float(loss),
+                                 "exact_known_layers": layers_right, "known_layers": layers_known,
+                                 **diagnostic_metrics(output, target)})
+                records.append(case.record)
+                if persist:
+                    folder = args.output/(split+"-probe")
+                    folder.mkdir(exist_ok=True)
+                    case.frame.image.save(folder/(case.record["sample_id"]+".png"))
+                    (folder/(case.record["sample_id"]+".json")).write_bytes(case.frame.state.to_json().encode())
+        identity = hashlib.sha256(json.dumps(records, sort_keys=True).encode()).hexdigest()
+        if split in evaluation_identities and evaluation_identities[split] != identity:
+            raise ValueError("evaluation cases changed during training")
+        evaluation_identities[split] = identity
+        if persist:
+            (args.output/(split+"-probe.jsonl")).write_text("".join(json.dumps(row)+"\n" for row in records))
+        return {"images": len(per_case), "ancestry_groups": groups, "loss": sum(row["loss"] for row in per_case)/len(per_case),
+                "exact_locked_boards": sum(row["exact_locked_board"] for row in per_case),
+                "cell_accuracy": sum(row["cell_accuracy"] for row in per_case)/len(per_case),
+                "mean_geometry_error_cells": sum(row["mean_geometry_error_cells"] for row in per_case)/len(per_case),
+                "exact_known_layers": sum(row["exact_known_layers"] for row in per_case),
+                "known_layers": sum(row["known_layers"] for row in per_case), "cases": per_case}
+
+    initial_train, initial_dev = evaluate("training", 3, True), evaluate("development", args.development_groups, True)
+    completed = 0
+    with (args.output/"curve.jsonl").open("x") as curve, (args.output/"training.jsonl").open("x") as ledger, (args.output/"evaluations.jsonl").open("x") as evaluations:
+        evaluations.write(json.dumps({"step": 0, "training": initial_train, "development": initial_dev})+"\n")
+        evaluations.flush()
+        for step in range(1, args.steps+1):
+            if time.monotonic()-started >= args.wall_seconds:
+                break
+            case = sample_case((step-1)//3, (step-1) % 3, "training", args.seed, profile_square=args.profile_square)
+            prepared, target = prepare(case)
+            model.train()
+            optimizer.zero_grad(set_to_none=True)
+            output = model(prepared.pixels[None], prepared.valid[None])
+            loss, terms = joint_loss(output, target)
+            if not bool(torch.isfinite(loss)):
+                raise RuntimeError("nonfinite curriculum loss")
+            loss.backward()
+            norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1., error_if_nonfinite=True)
+            optimizer.step()
+            completed = step
+            item = {"step": step, "sample_id": case.record["sample_id"], "loss": float(loss.detach()),
+                    "terms": {key: float(value.detach()) for key, value in terms.items()},
+                    "gradient_norm": float(norm), "elapsed_seconds": time.monotonic()-started}
+            curve.write(json.dumps(item, allow_nan=False)+"\n")
+            ledger.write(json.dumps({"step": step, **case.record}, allow_nan=False)+"\n")
+            curve.flush()
+            ledger.flush()
+            progress.update(status="training", step=step, loss=item["loss"], elapsed_seconds=item["elapsed_seconds"])
+            atomic_json(args.output/"progress.json", progress)
+            print(json.dumps(item), flush=True)
+            if step % args.evaluate_every == 0:
+                evaluations.write(json.dumps({"step": step, "development": evaluate("development", args.development_groups)})+"\n")
+                evaluations.flush()
+    final_train, final_dev = evaluate("training", 3), evaluate("development", args.development_groups)
+    verify_source(code, archive["catalogue_sha256"])
+    metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
+                "runtime_source_sha256": source_digest(), "model_kind": args.model,
+                "arguments": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
+                "stream_ledger_sha256": file_digest(args.output/"training.jsonl"), "cpu_only": torch.version.cuda is None}
+    checkpoint = save_checkpoint(args.output/"checkpoint", model.eval(), metadata)
+    restored, _ = load_checkpoint(args.output/"checkpoint")
+    example, _ = prepare(sample_case(0, 0, "development", args.seed))
+    with torch.no_grad():
+        expected = model(example.pixels[None], example.valid[None])["final"]
+        actual = restored.eval()(example.pixels[None], example.valid[None])["final"]
+    if any(not torch.equal(expected[key], actual[key]) for key in expected):
+        raise RuntimeError("saved checkpoint changes a final output tensor")
+    summary = {"status": "complete" if completed == args.steps else "wall_partial", "steps": completed, "requested_steps": args.steps,
+               "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
+               "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
+               "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0, "fresh_parent_groups": (completed+2)//3,
+               "initial_training_probe": initial_train, "initial_development": initial_dev,
+               "final_training_probe": final_train, "development": final_dev, "checkpoint_round_trip_exact": True,
+               "checkpoint_sha256": checkpoint["weights_sha256"], "elapsed_seconds": time.monotonic()-started,
+               "claim": "Finite synthetic curriculum or resource characterization, not complete-state or real-image acceptance.", **metadata}
+    atomic_json(args.output/"summary.json", summary)
+    progress.update(status=summary["status"], step=completed, summary="summary.json", checkpoint="checkpoint/manifest.json")
+    atomic_json(args.output/"progress.json", progress)
+    print(json.dumps({"status": summary["status"], "steps": completed, "max_input_pixels_seen": maximum_pixels,
+                      "checkpoint_round_trip_exact": True, "catalogue_sha256": archive["catalogue_sha256"]}), flush=True)
+    return 0 if summary["status"] == "complete" else 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

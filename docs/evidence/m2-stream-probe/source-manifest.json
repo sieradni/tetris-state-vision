@@ -1,0 +1,31 @@
+{
+  "format": "tetris-vision-training-source",
+  "version": 1,
+  "files": {
+    "tetris_vision/adapter.py": "d3e543962381259c6d4562ae9054a04d91b14a9a753148fe13be1459af10e734",
+    "tetris_vision/checkpoint.py": "9ea62e545104258d69e47fcf5fc5fb33af27179bfabf959592aeb2f9a3360f6e",
+    "tetris_vision/cli.py": "362b61870751a57918189026ab5675757c21afbca616d7b0d1500f4026792ed5",
+    "tetris_vision/dataset.py": "daee2bd5e287dd087de44e5d58e05a9a4d1ba6a3439340ee838d2c4d6ea993c8",
+    "tetris_vision/evaluate.py": "00fa3b0531a8baa87aa4b1a195bb65aa330dd1a52015f363fedcdd4c05833025",
+    "tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "tetris_vision/losses.py": "bcff465d5ca64738df7834c8e5a68f247fd5067b6ac36211cfb62098b93f469f",
+    "tetris_vision/model.py": "c864f4ffaf1ea87aaccaf20e16d8f9c87602acdeab9a41e94327149e9fe5b83c",
+    "tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "tetris_vision/runtime.py": "914714b6f067ff49b9bd3cc6774c0d990a043089edcb8b10b9e32ba34c58003a",
+    "tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "tetris_vision/__init__.py": "ef1f6cbe4acd3ba8f979f8ec1f83a439bccd74d3319b5f9789bc66ba7bb8c3f8",
+    "tetris_vision/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "scripts/train_m2_stream.py": "f897ae257a0ce2e78bb3f1e626c6504ec5c1a6c4b8cbbf3daaeb7f87bf65d528",
+    "scripts/m2_stream_data.py": "667a83323824c66fde49a163bba79c7fd9a54baaf09dcab5e43f23bdc75b2f38",
+    "scripts/source_snapshot.py": "33c1ae6d5dc5903af7488e97110afb46189e52ce8a49b452925b581308fddda0",
+    "scripts/probe_model.py": "6a5c5466161d1e2ff1106071502831f00f7a48717a0ab87896f2f9a2e6357864",
+    "scripts/run_bounded.py": "6f1ee574d902d3df3c08cdfa83c6e3f736e08055a3119cbca00fe4c8a0090921",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb"
+  },
+  "catalogue_sha256": "9b41313b8a13dd1ce95ab96caa943b275c5b5957958cf1374c3d405a3448453b",
+  "bytes": 244973
+}

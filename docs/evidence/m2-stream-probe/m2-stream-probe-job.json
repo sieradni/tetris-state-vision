@@ -1,0 +1,28 @@
+{
+  "supervisor_pid": 24324,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/train_m2_stream.py",
+    "--output",
+    "runs/m2-stream-probe",
+    "--model",
+    "pilot",
+    "--steps",
+    "1",
+    "--profile-square",
+    "--wall-seconds",
+    "110",
+    "--development-groups",
+    "6"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 150.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-7949f65df8c54e8c9028a93bc88d00d4",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 9.717,
+  "child_pid": 7672,
+  "peak_job_commit_bytes": 549154816
+}

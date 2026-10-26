@@ -1,0 +1,8 @@
+test_bounded_arguments_and_required_admission (test_stream_driver.StreamAdmissionTests.test_bounded_arguments_and_required_admission) ... ok
+test_incomplete_or_different_envelopes_never_admit_long_training (test_stream_driver.StreamAdmissionTests.test_incomplete_or_different_envelopes_never_admit_long_training) ... ok
+test_worker_refuses_without_job_identity_before_source_copy (test_stream_driver.StreamAdmissionTests.test_worker_refuses_without_job_identity_before_source_copy) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.241s
+
+OK

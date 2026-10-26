@@ -1,0 +1,45 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M2",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576
+  },
+  "weights_sha256": "c7315cde38d1edde0bf1d5c2eee625e81a9a603ff4f712636bd8292eadc9bfbc",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 647098,
+  "metadata": {
+    "trained_steps": 1,
+    "catalogue_sha256": "9b41313b8a13dd1ce95ab96caa943b275c5b5957958cf1374c3d405a3448453b",
+    "runtime_source_sha256": "1de1aae515f25cda2a17fcd26f0f063454e46da7f4c1894abe57080c4340601e",
+    "model_kind": "pilot",
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-probe",
+      "model": "pilot",
+      "steps": 1,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 110.0,
+      "evaluate_every": 128,
+      "development_groups": 6,
+      "profile_square": true,
+      "admission": null
+    },
+    "stream_ledger_sha256": "6d2c0be1fe389d3a51bbcb877ac15a1bd07189212cfcfe70ed79ea8a3f58e7b1",
+    "cpu_only": true
+  }
+}

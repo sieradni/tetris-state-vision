@@ -1,0 +1,12 @@
+test_appearances_share_ancestry_and_supported_state (test_stream_data.StreamDataTests.test_appearances_share_ancestry_and_supported_state) ... ok
+test_budget_and_split_refusal (test_stream_data.StreamDataTests.test_budget_and_split_refusal) ... ok
+test_holdout_seed_spaces_are_disjoint (test_stream_data.StreamDataTests.test_holdout_seed_spaces_are_disjoint) ... ok
+test_intervention_preserves_other_fields_and_only_changes_its_patch (test_stream_data.StreamDataTests.test_intervention_preserves_other_fields_and_only_changes_its_patch) ... ok
+test_pixels_labels_and_metadata_are_deterministic (test_stream_data.StreamDataTests.test_pixels_labels_and_metadata_are_deterministic) ... ok
+test_square_admission_frame_covers_the_maximum_input_shape (test_stream_data.StreamDataTests.test_square_admission_frame_covers_the_maximum_input_shape) ... ok
+test_varied_source_layouts_remain_visible_at_512_input (test_stream_data.StreamDataTests.test_varied_source_layouts_remain_visible_at_512_input) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.208s
+
+OK

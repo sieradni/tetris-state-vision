@@ -45,6 +45,13 @@ cells changed. docs/evidence/m2-local-reading/scope.json. Next: streaming
 state/position diversity and explicit resource profiling of the accuracy model;
 layer/geometry fit and complete-state requirements remain open.
 
+Streaming curriculum/source freezing is implemented and verified: 14 sampler/
+archive/admission checks and one actual 512-square optimizer/resource probe,
+all-final-tensor reload parity, replayed pixels/labels for 28 recorded samples.
+docs/evidence/m2-stream-probe/scope.json. No longer curriculum has run. Next
+system commit pressure admission/monitoring, then a fresh-state learning study
+and separate accuracy-configuration resource profile; see M2_STREAMING.md.
+
 The M2 artifact now has a one-image inspection API with typed review-only output.
 Seven focused contracts and one actual checkpoint/JSON validation are green;
 docs/evidence/m2-runtime/scope.json. The encoder/model/loss/preprocessing/loader

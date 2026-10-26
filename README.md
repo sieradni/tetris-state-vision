@@ -68,6 +68,12 @@ match, but ghost pose/geometry still fail the declared fit criterion and
 development remains 0/6. Its partial status and errors are retained under
 docs/evidence/m2-learn512/; it is not a completed 512-step or quality gate.
 
+The next [streaming curriculum](docs/M2_STREAMING.md) generates fresh states and
+positions without caching tensors. Each run imports a verified source snapshot
+and requires matching resource admission before longer training. Fourteen new
+checks plus a real 512×512 one-step/checkpoint/replay gate pass; this establishes
+the training pipeline, not model quality.
+
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
 unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with
