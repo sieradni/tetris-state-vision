@@ -1,0 +1,12 @@
+{
+  "sources": {
+    "src/tetris_vision/checkpoint.py": "9ea62e545104258d69e47fcf5fc5fb33af27179bfabf959592aeb2f9a3360f6e",
+    "src/tetris_vision/model.py": "c864f4ffaf1ea87aaccaf20e16d8f9c87602acdeab9a41e94327149e9fe5b83c",
+    "src/tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "src/tetris_vision/losses.py": "bcff465d5ca64738df7834c8e5a68f247fd5067b6ac36211cfb62098b93f469f",
+    "scripts/train_m2_pilot.py": "ab92f8b2389a75f2d5f3f347d795e9135933e30f6932f88e886af2323e3ee30b"
+  },
+  "base_commit": "421de028491d8c19b3a93f4cd37cde4f4914bde1",
+  "host_committed_bytes": 24970018816,
+  "no_release_build": true
+}

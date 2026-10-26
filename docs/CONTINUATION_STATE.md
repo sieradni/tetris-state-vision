@@ -1,60 +1,58 @@
 # Current checkpoint — 2026-10-26
 
-Repository C:/Users/micha/Code/tetris-state-vision, local Git, no remote.
-Goal ACTIVE. No vision background process running. Previous turn made progress.
-No run data deleted. User-approved screenshot folder remains unlabeled only.
+Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal ACTIVE.
+No vision background process running; no run data deleted.
+This turn made concrete progress: controlled128 and saved511/512 studies.
 
-M2 128-step study COMPLETE, not a learning/quality acceptance. Curated evidence
-docs/evidence/m2-learn128/receipt.json and comparison.json. 50.537 s, raw peak
-479,604,736 B under 1 GiB / 180 s / 128 steps / one CPU thread. Weight SHA256
-46787c4f236c421dc7b3eb693665c1c8d09688c28f7330a28c2d0abe8907967e
-at retained runs/m2-learn128/checkpoint/. 12 image/label identities and every
-optimizer step verified. Exact 16-step prefix/data/initial metrics confirmed.
-Only src/ delta since e6adce8 is unused runtime.py; core/driver unchanged.
+M2 study128 committed at421de02. Same data/initial metrics/first16 optimizer
+records exactly reproduced. Training exact2/6 (empty pair); development0/6.
+Receipt/source scope docs/evidence/m2-learn128/{receipt,comparison}.json.
 
-Training loss 4.4767 -> .34977, geometry .3645 cells, exact boards 2/6 (empty
-pair only), exact known active/ghost 10/12. Development 0/6 and 0/12 layers,
-geometry 1.3768 cells. Independent checkpoint confusion counts and per-case
-layers/stages agree with summary; examples/m2-learn128-locked-errors.png visually
-inspected along with lattice preview. Analysis peak 811,859,968 B exceeded
-<512 MiB forecast but stayed within 1 GiB; future analysis forecast <900 MiB.
-All PIDs 10268/18248/25716 (training), 25200/17312 (analysis) verified exited.
-Current task complete: finite run, exact controlled comparison, per-case
-diagnostics, receipts and local commit. Read M2_LEARNING_ACCEPTANCE.md.
+Second study reached inner240s wall after511/512 steps, saved checkpoint and
+returned wall_partial/exit2. Outer244.005s, raw peak480,751,616B under1GiB/300s/
+512-step cap/one thread. Do not call it completed512. Exact first128 curve
+records/data/runtime/driver/initial metrics reproduce. Training locked6/6 but
+known layers10/12 and geometry.4106 cells fail predeclared joint fit; dev0/6,
+layers0/12, geometry1.3112 cells. Ghost row15 vs target10 on dense clean/no-grid
+is the remaining training layer error. Source/weight/progress/logs/3 passing
+partial-evidence fixtures: docs/evidence/m2-learn512/. Weight SHA256
+ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf
+at retained runs/m2-learn512/checkpoint/. Reload exact.
 
-Next selected task: same-initialization 512-step finite memorization diagnostic.
-Predeclared fit criterion: train exact locked boards 6/6, known layers 12/12,
-mean geometry <.25 cells. Still no generalization/full-state/real quality claim.
-If it fails, inspect model sampling/targets/gradients before longer training.
-Todo: [ ] bounded run; [ ] compare first128 prefix/data; [ ] independent per-case
-analysis; [ ] acceptance verdict and local verified commit.
-No architectural/label change; V-001/002/005/006/009 observation masking,
-V-003 computed identity and V-004/V-007 named native resource guard apply.
+Training supervisor31360/launcher11480/worker9424 and analysis7284/child28924
+verified exited. Analysis12images passed4.717s, raw peak811,851,776B under1GiB/
+60s; forecast future analysis <900MiB, not <512. Current study/curation/diagnostic/
+verdict todos complete. See M2_LEARNING_ACCEPTANCE.md; goal not achieved.
 
-Before launch recheck no cargo/rustc, no bridge >256 MiB, host committed <28e9 B.
-Do not touch another owner's process. Expected <768 MiB from measured 128 run,
-native 1 GiB aggregate Job cap, 300 s outer / 240 s inner / 512 optimizer steps,
-one thread, <=64 MiB cache. Measured ~.36 s/step projects <200 s.
-Hidden detached bootstrap Python command:
-scripts/run_bounded.py --memory-mib 1024 --wall-seconds 300 --work-items 512
---receipt runs/m2-learn512-job.json -- .venv/Scripts/python.exe
-scripts/train_m2_pilot.py --output runs/m2-learn512 --steps 512 --states 3
---max-side 384 --threads 1 --wall-seconds 240 --evaluate-every 32
-Logs runs/m2-learn512.log/.stderr.log; progress/summary/checkpoint in output.
-Record source/host admission to runs/m2-learn512-admission.json, verify PID and
-record it here. The output/receipt do not exist yet. Keep model/math/driver
-unchanged through this comparison. While it runs: plan diverse synthetic
-training input path; do not edit runtime src while worker hashes are pinned.
+Next selected diagnostic: fixed-layout single-cell interventions on the actual
+511-step artifact. Re-render training cases byte/pixel-identically; change one
+visible locked cell away from active/ghost; assert exactly one supported label
+and local raster patch changes, hold other components/layout fixed. No target
+geometry in model.forward. Measure targeted change, unrelated changes, exact
+counterfactual boards and lattice drift. This distinguishes memorized states
+from local reading before more training or architectural changes.
+Todo: [ ] guarded finite probe; [ ] per-case evidence; [ ] review/commit; then
+choose targeted geometry/layer/data work. Prior bug interactions: V-001/002/005/
+006/009 visible-only labels and no guessed layer subtraction; V-003 re-render/
+weight/data hashes; V-004/V-007 named native guard and raw counters preserved.
+No new observation policy. Keep core model/loss/preprocess/checkpoint unchanged
+until the diagnostic is scoped. Legacy runtime stays review-only.
 
-Current numerical/evidence gates: 85 core/model/resource at 8d9d0f2; 2 training
-admission; 7 runtime plus actual single-image call; 26 corpus. Separate scopes,
-not one unified120. V-001..V-009 CLOSED on named receipts.
-User-approved 166 images: data/real-pilot-drafts/manifest.jsonl, 0 labels or
-training/scoring eligibility, seven pages at runs/real-drafts-overview/.
-Aggregate evidence docs/evidence/real-drafts/scope.json; overview1/4/7 visually
-checked. Never treat legacy labels/proposals as truth. User warned board
-answers uncertain. Real-data training requires a separate reviewed integration.
+A new unrelated release build is live: cargo28392/8656, rustc18496/3460 last
+checked. Recheck authority before any next training; don't touch their processes.
+Small one-thread diagnostic can run within1GiB/120s/<=54 forwards; expected
+<900MiB from measured checkpoint analysis, with a hard1GiB ceiling. No job
+launched yet; write exact command/log/receipt/PID before waiting.
+
+Earlier gates:85 core/model/resource at8d9d0f2;2 optimizer admission;7 runtime
+plus actual one-image API;26 corpus;3 partial-evidence. Separate scoped runs,
+not a unified123. V-001..V-009 CLOSED on named logs. Env .venv0.3.0,
+Torch2.14.1+cpu/NumPy2.5.4/Pillow12.3.0.
+
+User-approved166 uncertain-answer images remain unlabeled drafts only at
+data/real-pilot-drafts/manifest.jsonl, zero training/scoring eligibility.
+Seven private overview pages in runs/real-drafts-overview/. Aggregate receipts
+docs/evidence/real-drafts/scope.json. Never treat legacy labels/proposals as truth.
 
 M2 broad learning, M3 queue/hold joint state, accuracy-sized model, diverse data,
-reviewed real pilot/baseline, calibration/export/release remain OPEN. Whole goal
-is not complete. Local env .venv 0.3.0, Torch2.14.1+cpu/NumPy2.5.4/Pillow12.3.0.
+reviewed real pilot/baseline, calibration/export/release remain OPEN.

@@ -1,0 +1,12 @@
+{
+  "status": "wall_partial",
+  "step": 511,
+  "requested_steps": 512,
+  "job_ceiling_bytes": 1073741824,
+  "pid": 9424,
+  "threads": 1,
+  "elapsed_seconds": 240.07379800000126,
+  "loss": 0.5192488431930542,
+  "summary": "summary.json",
+  "checkpoint": "checkpoint/manifest.json"
+}

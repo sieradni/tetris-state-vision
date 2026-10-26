@@ -1,0 +1,24 @@
+{
+  "supervisor_pid": 7284,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/analyze_m2_pilot.py",
+    "--run",
+    "runs/m2-learn512",
+    "--baseline",
+    "runs/m2-learn128",
+    "--output",
+    "runs/m2-analysis512",
+    "--allow-wall-partial"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 60.0,
+  "work_items": 12,
+  "job_name": "Local\\TetrisStateVision-8c2932196d8a47e29f4fe6ef74b4601d",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 4.717,
+  "child_pid": 28924,
+  "peak_job_commit_bytes": 811851776
+}

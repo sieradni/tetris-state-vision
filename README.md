@@ -63,6 +63,11 @@ boards remain 0/6. [Per-cell errors](examples/m2-learn128-locked-errors.png) and
 docs/evidence/m2-learn128/comparison.json record this failure to fit nonempty
 boards precisely; no screenshot accuracy is established.
 
+The subsequent time-limited study saved step511/512: all six training boards
+match, but ghost pose/geometry still fail the declared fit criterion and
+development remains 0/6. Its partial status and errors are retained under
+docs/evidence/m2-learn512/; it is not a completed 512-step or quality gate.
+
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
 unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with

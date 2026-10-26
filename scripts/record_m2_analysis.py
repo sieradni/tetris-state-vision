@@ -53,6 +53,7 @@ def main():
         shutil.copyfile(ROOT/"runs"/filename, directory/filename)
     shutil.copyfile(analysis_root/"locked-errors.png", ROOT/"examples"/(args.name+"-locked-errors.png"))
     scope = {"status": "passed", "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+             "source_run_status": summary["status"], "completed_steps": summary["steps"], "requested_steps": summary["requested_steps"],
              "weight_sha256": analysis["checkpoint_sha256"], "analysis_sha256": sha(destination),
              "analysis_script_sha256": analysis["analysis_script_sha256"], "admitted_source_hashes": admission["sources"],
              "source_delta_since_initial_pilot": changed, "delta_effect": "Unused runtime caller only; optimizer/model/loss/preprocess/checkpoint identical.",

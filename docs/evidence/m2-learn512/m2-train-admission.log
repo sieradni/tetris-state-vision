@@ -1,0 +1,9 @@
+{"supervisor_pid": 4028, "command": [".venv/Scripts/python.exe", "-m", "unittest", "discover", "-s", "tests", "-p", "test_train_driver.py", "-v"], "memory_bytes": 268435456, "wall_seconds": 30.0, "work_items": 2, "job_name": "Local\\TetrisStateVision-f68c9e4cad604d0ab1ef9bc025e104d3", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "admitted", "exit_code": null, "elapsed_seconds": 0.0}
+test_invalid_work_or_numeric_budgets_fail_before_creating_output (test_train_driver.TrainingAdmissionTests.test_invalid_work_or_numeric_budgets_fail_before_creating_output) ... ok
+test_worker_without_supervisor_identity_refuses_before_output_or_torch (test_train_driver.TrainingAdmissionTests.test_worker_without_supervisor_identity_refuses_before_output_or_torch) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.265s
+
+OK
+{"supervisor_pid": 4028, "command": [".venv/Scripts/python.exe", "-m", "unittest", "discover", "-s", "tests", "-p", "test_train_driver.py", "-v"], "memory_bytes": 268435456, "wall_seconds": 30.0, "work_items": 2, "job_name": "Local\\TetrisStateVision-f68c9e4cad604d0ab1ef9bc025e104d3", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "status": "passed", "exit_code": 0, "elapsed_seconds": 0.576, "child_pid": 4208, "peak_job_commit_bytes": 52551680}

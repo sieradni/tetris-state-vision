@@ -16,10 +16,24 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def validate_completion(summary, supervisor, steps, allow_wall_partial=False):
+    if summary["steps"] != steps or not 1 <= steps <= 512:
+        raise ValueError("completed step budget mismatch")
+    if (summary["status"] == "complete" and summary["requested_steps"] == steps and
+            supervisor["status"] == "passed" and supervisor["exit_code"] == 0):
+        return "complete"
+    if (allow_wall_partial and summary["status"] == "wall_partial" and
+            steps < summary["requested_steps"] <= 512 and
+            supervisor["status"] == "failed" and supervisor["exit_code"] == 2):
+        return "wall_partial"
+    raise ValueError("requested optimizer budget did not complete; only an explicitly allowed saved wall-partial run may be curated")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", required=True)
     parser.add_argument("--steps", type=int, required=True)
+    parser.add_argument("--allow-wall-partial", action="store_true")
     args = parser.parse_args()
     if not args.name.startswith("m2-learn") or any(character not in "abcdefghijklmnopqrstuvwxyz0123456789-" for character in args.name):
         raise ValueError("expected an owned m2-learn run name")
@@ -27,8 +41,7 @@ def main():
     summary = json.loads((run/"summary.json").read_text())
     supervisor = json.loads((ROOT/f"runs/{args.name}-job.json").read_text())
     checkpoint = json.loads((run/"checkpoint/manifest.json").read_text())
-    if supervisor["status"] != "passed" or summary["status"] != "complete" or summary["steps"] != args.steps:
-        raise ValueError("requested optimizer budget did not complete")
+    completion = validate_completion(summary, supervisor, args.steps, args.allow_wall_partial)
     if not summary["checkpoint_round_trip_exact"] or not summary["cpu_only"]:
         raise ValueError("CPU/checkpoint gate missing")
     if summary["runtime_source_sha256"] != source_digest():
@@ -61,6 +74,8 @@ def main():
             shutil.copyfile(source, evidence/source.name)
     shutil.copyfile(run/"lattice-preview.png", ROOT/f"examples/{args.name}.png")
     result = {"milestone": "M2 finite scratch-learning pilot", "steps": args.steps,
+              "source_run_status": completion, "requested_steps": summary["requested_steps"],
+              "source_supervisor_status": supervisor["status"], "source_exit_code": supervisor["exit_code"],
               "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "runtime_source_sha256": source_digest(), "driver_sha256": summary["script_sha256"],
               "weights_path": str(weights), "weights_sha256": sha(weights),
@@ -72,7 +87,7 @@ def main():
     with (evidence/"receipt.json").open("x", encoding="utf-8") as output:
         json.dump(result, output, indent=2)
         output.write("\n")
-    print(json.dumps({"status": "passed", "steps": args.steps, "images_verified": len(records),
+    print(json.dumps({"status": "passed" if completion == "complete" else "curated_wall_partial", "steps": args.steps, "images_verified": len(records),
                       "weights_sha256": sha(weights), "receipt": str(evidence/"receipt.json")}))
 
 

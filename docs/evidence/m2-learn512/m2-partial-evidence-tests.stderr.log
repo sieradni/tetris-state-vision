@@ -1,0 +1,8 @@
+test_completed_budget_requires_matching_terminal_success (test_pilot_evidence.PilotEvidenceTests.test_completed_budget_requires_matching_terminal_success) ... ok
+test_outer_kill_and_other_failures_cannot_admit_saved_partial (test_pilot_evidence.PilotEvidenceTests.test_outer_kill_and_other_failures_cannot_admit_saved_partial) ... ok
+test_partial_is_refused_by_default_and_is_explicit_when_admitted (test_pilot_evidence.PilotEvidenceTests.test_partial_is_refused_by_default_and_is_explicit_when_admitted) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

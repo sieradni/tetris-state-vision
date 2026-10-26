@@ -77,3 +77,35 @@ predeclared training-fit diagnostic is 6/6 exact locked boards, 12/12 known
 active/ghost layers and mean geometry error <.25 cells. Passing it does not
 establish development, unseen-family, complete-state or real-image quality.
 If it fails, inspect per-case sampling/gradients/targets before extending time.
+
+## Saved 511/512-step wall-partial run
+
+The inner 240-second limit stopped the next study after **511 of 512** requested
+steps. Exit code 2 and `wall_partial` are preserved in
+`docs/evidence/m2-learn512/receipt.json` and comparison.json. This is not a
+completed 512-step gate. The saved checkpoint reload is exact; all first 128
+optimizer records reproduce the previous run exactly, with identical manifests,
+initial metrics, driver and runtime-source digest. The explicit partial-evidence
+path has three green refusal/admission fixtures in the same evidence directory.
+It refuses outer timeouts, other failures and accidental completion claims.
+
+| Diagnostic at saved step 511 | Training | Development |
+|---|---:|---:|
+| Exact locked boards | 6/6 | 0/6 |
+| Cell accuracy | 1.0 | .9225 |
+| Exact known active/ghost layers | 10/12 | 0/12 |
+| Mean geometry error, cells | .4106 | 1.3112 |
+| Loss | .1690 | 25.5779 |
+
+The predeclared joint training-fit criterion **fails** despite exact locked
+boards. The dense clean/no-grid pair's ghost has correct type but row 15 instead
+of row 10. Geometry also exceeds .25 cells. Development TP/FP/FN/TN are
+92/51/42/1015. This small model can memorize the locked training states; it has
+not demonstrated stable layer/geometry fit or general reading. Next inspect
+single-cell interventions at fixed geometry/appearance, not a longer blind run.
+
+Resource evidence: 244.005 s outer, raw peak 480,751,616 B within 1 GiB / 300 s;
+checkpoint analysis 4.717 s and 811,851,776 B under 1 GiB / 60 s. A new unrelated
+release build began after launch; no further training was started alongside it.
+Weights remain at runs/m2-learn512/checkpoint/weights.pt, SHA256
+ca4c0f34a81b8c7591fab7db0e92fd89d652a27dea015cf63473c3f7b780bcdf.

@@ -31,6 +31,7 @@ def main():
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--allow-wall-partial", action="store_true")
     args = parser.parse_args()
     require_bounded_job()
     import torch
@@ -42,8 +43,13 @@ def main():
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     summary, baseline = (read_json(directory/"summary.json") for directory in (args.run, args.baseline))
-    if summary["status"] != "complete" or baseline["status"] != "complete" or summary["threads"] != 1:
-        raise ValueError("complete one-thread pilot required")
+    partial = summary["status"] == "wall_partial" and args.allow_wall_partial
+    if (summary["status"] != "complete" and not partial) or baseline["status"] != "complete" or summary["threads"] != 1:
+        raise ValueError("complete one-thread pilot or explicitly admitted wall-partial checkpoint required")
+    if partial:
+        source_job = read_json(args.run.parent/(args.run.name+"-job.json"))
+        if source_job["status"] != "failed" or source_job["exit_code"] != 2 or not 0 < summary["steps"] < summary["requested_steps"] <= 512:
+            raise ValueError("saved inner-wall stop required; outer kill/failure is not admitted")
     manifest = args.run/"manifest.jsonl"
     if manifest.stat().st_size > 1024**2:
         raise ValueError("manifest byte budget exceeded")
@@ -51,6 +57,8 @@ def main():
     if len(records) != 12 or not 128 <= summary["arguments"]["max_side"] <= 640:
         raise ValueError("diagnostic sample/input budget exceeded")
     before, after = curve(args.baseline/"curve.jsonl"), curve(args.run/"curve.jsonl")
+    if len(after) != summary["steps"]:
+        raise ValueError("completed optimizer ledger differs from summary")
     controlled = {"identical_manifest": file_digest(manifest) == baseline["manifest_sha256"] == summary["manifest_sha256"],
                   "identical_driver": baseline["script_sha256"] == summary["script_sha256"],
                   "identical_initial_metrics": baseline["initial_training"] == summary["initial_training"],
@@ -132,6 +140,7 @@ def main():
         aggregates[split] = totals
     args.output.mkdir(parents=True, exist_ok=False)
     report = {"status": "passed", "controlled_repeat": controlled, "checkpoint_sha256": checkpoint["weights_sha256"],
+              "source_run_completion": {"status": summary["status"], "completed_steps": summary["steps"], "requested_steps": summary["requested_steps"]},
               "analysis_script_sha256": file_digest(Path(__file__)), "aggregates": aggregates, "cases": cases,
               "claim": "Tiny matched synthetic diagnostics. Six images/split are three ancestry groups; no complete-state or real-image acceptance."}
     (args.output/"analysis.json").write_text(json.dumps(report, indent=2, allow_nan=False)+"\n", encoding="utf-8")
