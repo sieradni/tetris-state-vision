@@ -15,7 +15,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 
-## V-010 — OPEN: bounded job ignored system-wide commit pressure
+## V-010 — CLOSED: bounded job ignored system-wide commit pressure
 
 - Symptom: runs/v010-before.stderr.log, synthetic critical OS counter still
   launched the child and exited0; expected refusal125. No host-scale allocation
@@ -33,7 +33,13 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Partial evidence: docs/evidence/v010-admission-only/scope.json records the red
   before case and a real OS-pressure refusal with the native cap armed. The
   pressure harness parked before executing tests; this is not a green suite.
-- Green gate: pending pressure/resource/stream-admission suites; defect OPEN.
+- Green gates: docs/evidence/v010/v010-pressure-tests-r2.stderr.log, 5/5 in
+  2.006 s (admission, pressure/error full-tree death, global counters and policy);
+  v010-resource-tests.stderr.log, 5/5 in 2.475 s (native allocation denial,
+  wall/tree death, nested/forged identity and clamp); strengthened admission
+  v010-stream-admission-tests.stderr.log, 3/3 in .232 s. scope.json pins source
+  commit64e582c and supervisor SHA635e764a...; tiny native Jobs, no host-scale
+  allocation. The earlier parked harness remains historical partial evidence.
 
 ## V-009 — CLOSED: ambiguous corpus labels admitted off-image known cells
 

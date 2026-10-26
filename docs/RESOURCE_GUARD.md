@@ -29,19 +29,21 @@ worker and longer-run admission require those identities to match the archived
 runner and resource probe. An older supervisor or pre-guard resource receipt
 cannot admit a current longer study.
 
-**Verification is partial; V-010 remains OPEN.** Before-change synthetic-pressure
+**V-010 is verified and CLOSED on the named gates below.** Before-change synthetic-pressure
 admission failed as expected: the child started. The new real OS reader refused
 a launch at 32,116,695,040 B commit against a 31,368,351,744 B stop point, with
-the native cap armed and no child created. The parked test harness did not run
-its five tests. Evidence is in `docs/evidence/v010-admission-only/scope.json`.
+the native cap armed and no child created. That first parked test harness did
+not run tests; its historical partial evidence remains in
+`docs/evidence/v010-admission-only/scope.json`.
 
-Still required: tiny-Job synthetic pressure and counter-failure process-tree
-death tests, global-counter/nested-Job test, existing native allocation/wall
-regressions and strengthened stream-admission tests. No host-scale allocation
-is used by those fixtures. Run them when actual system headroom admits the
-bounded harness; do not bypass the guard to obtain a green result.
+A real admitted window later opened. Five pressure/OS-counter/policy tests,
+five original native allocation/wall/identity regressions and three strengthened
+stream-admission tests all passed. Pressure and counter failure killed actual
+child/grandchild processes, including venv launcher/worker PIDs. No host-scale
+allocation was used. Source identities and raw receipts/logs are in
+`docs/evidence/v010/scope.json`. The guard was not bypassed or relaxed.
 
 The old streaming square characterization remains historical evidence of its
-exact source catalogue. After guard verification, use a fresh output/receipt to
+exact source catalogue. Use a fresh output/receipt to
 re-profile the changed catalogue before longer learning. A pressure park is not
 a crash, completed learning run or accuracy gate. Preserve its receipt/logs.

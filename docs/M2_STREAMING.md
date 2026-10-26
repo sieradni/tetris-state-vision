@@ -65,10 +65,9 @@ catalogue, generated pixels/labels and weight identity before curating evidence.
 All output paths are exclusive. Inner-wall partial runs keep partial status and
 are not accepted by this completion curator.
 
-The system pressure candidate now refuses real high-commit launches, but native
-runtime tripwires remain unrun while the host is above its stop point. See
-[RESOURCE_GUARD.md](RESOURCE_GUARD.md); V-010 is OPEN. The old probe cannot admit
-the strengthened current driver. Next: verify the guard and re-characterize its source
+The system pressure guard now passes 13 pressure/native/admission checks; V-010
+is CLOSED. See [RESOURCE_GUARD.md](RESOURCE_GUARD.md). The old probe cannot admit
+the strengthened current driver. Next: re-characterize its source
 catalogue, then measure fresh-state learning. Profile the accuracy model
 separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
 release gates remain open.

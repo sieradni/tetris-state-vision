@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "source_base_commit": "64e582caa61cedfdddaf09194335d945d82178fa",
+  "sources": {
+    "scripts/run_bounded.py": "635e764afdd1cac41b46057122deeed987f1a8345c262477cf1782671088867b",
+    "scripts/probe_model.py": "6a5c5466161d1e2ff1106071502831f00f7a48717a0ab87896f2f9a2e6357864",
+    "scripts/train_m2_stream.py": "68e57044723771fe90f89ec72235c3df575742a5c98b4030ac1d612593e7b138",
+    "tests/test_pressure_guard.py": "3ce3bb6245def55c5a2d12f09201232e74c6023f558290a0097683960a1a78fe",
+    "tests/test_resources.py": "de8c0d59dd313ea6296ded3166ad0f1c9847c977f88d103831fd423011e45e0c",
+    "tests/test_stream_driver.py": "91ce7d83b4567f26bc7ac05551b9145c1e3a62b987735155ef99d52866389ed2"
+  },
+  "gates": [
+    {
+      "stem": "v010-pressure-tests-r2",
+      "tests": 5,
+      "raw_peak_job_commit_bytes": 76111872
+    },
+    {
+      "stem": "v010-resource-tests",
+      "tests": 5,
+      "raw_peak_job_commit_bytes": 150167552
+    },
+    {
+      "stem": "v010-stream-admission-tests",
+      "tests": 3,
+      "raw_peak_job_commit_bytes": 53747712
+    }
+  ],
+  "tests_across_scoped_runs": 13,
+  "supervisor_script_sha256": "635e764afdd1cac41b46057122deeed987f1a8345c262477cf1782671088867b",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}
