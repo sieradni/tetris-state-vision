@@ -51,5 +51,11 @@ Source/gradient/checkpoint gates: 85 checks, docs/evidence/m2-numerics/numerical
 Learning, queue/hold joint decoding, real-image evaluation and release gates remain
 open; raw head diagnostics do not establish complete-state accuracy.
 
+The first 16-step CPU optimizer pilot is recorded under docs/evidence/m2-learn16/
+with [predicted-lattice diagnostics](examples/m2-learn16.png). Its loss decreased,
+but geometry remained imprecise and development exact boards were 0/6. The weights
+are retained locally at runs/m2-learn16/checkpoint/ with a checksum manifest.
+See docs/M2_LEARNING_ACCEPTANCE.md before interpreting or extending this result.
+
 The design source is archived in docs/research/Tetris_Vision_Research.md.
 See docs/ROADMAP.md for milestones and docs/ANNOTATION.md for label semantics.

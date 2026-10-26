@@ -22,6 +22,12 @@ Next: admitted clean/no-grid optimizer/learning pilot; this is not yet the M2
 learning acceptance or a comparison of architecture quality. The accuracy-sized
 configuration has not been trained/profiled by this pilot gate.
 
+First optimizer characterization completed: 16 steps, peak 484,966,400 B, exact
+checkpoint reload, loss 4.4767 -> 1.6126 and occupancy 0.5969 -> 0.2248. Geometry
+error remains 1.43 cells and development exact boards are 0/6. The M2 learning
+gate remains OPEN. Receipt docs/evidence/m2-learn16/receipt.json; next is a priced
+128-step controlled comparison, not a release-quality claim.
+
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact
    solver/colored-state evaluation; annotation policy. Gate: adversarial fixtures.

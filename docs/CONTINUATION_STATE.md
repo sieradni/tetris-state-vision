@@ -1,43 +1,44 @@
 # Current checkpoint — 2026-10-26
 
 Repository C:/Users/micha/Code/tetris-state-vision, local Git, no remote.
-Goal remains ACTIVE: complete the standalone model project thoroughly and commit
-verified milestones. No real-image/release completion is claimed.
+Goal remains ACTIVE. Continue the standalone image-to-state model thoroughly;
+commit verified milestones. No complete-state or real-image release claim.
 
-Verified checkpoints:
-- f5ed97f foundation; 3cd063b layout/panel diversity (historical scopes).
-- b06cdda: V-006 canonical pose/registration repair, 69 green checks.
-- M2 source/numerical milestone: 85/85 in 6.992 s, no skips. Current source and
-  lock hashes in docs/evidence/m2-numerics/numerical.json. Scratch encoder at
-  strides 2/4/8/16, learned axis-aligned lattice, bounded cell sampling/axial
-  attention; independent occupancy/type/visibility/active/ghost heads; tensor-only
-  hash-checked checkpoints. Default accuracy config and small pilot are distinct.
+Verified source milestones: f5ed97f foundation; 3cd063b layout/panel diversity;
+b06cdda canonical-frame repair; 8d9d0f2 scratch model/numerical gates (85 checks).
+Bug ledger has V-001..V-007 closed on named green runs. CPU-only PyTorch is an
+optional dependency. Current runtime source digest remains f118a239... from the
+numerical gate. Accuracy config is separate and still untrained/unprofiled.
 
-Measured resource admission:
-- Optional CPU-only torch 2.14.1+cpu / numpy 2.5.4 install, peak 190,705,664 B
-  under 1 GiB / 600 s / one sync. Package source version 0.3.0.
-- One 647,098-parameter pilot forward/backward: 15.291 s with cold import,
-  peak 389,275,648 B under 1 GiB / 60 s / one step; finite gradients and losses.
-- Full 85-case suite: 9.585 s runner, raw peak 1,006,940,160 B under 1 GiB /
-  120 s / 85 cases. Counter is near the cap and includes denied-allocation probes;
-  raw values retained. Native allocation denial and process-tree death green.
-- V-007 closed: implicit worker Job query saw an incidental nested object.
-  Supervisor now names its Job; worker proves membership and reads that exact
-  ceiling before Torch import. No cap disabled/raised for the repair. Evidence
-  retains the initial failure, diagnostic and green exact-identity fixtures.
+First optimizer pilot is verified:
+- runs/m2-learn16, 16/16 steps, 3 latent training states x clean/no-grid = 6 images;
+  3 separate development states x 2 appearances = 6 images. Variable board origin
+  and spacing, density strata dense/sparse/empty; full-image learned lattice.
+- One CPU thread, no workers/prefetch, max side 384, tensor cache 17,252,352 B
+  (64 MiB budget). Kernel cap 1 GiB / outer wall 120 s / inner 90 s / 16 steps.
+- Runner 19.414 s, raw peak 484,966,400 B. Saved/reloaded predictions identical.
+- Loss 4.4767 -> 1.6126; occupancy 0.5969 -> 0.2248; mean geometry error
+  2.63 -> 1.43 cells. Training raw exact boards 2/6; development 0/6. Geometry is
+  still visibly misregistered. These are uncalibrated head diagnostics only.
+- Curated receipt/data hashes/curve/progress: docs/evidence/m2-learn16/receipt.json.
+  Actual weights stay in retained runs/m2-learn16/checkpoint/weights.pt,
+  SHA256 56d23804eec0861d11ab1c08941a95cab4d38516e2db4e56ebc9d126e9bb0b4a.
+  Preview examples/m2-learn16.png inspected. Driver's two admission fixtures pass
+  (m2-train-admission.log); the shared runtime's 85-case gate remains unchanged.
 
-Next acceptance-gated task: M2 clean/no-grid learning pilot. Implement a finite
-CPU optimizer driver with >=3 density strata, variable board origin/spacing,
-clean/no-grid matched groups, observation-only targets, <=64 MiB tensor cache,
-no workers/prefetch, per-step durable progress and hash-identified checkpoints.
-First characterize 16 optimizer steps at max side 384 and one CPU thread under
-1 GiB / 120 s; measure loss/throughput/memory before scaling. Check for any other
-heavy process before launch. Code/data/config/seed/weights identity is required.
-Then run a longer bounded diagnostic if the small pilot warrants it; do not
-call learning complete on a merely finite gradient or favorable average score.
+Next acceptance-gated action: fresh 128-step study, same seed/data/config/initial
+weights, evaluate every 16 steps. Measured 0.365 s/step including intermediate
+checks projects ~59 s total; use 1 GiB / 180 s outer / 150 s inner / 128 steps,
+one thread, same 64 MiB cache cap. Recheck other heavy jobs before launch.
+Command planned: run_bounded.py --memory-mib 1024 --wall-seconds 180 --work-items
+128 --receipt runs/m2-learn128-job.json -- .venv/Scripts/python.exe
+scripts/train_m2_pilot.py --output runs/m2-learn128 --steps 128 --states 3
+--max-side 384 --threads 1 --wall-seconds 150 --evaluate-every 16.
+Log runs/m2-learn128.log / .stderr.log; progress inside output, final summary and
+checkpoint sentinel likewise. It has NOT been launched yet. Commit the verified
+16-step milestone before launching. Read M2_LEARNING_ACCEPTANCE.md for verdict.
 
-No background vision process or training is running. Other release-build/search
-processes were last verified absent; recheck before longer work. Queue/hold joint
-heads, larger accuracy model training, broad renderer coverage, human-reviewed
-real-image pilot/baseline, calibration, export and release accuracy remain open.
-Read MODEL_PROTOTYPE.md and BUG_LOG.md before the next architectural change.
+No vision background process is running; all measured supervisors/children exited.
+M2 learning acceptance remains OPEN; queue/hold joint state, broader data,
+accuracy-model training, reviewed real images, calibration/export/release still
+remain. Preserve the full objective and retain every existing run/artifact.

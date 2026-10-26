@@ -1,0 +1,21 @@
+{
+  "supervisor_pid": 15176,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/record_learning_pilot.py",
+    "--name",
+    "m2-learn16",
+    "--steps",
+    "16"
+  ],
+  "memory_bytes": 268435456,
+  "wall_seconds": 30.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-03729e4a1ca24e92b3fb8cf8c01b459e",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 0.403,
+  "child_pid": 22832,
+  "peak_job_commit_bytes": 74633216
+}

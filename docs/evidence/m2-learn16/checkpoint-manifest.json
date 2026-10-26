@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M2",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576
+  },
+  "weights_sha256": "56d23804eec0861d11ab1c08941a95cab4d38516e2db4e56ebc9d126e9bb0b4a",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 647098,
+  "metadata": {
+    "trained_steps": 16,
+    "runtime_source_sha256": "f118a2394e298db8a7ccb4b233ab130b053c613a52fef449bd665fa8f299d712",
+    "script_sha256": "ab92f8b2389a75f2d5f3f347d795e9135933e30f6932f88e886af2323e3ee30b",
+    "arguments": {
+      "output": "runs\\m2-learn16",
+      "steps": 16,
+      "states": 3,
+      "max_side": 384,
+      "threads": 1,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 90.0,
+      "evaluate_every": 8
+    },
+    "manifest_sha256": "e6bd6d3220a47d3bf769d0ee5c8c1bc613dad8e97892498035a1044983f6e11f",
+    "cpu_only": true
+  }
+}
