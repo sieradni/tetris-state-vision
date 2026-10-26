@@ -1,0 +1,11 @@
+Using CPython 3.14.7 interpreter at: C:\Users\micha\miniconda3\python.exe
+Creating virtual environment at: .venv
+Resolved 2 packages in 1.31s
+   Building tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+Downloading pillow (6.9MiB)
+      Built tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+ Downloaded pillow
+Prepared 2 packages in 14.17s
+Installed 2 packages in 98ms
+ + pillow==12.3.0
+ + tetris-state-vision==0.1.0 (from file:///C:/Users/micha/Code/tetris-state-vision)

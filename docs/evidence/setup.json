@@ -1,0 +1,16 @@
+{
+  "supervisor_pid": 29040,
+  "command": [
+    "C:\\Users\\micha\\.local\\bin\\uv.exe",
+    "sync"
+  ],
+  "memory_bytes": 536870912,
+  "wall_seconds": 120.0,
+  "work_items": 1,
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 17.245,
+  "child_pid": 16208,
+  "peak_job_commit_bytes": 145133568
+}

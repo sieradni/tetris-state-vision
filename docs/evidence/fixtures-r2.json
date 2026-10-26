@@ -1,0 +1,21 @@
+{
+  "supervisor_pid": 25428,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "memory_bytes": 536870912,
+  "wall_seconds": 90.0,
+  "work_items": 44,
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "failed",
+  "exit_code": 1,
+  "elapsed_seconds": 2.664,
+  "child_pid": 10480,
+  "peak_job_commit_bytes": 149569536
+}

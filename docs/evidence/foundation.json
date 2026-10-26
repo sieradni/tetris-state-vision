@@ -1,0 +1,48 @@
+{
+  "milestone": "M0/M1 initial foundation (scoped pilot)",
+  "recorded_utc": "2026-10-26T06:16:46.526795+00:00",
+  "source_brief_sha256": "4fe67034e8fd183849e27b8db099a0e12798db6e5e9ca6fbbfa94493990658f3",
+  "runtime_source_sha256": "2e3a7a25097b79da3dd5c1c326ffc9d6e9300127c65e7be79272e46d2a5823f4",
+  "uv_lock_sha256": "d6b7d63d5dd26233fa8cc3014a037089575dc614f21ab3579013b19fa20fb706",
+  "tests": 46,
+  "test_seconds": 2.462,
+  "test_receipt": "fixtures-final.json",
+  "synthetic_demo": {
+    "images": 15,
+    "groups": 3,
+    "decisions": {
+      "accepted": 12,
+      "needs_review": 3
+    },
+    "montage_sha256": "5895189d2db823fb90170ed782bbc8fc13c7d39d6c7d160335a0a23141bc958b"
+  },
+  "verified_sources": {
+    "scripts/record_foundation.py": "9025281a10e88189325430d2a97941e150d16acf004e7da0c79e9f2afb7fa54f",
+    "scripts/run_bounded.py": "e25cbc0552fec3b5ec7e5beddead8993267e4dc3dac427a062350942366a3ab6",
+    "src/tetris_vision/__init__.py": "6d49a338a83b290493dd5c95cae01d1d6d51500d4c5fb698a5bb64f7b960b62a",
+    "src/tetris_vision/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/tetris_vision/adapter.py": "3bb65f9d84e6ab03a5dd53161033d2003b09bd297e019dfef9a500427b11395c",
+    "src/tetris_vision/cli.py": "1546e7396096b5ecba3b61f89a39301328766178d3001e98a50d7a41a74d14de",
+    "src/tetris_vision/dataset.py": "46139f56c22c5343e0f1ea67d89c2937374652df9b827fb9937585174c0844b8",
+    "src/tetris_vision/evaluate.py": "149b8ffb12a4084657aeb312c6bc9ae5d88b1f331def43b46552385defb91664",
+    "src/tetris_vision/render.py": "a2fc425c418d9fae2e2fc6f46085be3d10299750d80c4d3326569dae06eea085",
+    "src/tetris_vision/shapes.py": "2415df12a1476e1cdc235f82a47f3e5e2bc0bd113495d166fc1c531c1bbe6d34",
+    "src/tetris_vision/state.py": "d20a1f2bffc4c82788d5980e0fd98bab1c3a6dee0ac9c6316fa3a085ad4d3c42",
+    "tests/test_dataset.py": "e4c5d18325f78343607f5d1551add6fb434a2bd6e5db06dd9845a6a24ef5325d",
+    "tests/test_evaluate.py": "174df9a65a37bee9ea49681921c2c05d3226a8074f3f0e1b1172aeb82c1db9a4",
+    "tests/test_render.py": "8b3cfb6f422b6c043a7615be3b184d346bb11db7b8c4da3f17c58b43d76fbc03",
+    "tests/test_resources.py": "75b20c2b5f2ae2d2ae9803e8f73acb6b5521c89a44bf9aa5357424df8159fe3c",
+    "tests/test_state.py": "1aaa656b7c37108d7b0462dc44b1d94328995ae45a3058ac1545efd9ca0a2b81"
+  },
+  "not_measured": [
+    "trained model",
+    "real-image accuracy",
+    "legacy baseline",
+    "human-reviewed pilot",
+    "training throughput",
+    "export",
+    "CPU inference latency"
+  ],
+  "visual_review": "Montage inspected: bottom-first asymmetric stack, sparse/empty, five appearance families; partial crops visibly require review.",
+  "next": "Expand layout/queue/occlusion families and real annotation pilot; then implement scratch lattice-query model with a resource-admitted learning pilot."
+}

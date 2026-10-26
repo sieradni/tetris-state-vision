@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.png binary
+# The supplied document and raw receipts are byte-exact evidence.
+docs/research/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+docs/evidence/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
