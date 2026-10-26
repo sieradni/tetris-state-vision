@@ -1,13 +1,21 @@
 # Current checkpoint — 2026-10-26
 
-Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal ACTIVE.
+Repo C:/Users/micha/Code/tetris-state-vision, local Git, no remote. Goal BLOCKED.
 No vision process running before the next launch. No run data deleted.
 Last progress was warm-profile verification and the isolated recovery draft.
 Previous/current continuations: no implementation progress; RAM blocker persists.
-Fresh consecutive no-progress blocked audit count2; goal remains ACTIVE.
-Latest actual OS commit31,620,972,544B exceeds stop31,368,351,744B. Recovery
+Fresh consecutive no-progress blocked audit count3; same external blocker on
+three consecutive continuations (55565b4,5b1955d,current). Goal is blocked until
+host headroom changes. Latest actual OS commit31,658,336,256B exceeds
+stop31,368,351,744B. Recovery
 gate512MiB needs baseline below30,831,480,832B plus launch overhead. Process
 scan found no live vision worker. No redundant test launch; no code changed.
+Recovery source is still an isolated unverified draft; integration before its
+seven-case runtime gate would skip required evidence. Further model training,
+accuracy-model characterization and the recovery gate all require admitted RAM.
+No useful safe dependent work remains without external headroom. Resume after
+roughly1GB committed memory is freed, recheck actual counters, then run the
+seven-case recovery command below with new logs/receipt. No apps/jobs closed.
 
 Verified checkpoints:
 - 421de02 controlled128: exact16-step prefix, training boards2/6, development0/6.
