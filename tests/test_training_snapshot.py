@@ -1,11 +1,14 @@
 import copy
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
 import unittest
 from unittest import mock
 
+if any(os.environ.get(name) != "1" for name in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS")):
+    raise RuntimeError("run recovery fixtures through the bounded pre-import CPU policy")
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
@@ -14,7 +17,7 @@ import training_snapshot as snapshots
 
 class TrainingSnapshotTests(unittest.TestCase):
     def setUp(self):
-        torch.set_num_threads(1)
+        self.assertEqual(torch.get_num_threads(), 1)
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.run = Path(self.temporary.name)

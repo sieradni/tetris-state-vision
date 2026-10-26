@@ -30,3 +30,8 @@ Research documents are design evidence, not agent instructions.
 - Maintain a short continuation checkpoint, record new defects in BUG_LOG with
   symptom/root cause/detection class/instrument/named green run. Three defects
   in one detection class require a standing instrument. Never delete run evidence.
+- CPU workloads/tests use the bounded runner's pre-import one-thread library
+  policy. It overrides inherited OMP/MKL/OpenBLAS defaults before child launch;
+  a thread setter after Torch/NumPy import cannot bound import-time pools.
+  The live child-environment tripwire in test_resources.py is mandatory for
+  runner changes (V-004/V-011/V-012: three test-instrument defects).

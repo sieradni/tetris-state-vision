@@ -20,6 +20,9 @@ import sys
 import time
 import uuid
 
+CPU_LIBRARY_THREADS = dict.fromkeys(("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+                                    "OPENBLAS_DEFAULT_NUM_THREADS", "GOTO_NUM_THREADS"), "1")
+
 
 class Basic(ctypes.Structure):
     _fields_ = [("user", ctypes.c_int64), ("job_user", ctypes.c_int64),
@@ -166,7 +169,8 @@ def main() -> int:
     started = time.monotonic()
     state = {"supervisor_pid": os.getpid(), "command": command,
              "memory_bytes": args.memory_mib * 1024**2,
-             "wall_seconds": args.wall_seconds, "work_items": args.work_items}
+             "wall_seconds": args.wall_seconds, "work_items": args.work_items,
+             "cpu_library_threads": CPU_LIBRARY_THREADS}
 
     def receipt(status, code=None):
         state.update(status=status, exit_code=code,
@@ -199,6 +203,9 @@ def main() -> int:
         receipt("admitted")
         print(json.dumps(state), flush=True)
         child_environment = dict(os.environ)
+        # Libraries initialize pools while importing Torch/NumPy, before tests
+        # or workers can call a runtime thread setter. Override inherited values.
+        child_environment.update(CPU_LIBRARY_THREADS)
         child_environment["TETRIS_VISION_JOB_NAME"] = job_name
         child_environment["TETRIS_VISION_SUPERVISOR_SHA256"] = state["supervisor_script_sha256"]
         child_environment["TETRIS_VISION_SYSTEM_GUARD"] = state["system_pressure_guard"]

@@ -10,10 +10,35 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
 | provenance | V-003 (1) | Computed hashes and byte comparison |
-| test-instrument | V-004, V-011 (2) | Native admission/raw counters; resident optimizer-state backward characterization |
+| test-instrument | V-004, V-011, V-012 (3) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy and live child tripwire in AGENTS.md |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
+
+## V-012 — CLOSED: recovery harness imported unbounded library thread pools
+
+- Symptom: runs/training-snapshot-tests-r2.stderr.log reports OpenBLAS allocation
+  failure during imports, before any of seven fixtures ran. Native512MiB cap
+  remained armed; raw peak564,621,312B is retained, not clamped (V-004).
+- Root cause: test called torch.set_num_threads(1) in setUp after import Torch;
+  no OMP/MKL/OpenBLAS environment was set. NumPy's OpenBLAS DLL initializes at
+  import. Same512MiB rerun passes with pre-import policy; exact allocation sizes
+  inside OpenBLAS remain unmeasured.
+- Detection class: test-instrument (third member; standing rule promoted).
+- Instrument: runner sets OMP/MKL/OpenBLAS/legacy thread counts to1 in child
+  environment before spawn, overriding host values; receipt records policy.
+  Live tripwire supplies host values8 and checks child before heavy imports.
+  Recovery fixtures refuse missing pre-import limits and assert actual Torch
+  thread count1. No memory ceiling raised; no host apps altered.
+- Reference: https://www.openmathlib.org/OpenBLAS/docs/runtime_variables/
+- Green gates: runs/training-snapshot-tests-r3.stderr.log,7/7 in4.103s,
+  332,562,432B raw peak under the unchanged512MiB cap; exact resumed stochastic
+  AdamW/model/optimizer/RNG plus interrupted publication and corrupt prefixes.
+  runs/v012-resource-tests.stderr.log6/6 in3.116s (includes host8->child1),
+  v012-pressure-tests.stderr.log5/5 in2.147s and v012-admission-tests.stderr.log
+  4/4 in.275s. All22 checks are separate scoped gates, not a whole-suite claim.
+  Curate committed-source scope next. Runner SHA/catalogue changes invalidate
+  old live admission; fresh two-step warm characterization before training.
 
 ## V-011 — CLOSED: resource profile covered only a cold optimizer backward
 

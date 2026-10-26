@@ -2,10 +2,12 @@
 
 `scripts/training_snapshot.py` is a separate, not-yet-integrated primitive.
 The streaming driver still saves its inference checkpoint only at the end.
-Seven runtime fixtures are written; their first native harness parked before
-launch because Windows could not reserve512MiB. No recovery gate is green yet.
+Seven runtime fixtures now pass: runs/training-snapshot-tests-r3.stderr.log,
+7/7 in4.103s,332,562,432B raw peak under512MiB/45s. Earlier attempts parked
+on host pressure; r2 hit an OpenBLAS import allocation failure before tests.
+V-012's pre-import thread policy repaired that harness at the same ceiling.
 
-The proposed recovery boundary contains model tensors, complete AdamW state,
+The verified primitive's recovery boundary contains model tensors, complete AdamW state,
 Torch CPU randomness, module training modes and the completed global step.
 The caller supplies the exact source catalogue and data/training recipe as a
 JSON contract. Recovery requires equal recipe, Torch version, tensor shapes/

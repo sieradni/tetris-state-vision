@@ -12,13 +12,26 @@ import unittest
 
 @unittest.skipUnless(os.name == "nt", "Windows Job Object probes")
 class ResourceGuardTests(unittest.TestCase):
-    def run_child(self, root, source, *, memory=64, wall=5):
+    def run_child(self, root, source, *, memory=64, wall=5, environment=None):
         receipt = root / "receipt.json"
         command = [sys.executable, "scripts/run_bounded.py", "--memory-mib", str(memory),
                    "--wall-seconds", str(wall), "--work-items", "1", "--receipt", str(receipt),
                    "--", sys.executable, "-c", source]
-        result = subprocess.run(command, capture_output=True, text=True, timeout=12)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=12, env=environment)
         return result, json.loads(receipt.read_text())
+
+    def test_cpu_library_limits_override_host_before_child_imports(self):
+        variables = ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
+                     "OPENBLAS_DEFAULT_NUM_THREADS", "GOTO_NUM_THREADS")
+        source = ("import os; expected="+repr(dict.fromkeys(variables, "1"))+"; "
+                  "assert {name:os.environ.get(name) for name in expected}==expected; "
+                  "print('PREIMPORT_CPU_LIMITS_VERIFIED')")
+        with tempfile.TemporaryDirectory() as scratch:
+            environment = {**os.environ, **dict.fromkeys(variables, "8")}
+            result, receipt = self.run_child(Path(scratch), source, environment=environment)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("PREIMPORT_CPU_LIMITS_VERIFIED", result.stdout)
+            self.assertEqual(receipt["cpu_library_threads"], dict.fromkeys(variables, "1"))
 
     def test_kernel_denies_allocation_over_small_job_ceiling(self):
         with tempfile.TemporaryDirectory() as scratch:
