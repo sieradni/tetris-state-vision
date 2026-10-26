@@ -46,7 +46,7 @@ Optional neural work uses `uv sync --frozen --extra train` through the bounded
 launcher (1 GiB / 600 s / one sync). It installs CPU-only PyTorch on Windows.
 `tetris_vision.model.TetrisStateNet` exposes the M2 raw heads; preprocessing is
 `tetris_vision.preprocess.prepare_image`. The accuracy configuration is distinct
-from `ModelConfig.pilot()`, which is only for resource/numerical experiments.
+from `ModelConfig.pilot()`, which is for resource, numerical and bounded learning pilots.
 Source/gradient/checkpoint gates: 85 checks, docs/evidence/m2-numerics/numerical.json.
 Learning, queue/hold joint decoding, real-image evaluation and release gates remain
 open; raw head diagnostics do not establish complete-state accuracy.

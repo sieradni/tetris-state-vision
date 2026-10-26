@@ -1,0 +1,20 @@
+{
+  "supervisor_pid": 19752,
+  "command": [
+    "C:\\Users\\micha\\.local\\bin\\uv.exe",
+    "sync",
+    "--frozen",
+    "--extra",
+    "train"
+  ],
+  "memory_bytes": 536870912,
+  "wall_seconds": 120.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-f69b6ceb443140298c264c0cf4a9e8bc",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 3.154,
+  "child_pid": 25464,
+  "peak_job_commit_bytes": 115916800
+}

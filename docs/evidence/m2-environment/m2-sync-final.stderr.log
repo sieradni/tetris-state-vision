@@ -1,0 +1,7 @@
+   Building tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+      Built tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+Prepared 1 package in 1.83s
+Uninstalled 1 package in 1ms
+Installed 1 package in 7ms
+ - tetris-state-vision==0.2.0 (from file:///C:/Users/micha/Code/tetris-state-vision)
+ + tetris-state-vision==0.3.0 (from file:///C:/Users/micha/Code/tetris-state-vision)

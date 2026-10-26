@@ -1,0 +1,18 @@
+{
+  "supervisor_pid": 17988,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-c",
+    "import importlib.metadata as m; import tetris_vision; assert m.version(\"tetris-state-vision\")==tetris_vision.__version__==\"0.3.0\"; print({\"project\":m.version(\"tetris-state-vision\"),\"torch\":m.version(\"torch\"),\"numpy\":m.version(\"numpy\"),\"Pillow\":m.version(\"Pillow\")})"
+  ],
+  "memory_bytes": 268435456,
+  "wall_seconds": 15.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-fdf19f1afd5a4ba299c09a021fdeae4b",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 0.289,
+  "child_pid": 22196,
+  "peak_job_commit_bytes": 32796672
+}
