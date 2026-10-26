@@ -1,0 +1,55 @@
+{
+  "curation_status": "verified_copy",
+  "run_status": "failed_no_final_weights",
+  "completed_updates": 565,
+  "requested_updates": 768,
+  "weights_available": false,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-learn768-r2\\code",
+  "source_catalogue_sha256": "a7f6e06437906380fd4ddc14b97a6492c8f6f2165a6bd853ee62b54a0d63ebae",
+  "artifact_sha256": {
+    "failed-study/curve.jsonl": "00ba3307f48b3bb4be06b58eb3685e25ba21c013753583fac048fe5545d84c3f",
+    "failed-study/training.jsonl": "1e1ce46d4b8796a559be2728c96ba64b797cbd92bcb29c78cf785d995de315d2",
+    "failed-study/evaluations.jsonl": "e21c6150b2b0255915c0276b12e6c438caae16f75fad19f73bb0bc62861a8b56",
+    "failed-study/progress.json": "2044bf3555d7e12333b74a58a4c6d83147fe3b720cf231dcb5c9022628c3608f",
+    "failed-study/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "failed-study/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff",
+    "failed-study/source-manifest.json": "f3febf0900853640a53c9f49487eeee1de139114984fc7e458bc3bb1a375e258",
+    "failed-study/m2-stream-learn768-r2-job.json": "e7f15f3407eed6676c2fba35827a4117a80d03918ec7fe12fa64cb638a7b5cfc",
+    "failed-study/m2-stream-learn768-r2.log": "1fd88164d4816f452858f7ec778c6b57c09131e82277c29462e9cc7edf50ae0f",
+    "failed-study/m2-stream-learn768-r2.stderr.log": "020859eeeec9c7efda3f8265b202fdb5f286266ac2f61710fa4dee9fa31a6c4f",
+    "cache-probes/native-cache-default-exercise.json": "4dba8bc96437f605cc2503ee4e7ecac541be19762d7af601bf03489cfa255615",
+    "cache-probes/native-cache-default-exercise-job.json": "9420dbd5902886655db98238952cf18de58b6ed4e3729030f1c85a64c3d54f34",
+    "cache-probes/native-cache-default-exercise.log": "5abd6bfff453e89fa6c1384d11d01b93eedfcef8e101ca3802005fd0a21c8edc",
+    "cache-probes/native-cache-default-exercise.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cache-probes/native-cache-bounded16-exercise.json": "1e1fb3350582807cc9b3b0368c43539f7b0205ff6b2b17ee032fdaee64337b1c",
+    "cache-probes/native-cache-bounded16-exercise-job.json": "e78f02a832fbb795f30b0d3dc4f15ed8081394292b94d6b3321e3539fe81f475",
+    "cache-probes/native-cache-bounded16-exercise.log": "ebf12549aa85b9065f90ac209518f232f09be88a21f357eb82239cbdc1b4d58a",
+    "cache-probes/native-cache-bounded16-exercise.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cache_exercises": {
+    "default": {
+      "final_repeated_shape": "cache_hit",
+      "last_native_creation": "onednn_verbose,v1,primitive,create:cache_hit,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.00409999",
+      "requested_environment": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": null,
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": null
+      },
+      "native_capacity_api_available": false,
+      "raw_peak_job_commit_bytes": 265912320
+    },
+    "bounded16": {
+      "final_repeated_shape": "cache_miss",
+      "last_native_creation": "onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3872",
+      "requested_environment": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      },
+      "native_capacity_api_available": false,
+      "raw_peak_job_commit_bytes": 251068416
+    }
+  },
+  "cache_probe_source_commit": "4ab205c",
+  "cache_probe_sha256": "ed24c8711aa3f16632f9fa7e1e76a3d80e71e445fba3ac2ea676c2580f9777ee",
+  "curator_sha256": "50abd289a7aab168a432426fdb7dc35a1f0a555b512c0c1fb126a25a209c49a8",
+  "scope": "Raw failed640MiB study and native cache eviction evidence. Exact cache capacity API unavailable; no attribution of every allocation, completed model, or accuracy claim."
+}

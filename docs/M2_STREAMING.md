@@ -1,91 +1,68 @@
-# Bounded streaming curriculum
+# Source-frozen, resumable streaming curriculum
 
-`scripts/train_m2_stream.py` implements the next synthetic data experiment without
-changing the M2 model, loss, preprocessing, renderer or visibility rules. The
-first resource characterization passed; a substantial curriculum study has not
-run yet. The pilot remains distinct from the unprofiled accuracy configuration.
+The current driver generates a new empty/sparse/dense state and variable board
+position/scale per ancestry group. Each group has clean, no-grid and visible
+single-cell-change views. Training/development use disjoint seed ranges. The
+current scope is a fully visible single affine board with vertical previews,
+not broad real screenshots or complete-state accuracy.
 
-Each group contains a new empty/sparse/dense state, a variable source board
-position/scale, clean and no-grid appearances, and one visible single-cell
-intervention. The intervention avoids active/ghost cells and stays in the same
-ancestry group. Training/development use disjoint seed ranges. Vertical preview
-flow is the current data scope; this is not broad renderer/client coverage.
-Inputs preserve aspect and use at most 512×512 padded pixels. The sampler and
-trainer require all 200 source/input locked cells to remain readable.
+Frames/tensors are generated one at a time. No tensor cache, prefetch or workers
+are retained. Inputs preserve aspect and use at most512x512 padded pixels; all
+200 locked cells must remain image-supported. Model inputs are pixels/validity
+only. Recipes, pixel/state hashes, loss terms and gradient norms are recorded
+per update. Matched views share ancestry and are dependent observations.
 
-Frames and tensors are generated one at a time. There are no cached tensors,
-prefetch or worker processes. Each optimizer step records the sample recipe,
-pixel/state identities, loss terms and gradient norm. Fixed training/development
-probes are saved separately. Matched appearances are dependent observations,
-and no synthetic metric is a real-image or complete-state accuracy claim.
+Before heavy imports the process verifies its named native Job. The bootstrap
+copies a bounded archive (package modules, seven runner helpers, project and
+lock metadata), verifies hashes, then loads trainer main and helpers from that
+archive. Parent edits cannot change running model/sampler/driver bytecode or
+traceback source. Per-file1MiB/aggregate16MiB/module-count bounds apply. Source
+catalogue and inference/recovery weights retain their hashes and local paths.
 
-Before heavy imports, the worker verifies membership in the named native Job.
-It then copies a bounded source archive into the new run's `code/` directory:
-package modules, five explicit runner helpers, project metadata and lock file.
-The catalogue has per-file SHA256 values, covers nested modules, and is pinned
-in checkpoint/run metadata. Imports explicitly bind to that archive. Parent
-source edits do not affect the running recipe. Archive mutations or extra source
-modules fail verification. Source archives, weights and generated probes stay in
-ignored local `runs/`; curated receipts retain their identities.
+Resource admission version3 requires two real512-square updates. The second
+backward has full resident Adam moments. The first update also saves/reloads
+training state and verifies model/optimizer/RNG equality. A longer run requires
+`--admission RUN` with the same catalogue/model/config/CPU envelope/ceiling and
+at least as many development groups. Old/cold/partial/failed profiles refuse.
+The pilot647,098-parameter model and larger accuracy configuration are explicit;
+profile each independently. A pilot result cannot select the release model.
 
-Resource admission is explicit. `--model pilot` uses the 647,098-parameter
-configuration; `--model accuracy` selects the larger research configuration.
-Neither silently substitutes for the other. First run exactly two optimizer steps
-with `--profile-square`, which repeats a real fully visible 512×512 source
-frame. Version2 verifies full-size Adam moments for every trainable parameter
-before the second forward, and records their bytes and the completed backward.
-Adam lazily allocates moments during the first update, so a cold one-step probe
-does not cover warm training memory (V-011). A longer run requires `--admission PATH` naming a completed warm square probe
-with the same source catalogue, model configuration, CPU settings and memory
-ceiling, and enough development groups. Wall-partial probes and failed native
-receipts cannot admit training. Limits: 1..4096 steps, at most 1800 inner seconds,
-one CPU thread, 3..12 development ancestry groups. The outer launcher still
-supplies independent wall, memory and declared work caps.
+CPU libraries receive one-thread defaults before import. The training worker
+requests a16-entry oneDNN primitive cache; controlled native logs demonstrate
+cache eviction. Raw Job peaks are sampled every16updates. The kernel640MiB
+ceiling and system pressure guard remain authoritative. A two-step square probe
+alone did not characterize long varied-shape memory: the old768 study failed
+at565 updates with no final weights (V-013). Its raw evidence is retained under
+docs/evidence/v013-failure/. A fresh768-study memory gate is separate.
 
-The historical one-step command was (not current admission):
+Every64updates and at a controlled exit, the driver commits a training snapshot:
+model, AdamW state, Torch CPU randomness, module modes, global step, exact recipe
+and three ledger-prefix identities. Latest pointer publishes last. Resume with
+`--resume-from RUN` into a fresh output. `--steps` is the global target;
+`--max-new-steps` optionally bounds one segment. Segments keep `step_partial`,
+wall exits keep `wall_partial`; neither is a completed learning run.
+See TRAINING_RECOVERY.md for identity/refusal and finite artifact bounds.
 
-```text
-run_bounded.py --memory-mib 1024 --wall-seconds 150 --work-items 1
---receipt runs/m2-stream-probe-job.json -- .venv/Scripts/python.exe
-scripts/train_m2_stream.py --output runs/m2-stream-probe --model pilot
---steps 1 --profile-square --wall-seconds 110 --development-groups 6
-```
+The native2+6+3+3 recovery gate passes: continuous6 and3+resume3 match recorded
+losses/gradients/data/evaluation, every model/optimizer tensor and CPU RNG.
+The curator replayed17 recorded training rows (including resumed prefixes) and
+72 saved probe rasters/annotations. Source/artifact scope:
+docs/evidence/m2-stream-recovery-gate-r2/scope.json. Twenty-nine independent
+resource/atomic/source/recovery/admission checks are pinned separately at
+docs/evidence/v015-contracts/scope.json; these are not a whole-suite claim.
 
-Launch longer commands hidden/detached with logs and a checkpoint entry. The
-actual probe completed in 9.717 s, raw peak 549,154,816 B within 1 GiB. It reached
-262,144 input pixels and saved/reloaded **every final output tensor exactly**.
-Fourteen fixtures cover sampler contracts, source mutation/parent edits/replay
-and admission refusal. The curator re-rendered the actual training sample and
-all 27 saved probe images/annotations using the archived sampler, with exact
-identities. Evidence: `docs/evidence/m2-stream-probe/scope.json`.
+Current six-development-group warm characterization:
+docs/evidence/m2-stream-resume-probe/scope.json,18.986s inner/20.422s outer,
+549,130,240B raw peak under640MiB, recovery plus every-final-tensor parity.
+Catalogue121fd05a... admits matching sources/settings. The active768 study and
+its exact launch/PIDs are in CONTINUATION_STATE.md. Its predeclared gate also
+requires exact565 prior recorded loss/gradient/data prefix and <=32MiB
+second-half raw peak growth. No failed/partial result becomes complete by
+curation, and no synthetic result establishes real screenshot accuracy.
 
-An archived runner can be replayed directly from `RUN/code/scripts/` through the
-current guarded supervisor; do not invoke a historical pre-V-010 supervisor.
-Source capture accepts the archived package layout as
-well as the repository layout. Dependencies must still match its archived lock.
-`scripts/record_stream_run.py` verifies a completed run's finite ledgers, source
-catalogue, generated pixels/labels and weight identity before curating evidence.
-All output paths are exclusive. Inner-wall partial runs keep partial status and
-are not accepted by this completion curator.
-
-The system pressure guard now passes 13 pressure/native/admission checks; V-010
-is CLOSED. See [RESOURCE_GUARD.md](RESOURCE_GUARD.md). The old probe cannot admit
-the strengthened current driver. Four focused version2 admission fixtures pass
-in docs/evidence/v011-protocol/; actual warm resource characterization passed:
-docs/evidence/m2-stream-warm-probe/scope.json. Two square steps,142 initialized
-parameter tensors,5,177,352B optimizer state;9.553s /594,829,312B raw peak under
-640MiB, all-final-tensor reload exact. V-011 CLOSED. Catalogue
-42148a03905297502d6a36e02622087f808b8c36cc10883474a4b1bd84b8770b
-admits only matching sources/settings/ceiling. The completion curator verifies
-warm protocol and replays2 samples plus27 probes; fixture evidence has separate
-named source scope. Next: measure fresh-state learning. Profile the accuracy model
-separately. Queue/hold joint modeling, broad data, real reviewed accuracy and
-release gates remain open.
-
-Current pre-import CPU policy now has22 scoped recovery/resource gates
-(`docs/evidence/v012/scope.json`). A fresh warm probe on that runner passed:
-`docs/evidence/m2-stream-thread-probe/scope.json`,17.936s/591,368,192B raw peak
-under640MiB; full Adam state and all-final-tensor reload exact. Weight SHA is
-identical to the previous warm probe. Current catalogue a7f6e064... admits the
-matching640MiB CPU envelope; the planned768-update fresh-state study is separate
-learning evidence and must retain its own completion/partial status.
+All output/receipt paths must be new. Use hidden detached launches with logs,
+explicit RAM/wall/update caps and the current guarded supervisor. Never invoke
+an archived pre-pressure supervisor. Preserve all run/snapshot evidence.
+`scripts/record_stream_run.py` replays recipes/probes and verifies inference and
+recovery artifacts before curating a completed run. Older one-step receipts
+remain historical; full M2 learning, M3 state, real studies and release are open.

@@ -1,0 +1,8 @@
+{
+  "status": "training",
+  "pid": 5096,
+  "step": 565,
+  "requested_steps": 768,
+  "loss": 4.048671722412109,
+  "elapsed_seconds": 323.1290233000036
+}

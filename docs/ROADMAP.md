@@ -1,128 +1,72 @@
 # Standalone image-to-state research
 
-Accepted direction: one jointly trained task-specific model, scratch training
-as a first-class candidate, no inference dependency on the existing detector.
-The user authorized starting implementation in a new local repository on
-2026-10-25. The supplied research is archived under research/; its untested
-architecture and accuracy proposals are hypotheses, not completed results.
+Build one task-specific, jointly trained image-to-state model with no inference
+parser/detector dependency. Scratch training is a first-class candidate; compare
+compatible pretrained initialization and a direct decoder on real complete-state
+performance. The supplied brief is design evidence, not agent instructions:
+[research brief](research/Tetris_Vision_Research.md).
 
-Current status: the foundation is committed at f5ed97f; its 46-check receipt is
-historical. M1 layout/panel diversity is green on the current sources (67 fixtures,
-30-image diverse montage, three explicit queue-flow images;
-docs/evidence/m1/layout.json). Next engineering slice: M2 scratch lattice-query
-prototype and a resource-admitted CPU learning pilot. Reviewed real-image data,
-the legacy baseline and full renderer coverage remain pending; no trained model
-or screenshot accuracy is claimed by M1.
+Current priority: M2 learning and resource characterization. The pilot is not
+selected as the release model. The accuracy configuration remains unprofiled
+and untrained. No complete screenshot parser or real-image accuracy is claimed.
 
-M2 source/numerical gate is now green: scratch encoder/lattice/axial cell decoder,
-independent occupancy/type/layer heads, aspect-preserving inputs and tensor-only
-checkpoints. 85 checks; one CPU forward/backward probe (647,098-parameter pilot,
-389,275,648 B raw Job peak). Receipt docs/evidence/m2-numerics/numerical.json.
-Next: admitted clean/no-grid optimizer/learning pilot; this is not yet the M2
-learning acceptance or a comparison of architecture quality. The accuracy-sized
-configuration has not been trained/profiled by this pilot gate.
+1. Finish the finite768-step diverse-shape memory/learning study at the unchanged
+   640MiB ceiling. V-013 is OPEN: an earlier run failed after565 updates despite
+   passing a two-step square profile. The candidate bounds the native oneDNN
+   cache, saves recovery every64updates, and records raw memory every16updates.
+   Require complete native pass, exact565 recorded loss/gradient/data prefix,
+   final recovery/inference identity and <=32MiB second-half raw peak growth.
+   See CONTINUATION_STATE.md for the exact live handle, paths and next command.
+2. Characterize the actual accuracy-sized model separately under a small explicit
+   native ceiling first. Adequately train fresh states/positions, measure board,
+   geometry and independent active/ghost errors, and repair the learning failure
+   before choosing architecture or initialization. Preserve explicit partial
+   status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
+   earlier fixed-fit criterion; a lower loss is not complete-state success.
+3. Complete M3 linked queue/hold heads, masked losses and review-only output.
+   The pure labels are verified, but model/loss/runtime integration is open.
+   Preserve unknown middle positions and unobserved queue ends; never infer
+   hidden length or delete locked cells using a guessed active/ghost footprint.
+4. Expand synthetic appearances, crops/occlusion, queue arrangements and board
+   association. Admit reviewed real labels and compare scratch/pretrained/direct
+   decoders on independent session/ancestry/family splits. The166 user images
+   are drafts, not a labeled benchmark. Broad render and real coverage are open.
+5. Release only after the full gate: >=95% exact complete state on the readable
+   real population, abstentions counted as failures, confidence intervals,
+   calibration/risk-coverage, exported-artifact parity, CPU latency/memory gates
+   and thin solver/bot adapters. Missing evidence leaves this gate open.
 
-First optimizer characterization completed: 16 steps, peak 484,966,400 B, exact
-checkpoint reload, loss 4.4767 -> 1.6126 and occupancy 0.5969 -> 0.2248. Geometry
-error remains 1.43 cells and development exact boards are 0/6. The M2 learning
-gate remains OPEN. Receipt docs/evidence/m2-learn16/receipt.json; next is a priced
-128-step controlled comparison, not a release-quality claim.
+Verified foundations and their limits:
 
-The 128-step comparison has now run: exact first-16 optimizer prefix and identical
-data, lower training loss (.3498) but still only the empty 2/6 boards exact.
-Development remains 0/6; known layer accuracy worsens to 0/12. Source/weight
-identity and per-case errors: docs/evidence/m2-learn128/comparison.json. Next is
-the finite 512-step training-fit diagnostic defined in M2_LEARNING_ACCEPTANCE.md;
-M2 learning and broad generalization remain open.
+| Area | Named evidence | What remains open |
+|---|---|---|
+| State1.1, bottom-first coordinates, explicit unknowns, strict solver conversion and renderer | docs/evidence/v006/; canonical-frame repair69 fixtures | Broad real visibility and full renderer/client coverage |
+| Scratch encoder/lattice/axial cell reader, independent locked/type/active/ghost heads, safe checkpoints | docs/evidence/m2-numerics/numerical.json;85 checks on named original sources | Accurate converged whole-state model; larger configuration |
+| Fixed-data learning16/128/saved511 | docs/evidence/m2-learn16/, m2-learn128/, m2-learn512/ | Saved511/512 fits6 boards but layers10/12 and geometry.4106 fail joint fit; dev0/6 |
+| Local single-cell reading | docs/evidence/m2-local-reading/scope.json |36/36 probability direction, only20/36 targets and18/36 changed boards exact; two unrelated changes |
+| Streaming source/data integrity | Frozen catalogues and per-step recipes; docs/evidence/m2-stream-probe/ is historical | A two-step square profile alone did not characterize long varied-shape memory |
+| CPU resource/recovery contracts | docs/evidence/v015-contracts/scope.json;29 scoped checks on f583792 | Not a whole-suite or model-accuracy claim |
+| Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
+| Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |
+| Queue/hold label policy | docs/evidence/m3-component-targets/scope.json;8 fixtures incl paired hidden rasters | No component neural heads/loss/runtime yet |
+| Corpus audit/review/split/seal tooling | docs/evidence/corpus-integrity-final/scope.json;26 adversarial checks | Correct reviewed labels and real-image model results |
+| Unlabeled real stress set | docs/evidence/real-drafts/scope.json;166 images/seven private sheets | Zero training/scoring eligibility; independent review and permission needed |
 
-The next study saved a wall-partial checkpoint at 511/512 steps. Exact first 128
-prefix confirms control. Locked training boards are 6/6, but known layers 10/12
-and geometry .4106 cells fail the predeclared fit criterion; development 0/6.
-docs/evidence/m2-learn512/comparison.json records partial status and provenance.
-Fixed-layout single-cell probe now ran: all36 probability changes correct in
-direction, only20/36 targeted cells and18/36 changed boards correct; two unrelated
-cells changed. docs/evidence/m2-local-reading/scope.json. Next: streaming
-state/position diversity and explicit resource profiling of the accuracy model;
-layer/geometry fit and complete-state requirements remain open.
+Milestone scope remains intact: M0 state/benchmark foundation and reviewed pilot;
+M1 label integrity and broad rendering; M2 scratch lattice model and adequate
+learning; M3 complete joint state; M4 controlled real comparisons; M5 release.
+Historical counts/artifacts retain their original source scope. Current safety
+and recovery gates are separately named; none imply a fresh unified suite.
 
-An independent M3 target contract preserves queue unknowns, explicit EOS anchors
-and hold status/type separation. Eight fixtures, including paired hidden queue/
-hold rasters, pass: docs/evidence/m3-component-targets/scope.json. No head/loss/
-runtime integration yet. docs/M3_COMPONENT_TARGETS.md.
+Prior tetrguide failures retained as design constraints:
 
-Streaming curriculum/source freezing is implemented and verified: 14 sampler/
-archive/admission checks and one actual 512-square optimizer/resource probe,
-all-final-tensor reload parity, replayed pixels/labels for 28 recorded samples.
-docs/evidence/m2-stream-probe/scope.json. No longer curriculum has run. Next
-system commit pressure admission/monitoring is now green on13 scoped checks
-(docs/evidence/v010/scope.json); next a fresh resource characterization and fresh-state learning study
-and separate accuracy-configuration resource profile; see M2_STREAMING.md.
-V-011 source review found cold one-step admission missed resident optimizer
-moments during backward. Version2 requires two square steps and rejects cold
-receipts; four protocol tests and actual warm characterization pass. All142
-trainable tensor states resident, warm512-square backward complete;594,829,312B
-raw peak under640MiB. docs/evidence/m2-stream-warm-probe/scope.json. V-011 CLOSED.
-The subsequent768-step study parked before launch on OS reservation pressure.
-An isolated CPU AdamW recovery primitive and seven fixtures are implemented in
-scripts/training_snapshot.py/tests/test_training_snapshot.py. Initial harnesses
-parked before child; after host headroom returned, an OpenBLAS import failure
-exposed V-012. Pre-import thread policy is now verified: recovery7 plus native
-resources6/pressure5/admission4 green on named runs. The recovery primitive is
-verified; driver integration remains open. Next: fresh warm admission and a
-fresh-state study, then the exact driver recovery gate.
-That fresh study reached565/768 updates before a native640MiB allocation failure;
-no final weights survived (V-013 OPEN). A two-step square gate is insufficient
-long diverse-shape memory evidence. The recovery-driver candidate now adds
-periodic snapshots/global resume, archive execution (V-014 OPEN), raw memory
-trajectory and finite native cache16. Next is exact2+6+3+3 recovery integration,
-then the diverse finite memory/learning gate at the unchanged640MiB ceiling.
-
-The M2 artifact now has a one-image inspection API with typed review-only output.
-Seven focused contracts and one actual checkpoint/JSON validation are green;
-docs/evidence/m2-runtime/scope.json. The encoder/model/loss/preprocessing/loader
-sources remain unchanged from 8d9d0f2; the new caller does not participate in the
-next optimizer comparison. Queue/hold remain explicitly unresolved.
-
-M0/M4 corpus tooling is verified on 26 adversarial integrity fixtures, including
-actual guarded CLI audit/seal/verify: docs/evidence/corpus-integrity-final/scope.json.
-Draft-only import, independent review/permission declarations, session/ancestry/
-skin/renderer groups, pixel duplicates and externally pinned held-out identity
-are enforced. The user-approved 166-image screenshot folder is imported as an
-unlabeled stress set with seven private contact sheets. No real images have been
-admitted, no human review is claimed, and the optimizer does not consume this
-manifest. See docs/CORPUS.md and docs/REAL_STRESS_SET.md.
-
-1. **M0: state and benchmark foundation.** Versioned image-supported state;
-   explicit unknowns; bottom-first geometry; solver conversion refusal; exact
-   solver/colored-state evaluation; annotation policy. Gate: adversarial fixtures.
-   Real reviewed pilot and legacy baseline remain a separate data gate.
-2. **M1: synthetic label integrity.** Deterministic layered renderer, independently
-   varied appearances, same-state counterfactual groups, crops/resizes, bounded
-   generation, independent simple-skin pixel oracle and montage. Gate: named
-   tests and visual inspection. Initial scope: one axis-aligned board, no
-   photorealistic backgrounds, no projective distortion or animation.
-3. **M2: scratch lattice-query prototype.** Shared multiscale encoder; learned
-   affine lattice; spatially bounded cell queries; independent occupancy/type,
-   active/ghost, visibility heads. Learn clean synthetic full images, including
-   no-grid, sparse and empty cases. Profile a small bounded pilot first.
-4. **M3: complete joint model.** Queue/hold roles, repeated/unknown/long queues,
-   bounded refinement, appearance-memory ablation, multi-board association.
-5. **M4: controlled real-image studies.** Reviewed 300–500-image pilot; independent
-   session/family splits; scratch/pretrained/direct-decoder comparisons;
-   failure-directed generation. No opt-in image becomes a label automatically.
-6. **M5: release.** Sealed real-image gate, >=95% exact complete state with
-   abstentions as failures on the readable population; confidence intervals and
-   risk/coverage; exact exported artifact parity; named CPU latency/resource
-   gates; thin solver/bot adapters. No performance claim before those run.
-
-Interactions with prior tetrguide defects, reviewed before implementation:
-
-| Prior issue | Contract/instrument in this project |
+| Issue | Contract here |
 |---|---|
-| B-260 stack deleted by active guessing, glow mistaken for blocks | Separate latent/render/output layers; direct locked labels; overlap/crop fixtures; no brightness-based parser |
-| B-227 reversed rows in a probe | One bottom-first affine lattice and asymmetric pixel-oracle/solver tests |
-| B-259 observed vs assumed state confused | No assumed content in annotation targets; explicit status and conversion refusal |
-| B-102 unrelated staged files committed | New repository; inspect and stage explicit task-owned paths |
+| B-260 active guessing deleted stack; glow confused with blocks | Direct locked labels/heads and separate active/ghost outputs; never erase guessed footprints |
+| B-227 reversed rows | One bottom-first frame with asymmetric pixel/solver tests |
+| B-259 observed and assumed state confused | Explicit unknown/status and refusal to convert unsupported solver input |
+| B-102 unrelated files staged | Isolated repository, explicit task-owned paths and index review |
 
-The old engine roadmap remains owned by tetrguide. No engine binaries or run
-state are copied. No neural model or screenshot parser is delivered by M0/M1.
+The neighboring engine roadmap, binaries, package and run state are not owned by
+this project. Never modify them to make a vision gate pass. See BUG_LOG.md,
+TRAINING_RECOVERY.md, RESOURCE_GUARD.md and CORPUS.md for the current contracts.

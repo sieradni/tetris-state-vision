@@ -1,0 +1,13 @@
+{
+  "torch": "2.14.1+cpu",
+  "job_ceiling_bytes": 536870912,
+  "mkldnn_available": true,
+  "mkldnn_enabled": true,
+  "environment": {
+    "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+    "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+  },
+  "native_query_available": false,
+  "capacity": null,
+  "finite_convolutions": 19
+}

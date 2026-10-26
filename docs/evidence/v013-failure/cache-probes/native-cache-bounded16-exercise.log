@@ -1,0 +1,219 @@
+{"supervisor_pid": 30364, "command": [".venv/Scripts/python.exe", "scripts/probe_native_cache.py", "--output", "runs/native-cache-bounded16-exercise.json", "--exercise", "--capacity", "16"], "memory_bytes": 536870912, "wall_seconds": 30.0, "work_items": 19, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "job_name": "Local\\TetrisStateVision-679de186679449e38d31063b68002f4d", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "6f46c8389de696d9fcddc00803675e3eb1898494369bb6e0c3fec1034d912a6f", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 20722671616, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 16511361024, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 31368351744, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 536870912}, "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{"case": 0, "height": 80}
+onednn_verbose,v1,info,oneDNN v3.12.0 (commit 80afa71049cd69a3df32adcccb623b12cd7baa22)
+onednn_verbose,v1,info,cpu,runtime:OpenMP,nthr:1
+onednn_verbose,v1,info,cpu,isa:Intel AVX-512 with Intel DL Boost and bfloat16 support
+onednn_verbose,v1,info,gpu,runtime:none
+onednn_verbose,v1,info,graph,backend,0:dnnl_backend
+onednn_verbose,v1,primitive,info,template:operation,engine,primitive,implementation,prop_kind,memory_descriptors,attributes,auxiliary,problem_desc,exec_time
+onednn_verbose,v1,graph,info,template:operation,engine,partition_id,partition_kind,op_names,data_formats,logical_tensors,fpmath_mode,implementation,backend,exec_time
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.1162
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0802
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3549
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0334
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0178
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0495
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0063
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2669
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.025
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0143
+{"case": 1, "height": 80}
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0089
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0897
+onednn_verbose,v1,primitive,create:cache_hit,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.00400001
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0018
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0197
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0011
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00480001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.1986
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.00150001
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.009
+{"case": 2, "height": 81}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x81x80,0.0322
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x81x80,0.0099
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih81oh81kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3301
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x81x80,0.0213
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x81x80,0.0102
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.002
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00120001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih81oh81kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2067
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x81x80,0.0264
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x81x80,0.0112
+{"case": 3, "height": 82}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x82x80,0.0335
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x82x80,0.0103
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih82oh82kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3346
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x82x80,0.0217
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x82x80,0.0179
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00229999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0019
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih82oh82kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2047
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x82x80,0.0235
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x82x80,0.011
+{"case": 4, "height": 83}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x83x80,0.031
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x83x80,0.0102
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih83oh83kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3385
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x83x80,0.0225
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x83x80,0.0104
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0024
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00139999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih83oh83kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2076
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x83x80,0.0384
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x83x80,0.0105
+{"case": 5, "height": 84}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x84x80,0.0486
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x84x80,0.0105
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih84oh84kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3456
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x84x80,0.0258
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x84x80,0.0137
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0019
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0015
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih84oh84kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.208
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x84x80,0.024
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x84x80,0.0099
+{"case": 6, "height": 85}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x85x80,0.0316
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x85x80,0.0103
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih85oh85kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3257
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x85x80,0.0229
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x85x80,0.0104
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00219999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00120001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih85oh85kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2115
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x85x80,0.0297
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x85x80,0.0115
+{"case": 7, "height": 86}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x86x80,0.0345
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x86x80,0.0104
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih86oh86kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3371
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x86x80,0.0235
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x86x80,0.0127
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00210001
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00129999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih86oh86kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2135
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x86x80,0.025
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x86x80,0.0105
+{"case": 8, "height": 87}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x87x80,0.0377
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x87x80,0.0107
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih87oh87kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3378
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x87x80,0.0254
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x87x80,0.0166
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00210001
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0015
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih87oh87kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2181
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x87x80,0.023
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x87x80,0.0108
+{"case": 9, "height": 88}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x88x80,0.0317
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x88x80,0.0108
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih88oh88kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3236
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x88x80,0.0192
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x88x80,0.0113
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00209999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00120001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih88oh88kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2233
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x88x80,0.0233
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x88x80,0.0108
+{"case": 10, "height": 89}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x89x80,0.0279
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x89x80,0.0107
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih89oh89kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.333
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x89x80,0.0197
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x89x80,0.0106
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.002
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00109999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih89oh89kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2221
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x89x80,0.0226
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x89x80,0.0109
+{"case": 11, "height": 90}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x90x80,0.0277
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x90x80,0.055
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih90oh90kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3332
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x90x80,0.0221
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x90x80,0.012
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.002
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00130001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih90oh90kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2876
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x90x80,0.0237
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x90x80,0.0116
+{"case": 12, "height": 91}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x91x80,0.0296
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x91x80,0.011
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih91oh91kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3276
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x91x80,0.02
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x91x80,0.0106
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00210001
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih91oh91kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2294
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x91x80,0.0234
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x91x80,0.012
+{"case": 13, "height": 92}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x92x80,0.036
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x92x80,0.0105
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih92oh92kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3859
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x92x80,0.0229
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x92x80,0.0166
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00309999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0018
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih92oh92kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2436
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x92x80,0.0377
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x92x80,0.014
+{"case": 14, "height": 93}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x93x80,0.0344
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x93x80,0.0127
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih93oh93kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3348
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x93x80,0.0219
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x93x80,0.019
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00209999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00139999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih93oh93kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2368
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x93x80,0.0237
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x93x80,0.0116
+{"case": 15, "height": 94}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x94x80,0.0301
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x94x80,0.011
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih94oh94kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.328
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x94x80,0.022
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x94x80,0.012
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00209999
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00130001
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih94oh94kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2333
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x94x80,0.0218
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x94x80,0.0115
+{"case": 16, "height": 95}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x95x80,0.0342
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x95x80,0.011
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih95oh95kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3346
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x95x80,0.0233
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x95x80,0.0118
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0019
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00109999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih95oh95kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2357
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x95x80,0.0249
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x95x80,0.0116
+{"case": 17, "height": 96}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x96x80,0.0303
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x96x80,0.0112
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih96oh96kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3267
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x96x80,0.02
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x96x80,0.0121
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.0018
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00119999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih96oh96kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2377
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x96x80,0.022
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x96x80,0.0162
+{"case": 18, "height": 80}
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0285
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit_direct_copy:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0108
+onednn_verbose,v1,primitive,create:cache_miss,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.3872
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0226
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:aBcd16b::f0,attr-scratchpad:user,,1x16x80x80,0.0166
+onednn_verbose,v1,primitive,create:cache_hit,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00240001
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:uni,undef,src:f32::blocked:abcd::f0 dst:f32::blocked:ABcd16b16a::f0,attr-scratchpad:user,,16x16x3x3,0.00129999
+onednn_verbose,v1,primitive,exec,cpu,convolution,jit:avx512_core,forward_training,src:f32:a:blocked:aBcd16b::f0 wei:f32:a:blocked:ABcd16b16a::f0 bia:undef::undef::: dst:f32:a:blocked:aBcd16b::f0,attr-scratchpad:user,alg:convolution_direct,mb1_ic16oc16_ih80oh80kh3sh1dh0ph1_iw80ow80kw3sw1dw0pw1,0.2012
+onednn_verbose,v1,primitive,create:cache_miss,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0235
+onednn_verbose,v1,primitive,exec,cpu,reorder,jit:blk,undef,src:f32::blocked:aBcd16b::f0 dst:f32::blocked:abcd::f0,attr-scratchpad:user,,1x16x80x80,0.0122
+{"torch": "2.14.1+cpu", "job_ceiling_bytes": 536870912, "mkldnn_available": true, "mkldnn_enabled": true, "environment": {"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"}, "native_query_available": false, "capacity": null, "finite_convolutions": 19}
+{"supervisor_pid": 30364, "command": [".venv/Scripts/python.exe", "scripts/probe_native_cache.py", "--output", "runs/native-cache-bounded16-exercise.json", "--exercise", "--capacity", "16"], "memory_bytes": 536870912, "wall_seconds": 30.0, "work_items": 19, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "job_name": "Local\\TetrisStateVision-679de186679449e38d31063b68002f4d", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "6f46c8389de696d9fcddc00803675e3eb1898494369bb6e0c3fec1034d912a6f", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 20722671616, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 16511361024, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 31368351744, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 0}, "status": "passed", "exit_code": 0, "elapsed_seconds": 2.07, "child_pid": 31376, "last_system_memory": {"commit_bytes": 20706095104, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 16506318848, "counter_source": "GetPerformanceInfo"}, "peak_job_commit_bytes": 251068416}
