@@ -3,6 +3,7 @@
 Repository C:/Users/micha/Code/tetris-state-vision, local Git, no remote.
 Goal ACTIVE: complete the standalone model thoroughly, commit good checkpoints.
 No vision background process is running. No run data was deleted.
+Latest commits: 2486cb7 corpus integrity; c2572bd user-approved draft stress set.
 
 Latest verified milestone: corpus preparation/audit/seal/verify, 26/26 checks in
 3.620 s, raw peak 62,005,248 B under 256 MiB / 60 s / 26 finite cases.
@@ -31,6 +32,8 @@ separate reviewed-data integration; the existing optimizer is synthetic-only.
 
 Next acceptance-gated task: M2 128-step controlled learning study. Another
 owner's release build remains live (cargo 30852/15708, rustc 20672 last check).
+Host check: 29,079,207,936 B committed; rustc private 1,927,860,224 B. Keep
+the conservative serialized learning window; no new optimizer launched.
 Do not kill or modify it. The 128-step study has NOT launched; output/receipt
 do not exist. Immediately recheck exact cargo/rustc/fusion-bridge processes.
 If the resource window is free: expected <768 MiB, kernel 1 GiB ceiling,
