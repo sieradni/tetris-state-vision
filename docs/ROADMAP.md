@@ -14,6 +14,14 @@ prototype and a resource-admitted CPU learning pilot. Reviewed real-image data,
 the legacy baseline and full renderer coverage remain pending; no trained model
 or screenshot accuracy is claimed by M1.
 
+M2 source/numerical gate is now green: scratch encoder/lattice/axial cell decoder,
+independent occupancy/type/layer heads, aspect-preserving inputs and tensor-only
+checkpoints. 85 checks; one CPU forward/backward probe (647,098-parameter pilot,
+389,275,648 B raw Job peak). Receipt docs/evidence/m2-numerics/numerical.json.
+Next: admitted clean/no-grid optimizer/learning pilot; this is not yet the M2
+learning acceptance or a comparison of architecture quality. The accuracy-sized
+configuration has not been trained/profiled by this pilot gate.
+
 1. **M0: state and benchmark foundation.** Versioned image-supported state;
    explicit unknowns; bottom-first geometry; solver conversion refusal; exact
    solver/colored-state evaluation; annotation policy. Gate: adversarial fixtures.

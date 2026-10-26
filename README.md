@@ -1,8 +1,8 @@
 # Tetris State Vision
 
-An independent image-to-state model research project. The first milestone
-implements state/annotation contracts, honest exact-state scoring and synthetic
-scene generation. **There is no trained model or screenshot parser yet.**
+An independent image-to-state model research project. It includes state contracts,
+exact-state scoring, synthetic scenes and the scratch M2 lattice-query model.
+**There is no released complete screenshot parser or validated model yet.**
 
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
 dependencies and generate three ancestry groups (15 images). Each receipt/output
@@ -41,6 +41,15 @@ complete and cropped states are in examples/. The state API is
 The original foundation receipt is docs/evidence/foundation.json (f5ed97f's
 sources, preserved as historical evidence). No engine
 runtime, detector, downloaded weights or existing user images are dependencies.
+
+Optional neural work uses `uv sync --frozen --extra train` through the bounded
+launcher (1 GiB / 600 s / one sync). It installs CPU-only PyTorch on Windows.
+`tetris_vision.model.TetrisStateNet` exposes the M2 raw heads; preprocessing is
+`tetris_vision.preprocess.prepare_image`. The accuracy configuration is distinct
+from `ModelConfig.pilot()`, which is only for resource/numerical experiments.
+Source/gradient/checkpoint gates: 85 checks, docs/evidence/m2-numerics/numerical.json.
+Learning, queue/hold joint decoding, real-image evaluation and release gates remain
+open; raw head diagnostics do not establish complete-state accuracy.
 
 The design source is archived in docs/research/Tetris_Vision_Research.md.
 See docs/ROADMAP.md for milestones and docs/ANNOTATION.md for label semantics.

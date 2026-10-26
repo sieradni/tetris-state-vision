@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\probe_model.py", line 81, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\probe_model.py", line 34, in main
+    ceiling = require_bounded_job()  # Before importing the optional heavy runtime.
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\probe_model.py", line 26, in require_bounded_job
+    raise RuntimeError("use run_bounded.py with <=2 GiB aggregate commit and a wall cap")
+RuntimeError: use run_bounded.py with <=2 GiB aggregate commit and a wall cap

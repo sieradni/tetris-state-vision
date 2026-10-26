@@ -1,0 +1,18 @@
+{
+  "supervisor_pid": 2168,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/probe_model.py",
+    "--output",
+    "runs/m2-probe-result.json"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 60.0,
+  "work_items": 1,
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "failed",
+  "exit_code": 1,
+  "elapsed_seconds": 0.274,
+  "child_pid": 9516,
+  "peak_job_commit_bytes": 33058816
+}

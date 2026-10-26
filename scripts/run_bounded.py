@@ -16,6 +16,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import uuid
 
 
 class Basic(ctypes.Structure):
@@ -44,7 +45,7 @@ class MemoryStatus(ctypes.Structure):
          "available_virtual", "extended")]
 
 
-def arm_job(memory_bytes: int):
+def arm_job(memory_bytes: int, name: str | None = None):
     if os.name != "nt":
         raise RuntimeError("Windows Job Object enforcement required; refusing launch")
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -65,7 +66,7 @@ def arm_job(memory_bytes: int):
     kernel.QueryInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int,
         ctypes.c_void_p, wintypes.DWORD, ctypes.c_void_p]
     kernel.TerminateJobObject.argtypes = [wintypes.HANDLE, wintypes.UINT]
-    job = kernel.CreateJobObjectW(None, None)
+    job = kernel.CreateJobObjectW(None, name)
     info = Extended()
     info.basic.flags = 0x200 | 0x2000  # JOB_MEMORY | KILL_ON_JOB_CLOSE
     info.job_memory = memory_bytes
@@ -120,11 +121,15 @@ def main() -> int:
         temporary.replace(args.receipt)
 
     try:
-        kernel, job, peak = arm_job(state["memory_bytes"])
+        job_name = "Local\\TetrisStateVision-"+uuid.uuid4().hex
+        kernel, job, peak = arm_job(state["memory_bytes"], job_name)
+        state["job_name"] = job_name
         state["guard"] = "readback-verified Windows aggregate Job commit + kill-on-close"
         receipt("admitted")
         print(json.dumps(state), flush=True)
-        process = subprocess.Popen(command, stdin=subprocess.DEVNULL)
+        child_environment = dict(os.environ)
+        child_environment["TETRIS_VISION_JOB_NAME"] = job_name
+        process = subprocess.Popen(command, stdin=subprocess.DEVNULL, env=child_environment)
         state["child_pid"] = process.pid
         receipt("running")
         try:

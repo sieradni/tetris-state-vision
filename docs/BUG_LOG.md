@@ -11,6 +11,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
 | provenance | V-003 (1) | Computed hashes and byte comparison |
 | test-instrument | V-004 (1) | Native allocation admission plus raw counters |
+| resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 
 ## V-001 — CLOSED: latent geometry survived ambiguous crops
 
@@ -101,3 +102,24 @@ a named green run. An unrun gate leaves the entry OPEN.
   the historical 1.0 cropped example migrates to masked cells/layers. Scope and
   source hashes are in docs/evidence/v006/scope.json. M1 receipts remain history
   on 3cd063b's pre-repair sources; old affected 1.1 annotations are rejected.
+
+## V-007 — CLOSED: worker inspected an incidental nested Job
+
+- Symptom: runs/m2-probe-job.json failed before Torch import. The supervisor's
+  explicit 1 GiB cap read back correctly, but the worker's NULL-handle query
+  returned flags 0x3000 and local memory limit 0 (m2-job-diagnostic.log).
+- Root cause: an implicit current-Job query does not identify the supervisor's
+  object when an additional nested Job exists. Inherited parent enforcement
+  remains active; the worker incorrectly treated the incidental local limits
+  as the cap's identity. Native allocation-denial gates remain independent proof.
+- Detection class: resource-identity.
+- Instrument: unique named supervisor Job; worker opens it query-only, verifies
+  actual process membership, then reads its limits. Added nested-Job and forged-
+  identity fixtures; no memory ceiling was raised or disabled for this repair.
+- References: https://learn.microsoft.com/en-us/windows/win32/api/jobapi/nf-jobapi-isprocessinjob
+  and https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs
+- Green gate: docs/evidence/m2-numerics/m2-fixtures-r1.stderr.log, 85/85 in
+  6.992 s, including nested/forged identity, native allocation denial and
+  child/grandchild death. Numerical worker admitted the exact 1 GiB Job and
+  completed one forward/backward step (m2-probe-r2-result.json). Source/lock
+  identity: numerical.json. Raw historical failure/diagnostic logs retained.

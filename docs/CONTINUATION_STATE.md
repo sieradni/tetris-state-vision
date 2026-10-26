@@ -1,41 +1,43 @@
-# Current checkpoint — 2026-10-25
+# Current checkpoint — 2026-10-26
 
-Repository C:/Users/micha/Code/tetris-state-vision; local Git, no remote.
-Active goal: complete as much of the standalone model project as possible,
-thoroughly, with verified local commits. Goal remains active.
+Repository C:/Users/micha/Code/tetris-state-vision, local Git, no remote.
+Goal remains ACTIVE: complete the standalone model project thoroughly and commit
+verified milestones. No real-image/release completion is claimed.
 
-Completed milestones:
-- f5ed97f: state/data foundation (46 checks on those sources, historical).
-- 3cd063b: variable layouts/panels and observation-only queue spans (67 checks,
-  30-image montage + three explicit visible queue flows; docs/evidence/m1/).
-- V-006 repair: canonical active/ghost poses require supported board geometry.
-  Reproduction 1 failed / 21 at docs/evidence/v006/v006-before.stderr.log;
-  fixed full gate 69/69 in 3.685 s at v006-after.stderr.log. Limits 512 MiB /
-  90 s / 69 cases, raw peak 154,918,912 B. Source hashes in scope.json.
-  Legacy 1.0 cropped annotation masks cells/layers; invalid 1.1 pose is refused.
-  These source changes supersede M1's cropped annotation policy; retain old
-  receipts on their own sources, never as verification of the repair.
+Verified checkpoints:
+- f5ed97f foundation; 3cd063b layout/panel diversity (historical scopes).
+- b06cdda: V-006 canonical pose/registration repair, 69 green checks.
+- M2 source/numerical milestone: 85/85 in 6.992 s, no skips. Current source and
+  lock hashes in docs/evidence/m2-numerics/numerical.json. Scratch encoder at
+  strides 2/4/8/16, learned axis-aligned lattice, bounded cell sampling/axial
+  attention; independent occupancy/type/visibility/active/ghost heads; tensor-only
+  hash-checked checkpoints. Default accuracy config and small pilot are distinct.
 
-Active M2 task: scratch lattice-query prototype, docs/MODEL_PROTOTYPE.md.
-Optional CPU dependency setup PASSED: runs/m2-setup.json, rc=0 in 70.658 s,
-190,705,664 B peak under 1 GiB / 600 s / one uv sync. torch 2.14.1+cpu,
-numpy 2.5.4 installed in .venv; pyproject.toml, uv.lock and prototype design remain
-owned M2 work pending their own verified checkpoint. No model source/training yet.
+Measured resource admission:
+- Optional CPU-only torch 2.14.1+cpu / numpy 2.5.4 install, peak 190,705,664 B
+  under 1 GiB / 600 s / one sync. Package source version 0.3.0.
+- One 647,098-parameter pilot forward/backward: 15.291 s with cold import,
+  peak 389,275,648 B under 1 GiB / 60 s / one step; finite gradients and losses.
+- Full 85-case suite: 9.585 s runner, raw peak 1,006,940,160 B under 1 GiB /
+  120 s / 85 cases. Counter is near the cap and includes denied-allocation probes;
+  raw values retained. Native allocation denial and process-tree death green.
+- V-007 closed: implicit worker Job query saw an incidental nested object.
+  Supervisor now names its Job; worker proves membership and reads that exact
+  ceiling before Torch import. No cap disabled/raised for the repair. Evidence
+  retains the initial failure, diagnostic and green exact-identity fixtures.
 
-Next: implement preprocessing + valid-pixel mask, shared multiscale encoder,
-learned one-board lattice, bounded cell samples/axial context and independent
-occupancy/type/observability/active/ghost heads. Characterize import and tiny
-forward/backward under a small Windows Job before any longer learning pilot.
-Queue/hold, controlled real data, export and release gates remain open.
+Next acceptance-gated task: M2 clean/no-grid learning pilot. Implement a finite
+CPU optimizer driver with >=3 density strata, variable board origin/spacing,
+clean/no-grid matched groups, observation-only targets, <=64 MiB tensor cache,
+no workers/prefetch, per-step durable progress and hash-identified checkpoints.
+First characterize 16 optimizer steps at max side 384 and one CPU thread under
+1 GiB / 120 s; measure loss/throughput/memory before scaling. Check for any other
+heavy process before launch. Code/data/config/seed/weights identity is required.
+Then run a longer bounded diagnostic if the small pilot warrants it; do not
+call learning complete on a merely finite gradient or favorable average score.
 
-Resource note: other owner's tetrguide release build was live at last check
-(cargo 30444/18252, rustc 23704). Recheck exact current process state before a
-substantial training job; do source/modest verification work meanwhile. Do not
-kill or alter that work. Setup/reproduction/full-gate supervisors and children
-are verified exited; no vision background work is running.
-
-Bug interactions: V-001/V-006 require one supported coordinate system for all
-canonical targets; V-002 keeps occupancy/type/layers independent; V-003 requires
-computed hashes; V-004 retains native memory enforcement and raw counters;
-V-005 requires observation-only targets and paired-raster equivalence tests.
-No engine files, binaries or run data changed. Real-image accuracy unmeasured.
+No background vision process or training is running. Other release-build/search
+processes were last verified absent; recheck before longer work. Queue/hold joint
+heads, larger accuracy model training, broad renderer coverage, human-reviewed
+real-image pilot/baseline, calibration, export and release accuracy remain open.
+Read MODEL_PROTOTYPE.md and BUG_LOG.md before the next architectural change.

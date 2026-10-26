@@ -46,6 +46,33 @@ class ResourceGuardTests(unittest.TestCase):
             self.assertEqual(receipt["status"], "failed")
             self.assertNotIn("child_pid", receipt)
 
+    def test_worker_queries_named_ceiling_beneath_another_nested_job(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            source = ("import sys, ctypes; from ctypes import wintypes; sys.path.insert(0,'scripts'); "
+                      "from probe_model import require_bounded_job; from run_bounded import Extended; "
+                      "k=ctypes.WinDLL('kernel32',use_last_error=True); "
+                      "k.CreateJobObjectW.argtypes=[ctypes.c_void_p,wintypes.LPCWSTR]; k.CreateJobObjectW.restype=wintypes.HANDLE; "
+                      "k.GetCurrentProcess.restype=wintypes.HANDLE; "
+                      "k.SetInformationJobObject.argtypes=[wintypes.HANDLE,ctypes.c_int,ctypes.c_void_p,wintypes.DWORD]; "
+                      "k.AssignProcessToJobObject.argtypes=[wintypes.HANDLE,wintypes.HANDLE]; "
+                      "nested=k.CreateJobObjectW(None,None); info=Extended(); info.basic.flags=0x3000; "
+                      "assert k.SetInformationJobObject(nested,9,ctypes.byref(info),ctypes.sizeof(info)); "
+                      "assert k.AssignProcessToJobObject(nested,k.GetCurrentProcess()); "
+                      "assert require_bounded_job()==64*1024**2; print('EXACT_JOB_VERIFIED')")
+            result, receipt = self.run_child(Path(scratch), source)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("EXACT_JOB_VERIFIED", result.stdout)
+            self.assertIn("TetrisStateVision-", receipt["job_name"])
+
+    def test_worker_refuses_a_forged_job_identity(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            source = ("import sys,os; sys.path.insert(0,'scripts'); from probe_model import require_bounded_job; "
+                      "os.environ['TETRIS_VISION_JOB_NAME']='Local\\\\nonexistent-tetris-vision-job'; "
+                      "require_bounded_job()")
+            result, receipt = self.run_child(Path(scratch), source)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(receipt["status"], "failed")
+
     def test_wall_timeout_kills_child_and_grandchild_with_durable_receipt(self):
         with tempfile.TemporaryDirectory() as scratch:
             root = Path(scratch)

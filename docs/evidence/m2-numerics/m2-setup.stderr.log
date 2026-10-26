@@ -1,0 +1,27 @@
+Resolved 16 packages in 1.03s
+   Building tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+Downloading torch (120.1MiB)
+Downloading networkx (2.0MiB)
+Downloading sympy (6.0MiB)
+Downloading numpy (12.1MiB)
+      Built tetris-state-vision @ file:///C:/Users/micha/Code/tetris-state-vision
+ Downloaded networkx
+ Downloaded sympy
+ Downloaded torch
+ Downloaded numpy
+Prepared 12 packages in 50.41s
+Uninstalled 1 package in 6ms
+Installed 12 packages in 17.62s
+ + filelock==4.2.4
+ + fsspec==2026.9.0
+ + jinja2==3.1.6
+ + markupsafe==3.0.4
+ + mpmath==1.3.0
+ + networkx==3.7
+ + numpy==2.5.4
+ + setuptools==84.2.1
+ + sympy==1.14.0
+ - tetris-state-vision==0.1.0 (from file:///C:/Users/micha/Code/tetris-state-vision)
+ + tetris-state-vision==0.2.0 (from file:///C:/Users/micha/Code/tetris-state-vision)
+ + torch==2.14.1+cpu
+ + typing-extensions==4.16.0

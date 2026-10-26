@@ -1,0 +1,22 @@
+{
+  "supervisor_pid": 21108,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 120.0,
+  "work_items": 85,
+  "job_name": "Local\\TetrisStateVision-fe536cd145cf4dbcb5e3e0fc6fc75338",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 9.585,
+  "child_pid": 8584,
+  "peak_job_commit_bytes": 1006940160
+}

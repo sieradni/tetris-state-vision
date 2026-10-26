@@ -1,0 +1,19 @@
+{
+  "supervisor_pid": 26776,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/probe_model.py",
+    "--output",
+    "runs/m2-probe-r2-result.json"
+  ],
+  "memory_bytes": 1073741824,
+  "wall_seconds": 60.0,
+  "work_items": 1,
+  "job_name": "Local\\TetrisStateVision-5f72972eae4d4e32a586b8cd156dd9f5",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 15.291,
+  "child_pid": 3648,
+  "peak_job_commit_bytes": 389275648
+}
