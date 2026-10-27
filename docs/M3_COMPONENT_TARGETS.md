@@ -66,8 +66,24 @@ unchanged, fully valid source pixels (padding is allowed). It refuses altered
 evidence instead of guessing which identities survived. A resized component
 observer and its paired-raster gate remain OPEN before broad M3 training.
 
+For synthetic data, `model_capture.render_for_model` now selects a bounded final
+capture size and reruns the existing observer at that exact transform. It records
+the actual rounded x/y dimensions in the effective Appearance; `prepare_image`
+then pads without another resize. Weak final icons lose identity supervision.
+This creates a new capture recipe; it does not claim equality to an old PNG
+resized a second time. Preserve the original4096 M2 archive/recipe separately.
+
+Nine new label/preparation checks pass: final noninteger geometry, weak previews,
+unchanged capture, size/refusal bounds and paired identical rasters for hidden
+panels, occluded middle slots and different unseen prefixes. The latter retains
+visible T/I order without a hidden absolute count. Prepared tensor targets also
+agree for indistinguishable images. Tests took2.057s,255,062,016B raw peak under
+512MiB/60s. Source-bound evidence will be pinned at this milestone's commit.
+This supports an initial synthetic M3 curriculum, not real-image relabeling,
+component accuracy or arbitrary post-labeled resizing/invalid alpha.
+
 The public inspection API remains needs_review; it identifies M3 artifacts but
 leaves queue/hold unknown. M3 training, warm optimizer/resource admission,
-resized-component supervision and reviewed runtime decoding are still OPEN.
+general resized-component supervision and reviewed runtime decoding are still OPEN.
 No M2 admission covers the changed package or new heads. The running4096-target
 M2 study must continue from its original archive and optimizer history.

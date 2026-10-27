@@ -4,12 +4,15 @@ Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity, no
 remote. Goal ACTIVE and unfinished. Neighboring engine/apps/data untouched.
 Local milestones committed; no push/deploy/publish/deletion authorized.
 
-RUNNING: runs/m2-stream-accuracy4096-s2, resumed ORIGINAL M2 from bank192,
+TERMINAL SUCCESSFUL SEGMENT: runs/m2-stream-accuracy4096-s2, ORIGINAL M2 from bank192,
 fixed global4096, at most512 new updates (up to704). Hidden root24896/20316,
 controller23208/21624, training supervisor18008/15176, actual worker9836
 (launcher26436). Exact command lines verified. Startup passed: global199 at
 55.183s, original archived trainer, no stderr. Later290/4096 at242.158s, bank256
-published. Only heavy vision Job live.
+published. Final704/4096,512new,step_partial; root passed0 at1293.239s,
+964,603,904B/1280MiB; child928,505,856B/1GiB. All matching model processes gone.
+Native controller segment_verified, data704+27 probe replay/round-trip GREEN.
+Global4096 remains unfinished. No heavy vision Job currently live.
 Check live PID and terminal receipts; stale running/progress alone proves nothing.
 
 Native parent1280MiB/2100s/512new updates, child1024MiB/1860s outer/1800s inner,
@@ -28,7 +31,10 @@ runs/m2-stream-accuracy4096-s2-pipeline/{progress,result}.json. Worker
 runs/m2-stream-accuracy4096-s2/{progress,latest-training,summary}.json and
 runs/m2-stream-accuracy4096-s2-job.json/.log/.stderr.log.
 
-NEXT inspect these same handles/files, not a fresh launch. On segment_verified,
+NEXT preserve verified704 evidence, run ordinary error report on its actual saved
+artifact under1GiB/120s/27forwards (same model envelope as prior546MiB report).
+Then resume704 toward4096 in new s3, unchanged original source/recipe,512new.
+For each segment_verified,
 verify actual new/global counts, partial tag, source/artifact and ancestor-stop
 provenance, terminal tree and curated evidence. Commit narrow milestone, then
 run error probe on actual saved segment before selecting learning changes.
@@ -98,3 +104,18 @@ reviewed real pilot and controlled scratch/pretrained/direct comparisons,
 calibration, export and release. User's166 images are unlabeled drafts, zero
 training/scoring eligibility; seven private sheets. Unknown is not empty;
 locked/active/ghost separate, bottom-first. Torch2.14.1+cpu, no GPU.
+
+Selected next M3 data milestone: render synthetic captures directly at the
+bounded model size and re-run existing observe() on that exact final transform.
+Do not resize known source Icon labels afterward or invent support geometry.
+Keep the V-016 refusal for arbitrary post-labeled resize/invalid alpha. Acceptance:
+noninteger crop/resize geometry, size budget, weakened icon identity masks,
+paired hidden panels, paired occluded middle slots, paired unseen-start spans,
+and final-frame targets admitted without another resize. No training admission
+or queue/hold accuracy claim from these label fixtures. Prior contracts:
+V-001/002/005/006/016 observation support + paired-raster standing instrument;
+V-003/014 current source vs original4096 archive; V-011/013 new data/M3 config
+requires fresh bounded warm profile. No changes to the original running recipe.
+Final-capture9 checks GREEN2.057s/255,062,016B under512MiB/60s. This admits
+synthetic final-frame labels without a second resize; arbitrary post-labeled
+resize/alpha still refuses. No M3 training/resource or component quality claim.
