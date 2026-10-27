@@ -1,0 +1,37 @@
+{
+  "parent_peak_bytes": 566571008,
+  "status": "verified_partial",
+  "requested_steps": 768,
+  "curator_peak_bytes": 92774400,
+  "weights_sha256": "d911f819d78d11b0b5f520fbec0381784118fc313915bdc5cc5316b90de8f75a",
+  "new_updates": 512,
+  "snapshot_payload_sha256": "a3f15d5a2b036665bb64096c64b7a1c66d01a2b938c42ce730010f85a20c074c",
+  "snapshot_manifest_sha256": "39d636c14b8753da6b82cb1b6915b1a6f9235d9c7db5f7094360868ce6661d2c",
+  "artifact_sha256": {
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-collector.ps1": "d19243c095155109e5d773a6bf0ed821047c3d3b951af6664ef838e414ae837a",
+    "controller-curation.log": "2bb1d892b19f6ea8b850dd7f8ee3e4be5f28d54b7a50872758a7aa34699795b1",
+    "controller.log": "a8bc5d5e2e61cf0bcc5d15f7c6f0a5ef20bf2dc5a62ed629b229a90ad54dca53",
+    "controller-job.json": "8a84eeeecd769a3edfbbf32784539a1dc190359eb9479fa8775790c634db8a70",
+    "controller-curation-job.json": "fecddff14b046dde7b566f680caf966e33397a3d3ef9a392170a5c0e455b57b3",
+    "controller-result.json": "32d2d94956692ff5151256d07f3663144b79340b94f1d31e4ad71f30228b099b"
+  },
+  "verified_dead_pids": [
+    32316,
+    35464,
+    4468,
+    20844,
+    36824,
+    35400,
+    2240,
+    17728
+  ],
+  "child_seconds": 129.38,
+  "child_peak_bytes": 530214912,
+  "curator_seconds": 5.002,
+  "parent_seconds": 135.133,
+  "controller_sha256": "dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad",
+  "layer_evidence": false,
+  "global_steps": 640
+}

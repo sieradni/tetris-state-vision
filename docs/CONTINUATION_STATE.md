@@ -127,3 +127,16 @@ match excluding elapsed time, including29 recomputed updates513..541. Evidence
 layer-learning541-recomputed-r1/; no old541 tensor comparison claimed.
 Broader diagnostic source review now adds full recipe/seed/config/frozen-model
 origin checks and independent ordinary/dense metric recomputation; still UNRUN.
+False s2 VERIFIED step_partial640/768,512 new; parent135.133s/566,571,008B.
+Entire matching tree/PIDs gone; actual inference/training hashes and raw receipts
+preserved. NEXT false s3 last128, expected<700MiB aggregate,nativeguards:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 128 --receipt runs/m2-stream-layer-control768-s3-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-layer-control768-s3 --target-steps 768 --updates 128
+--admission runs/m2-stream-layer-control-profile-r1
+--resume-from runs/m2-stream-layer-control768-s2
+Logs same-prefix-pipeline.log/.stderr.log, state same-prefix-pipeline/progress.json,
+result.json; child same-prefix-job.json. Child640MiB,aggregate896MiB/420s/work128.
+Freeze controller/helpers; expect complete768. Then matched report and generalization.
+LIVE false s3 launcher32604, exact command verified.
