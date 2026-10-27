@@ -132,3 +132,14 @@ before future integration. Active original s3 continues untouched.
 LIVE standalone sampler tests launcher22424;exactstartup runs/interleaved-order-tests-r1-startup.json.
 
 Standalone7 sampler checks GREEN28.595s/native29.540s/41,766,912B under128MiB;all known PIDs/exact commands gone. Source-pinned evidence curator next128MiB/30s/work7,expected<110MiB; plan runs/interleaved-order-curation-r1-plan.json,receipt runs/interleaved-order-curation-r1.json,logs same stem; output docs/evidence/interleaved-order-contracts/scope.json. Not integrated/admitted yet.
+
+LIVE sampler evidence curator launcher27880;exact startup runs/interleaved-order-curation-r1-startup.json.
+
+Sampler7-check evidence VERIFIED docs/evidence/interleaved-order-contracts/scope.json:
+17 source/fixture/lock/plan hashes checked;curator1.740s/77,344,768B under128MiB.
+All known test/curator PIDs/exact commands gone. Raw curator receipt/log bytes
+preserved. No active training source/helper changed. Future policy integration
+must update frozen source list, centralized curriculum routing/admission/recovery,
+controller probe cardinality, source-bound collectors and raw error-reader policy
+checks; legacy stream/ordered-fit behavior and historical evidence stay intact.
+Current selected action still terminal s3 and final41-forward ordinary audit.

@@ -1,0 +1,12 @@
+test_ancestry_count_uses_actual_prefix_without_inventing_diversity (test_interleaved_order.InterleavedOrderTests.test_ancestry_count_uses_actual_prefix_without_inventing_diversity) ... ok
+test_arbitrary_resume_cursors_reproduce_global_order (test_interleaved_order.InterleavedOrderTests.test_arbitrary_resume_cursors_reproduce_global_order) ... ok
+test_every_admitted_cycle_has_identical_complete_pair_population (test_interleaved_order.InterleavedOrderTests.test_every_admitted_cycle_has_identical_complete_pair_population) ... ok
+test_every_eight_position_round_has_every_class_and_absence (test_interleaved_order.InterleavedOrderTests.test_every_eight_position_round_has_every_class_and_absence) ... ok
+test_invalid_boolean_fractional_or_unbounded_cursors_refuse (test_interleaved_order.InterleavedOrderTests.test_invalid_boolean_fractional_or_unbounded_cursors_refuse) ... ok
+test_reordered_pairs_retain_actual_pixels_public_labels_and_recipes (test_interleaved_order.InterleavedOrderTests.test_reordered_pairs_retain_actual_pixels_public_labels_and_recipes) ... ok
+test_repeated_queries_consume_no_global_randomness_and_are_not_one_fixed_cycle (test_interleaved_order.InterleavedOrderTests.test_repeated_queries_consume_no_global_randomness_and_are_not_one_fixed_cycle) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 28.595s
+
+OK

@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "source_base_commit": "23b8cf51c991abc8ebccfc1bf78615b949b0e7e5",
+  "sources": {
+    "scripts/m2_interleaved_order.py": "22e0dad24535991b6c284f5b1b8ab23a5dae194fcb5a7febcf2b9e3b91900a6d",
+    "scripts/m2_positive_control_data.py": "484a9497d9acdf47471093fd693c2f3c5ad576e12a0592dc75ed3bc5ba03058a",
+    "tests/test_interleaved_order.py": "2ccf5907ac13ae5cbe9589a595ea2d96ba342e26d527df28c4b817e760a9a195",
+    "src/tetris_vision/__init__.py": "ef1f6cbe4acd3ba8f979f8ec1f83a439bccd74d3319b5f9789bc66ba7bb8c3f8",
+    "src/tetris_vision/dataset.py": "daee2bd5e287dd087de44e5d58e05a9a4d1ba6a3439340ee838d2c4d6ea993c8",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "src/tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "src/tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "src/tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "src/tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "docs/INTERLEAVED_FIT.md": "c40df265d2883ce232054b74fbe6dcd87299d4de964df9d61bb37ff84ae7630a"
+  },
+  "gates": [
+    {
+      "stem": "interleaved-order-tests-r1",
+      "tests": 7,
+      "raw_peak_job_commit_bytes": 41766912
+    }
+  ],
+  "tests_across_scoped_runs": 7,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}
