@@ -90,6 +90,20 @@ The39 error-report checks bind actual historical fixture/source hashes in
 docs/evidence/allclass-error-contracts/scope.json. Continue the unchanged finite
 study before choosing another mechanism or extending its target.
 
+At640/1,024, the same independent41-image replay confirms32/32 fit boards,
+128/128 semantic labels and.14781884-cell geometry, but only8/64 exact roles:
+4/56 observed (two L poses per role) and4/8 absences. Each role predicts L on26
+views,Z on2 and absence on4;26/32 type labels are wrong. Observed columns and
+equivalent rotations are correct; active has13 row errors and ghost14. Thus
+correct locked boards coexist with severe piece-class and role-position failure.
+Development remains2/9 boards (the two empty),0/18 roles,4.06980-cell geometry.
+Evidence docs/evidence/m2-stream-allclass640-errors-r1/scope.json binds actual
+weights87930058... and explicit step_partial640/1024. Ordinary replay34.080s/
+425,746,432B under640MiB reproduces every saved metric without changing weights.
+Native training/controller proof in same-name1024-s2 evidence retains all640
+recipes,41 probes, full source/snapshot identity and complete process termination.
+The1024-update fit criterion remains FALSE at this checkpoint.
+
 If the final fixed study still fails, keep two questions distinct. First, the
 declared32-step cycle presents each class in four consecutive views and always
 ends with the four absences; every64-step snapshot is at that same cycle phase.

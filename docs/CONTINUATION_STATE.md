@@ -174,3 +174,29 @@ geometry.14781884010881186; fit FALSE. Independent raw-head replay next as above
 Collector actual128 VerifyOnly passes without writes; historical-proof reuse
 refuses and its bytes unchanged. Actual640 capture passes and preserves raw
 source/controller/native receipts/startup. No model Job live until next launch.
+
+LIVE640 ordinary replay launcher27072; exact startup runs/m2-stream-allclass640-errors-r1-startup.json.
+
+640 ordinary replay PASS34.08s/425746432B;all known PIDs/exact commands gone;next curator128MiB/30s/work41 as predeclared.
+
+LIVE640 error curator launcher17804;exact startup in runs/allclass640-error-curation-r1-startup.json.
+
+LATEST640 raw-head evidence VERIFIED;41 forwards34.080s/425,746,432B under640MiB.
+Independent collector passed;all known PIDs/exact commands gone;raw curator receipt/
+logs copied byte-checked. Both role heads predict L26,Z2,absence4;4 exact observed
+poses are L,two per role.32/32 boards,128/128 semantics,.14781884geometry;fitFALSE.
+NEXT final s3,+384 ->1024; expected<700MiB,parent896MiB/900s/work384,
+child640MiB/1860s with ancestor900s effective deadline; curator128MiB/120s/work1065:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
+--work-items 384 --receipt runs/m2-stream-allclass1024-s3-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s3
+--target-steps 1024 --updates 384 --admission runs/m2-stream-recovery-gate-r5/profile
+--resume-from runs/m2-stream-allclass1024-s2
+Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
+terminal result.json;child same-prefix-job.json;run summary/progress/snapshots.
+Freeze controller/shared helpers; catalogue6147/source c586 unchanged. One heavy
+Job, native kernel/pressure/pre-import CPU1/cache16 unchanged. Recheck >40GB free.
+At termination verify receipt/progress/result and capture metadata/raw bytes:
+& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s3 -Launcher LAUNCHER_BELOW
+Then final41 ordinary forwards+128MiB evidence audit with new exact paths/receipts,
+report fit failure if false and inspect raw errors before any changed/extended study.

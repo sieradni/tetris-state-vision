@@ -48,10 +48,11 @@ No complete screenshot parser or real-image accuracy is claimed.
    fixtures now pass5 source-bound checks and exact file/pixel/recipe replay;
    ALL_CLASS_FIT.md predeclares the fixed1,024-update fit criterion. The frozen
    driver, fresh warm admission and exact2+6+3+3 recovery are verified on
-   catalogue6147a558. The first128 updates are banked; internal28/32 boards,
-   0/56 observed role poses and128/128 supported semantic cells still fail fit.
-   Independent ordinary-forward error replay and the remaining896 updates
-   are next. More than40GB free is required before each long training window.
+   catalogue6147a558. Now640 updates are banked and independently replayed:
+   32/32 boards,4/56 observed role poses and128/128 supported semantic cells
+   still fail fit; class predictions mostly collapse to L. The remaining384
+   updates and final ordinary replay are next. More than40GB free is required
+   before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
