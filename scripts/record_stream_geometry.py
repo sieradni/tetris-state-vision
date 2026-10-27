@@ -28,7 +28,7 @@ def read(path):
 def validate_report(result, job, summary, source_job, manifest, recipes, *, name):
     if (result["status"] != "passed" or result.get("diagnostic_format_version") != 2 or
             job["status"] != "passed" or job["exit_code"] != 0 or job["work_items"] != 54 or
-            job["memory_bytes"] not in (640*1024**2, 1024**3) or result["forwards"] != 54 or
+            job["memory_bytes"] not in (640*1024**2, 768*1024**2, 1024**3) or result["forwards"] != 54 or
             result["weights_unchanged"] is not True or result["automatic_metrics_reproduced"] is not True or
             result["oracle_geometry_provided"] is not True or result["automatic_accuracy_claim_allowed"] is not False):
         raise ValueError("native exact-source conditional diagnostic-only gate required")

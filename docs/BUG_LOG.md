@@ -30,6 +30,10 @@ a named green run. An unrun gate leaves the entry OPEN.
   checkpoint identity. Explicit partial admission preserves original status;
   conditional labels never become automatic accuracy. Old scopes remain old.
 - Pending gate: geometry metadata regressions and actual native replay/curation.
+- Candidate gate geometry-evidence-tests-r1 rejected the preserved valid768MiB
+  historical envelope before positive cases reached aggregate checks. The new
+  collector now includes that measured envelope alongside640MiB/1GiB; no live
+  cap changed. Raw failing gate remains retained; rerun required.
 
 ## V-023 — CLOSED: new proof checker mistook normalized JSON for a raw copy
 

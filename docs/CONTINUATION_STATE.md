@@ -81,6 +81,11 @@ Logs runs/geometry-evidence-tests-r1.log/.stderr.log. Expected<96MiB;native
 pressure/Job/CPU guards;modest read-only metadata job can coexist with s4.
 Acceptance: explicit partial/source/command/population/aggregate/masking refusal
 fixtures,then actual serialized saved-artifact conditional forwards/curation.
+Geometry r1:10 cases,1failure+2errors because candidate omitted preserved valid
+768MiB diagnostic envelope. Production contract now accepts640/768/1024MiB;
+no training cap changed. Failed r1 retained;14216/22760/16004 all dead.
+NEXT geometry-evidence-tests-r2.json/.log/.stderr.log with same128MiB/30s/work10,
+expected<96MiB and native guards. Source checkpointed before rerun.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:
