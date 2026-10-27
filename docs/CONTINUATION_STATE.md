@@ -21,10 +21,21 @@ work1172,expected<96MiB. Receipt/logs runs/m2-stream-accuracy4096-s3-stop-curati
 (.json/.log/.stderr.log). Evidence target docs/evidence/m2-stream-accuracy4096-s3-stop/.
 Require exact snapshot/tensor/prefix hashes and terminal saved PIDs; this alone
 is not semantic optimizer restoration. Check metadata gate before any new launch.
-V-021 OPEN pending this actual stop gate: scope prose now preserves actual child
-status rather than assuming a stale running receipt. Guard/validation unchanged.
+Stop metadata gate PASS.441s,36,564,992B/128MiB; launcher22556/supervisor15916/
+child9664 and matching processes gone. Bank1152 tensor SHA
+c27f05730eae13ca75b56ddf33aea6b9d96c19fc36755a66024d3d40acadf861 and all three
+ledger prefixes verified; five saved training PIDs dead. V-021 CLOSED on actual
+scope with terminal child receipt accurately preserved. No semantic restore yet.
 Fresh host commit29,225,660,416B after stop,available9589MiB; pressure can recur.
 Do not restart training automatically or change any guard/cap. No host crash seen.
+
+NEXT semantic restore only:512MiB/45s/work1,expected<480MiB from earlier same-size
+446MiB restore. script probe_parked_recovery.py --run runs/m2-stream-accuracy4096-s3
+--output runs/m2-stream-accuracy1152-recovery-r1.json. Native receipt
+runs/m2-stream-accuracy1152-recovery-r1-job.json and matching.log/.stderr.log.
+No new forward/update. Current commit30,270,418,944B fits512MiB reservation but
+does not provide a stable1GiB model window. Verify exact command/PIDs/terminal
+receipt and freeze its proof before considering any model report.
 
 Next serialized model checks, only if fresh native headroom admission succeeds:
 1. New format2 ordinary M2 report on ORIGINAL saved704 runs/m2-stream-accuracy4096-s2,
@@ -56,7 +67,7 @@ receipts and docs. Actual new-format M2/M3 forward/curation integration pending.
 Prior source577c7ec diagnostics27 pass:12 M2+15 joint pure/tensor/mask/legacy/
 decorator-origin cases, docs/evidence/joint-error-diagnostics-full/scope.json.
 Earlier12-source scope refers to SAME27, not54. V-019/V-020 CLOSED on named27.
-All V-001..V-020 CLOSED on named historical gates, not a fresh whole-suite claim.
+All V-001..V-021 CLOSED on named historical gates, not a fresh whole-suite claim.
 See docs/SAVED_ERROR_REPORTS.md and M3_COMPONENT_TARGETS.md for contracts/limits.
 
 ## Immutable training histories

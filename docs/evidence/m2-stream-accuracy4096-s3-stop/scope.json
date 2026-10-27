@@ -1,0 +1,46 @@
+{
+  "status": "pressure_stop_hashes_verified",
+  "run": "m2-stream-accuracy4096-s3",
+  "terminating_ancestor_status": "memory_pressure",
+  "terminating_ancestor_exit_code": 125,
+  "child_receipt_status": "memory_pressure",
+  "child_receipt_terminal": true,
+  "verified_terminal_saved_pids": [
+    6248,
+    23160,
+    24128,
+    26544,
+    28556
+  ],
+  "logged_step": 1172,
+  "banked_step": 1152,
+  "target_steps": 4096,
+  "uncheckpointed_updates_not_restored": 20,
+  "committed_ledger_rows": {
+    "curve.jsonl": 1152,
+    "evaluations.jsonl": 10,
+    "training.jsonl": 1152
+  },
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "snapshot_tensors_sha256": "c27f05730eae13ca75b56ddf33aea6b9d96c19fc36755a66024d3d40acadf861",
+  "artifact_sha256": {
+    "ancestor-job.json": "bf4af5cdd634f9d8fed554dae8df8d26807d8f250edb51eb557c0624ab0a46e3",
+    "child-job.json": "c163827f1f52803e9624e1ee79b929a40ba1a0ff46f844a72239c5649e689840",
+    "training-progress.json": "fd06204e1ba5ed95bb9d50f46ad9cec9a6177b1ad5cdaa86a5fc74422dba9c46",
+    "latest-training.json": "6aa413b28cc20d8c6169f51d4d6525377fb8342337f40995b0c605ec53c87a06",
+    "source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "snapshot-manifest.json": "c51fb2d140e201e63e7d915249f13232eff93f71fecc6bb44ad5e1bfc0e0d23b",
+    "ancestor.log": "b8802d49e8c29d58364ce1d3574781d670b28e5cf2a5265f7ce9cc7bcfd88b6a",
+    "child.log": "f3d1d142385cce78548b8c23ef80fbae1bb614f9470544eca4bf637c7c14780c",
+    "ancestor.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curve.jsonl": "460b65680169eaac285b920647b4865e3cea7f808a20df67c2e87cfe9de4fcda",
+    "training.jsonl": "bd964dd91c0b78d4f005b8746072ade6e33def9bbc69099952279abfe2efec8c",
+    "evaluations.jsonl": "3985f6cf703c3abbb1ba416d1f15967845463113741494d33f86426b2eef7e88",
+    "memory.jsonl": "62d9526c5dfd50d290a4007bfde0a97610e692875924dfde3ca23ff3207ce806"
+  },
+  "semantic_restore_verified": false,
+  "target_complete": false,
+  "curator_sha256": "fa1ce6afb8a14824fc201c15ebc61b30bc895156563983a87f592818e9ff973f",
+  "scope": "Real ancestor OS-pressure stop; saved PIDs dead, frozen sources and banked tensor/ledger hashes verified. Raw child receipt preserved verbatim; its actual terminal status is reported above. No semantic restoration, final inference artifact, completed target or accuracy claim."
+}

@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-021 — OPEN: stop collector text assumed the child receipt was stale
+## V-021 — CLOSED: stop collector text assumed the child receipt was stale
 
 - Symptom: the s3 ancestor and child both recorded memory_pressure/125, but
   pre-curation review found fixed scope wording calling the child receipt stale.
@@ -26,9 +26,11 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Detection class: provenance.
 - Instrument: neutral verbatim-receipt wording plus actual structured terminal
   fields. Historical s1 scope remains unchanged; its running/null child was stale.
-- Acceptance: actual s3 stop collection must retain both terminal125 receipts,
-  verify bank1152 hashes/prefixes and saved PIDs, and avoid a stale-child claim.
-  Pending docs/evidence/m2-stream-accuracy4096-s3-stop/scope.json.
+- Green gate: docs/evidence/m2-stream-accuracy4096-s3-stop/scope.json retains
+  both terminal125 receipts, reports child_receipt_terminal=true, verifies1152
+  tensor/manifest/ledger hashes and five saved PIDs dead, and has neutral scope
+  wording. Native collection.441s,36,564,992B/128MiB/30s. This is file integrity,
+  not semantic optimizer restoration or completed training/quality evidence.
 
 ## V-020 — CLOSED: joint diagnostic would reject a decorated frozen metric
 
