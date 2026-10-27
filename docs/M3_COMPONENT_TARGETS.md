@@ -90,7 +90,8 @@ general resized-component supervision and reviewed runtime decoding are still OP
 No M2 admission covers the changed package or new heads. The partial4096-target
 M2 study must continue from its original archive and optimizer history.
 
-The joint streaming driver is now a source candidate, awaiting new gates.
+The joint streaming driver now passes its scoped unit/contract gates; native
+M3 resource characterization and learning remain pending.
 `train_m2_stream.py --component-capacity 10..64` selects the optional M3 heads,
 final-capture sample policy and component targets/loss. Zero keeps the M2 path.
 The lower joint bound covers all10 renderer slots without silent truncation;
@@ -105,9 +106,10 @@ never become an exact readable-component success. These are prototype diagnostic
 not decoded runtime/whole-state accuracy. Recursive checkpoint parity now covers
 all nested component outputs and rejects changed tensor shape/dtype/value.
 
-Pending gates: joint metrics7, sampler10, driver5, component15 and capture9, plus
-explicit-partial/source/recovery contracts as relevant. Host memory currently
-prevents execution; source edits are not a green gate. After those pass, profile
+Current sourcef542096:57 selected cases pass across stream/joint25, component23
+and capture9;11 more source/recovery cases pass separately. Source-pinned scopes:
+docs/evidence/joint-stream-contracts/scope.json and joint-recovery-contracts/scope.json.
+These68 cases are not a whole-suite, trained-model or accuracy claim. Next profile
 the actual M3 configuration with2 full-square optimizer steps, all resident Adam
 states, recovery parity and nested final-output parity under a NEW native cap.
 No prior M2 or earlier-source admission permits joint training.

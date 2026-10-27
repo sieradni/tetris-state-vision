@@ -1,0 +1,28 @@
+test_absent_is_not_visible_empty (test_component_targets.ComponentTargetTests.test_absent_is_not_visible_empty) ... ok
+test_capacity_boundary_has_explicit_end_position (test_component_targets.ComponentTargetTests.test_capacity_boundary_has_explicit_end_position) ... ok
+test_hold_status_and_identity_are_independent (test_component_targets.ComponentTargetTests.test_hold_status_and_identity_are_independent) ... ok
+test_identical_raster_hidden_queue_and_hold_have_equal_masked_targets (test_component_targets.ComponentTargetTests.test_identical_raster_hidden_queue_and_hold_have_equal_masked_targets) ... ok
+test_identified_model_output_is_not_admitted_as_ground_truth (test_component_targets.ComponentTargetTests.test_identified_model_output_is_not_admitted_as_ground_truth) ... ok
+test_unknown_middle_retains_index_and_presence (test_component_targets.ComponentTargetTests.test_unknown_middle_retains_index_and_presence) ... ok
+test_unseen_start_masks_absolute_slots_even_when_end_visible (test_component_targets.ComponentTargetTests.test_unseen_start_masks_absolute_slots_even_when_end_visible) ... ok
+test_unseen_tail_never_trains_eos_or_hidden_length (test_component_targets.ComponentTargetTests.test_unseen_tail_never_trains_eos_or_hidden_length) ... ok
+test_budgets_empty_context_and_prediction_targets_refuse (test_components.ComponentTests.test_budgets_empty_context_and_prediction_targets_refuse) ... ok
+test_cropped_tail_has_no_eos_or_future_presence_gradient (test_components.ComponentTests.test_cropped_tail_has_no_eos_or_future_presence_gradient) ... ok
+test_eos_after_item64_is_supervised_without_extra_item (test_components.ComponentTests.test_eos_after_item64_is_supervised_without_extra_item) ... ok
+test_identical_hidden_rasters_have_equal_tensor_targets (test_components.ComponentTests.test_identical_hidden_rasters_have_equal_tensor_targets) ... ok
+test_joint_loss_reaches_encoder_and_component_queries (test_components.ComponentTests.test_joint_loss_reaches_encoder_and_component_queries) ... ok
+test_m2_outputs_unchanged_with_shared_board_weights (test_components.ComponentTests.test_m2_outputs_unchanged_with_shared_board_weights) ... ok
+test_m3_checkpoint_round_trip_and_legacy_config (test_components.ComponentTests.test_m3_checkpoint_round_trip_and_legacy_config) ... ok
+test_m3_component_targets_refuse_resize_and_invalid_alpha (test_components.ComponentTests.test_m3_component_targets_refuse_resize_and_invalid_alpha) ... ok
+test_masked_context_values_cannot_change_predictions (test_components.ComponentTests.test_masked_context_values_cannot_change_predictions) ... ok
+test_shared_parameters_and_prefix_predictions_extend_to64 (test_components.ComponentTests.test_shared_parameters_and_prefix_predictions_extend_to64) ... ok
+test_target_masks_cannot_smuggle_hidden_start_end_or_hold_identity (test_components.ComponentTests.test_target_masks_cannot_smuggle_hidden_start_end_or_hold_identity) ... ok
+test_uncalibrated_api_keeps_components_unknown (test_components.ComponentTests.test_uncalibrated_api_keeps_components_unknown) ... ok
+test_unknown_middle_does_not_shift_or_train_its_identity (test_components.ComponentTests.test_unknown_middle_does_not_shift_or_train_its_identity) ... ok
+test_unknown_semantics_have_zero_gradient_but_visibility_learns (test_components.ComponentTests.test_unknown_semantics_have_zero_gradient_but_visibility_learns) ... ok
+test_unseen_start_does_not_admit_hidden_absolute_length (test_components.ComponentTests.test_unseen_start_does_not_admit_hidden_absolute_length) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.560s
+
+OK

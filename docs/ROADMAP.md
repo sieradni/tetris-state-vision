@@ -34,7 +34,9 @@ No complete screenshot parser or real-image accuracy is claimed.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
    Capacity0 preserves M2; capacity1..64 uses explicit M3 checkpoint identity.
-   No M3 learning or resource admission exists yet. Synthetic final-model-size
+   Joint streaming integration now passes68 scoped unit/contract checks on
+   f542096; native M3 resource characterization and learning remain pending.
+   Synthetic final-model-size
    captures now reobserve labels at that exact transform (9 checks). Arbitrary
    post-labeled resize/invalid alpha still refuses; the API keeps queue/
    hold unknown. Current M2 training must resume its original archive.

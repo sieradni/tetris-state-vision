@@ -2,8 +2,8 @@
 
 Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity,
 no remote. Full objective unfinished. Neighboring engine/apps/run data untouched.
-No push/deploy/publish/deletion authorized. Source candidate f542096 committed;
-working tree clean before this checkpoint. Goal blocking audit passed below.
+No push/deploy/publish/deletion authorized. Sourcef542096 now has68 scoped green
+contract checks. Goal ACTIVE after actual memory recovery; full goal unfinished.
 
 RESUMED: goal service ACTIVE; fresh OS commit27,527,557,120B, headroom restored.
 Selected acceptance task: execute f542096 candidate's pending scoped tests,
@@ -13,8 +13,19 @@ all original4096 source/cursor state. First unit gate:25 stream/joint cases,
 runs/joint-stream-tests-r1.json. No model training authorized by unit pass alone.
 Launch PID13560 exact supervisor command verified; inspect native receipt/logs
 and matching worker before waiting. No other owned model process was present.
+First25 PASS1.185s/274,456,576B under512MiB; component23 PASS2.560s and capture9
+PASS1.832s, both512MiB; recovery7 PASS2.279s/512MiB, source4 PASS.414s/128MiB.
+Committed-source scopes: docs/evidence/joint-stream-contracts/scope.json57 and
+docs/evidence/joint-recovery-contracts/scope.json11; sourcef542096. No whole-suite,
+M3 admission or learning claim. All test Jobs terminal.
 
-BLOCKER: host OS commit31,934,693,376B > guard stop31,368,351,744B, before any
+RUNNING ordinary704 report: runs/m2-stream-accuracy704-errors-r2, supervisor
+launch27948 exact command verified,1GiB/120s/27forwards, expected<600MiB. Read
+same receipt/progress/logs and verify actual worker/terminal tree before next
+heavy Job. This uses ORIGINAL saved704 model/archive, not current M3 package.
+
+HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
+guard stop31,368,351,744B, before any
 worker reservation. Same condition across three consecutive goal turns: follow-up
 jobs parked before launch (~32.2GB, later33.9GB); next turn source work completed
 but no tests could launch (~31.7GB); current audit31.93GB. All matching704-report/

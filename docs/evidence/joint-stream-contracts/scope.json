@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "source_base_commit": "f5420966bd02e9b9cde28eaffd4e535639593ba5",
+  "sources": {
+    "src/tetris_vision/__init__.py": "ef1f6cbe4acd3ba8f979f8ec1f83a439bccd74d3319b5f9789bc66ba7bb8c3f8",
+    "src/tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "src/tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "src/tetris_vision/runtime.py": "e87b18c37a2e411b289a531233b4b15c4e9867614ebead74d0ef8237d55035e8",
+    "src/tetris_vision/checkpoint.py": "2a4cf36f4d1311bbf79d17bd200057337251b1afcb4a1821a9fdad55673dffd6",
+    "src/tetris_vision/model.py": "ce515e3e6bb803753ca23e2a7fbcf483aa106aabec5d9a438f7092d3d0f68dc4",
+    "src/tetris_vision/components.py": "d1756f4873144614b76bc0ea9259441d798e0dee81e0a488851fdc0f64be820e",
+    "src/tetris_vision/component_targets.py": "a432ea78bb1a3c312fb29aa2e271389fbe4a914ae78dafff1837622479c10671",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "src/tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "src/tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "src/tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "src/tetris_vision/losses.py": "3a201ecd772c42f1aa19c727a62e0fc34c96851d37c1c0424a854a1929f133b5",
+    "src/tetris_vision/dataset.py": "daee2bd5e287dd087de44e5d58e05a9a4d1ba6a3439340ee838d2c4d6ea993c8",
+    "src/tetris_vision/model_capture.py": "553ac8d274ae01454f785dca3f99a3c0dc11bd329f466a89e36a44473770faac",
+    "scripts/m2_stream_data.py": "d259a5d93db3e1d6d17452252bc2ceb26affd06e39f0e9503dfabcdcd9b6dd56",
+    "scripts/train_m2_stream.py": "6d282d65743887d4b15453d8072171107922c00050e3fd62ced0b06e2f149978",
+    "scripts/record_stream_run.py": "c1b200c6bc5734d1de34850d672ed5bd45aafba9e240244f826af9baafe28684",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "tests/test_stream_data.py": "1ce3e40885abdcc69f01a2a2e7ba808d1ed7256eb5f2039d7d245e4a7204d21f",
+    "tests/test_stream_driver.py": "1ad476499d576bedc911be9a693776120e06f7121253587b03e5c0d722e3a902",
+    "tests/test_stream_evidence.py": "ed9927ed5fc6df9de7a05953683659295aa7a2cb3f328a28e76aa98e25308b26",
+    "tests/test_joint_stream.py": "a388e5ed5a8fad1148df65ae91a7eb18dea8f15e9870874a3a26730e186071cf",
+    "tests/test_components.py": "2c475e5891c985664c8a07c4d48f255e30f003cc4635488df23630cf6360f381",
+    "tests/test_component_targets.py": "9649dc3bf6ea5c2386bcf51c2d27d876c98a18b8fdaa44973f6d20f31c4a8174",
+    "tests/test_model_capture.py": "6ba217d2b234cd4412317d97c4d6b784cc47a2fb9445fd7d7c3217361bad92fa",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb"
+  },
+  "gates": [
+    {
+      "stem": "joint-stream-tests-r1",
+      "tests": 25,
+      "raw_peak_job_commit_bytes": 274456576
+    },
+    {
+      "stem": "joint-component-tests-r1",
+      "tests": 23,
+      "raw_peak_job_commit_bytes": 354611200
+    },
+    {
+      "stem": "joint-capture-tests-r1",
+      "tests": 9,
+      "raw_peak_job_commit_bytes": 254758912
+    }
+  ],
+  "tests_across_scoped_runs": 57,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}
