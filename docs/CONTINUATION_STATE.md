@@ -124,6 +124,15 @@ controller18/192MiB(expecting<128MiB),exposure14/128MiB(<96MiB),geometry12/128Mi
 .stderr.log,receipt runs/STEM.json;bounded runner -- then unittest discover
 -s tests -p PATTERN -v. Serialize and verify dead PIDs before next. Freeze all
 sources during gates. Native warm profile and candidate learning still unrun.
+Affected79 protocol cases all GREEN:controller18(2.358s,58,028,032B),exposure14
+(.295s,35,041,280B),geometry12(.375s,34,627,584B),error35(2.205s,247,857,152B).
+All configured caps/time/work held;all launch/supervisor/worker PIDs verified
+not live before advancing. Combined with60 core cases:139 selected,not whole suite.
+NEXT3 metadata scope curators exact arrays in runs/layer-protocol-curations-r1.json:
+layer-controller-contracts18,layer-diagnostic-contracts26,layer-error-contracts35,
+baseae11649. Each128MiB/30s/workCOUNT,expected<96MiB,native guards;hidden
+runs/STEM.log/.stderr.log,receipt runs/STEM.json,evidence NAME/scope.json.
+Serialize then commit scopes;candidate native warm/learning still pending.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
