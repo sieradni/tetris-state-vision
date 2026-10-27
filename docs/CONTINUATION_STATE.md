@@ -193,3 +193,16 @@ logs same-stem. Native guards unchanged; no neural fit is admitted yet.
 Numerical comparator launcher25592, exact command verified.
 Default numerical comparison PASS.349s/36,122,624B: actual weight bytes, data bytes, all4 metric objects,loss/terms/grad/sample curves exact. All known PIDs and exact command gone; raw source/receipt/logs preserved. Next profile curator exact command/caps recorded above, no model Job live.
 Default profile curator launcher5780, exact command verified.
+Default profile curator PASS; 2 optimizer records+27 exact saved probe images,
+all known PIDs gone, raw curator receipt/logs preserved in same named evidence.
+NEXT all-class native recovery gate,expected<700MiB aggregate,1GiB/420s/work14:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 420
+--work-items 14 --receipt runs/m2-stream-recovery-gate-r4-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_recovery.py
+--output runs/m2-stream-recovery-gate-r4 --curriculum all-class-fit-v1
+Logs runs/m2-stream-recovery-gate-r4.log/.stderr.log; state run/progress.json,
+terminal proof.json. Serialized children640MiB/90s/work2,6,3,3;32 fit probes+
+9 independent development views per child. No model Job overlaps. Freeze source
+and helper until terminal; then verify every PID/command death and exact curve/
+model/Adam/RNG/evaluation proof, native curators and fresh admission before fit.
+LIVE all-class recovery launcher20860, exact command verified; no other model Job.
