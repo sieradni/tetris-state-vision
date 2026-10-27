@@ -201,3 +201,4 @@ Expected<700MiB aggregate,child640MiB,896MiB parent,420s. Logs same-prefix-pipel
 same-prefix-job.json, archive/training snapshots in same-prefix run. Nativeguards,
 no retries into old output. Before comparison require exact541-row recomputed
 recipe/loss/terms/gradient prefix excluding time; old541 tensors unavailable.
+LIVE true s3 launcher35152, exact command verified; controller frozen.
