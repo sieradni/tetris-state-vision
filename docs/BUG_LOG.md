@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-025 — OPEN: absence fixture hid part of the active spawn domain
+## V-025 — CLOSED: absence fixture hid part of the active spawn domain
 
 - Symptom: layer-evidence-model-tests-r1 has14/15 passes;the new known-absence
   fixture expected both dense masks known although its default canvas omits the
@@ -30,7 +30,11 @@ a named green run. An unrun gate leaves the entry OPEN.
   unknown as a negative check. This extends the standing validated-fixture rule.
 - Failed gate: runs/layer-evidence-model-tests-r1.stderr.log,15 cases,1failure,
   native3.725s,448,126,976B/640MiB;all recorded processes gone.
-- Pending gate: named corrected15-case run and source-bound evidence.
+- Green gate: docs/evidence/layer-evidence-core-contracts/scope.json pins
+  corrected layer-evidence-model-tests-r2,15/15 in1.267s,446,099,456B/640MiB.
+  It includes actual observer-validated full-spawn absence and cropped-spawn
+  unknown. The same scope has45 existing model/component/runtime/capture checks
+  (60 selected total on32 hashed sources);failed r1 remains preserved separately.
 
 ## V-024 — CLOSED: geometry collector trusted aggregates and incompletely bound native command
 

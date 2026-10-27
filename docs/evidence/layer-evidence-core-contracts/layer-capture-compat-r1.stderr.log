@@ -1,0 +1,14 @@
+test_bounds_do_not_silently_distort_or_upscale (test_model_capture.ModelCaptureTests.test_bounds_do_not_silently_distort_or_upscale) ... ok
+test_hidden_queue_length_and_hold_stay_identical_after_resize (test_model_capture.ModelCaptureTests.test_hidden_queue_length_and_hold_stay_identical_after_resize) ... ok
+test_noninteger_capture_uses_final_rounded_axes_for_geometry (test_model_capture.ModelCaptureTests.test_noninteger_capture_uses_final_rounded_axes_for_geometry) ... ok
+test_occluded_middle_retains_slot_without_latent_identity (test_model_capture.ModelCaptureTests.test_occluded_middle_retains_slot_without_latent_identity) ... ok
+test_unscaled_capture_preserves_existing_pixels_and_labels (test_model_capture.ModelCaptureTests.test_unscaled_capture_preserves_existing_pixels_and_labels) ... ok
+test_unseen_prefix_count_does_not_survive_matching_visible_span (test_model_capture.ModelCaptureTests.test_unseen_prefix_count_does_not_survive_matching_visible_span) ... ok
+test_weak_final_icons_do_not_reuse_known_source_identities (test_model_capture.ModelCaptureTests.test_weak_final_icons_do_not_reuse_known_source_identities) ... ok
+test_final_capture_targets_need_no_second_resize (test_model_capture.PreparedCaptureTests.test_final_capture_targets_need_no_second_resize) ... ok
+test_prepared_identical_rasters_have_identical_masked_targets (test_model_capture.PreparedCaptureTests.test_prepared_identical_rasters_have_identical_masked_targets) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.567s
+
+OK

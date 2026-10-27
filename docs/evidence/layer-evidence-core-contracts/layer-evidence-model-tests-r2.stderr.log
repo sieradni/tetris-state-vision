@@ -1,0 +1,20 @@
+test_component_and_dense_paths_jointly_backpropagate (test_layer_evidence.LayerEvidenceTests.test_component_and_dense_paths_jointly_backpropagate) ... ok
+test_default_off_and_shared_seed_preserve_common_parameters (test_layer_evidence.LayerEvidenceTests.test_default_off_and_shared_seed_preserve_common_parameters) ... ok
+test_default_off_matches_verified_original_archive_tensors_targets_losses (test_layer_evidence.LayerEvidenceTests.test_default_off_matches_verified_original_archive_tensors_targets_losses) ... ok
+test_dense_loss_alone_reaches_encoder_sampling_and_geometry (test_layer_evidence.LayerEvidenceTests.test_dense_loss_alone_reaches_encoder_sampling_and_geometry) ... ok
+test_enabled_checkpoint_restores_all_outputs_and_configuration (test_layer_evidence.LayerEvidenceTests.test_enabled_checkpoint_restores_all_outputs_and_configuration) ... ok
+test_forward_is_pixel_only_with_finite_per_stage_visible_maps (test_layer_evidence.LayerEvidenceTests.test_forward_is_pixel_only_with_finite_per_stage_visible_maps) ... ok
+test_identical_invisible_role_rasters_have_identical_unknown_targets (test_layer_evidence.LayerEvidenceTests.test_identical_invisible_role_rasters_have_identical_unknown_targets) ... ok
+test_identical_unregistered_crops_cannot_recover_hidden_pose (test_layer_evidence.LayerEvidenceTests.test_identical_unregistered_crops_cannot_recover_hidden_pose) ... ok
+test_identified_model_outputs_are_not_new_observation_labels (test_layer_evidence.LayerEvidenceTests.test_identified_model_outputs_are_not_new_observation_labels) ... ok
+test_invalid_prepared_cell_is_not_supervised_as_role_absence (test_layer_evidence.LayerEvidenceTests.test_invalid_prepared_cell_is_not_supervised_as_role_absence) ... ok
+test_known_absence_and_observed_visible_denominators_are_separate (test_layer_evidence.LayerEvidenceTests.test_known_absence_and_observed_visible_denominators_are_separate) ... ok
+test_supported_projection_allows_overlap_without_modifying_locked_targets (test_layer_evidence.LayerEvidenceTests.test_supported_projection_allows_overlap_without_modifying_locked_targets) ... ok
+test_unknown_roles_have_zero_auxiliary_loss_and_gradient (test_layer_evidence.LayerEvidenceTests.test_unknown_roles_have_zero_auxiliary_loss_and_gradient) ... ok
+test_visible_grid_does_not_relabel_a_supported_spawn_piece_absent (test_layer_evidence.LayerEvidenceTests.test_visible_grid_does_not_relabel_a_supported_spawn_piece_absent) ... ok
+test_visible_role_supervision_is_independent_of_locked_certainty (test_layer_evidence.LayerEvidenceTests.test_visible_role_supervision_is_independent_of_locked_certainty) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.267s
+
+OK

@@ -70,4 +70,12 @@ Prior-bug interaction review (entire BUG_LOG read before this design):
   cache16,periodic recovery and atomic publication unchanged. No cap opt-out.
 - V-008,V-009: real-corpus admission is untouched;no new real labels/eligibility.
 
-All implementation/testing/learning gates are pending at this design checkpoint.
+Implementation is present with the option default off. Sixty selected model,
+component,runtime and capture checks pass on32 hashed sources:
+`docs/evidence/layer-evidence-core-contracts/scope.json`. They include exact
+agreement with the byte-verified original M2 reference,real paired rasters,
+independent overlap/locked uncertainty,masks/gradients and checkpoint reload.
+The initial absence-fixture failure and its corrected public-status check remain
+in that scope (V-025). Controller/report protocol checks,fresh native warm
+admission and actual learning/recovery comparisons are still pending. These
+unit results do not establish that the new mechanism improves learning.

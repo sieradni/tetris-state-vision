@@ -116,6 +116,14 @@ including portable byte-exact legacy reference. Logs runs/layer-core-curation-r1
 Geometry's strict report contract now also supports explicit optional dense-grid
 counts/observed denominators (12 metadata cases pending),so new True artifacts
 can use diagnostic replay. Other metadata/controller tests remain pending.
+Core60 source scope GREEN:docs/evidence/layer-evidence-core-contracts/scope.json,
+32 hashes on52ff808;V-025 CLOSED on corrected15-case gate,failed r1 preserved.
+NEXT affected protocol plan exact runs/layer-protocol-plan-r1.json:
+controller18/192MiB(expecting<128MiB),exposure14/128MiB(<96MiB),geometry12/128MiB
+(<96MiB),error35/512MiB(<350MiB). Each wall60s,workCOUNT,hidden runs/STEM.log/
+.stderr.log,receipt runs/STEM.json;bounded runner -- then unittest discover
+-s tests -p PATTERN -v. Serialize and verify dead PIDs before next. Freeze all
+sources during gates. Native warm profile and candidate learning still unrun.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
