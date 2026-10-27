@@ -9,7 +9,7 @@ Actual p1 PASS13.512s,526,790,656B/1280MiB; step_partial1/3,1new,
 M3/pilot/capacity64/sourceb6bb05f3. Result and curated evidence present; exact
 matching Python commands gone. Recorded12036/8600/26392/23720 no longer live.
 
-LIVE planned p2: .venv/Scripts/python.exe scripts/run_bounded.py
+LIVE p2 launch29056/controller31820 verified; poll receipt and exact commands. Command: .venv/Scripts/python.exe scripts/run_bounded.py
 --memory-mib 1280 --wall-seconds 120 --work-items 2
 --receipt runs/m3-stream-controller-recovery-p2-pipeline-job.json --
 .venv/Scripts/python.exe scripts/run_stream_segment.py
