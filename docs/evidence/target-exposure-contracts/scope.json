@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "source_base_commit": "e4543451509704e1c56a1fafd5733e7cfe669c4c",
+  "sources": {
+    "scripts/target_exposure.py": "084c30f195e71076915647a3d469293b577df06bee08236564435ebc9eaf6027",
+    "scripts/probe_stream_exposure.py": "e9d7c1eeb2789d46f744a4aff0ca8949b7e0c16022f65f190f26aa5a54ad4137",
+    "scripts/record_stream_exposure.py": "a0dde60123471f80c2abcb4d6f00e231f72b0a7747a58482974a23eba76276c7",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "tests/test_target_exposure.py": "4ef0c2be57a1503e0054f0a3396913b3db0abaa9ddfbec17c655390100c9900b",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb"
+  },
+  "gates": [
+    {
+      "stem": "target-exposure-tests-r1",
+      "tests": 14,
+      "raw_peak_job_commit_bytes": 35467264
+    }
+  ],
+  "tests_across_scoped_runs": 14,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

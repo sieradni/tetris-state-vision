@@ -79,6 +79,23 @@ NEXT source curator exact command array runs/target-exposure-curation-r1-command
 runs/target-exposure-curation-r1.log/.stderr.log,receipt same-prefix.json;
 sentinel docs/evidence/target-exposure-contracts/scope.json. Expected<96MiB,
 native guards;modest metadata job beside s5. Actual target audit still unrun.
+Target14 source scope curated: docs/evidence/target-exposure-contracts/scope.json,
+12 hashes one454345;curator.473s,74,833,920B/128MiB,24584/36156/5152 all gone.
+S5 reached2176 but is finalizing;do not start target replay until entire tree exits.
+PLANNED exact target replay command,after s5 terminal/dead verification:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
+--wall-seconds 120 --work-items 1691
+--receipt runs/m2-stream-accuracy1664-exposure-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_exposure.py
+--run m2-stream-accuracy4096-s4 --output runs/m2-stream-accuracy1664-exposure-r1
+Hidden logs runs/m2-stream-accuracy1664-exposure-r1.log/.stderr.log;
+state output/progress.json,result.json,targets.jsonl;expected<550MiB,native guards,
+zero model forwards/updates. Frozen1664 source matches investigated error artifact;
+new2176 is a different artifact. Do not edit audit code during actual replay.
+After terminal/dead verification,curate under128MiB/30s/work1691 with fresh
+runs/accuracy1664-exposure-curation-r1.json/.log/.stderr.log and
+record_stream_exposure.py --name m2-stream-accuracy1664-exposure-r1;
+evidence sentinel docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
 ## Verified s4 and ordinary/conditional diagnostics
 
 M2_BASELINE_1664.md explains latest evidence and limits. s4 is verified

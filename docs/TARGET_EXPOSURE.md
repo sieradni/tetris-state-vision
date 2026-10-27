@@ -44,3 +44,7 @@ source recipe associations and independently recomputed packed-target counts.
 It preserves raw target/input ledgers,summary,source/weight manifests and native
 receipts with hashes. Only an actual native audit establishes exposure facts;
 unit fixtures alone cannot establish training data quality or model accuracy.
+
+Fourteen pure accounting/protocol checks pass in.040s,35,467,264B under128MiB/30s:
+`docs/evidence/target-exposure-contracts/scope.json` pins12 source files on
+e454345. Its logical metadata fixtures do not claim actual native target values.
