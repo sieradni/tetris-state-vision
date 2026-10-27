@@ -97,3 +97,11 @@ Expected<96MiB, native guards. Then false profile command exactly as above true,
 omit --layer-evidence, replace run stem with m2-stream-layer-control-profile-r1.
 Curator launcher25376 exact command verified.
 True curator PASS; exact raw copies preserved; all3 PIDs gone. LIVE false profile launcher16012, exact command verified; same documented640MiB/120s/2 envelope.
+False control profile PASS9.434s/561,950,720B under640MiB,same cataloguef095d352;
+all launcher/supervisor/child/worker PIDs gone. NEXT curator:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 29 --receipt runs/layer-control-profile-curation-r1.json --
+.venv/Scripts/python.exe scripts/record_stream_run.py --name m2-stream-layer-control-profile-r1
+Logs runs/layer-control-profile-curation-r1.log/.stderr.log. Expected<96MiB,native guards.
+New recovery-helper optional flag is drafted; actual2+6+3+3 native gate pending.
+False curator launcher32132 exact command verified.

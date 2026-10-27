@@ -45,6 +45,7 @@ def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--component-capacity", type=int, default=0)
+    parser.add_argument("--layer-evidence", action="store_true")
     args = parser.parse_args(argv)
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint gate capacity must cover renderer10 slots and stay<=64;0 keeps M2")
@@ -65,6 +66,8 @@ def main():
                   "--model", "pilot", "--steps", "2" if profile else "6", "--wall-seconds", "60",
                   "--component-capacity", str(args.component_capacity),
                   "--development-groups", "3", "--evaluate-every", "3", "--checkpoint-every", "3"]
+        if args.layer_evidence:
+            worker += ["--layer-evidence"]
         if profile:
             worker += ["--profile-square"]
         else:
@@ -88,7 +91,8 @@ def main():
             raise ValueError("gate resource/work envelope differs")
         if (summary["status"] != ("complete" if expected == 0 else "step_partial") or
                 not summary["checkpoint_round_trip_exact"] or summary["component_capacity"] != args.component_capacity or
-                summary["config"]["component_capacity"] != args.component_capacity):
+                summary["config"]["component_capacity"] != args.component_capacity or
+                summary["config"].get("layer_evidence", False) is not args.layer_evidence):
             raise ValueError("gate completion/partial/parity contract differs")
         if not Path(summary["driver_source_path"]).resolve().is_relative_to(run/"code"):
             raise ValueError("trainer main source path is not archived")
