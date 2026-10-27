@@ -197,8 +197,18 @@ type/occupancy disagreement, strict zero threshold, malformed contracts and
 dependent aggregates. These fixtures do not verify neural replay or accuracy.
 Committed-source scope: docs/evidence/m2-error-analysis-contracts/scope.json,
 12/12 on1531769,33,021,952B raw peak under128MiB/30s.
-Native inference acceptance remains pending until the active training Job ends.
-Then use a NEW output,1GiB/120s/27 forwards on the current9+18 probes, one CPU.
+Native inference replay now passes on the saved larger128 model:27 forwards,
+32.419s outer,546,164,736B under1GiB. Every saved metric reproduces exactly and
+model tensors remain unchanged. docs/evidence/m2-stream-accuracy128-errors/scope.json.
+Development has401 positive cells:15 recognized,386 missed,8 false positives.
+All18 active and18 ghost outputs predict unknown. Origin and basis errors both
+remain substantial (2.1934-cell mean origin error,.4096 per-column and.1366
+per-row basis error). The high mean cell accuracy mainly reflects empty cells;
+this short-budget report does not select a causal architectural repair. Continue
+the original longer study before ranking/tuning its alternatives.
+
+The current4096-target segment still needs its own saved-artifact report after
+its Job ends. Use a NEW output,1GiB/120s/27 forwards on9+18 probes, one CPU.
 Expected below the admitted training envelope, experimentally capped; do not
 run another heavy model process while training is live. Suggested command:
 

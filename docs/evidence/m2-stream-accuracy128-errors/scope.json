@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "source_base_commit": "e28128f112a233e986c46cb1a0a4cd023e28ea8c",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "1ed5a3113ec3322a80f3b3d56f8a5c88df7e9c4e1813de67ecf8a555a766dc78",
+  "forwards": 27,
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "label_inputs_to_model": false,
+  "native_peak_job_commit_bytes": 546164736,
+  "native_elapsed_seconds": 32.419,
+  "native_memory_bytes": 1073741824,
+  "diagnostic_sources": {
+    "scripts/probe_stream_errors.py": "201338c09738dd5a5d7179748a5227b1d4b40c05b888614b99266b7fe416fca3",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/record_stream_run.py": "754bde0391177cc7080be2cc3ebf3438acb8273b38b0969c743fe924abd5f880",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "artifact_sha256": {
+    "result.json": "856244f80a2a90517e64d1c8fdc2d97988757455cfd955510ab0d3dd02d429cb",
+    "progress.json": "e74ec6b27a23c8ab2437ea1dc4669759c503bfc12e48f09a1e160f0be42cfddd",
+    "native-job.json": "810148116f7ff5e1d7f640319be32085585421f47cd202e083c6618e3c09c73c",
+    "native.log": "1ab1e6f81924ab2ed45a44d979ddc388644356136227ffac6ee2198823f138ea",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "checkpoint-manifest.json": "ba84ec8ae5f18d44512739986572ab5cdc45426b7a6f31f10b1563f4ae44c690"
+  },
+  "scope": "Source-bound ordinary inference and error decomposition on 27 saved synthetic probes of the completed128-update model. Matched views are dependent. No real or complete-state accuracy, calibrated confidence, oracle correction, or trained M3 claim."
+}

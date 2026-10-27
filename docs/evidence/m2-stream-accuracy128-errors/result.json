@@ -1,0 +1,5217 @@
+{
+  "status": "passed",
+  "run": "m2-stream-accuracy128-r2",
+  "run_status": "complete",
+  "global_steps": 128,
+  "target_steps": 128,
+  "forwards": 27,
+  "job_ceiling_bytes": 1073741824,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "1ed5a3113ec3322a80f3b3d56f8a5c88df7e9c4e1813de67ecf8a555a766dc78",
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "label_inputs_to_model": false,
+  "totals": {
+    "training": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "locked_populations": {
+        "empty": {
+          "images": 2,
+          "exact_boards": 0,
+          "known_cells": 400,
+          "true_positive": 0,
+          "true_negative": 398,
+          "false_positive": 2,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 7,
+          "exact_boards": 0,
+          "known_cells": 1400,
+          "true_positive": 0,
+          "true_negative": 1230,
+          "false_positive": 2,
+          "false_negative": 168
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 9,
+          "exact": 0,
+          "unknown_predictions": 9,
+          "type_errors": 9,
+          "column_errors": 3,
+          "row_errors": 6,
+          "rotation_errors": 3
+        },
+        "ghost": {
+          "known": 9,
+          "exact": 0,
+          "unknown_predictions": 9,
+          "type_errors": 9,
+          "column_errors": 0,
+          "row_errors": 0,
+          "rotation_errors": 0
+        }
+      },
+      "geometry": {
+        "supported_images": 9,
+        "mean_cells": 4.4604772714628576,
+        "origin_error_cells": 3.698278991605617,
+        "per_column_basis_error_cells": 0.6292634704966976,
+        "per_row_basis_error_cells": 0.10675813016997096,
+        "worst_point_cells": 12.113221075940734
+      }
+    },
+    "development": {
+      "images": 18,
+      "ancestry_groups": 6,
+      "locked_populations": {
+        "empty": {
+          "images": 4,
+          "exact_boards": 4,
+          "known_cells": 800,
+          "true_positive": 0,
+          "true_negative": 800,
+          "false_positive": 0,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 14,
+          "exact_boards": 0,
+          "known_cells": 2800,
+          "true_positive": 15,
+          "true_negative": 2391,
+          "false_positive": 8,
+          "false_negative": 386
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 18,
+          "exact": 0,
+          "unknown_predictions": 18,
+          "type_errors": 12,
+          "column_errors": 18,
+          "row_errors": 18,
+          "rotation_errors": 15
+        },
+        "ghost": {
+          "known": 18,
+          "exact": 0,
+          "unknown_predictions": 18,
+          "type_errors": 12,
+          "column_errors": 18,
+          "row_errors": 18,
+          "rotation_errors": 15
+        }
+      },
+      "geometry": {
+        "supported_images": 18,
+        "mean_cells": 2.4785019050732253,
+        "origin_error_cells": 2.193439051974848,
+        "per_column_basis_error_cells": 0.40958328210524353,
+        "per_row_basis_error_cells": 0.1366081530837857,
+        "worst_point_cells": 11.901059252618083
+      }
+    }
+  },
+  "cases": [
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v0",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 199,
+          "false_positive": 1,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.995,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000010",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 17,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4818512061251725
+            }
+          ],
+          "minimum_correct_class_probability": 0.4818512061251725,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": true,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.0104919950042404,
+          "rms_cells": 2.1753002103089085,
+          "max_cells": 3.789553069944873,
+          "corner_errors_cells": [
+            2.124443829719122,
+            0.14700055189416644,
+            3.789553069944873,
+            3.141506015680083
+          ],
+          "origin_error_cells": 2.124443829719122,
+          "per_column_basis_error_cells": 0.2271441615442056,
+          "per_row_basis_error_cells": 0.15694685437353914
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v1",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 199,
+          "false_positive": 1,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.995,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000010",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 17,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.48728422509834834
+            }
+          ],
+          "minimum_correct_class_probability": 0.48728422509834834,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": true,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.0100551652489433,
+          "rms_cells": 2.1744927005777384,
+          "max_cells": 3.7873818424519055,
+          "corner_errors_cells": [
+            2.1258479457426005,
+            0.14570834974392669,
+            3.7873818424519055,
+            3.1378755002870102
+          ],
+          "origin_error_cells": 2.1258479457426005,
+          "per_column_basis_error_cells": 0.2271555669424084,
+          "per_row_basis_error_cells": 0.1567038741769197
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v2",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 197,
+          "false_positive": 2,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.985,
+          "precision": 0.0,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000100000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000010",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 3,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.25490593794576477
+            },
+            {
+              "column": 4,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4212826900877826
+            },
+            {
+              "column": 8,
+              "row": 17,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.48105855807590153
+            }
+          ],
+          "minimum_correct_class_probability": 0.25490593794576477,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": true,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.010479893767095,
+          "rms_cells": 2.175273700443509,
+          "max_cells": 3.789467315402889,
+          "corner_errors_cells": [
+            2.1244668111296483,
+            0.14688925253037252,
+            3.789467315402889,
+            3.141381822609969
+          ],
+          "origin_error_cells": 2.1244668111296483,
+          "per_column_basis_error_cells": 0.22713535249681321,
+          "per_row_basis_error_cells": 0.15693905175302356
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v0",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 198,
+          "false_positive": 0,
+          "false_negative": 2,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.99,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06452196243499206
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.10242767553283671
+            }
+          ],
+          "minimum_correct_class_probability": 0.06452196243499206,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 3.4390339104265206,
+          "rms_cells": 3.757846427375256,
+          "max_cells": 6.415210640165216,
+          "corner_errors_cells": [
+            1.6603369264881862,
+            6.311564402727824,
+            2.0188613269286733,
+            6.415210640165216
+          ],
+          "origin_error_cells": 1.6603369264881862,
+          "per_column_basis_error_cells": 0.689589229270436,
+          "per_row_basis_error_cells": 0.019705231616730216
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v1",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 198,
+          "false_positive": 0,
+          "false_negative": 2,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.99,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.058659474286822555
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09785380270797704
+            }
+          ],
+          "minimum_correct_class_probability": 0.058659474286822555,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 3.4358925179755135,
+          "rms_cells": 3.7543810988597683,
+          "max_cells": 6.409006110877668,
+          "corner_errors_cells": [
+            1.6637662940743438,
+            6.307223054168178,
+            2.015543340028837,
+            6.409006110877668
+          ],
+          "origin_error_cells": 1.6637662940743438,
+          "per_column_basis_error_cells": 0.6892743890231235,
+          "per_row_basis_error_cells": 0.019344027470929163
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v2",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 197,
+          "false_positive": 0,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.985,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 5,
+              "row": 16,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.009345700018808686
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05858330778098602
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09794124662143405
+            }
+          ],
+          "minimum_correct_class_probability": 0.009345700018808686,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 3.4360447253597974,
+          "rms_cells": 3.7545464585000876,
+          "max_cells": 6.409310423846573,
+          "corner_errors_cells": [
+            1.6636119271716858,
+            6.307424153992272,
+            2.015754274481661,
+            6.409310423846573
+          ],
+          "origin_error_cells": 1.6636119271716858,
+          "per_column_basis_error_cells": 0.6892921426922417,
+          "per_row_basis_error_cells": 0.01936376086574043
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v0",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 147,
+          "false_positive": 0,
+          "false_negative": 53,
+          "known_cells": 200,
+          "positive_cells": 53,
+          "negative_cells": 147,
+          "cell_accuracy": 0.735,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            3,
+            7,
+            6,
+            7,
+            7,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.035692555929556745
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.036579254375806954
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03878854619874766
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04202707851119691
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0430455009530322
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.045598133518366675
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04614219003082793
+            },
+            {
+              "column": 7,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05150531985854657
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05410202816439653
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05512571040807932
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0580819313768754
+            },
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0582111445566797
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06109371245831484
+            },
+            {
+              "column": 0,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.061388601000155994
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0633328150450538
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07042863444216199
+            }
+          ],
+          "minimum_correct_class_probability": 0.035692555929556745,
+          "typed_cells": 53,
+          "correct_type_head_cells": 6,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.934989363543909,
+          "rms_cells": 8.14399061555616,
+          "max_cells": 12.113077456145191,
+          "corner_errors_cells": [
+            7.306741236998516,
+            12.113077456145191,
+            4.429681051027292,
+            10.62827606754494
+          ],
+          "origin_error_cells": 7.306741236998516,
+          "per_column_basis_error_cells": 0.9713923041315033,
+          "per_row_basis_error_cells": 0.14385916078300534
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v1",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 147,
+          "false_positive": 0,
+          "false_negative": 53,
+          "known_cells": 200,
+          "positive_cells": 53,
+          "negative_cells": 147,
+          "cell_accuracy": 0.735,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            3,
+            7,
+            6,
+            7,
+            7,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03663288954520045
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.039598497718883956
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.040600364660239356
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04378378771316447
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.045345117968060664
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.047104419896206326
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.050693717803698496
+            },
+            {
+              "column": 7,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.050740665489262725
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.058135002044173115
+            },
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05832447964999102
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.059934729773814074
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06003362004728772
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06006889231426478
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06401291530861483
+            },
+            {
+              "column": 0,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06616645893314593
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06874611184574565
+            }
+          ],
+          "minimum_correct_class_probability": 0.03663288954520045,
+          "typed_cells": 53,
+          "correct_type_head_cells": 6,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.932172312106406,
+          "rms_cells": 8.141071540722217,
+          "max_cells": 12.10965098924945,
+          "corner_errors_cells": [
+            7.308641127825893,
+            12.10965098924945,
+            4.426438975047029,
+            10.621712382939837
+          ],
+          "origin_error_cells": 7.308641127825893,
+          "per_column_basis_error_cells": 0.9709793929609747,
+          "per_row_basis_error_cells": 0.1441166528445981
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v2",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 146,
+          "false_positive": 0,
+          "false_negative": 54,
+          "known_cells": 200,
+          "positive_cells": 54,
+          "negative_cells": 146,
+          "cell_accuracy": 0.73,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            3,
+            7,
+            6,
+            7,
+            7,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 3,
+              "row": 14,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.010650716920143412
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.035649163229861884
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03659004427965499
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03878559509305415
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.042037408166420535
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.043034846343152806
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04559535290487383
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04615606447267953
+            },
+            {
+              "column": 7,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0515192984707458
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05408782787566893
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05514535973506773
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05809590254602394
+            },
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05822642611938711
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06111282061325801
+            },
+            {
+              "column": 0,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06134130543805715
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06335242064293332
+            }
+          ],
+          "minimum_correct_class_probability": 0.010650716920143412,
+          "typed_cells": 54,
+          "correct_type_head_cells": 6,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.935135559733295,
+          "rms_cells": 8.144138018862037,
+          "max_cells": 12.113221075940734,
+          "corner_errors_cells": [
+            7.306654825300556,
+            12.113221075940734,
+            4.429886306560417,
+            10.628584702940387
+          ],
+          "origin_error_cells": 7.306654825300556,
+          "per_column_basis_error_cells": 0.9714086954085723,
+          "per_row_basis_error_cells": 0.14384455764525297
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v0",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 200,
+          "false_positive": 0,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 1.0,
+          "precision": null,
+          "recall": null,
+          "exact_supported_cells": true,
+          "exact_board": true,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [],
+          "minimum_correct_class_probability": 0.6458847051881661,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0316879507008225,
+          "rms_cells": 1.1203056870304662,
+          "max_cells": 1.9782150589214096,
+          "corner_errors_cells": [
+            1.9782150589214096,
+            1.656222533745631,
+            1.9354083738470182,
+            1.6048500975170616
+          ],
+          "origin_error_cells": 1.9782150589214096,
+          "per_column_basis_error_cells": 0.1291021203270998,
+          "per_row_basis_error_cells": 0.16191565507901742
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v1",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 200,
+          "false_positive": 0,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 1.0,
+          "precision": null,
+          "recall": null,
+          "exact_supported_cells": true,
+          "exact_board": true,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [],
+          "minimum_correct_class_probability": 0.646461207783682,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0312734805999304,
+          "rms_cells": 1.1197657766560396,
+          "max_cells": 1.977647911947947,
+          "corner_errors_cells": [
+            1.977647911947947,
+            1.6549201726834526,
+            1.9339263595282916,
+            1.602417136204211
+          ],
+          "origin_error_cells": 1.977647911947947,
+          "per_column_basis_error_cells": 0.1290871907291121,
+          "per_row_basis_error_cells": 0.1617385746517209
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v2",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 199,
+          "false_positive": 0,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.995,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.4235994477853482
+            }
+          ],
+          "minimum_correct_class_probability": 0.4235994477853482,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0316908363108628,
+          "rms_cells": 1.1203023707652322,
+          "max_cells": 1.978131319728703,
+          "corner_errors_cells": [
+            1.978131319728703,
+            1.6561383857278125,
+            1.9354024569823476,
+            1.6048593412143048
+          ],
+          "origin_error_cells": 1.978131319728703,
+          "per_column_basis_error_cells": 0.1290743086188484,
+          "per_row_basis_error_cells": 0.1619144530520503
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v0",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 197,
+          "false_positive": 0,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.985,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08219969769090756
+            },
+            {
+              "column": 1,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09866158331455512
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1414822179701453
+            }
+          ],
+          "minimum_correct_class_probability": 0.08219969769090756,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.392242076309861,
+          "rms_cells": 7.692657894205639,
+          "max_cells": 11.901059252618083,
+          "corner_errors_cells": [
+            6.078410753617601,
+            11.901059252618083,
+            3.2269230021241104,
+            10.728521151876901
+          ],
+          "origin_error_cells": 6.078410753617601,
+          "per_column_basis_error_cells": 0.9714554850540238,
+          "per_row_basis_error_cells": 0.1436116524992637
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v1",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 197,
+          "false_positive": 0,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.985,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08304983454198264
+            },
+            {
+              "column": 1,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0900725523371473
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1466700450508673
+            }
+          ],
+          "minimum_correct_class_probability": 0.08304983454198264,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.3875863861543385,
+          "rms_cells": 7.687830706366921,
+          "max_cells": 11.895531805265342,
+          "corner_errors_cells": [
+            6.081398811637163,
+            11.895531805265342,
+            3.2210830012547795,
+            10.718938432739966
+          ],
+          "origin_error_cells": 6.081398811637163,
+          "per_column_basis_error_cells": 0.9708735947180749,
+          "per_row_basis_error_cells": 0.1440477349751035
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v2",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 196,
+          "false_positive": 0,
+          "false_negative": 4,
+          "known_cells": 200,
+          "positive_cells": 4,
+          "negative_cells": 196,
+          "cell_accuracy": 0.98,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 14,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.029277484125732355
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08305726072359156
+            },
+            {
+              "column": 1,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09010845498331257
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.14671364662590092
+            }
+          ],
+          "minimum_correct_class_probability": 0.029277484125732355,
+          "typed_cells": 4,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 7.3876828190567,
+          "rms_cells": 7.68793023397815,
+          "max_cells": 11.89563120243799,
+          "corner_errors_cells": [
+            6.081280112403907,
+            11.89563120243799,
+            3.2212616364584803,
+            10.719169763998337
+          ],
+          "origin_error_cells": 6.081280112403907,
+          "per_column_basis_error_cells": 0.9708895389603147,
+          "per_row_basis_error_cells": 0.1440328338141317
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v0",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 141,
+          "false_positive": 3,
+          "false_negative": 55,
+          "known_cells": 200,
+          "positive_cells": 56,
+          "negative_cells": 144,
+          "cell_accuracy": 0.71,
+          "precision": 0.25,
+          "recall": 0.017857142857142856,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            9,
+            6,
+            5,
+            8,
+            4,
+            9,
+            9,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000010",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.02743094056607131
+            },
+            {
+              "column": 2,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03631546380707295
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03685174171757401
+            },
+            {
+              "column": 0,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.038689686093576266
+            },
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.059508218738332834
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06087343616038471
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06476888473667454
+            },
+            {
+              "column": 3,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07584432525313368
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07819936224312452
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07838328053135807
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.10296088233553824
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1135952431141386
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12243629298806383
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12476676398060482
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12630113278345054
+            },
+            {
+              "column": 1,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12926571501504758
+            }
+          ],
+          "minimum_correct_class_probability": 0.02743094056607131,
+          "typed_cells": 56,
+          "correct_type_head_cells": 9,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.1060689852983145,
+          "rms_cells": 1.2022198135332665,
+          "max_cells": 2.2788233839544456,
+          "corner_errors_cells": [
+            2.1947160738902283,
+            1.51180980532786,
+            2.2788233839544456,
+            1.6315104222011312
+          ],
+          "origin_error_cells": 2.1947160738902283,
+          "per_column_basis_error_cells": 0.2608744503593749,
+          "per_row_basis_error_cells": 0.13407584079987048
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v1",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 142,
+          "false_positive": 2,
+          "false_negative": 55,
+          "known_cells": 200,
+          "positive_cells": 56,
+          "negative_cells": 144,
+          "cell_accuracy": 0.715,
+          "precision": 0.3333333333333333,
+          "recall": 0.017857142857142856,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            9,
+            6,
+            5,
+            8,
+            4,
+            8,
+            9,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.027244258749906762
+            },
+            {
+              "column": 2,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.036487588264261656
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.037350257224979845
+            },
+            {
+              "column": 0,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03893657279869982
+            },
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.059854731885260776
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06163560071289779
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06471896243302576
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0757138969270172
+            },
+            {
+              "column": 3,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07663511512307757
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07868322963520981
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09528287406782378
+            },
+            {
+              "column": 1,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1116423433296164
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11454065239530677
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11606705537447581
+            },
+            {
+              "column": 9,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11758813846926278
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11932292958328877
+            }
+          ],
+          "minimum_correct_class_probability": 0.027244258749906762,
+          "typed_cells": 56,
+          "correct_type_head_cells": 9,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.1058877141978332,
+          "rms_cells": 1.2021019638026844,
+          "max_cells": 2.278474676380853,
+          "corner_errors_cells": [
+            2.195154012003108,
+            1.5108053755942852,
+            2.278474676380853,
+            1.6295025613419827
+          ],
+          "origin_error_cells": 2.195154012003108,
+          "per_column_basis_error_cells": 0.2609027543499517,
+          "per_row_basis_error_cells": 0.13394631990870356
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v2",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 140,
+          "false_positive": 3,
+          "false_negative": 56,
+          "known_cells": 200,
+          "positive_cells": 57,
+          "negative_cells": 143,
+          "cell_accuracy": 0.705,
+          "precision": 0.25,
+          "recall": 0.017543859649122806,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            9,
+            6,
+            5,
+            8,
+            4,
+            9,
+            9,
+            5,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000010",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 19,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.01893804413822857
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.02747826523635232
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03513527537294748
+            },
+            {
+              "column": 2,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.036393467540470195
+            },
+            {
+              "column": 0,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.03875672651561658
+            },
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.059395752057540475
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.060998788031047906
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06488457405553201
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07492868510087387
+            },
+            {
+              "column": 3,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07600192852837977
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07851027510279614
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.10312990090106638
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11377327821428913
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1226702148814598
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12430771927241917
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.12648692737536063
+            }
+          ],
+          "minimum_correct_class_probability": 0.01893804413822857,
+          "typed_cells": 57,
+          "correct_type_head_cells": 9,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.1060834216898485,
+          "rms_cells": 1.2022283889205356,
+          "max_cells": 2.2788130118338836,
+          "corner_errors_cells": [
+            2.1947363946398872,
+            1.5119671315886898,
+            2.2788130118338836,
+            1.6316143870262532
+          ],
+          "origin_error_cells": 2.1947363946398872,
+          "per_column_basis_error_cells": 0.2608774046479536,
+          "per_row_basis_error_cells": 0.13408543076132448
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v0",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 200,
+          "false_positive": 0,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 1.0,
+          "precision": null,
+          "recall": null,
+          "exact_supported_cells": true,
+          "exact_board": true,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [],
+          "minimum_correct_class_probability": 0.5967464283337699,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.3563272212400383,
+          "rms_cells": 1.4786888080633898,
+          "max_cells": 2.807890884126272,
+          "corner_errors_cells": [
+            1.792937989544856,
+            2.3591605366550463,
+            2.35228387185774,
+            2.807890884126272
+          ],
+          "origin_error_cells": 1.792937989544856,
+          "per_column_basis_error_cells": 0.4070857774277851,
+          "per_row_basis_error_cells": 0.09901282751050029
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v1",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 200,
+          "false_positive": 0,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 1.0,
+          "precision": null,
+          "recall": null,
+          "exact_supported_cells": true,
+          "exact_board": true,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [],
+          "minimum_correct_class_probability": 0.6219094919863806,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.3556897508921655,
+          "rms_cells": 1.4779810738805335,
+          "max_cells": 2.8058842986689956,
+          "corner_errors_cells": [
+            1.7937834796391694,
+            2.358077842552425,
+            2.35161960312609,
+            2.8058842986689956
+          ],
+          "origin_error_cells": 1.7937834796391694,
+          "per_column_basis_error_cells": 0.4071294792507785,
+          "per_row_basis_error_cells": 0.09881139010485433
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v2",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 199,
+          "false_positive": 0,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.995,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 7,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05129901778622962
+            }
+          ],
+          "minimum_correct_class_probability": 0.05129901778622962,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.3557083252102737,
+          "rms_cells": 1.4779972240051042,
+          "max_cells": 2.8059199306743823,
+          "corner_errors_cells": [
+            1.7937522804411852,
+            2.358022580886943,
+            2.351693731966593,
+            2.8059199306743823
+          ],
+          "origin_error_cells": 1.7937522804411852,
+          "per_column_basis_error_cells": 0.40711778289912576,
+          "per_row_basis_error_cells": 0.09882319445428141
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v0",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 198,
+          "false_positive": 0,
+          "false_negative": 2,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.99,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0682695326795188
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.41979050139323254
+            }
+          ],
+          "minimum_correct_class_probability": 0.0682695326795188,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.3831947514087943,
+          "rms_cells": 2.6663864303376648,
+          "max_cells": 4.8154047634340555,
+          "corner_errors_cells": [
+            0.4811674643402408,
+            4.374659466847706,
+            2.069299329136014,
+            4.8154047634340555
+          ],
+          "origin_error_cells": 0.4811674643402408,
+          "per_column_basis_error_cells": 0.4782958451802215,
+          "per_row_basis_error_cells": 0.11353128369245778
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v1",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 198,
+          "false_positive": 0,
+          "false_negative": 2,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.99,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06749176616818947
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.3415886793162625
+            }
+          ],
+          "minimum_correct_class_probability": 0.06749176616818947,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.3816049741900422,
+          "rms_cells": 2.6647221275215474,
+          "max_cells": 4.812711217392123,
+          "corner_errors_cells": [
+            0.4813864776289858,
+            4.372603483148097,
+            2.067428591757678,
+            4.812711217392123
+          ],
+          "origin_error_cells": 0.4813864776289858,
+          "per_column_basis_error_cells": 0.47822778413001826,
+          "per_row_basis_error_cells": 0.11333461443586988
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v2",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 199,
+          "false_positive": 0,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.995,
+          "precision": null,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.41937784865831645
+            }
+          ],
+          "minimum_correct_class_probability": 0.41937784865831645,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.3831088726347662,
+          "rms_cells": 2.666297794098074,
+          "max_cells": 4.815279574584433,
+          "corner_errors_cells": [
+            0.4812348777962733,
+            4.374546351603177,
+            2.069262817211231,
+            4.815279574584433
+          ],
+          "origin_error_cells": 0.4812348777962733,
+          "per_column_basis_error_cells": 0.47829126307339337,
+          "per_row_basis_error_cells": 0.11352955143241737
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v0",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 4,
+          "true_negative": 128,
+          "false_positive": 0,
+          "false_negative": 68,
+          "known_cells": 200,
+          "positive_cells": 72,
+          "negative_cells": 128,
+          "cell_accuracy": 0.66,
+          "precision": 1.0,
+          "recall": 0.05555555555555555,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            6,
+            9,
+            7,
+            8,
+            9,
+            9,
+            5,
+            7,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0001010100",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000010000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.04405511376710637
+            },
+            {
+              "column": 9,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05101700649758741
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.055403198538512784
+            },
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05611578825918034
+            },
+            {
+              "column": 0,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05635984744819991
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.058581453786033064
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06048965090902395
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06261547341134306
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06290854249930641
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07226286760327164
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07480988488488816
+            },
+            {
+              "column": 9,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07596541988562597
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07922794126944639
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07976832645571577
+            },
+            {
+              "column": 2,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09936695992300736
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11080820406002574
+            }
+          ],
+          "minimum_correct_class_probability": 0.04405511376710637,
+          "typed_cells": 72,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.6068860868052597,
+          "rms_cells": 1.78400139089546,
+          "max_cells": 3.332671451910324,
+          "corner_errors_cells": [
+            0.6329801600356226,
+            1.9127273501387512,
+            2.801577586540837,
+            3.332671451910324
+          ],
+          "origin_error_cells": 0.6329801600356226,
+          "per_column_basis_error_cells": 0.21108671750060384,
+          "per_row_basis_error_cells": 0.16764958340677835
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v1",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 4,
+          "true_negative": 128,
+          "false_positive": 0,
+          "false_negative": 68,
+          "known_cells": 200,
+          "positive_cells": 72,
+          "negative_cells": 128,
+          "cell_accuracy": 0.66,
+          "precision": 1.0,
+          "recall": 0.05555555555555555,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            6,
+            9,
+            7,
+            8,
+            9,
+            9,
+            5,
+            7,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0001010100",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000010000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.044899967620583375
+            },
+            {
+              "column": 9,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05167499427033751
+            },
+            {
+              "column": 0,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.053715246278967885
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0564295640875395
+            },
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.057170862199997036
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0581350281535515
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05934466402593248
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06070026760798897
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0635955831809118
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07177252299851461
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07317185161782183
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07687054367612763
+            },
+            {
+              "column": 9,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07777601831723893
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08215254811718065
+            },
+            {
+              "column": 2,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09769122824033702
+            },
+            {
+              "column": 2,
+              "row": 7,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.11376048983333834
+            }
+          ],
+          "minimum_correct_class_probability": 0.044899967620583375,
+          "typed_cells": 72,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.6050800527624123,
+          "rms_cells": 1.7820574020560518,
+          "max_cells": 3.329191593480734,
+          "corner_errors_cells": [
+            0.6324008815854602,
+            1.9107030333209656,
+            2.798689239553209,
+            3.329191593480734
+          ],
+          "origin_error_cells": 0.6324008815854602,
+          "per_column_basis_error_cells": 0.21106218863557547,
+          "per_row_basis_error_cells": 0.16742816425582677
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v2",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 2,
+      "diagnostics": {
+        "locked": {
+          "true_positive": 4,
+          "true_negative": 129,
+          "false_positive": 0,
+          "false_negative": 67,
+          "known_cells": 200,
+          "positive_cells": 71,
+          "negative_cells": 129,
+          "cell_accuracy": 0.665,
+          "precision": 1.0,
+          "recall": 0.056338028169014086,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            6,
+            9,
+            7,
+            8,
+            9,
+            9,
+            4,
+            7,
+            8,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0001010100",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000010000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.044755025968975445
+            },
+            {
+              "column": 9,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.051544002787384746
+            },
+            {
+              "column": 0,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.052720831344405826
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.056271217044054876
+            },
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05700426763212006
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.057985080952834174
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05912577393459992
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06053591183855563
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06385171378924445
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07160240387431355
+            },
+            {
+              "column": 6,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07297775385331683
+            },
+            {
+              "column": 9,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07804506638293837
+            },
+            {
+              "column": 7,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07998406716557192
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0853295224001198
+            },
+            {
+              "column": 2,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09788154644869627
+            },
+            {
+              "column": 2,
+              "row": 7,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1138012631773592
+            }
+          ],
+          "minimum_correct_class_probability": 0.044755025968975445,
+          "typed_cells": 71,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": false,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.6052305858557923,
+          "rms_cells": 1.7822335720835867,
+          "max_cells": 3.329549041777183,
+          "corner_errors_cells": [
+            0.6325688757455211,
+            1.9108252366250278,
+            2.7990689736478838,
+            3.329549041777183
+          ],
+          "origin_error_cells": 0.6325688757455211,
+          "per_column_basis_error_cells": 0.21106539203212768,
+          "per_row_basis_error_cells": 0.16745765067397061
+        }
+      }
+    }
+  ],
+  "sources": {
+    "scripts/probe_stream_errors.py": "201338c09738dd5a5d7179748a5227b1d4b40c05b888614b99266b7fe416fca3",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/record_stream_run.py": "754bde0391177cc7080be2cc3ebf3438acb8273b38b0969c743fe924abd5f880",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "elapsed_seconds": 31.156447000001208,
+  "scope": "Saved synthetic M2 error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, complete-state or real accuracy claim. No training/label/production-output changes."
+}
