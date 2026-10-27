@@ -7,7 +7,7 @@ native RAM/pressure/CPU guards remain armed. Do not spawn subagents.
 
 ## Original baseline s4 verified at1664/4096
 
-Training/ordinary Jobs gone;next curator below. s4 saved512 new updates from1152,explicit step_partial;
+Training/ordinary Jobs gone;conditional geometry below live. s4 saved512 new updates from1152,explicit step_partial;
 fixed global target4096 remains open. Original catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
@@ -48,7 +48,7 @@ sentinel docs/evidence/m2-stream-accuracy1664-errors-r1/scope.json.
 Expected<96MiB,native pressure/Job guard. Then conditional54-forward job;
 no model Job live at this checkpoint.
 Ordinary1664 curation PASS;new report scopes preserved,probe ledgers byte-identical
-to saved704. All associated native processes gone. NEXT conditional geometry:
+to saved704. All associated native processes gone. LIVE conditional geometry launch9692 verified;exact command:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024
 --wall-seconds 120 --work-items 54
 --receipt runs/m2-stream-accuracy1664-geometry-r1-job.json --
