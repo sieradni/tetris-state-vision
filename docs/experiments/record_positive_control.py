@@ -28,7 +28,13 @@ def main():
     require_bounded_job()
     from PIL import Image
     import m2_positive_control_data as data
+    import tetris_vision.dataset as dataset
     from tetris_vision.dataset import source_digest
+    if (Path(data.__file__).resolve() != ROOT / "scripts/m2_positive_control_data.py" or
+            Path(dataset.__file__).resolve() != ROOT / "src/tetris_vision/dataset.py" or
+            Path(data.render.__code__.co_filename).resolve() != ROOT / "src/tetris_vision/render.py"):
+        raise ValueError("fixture callable origin differs")
+    curator_sha = sha(Path(__file__))
     run = ROOT / "runs/m2-positive-control-fixtures-r1"
     summary = read(run / "complete.json")
     job = read(ROOT / "runs/positive-control-generation-r1-job.json")
@@ -59,6 +65,9 @@ def main():
         files += [(run / record[key], record[key]) for key in ("image", "state")]
     if counts != summary["role_class_counts"]:
         raise ValueError("aggregate class/status counts differ")
+    if (source_digest() != summary["package_sha256"] or sha(Path(data.__file__)) != summary["generator_sha256"] or
+            sha(Path(__file__)) != curator_sha):
+        raise ValueError("fixture/curator source changed during replay")
     sources = {path.relative_to(ROOT).as_posix(): sha(path) for path in (ROOT / "src/tetris_vision").glob("*.py")}
     sources["scripts/m2_positive_control_data.py"] = sha(Path(data.__file__))
     files += [(Path(data.__file__), "generator-source.py"), (Path(__file__), "curator-source.py")]
@@ -76,7 +85,7 @@ def main():
     scope = {"status": "passed", "replayed_images": 32, "ancestry_groups": 16, "split": "fit",
              "role_class_counts": counts, "sources": sources, "artifact_sha256": hashes,
              "source_base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-             "native_generation_peak_bytes": job["peak_job_commit_bytes"], "curator_sha256": sha(Path(__file__)),
+             "native_generation_peak_bytes": job["peak_job_commit_bytes"], "curator_sha256": curator_sha,
              "scope": "Public-observer labels, complete class/absence coverage, exact PNG/state/manifest/source replay. No model training, admission or accuracy claim."}
     (out / "scope.json").write_text(json.dumps(scope, indent=2) + "\n")
     print(json.dumps({"status": "passed", "replayed_images": 32}), flush=True)

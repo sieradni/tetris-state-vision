@@ -1,0 +1,10 @@
+test_each_piece_has_two_supported_positions_and_preserves_locked_stack (test_positive_control_data.PositiveControlDataTests.test_each_piece_has_two_supported_positions_and_preserves_locked_stack) ... ok
+test_known_absence_covers_full_spawn_domain_and_invalid_indices_refuse (test_positive_control_data.PositiveControlDataTests.test_known_absence_covers_full_spawn_domain_and_invalid_indices_refuse) ... ok
+test_public_labels_balance_all_types_and_absence_with_known_locked_cells (test_positive_control_data.PositiveControlDataTests.test_public_labels_balance_all_types_and_absence_with_known_locked_cells) ... ok
+test_two_styles_have_different_pixels_same_supported_state_and_exact_replay (test_positive_control_data.PositiveControlDataTests.test_two_styles_have_different_pixels_same_supported_state_and_exact_replay) ... ok
+test_written_bytes_match_manifest_and_state_identities_and_refuse_reuse (test_positive_control_data.PositiveControlDataTests.test_written_bytes_match_manifest_and_state_identities_and_refuse_reuse) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.335s
+
+OK

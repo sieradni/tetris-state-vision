@@ -134,3 +134,4 @@ pure curators, each expected<110MiB,128MiB/30s,native guards:
    docs/evidence/positive-control-fixtures-r1/scope.json. Replays/copies all32 PNGs
    and public states with byte/file/pixel/source/coverage hashes. No training.
 Test curator launcher25212, exact command verified.
+Five-case source curation PASS;26 source hashes rechecked, raw curator receipt/log bytes preserved, all known PIDs gone. Final32-data replay uses exact command recorded above; freeze its helpers until terminal.
