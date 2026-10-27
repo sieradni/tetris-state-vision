@@ -133,3 +133,28 @@ Sources31/29/32 respectively;error scope pins actual six historical fixture file
 Same existing record_test_gates.py, no source-budget change. CPU1/native/pressure
 unchanged. After pass/full process death/byte-copy verification,commit evidence;
 only then fresh same-input warm native profile and numerical compatibility.
+
+LIVE three protocol curators;exactverifiedstartup in runs/interleave-curation-startup-r1.json.
+
+All three88-check scopes VERIFIED;31/29/32 actual source/fixture hashes checked.
+Curators driver1.209s/78,385,152B;adapter1.277s/76,337,152B;error1.324s/78,082,048B,
+all128MiB/30s. Entire test/curator PIDs and commands gone;raw receipts/log bytes
+copied verified. No other model Job live. Neural package sources unchanged.
+NEXT fresh same-input profile,expected<600MiB,640MiB/120s/work2:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 2 --receipt runs/m2-stream-interleave-profile-r1-job.json --
+.venv/Scripts/python.exe scripts/train_m2_stream.py --output runs/m2-stream-interleave-profile-r1
+--model pilot --steps 2 --wall-seconds 60 --development-groups 3 --evaluate-every 3
+--checkpoint-every 3 --profile-square --curriculum all-class-interleaved-v1
+Logs runs/m2-stream-interleave-profile-r1.log/.stderr.log;state run/progress.json,
+terminal summary/checkpoint. Entire root helpers frozen until exit. Actual source
+catalogue must be derived,not guessed. Compare to actual r5/profile with the same
+recipe except output/policy. Comparator docs/experiments/verify_interleaved_profile.py
+is external metadata-only and unexecuted;exact actualweights/package/data/probe/
+loss/gradient equality must pass before claiming numerical compatibility.
+After profile pass/death,curate record_stream_run.py --name m2-stream-interleave-profile-r1
+under128MiB/30s/work43,expected<110MiB;receipt runs/interleave-profile-curation-r1.json,
+logs same stem. Then comparator128MiB/30s/work256,expected<110MiB;receipt
+runs/interleave-profile-numerics-r1-job.json,logs runs/interleave-profile-numerics-r1.log/.stderr.log,
+final docs/evidence/interleave-profile-numerics-r1/scope.json. Fixed256 comparison
+rows/weights(164 metriccase rows+86 recipes+4 curve rows+2 actual weights).

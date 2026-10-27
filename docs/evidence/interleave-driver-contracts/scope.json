@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "source_base_commit": "25251c86fd71360f04508b2c6edf106d146948b8",
+  "sources": {
+    "scripts/train_m2_stream.py": "4e1f87a76b20c5a4a3e0bd36143e0ad7294348f23650b9bd33810d841fd55015",
+    "scripts/m2_stream_data.py": "d259a5d93db3e1d6d17452252bc2ceb26affd06e39f0e9503dfabcdcd9b6dd56",
+    "scripts/source_snapshot.py": "ff2c1d2264b6d6686ac012b17075695edf264c4279bf36844733daabee93157f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/training_snapshot.py": "3e1375459f19ede8d56447c1f06b17cabfaa79e6d2a32487b93080f9077e7ca7",
+    "scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "scripts/m2_curriculum.py": "af819e95aaa60a2887e28863604f12638d4e0b0c726fe87ade8cccd8af546d96",
+    "scripts/m2_positive_control_data.py": "484a9497d9acdf47471093fd693c2f3c5ad576e12a0592dc75ed3bc5ba03058a",
+    "scripts/m2_fit_contract.py": "444a0667a5039a92f0cde6b093d981dd17995419908172cc6e330371596f32a2",
+    "scripts/run_stream_segment.py": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+    "scripts/record_stream_run.py": "de8efae091afab523831844cebbf7c693d6c82eb4b39465609d4389d7608e5f7",
+    "scripts/record_stream_recovery.py": "d88403eb1f85bf89c0431ffdf794328990c764112d615c098f8a049034a63d2b",
+    "scripts/probe_stream_recovery.py": "843a3b7642f0a450ab92a2622772b371ec364ab236aff0626f927c9334a589b4",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "tests/test_fit_contract.py": "b696563eaf629ceb0b2f7a0bd89f8b8e6098911d1d209925ccba4ce71a0e059f",
+    "tests/test_stream_driver.py": "833adfc5d5cf896ad9cac838f9172e30548b1ca877472cc523e7dee796b7ef33",
+    "tests/test_stream_evidence.py": "73ae1ceb4882000dd1735450ef333386d55a0bdd2b37638446b9612861544cce",
+    "tests/test_stream_segment.py": "079bc8259a135256fe6ae3a7a535923eb3d7b5645d309bfb0fc371693d768391",
+    "tests/test_source_snapshot.py": "f9da46728aa5149f472aa3c270cdc8cddfe9bc68596053dc2b8c1941ac067340",
+    "tests/test_native_stream_gate.py": "50d69b3608af6b26189821362e739f6581d0f7ee6a13f894ace8ef0bc25bef30",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "docs/evidence/m2-stream-accuracy-probe/summary.json": "94b0f4e12bd7217a4a1333a686fa1c2f4ae992446252e3b42abada499ec49633",
+    "docs/evidence/m2-stream-accuracy-probe/checkpoint-manifest.json": "a18887dbc535d9b96e3e823aea53c984246eb4bcd36205bfbf5791987b270d53",
+    "docs/evidence/m2-stream-accuracy-probe/source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "docs/evidence/m2-stream-accuracy-probe/m2-stream-accuracy-probe-job.json": "6035d46282bc0f016f0b0d77ecf143946ae21b1f4b0f5af96d04173a6e450ece",
+    "docs/evidence/m3-stream-pilot-profile-r1/summary.json": "de09fc2121f7d9d43f7feb1b34b6b82a9cf288fddc098701b6db2a51def455b5",
+    "docs/evidence/m3-stream-pilot-profile-r1/checkpoint-manifest.json": "219e4b1be15f46264a4b09a76cf60c9b60cc3b611448b62ed21dc28e5f8b59ce",
+    "docs/evidence/m3-stream-pilot-profile-r1/source-manifest.json": "faf5d7b2fedcc30b222e55535475400f3d529f8b33550e1540797cf16f27a444",
+    "docs/evidence/m3-stream-pilot-profile-r1/m3-stream-pilot-profile-r1-job.json": "c8d61a225403b1ebfaf16abad118f760794a0b519a3bcc9fd10a43a577752f63"
+  },
+  "gates": [
+    {
+      "stem": "interleave-fit-contract-r1",
+      "tests": 4,
+      "raw_peak_job_commit_bytes": 32944128
+    },
+    {
+      "stem": "interleave-stream-driver-r1",
+      "tests": 6,
+      "raw_peak_job_commit_bytes": 53612544
+    },
+    {
+      "stem": "interleave-stream-evidence-r1",
+      "tests": 5,
+      "raw_peak_job_commit_bytes": 34328576
+    },
+    {
+      "stem": "interleave-stream-segment-r1",
+      "tests": 20,
+      "raw_peak_job_commit_bytes": 58814464
+    },
+    {
+      "stem": "interleave-source-snapshot-r1",
+      "tests": 4,
+      "raw_peak_job_commit_bytes": 34021376
+    },
+    {
+      "stem": "interleave-native-stream-gate-r1",
+      "tests": 3,
+      "raw_peak_job_commit_bytes": 52895744
+    }
+  ],
+  "tests_across_scoped_runs": 42,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

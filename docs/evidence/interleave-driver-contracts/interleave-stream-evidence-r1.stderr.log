@@ -1,0 +1,10 @@
+test_architecture_identity_comes_from_matching_checkpoint_config (test_stream_evidence.StreamEvidenceTests.test_architecture_identity_comes_from_matching_checkpoint_config) ... ok
+test_completed_resume_counts_new_updates_separately_from_global_target (test_stream_evidence.StreamEvidenceTests.test_completed_resume_counts_new_updates_separately_from_global_target) ... ok
+test_fit_policy_is_derived_from_matching_checkpoint_recovery_metadata (test_stream_evidence.StreamEvidenceTests.test_fit_policy_is_derived_from_matching_checkpoint_recovery_metadata) ... ok
+test_outer_timeout_pressure_crash_or_missing_reload_cannot_be_curated_as_partial (test_stream_evidence.StreamEvidenceTests.test_outer_timeout_pressure_crash_or_missing_reload_cannot_be_curated_as_partial) ... ok
+test_wall_and_step_partials_need_explicit_admission_and_keep_partial_tag (test_stream_evidence.StreamEvidenceTests.test_wall_and_step_partials_need_explicit_admission_and_keep_partial_tag) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.058s
+
+OK

@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "source_base_commit": "25251c86fd71360f04508b2c6edf106d146948b8",
+  "sources": {
+    "scripts/m2_curriculum.py": "af819e95aaa60a2887e28863604f12638d4e0b0c726fe87ade8cccd8af546d96",
+    "scripts/m2_positive_control_data.py": "484a9497d9acdf47471093fd693c2f3c5ad576e12a0592dc75ed3bc5ba03058a",
+    "scripts/m2_stream_data.py": "d259a5d93db3e1d6d17452252bc2ceb26affd06e39f0e9503dfabcdcd9b6dd56",
+    "tests/test_curriculum.py": "b00c3bfe0899bc2b86179d56f9da74962659c6fe05e7617ef1453e7612d3744f",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "src/tetris_vision/__init__.py": "ef1f6cbe4acd3ba8f979f8ec1f83a439bccd74d3319b5f9789bc66ba7bb8c3f8",
+    "src/tetris_vision/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/tetris_vision/adapter.py": "d3e543962381259c6d4562ae9054a04d91b14a9a753148fe13be1459af10e734",
+    "src/tetris_vision/checkpoint.py": "2a4cf36f4d1311bbf79d17bd200057337251b1afcb4a1821a9fdad55673dffd6",
+    "src/tetris_vision/cli.py": "362b61870751a57918189026ab5675757c21afbca616d7b0d1500f4026792ed5",
+    "src/tetris_vision/component_targets.py": "a432ea78bb1a3c312fb29aa2e271389fbe4a914ae78dafff1837622479c10671",
+    "src/tetris_vision/components.py": "d1756f4873144614b76bc0ea9259441d798e0dee81e0a488851fdc0f64be820e",
+    "src/tetris_vision/dataset.py": "daee2bd5e287dd087de44e5d58e05a9a4d1ba6a3439340ee838d2c4d6ea993c8",
+    "src/tetris_vision/evaluate.py": "00fa3b0531a8baa87aa4b1a195bb65aa330dd1a52015f363fedcdd4c05833025",
+    "src/tetris_vision/layer_evidence.py": "eb872c750c7908de6039e34c88580dc31626e1818eef2582f083756341affbd3",
+    "src/tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "src/tetris_vision/losses.py": "7baf4485b1698d2812721cd39ec3a5f5d8cd3a7c78632b93c1a43b51dbedd281",
+    "src/tetris_vision/model_capture.py": "553ac8d274ae01454f785dca3f99a3c0dc11bd329f466a89e36a44473770faac",
+    "src/tetris_vision/model.py": "773f3d7d5bbc982794c83599f0adf7b9884f507b821c2817f189f6a049f432eb",
+    "src/tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "src/tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "src/tetris_vision/runtime.py": "e87b18c37a2e411b289a531233b4b15c4e9867614ebead74d0ef8237d55035e8",
+    "src/tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "src/tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "scripts/m2_interleaved_order.py": "22e0dad24535991b6c284f5b1b8ab23a5dae194fcb5a7febcf2b9e3b91900a6d"
+  },
+  "gates": [
+    {
+      "stem": "interleave-curriculum-r1",
+      "tests": 7,
+      "raw_peak_job_commit_bytes": 50642944
+    }
+  ],
+  "tests_across_scoped_runs": 7,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}
