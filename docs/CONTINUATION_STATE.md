@@ -5,6 +5,12 @@ no remote. User's lower-memory reply enabled substantial verified work. Goal
 service last reported BLOCKED (resume is user-controlled); actual work resumed.
 Neighboring engine, user apps and run data untouched. Whole goal remains open.
 
+RUNNING: first larger4096-target segment, at most512 new updates. Hidden detached
+root26644/20696, controller31560/21424, training supervisor6232/28724 and actual
+worker8988 (launcher15820), exact command lines verified. Source145b76a; only
+heavy vision job. Current phase capturing_source. Inspect the paths below before
+any new launch; progress/receipt marked running can be stale, verify process tree.
+
 Completed finite pilot: runs/m2-stream-learn768-r3, COMPLETE768,458.494s inner,
 459.718s outer, one CPU,640MiB native cap,519,782,400B raw peak. Exact565 prior
 loss/gradient/data records; second-half growth2,748,416B <=32MiB; recovery768
@@ -43,7 +49,7 @@ Seven archived helpers; pre-import CPU pools1; native cache16; exact named
 Windows Job, kill-on-close and GetPerformanceInfo/.2s pressure guard stay armed.
 No opt-out, higher cap, receipt overwrite or deletion. Actual CPU Torch2.14.1.
 
-Selected task: verify finite segment controller, then begin fixed4096-step larger
+Selected task: verified finite segment controller, now begin fixed4096-step larger
 scratch baseline, at most512 new updates/segment. Completed128 stays a separate
 diagnostic; do not silently extend its recipe. No scheduler/restart/notification.
 
@@ -51,7 +57,7 @@ First trial runs/m2-stream-accuracy-segment-probe: pressure-parked exit125 durin
 final evaluation after recovery1/target3. External Rust builds coincided with OS
 commit31,370,371,072B > stop31,368,351,744B. Peak793,481,216B/1GiB,60.648s;
 parent829,616,128B/1.25GiB,61.244s. No final summary/pipeline result; stale progress
-is not live state. All matching processes verified gone. Wrapper UNVERIFIED.
+is not live state. All matching processes verified gone. First trial incomplete.
 Actual saved model/Adam/RNG/ledgers restored without new forward/update under
 512MiB/30s/one restore: peak467,935,232B,5.177s,238 states all at step1.
 docs/evidence/segment-pressure-recovery/scope.json. Generation:
@@ -65,7 +71,7 @@ training842,248,192B/1GiB,curator82,022,400B/128MiB. All matching Python process
 verified gone. docs/evidence/m2-stream-accuracy-segment-probe-r2/controller-gate.json
 pins actual controller source89138cd8... and receipts. This is not target3 complete.
 
-NEXT first larger long baseline: expected<1100MiB total,<1GiB new disk; latest
+ACTIVE first larger long baseline: expected<1100MiB total,<1GiB new disk; latest
 OS commit26.4GB,disk50.33GiB free (>40GiB). Native parent1280MiB/2100s/512updates;
 child1GiB/1860s outer/1800s inner,checkpoint64; serial curator128MiB/120s.
 Hidden detached command from repo root:
@@ -79,8 +85,13 @@ Root receipt/log prefix runs/m2-stream-accuracy4096-s1-pipeline; controller stat
 runs/m2-stream-accuracy4096-s1-pipeline/{progress,result}.json; actual training
 runs/m2-stream-accuracy4096-s1/{progress,latest-training,summary}.json. Preserve
 partial/pressure/timeout honestly. Only controlled segment results enter curation.
-Record launch/PIDs here, commit before waiting. If only long wait remains, leave
-finite controller detached with discoverable logs/result and end turn.
+NEXT inspect pipeline result/receipts and training latest pointer, verify live or
+terminal process tree. On segment_verified, review actual counts/memory/metrics
+and curated source/artifact identity; commit narrow evidence, then resume the
+same global4096 source/recipe/cursor in a NEW segment name if headroom permits.
+On pressure/timeout/crash, preserve receipts/logs/latest state, diagnose first;
+do not promote an uncurated result to success. No auto-restart. A missing result
+is not a completed segment. Leave this finite controller detached while waiting.
 
 Then adequately train and repair geometry/layer/board errors. M3 labels8 green,
 heads/loss/runtime open. API review-only, queue/hold unknown. User's166 images
