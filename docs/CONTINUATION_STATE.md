@@ -92,3 +92,18 @@ Full objective still OPEN: adequate scratch learning, broad synthetic visibility
 complete joint queue/hold learning, reviewed real truth/independent splits,
 initialization/direct-decoder comparisons, calibration/export/CPU latency and
 >=95% exact readable real complete-state with abstentions failing.
+
+Selected next: all-class fixed-geometry fit fixtures are implemented in
+scripts/m2_positive_control_data.py with5 meaningful public-label/coverage/replay/
+file-byte/refusal checks. docs/ALL_CLASS_FIT.md predeclares32/32 board,64/64
+layers, all supported semantic labels and<.25-cell geometry; NO fit admitted.
+New sampler is deliberately NOT in training archives yet; old profiles cannot
+admit a future changed training recipe. V-026 OPEN: pre-run review found new
+text writer could translate hashed LF bytes; now explicit byte writes plus
+full actual file/hash round-trip test. No generated set was published/used.
+NEXT five cases, expected<110MiB,128MiB/30s/work5, native Job/pressure/thread guards:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 5 --receipt runs/positive-control-tests-r1.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_positive_control_data.py -v
+Logs runs/positive-control-tests-r1.log/.stderr.log. New source is UNVERIFIED until
+this actual gate and32-fixture generation/replay pass. Disk floor still holds long training.

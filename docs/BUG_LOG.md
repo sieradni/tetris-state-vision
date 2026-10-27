@@ -9,13 +9,29 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024 (7) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026 (8) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-026 — OPEN: new fixture writer could change hashed newlines on Windows
+
+- Symptom: pre-run review found the new positive-control writer hashed UTF-8
+  strings but used text-mode writes for states and the manifest. No affected
+  generated set has been published or used for learning.
+- Root cause: string identity was treated as file-byte identity despite native
+  newline translation. This is specific to the new writer, not an allegation
+  about historical archived streaming drivers.
+- Detection class: provenance.
+- Instrument: explicit UTF-8 byte writes and a full32-image file round-trip
+  fixture: actual state/PNG/decoded-pixel/manifest hashes must match records,
+  and output reuse must refuse without changing prior bytes. Extends the
+  standing computed-byte-identity instrument.
+- Pending green gate: positive-control-tests-r1 (five cases), plus actual bounded
+  fixture generation/replay. Keep OPEN until named source-bound evidence runs.
 
 ## V-025 — CLOSED: absence fixture hid part of the active spawn domain
 
