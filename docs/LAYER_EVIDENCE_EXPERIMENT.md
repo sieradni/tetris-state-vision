@@ -76,6 +76,8 @@ component,runtime and capture checks pass on32 hashed sources:
 agreement with the byte-verified original M2 reference,real paired rasters,
 independent overlap/locked uncertainty,masks/gradients and checkpoint reload.
 The initial absence-fixture failure and its corrected public-status check remain
-in that scope (V-025). Controller/report protocol checks,fresh native warm
-admission and actual learning/recovery comparisons are still pending. These
-unit results do not establish that the new mechanism improves learning.
+in that scope (V-025). Another79 protocol cases pass in source-pinned scopes
+`layer-controller-contracts` (18), `layer-diagnostic-contracts` (26), and
+`layer-error-contracts` (35). Fresh native warm admission and actual learning/
+recovery comparisons remain pending. These unit results do not establish that
+the new mechanism improves learning.

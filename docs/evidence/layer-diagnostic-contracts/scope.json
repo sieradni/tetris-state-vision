@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "source_base_commit": "ae116490849deacd6fdecaea8300b322cbe27dd9",
+  "sources": {
+    "scripts/target_exposure.py": "084c30f195e71076915647a3d469293b577df06bee08236564435ebc9eaf6027",
+    "scripts/probe_stream_exposure.py": "d0f27d527d70de498bc7f2e939247190ef7afa945afd4be7f61a107b7893e766",
+    "scripts/record_stream_exposure.py": "a0dde60123471f80c2abcb4d6f00e231f72b0a7747a58482974a23eba76276c7",
+    "scripts/geometry_contract.py": "e2442aa2ec139fb41a7d0c827f2dbd2c6203c5936e09e9752d48d34851ca1547",
+    "scripts/probe_stream_geometry.py": "84810d8e36e27303079929383245984c1658436bfd41ad1a07ede8ad607d8f7a",
+    "scripts/record_stream_geometry.py": "d76b396f0a27714129eb7d0a7f0dda3763ea0dcf91e5077c8ef63d8532eb0515",
+    "scripts/record_stream_run.py": "bd65c67fae1cbea1db9ee71abf0b412083700f4c1dbe4023f22b59135d5cd1f0",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "tests/test_target_exposure.py": "4ef0c2be57a1503e0054f0a3396913b3db0abaa9ddfbec17c655390100c9900b",
+    "tests/test_geometry_evidence.py": "6be818ab293cf01b356bb823f17604a3a75ede327d140e16b92cc208ddfc7c24",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "docs/evidence/m2-stream-pilot-geometry/result.json": "afdaf20c7dd593abc8a7d984c629247f60abc1752538198dca26da4d07993b36",
+    "docs/evidence/m2-stream-pilot-geometry/input-checkpoint-manifest.json": "b445b16ae87934f44a8a6791f03ecad626ccf0e308271c93961fe5137b2326ed",
+    "docs/evidence/m2-stream-pilot-geometry/m2-stream-pilot-geometry-job.json": "e0bd0020c4751b2a0865be51076b58bf823c4cc5843cadc736344e3911c9f1e2",
+    "docs/evidence/m2-stream-learn768-r3/summary.json": "2f70b011e75e529cb68097fb05515fee49031e711fc9240c7b2ef24f41f7c93f",
+    "docs/evidence/m2-stream-learn768-r3/m2-stream-learn768-r3-job.json": "60e592f47d2fe5f7a82abbdc2fac42f09ad18a5ff594041d254f802c012a7f01",
+    "docs/evidence/m2-stream-learn768-r3/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "docs/evidence/m2-stream-learn768-r3/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff"
+  },
+  "gates": [
+    {
+      "stem": "layer-exposure-protocol-r1",
+      "tests": 14,
+      "raw_peak_job_commit_bytes": 35041280
+    },
+    {
+      "stem": "layer-geometry-protocol-r1",
+      "tests": 12,
+      "raw_peak_job_commit_bytes": 34627584
+    }
+  ],
+  "tests_across_scoped_runs": 26,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

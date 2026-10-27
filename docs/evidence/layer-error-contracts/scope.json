@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_base_commit": "ae116490849deacd6fdecaea8300b322cbe27dd9",
+  "sources": {
+    "scripts/probe_stream_errors.py": "3d9722e1bdb29976555e138753b9198fa2428834b45ec0d15ca2939d2da2b3c2",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/record_stream_errors.py": "924d70836d83da2660651dc0b78b6d4bd29319ee4c2547baadde6c952c431502",
+    "scripts/record_stream_run.py": "bd65c67fae1cbea1db9ee71abf0b412083700f4c1dbe4023f22b59135d5cd1f0",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "tests/test_error_evidence.py": "13426039217dc2f1ed0a3cb61607ddd5c2c8071a2e3f7b1c8bb851dcd2909863",
+    "tests/test_m2_error_analysis.py": "7278e8904619f5f545e1cda5016cf69ee0fd4e72a6b7629a66774a8bd313ca5c",
+    "tests/test_m3_error_analysis.py": "c4f2b713a928030a3ee30ef8201aff53e66266a466d78026f2e0a814bc4e9373",
+    "src/tetris_vision/components.py": "d1756f4873144614b76bc0ea9259441d798e0dee81e0a488851fdc0f64be820e",
+    "src/tetris_vision/component_targets.py": "a432ea78bb1a3c312fb29aa2e271389fbe4a914ae78dafff1837622479c10671",
+    "src/tetris_vision/state.py": "c67513edfa023562fc7b1c77e3ce73ef5ebf49e99465e8f8906ac69811161190",
+    "src/tetris_vision/shapes.py": "1136fd9970638996680e9815e1b60ceed76e5371583c71802beea0e9f650bbb0",
+    "src/tetris_vision/model_capture.py": "553ac8d274ae01454f785dca3f99a3c0dc11bd329f466a89e36a44473770faac",
+    "src/tetris_vision/layout.py": "12fcfbccfe06f072168c04deceea2722ac401aae480440ca16f2e730db34f718",
+    "src/tetris_vision/render.py": "83a6030fbf54793d121746240a8b371336f652a851335172c0bef8b940b91983",
+    "src/tetris_vision/observe.py": "78d37aed039911e33c25d5d69da4d831a44097c074dd4ca9b87979bc8b62e6c4",
+    "src/tetris_vision/model.py": "773f3d7d5bbc982794c83599f0adf7b9884f507b821c2817f189f6a049f432eb",
+    "src/tetris_vision/preprocess.py": "51142d968fd04e7d1676b58b924138c8c7bbcb2a63b2825fdf2da4cb3c50e6bf",
+    "src/tetris_vision/layer_evidence.py": "eb872c750c7908de6039e34c88580dc31626e1818eef2582f083756341affbd3",
+    "src/tetris_vision/losses.py": "7baf4485b1698d2812721cd39ec3a5f5d8cd3a7c78632b93c1a43b51dbedd281",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/result.json": "280ab0d3537ab1b4436eba3163d9a2d6a32e2c5732a0338565a6b644400daef1",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/input-summary.json": "ba1809e4a99c8ca59d82cd468e506d60282f1e783cd897d3236a39fbced82984",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/checkpoint-manifest.json": "2eee20553a4612f0c43b011c93625082a3e85d837e78b7c462014a1866cca217",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/native-job.json": "c84373b7058dee0794305ac0201beafd6884daf18f6e4c4e74418649a639c629",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff"
+  },
+  "gates": [
+    {
+      "stem": "layer-error-protocol-r1",
+      "tests": 35,
+      "raw_peak_job_commit_bytes": 247857152
+    }
+  ],
+  "tests_across_scoped_runs": 35,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

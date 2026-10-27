@@ -1,0 +1,19 @@
+test_failed_source_cannot_be_relabelled_as_valid_saved_replay (test_target_exposure.ExposureEvidenceTests.test_failed_source_cannot_be_relabelled_as_valid_saved_replay) ... ok
+test_forged_counts_or_unmasked_unknown_target_refuses (test_target_exposure.ExposureEvidenceTests.test_forged_counts_or_unmasked_unknown_target_refuses) ... ok
+test_logical_partial_protocol_is_accepted_without_mutation (test_target_exposure.ExposureEvidenceTests.test_logical_partial_protocol_is_accepted_without_mutation) ... ok
+test_native_command_work_and_no_forward_contract_are_bound (test_target_exposure.ExposureEvidenceTests.test_native_command_work_and_no_forward_contract_are_bound) ... ok
+test_original_status_weight_architecture_runtime_and_dialect_are_bound (test_target_exposure.ExposureEvidenceTests.test_original_status_weight_architecture_runtime_and_dialect_are_bound) ... ok
+test_swapped_or_altered_recipe_identity_refuses (test_target_exposure.ExposureEvidenceTests.test_swapped_or_altered_recipe_identity_refuses) ... ok
+test_bookkeeping_is_pure_and_does_not_alias_rotation_labels (test_target_exposure.TargetExposureTests.test_bookkeeping_is_pure_and_does_not_alias_rotation_labels) ... ok
+test_duplicate_cursor_invalid_population_and_unknown_padded_export_refuse (test_target_exposure.TargetExposureTests.test_duplicate_cursor_invalid_population_and_unknown_padded_export_refuse) ... ok
+test_known_absent_is_supervised_separately_from_unknown (test_target_exposure.TargetExposureTests.test_known_absent_is_supervised_separately_from_unknown) ... ok
+test_masked_pose_fields_do_not_become_pose_counts (test_target_exposure.TargetExposureTests.test_masked_pose_fields_do_not_become_pose_counts) ... ok
+test_repeated_views_count_updates_but_group_exposure_once (test_target_exposure.TargetExposureTests.test_repeated_views_count_updates_but_group_exposure_once) ... ok
+test_roles_and_equivalent_rotations_stay_independent (test_target_exposure.TargetExposureTests.test_roles_and_equivalent_rotations_stay_independent) ... ok
+test_unknown_or_absent_pose_and_invalid_known_coordinates_refuse (test_target_exposure.TargetExposureTests.test_unknown_or_absent_pose_and_invalid_known_coordinates_refuse) ... ok
+test_unknown_padded_type_and_pose_values_do_not_change_exposure (test_target_exposure.TargetExposureTests.test_unknown_padded_type_and_pose_values_do_not_change_exposure) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.037s
+
+OK
