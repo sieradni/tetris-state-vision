@@ -258,3 +258,18 @@ fixed1024 globaltarget. Expect step_partial128/1024,not completion or fit succes
 Freeze controller/shared helpers; external error-reader source can be extended
 without changing the frozen neural catalogue. No GT supplied to forward.
 LIVE first fit launcher18588, exact command verified. Source catalogue6147; no other model Job.
+
+External fit error-report extension is drafted (does NOT change neural catalogue6147
+or active controller/helpers): frozen curriculum replay,32 training cases with
+explicit bounded68-total extension, raw semantic/role fit score reconstruction,
+policy/stratum/aggregate binding. Legacy45 limit remains default. New counters
+are independently derived from raw prediction/target decomposition, not copied
+from training scores. Actual model inputs remain only pixels/validity.
+NEXT selected test_*error*.py cases,expected<350MiB,512MiB/60s,exact count printed
+in launch plan; this is modest read-only metadata/Torch-decorator checking, not
+another training Job. Receipt runs/fit-error-protocol-r1.json,logs same-stem.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 512 --wall-seconds 60
+--work-items 39 --receipt runs/fit-error-protocol-r1.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_*error*.py -v
+Freeze external report sources through gate; then source-pin and run actual41
+ordinary forwards on saved firstfit checkpoint after its process tree exits.

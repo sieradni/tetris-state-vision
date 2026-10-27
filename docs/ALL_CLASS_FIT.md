@@ -63,6 +63,15 @@ narrow diagnostic, not an all-class generalization population. Training cycles
 the32 fit images, without cached tensors. If the criterion fails at1,024, record
 the failure and inspect raw errors before declaring any extended study.
 
+Saved fit points also need an independent ordinary-forward error report. Replay
+the frozen32-case fit recipes and development recipes, and derive semantic/role
+scores from raw head predictions and supported masks. Reproduce every saved
+per-case field, including the fit metrics. Keep the old45-case report bound as
+the default; an explicit fit policy may use a bounded68-case population. Bind
+policy, family metadata, actual checkpoint and all aggregates in the collector.
+These external diagnostic helpers are outside the frozen neural catalogue and
+must not alter a live trainer, controller, or its imported helpers.
+
 Prior-bug interaction review (current ledger read before this diagnostic):
 
 - V-001/002/005/006/016: existing observer/prepared masks remain authoritative;

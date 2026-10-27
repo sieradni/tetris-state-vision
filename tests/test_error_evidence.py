@@ -32,6 +32,11 @@ def fixture():
 
 
 class ErrorEvidenceTests(unittest.TestCase):
+    def test_report_cannot_relabel_a_legacy_artifact_as_fit_policy(self):
+        values = fixture()
+        values[0]["curriculum"] = "all-class-fit-v1"
+        with self.assertRaises(ValueError):
+            validate_report(*values, name=NAME)
     def test_actual_partial_metadata_is_accepted_without_rewriting_it(self):
         values = fixture()
         before = copy.deepcopy(values)

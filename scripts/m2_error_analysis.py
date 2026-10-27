@@ -147,10 +147,40 @@ def analyze_case(prediction, target):
             "geometry": _geometry(lattice, truth_lattice, target["registered"])}
 
 
-def summarize(records):
-    """Aggregate at most45 dependent synthetic probes; no confidence interval."""
-    if type(records) is not list or not 1 <= len(records) <= 45:
-        raise ValueError("finite1..45 diagnostic cases required")
+def recipe_strata(recipe):
+    if recipe.get("curriculum") is None:
+        return recipe["density"], recipe["skin"]
+    if (recipe["curriculum"] != "all-class-fit-v1" or recipe.get("split") != "fit" or
+            type(recipe.get("index")) is not int or not 0 <= recipe["index"] < 16 or
+            type(recipe.get("view")) is not int or recipe["view"] not in (0, 1)):
+        raise ValueError("supported fit recipe strata required")
+    return ("sparse" if recipe["index"] % 2 == 0 else "empty"), ("clean" if recipe["view"] == 0 else "no_grid")
+
+
+def fit_metrics_from_diagnostics(diagnostic):
+    """Rebuild fit scores from independently decomposed raw heads and masks."""
+    locked = diagnostic["locked"]
+    known, correct = locked["typed_cells"], locked["correct_type_head_cells"]
+    if type(known) is not int or type(correct) is not int or not 0 <= correct <= known <= 200:
+        raise ValueError("supported semantic counts required")
+    roles = {}
+    for role in ("active", "ghost"):
+        item = diagnostic["layers"][role]
+        supported = item["target_known"]
+        kind = item["target_type"]
+        if (type(supported) is not bool or type(item["target_pose_known"]) is not bool or
+                supported and (not _index(kind, 8) or type(item["exact"]) is not bool) or
+                not supported and (kind is not None or item["exact"] is not None)):
+            raise ValueError("supported role decomposition required")
+        roles[role] = {"known": supported, "observed": item["target_pose_known"], "exact": item["exact"],
+                       "class": (("IOTSZJL"[kind-1] if kind else "absent") if supported else "unknown")}
+    return {"semantic_known": known, "semantic_correct": correct, "roles": roles}
+
+
+def summarize(records, *, max_cases=45):
+    """Bounded dependent probes; explicit68-case fit extension, no interval."""
+    if type(max_cases) is not int or max_cases not in (45, 68) or type(records) is not list or not 1 <= len(records) <= max_cases:
+        raise ValueError("finite explicit45/68 diagnostic case bound required")
     if (any(row["split"] not in {"training", "development"} or type(row["group_id"]) is not str or
             not row["group_id"] or type(row["sample_id"]) is not str or not row["sample_id"] for row in records) or
             len({row["sample_id"] for row in records}) != len(records)):

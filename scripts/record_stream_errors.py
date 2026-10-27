@@ -8,7 +8,7 @@ import re
 import shutil
 import subprocess
 
-from m2_error_analysis import summarize
+from m2_error_analysis import fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import summarize_components
 from probe_model import require_bounded_job
 from record_stream_run import checkpoint_architecture, validate_completion
@@ -38,9 +38,11 @@ def digest(path):
 
 def validate_report(result, job, summary, manifest, recipes, *, name):
     """Pure metadata gate; neural/pixel replay belongs to the recorded worker."""
+    curriculum = summary.get("curriculum", "stream-v1")
+    max_cases = 68 if curriculum == "all-class-fit-v1" else 45
     if (result["status"] != "passed" or result.get("diagnostic_format_version") != 2 or
             job["status"] != "passed" or job["exit_code"] != 0 or
-            type(result["forwards"]) is not int or not 1 <= result["forwards"] <= 45 or
+            type(result["forwards"]) is not int or not 1 <= result["forwards"] <= max_cases or
             job["work_items"] != result["forwards"] or result["forwards"] != len(result["cases"]) or
             result["weights_unchanged"] is not True or result["automatic_metrics_reproduced"] is not True or
             result["label_inputs_to_model"] is not False):
@@ -57,27 +59,31 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
             result["source_catalogue_sha256"] != summary["catalogue_sha256"] or
             result["core_architecture"] != architecture or result["config"] != manifest["config"] or
             result["component_capacity"] != summary["config"].get("component_capacity", 0) or
-            result["job_ceiling_bytes"] != job["memory_bytes"]):
+            result["job_ceiling_bytes"] != job["memory_bytes"] or result.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("report checkpoint/partial-status identity differs")
     capacity = result["component_capacity"]
-    totals = summarize(result["cases"])
+    totals = summarize(result["cases"], max_cases=max_cases)
     for split, field in (("training", "final_training_probe"), ("development", "development")):
         expected = {row["sample_id"]: row for row in summary[field]["cases"]}
         labels = {row["sample_id"]: row for row in recipes[split]}
         cases = [row for row in result["cases"] if row["split"] == split]
-        if (not 1 <= len(cases) <= (9 if split == "training" else 36) or len(expected) != len(summary[field]["cases"]) or
+        training_limit = 32 if curriculum == "all-class-fit-v1" else 9
+        if (not 1 <= len(cases) <= (training_limit if split == "training" else 36) or len(expected) != len(summary[field]["cases"]) or
                 len(labels) != len(recipes[split]) or len(cases) != len(expected) or
                 {row["sample_id"] for row in cases} != set(expected) or set(labels) != set(expected)):
             raise ValueError("saved diagnostic population differs")
         for row in cases:
             recipe = labels[row["sample_id"]]
-            if any(row[key] != recipe[source] for key, source in
-                   (("group_id", "group_id"), ("view", "view"), ("skin", "skin"), ("density_recipe", "density"))):
+            density, skin = recipe_strata(recipe)
+            if row["group_id"] != recipe["group_id"] or row["view"] != recipe["view"] or row["skin"] != skin or row["density_recipe"] != density:
                 raise ValueError("saved sample ancestry/recipe differs")
             ordinary = row["ordinary_metrics"]
             if ordinary != {key: value for key, value in expected[row["sample_id"]].items() if key != "sample_id"}:
                 raise ValueError("saved ordinary metrics differ")
             diagnostic = row["diagnostics"]
+            if curriculum == "all-class-fit-v1" and split == "training":
+                if ordinary.get("fit_case") != fit_metrics_from_diagnostics(diagnostic) or ordinary.get("group_id") != recipe["group_id"]:
+                    raise ValueError("fit raw-head decomposition differs")
             layers = [value for value in diagnostic["layers"].values() if value["target_known"]]
             if (ordinary["known_cells"] != diagnostic["locked"]["known_cells"] or
                     ordinary["exact_locked_board"] != diagnostic["locked"]["exact_board"] or

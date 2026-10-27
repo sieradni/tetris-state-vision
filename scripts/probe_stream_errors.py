@@ -14,7 +14,7 @@ import re
 import sys
 import time
 
-from m2_error_analysis import analyze_case, summarize
+from m2_error_analysis import analyze_case, fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import analyze_components, pack_components, replay_keywords, summarize_components
 from probe_model import require_bounded_job
 from record_stream_run import checkpoint_architecture, validate_completion
@@ -85,6 +85,10 @@ def main():
     from tetris_vision.preprocess import prepare_image
     import tetris_vision.model as model_module
     require_frozen_callables(code, sample_case, targets_for)
+    curriculum = summary.get("curriculum", "stream-v1")
+    if "curriculum" in summary:
+        from m2_curriculum import replay_case
+        require_frozen_callables(code, replay_case)
     if not Path(model_module.__file__).resolve().is_relative_to(code):
         raise ValueError("error probe model/sampler/labels import is not frozen")
     torch.set_num_threads(1)
@@ -109,13 +113,15 @@ def main():
                 raise ValueError("probe ledger byte budget exceeded")
             recipes = [json.loads(line) for line in ledger.read_text().splitlines()]
             expected = {row["sample_id"]: row for row in summary[field]["cases"]}
-            if not 1 <= len(recipes) <= (9 if split == "training" else 36) or len(recipes) != len(expected):
-                raise ValueError("finite45-probe budget or saved population differs")
+            training_limit = 32 if curriculum == "all-class-fit-v1" else 9
+            if not 1 <= len(recipes) <= (training_limit if split == "training" else 36) or len(recipes) != len(expected):
+                raise ValueError("finite declared probe budget or saved population differs")
             for recipe in recipes:
                 sample_kwargs, target_kwargs = replay_keywords(recipe, capacity)
                 if manifest["config"].get("layer_evidence", False):
                     target_kwargs["layer_evidence"] = True
-                case = sample_case(recipe["group_index"], recipe["view"], split, recipe["base_seed"], **sample_kwargs)
+                case = (replay_case(recipe, split=split, curriculum=curriculum, component_capacity=capacity) if "curriculum" in summary else
+                        sample_case(recipe["group_index"], recipe["view"], split, recipe["base_seed"], **sample_kwargs))
                 if json.loads(json.dumps(case.record)) != recipe:
                     raise ValueError("error probe recipe/pixel/label identity differs")
                 stem = run/(split+"-probe")/recipe["sample_id"]
@@ -136,6 +142,8 @@ def main():
                 known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
                 baseline.update(loss=float(loss), known_layers=len(known_layers),
                                 exact_known_layers=sum(layer["exact"] for layer in known_layers))
+                if curriculum == "all-class-fit-v1" and split == "training":
+                    baseline.update(group_id=recipe["group_id"], fit_case=fit_metrics_from_diagnostics(diagnostics))
                 if capacity:
                     baseline["components"] = component_metrics(output["final"]["components"], target["components"])[0]
                     components = analyze_components(*pack_components(output["final"]["components"], target["components"]))
@@ -149,15 +157,16 @@ def main():
                         not math.isclose(baseline["cell_accuracy"], diagnostics["locked"]["cell_accuracy"], abs_tol=1e-6) or
                         not math.isclose(baseline["mean_geometry_error_cells"], diagnostics["geometry"]["mean_cells"], rel_tol=1e-5, abs_tol=1e-5)):
                     raise ValueError("independent decomposition disagrees with frozen metrics")
+                density, skin = recipe_strata(recipe)
                 records.append({"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
-                                "density_recipe": recipe["density"], "skin": recipe["skin"], "view": recipe["view"],
+                                "density_recipe": density, "skin": skin, "view": recipe["view"],
                                 "ordinary_metrics": baseline, "diagnostics": diagnostics})
                 (args.output/"progress.json").write_text(json.dumps({"forwards": len(records), "sample_id": recipe["sample_id"]})+"\n")
     if not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()):
         raise ValueError("read-only error probe changed model tensors")
     if sources != {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in source_paths}:
         raise ValueError("diagnostic source changed during execution")
-    totals = summarize(records)
+    totals = summarize(records, max_cases=68 if curriculum == "all-class-fit-v1" else 45)
     if capacity:
         for split, values in summarize_components(records).items():
             totals[split]["components"] = values
@@ -167,6 +176,7 @@ def main():
               "source_catalogue_sha256": summary["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
               "automatic_metrics_reproduced": True, "weights_unchanged": True, "label_inputs_to_model": False,
               "core_architecture": architecture, "config": manifest["config"], "component_capacity": capacity,
+              "curriculum": curriculum,
               "totals": totals, "cases": records, "sources": sources,
               "elapsed_seconds": time.monotonic()-started,
               "scope": "Saved synthetic raw-head error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, decoded complete-state or real accuracy claim. Unknown component targets are excluded. No training/label/production-output changes."}

@@ -23,6 +23,45 @@ def fixture():
 
 
 class M2ErrorAnalysisTests(unittest.TestCase):
+    def test_fit_colour_and_role_scores_come_from_raw_supported_decomposition(self):
+        pred, target = fixture()
+        target["occupied"][0][0] = target["typed"][0][0] = True
+        target["semantic"][0][0] = 2
+        target["layers"][0].update(type=1, pose_known=True, column=3, row=2, rotations=[True, False, True, False])
+        pred["layers"][0].update(type=1, column=3, row=2, rotation=2)
+        metrics = analysis.fit_metrics_from_diagnostics(analysis.analyze_case(pred, target))
+        self.assertEqual((metrics["semantic_known"], metrics["semantic_correct"]), (1, 0))
+        self.assertEqual(metrics["roles"]["active"], {"class": "I", "known": True, "observed": True, "exact": True})
+        self.assertEqual(metrics["roles"]["ghost"], {"class": "absent", "known": True, "observed": False, "exact": True})
+        pred["layers"][0]["type"] = 0
+        pred["semantic"][0][0] = 2
+        changed = analysis.fit_metrics_from_diagnostics(analysis.analyze_case(pred, target))
+        self.assertEqual(changed["semantic_correct"], 1)
+        self.assertFalse(changed["roles"]["active"]["exact"])
+        target["layers"][0].update(known=False, pose_known=False)
+        unknown = analysis.fit_metrics_from_diagnostics(analysis.analyze_case(pred, target))["roles"]["active"]
+        self.assertEqual(unknown["class"], "unknown")
+        self.assertIsNone(unknown["exact"])
+
+    def test_fit_strata_are_explicit_and_legacy_metadata_is_unchanged(self):
+        self.assertEqual(analysis.recipe_strata({"density": "dense", "skin": "no_grid"}), ("dense", "no_grid"))
+        base = {"curriculum": "all-class-fit-v1", "split": "fit", "index": 14, "view": 1}
+        self.assertEqual(analysis.recipe_strata(base), ("sparse", "no_grid"))
+        self.assertEqual(analysis.recipe_strata({**base, "index": 15, "view": 0}), ("empty", "clean"))
+        for change in ({"curriculum": "other"}, {"index": True}, {"index": 16}, {"view": False}, {"split": "training"}):
+            with self.assertRaises(ValueError):
+                analysis.recipe_strata({**base, **change})
+
+    def test_larger_fit_report_bound_is_explicit_and_stays_finite(self):
+        pred, target = fixture()
+        value = analysis.analyze_case(pred, target)
+        rows = [{"sample_id": str(i), "group_id": "one-parent", "split": "training", "diagnostics": value} for i in range(50)]
+        with self.assertRaises(ValueError):
+            analysis.summarize(rows)
+        self.assertEqual(analysis.summarize(rows, max_cases=68)["training"]["images"], 50)
+        for maximum in (True, 1000):
+            with self.assertRaises(ValueError):
+                analysis.summarize(rows, max_cases=maximum)
     def test_empty_cell_accuracy_does_not_hide_missed_block(self):
         pred, target = fixture()
         target["occupied"][0][3] = True
