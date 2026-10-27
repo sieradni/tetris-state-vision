@@ -111,3 +111,14 @@ Full objective remains OPEN: adequate scratch learning,broad visibility/renderin
 complete queue/hold,reviewed real truth/independent splits,initialization/direct
 comparison,calibration/export/CPU latency and>=95% exact readable real complete
 state with abstentions failing. Public API remains needs_review/unsupported.
+
+Current selected source subtask: explicit m2_curriculum.py adapter for stream-v1
+and all-class-fit-v1,with strict serialized recipe replay,32-case training
+cycle/probe population,independent existing development probes and true distinct
+ancestry counts. Plan/bug interactions in ALL_CLASS_FIT.md. Preserve legacy
+sample records byte-for-byte;fit is capacity0 only. Prepare adapter/tests now;
+do NOT edit active controller/train_m2_stream/source_snapshot/record_stream_run
+while original s7 tree lives. Wire/admit after exact terminal/death verification.
+Adapter source/test gate expected<110MiB under128MiB/30s, finite tests; no neural
+Job overlaps. New source remains a candidate until native tests and frozen
+integration/warm/recovery gates run. Full fit goal/32-case criterion unchanged.

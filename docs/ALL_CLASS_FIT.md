@@ -41,6 +41,19 @@ Evidence: `docs/evidence/positive-control-fixture-contracts/scope.json` and
 `docs/evidence/positive-control-fixtures-r1/scope.json`. These establish supported
 fit data, not a trained model or a resource admission for the future fit driver.
 
+Driver integration contract: add an explicit `curriculum` identity, default
+`stream-v1`; `all-class-fit-v1` is M2/capacity0 only. Preserve every existing
+stream recipe byte and its three-view sampling order. The fit cycles32 cases
+in index/view order, with32 training-probe views and the existing independent
+development generator. Its32-case population is reused, not fresh diversity.
+The full-square resource profile repeats the first512-square case twice.
+Record the curriculum in admission, recovery, summaries and controller routing;
+refuse a resource profile or recovery state from another policy. Archive both
+the adapter and fixture module. Old archived drivers never receive a new flag.
+Readers replay the declared policy and compare the complete serialized record,
+not merely a sample ID. Preserve all default numerical behavior; obtain fresh
+source-bound gates/admissions before using the new catalogue.
+
 Prior-bug interaction review (current ledger read before this diagnostic):
 
 - V-001/002/005/006/016: existing observer/prepared masks remain authoritative;
