@@ -7,7 +7,7 @@ native RAM/pressure/CPU guards remain armed. Do not spawn subagents.
 
 ## Original baseline s4 verified at1664/4096
 
-Training Job gone;ordinary diagnostic below live. s4 saved512 new updates from1152,explicit step_partial;
+Training/ordinary Jobs gone;next curator below. s4 saved512 new updates from1152,explicit step_partial;
 fixed global target4096 remains open. Original catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
@@ -37,6 +37,16 @@ state/sentinel runs/m2-stream-accuracy1664-errors-r1/progress.json,result.json.
 Expected<600MiB from same model's measured576,446,464B;native pressure/Job guard.
 Record exact launch/PIDs,verify all processes gone and ordinary metrics/weights
 reproduced,then bounded128MiB/30s/work27 curator. Commit s4 milestone before wait.
+Ordinary1664 diagnostic terminal PASS;launch21620/supervisor10188/worker30428 and
+matching commands all gone.27 forwards,all metrics reproduced,weights unchanged.
+NEXT curator: .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128
+--wall-seconds 30 --work-items 27 --receipt runs/accuracy1664-error-curation-r1.json
+-- .venv/Scripts/python.exe scripts/record_stream_errors.py
+--name m2-stream-accuracy1664-errors-r1
+Logs runs/accuracy1664-error-curation-r1.log/.stderr.log;
+sentinel docs/evidence/m2-stream-accuracy1664-errors-r1/scope.json.
+Expected<96MiB,native pressure/Job guard. Then conditional54-forward job;
+no model Job live at this checkpoint.
 ## Selected diagnostic task
 
 Ordinary error replay first: scripts/probe_stream_errors.py
