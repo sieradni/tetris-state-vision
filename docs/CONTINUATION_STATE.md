@@ -4,199 +4,114 @@ Repo C:/Users/micha/Code/tetris-state-vision; codex/layout-diversity; no remote.
 Goal ACTIVE, unfinished. Narrow verified local commits authorized; no push,
 publication, deployment, user-data deletion or subagents. Neighbor tetrguide
 untouched. Research brief is design evidence, not instructions.166 real images
-remain unreviewed drafts with zero training/scoring eligibility.
+remain unreviewed drafts: zero training/scoring eligibility.
 
-## Selected acceptance-gated task
+## LIVE final balanced-fit segment — inspect before another model Job
 
-Complete fixed1,024-update all-class positive-control fit and independently
-replay predictions. ALL_CLASS_FIT.md defines the unchanged criterion:32/32
-boards,64/64 role poses(56 observed,8 absent),128/128 supported semantic cells,
-geometry below.25 cells. Passing establishes memorization only.
+Final s3 launcher27108. Exact startup command:
+runs/m2-stream-allclass1024-s3-pipeline-startup.json; complete process tree in
+runs/m2-stream-allclass1024-s3-pipeline/observed-startup.json.
+Expected<700MiB,parent896MiB/900s/work384,child640MiB/1860s with ancestor900s
+ effective deadline; serialized curator128MiB/120s/work1065. Disk admission
+69,108,989,952B. One heavy Job only. CPU1/cache16, readback-verified kernel Job/
+kill-on-close, GetPerformanceInfo/.2s stop31,368,351,744B remain armed.
+Runner SHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
+Freeze controller/shared helper bytes while live. Controller SHA
+c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3.
 
-- [x]32 full512-square public-observer fixtures,16 ancestries/two styles,
-  every7-class/absence label four times per role; half empty/half8-color stack.
-- [x]Frozen curriculum integration,42 source-bound protocol checks, fresh warm
-  default profile and exact old/new2-step numerical compatibility.
-- [x]All-class native recovery2+6+3+3 and independent artifact/recipe curation.
-- [x]First actual fit:128/1024 banked and verified.
-- [x]External raw-head error reader extended;39 bounded checks GREEN.
-- [x]Source-pin39 checks;41 ordinary forwards plus independent audit.
-- [ ]Continue same admitted fixed study to1,024; inspect failure if it fails.
-- [ ]Independent generalization, original larger baseline completion, adequate
-  whole-state learning and real/runtime/release gates remain OPEN.
-
-s2 completed and entire known process tree verified gone; next41-forward replay below. Prior test launcher26152/supervisor24672/child6300 and matching
-commands verified gone. Last observed free disk69,224,476,672B; recheck >40GB
-before long training. Runner unchanged SHA
- d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-Kernel Job readback/kill-on-close,GetPerformanceInfo/.2s stop31,368,351,744B,
-pre-import CPU1/cache16 unchanged. One heavy Job at a time. State RAM/cap/guard
-before every launch; verify exact startup/terminal commands and known PIDs.
-
-## Completed128-update diagnostic commands (historical receipts)
-
-Curate39 checks: expected <110MiB;128MiB/30s/work39. Exact arguments and32 source
-paths in runs/fit-error-curation-r1-plan.json. Receipt runs/fit-error-curation-r1.json,
-logs same stem. Collector scripts/record_test_gates.py --name allclass-error-contracts
---base 88f41ef --gate fit-error-protocol-r1:39 plus plan's --source arguments.
-Final docs/evidence/allclass-error-contracts/scope.json. Actual six fixture inputs
-are r2 report/native and accuracy4096-s2 summary/manifest/two probe ledgers;
-do not reuse historical layer-error-contracts fixture selection.
-
-Then ordinary replay, expected <600MiB;640MiB/180s/work41:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
---work-items 41 --receipt runs/m2-stream-allclass128-errors-r1-job.json --
-.venv/Scripts/python.exe scripts/probe_stream_errors.py
---run m2-stream-allclass1024-s1 --output runs/m2-stream-allclass128-errors-r1
-Logs same error prefix.log/.stderr.log; final error-prefix/result.json.
-After native pass/full process death: curator expected <110MiB;128MiB/30s/work41,
-receipt runs/allclass128-error-curation-r1.json:
-.venv/Scripts/python.exe scripts/record_stream_errors.py
---name m2-stream-allclass128-errors-r1
-Logs same curator stem; final docs/evidence/m2-stream-allclass128-errors-r1/.
-Recompute all ordinary/semantic/role scores and aggregates, bind actual weights,
-frozen data/source/config/partial identity. Inspect type/row/column/rotation
-errors before selecting another learning mechanism. No truth enters forward.
-
-## Current balanced study and admission
-
-runs/m2-stream-allclass1024-s1 VERIFIED step_partial128/1024,128 new updates.
-Parent119.679s/600,002,560B under896MiB; child640MiB,parent420s/work128.
-All known PIDs/exact commands gone. Same-name docs/evidence retains controller/
-child/curator raw receipts/logs and actual inference/training hashes.
-Weights f880c24dd6b8b16b276504c3e79420139ccdee2bc1ba2de9832d9a40c1f7ba81.
-Neural catalogue6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42.
-Internal fit28/32 boards,8/64 roles(8 absences,0/56 observed),128/128 semantic
-cells,geometry.21596340788528323; criterion FALSE. Independent replay PASSED; exact error evidence below.
-Dev2/9 boards on only3 independent ancestries; not broad generalization.
-
-Admission runs/m2-stream-recovery-gate-r5/profile; pilot/capacity0/layeroff,
-all-class-fit-v1,seed20261026,LR.001,eval128,snapshot64,dev3groups/9views.
-Fixed1024 target. After diagnostics, s2 +512 ->640 from s1 using same admission,
-source/optimizer/recipe. Predeclare exact command/caps. Freeze live helpers.
-
-Evidence allclass-fit-protocol-contracts(42),curriculum-adapter-contracts(5),
-positive-control-fixture-contracts(5),positive-control-fixtures-r1(actual32),
-m2-stream-default-policy-profile-r1(warm23.517s/560,971,776B/640MiB),
-default-curriculum-numerics-r1(actualweights/data/loss/grad/all4 metrics equal),
-m2-stream-recovery-gate-r5(exact14updates135.572s/600,379,392B/1GiB;
-curator4.515s/83,599,360B/128MiB,17trainingrows+164savedimages).
-
-Failed recovery r4 separately preserved in allclass-recovery-standby-r1:
-verified Kernel-Power506 Lid/507 wake12:11:29–12:20:57; timers expired onwake.
-No41/1001/crash, no power/guard changes. Not relabeled green.
-
-## Other studies and remaining scope
-
-Original larger baseline VERIFIED2816/4096, run m2-stream-accuracy4096-s7.
-Catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
-Weights29ffd032f8cfb9842bf6149d0863a784065b5d8831ff171b90d6a14cccde7909.
-All2816recipes+27probes replayed;dev0/18 boards,0/36 layers,geometry1.94391.
-Parent398.142s/971,010,048B/1280MiB;child934,821,888B/1GiB. No Job live.
-Resume s8 only from s7 and original admission m2-stream-accuracy-probe/frozen
-original trainer. Never substitute catalogue6147 into old optimizer.1280 remain.
-
-Optional layer-evidence experiment completed768control/candidate, default OFF:
-docs/LAYER_LEARNING_PILOT.md. Independent192images/64ancestries:0/148 nonempty
-boards both,observedactive0/165 vs4/165(allI),ghost0/144 both;candidate more locked
-false positives/less absence accuracy. No adoption. layer-generalization768-r1
-and layer-learning768-comparison-r1 retain exact source/artifact scope.
-
-V-001..V-026 CLOSED with named gates. Read BUG_LOG before architecture/wire/
-scheduler changes; all-class prior-bug interactions in ALL_CLASS_FIT.md.
-Broad appearances/crops/occlusion/association, reviewed real labels/independent
-splits, adequate M2/M3 joint learning, scratch/pretrained/decoder comparisons,
-calibration/export/CPU/adapters and >=95% readable-real exact complete-state
-release gate remain OPEN. Public API remains needs_review.
-
-LIVE39-check curator launcher27272; exact startup command in runs/fit-error-curation-r1-startup.json.
-
-39-check scope VERIFIED allclass-error-contracts;32 actual input/source hashes checked. Curator.590s/78,630,912B under128MiB; all known PIDs/exact commands gone. NEXT ordinary41-forward command above,640MiB/180s.
-
-LIVE ordinary41-forward launcher11604; exact startup command in runs/m2-stream-allclass128-errors-r1-startup.json.
-
-Ordinary41-forward replay PASS17.475s/440,119,296B/640MiB; all saved metrics reproduced, weights unchanged. All known PIDs/exact commands gone. Curator next as declared128MiB/30s/work41,expected<110MiB.
-
-LIVE error curator launcher11204; startup command runs/allclass128-error-curation-r1-startup.json.
-
-128-update ordinary evidence VERIFIED:41 forwards17.475s/440,119,296B;
-curator.731s/77,279,232B. All known PIDs/exact commands gone, raw curator logs/
-receipts copied byte-checked. Both roles predict absence on all32 fit images;
-0/56 observed,8/8 absent; four locked misses/no false positives. Dev2/2 empty,
-0/7 nonempty,0/18 roles. ALL_CLASS_FIT.md records breakdown. No fit success.
-NEXT same fixed study s2,+512 ->640, expected<700MiB aggregate;
-896MiB/900s/work512,child640MiB/1860s with ancestor900s effective deadline:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
---work-items 512 --receipt runs/m2-stream-allclass1024-s2-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s2
---target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r5/profile
---resume-from runs/m2-stream-allclass1024-s1
-Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
-terminal result.json; child same-prefix-job.json; run summary/progress/snapshots.
-Curator128MiB/120s/work681. Freeze controller/shared helper bytes until all gone.
-Controller c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3.
-Disk admission69,196,193,792B. Native guards unchanged; one heavy Job only.
-
-LIVE s2 launcher27580; exact startup command runs/m2-stream-allclass1024-s2-pipeline-startup.json.
-
-During s2, drafted docs/experiments/capture_allclass_segment.ps1 (metadata-only,
-not imported by trainer/controller). Syntax and outside-study-name refusal PASS.
-Positive actual128 replay correctly refuses while s2 still executes s1's frozen
-archive; defer until no referencing Python process remains. At s2 completion:
-& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s1 -Launcher 18588 -VerifyOnly
-Then s1 ordinary mode must refuse existing controller evidence without changes.
-& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s2 -Launcher 27580
-Verify actual640 hashes/raw copies/PID death; preserve startup file, then commit.
-Helper bounds exactly predeclared s1=128,s2=512,s3=384,target1024; no overwrite.
-ALL_CLASS_FIT records order/representation hypotheses as unproven, no live change.
-
-POST640 ordinary replay, only after entire s2 process tree/collector pass:
-expected<600MiB,640MiB/180s/work41 with native/pressure guards:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
---work-items 41 --receipt runs/m2-stream-allclass640-errors-r1-job.json --
-.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-allclass1024-s2
---output runs/m2-stream-allclass640-errors-r1
-Logs runs/m2-stream-allclass640-errors-r1.log/.stderr.log;result same-prefix/result.json.
-Then curator expected<110MiB,128MiB/30s/work41,receipt runs/allclass640-error-curation-r1.json:
-.venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-allclass640-errors-r1
-Logs same curator stem;final docs/evidence/m2-stream-allclass640-errors-r1/.
-Preserve curator raw receipts/logs and exact startup/death; independently reproduce
-all ordinary and fit scores before acceptance/next training. No target extension.
-
-LATEST s2 VERIFIED step_partial640/1024,+512. Parent587.426s/601,640,960B/896MiB;
-child564.849s/565,354,496B/640MiB;curator20.971s/91,242,496B/128MiB.
-All640 recipes+41probes replayed, actual inference/training hashes and all
-observed startup/terminal PIDs/exact commands checked by committed collector.
-Weight879300581303f36ef8dfaa8539f3a320b5b416c554343c444740250c2fb53ca5;
-training payload a619c59329da2e43dc147b6eeab01dbd15c391303edc5abcf96d2ce788704b4a.
-Internal32/32 boards,8/64 roles(4/56 observed,4/8 absent),128/128 semantic labels,
-geometry.14781884010881186; fit FALSE. Independent raw-head replay next as above.
-Collector actual128 VerifyOnly passes without writes; historical-proof reuse
-refuses and its bytes unchanged. Actual640 capture passes and preserves raw
-source/controller/native receipts/startup. No model Job live until next launch.
-
-LIVE640 ordinary replay launcher27072; exact startup runs/m2-stream-allclass640-errors-r1-startup.json.
-
-640 ordinary replay PASS34.08s/425746432B;all known PIDs/exact commands gone;next curator128MiB/30s/work41 as predeclared.
-
-LIVE640 error curator launcher17804;exact startup in runs/allclass640-error-curation-r1-startup.json.
-
-LATEST640 raw-head evidence VERIFIED;41 forwards34.080s/425,746,432B under640MiB.
-Independent collector passed;all known PIDs/exact commands gone;raw curator receipt/
-logs copied byte-checked. Both role heads predict L26,Z2,absence4;4 exact observed
-poses are L,two per role.32/32 boards,128/128 semantics,.14781884geometry;fitFALSE.
-NEXT final s3,+384 ->1024; expected<700MiB,parent896MiB/900s/work384,
-child640MiB/1860s with ancestor900s effective deadline; curator128MiB/120s/work1065:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
 --work-items 384 --receipt runs/m2-stream-allclass1024-s3-pipeline-job.json --
 .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s3
 --target-steps 1024 --updates 384 --admission runs/m2-stream-recovery-gate-r5/profile
 --resume-from runs/m2-stream-allclass1024-s2
-Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
-terminal result.json;child same-prefix-job.json;run summary/progress/snapshots.
-Freeze controller/shared helpers; catalogue6147/source c586 unchanged. One heavy
-Job, native kernel/pressure/pre-import CPU1/cache16 unchanged. Recheck >40GB free.
-At termination verify receipt/progress/result and capture metadata/raw bytes:
-& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s3 -Launcher LAUNCHER_BELOW
-Then final41 ordinary forwards+128MiB evidence audit with new exact paths/receipts,
-report fit failure if false and inspect raw errors before any changed/extended study.
+
+Logs same-prefix-pipeline.log/.stderr.log; state same-prefix-pipeline/progress.json;
+terminal result.json. Child same-prefix-job.json; run summary/progress/snapshots.
+Expect complete1024 only if all384 updates complete and both native audits pass.
+Do not restart on observation timeout. If interrupted, inspect actual bank/prefix.
+
+NEXT verify terminal parent/child/curator receipts and full process death, then:
+& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s3 -Launcher 27108
+Collector checks actual inference/training manifest/payload hashes, source/
+policy/step/native budgets, every observed PID/exact command and copies raw bytes.
+It refuses overwrite/outside-study names. Syntax and outside-study refusal PASS;
+actual128 VerifyOnly PASS/no writes; historical-proof reuse refuses unchanged;
+actual640 full capture PASS. Commit verified task-owned milestone before waiting.
+
+Then independent final ordinary41 forwards, expected<600MiB;640MiB/180s/work41:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 41 --receipt runs/m2-stream-allclass1024-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-allclass1024-s3
+--output runs/m2-stream-allclass1024-errors-r1
+Logs same error prefix.log/.stderr.log; result error-prefix/result.json.
+After pass/death, curator expected<110MiB;128MiB/30s/work41,receipt
+runs/allclass1024-error-curation-r1.json,logs same stem:
+.venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-allclass1024-errors-r1
+Final docs/evidence/m2-stream-allclass1024-errors-r1/. Reproduce all saved ordinary/
+semantic/role scores and aggregates, unchanged actual weights/frozen recipe/config/
+source identity. Preserve raw curator receipt/log bytes and startup/death evidence.
+State RAM/cap/guard in transcript before each launch; verify exact startup.
+
+## Selected acceptance gate / verified640 result
+
+ALL_CLASS_FIT.md fixes target1024 and criterion:32/32 boards,64/64 role poses
+(56 observed,8 absent),128/128 supported semantic cells,geometry<.25cells.
+Passing establishes memorization only. No target extension or live shuffle.
+
+- [x]32 full512-square public-observer fixtures,16 ancestries/two styles,
+  every7-class/absence label four times/role,half empty/half8-color stack.
+- [x]Frozen curriculum integration,42 source-bound protocol checks, fresh warm
+  default profile and exact old/new2-step numerical compatibility.
+- [x]All-class native recovery2+6+3+3 plus independent artifact/recipe curation.
+- [x]Actual128 and640 checkpoints,independent41-forward replay and evidence audits.
+- [ ]Final384 updates/final raw-error replay and declared fit verdict.
+- [ ]Independent generalization,larger baseline completion,adequate M2/M3 joint
+  learning and all real/runtime/release gates remain OPEN.
+
+s2 runs/m2-stream-allclass1024-s2 VERIFIED step_partial640/1024,+512.
+Parent587.426s/601,640,960B/896MiB;child564.849s/565,354,496B/640MiB;
+curator20.971s/91,242,496B/128MiB. All640 recipes+41 probes replayed; all known
+PIDs/exact commands gone before s3. Same-name docs/evidence retains full receipt/
+controller/source/snapshot/startup bytes. Weights
+879300581303f36ef8dfaa8539f3a320b5b416c554343c444740250c2fb53ca5;
+training payload a619c59329da2e43dc147b6eeab01dbd15c391303edc5abcf96d2ce788704b4a.
+Neural catalogue6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42.
+
+Actual640 ordinary replay34.080s/425,746,432B/640MiB;collector1.334s/76,537,856B/
+128MiB.32/32 fit boards,128/128 semantics,.14781884geometry;only8/64 exactroles:
+4/56 observed(all L,two/role),4/8 absence. Eachrole predicts L26,Z2,absence4;
+26 type errors,zero column/rotation errors;active13row errors,ghost14. FitFALSE.
+Dev2/9 boards(the two empty),0/18roles,4.06980geometry,only3ancestries.
+Evidence m2-stream-allclass640-errors-r1. Prior128:28/32 boards,0/56 observed,
+8/8 absence,128/128 semantics,.2159634geometry;m2-stream-allclass128-errors-r1.
+39 error-report checks bind32 actualsource/fixture hashes in allclass-error-contracts.
+Order/role-representation hypotheses remain unproven; ALL_CLASS_FIT records what
+may be tested only after final failure/error inspection. No architecture adoption.
+
+Admission r5/profile:pilot/capacity0/layeroff,all-class-fit-v1,seed20261026,
+LR.001,eval128,snapshot64,dev3groups/9views. Recovery proof exact14updates,
+135.572s/600,379,392B/1GiB;curator4.515s/83,599,360B/128MiB. Default numerical
+compatibility and freshwarm profile verified in named evidence. Failed r4 separately
+preserved(allclass-recovery-standby-r1):verified Lid Modern Standby506/507, timers
+expired onwake;no41/1001/crash,no power/guard changes. Never relabeled green.
+
+## Other studies / boundaries
+
+Original larger baseline VERIFIED2816/4096,runs/m2-stream-accuracy4096-s7.
+Catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
+Weights29ffd032f8cfb9842bf6149d0863a784065b5d8831ff171b90d6a14cccde7909.
+All2816recipes+27probes replayed;dev0/18 boards,0/36roles,1.94391geometry.
+No original Job live. Resume s8 only from s7 with original admission
+m2-stream-accuracy-probe and original frozen trainer; never substitute6147 into
+old optimizer.1280 updates remain; do not overlap live fit/replay.
+
+Optional layer-evidence experiment completed768control/candidate,default OFF:
+LAYER_LEARNING_PILOT.md. Independent192images/64ancestries:0/148 nonemptyboards
+both;observedactive0/165 vs4/165(allI),ghost0/144both;candidate more locked false
+positives/lessabsenceaccuracy. No adoption;layer-generalization768-r1 evidence.
+
+V-001..V-026 CLOSED with named gates. Read BUG_LOG before architecture/wire/
+scheduler changes; prior-bug interactions in ALL_CLASS_FIT. Broad appearances/
+crops/occlusion/association,reviewed real labels/splits,scratch/pretrained/decoder
+comparisons,calibration/export/CPU/adapters and >=95% readable-real exact complete
+state release gate remain OPEN. Public API remains needs_review.
