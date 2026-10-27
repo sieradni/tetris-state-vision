@@ -82,6 +82,15 @@ another forward/update. It passed at467,935,232B raw peak. The interrupted run
 has no final summary; this verifies saved-state recovery, not successful segment
 completion. Evidence: docs/evidence/segment-pressure-recovery/scope.json.
 
+A later4096-target segment was killed by its ancestor Job at OS commit pressure:
+229 updates logged but only192 banked. The child receipt remained raw running/
+null; the terminating ancestor receipt125 is retained separately. Resume from192
+recomputed37 later updates with all229 recorded data/loss/terms/gradient norms
+equal (time excluded), and all three committed prefixes unchanged. Evidence:
+docs/evidence/m2-stream-accuracy4096-pressure-replay/scope.json. No old229 tensor
+artifact survived; this proves the recorded trajectory, not full final-model
+tensor identity or target completion. All original/uncheckpointed data remain.
+
 `record_stream_run.py --allow-partial` now also preserves controlled `wall_partial`
 and `step_partial` artifacts explicitly. Default completion remains strict;
 outer timeout, pressure kill, crash and missing checkpoint/reload parity refuse.

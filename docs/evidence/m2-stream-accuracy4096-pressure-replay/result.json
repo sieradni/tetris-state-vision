@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "banked_step": 192,
+  "exact_recorded_prefix": 229,
+  "recomputed_after_bank": 37,
+  "training_data_records_equal": 229,
+  "loss_terms_gradient_norms_equal": 229,
+  "committed_ledger_prefixes_equal": 3,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "target_steps": 4096,
+  "target_complete": false,
+  "old_final_model_tensor_comparison_available": false,
+  "script_sha256": "99da61efb57bea5aa4965baef4a41ebb063cfdddde099db67801806ceb3eb208",
+  "scope": "Actual pressure-bank192 restore recomputes37 later updates with exact recorded loss/terms/gradient norms/data. Elapsed time excluded. No old229 tensor artifact survived; no final-model tensor equality, completed target or quality claim."
+}

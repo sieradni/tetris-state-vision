@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "source_base_commit": "9e7f6e656848e2e58ec41c5a45538869a04fd73b",
+  "banked_step": 192,
+  "recomputed_updates": 37,
+  "exact_loss_terms_gradient_data_records": 229,
+  "committed_prefixes": 3,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "native_peak_job_commit_bytes": 37257216,
+  "artifact_sha256": {
+    "result.json": "8285d77d815608b2706f422851fd9d99187662b9a19a76e37f7785702ff44911",
+    "verification.py": "99da61efb57bea5aa4965baef4a41ebb063cfdddde099db67801806ceb3eb208",
+    "native-job.json": "4c4cb35a7a8d5ad322ee4cbd9c5a5e3ed157018fa22b519b34a4cd8150c39888",
+    "native.log": "ae1984ae9cef7a9c80723a594e294de5604fe290f7d2a3b8a35e767803e0f7d8",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "target_complete": false,
+  "old_final_model_tensor_comparison_available": false,
+  "scope": "Actual pressure-bank192 restore recomputes37 later updates with exact recorded loss/terms/gradient norms/data. Elapsed time excluded. No old229 tensor artifact survived; no final-model tensor equality, completed target or quality claim."
+}

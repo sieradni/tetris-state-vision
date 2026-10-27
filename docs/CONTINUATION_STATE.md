@@ -8,7 +8,8 @@ RUNNING: runs/m2-stream-accuracy4096-s2, resumed ORIGINAL M2 from bank192,
 fixed global4096, at most512 new updates (up to704). Hidden root24896/20316,
 controller23208/21624, training supervisor18008/15176, actual worker9836
 (launcher26436). Exact command lines verified. Startup passed: global199 at
-55.183s, original archived trainer, no stderr. Only heavy vision Job live.
+55.183s, original archived trainer, no stderr. Later290/4096 at242.158s, bank256
+published. Only heavy vision Job live.
 Check live PID and terminal receipts; stale running/progress alone proves nothing.
 
 Native parent1280MiB/2100s/512new updates, child1024MiB/1860s outer/1800s inner,
@@ -55,6 +56,10 @@ Curator now retains ancestor receipt/logs and explicitly marks stale child statu
 on resumed histories. Three partial-evidence boundary fixtures reran GREEN;
 actual s2 final curation will exercise ancestor metadata. Hashes alone are not
 semantic restoration; real resumed updates now run from bank192.
+Actual pressure replay GREEN: docs/evidence/m2-stream-accuracy4096-pressure-replay/
+scope.json; all229 recorded data/loss/terms/gradient norms match (elapsed excluded),
+including37 updates recomputed after bank192. All3 committed prefixes identical.
+No old229 tensor artifact survived, so no final-model tensor equality claim.
 
 M2 evidence: pilot768 complete, resource/recovery gate GREEN at640MiB,
 519,782,400B peak,2.6MiB second-half growth, exact565 old records; dev0/18 exact
