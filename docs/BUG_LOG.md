@@ -10,12 +10,25 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022 (6) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config tripwire |
-| test-instrument | V-004, V-011, V-012, V-017, V-019 (5) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023 (6) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-023 — OPEN: new proof checker mistook normalized JSON for a raw copy
+
+- Symptom: runs/m3-controller-recovery-proof-r1.stderr.log rejects actual p1
+  evidence before publishing proof; all three native controller runs passed.
+- Root cause: the new checker did not read the existing curator's serialization
+  contract: its current snapshot manifest is reformatted JSON, while parent
+  manifests are raw copies. Resumed-parent evidence mappings were also missing.
+- Detection class: test-instrument.
+- Instrument: explicit current-manifest value comparison, raw byte comparison
+  for every other selected artifact, complete parent mappings; four regression
+  cases reject changed state and reformatted raw parent files.
+- Pending gate: named four-case contract run and actual native proof rerun.
 
 ## V-022 — OPEN: controller result could identify edited source instead of its launch source
 

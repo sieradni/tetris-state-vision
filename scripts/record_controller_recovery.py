@@ -44,6 +44,13 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def verify_saved_copy(copy, source, *, normalized=False):
+    # record_stream_run rewrites only the current snapshot manifest as JSON.
+    # Parent manifests and every other selected artifact are raw copies.
+    require(read(copy) == read(source) if normalized else digest(copy) == digest(source),
+            "curated content differs: "+copy.name)
+
+
 def main():
     require_bounded_job()
     require(digest(ROOT/"scripts/run_stream_segment.py") == CONTROLLER, "controller source differs")
@@ -111,9 +118,19 @@ def main():
                           "checkpoint-manifest.json": run/"checkpoint/manifest.json",
                           "training-snapshot-manifest.json": folder/"manifest.json"})
         originals.update({name+suffix: ROOT/"runs"/(name+suffix) for suffix in ("-job.json", ".log", ".stderr.log")})
+        if case == "p2":
+            parent_run = ROOT/"runs"/(PREFIX+"p1")
+            parent_pointer = read(parent_run/"latest-training.json")
+            originals.update({"resume-parent-snapshot-manifest.json": parent_run/"training-snapshots"/parent_pointer["generation"]/"manifest.json",
+                              "resume-parent-source-manifest.json": parent_run/"code/source.json",
+                              "resume-parent-summary.json": parent_run/"summary.json"})
+            for suffix in ("-job.json", ".log", ".stderr.log"):
+                originals["resume-parent"+suffix] = ROOT/"runs"/(PREFIX+"p1"+suffix)
+                originals["resume-parent-enclosing"+suffix] = ROOT/"runs"/(PREFIX+"p1-pipeline"+suffix)
         for copy in saved.iterdir():
             if copy.name != "scope.json":
-                require(copy.name in originals and digest(copy) == digest(originals[copy.name]), "curated bytes differ")
+                require(copy.name in originals, "unexpected curated artifact: "+copy.name)
+                verify_saved_copy(copy, originals[copy.name], normalized=copy.name == "training-snapshot-manifest.json")
         for filename in ("result.json", "progress.json", "curation-job.json", "curation.log", "curation.stderr.log"):
             selected.append((pipe/filename, case+"/"+filename))
         selected += [(ROOT/"runs"/(name+"-pipeline"+suffix), case+"/pipeline"+suffix)

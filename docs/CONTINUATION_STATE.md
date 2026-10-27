@@ -26,6 +26,16 @@ sentinel docs/evidence/m3-controller-recovery-r1/scope.json. Expected<96MiB,
 native pressure/Job guards; no model import/forward/update. Verify7 data/curve
 rows,3 native source-bound controllers,81 replayed probes,all copied bytes and
 whole tensor payload identity (model/optimizer/RNG),terminal PIDs;then commit.
+Proof r1 FAILED.277s/33,726,464B before output: checker treated normalized current
+snapshot JSON as raw copy and omitted resumed parent mappings. V-023 OPEN;
+all3 training runs remain green;no training rerun. Launch27060/supervisor17772/
+child28772 gone. Fix and4 regression cases ready. NEXT bounded tests:
+scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 4
+--receipt runs/controller-evidence-tests-r1.json -- .venv/Scripts/python.exe
+-m unittest discover -s tests -p test_controller_evidence.py -v
+Logs runs/controller-evidence-tests-r1.log/.stderr.log. Expected<96MiB,
+native pressure guard. Then proof-r2 (same128MiB/30s/work7, fresh logs/receipt)
+using scripts/record_controller_recovery.py; sentinel unchanged,not yet created.
 ## Selected task and next action
 
 Controller source b8eb48a, SHA
