@@ -113,3 +113,13 @@ These68 cases are not a whole-suite, trained-model or accuracy claim. Next profi
 the actual M3 configuration with2 full-square optimizer steps, all resident Adam
 states, recovery parity and nested final-output parity under a NEW native cap.
 No prior M2 or earlier-source admission permits joint training.
+
+First actual M3 pilot profile now passes: capacity64,682,584 parameters,
+168 trainable parameter tensors with5,461,344B resident Adam state, two full
+512-square updates including warm backward, exact recovery and all nested final
+outputs after checkpoint reload. Native640MiB,558,497,792B peak,22.728s outer.
+Frozen source catalogueb6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
+docs/evidence/m3-stream-pilot-profile-r1/scope.json pins actual M3 architecture,
+configuration, weights, replayed2 recipes and27 probe images. This admission
+covers that pilot/config/source envelope, not the larger model or long-run
+stability, converged learning, inference decoding or real-image accuracy.

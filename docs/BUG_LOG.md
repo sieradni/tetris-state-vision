@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-018 — OPEN: new joint scopes would inherit a fixed M2 architecture label
+## V-018 — CLOSED: new joint scopes would inherit a fixed M2 architecture label
 
 - Symptom: pre-curation review found record_stream_run's scope still hardcoded
   Unchanged M2 despite the new joint checkpoint architecture being M3. No wrong
@@ -28,7 +28,11 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Instrument: checkpoint architecture/config/capacity must match the run contract;
   report the actual identity. Legacy M2 and joint M3 acceptance/mismatch fixtures.
   V-003 requires computed identity; V-014 requires actual frozen execution source.
-- Gate: pending named architecture fixtures and actual native M3 artifact curation.
+- Green gates: docs/evidence/v018-architecture/scope.json,4 receipt/architecture
+  cases on371bfd8; docs/evidence/m3-stream-pilot-profile-r1/scope.json verifies
+  the actual native two-step joint artifact as TetrisStateNet-M3/capacity64,
+  matching checkpoint/config/source/weight identity,2 recipes and27 saved probes.
+  Native558,497,792B/640MiB; old M2 scopes retain their historical identities.
 
 ## V-017 — CLOSED: M3 joint-gradient fixture had an undersized canvas
 

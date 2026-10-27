@@ -42,6 +42,15 @@ lines verified. Source371bfd8; inspect same receipt/progress and terminate-state
 before any other heavy Job. Named4-case source scope now
 docs/evidence/v018-architecture/scope.json; V-018 still OPEN until native M3
 artifact curation passes. Never infer admission from these unit fixtures.
+Pilot M3 profile COMPLETE and curated:22.728s outer,558,497,792B/640MiB,
+682,584 parameters,168 initialized parameter tensors/5,461,344B Adam, two full
+512-square updates, warm backward/recovery/nested output parity. All matching
+processes gone. docs/evidence/m3-stream-pilot-profile-r1/scope.json, actualM3/
+capacity64;2 recipes+27 probes replayed. V-018 CLOSED on this plus4-case gate.
+M3 sourceb6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
+No larger-M3 or learning admission implied. Next verify native continuous6 vs
+3+resume3 for joint heads; then characterize actual larger M3 separately before
+long studies. Original M2 bank704/source121fd05a remains next s3 baseline.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any
