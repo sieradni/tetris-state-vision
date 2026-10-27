@@ -166,3 +166,6 @@ require saved metrics reproduction and unchanged weights, verify terminal tree.
 Then resume192 toward4096 with a NEW s2 controller output using
 --resume-from runs/m2-stream-accuracy4096-s1, ORIGINAL archive121fd05a...,
 parent1280MiB/2100s/512new updates, unchanged snapshot64/recipe/Adam/RNG.
+LAUNCHED old larger128 error gate: root23616/26968, actual worker26416 (launcher
+31584), exact command lines verified. Inspect runs/m2-stream-accuracy128-errors-job.json
+and .log/.stderr.log before waiting. Source099b02e, no training Job live.
