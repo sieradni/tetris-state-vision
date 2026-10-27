@@ -108,3 +108,15 @@ NEXT five cases, expected<110MiB,128MiB/30s/work5, native Job/pressure/thread gu
 Logs runs/positive-control-tests-r1.log/.stderr.log. New source is UNVERIFIED until
 this actual gate and32-fixture generation/replay pass. Disk floor still holds long training.
 LIVE positive fixture tests launcher21692, exact command verified.
+Positive-control tests GREEN5/5,1.335s native1.690s/52,592,640B under128MiB;
+launcher21692/supervisor24404/child13180 and exact commands gone. V-026 remains
+OPEN until source-bound curation and actual32-file generation/replay are preserved.
+NEXT generation, expected<110MiB,128MiB/30s/work32,unchanged nativeguards:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 32 --receipt runs/positive-control-generation-r1-job.json --
+.venv/Scripts/python.exe scripts/m2_positive_control_data.py --output runs/m2-positive-control-fixtures-r1
+Logs runs/positive-control-generation-r1.log/.stderr.log; state terminal
+runs/m2-positive-control-fixtures-r1/complete.json and manifest.jsonl.32images,
+16ancestries, no model forward/optimizer/training admission. This short fixture
+check does not start a long training window. C:38,727,614,464B; keep long training parked.
+Generation launcher21628, exact command verified.
