@@ -175,3 +175,4 @@ Logs same-prefix.log/.stderr.log,terminal run/summary.json/progress.json;
 compare weights/data/loss/terms/gradients and every common metric to actual prior
 runs/m2-stream-layer-control-profile-r1,excluding elapsed/source metadata only.
 Fresh catalogue will be derived from actual archive; no guessed hash.
+Protocol curator launcher8652, exact command verified.
