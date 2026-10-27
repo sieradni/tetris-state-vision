@@ -1,0 +1,17 @@
+test_active_and_ghost_errors_remain_independent (test_m2_error_analysis.M2ErrorAnalysisTests.test_active_and_ghost_errors_remain_independent) ... ok
+test_aggregate_keeps_empty_nonempty_and_dependent_ancestry_separate (test_m2_error_analysis.M2ErrorAnalysisTests.test_aggregate_keeps_empty_nonempty_and_dependent_ancestry_separate) ... ok
+test_empty_cell_accuracy_does_not_hide_missed_block (test_m2_error_analysis.M2ErrorAnalysisTests.test_empty_cell_accuracy_does_not_hide_missed_block) ... ok
+test_false_positive_and_bottom_first_error_coordinates (test_m2_error_analysis.M2ErrorAnalysisTests.test_false_positive_and_bottom_first_error_coordinates) ... ok
+test_no_supported_cells_have_no_accuracy_or_perfect_claim (test_m2_error_analysis.M2ErrorAnalysisTests.test_no_supported_cells_have_no_accuracy_or_perfect_claim) ... ok
+test_right_type_cannot_hide_missing_occupancy (test_m2_error_analysis.M2ErrorAnalysisTests.test_right_type_cannot_hide_missing_occupancy) ... ok
+test_rotation_equivalence_is_preserved (test_m2_error_analysis.M2ErrorAnalysisTests.test_rotation_equivalence_is_preserved) ... ok
+test_translation_and_scale_have_separate_analytic_signatures (test_m2_error_analysis.M2ErrorAnalysisTests.test_translation_and_scale_have_separate_analytic_signatures) ... ok
+test_unknown_cells_are_excluded_even_with_changed_latent_values (test_m2_error_analysis.M2ErrorAnalysisTests.test_unknown_cells_are_excluded_even_with_changed_latent_values) ... ok
+test_unknown_layers_have_no_type_or_pose_score (test_m2_error_analysis.M2ErrorAnalysisTests.test_unknown_layers_have_no_type_or_pose_score) ... ok
+test_wrong_shape_nonfinite_and_inconsistent_masks_refuse (test_m2_error_analysis.M2ErrorAnalysisTests.test_wrong_shape_nonfinite_and_inconsistent_masks_refuse) ... ok
+test_zero_logit_is_negative_and_not_confidently_known (test_m2_error_analysis.M2ErrorAnalysisTests.test_zero_logit_is_negative_and_not_confidently_known) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.014s
+
+OK

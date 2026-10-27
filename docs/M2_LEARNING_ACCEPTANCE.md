@@ -195,6 +195,8 @@ miss, bottom-first false positives, unknown-label invariance, no-evidence null
 scores, analytic translation/scale, symmetric rotations, independent layers,
 type/occupancy disagreement, strict zero threshold, malformed contracts and
 dependent aggregates. These fixtures do not verify neural replay or accuracy.
+Committed-source scope: docs/evidence/m2-error-analysis-contracts/scope.json,
+12/12 on1531769,33,021,952B raw peak under128MiB/30s.
 Native inference acceptance remains pending until the active training Job ends.
 Then use a NEW output,1GiB/120s/27 forwards on the current9+18 probes, one CPU.
 Expected below the admitted training envelope, experimentally capped; do not

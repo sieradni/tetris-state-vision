@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "source_base_commit": "15317699d624ade55b2fcd16f4354fc2edc81b92",
+  "sources": {
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "tests/test_m2_error_analysis.py": "7278e8904619f5f545e1cda5016cf69ee0fd4e72a6b7629a66774a8bd313ca5c",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+  },
+  "gates": [
+    {
+      "stem": "m2-error-analysis-tests",
+      "tests": 12,
+      "raw_peak_job_commit_bytes": 33021952
+    }
+  ],
+  "tests_across_scoped_runs": 12,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

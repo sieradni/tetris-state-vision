@@ -109,5 +109,8 @@ heavy job while this training process lives. Pure12 fixtures GREEN in0.014s,
 33,021,952B/128MiB; driver syntax GREEN separately. Actual model replay remains
 pending until training is terminal; exact diagnostic command and limits are in
 docs/M2_LEARNING_ACCEPTANCE.md. Do not claim runtime gate from pure fixtures.
+Source-pinned12-case receipt: docs/evidence/m2-error-analysis-contracts/scope.json
+(1531769). No package/training-source files changed; catalogue121fd05a... remains
+unchanged. Review detailed errors after this segment before altering model math.
 Prior contracts: V-001/002/005/006 unknowns and separate layers; V-003/014 frozen
 sources/weights; V-004 raw resource counters. No architectural change/fix claim.
