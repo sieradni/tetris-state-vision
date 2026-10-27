@@ -76,6 +76,15 @@ source manifest) is curated under tests/fixtures/m2_original so clean checkouts
 can run numerical compatibility;raw bytes protected in .gitattributes.
 Next commit candidate,then bounded serialized tests,then fresh warm profile.
 All source changes are UNADMITTED for new training until gates pass.
+NEXT15 optional model/visibility/legacy/checkpoint cases,source036fbd6:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
+--wall-seconds 60 --work-items 15 --receipt runs/layer-evidence-model-tests-r1.json
+-- .venv/Scripts/python.exe -m unittest discover -s tests -p test_layer_evidence.py -v
+Logs runs/layer-evidence-model-tests-r1.log/.stderr.log. Expected<600MiB;
+native pressure/Job/pre-import thread guards. No training Job live. Freeze tested
+source during gate;then existing model14/component15/runtime7/capture9 compatibility,
+controller18 and affected metadata/diagnostic tests. New native warm profile and
+actual controller learning/recovery remain pending;no candidate training yet.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
