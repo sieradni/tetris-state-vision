@@ -9,6 +9,22 @@ resume the original fixed4096 M2 study from its verified704 bank if resource
 headroom permits. One heavy model Job at a time. Kernel Job/OS pressure guards
 and one-thread pre-import policy remain armed; no automatic restarts.
 
+Selected independent source task while s3 trains: extend the ordinary saved-probe
+error report to M3, with masked per-index queue/EOS/presence/status/anchor and
+hold breakdowns plus explicit readable denominators. Keep M2 numerical output
+and archived sampler compatibility; derive architecture/config from artifacts.
+Acceptance: adversarial pure diagnostics and replay-policy fixtures under a
+modest native cap, then actual frozen M2/M3 forward replay only after s3 ends.
+No training catalogue/guard/label changes; no decoded-runtime/quality claim.
+Candidate scripts/m3_error_analysis.py + probe_stream_errors.py:15 new adversarial/
+metric-compatibility fixtures +12 existing M2 cases PASS27 in1.745s,246,988,800B
+peak under512MiB/60s, native runs/joint-error-diagnostics-r3.json/log/stderr.
+Verified launcher30812/supervisor32908/child11212 gone. r1 invalid fixture and
+r2 intermediate evidence preserved; V-019/V-020 remain OPEN pending curated
+final-source unit scope. No model forward/update. NEXT record_test_gates source
+scope joint-error-diagnostics,128MiB/30s/work27,expected<64MiB, then commit.
+Actual frozen M2/M3 replay is deferred while s3's heavy model Job is live.
+
 ## Current processes and next action
 
 Larger M3 profile runs/m3-stream-large-profile-r1 is COMPLETE2, native receipt
@@ -29,7 +45,7 @@ launcher31560/root supervisor28556;controller24128/13692;
 child supervisor30464/23160;archived trainer6248/26544.
 Pipeline progress confirms start704,target4096,at most512new, original archived
 trainer from s2/code/scripts/train_m2_stream.py. Startup verified: worker26544
-restored704 and reached708,loss3.0668354 at39.005s; stderr empty. No other heavy
+restored704 and reached896 at581.736s,latest reported bank832; stderr empty. No other heavy
 project Job. Inspect SAME receipts/progress before
 any relaunch; missing summary or a stale running child does not mean success.
 

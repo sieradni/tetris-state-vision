@@ -9,13 +9,43 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018 (3) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution and checkpoint architecture/config tripwire |
-| test-instrument | V-004, V-011, V-012, V-017 (4) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; layout.validate_panels before model gates |
+| provenance | V-003, V-014, V-018, V-020 (4) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, unwrapped callable origin and checkpoint architecture/config tripwire |
+| test-instrument | V-004, V-011, V-012, V-017, V-019 (5) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-020 — OPEN: joint diagnostic would reject a decorated frozen metric
+
+- Symptom: pre-native review found the new component origin check inspected
+  component_metrics.__code__, which belongs to Torch's no_grad decorator.
+  The valid frozen metric would be rejected before any model forward.
+- Root cause: callable wrapper location was mistaken for implementation origin.
+- Detection class: provenance.
+- Instrument: inspect.unwrap before checking the implementation's resolved
+  source path. Actual decorated component metric must pass for its source tree
+  and fail for the scripts tree. The source archive is verified separately.
+- Next green gate: runs/joint-error-diagnostics-r3,27 selected cases. No actual
+  native M3 forward replay is claimed until the heavy M2 Job ends.
+
+## V-019 — OPEN: component diagnostic fixture swapped queue anchor flags
+
+- Symptom: the first27-case diagnostic gate had26 passes and one fixture error
+  before component analysis; Queue rejected a cropped panel with end_observed=True.
+- Root cause: new fixture supplied positional start/end booleans in the wrong
+  dataclass order. A pure unseen-start fixture also had an impossible cropped/
+  observed-end combination, corrected to both anchors unseen.
+- Detection class: test-instrument.
+- Instrument: existing validated Queue constructor; use named end_observed and
+  start_observed arguments in new diagnostic fixtures. Cross-check decomposed
+  metrics against actual component_tensors/component_metrics on valid states.
+- Failing gate: runs/joint-error-diagnostics-r1.stderr.log,27 cases, one error;
+  native512MiB/60s,245,854,208B peak. No model forward/update was attempted.
+- Intermediate green: runs/joint-error-diagnostics-r2,27/27 in1.785s,
+  246,317,056B/512MiB. Updated provenance tripwire now also needs r3 on the final
+  sources; remains OPEN until that named evidence is reviewed and preserved.
 
 ## V-018 — CLOSED: new joint scopes would inherit a fixed M2 architecture label
 

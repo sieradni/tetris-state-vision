@@ -145,3 +145,19 @@ saved probes are pinned by docs/evidence/m3-stream-large-profile-r1/scope.json.
 The metadata replay itself passed under128MiB/30s. This admits that larger
 configuration for bounded studies; varied-shape long memory, optimization,
 complete-state accuracy and release decoding remain unverified.
+
+The ordinary saved-probe error report now has a joint diagnostic candidate.
+It checks actual checkpoint architecture/configuration, uses final-capture
+recipes only for M3 and leaves legacy M2 sampler/target calls unchanged. Queue
+piece/EOS, slot status, presence, start/end and hold errors have separate known
+denominators and absolute error indices. Unknown middle positions never shift
+later indices; unseen endpoints supply no length truth. Readable component cases
+are counted separately from matching only the supported fields. These are raw
+head diagnostics, not a decoded complete state or calibrated inference policy.
+
+Twenty-seven scoped diagnostic fixtures pass:12 existing M2 plus15 new pure/
+tensor compatibility cases,1.745s,246,988,800B peak under512MiB/60s. The actual
+decorated metric's implementation passes its source-origin check and rejects
+the wrong tree; identity inspection unwraps Torch's decorator. Native M2/M3
+saved-model forward replay remains pending while the original M2 study runs.
+No training source catalogue, observation policy or model weights changed.
