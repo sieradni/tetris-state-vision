@@ -113,3 +113,10 @@ Logs same-prefix-pipeline.log/.stderr.log, state same-prefix-pipeline/progress.j
 result.json; child same-prefix-job.json. Expected step_partial640/768. Freeze
 controller/imported helpers; native admission/pressure/CPU1 guards unchanged.
 LIVE false s2 launcher32316, exact command verified.
+NEXT modest read-only pressure-prefix audit, expected<96MiB,128MiB/30s/work2164:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 2164 --receipt runs/layer-pressure-prefix-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/verify_layer_pressure.py
+Logs runs/layer-pressure-prefix-r1.log/.stderr.log; final
+ docs/evidence/layer-learning541-recomputed-r1/scope.json. Four541-row finite inputs.
+May coexist with the one640MiB training child; no second heavy workload.
