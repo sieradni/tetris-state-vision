@@ -85,3 +85,14 @@ complete-state, abstentions failures. All OPEN. User screenshots are draft refer
 not truth. No model acceptance/public policy change; API remains needs_review/unsupported.
 
 LIVE true-profile launcher23064, exact command verified; inspect same named receipt/progress before any next Job.
+
+True profile PASS9.535s/562,204,672B under640MiB; catalogue
+f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47;
+launcher23064/supervisor32088/child25364/worker35424 gone. Next:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 29 --receipt runs/layer-pilot-profile-curation-r1.json --
+.venv/Scripts/python.exe scripts/record_stream_run.py --name m2-stream-layer-pilot-profile-r1
+Logs runs/layer-pilot-profile-curation-r1.log/.stderr.log; scope in same named docs/evidence.
+Expected<96MiB, native guards. Then false profile command exactly as above true,
+omit --layer-evidence, replace run stem with m2-stream-layer-control-profile-r1.
+Curator launcher25376 exact command verified.
