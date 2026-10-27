@@ -22,13 +22,14 @@ No complete screenshot parser or real-image accuracy is claimed.
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
-   baseline has reached704 through bank192+512 verified updates: dev0/18 boards,
-   0/36 layers,geometry1.84647cells. All704 recipes and27 probes replayed; the
-   global target is still partial. A later host-pressure stop logged1172 and
-   banked1152; its files and actual model/238 Adam-state restore are verified
-   with no new forward/update. There is no final1152 inference artifact or
-   updated accuracy result. Continue bounded resumable training and
-   use the verified704 error report to track misses, false positives and independent active/
+   baseline has reached1664 through bank1152+512 verified updates: dev0/18 boards,
+   2/36 layers,geometry2.22941cells. All1664 recipes and27 probes replayed;
+   docs/evidence/m2-stream-accuracy4096-s4/scope.json preserves step_partial1664/4096
+   and native controller/child/curator receipts. The prior host-pressure stop
+   logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
+   exactly,excluding time. New inference weights7b1e4587... retain original
+   catalogue121fd05a; adequate learning remains open. Continue bounded resumable
+   training and use saved error reports to track misses,false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the

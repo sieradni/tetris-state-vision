@@ -5,47 +5,39 @@ Goal ACTIVE,unfinished. Local commits authorized;no push/deploy/publish/user-dat
 deletion. Neighboring engine/apps/data untouched. One heavy model Job at a time;
 native RAM/pressure/CPU guards remain armed. Do not spawn subagents.
 
-## Live original baseline: inspect existing job before any new model work
+## Original baseline s4 verified at1664/4096
 
-s4 last observed step1618,elapsed619.636s,training;worker30892 verified. Process
-chain:launch31508/root33104/controller13492+30656/child launcher27512+supervisor31064/
-worker4208+30892 (Python redirectors included). Original s3 archive executes.
-Controller SHA11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4
-MUST stay unchanged while active. Native supervisor SHA
- d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db unchanged.
+No owned model Job live. s4 saved512 new updates from1152,explicit step_partial;
+fixed global target4096 remains open. Original catalogue
+121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
+accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
+Training archive/source/controller remained unchanged. Full1664 recipes+27 saved
+probes replayed. docs/evidence/m2-stream-accuracy4096-s4/scope.json and
+controller-receipt-scope.json preserve raw terminal receipts/verified artifact
+hashes/PID death. Parent PASS713.417s,993,869,824B/1280MiB;child controlled2,
+700.086s,957,689,856B/1GiB;curator PASS12.593s,103,497,728B/128MiB.
+Controller SHA11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4;
+native supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
+Inference weights7b1e4587437514db77cc58b19463ecbc1c0e23ed6bd9ff19b697b23cee70f4fb;
+training1664 pointer/payload hashes verified in controller receipt scope.
+Dev0/18 exactboards,2/36 layers,2.22941087-cell geometry;training0/9,8/18 layers,
+2.89729281cells. Learning inadequate. Intermediate1280's4 exactboards was not
+final accuracy. Exact20 recomputed s3 updates/all1172 prefixes were preserved in
+m2-stream-accuracy1172-recomputed-r1;old1172 tensors do not exist.
+Latest commit26,472,333,312B and C:49,133,969,408B free;recheck before long runs.
 
-Exact detached command:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
---wall-seconds 2100 --work-items 512
---receipt runs/m2-stream-accuracy4096-s4-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m2-stream-accuracy4096-s4 --target-steps 4096 --updates 512
---admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s3
-
-Logs runs/m2-stream-accuracy4096-s4-pipeline.log/.stderr.log;
-state runs/m2-stream-accuracy4096-s4-pipeline/progress.json,result.json;
-child runs/m2-stream-accuracy4096-s4-job.json and s4.log/.stderr.log;
-evidence sentinel docs/evidence/m2-stream-accuracy4096-s4/scope.json.
-Child1024MiB/1860s outer/1800s inner,checkpoint64,CPU1/cache16;serialized
-curator128MiB/120s. Expected<1100MiB aggregate. Start1152,at most512new ->1664,
-fixed target4096. Source121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b;
-seed20261026,LR.001,eval128,checkpoint64,groups6,capacity0. No training edits.
-Current memory window good,latestcommit27.3GB/free disk51.0GB;recheck beforelaunch,
-require>40GB disk. Never close apps/delete data/alter guards to bypass admission.
-
-At1280 dev4/18 exactboards,0/36 layers,2.07288-cell geometry;intermediate logged
-evaluation only,no final1280 inference result. New saved snapshots observed up
-to1600;last separately hashed snapshot1216. Final accuracy must use s4 artifact.
-Exact20 recomputed updates1153..1172 and all1172 prefix records verified:
-docs/evidence/m2-stream-accuracy1172-recomputed-r1/scope.json. No old1172 tensors.
-
-NEXT poll existing root receipt and worker30892. If controlled completion,verify
-all owned PIDs/commands gone,child/curator/root statuses,actual summary/config/
-weights/source and curated scope;preserve parent/curator receipts/logs/results.
-If pressure125,record actual logged/banked cursor and raw statuses,verify death,
-then verify recovery;do not restart merely from a stale receipt/observation.
-
-## Selected diagnostic task after s4 terminates
+PLANNED next ordinary diagnostic command (not yet launched):
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
+--wall-seconds 120 --work-items 27
+--receipt runs/m2-stream-accuracy1664-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py
+--run m2-stream-accuracy4096-s4 --output runs/m2-stream-accuracy1664-errors-r1
+Logs runs/m2-stream-accuracy1664-errors-r1.log/.stderr.log;
+state/sentinel runs/m2-stream-accuracy1664-errors-r1/progress.json,result.json.
+Expected<600MiB from same model's measured576,446,464B;native pressure/Job guard.
+Record exact launch/PIDs,verify all processes gone and ordinary metrics/weights
+reproduced,then bounded128MiB/30s/work27 curator. Commit s4 milestone before wait.
+## Selected diagnostic task
 
 Ordinary error replay first: scripts/probe_stream_errors.py
 --run m2-stream-accuracy4096-s4 --output runs/m2-stream-accuracy1664-errors-r1
@@ -81,7 +73,7 @@ apply;V-023 raw copies remain byte-checked. No labels/model/optimizer changed.
 Prior s3 pressure stop:1172 logged/1152 banked,both receipts125;file/restore
 proofs in m2-stream-accuracy4096-s3-stop and m2-stream-accuracy1152-recovery-r1.
 Actual frozen model/238 Adam states/RNG restore PASS6.428s/477,442,048B;no final
-1152 inference. Last FINAL M2 inference is s2 step_partial704/4096,weights
+1152 inference. Historical prior FINAL M2 inference s2 step_partial704/4096,weights
 36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
 Verified format2 errors at m2-stream-accuracy704-errors-r3:dev384/401TP,17FN,
 326FP,0/18 exactboards,0/36 layers,geometry1.84647cells. Learning inadequate.
