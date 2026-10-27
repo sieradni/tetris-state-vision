@@ -145,3 +145,5 @@ Then matching false study with same command, replace layer-evidence768 by
 layer-control768 and admission by runs/m2-stream-layer-control-profile-r1.
 Design/limits/comparison denominators predeclared in LAYER_EVIDENCE_EXPERIMENT.md.
 LIVE true-learning launcher24808, exact command verified. Freeze controller and imported helpers during segment; no other model Job.
+True learning s1 VERIFIED step_partial128/768,parent42.626s/545,067,008B; all known PIDs gone; raw controller/curator receipts saved with hashes. Next false command predeclared above,896MiB/420s/128updates,640MiB child,expected<700MiB,native guards.
+LIVE false learning launcher35596, exact command verified. Freeze controller/helper bytes.

@@ -1,0 +1,27 @@
+{
+  "global_steps": 128,
+  "weights_sha256": "40d550222615fc43f73fca90cefadd686f68094a892d5f7dfd500cd2e7b6d0fc",
+  "controller_sha256": "dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad",
+  "verified_dead_pids": [
+    24808,
+    29420,
+    33128,
+    7844,
+    8264,
+    21336,
+    4592,
+    27040
+  ],
+  "requested_steps": 768,
+  "status": "verified_partial",
+  "layer_evidence": true,
+  "artifact_sha256": {
+    "controller-curation.log": "27c60ea59113a0969e2132f67aa35ec38d98895f3dce7b4f5ebc300b6b014add",
+    "controller.log": "fd6b457f3f877600d5218efd0022772aca63809a9c1e17f845187f9a30705bfc",
+    "controller-result.json": "f07b8992b34a12b151f7c53c8b6cefec1c1492b4bbfb2002cc4c9998fae4915e",
+    "controller-job.json": "ca82e48d8bd8154558b50ca8d93d9400a1caf10bb25b83ac5c5fc316d4934152",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation-job.json": "00a8c7b990474dadff951f21958fe26725101cb7cd805fb3027e1b10649d8bc4"
+  }
+}
