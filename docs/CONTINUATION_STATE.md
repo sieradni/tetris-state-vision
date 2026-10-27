@@ -7,7 +7,7 @@ Job at a time;native memory/OS pressure/CPU thread guards remain armed.
 
 ## Next task: original baseline from bank1152
 
-PLANNED exact detached command (not yet launched):
+LIVE launch31508 verified;root supervisor33104/controller13492. Exact detached command:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
 --wall-seconds 2100 --work-items 512
 --receipt runs/m2-stream-accuracy4096-s4-pipeline-job.json --
@@ -59,8 +59,7 @@ folder. Four copy-contract cases PASS.076s,35,454,976B/128MiB. V-022/V-023 CLOSE
 on named gates. Initial proof-r1 failure preserved: new checker had mistaken
 normalized current manifest JSON for raw bytes and omitted parent mappings.
 Current manifests compare exact JSON values;other selected artifacts raw bytes.
-No training rerun. All V-001..V-023 CLOSED;no whole-suite claim. No owned Job live
-at this checkpoint;next launch is M2 s4 above.
+No training rerun. All V-001..V-023 CLOSED;no whole-suite claim. M2 s4 is live above;no other owned heavy Job.
 
 ## Prior pressure recovery and current quality
 
