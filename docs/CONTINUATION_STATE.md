@@ -165,3 +165,16 @@ state docs/evidence/layer-generalization768-r1/progress.json, terminal result.js
 No optimizer/GT input; verify immutable models, raw source/recipe/prediction hashes,
 actual class/status denominators and independent metric reproduction before claims.
 LIVE broader probe launcher31472, exact command verified; freeze diagnostic helpers.
+Broader inference PASS35.096s/432,234,496B under640MiB;384 forwards, all192 recipes,
+all7 classes per role, tensors unchanged. All known PIDs/matching Python commands
+gone; raw native receipt/logs copied byte-exact. Native results are not acceptance:
+nonempty boards0/148 both; true observed active4/165(allI),ghost0/144,
+visible dense grids0/309 observed; false0 observed active/ghost. True falsepositives
+12,940 versusfalse6,124 over38,400 cells. No adoption as default.
+NEXT read-only curator, expected<110MiB,128MiB/30s/work576:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 576 --receipt runs/layer-generalization-curation-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/verify_layer_generalization.py
+Logs runs/layer-generalization-curation-r1.log/.stderr.log; terminal scope.json
+in docs/evidence/layer-generalization768-r1.192 replayed recipes+384 raw cases,
+all aggregates rederived, native guards. Source review and actual gate pending.
