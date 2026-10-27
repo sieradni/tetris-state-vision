@@ -8,8 +8,9 @@ Neighboring engine, user apps and run data untouched. Whole goal remains open.
 RUNNING: first larger4096-target segment, at most512 new updates. Hidden detached
 root26644/20696, controller31560/21424, training supervisor6232/28724 and actual
 worker8988 (launcher15820), exact command lines verified. Source145b76a; only
-heavy vision job. Current phase capturing_source. Inspect the paths below before
-any new launch; progress/receipt marked running can be stale, verify process tree.
+heavy vision job. Startup verified training step10/4096 at61.093s, PID8988 alive,
+no stderr, host commit27.37GB. Inspect paths below before any new launch;
+progress/receipt marked running can be stale, verify process tree.
 
 Completed finite pilot: runs/m2-stream-learn768-r3, COMPLETE768,458.494s inner,
 459.718s outer, one CPU,640MiB native cap,519,782,400B raw peak. Exact565 prior
