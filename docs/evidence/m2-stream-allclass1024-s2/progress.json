@@ -1,0 +1,11 @@
+{
+  "status": "step_partial",
+  "pid": 11748,
+  "step": 640,
+  "requested_steps": 1024,
+  "loss": 0.507980227470398,
+  "elapsed_seconds": 540.5073064999997,
+  "recovery_step": 640,
+  "summary": "summary.json",
+  "checkpoint": "checkpoint/manifest.json"
+}

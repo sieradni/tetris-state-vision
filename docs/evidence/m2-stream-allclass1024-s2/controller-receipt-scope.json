@@ -1,0 +1,41 @@
+{
+  "weights_sha256": "879300581303f36ef8dfaa8539f3a320b5b416c554343c444740250c2fb53ca5",
+  "training_payload_sha256": "a619c59329da2e43dc147b6eeab01dbd15c391303edc5abcf96d2ce788704b4a",
+  "curator_seconds": 20.971,
+  "controller_sha256": "c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3",
+  "status": "verified_partial",
+  "parent_peak_bytes": 601640960,
+  "target_steps": 1024,
+  "updates": 512,
+  "scope": "Native bounded segment, source/artifact/replay identity only. Fit quality requires separate ordinary raw-head replay.",
+  "training_manifest_sha256": "90d3f3a4b43f82a596f95509f64dba02fd5d93afd0ea0bbc146e07902b33b45b",
+  "curriculum": "all-class-fit-v1",
+  "steps": 640,
+  "child_peak_bytes": 565354496,
+  "parent_seconds": 587.426,
+  "artifact_sha256": {
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation-job.json": "3548bd56fb06ea0d965534b5a1fe43bef7fc3a5e0460fde79d4cba3761507caf",
+    "observed-startup.json": "f002f9de5336b81e0d2f435bb7d8dc36760d235bdf51db30d2a05b6092c25b0e",
+    "controller-collector.ps1": "f89f4583ad2efd9c11b942bfb91b28cbd70c82a550dba856f7a886a09b52758f",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-job.json": "c2ddbb4156859935933fea55083a96c2704567b6906eac0b093df78a0e04f4e7",
+    "controller-result.json": "14d9f86239cf598244545dc6e9ec565b3ae82ccc98a82968b8c97e2a62c52752",
+    "controller.log": "1d015b3f6c82e786940373f253b7a0b83feadb970d942717475f1813ccb8d079",
+    "controller-curation.log": "b51da092cc1219537ec5c0ea54eb7f9c1a3503ca0b190fce224cd59c85c11e90"
+  },
+  "verified_dead_pids": [
+    240,
+    11748,
+    16752,
+    16772,
+    19296,
+    21012,
+    22824,
+    26848,
+    27580,
+    29260
+  ],
+  "child_seconds": 564.849,
+  "curator_peak_bytes": 91242496
+}

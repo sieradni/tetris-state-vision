@@ -25,7 +25,7 @@ geometry below.25 cells. Passing establishes memorization only.
 - [ ]Independent generalization, original larger baseline completion, adequate
   whole-state learning and real/runtime/release gates remain OPEN.
 
-LIVE s2 model Job (launcher27580,worker11748); exact command and next actions below. Prior test launcher26152/supervisor24672/child6300 and matching
+s2 completed and entire known process tree verified gone; next41-forward replay below. Prior test launcher26152/supervisor24672/child6300 and matching
 commands verified gone. Last observed free disk69,224,476,672B; recheck >40GB
 before long training. Runner unchanged SHA
  d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
@@ -162,3 +162,15 @@ Then curator expected<110MiB,128MiB/30s/work41,receipt runs/allclass640-error-cu
 Logs same curator stem;final docs/evidence/m2-stream-allclass640-errors-r1/.
 Preserve curator raw receipts/logs and exact startup/death; independently reproduce
 all ordinary and fit scores before acceptance/next training. No target extension.
+
+LATEST s2 VERIFIED step_partial640/1024,+512. Parent587.426s/601,640,960B/896MiB;
+child564.849s/565,354,496B/640MiB;curator20.971s/91,242,496B/128MiB.
+All640 recipes+41probes replayed, actual inference/training hashes and all
+observed startup/terminal PIDs/exact commands checked by committed collector.
+Weight879300581303f36ef8dfaa8539f3a320b5b416c554343c444740250c2fb53ca5;
+training payload a619c59329da2e43dc147b6eeab01dbd15c391303edc5abcf96d2ce788704b4a.
+Internal32/32 boards,8/64 roles(4/56 observed,4/8 absent),128/128 semantic labels,
+geometry.14781884010881186; fit FALSE. Independent raw-head replay next as above.
+Collector actual128 VerifyOnly passes without writes; historical-proof reuse
+refuses and its bytes unchanged. Actual640 capture passes and preserves raw
+source/controller/native receipts/startup. No model Job live until next launch.
