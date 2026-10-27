@@ -83,3 +83,5 @@ learning; reviewed real labels/independent family/session/ancestry splits; pretr
 direct decoder comparison; calibration/export/latency; >=95% exact readable real
 complete-state, abstentions failures. All OPEN. User screenshots are draft references,
 not truth. No model acceptance/public policy change; API remains needs_review/unsupported.
+
+LIVE true-profile launcher23064, exact command verified; inspect same named receipt/progress before any next Job.
