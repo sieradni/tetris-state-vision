@@ -65,6 +65,16 @@ Adam/RNG/module-mode equality; partial status remains explicit. No quality claim
 LAUNCHED: root33284/15296, orchestrator27504/28044 exact commands verified;
 source656a0a5. Inspect same progress/receipts/proof and current child before any
 wait or new heavy launch. No other owned model Job live at launch.
+Native joint recovery COMPLETE95.148s,597,655,552B/1GiB parent; childmax
+561,909,760B/640MiB. Continuous6/3+resume3 exact data/loss/gradient/evaluation/
+model/Adam/CPU RNG/module modes, identical inference SHA2f97b540...;17 recipes
+and72 probes independently replayed. All matching processes gone. Evidence
+docs/evidence/m3-stream-recovery-gate-r1/scope.json. Wrapper2 source-bound unit
+fixtures in docs/evidence/joint-native-gate-contracts/scope.json.
+NEXT larger M3 characterization: runs/m3-stream-large-profile-r1, --model accuracy
+--component-capacity64,2 full512-square updates,1GiB/300s outer/240s inner,CPU1.
+Expected<1GiB; unknown larger-head peak is bounded experimentally. Original
+M2 bank704 still next long s3 after this serial characterization. No quality claim.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any

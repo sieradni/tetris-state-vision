@@ -123,3 +123,13 @@ docs/evidence/m3-stream-pilot-profile-r1/scope.json pins actual M3 architecture,
 configuration, weights, replayed2 recipes and27 probe images. This admission
 covers that pilot/config/source envelope, not the larger model or long-run
 stability, converged learning, inference decoding or real-image accuracy.
+
+Native joint recovery also passes: continuous6 equals3+resume3 on data, loss
+terms/gradient norms, evaluations, all model/optimizer tensors, CPU RNG and
+restored module modes. Inference weights SHA2f97b540... identical. The curator
+replayed17 training rows including carried prefixes and72 saved rasters/labels;
+source/config/architecture and snapshot hashes match. Parent597,655,552B/1GiB,
+child max561,909,760B/640MiB,95.148s outer. Named evidence:
+docs/evidence/m3-stream-recovery-gate-r1/scope.json and proof.json.
+This finite pilot recovery gate does not characterize the larger configuration,
+long varied-shape memory or model accuracy.

@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "source_base_commit": "656a0a5d6983d3c1204de220a7634f87d1c4a83e",
+  "sources": {
+    "scripts/probe_stream_recovery.py": "8c0861206434712a1e01e6af02eb64b9153a4192c93eae53485726ba2610403d",
+    "scripts/record_stream_recovery.py": "e33a04bb2a478edbc5d600b6e1b19d6823c870b43a7902241572b2d0c3d5ba56",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "tests/test_native_stream_gate.py": "42b1e59537ff361d85be63b852a777b0a884fd518b53333ea34f5c7894d363f7"
+  },
+  "gates": [
+    {
+      "stem": "joint-native-gate-tests-r1",
+      "tests": 2,
+      "raw_peak_job_commit_bytes": 53329920
+    }
+  ],
+  "tests_across_scoped_runs": 2,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

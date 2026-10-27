@@ -1,0 +1,2 @@
+{"step": 4, "input_shape": [3, 480, 480], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 488443904}
+{"step": 6, "input_shape": [3, 480, 480], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 494604288}
