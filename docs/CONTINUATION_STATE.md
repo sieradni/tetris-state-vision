@@ -185,3 +185,19 @@ need256 updates to finish. Never rerun s2 output or use logged541 as cursor.
 False remains verified128/768. Final768 matched comparison/generalization pending.
 Draft diagnostic sources runs/probe_layer_generalization.py and
 runs/capture_layer_segment.ps1; first predeclared groups100..163 not evaluated yet.
+Fresh status: host committed27,662,856,192B, available13,184,983,040B;
+C:46,894,329,856B free. Headroom restored; next native admission remains decisive.
+Draft read-only comparison/generalization/receipt sources now versioned under
+docs/experiments/. Broader192-image inference is UNRUN, not accepted evidence.
+NEXT true s3 resumes actual bank512 (recomputes29 unbanked updates),256 new ->768:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 256 --receipt runs/m2-stream-layer-evidence768-s3-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-layer-evidence768-s3 --target-steps 768 --updates 256
+--admission runs/m2-stream-layer-pilot-profile-r1
+--resume-from runs/m2-stream-layer-evidence768-s2
+Expected<700MiB aggregate,child640MiB,896MiB parent,420s. Logs same-prefix-pipeline
+.log/.stderr.log; state same-prefix-pipeline/progress.json/result.json; child
+same-prefix-job.json, archive/training snapshots in same-prefix run. Nativeguards,
+no retries into old output. Before comparison require exact541-row recomputed
+recipe/loss/terms/gradient prefix excluding time; old541 tensors unavailable.
