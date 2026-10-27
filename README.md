@@ -1,7 +1,8 @@
 # Tetris State Vision
 
 An independent image-to-state model research project. It includes state contracts,
-exact-state scoring, synthetic scenes and the scratch M2 lattice-query model.
+exact-state scoring, synthetic scenes and a scratch lattice-query model with
+optional joint queue/hold heads.
 **There is no released complete screenshot parser or validated model yet.**
 
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
@@ -84,16 +85,26 @@ development boards all have no locked blocks; nonempty boards remain0/14 and
 active/ghost layers0/36. [Recorded comparison](docs/evidence/m2-stream-accuracy128-r2/analysis.json)
 does not establish convergence or real-image accuracy.
 
+The fixed4096-update board-model study has a verified saved704-update checkpoint.
+Its development probes still have0/18 exact boards and0/36 exact active/ghost
+layers. [Error analysis](docs/evidence/m2-stream-accuracy704-errors-r2/scope.json)
+finds384/401 positive cells recognized but326 invented cells. Further training
+continues from the original model/optimizer/source history; this is not a release
+or an adequately converged comparison.
+
 Optional joint queue/hold heads are available with `component_capacity=1..64`;
 zero retains the board-only model. Shared role/index queries and masked losses
 have numerical and compatibility checks, including unknown-slot and hidden-tail
-cases. They are untrained experiments. [M3 scope](docs/M3_COMPONENT_TARGETS.md)
-records the current source-pixel admission limit and remaining training/runtime
-work; the public inspection API still leaves queue and hold unknown.
+cases. Pilot and larger configurations now pass bounded warm resource/reload
+profiles, and continuous6 versus3+resume3 pilot training recovers exactly.
+[M3 scope](docs/M3_COMPONENT_TARGETS.md) records the synthetic final-capture
+policy and remaining learning/runtime work; the public inspection API still
+leaves queue and hold unknown. Resource and recovery checks establish no accuracy.
 
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
-unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with
+unsupported), and leaves queue/hold unknown pending verified component decoding.
+Run the guarded CLI with
 scripts/inspect_m2_checkpoint.py; its real 16-step-artifact call and seven focused
 contracts are scoped in docs/evidence/m2-runtime/. The resulting JSON is there
 as state.json. This path is for inspection, not automatic solver input.

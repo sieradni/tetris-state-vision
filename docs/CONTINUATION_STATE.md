@@ -24,7 +24,14 @@ child11844 all absent after completion. Named native receipt
 runs/m3-large-profile-curation-r1.json and matching.log/.stderr.log. Curated
 docs/evidence/m3-stream-large-profile-r1/scope.json, actualM3,7,997,016 parameters,
 weightsad14d69afe645b726b3e765ba10e7574695b157e72245dc7be05720fcb6fe160.
-No model/curation Job live. NEXT launch original M2 s3 with the limits below.
+RUNNING original M2 s3 with the limits below. Verified exact command tree:
+launcher31560/root supervisor28556;controller24128/13692;
+child supervisor30464/23160;archived trainer6248/26544.
+Pipeline progress confirms start704,target4096,at most512new, original archived
+trainer from s2/code/scripts/train_m2_stream.py. Worker first state capturing_source
+at step0 is initialization, not lost recovery; require restored704/current cursor
+on next check. No other heavy project Job. Inspect SAME receipts/progress before
+any relaunch; missing summary or a stale running child does not mean success.
 
 Latest host commit26,569,433,088B < stop31,368,351,744B; headroom restored after
 prior blocker. C: free40,304,672,768B (~40.30GB/37.54GiB), above the40GB prelaunch
