@@ -190,3 +190,4 @@ Logs runs/default-curriculum-numerics-r1.log/.stderr.log; final
 Then profile curator128MiB/30s/work29,record_stream_run.py --name
 m2-stream-default-policy-profile-r1;receipt runs/default-policy-profile-curation-r1.json,
 logs same-stem. Native guards unchanged; no neural fit is admitted yet.
+Numerical comparator launcher25592, exact command verified.
