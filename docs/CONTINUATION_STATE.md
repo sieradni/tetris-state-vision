@@ -224,3 +224,4 @@ NEXT fresh r5 after machine wake, same expected<700MiB and1GiB/420s/work14:
 Logs same-prefix.log/.stderr.log; state run/progress.json,terminal proof.json.
 Children640MiB/90s,2+6+3+3. Fresh invocation authorized by resolved external
 interruption; guards/source/recipe unchanged. Still no long fit admitted.
+LIVE r5 launcher28564, exact command verified. Keep helper/core bytes frozen.
