@@ -24,7 +24,10 @@ No complete screenshot parser or real-image accuracy is claimed.
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
    baseline has reached704 through bank192+512 verified updates: dev0/18 boards,
    0/36 layers,geometry1.84647cells. All704 recipes and27 probes replayed; the
-   global target is still partial. Continue bounded resumable training and
+   global target is still partial. A later host-pressure stop logged1172 and
+   banked1152; its files and actual model/238 Adam-state restore are verified
+   with no new forward/update. There is no final1152 inference artifact or
+   updated accuracy result. Continue bounded resumable training and
    use the verified704 error report to track misses, false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial

@@ -104,3 +104,14 @@ and `step_partial` artifacts explicitly. Default completion remains strict;
 outer timeout, pressure kill, crash and missing checkpoint/reload parity refuse.
 Three boundary fixtures and actual93-step partial replay pass. Segmented
 longer targets can therefore publish evidence without a completion claim.
+
+The next original4096-target segment stopped at actual host commit pressure
+with both ancestor/child125 receipts terminal:1172 logged,1152 banked. Native
+file collection verifies the selected manifest/tensor and all three committed
+ledger prefixes plus saved PIDs dead; docs/evidence/m2-stream-accuracy4096-s3-stop/.
+A separate512MiB/45s restore passes at477,442,048B in6.428s:7,694,010 parameters,
+238 Adam states all at1152 and committed data prefixes. No new forward/update
+or final inference checkpoint. Source/pointer/tensor identity is pinned by
+docs/evidence/m2-stream-accuracy1152-recovery-r1/scope.json. Preserve the20 later
+logged updates for a subsequent deterministic replay; no old1172 tensor artifact
+exists to support final-model equality. The fixed4096 target remains unfinished.

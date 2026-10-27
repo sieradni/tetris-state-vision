@@ -49,10 +49,21 @@ Next serialized model checks, only if fresh native headroom admission succeeds:
    metrics/diagnostics/totals to prior704 report, then scripts/record_stream_errors.py
    --name m2-stream-accuracy704-errors-r3 under128MiB/30s/work27 (expected<96MiB).
 2. Actual M3 replay on runs/m3-stream-large-profile-r1, NEW output
-   m3-stream-large-profile-errors-r1, same1GiB/120s/27forwards,expected<600MiB but
+   m3-stream-large-profile-errors-r1, same640MiB/120s/27forwards,expected<600MiB but
    experimentally bounded. Then same128MiB/30s/work27 collector. These2-step
    weights establish replay/plumbing only, not trained accuracy or learning.
 Use fresh receipts/output, hidden logs and checkpoint entry/PID verification.
+M2 format2 report PASSED18.831s,576,446,464B/640MiB,27 forwards,actualM2/capacity0,
+all saved metrics reproduced,weights unchanged. Launch23788/supervisor6380/
+child10916 and all matching processes gone. NEXT metadata collector
+runs/m2-error-format2-curation-r1.json/.log/.stderr.log,128MiB/30s/work27,
+expected<96MiB, source report m2-stream-accuracy704-errors-r3. No model process live.
+M2 actual collector PASSED.486s,72,908,800B/128MiB; launch32640/supervisor25556/
+child21164 gone. Curated docs/evidence/m2-stream-accuracy704-errors-r3/scope.json.
+All27 previous704 case diagnostics and aggregate values also compared exactly
+to old errors-r2. Native source/config/weights/partial tag preserved. No new model
+quality claim. NEXT actual M3 report,640MiB/120s/work27, fresh paths listed above.
+Host commit30,561,394,688B; full640MiB reservation currently fits native stop.
 M2 report cap lowered from planned1GiB to640MiB because prior same-model reports
 peaked551,600,128B (~526MiB); full model/all27 probes unchanged. Host around
 30.30GB commit fits640MiB reservation while1GiB is marginal. Kernel/OS guards
