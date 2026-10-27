@@ -120,3 +120,4 @@ NEXT modest read-only pressure-prefix audit, expected<96MiB,128MiB/30s/work2164:
 Logs runs/layer-pressure-prefix-r1.log/.stderr.log; final
  docs/evidence/layer-learning541-recomputed-r1/scope.json. Four541-row finite inputs.
 May coexist with the one640MiB training child; no second heavy workload.
+Prefix audit launcher19788, exact command verified.
