@@ -7,7 +7,7 @@ native RAM/pressure/CPU guards remain armed. Do not spawn subagents.
 
 ## Original baseline s4 verified at1664/4096
 
-No owned model Job live. s4 saved512 new updates from1152,explicit step_partial;
+Training Job gone;ordinary diagnostic below live. s4 saved512 new updates from1152,explicit step_partial;
 fixed global target4096 remains open. Original catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
@@ -26,7 +26,7 @@ final accuracy. Exact20 recomputed s3 updates/all1172 prefixes were preserved in
 m2-stream-accuracy1172-recomputed-r1;old1172 tensors do not exist.
 Latest commit26,472,333,312B and C:49,133,969,408B free;recheck before long runs.
 
-PLANNED next ordinary diagnostic command (not yet launched):
+LIVE ordinary launch21620 verified;exact command:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
 --wall-seconds 120 --work-items 27
 --receipt runs/m2-stream-accuracy1664-errors-r1-job.json --
