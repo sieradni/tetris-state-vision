@@ -61,9 +61,11 @@ Prior-bug interaction review (entire BUG_LOG read before this design):
 - V-003,V-014,V-018,V-020,V-021,V-022,V-024: computed artifact/config/source
   identity,frozen callable origins,original partial status,immutable active
   controller,full command/aggregate validation. No old scopes relabeled.
-- V-004,V-011,V-012,V-017,V-019,V-023: preserve raw counters;warm resident-Adam
+- V-004,V-011,V-012,V-017,V-019,V-023,V-025: preserve raw counters;warm resident-Adam
   profile;pre-import thread limits;validated fixtures/named role arguments;
   distinguish raw copies from normalized metadata. New gates must actually run.
+  Absence fixtures must verify that the public observer sees the full spawn
+  domain;latent missing poses never establish known absence.
 - V-007,V-010,V-013,V-015: named kernel Job/pressure guards,finite memory/time/work,
   cache16,periodic recovery and atomic publication unchanged. No cap opt-out.
 - V-008,V-009: real-corpus admission is untouched;no new real labels/eligibility.

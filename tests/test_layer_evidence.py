@@ -130,7 +130,14 @@ class LayerEvidenceTests(unittest.TestCase):
         self.assertTrue(torch.equal(left["layer_cells"]["occupied"], right["layer_cells"]["occupied"]))
 
     def test_known_absence_and_observed_visible_denominators_are_separate(self):
-        _, target = prepare(frame(None))
+        cropped_spawn = frame(None)
+        self.assertEqual(cropped_spawn.state.active.status, "unknown")
+        _, unknown = prepare(cropped_spawn)
+        self.assertFalse(bool(unknown["layer_cells"]["known"][0, 0].any()))
+        scene = replace(sample_scene(4, "empty"), active=None, ghost=None)
+        complete = render(scene, layout=Layout(board_bottom=530))
+        self.assertEqual((complete.state.active.status, complete.state.ghost.status), ("absent", "absent"))
+        _, target = prepare(complete)
         label = target["layer_cells"]
         self.assertTrue(bool(label["known"].all()))
         self.assertEqual(int(label["occupied"].sum()), 0)

@@ -10,12 +10,27 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024 (7) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023 (6) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-025 — OPEN: absence fixture hid part of the active spawn domain
+
+- Symptom: layer-evidence-model-tests-r1 has14/15 passes;the new known-absence
+  fixture expected both dense masks known although its default canvas omits the
+  top of the six-row spawn area. The existing observer correctly returns unknown.
+- Root cause: latent active=None was mistaken for an image-supported absence.
+  This is a test-instrument error;the model/observer masks did not need changing.
+- Detection class: test-instrument.
+- Instrument: assert observed public statuses before target expectations;use a
+  validated full-spawn layout for positive absence and retain the cropped-spawn
+  unknown as a negative check. This extends the standing validated-fixture rule.
+- Failed gate: runs/layer-evidence-model-tests-r1.stderr.log,15 cases,1failure,
+  native3.725s,448,126,976B/640MiB;all recorded processes gone.
+- Pending gate: named corrected15-case run and source-bound evidence.
 
 ## V-024 — CLOSED: geometry collector trusted aggregates and incompletely bound native command
 

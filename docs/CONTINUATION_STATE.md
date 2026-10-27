@@ -85,6 +85,15 @@ native pressure/Job/pre-import thread guards. No training Job live. Freeze teste
 source during gate;then existing model14/component15/runtime7/capture9 compatibility,
 controller18 and affected metadata/diagnostic tests. New native warm profile and
 actual controller learning/recovery remain pending;no candidate training yet.
+Layer-model r1:14/15,one invalid known-absence fixture. Native3.725s,
+448,126,976B/640MiB;33916/24368/36820 and matching commands gone. V-025 OPEN:
+default spawn box extends above image;observer correctly masks absence unknown.
+Fixture now checks public statuses,uses Layout(board_bottom=530) for complete
+spawn coverage,and retains default cropped-spawn unknown negative. Model/observer
+source unchanged. NEXT layer-evidence-model-tests-r2.json/.log/.stderr.log,
+same640MiB/60s/work15,expected<600MiB,native guards. Other14 checks including
+actual legacy numerical equality,paired rasters,gradients,reload and M3 passed;
+full15-source claim waits for corrected gate and curation.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
