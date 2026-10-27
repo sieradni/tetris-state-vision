@@ -135,3 +135,11 @@ Logs runs/curriculum-tests-r1.log/.stderr.log. No model Job live; nativeguards.
 After adapter gate, wire explicit policy into frozen training/admission/recovery/
 summary/controller/curation; old default maths/records remain unchanged.
 LIVE curriculum tests launcher24616, exact command verified.
+Adapter5 tests GREEN .929s,native1.259s/48,734,208B,all known PIDs gone.
+NEXT source curation expected<110MiB,128MiB/30s/work5,nativeguards. Exact command
+runs/curriculum-curation-r1-command.json,record_test_gates.py
+--name curriculum-adapter-contracts --base1f2c316 --gate curriculum-tests-r1:5
+with28 source paths. Receipt runs/curriculum-curation-r1.json,logs same-stem
+.log/.stderr.log; final docs/evidence/curriculum-adapter-contracts/scope.json.
+Original2816 terminal; shared root helpers can now be changed for new frozen
+policy after this sampler-only scope. Do not mislabel these5 as whole integration.
