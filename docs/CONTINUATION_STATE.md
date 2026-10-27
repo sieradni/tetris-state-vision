@@ -136,3 +136,16 @@ terminal result.json; child same-prefix-job.json; run summary/progress/snapshots
 Curator128MiB/120s/work681. Freeze controller/shared helper bytes until all gone.
 Controller c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3.
 Disk admission69,196,193,792B. Native guards unchanged; one heavy Job only.
+
+LIVE s2 launcher27580; exact startup command runs/m2-stream-allclass1024-s2-pipeline-startup.json.
+
+During s2, drafted docs/experiments/capture_allclass_segment.ps1 (metadata-only,
+not imported by trainer/controller). Syntax and outside-study-name refusal PASS.
+Positive actual128 replay correctly refuses while s2 still executes s1's frozen
+archive; defer until no referencing Python process remains. At s2 completion:
+& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s1 -Launcher 18588 -VerifyOnly
+Then s1 ordinary mode must refuse existing controller evidence without changes.
+& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s2 -Launcher 27580
+Verify actual640 hashes/raw copies/PID death; preserve startup file, then commit.
+Helper bounds exactly predeclared s1=128,s2=512,s3=384,target1024; no overwrite.
+ALL_CLASS_FIT records order/representation hypotheses as unproven, no live change.

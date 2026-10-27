@@ -90,6 +90,23 @@ The39 error-report checks bind actual historical fixture/source hashes in
 docs/evidence/allclass-error-contracts/scope.json. Continue the unchanged finite
 study before choosing another mechanism or extending its target.
 
+If the final fixed study still fails, keep two questions distinct. First, the
+declared32-step cycle presents each class in four consecutive views and always
+ends with the four absences; every64-step snapshot is at that same cycle phase.
+The step97–128 curve's layer loss falls from4.24 on the first I view to.52 on
+the final absent view. This is an order/recency hypothesis, not proof that data
+order caused the failure. Second, the shared pose heads consume the output of
+layer attention without a query residual; active/ghost identity enters through
+attention weights. Their ability to retain separate row information is an
+unmeasured representation hypothesis. Neither observation alone is a defect.
+
+After the final ordinary error replay, inspect per-class predictions and role
+feature separation before a new learning experiment. Any order-only comparison
+must keep the same32 pixel/state pairs, initialization, optimizer,1,024-update
+budget and acceptance criterion; change only a declared deterministic order,
+then obtain fresh source/resource/recovery admission. A mechanism comparison is
+a separate source-bound study. Do not silently shuffle or extend this live fit.
+
 Prior-bug interaction review (current ledger read before this diagnostic):
 
 - V-001/002/005/006/016: existing observer/prepared masks remain authoritative;

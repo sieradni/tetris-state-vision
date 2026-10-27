@@ -9,6 +9,9 @@ The [latest matched learning pilot](docs/LAYER_LEARNING_PILOT.md) completed two
 768-update studies and a192-image disjoint-ancestry diagnostic. The optional
 layer-evidence mechanism did not pass the joint learning gate and remains off
 by default. Resource/recovery checks passed; real-image accuracy remains untested.
+The current [balanced32-image fit](docs/ALL_CLASS_FIT.md) has128/1,024 updates
+verified. Independent replay finds28/32 exact locked boards but0/56 observed
+piece poses; the finite study is still in progress and has not passed its fit gate.
 
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
 dependencies and generate three ancestry groups (15 images). Each receipt/output
@@ -90,14 +93,14 @@ development boards all have no locked blocks; nonempty boards remain0/14 and
 active/ghost layers0/36. [Recorded comparison](docs/evidence/m2-stream-accuracy128-r2/analysis.json)
 does not establish convergence or real-image accuracy.
 
-The fixed4096-update board-model study has a verified saved704-update checkpoint.
-Its development probes still have0/18 exact boards and0/36 exact active/ghost
-layers. [Error analysis](docs/evidence/m2-stream-accuracy704-errors-r2/scope.json)
-finds384/401 positive cells recognized but326 invented cells. A later host-memory
-stop left a1152-update training snapshot; model/optimizer recovery is verified,
-but there is no final1152 inference artifact or updated accuracy result. Further
-training retains the original source/optimizer history. This is not a release
-or an adequately converged comparison.
+The separate fixed4096-update board-model study has a verified2,816-update
+checkpoint. Its development probes still have0/18 exact boards and0/36 exact
+active/ghost layers, with1.94391-cell geometry error.
+[Current evidence](docs/evidence/m2-stream-accuracy4096-s7/scope.json) replays all
+2,816 training recipes and27 saved probe images and retains native controller/
+child/curator receipts. Earlier pressure interruptions and exact optimizer/data
+recovery remain recorded separately. Further training must retain this study's
+original frozen source and optimizer history. Adequate learning remains open.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;
 zero retains the board-only model. Shared role/index queries and masked losses
