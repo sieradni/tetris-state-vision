@@ -158,3 +158,19 @@ Logs runs/layer-learning128-comparison-r1.log/.stderr.log. Expected<96MiB,
 128MiB kernel cap/native pressure/CPU1 guards. Verify recipes/config/actualweights,
 27+27 supported states and256 curve records; total joint losses not compared.
 Comparison launcher18588, exact command verified.
+128 comparison PASS.302s/36,593,664B under128MiB; raw source/receipt/logs saved,
+all3 PIDs gone. Identical source/config except option, data/probes; both dev0/18
+boards,0/36 layers, nonempty0/14. True cellacc.90222 vsfalse.83056; geometry
+1.94832 vs2.21219. No complete-state improvement established; total losses differ.
+NEXT s2 TRUE, expected<700MiB,896MiB aggregate/420s/512new,child640MiB:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 512 --receipt runs/m2-stream-layer-evidence768-s2-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-layer-evidence768-s2 --target-steps 768 --updates 512
+--admission runs/m2-stream-layer-pilot-profile-r1
+--resume-from runs/m2-stream-layer-evidence768-s1
+Logs same-prefix-pipeline.log/.stderr.log,state same-prefix-pipeline/progress.json
+and result.json, child same-prefix-job.json; expected step_partial640/768.
+Native guards/source/recipe freeze unchanged. After terminal capture exact receipts
+with runs/capture_layer_segment.ps1 -Name NAME -Launcher PID; verify death before next Job.
+LIVE true s2 launcher20076, exact command verified.
