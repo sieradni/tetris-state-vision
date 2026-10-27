@@ -86,6 +86,14 @@ Geometry r1:10 cases,1failure+2errors because candidate omitted preserved valid
 no training cap changed. Failed r1 retained;14216/22760/16004 all dead.
 NEXT geometry-evidence-tests-r2.json/.log/.stderr.log with same128MiB/30s/work10,
 expected<96MiB and native guards. Source checkpointed before rerun.
+Geometry metadata r2 GREEN10/10,.113s,35,180,544B/128MiB/30s;4244/36504/5068
+and matching tests gone. Sourceeaf5bee. NEXT curator exact command array in
+runs/geometry-contract-curation-r1-command.json: bounded128MiB/30s/work10,
+record_test_gates --name geometry-evidence-contracts --base eaf5bee
+--gate geometry-evidence-tests-r2:10 and18 source/fixture selections. Logs
+runs/geometry-contract-curation-r1.log/.stderr.log,receipt same-prefix.json;
+sentinel docs/evidence/geometry-evidence-contracts/scope.json. Expected<96MiB,
+native guards;no model imports. Preserve r1 failure in new scope folder.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:
