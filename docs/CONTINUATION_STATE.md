@@ -7,7 +7,7 @@ native RAM/pressure/CPU guards armed. No subagents authorized.
 
 ## Next action: original baseline s5 from verified1664
 
-No owned model/curator Job live at this checkpoint. PLANNED exact command:
+LIVE s5 launch18820/root20148/controller29040 verified;exact command:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
 --wall-seconds 2100 --work-items 512
 --receipt runs/m2-stream-accuracy4096-s5-pipeline-job.json --
@@ -30,7 +30,9 @@ accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16
 Controller SHA11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4
 must remain unchanged while active. Native supervisor SHA
  d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db unchanged.
-Verify exact process command/PID and archive selection after launch;record here.
+Verified chain:18820/20148/29040+31004/13840+28636/6908+22228;worker22228
+executes s4/code/scripts/train_m2_stream.py with original recipe. Last observed
+step1687 at41.032s. No new separately verified snapshot yet;last final artifact1664.
 Do not restart from a stale receipt or observation timeout. At controlled finish
 verify entire process death,status/actualartifact/curation;at pressure stop first
 record true bank/logged cursor and verify recovery. No automatic retry.
@@ -40,6 +42,9 @@ piece-class exposure and local reading failures in the original curriculum,
 without editing current model/data/optimizer sources or treating hidden state as
 known. Current active-head development collapse may reflect learning/data issues;
 do not assume root cause or claim model capacity from the conditional test.
+Do not infer actual masked training exposure from source-visible state counts;
+the exact frozen targets_for audit requires Torch and belongs in a serialized
+model-free gap. Pure metadata/code review can proceed while s5 trains.
 Do useful read-only/modest metadata work between polls;only long wait remaining
 means checkpoint/commit/end turn,not prolonged babysitting.
 
