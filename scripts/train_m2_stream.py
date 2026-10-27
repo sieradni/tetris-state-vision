@@ -25,6 +25,7 @@ def arguments(argv=None):
     parser.add_argument("--component-capacity", type=int, default=0,
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
+    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1"), default="stream-v1")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
@@ -41,6 +42,8 @@ def arguments(argv=None):
         parser.error("steps 1..4096 and finite nonnegative seed required")
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
+    if args.curriculum == "all-class-fit-v1" and args.component_capacity:
+        parser.error("all-class fit is a capacity0 diagnostic")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
@@ -54,7 +57,13 @@ def arguments(argv=None):
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1"):
+    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
+            summary.get("curriculum", "stream-v1") != curriculum):
+        raise ValueError("curriculum differs from resource admission")
+    if "curriculum" in summary and (summary.get("arguments", {}).get("curriculum") != curriculum or
+                                    summary.get("recovery_contract", {}).get("curriculum") != curriculum):
+        raise ValueError("resource arguments/recovery curriculum identity differs")
     warm = summary.get("warm_optimizer_backward", {})
     if (summary.get("status") != "complete" or summary.get("steps") != 2 or not summary.get("profile_square") or
             summary.get("resource_profile_version") != 3 or not summary.get("training_recovery_profile_exact") or
@@ -128,15 +137,17 @@ def main(argv=None, *, _archive=None, _started=None):
     os.environ.update(NATIVE_CACHE_LIMITS)
     import torch
     from dataclasses import asdict, replace
-    from m2_stream_data import sample_case
+    from m2_curriculum import ALL_CLASS, distinct_training_groups, probe_specs, sample_for, training_case
+    from m2_fit_contract import summarize_fit
     from training_snapshot import load_training_snapshot, save_training_snapshot
     from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
     from tetris_vision.dataset import source_digest
-    from tetris_vision.losses import diagnostic_metrics, joint_loss, targets_for
+    from tetris_vision.losses import PIECE_NAMES, diagnostic_metrics, joint_loss, targets_for
     from tetris_vision.model import ModelConfig, TetrisStateNet
     from tetris_vision.preprocess import prepare_image
     import tetris_vision.model as model_module
-    if not Path(model_module.__file__).resolve().is_relative_to(code) or not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
+    if (not Path(model_module.__file__).resolve().is_relative_to(code) or
+            any(not Path(function.__code__.co_filename).resolve().is_relative_to(code) for function in (sample_for, training_case, summarize_fit))):
         raise RuntimeError("runtime did not import from the verified source archive")
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
@@ -150,7 +161,7 @@ def main(argv=None, *, _archive=None, _started=None):
         validate_admission(json.loads((admit/"summary.json").read_text()),
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
-                           ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha)
+                           ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum)
     model = TetrisStateNet(config)
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
     maximum_pixels, evaluation_identities = 0, {}
@@ -158,8 +169,8 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_profile_exact = False
 
     def sample(group, view, split, *, profile_square=False):
-        return sample_case(group, view, split, args.seed, profile_square=profile_square,
-                           final_capture=bool(args.component_capacity))
+        return sample_for(group, view, split, args.seed, profile_square=profile_square,
+                          curriculum=args.curriculum, component_capacity=args.component_capacity)
 
     def prepare(case):
         nonlocal maximum_pixels
@@ -177,43 +188,54 @@ def main(argv=None, *, _archive=None, _started=None):
     def evaluate(split, groups, persist=False):
         model.eval()
         records, per_case = [], []
-        for group in range(groups):
-            for view in range(3):
-                case = sample(group, view, split)
-                prepared, target = prepare(case)
-                output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target)
-                layers_right = layers_known = 0
-                for layer in range(2):
-                    if not bool(target["layer_known"][0, layer]):
-                        continue
+        for group, view in probe_specs(split, groups, args.curriculum):
+            case = sample(group, view, split)
+            prepared, target = prepare(case)
+            output = model(prepared.pixels[None], prepared.valid[None])
+            loss, _ = joint_loss(output, target)
+            layers_right = layers_known = 0
+            fit_roles = {}
+            for layer, role in enumerate(("active", "ghost")):
+                known = bool(target["layer_known"][0, layer])
+                observed = bool(target["pose_known"][0, layer])
+                right = None
+                if known:
                     layers_known += 1
                     final = output["final"]
                     right = int(final["layer_type"][0, layer].argmax()) == int(target["layer_type"][0, layer]) and bool(final["layer_known"][0, layer] > 0)
-                    if bool(target["pose_known"][0, layer]):
+                    if observed:
                         right = (right and int(final["pose_column"][0, layer].argmax()) == int(target["column"][0, layer]) and
                                  int(final["pose_row"][0, layer].argmax()) == int(target["row"][0, layer]) and
                                  bool(target["rotations"][0, layer, final["pose_rotation"][0, layer].argmax()]))
                     layers_right += int(right)
-                per_case.append({"sample_id": case.record["sample_id"], "loss": float(loss),
-                                 "exact_known_layers": layers_right, "known_layers": layers_known,
-                                 **diagnostic_metrics(output, target)})
-                if args.component_capacity:
-                    from tetris_vision.components import component_metrics
-                    per_case[-1]["components"] = component_metrics(output["final"]["components"], target["components"])[0]
-                records.append(case.record)
-                if persist:
-                    folder = args.output/(split+"-probe")
-                    folder.mkdir(exist_ok=True)
-                    case.frame.image.save(folder/(case.record["sample_id"]+".png"))
-                    (folder/(case.record["sample_id"]+".json")).write_bytes(case.frame.state.to_json().encode())
+                if args.curriculum == ALL_CLASS and split == "training":
+                    kind = int(target["layer_type"][0, layer])
+                    fit_roles[role] = {"known": known, "observed": observed, "exact": right,
+                                       "class": (PIECE_NAMES[kind-1] if kind else "absent") if known else "unknown"}
+            per_case.append({"sample_id": case.record["sample_id"], "loss": float(loss),
+                             "exact_known_layers": layers_right, "known_layers": layers_known,
+                             **diagnostic_metrics(output, target)})
+            if args.curriculum == ALL_CLASS and split == "training":
+                typed = target["typed"]
+                correct = (output["final"]["semantic"][:, :20].argmax(-1) == target["semantic"]) & typed
+                per_case[-1].update(group_id=case.record["group_id"],
+                                    fit_case={"semantic_known": int(typed.sum()), "semantic_correct": int(correct.sum()), "roles": fit_roles})
+            if args.component_capacity:
+                from tetris_vision.components import component_metrics
+                per_case[-1]["components"] = component_metrics(output["final"]["components"], target["components"])[0]
+            records.append(case.record)
+            if persist:
+                folder = args.output/(split+"-probe")
+                folder.mkdir(exist_ok=True)
+                case.frame.image.save(folder/(case.record["sample_id"]+".png"))
+                (folder/(case.record["sample_id"]+".json")).write_bytes(case.frame.state.to_json().encode())
         identity = hashlib.sha256(json.dumps(records, sort_keys=True).encode()).hexdigest()
         if split in evaluation_identities and evaluation_identities[split] != identity:
             raise ValueError("evaluation cases changed during training")
         evaluation_identities[split] = identity
         if persist:
             (args.output/(split+"-probe.jsonl")).write_text("".join(json.dumps(row)+"\n" for row in records))
-        result = {"images": len(per_case), "ancestry_groups": groups, "loss": sum(row["loss"] for row in per_case)/len(per_case),
+        result = {"images": len(per_case), "ancestry_groups": len({row["group_id"] for row in records}), "loss": sum(row["loss"] for row in per_case)/len(per_case),
                 "exact_locked_boards": sum(row["exact_locked_board"] for row in per_case),
                 "cell_accuracy": sum(row["cell_accuracy"] for row in per_case)/len(per_case),
                 "mean_geometry_error_cells": sum(row["mean_geometry_error_cells"] for row in per_case)/len(per_case),
@@ -227,6 +249,8 @@ def main(argv=None, *, _archive=None, _started=None):
             result.update(readable_component_cases=sum(row["components"]["component_state_readable"] for row in per_case),
                           exact_readable_components=sum(row["components"]["exact_readable_components"] is True for row in per_case),
                           supported_components_exact=sum(row["components"]["supported_components_exact"] for row in per_case))
+        if args.curriculum == ALL_CLASS and split == "training":
+            result["fit"] = summarize_fit(per_case)
         return result
 
     initial_train, initial_dev = evaluate("training", 3, True), evaluate("development", args.development_groups, True)
@@ -238,6 +262,7 @@ def main(argv=None, *, _archive=None, _started=None):
                          "profile_square": args.profile_square, "threads": 1, "rng": "torch_cpu_only"}
     recovery_contract["native_cache_limits"] = NATIVE_CACHE_LIMITS
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
+    recovery_contract["curriculum"] = args.curriculum
     ledger_names = ("curve.jsonl", "training.jsonl", "evaluations.jsonl")
     resume_record = None
     if args.resume_from is not None:
@@ -275,8 +300,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 break
             # Both characterization steps must use the maximum shape. Step two
             # includes Adam's moment tensors, allocated lazily by the first step.
-            group, view = (0, 0) if args.profile_square else ((step-1)//3, (step-1) % 3)
-            case = sample(group, view, "training", profile_square=args.profile_square)
+            case = training_case(step, args.seed, curriculum=args.curriculum, component_capacity=args.component_capacity, profile_square=args.profile_square)
             prepared, target = prepare(case)
             model.train()
             optimizer.zero_grad(set_to_none=True)
@@ -365,7 +389,8 @@ def main(argv=None, *, _archive=None, _started=None):
                "warm_optimizer_backward": warm_optimizer_backward,
                "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
                "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
-               "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0, "fresh_parent_groups": (completed+2)//3,
+               "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0, "fresh_parent_groups": distinct_training_groups(completed, args.curriculum),
+               "curriculum": args.curriculum,
                "initial_training_probe": initial_train, "initial_development": initial_dev,
                "final_training_probe": final_train, "development": final_dev, "checkpoint_round_trip_exact": True,
                "checkpoint_sha256": checkpoint["weights_sha256"], "elapsed_seconds": time.monotonic()-started,

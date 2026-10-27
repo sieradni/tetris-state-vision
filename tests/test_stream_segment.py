@@ -98,6 +98,47 @@ def outcome(case, plan, updates=2, complete=False):
 
 
 class StreamSegmentTests(unittest.TestCase):
+    def test_fit_policy_routes_and_resumes_only_its_matching_recipe_and32_probes(self):
+        with fixture() as case:
+            case.profile.update(curriculum="all-class-fit-v1")
+            case.profile["arguments"]["curriculum"] = "all-class-fit-v1"
+            case.profile["recovery_contract"]["curriculum"] = "all-class-fit-v1"
+            case.manifest["metadata"]["recovery_contract"]["curriculum"] = "all-class-fit-v1"
+            write(case.admission/"summary.json", case.profile)
+            write(case.admission/"checkpoint/manifest.json", case.manifest)
+            plan = segment.segment_plan(case.args)
+            self.assertEqual(plan["curriculum"], "all-class-fit-v1")
+            self.assertIn("--curriculum", plan["worker"])
+            summary, job, manifest = outcome(case, plan)
+            summary.update(curriculum="all-class-fit-v1", recovery_contract={"curriculum": "all-class-fit-v1"})
+            summary["final_training_probe"] = {"images": 32, "cases": [{"sample_id": str(i)} for i in range(32)]}
+            self.assertEqual(segment.validate_segment(summary, job, manifest, plan), 50)
+            summary["curriculum"] = "stream-v1"
+            with self.assertRaises(ValueError):
+                segment.validate_segment(summary, job, manifest, plan)
+            saved, path = resume(case, step=32, target=1024)
+            saved["contract"]["curriculum"] = "all-class-fit-v1"
+            write(path, saved)
+            publish(case, case.args.resume_from, path)
+            self.assertEqual(segment.segment_plan(case.args)["start"], 32)
+            saved["contract"]["curriculum"] = "stream-v1"
+            write(path, saved)
+            publish(case, case.args.resume_from, path)
+            with self.assertRaises(ValueError):
+                segment.segment_plan(case.args)
+
+    def test_unknown_or_joint_fit_policy_refuses_before_spawn(self):
+        for joint, policy in ((False, "unknown"), (True, "all-class-fit-v1")):
+            with fixture(joint) as case:
+                case.profile.update(curriculum=policy)
+                case.profile["recovery_contract"]["curriculum"] = policy
+                case.manifest["metadata"]["recovery_contract"]["curriculum"] = policy
+                write(case.admission/"summary.json", case.profile)
+                write(case.admission/"checkpoint/manifest.json", case.manifest)
+                with self.assertRaises(ValueError):
+                    segment.segment_plan(case.args)
+                case.spawn.assert_not_called()
+
     def test_layer_evidence_routes_only_from_verified_configuration_and_resume(self):
         for joint in (False, True):
             with fixture(joint) as case:
@@ -139,6 +180,7 @@ class StreamSegmentTests(unittest.TestCase):
             plan = segment.segment_plan(case.args)
             self.assertEqual(plan["worker"][1], str(case.admission/"code/scripts/train_m2_stream.py"))
             self.assertNotIn("--component-capacity", plan["worker"])
+            self.assertNotIn("--curriculum", plan["worker"])
             self.assertEqual((plan["memory_mib"], plan["model_kind"], plan["budget"]), (1024, "accuracy", 512))
             self.assertFalse(plan["pipeline"].exists())
             case.spawn.assert_not_called()

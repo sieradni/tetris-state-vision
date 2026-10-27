@@ -7,6 +7,15 @@ from record_stream_run import checkpoint_architecture, validate_completion
 
 
 class StreamEvidenceTests(unittest.TestCase):
+    def test_fit_policy_is_derived_from_matching_checkpoint_recovery_metadata(self):
+        summary = {"config": {"component_capacity": 0}, "component_capacity": 0,
+                   "curriculum": "all-class-fit-v1", "recovery_contract": {"curriculum": "all-class-fit-v1"}}
+        manifest = {"config": summary["config"], "architecture": "TetrisStateNet-M2",
+                    "metadata": {"recovery_contract": {"curriculum": "all-class-fit-v1"}}}
+        self.assertEqual(checkpoint_architecture(summary, manifest), "TetrisStateNet-M2")
+        manifest["metadata"]["recovery_contract"]["curriculum"] = "stream-v1"
+        with self.assertRaises(ValueError):
+            checkpoint_architecture(summary, manifest)
     def test_architecture_identity_comes_from_matching_checkpoint_config(self):
         old = {"config": {"dimension": 64}}
         manifest = {"architecture": "TetrisStateNet-M2", "config": old["config"]}

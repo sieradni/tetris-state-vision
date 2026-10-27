@@ -33,6 +33,24 @@ class StreamAdmissionTests(unittest.TestCase):
             with self.subTest(capacity=capacity), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 arguments([*base, "--component-capacity", capacity])
 
+    def test_fit_curriculum_requires_capacity0_and_matching_resource_recipe(self):
+        base = ["--output", "unused", "--model", "pilot", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments(base).curriculum, "stream-v1")
+        self.assertEqual(arguments([*base, "--curriculum", "all-class-fit-v1"]).curriculum, "all-class-fit-v1")
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--curriculum", "all-class-fit-v1", "--component-capacity", "64"])
+        summary, job, expected = self.admission()
+        with self.assertRaisesRegex(ValueError, "curriculum"):
+            validate_admission(summary, job, **expected, curriculum="all-class-fit-v1")
+        summary.update(curriculum="all-class-fit-v1", arguments={"curriculum": "all-class-fit-v1"},
+                       recovery_contract={"curriculum": "all-class-fit-v1"})
+        validate_admission(summary, job, **expected, curriculum="all-class-fit-v1")
+        with self.assertRaises(ValueError):
+            validate_admission(summary, job, **expected)
+        summary["arguments"]["curriculum"] = "stream-v1"
+        with self.assertRaises(ValueError):
+            validate_admission(summary, job, **expected, curriculum="all-class-fit-v1")
+
     def admission(self):
         config = {"dimension": 64}
         summary = {"status": "complete", "steps": 2, "profile_square": True, "checkpoint_round_trip_exact": True,

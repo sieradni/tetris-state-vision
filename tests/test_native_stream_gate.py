@@ -13,6 +13,11 @@ from probe_stream_recovery import arguments
 
 
 class NativeStreamGateTests(unittest.TestCase):
+    def test_fit_policy_is_explicit_and_refuses_joint_capacity(self):
+        self.assertEqual(arguments(["--output", "unused"]).curriculum, "stream-v1")
+        self.assertEqual(arguments(["--output", "unused", "--curriculum", "all-class-fit-v1"]).curriculum, "all-class-fit-v1")
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments(["--output", "unused", "--curriculum", "all-class-fit-v1", "--component-capacity", "64"])
     def test_m2_default_and_joint_capacity_are_explicit(self):
         self.assertEqual(arguments(["--output", "unused"]).component_capacity, 0)
         self.assertEqual(arguments(["--output", "unused", "--component-capacity", "64"]).component_capacity, 64)

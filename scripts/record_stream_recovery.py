@@ -52,6 +52,14 @@ def main():
     archive = verify_source(code, catalogue)
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
+    curriculum = proof.get("curriculum", "stream-v1")
+    new_curriculum_contract = "curriculum" in proof
+    if new_curriculum_contract:
+        from m2_curriculum import probe_specs, sample_for, training_case
+        from m2_fit_contract import summarize_fit
+        if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
+               for function in (probe_specs, sample_for, training_case, summarize_fit)):
+            raise ValueError("recovery curriculum implementation is not frozen")
     from m2_stream_data import sample_case
     from PIL import Image
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
@@ -66,7 +74,7 @@ def main():
                 job["memory_bytes"] != 640*1024**2 or job["work_items"] != updates or
                 job["supervisor_script_sha256"] != archive["files"]["scripts/run_bounded.py"] or
                 summary["updates_this_run"] != updates or summary["status"] != ("step_partial" if partial else "complete") or
-                summary["catalogue_sha256"] != catalogue or
+                summary["catalogue_sha256"] != catalogue or summary.get("curriculum", "stream-v1") != curriculum or
                 not summary["checkpoint_round_trip_exact"] or
                 not Path(summary["driver_source_path"]).resolve().is_relative_to(child/"code")):
             raise ValueError("child status/resource/archive contract differs")
@@ -98,18 +106,32 @@ def main():
         for row in rows:
             if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
                 raise ValueError("recovery capture policy differs from model")
-            extra = {"final_capture": True} if row.get("final_capture") else {}
-            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
+            if new_curriculum_contract:
+                replay = training_case(row["step"], summary["arguments"]["seed"], curriculum=curriculum,
+                                       component_capacity=summary.get("component_capacity", 0), profile_square=summary["profile_square"])
+            else:
+                extra = {"final_capture": True} if row.get("final_capture") else {}
+                replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
             if {key: value for key, value in row.items() if key != "step"} != json.loads(json.dumps(replay.record)):
                 raise ValueError("recovery training recipe/pixels differ")
             training_count += 1
         for split in ("training", "development"):
-            for line in (child/(split+"-probe.jsonl")).read_text().splitlines():
+            lines = (child/(split+"-probe.jsonl")).read_text().splitlines()
+            if new_curriculum_contract:
+                specs = probe_specs(split, 3 if split == "training" else summary["development_groups"], curriculum)
+                if len(lines) != len(specs):
+                    raise ValueError("recovery probe population differs")
+            for index, line in enumerate(lines):
                 row = json.loads(line)
                 if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
                     raise ValueError("recovery probe capture policy differs from model")
-                extra = {"final_capture": True} if row.get("final_capture") else {}
-                replay = sample_case(row["group_index"], row["view"], split, row["base_seed"], **extra)
+                if new_curriculum_contract:
+                    group, view = specs[index]
+                    replay = sample_for(group, view, split, summary["arguments"]["seed"], curriculum=curriculum,
+                                        component_capacity=summary.get("component_capacity", 0))
+                else:
+                    extra = {"final_capture": True} if row.get("final_capture") else {}
+                    replay = sample_case(row["group_index"], row["view"], split, row["base_seed"], **extra)
                 path = child/(split+"-probe")/row["sample_id"]
                 with Image.open(path.with_suffix(".png")) as stored:
                     if stored.mode != replay.frame.image.mode or stored.size != replay.frame.image.size or stored.tobytes() != replay.frame.image.tobytes():
@@ -117,6 +139,10 @@ def main():
                 if digest(path.with_suffix(".json")) != row["state_sha256"] or json.loads(json.dumps(replay.record)) != row:
                     raise ValueError("recovery saved probe labels/recipe differ")
                 probe_count += 1
+        if curriculum == "all-class-fit-v1":
+            for field in ("initial_training_probe", "final_training_probe"):
+                if summarize_fit(summary[field]["cases"]) != summary[field].get("fit"):
+                    raise ValueError("recovery fit aggregates differ")
         summary_rows[name] = summary
         for filename in ("summary.json", "progress.json", "curve.jsonl", "training.jsonl", "evaluations.jsonl", "memory.jsonl",
                          "training-probe.jsonl", "development-probe.jsonl", "latest-training.json"):
@@ -147,7 +173,7 @@ def main():
         shutil.copyfile(source, target)
     scope = {"status": "passed", "source_base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "architecture": architecture, "component_capacity": summary_rows["continuous"].get("component_capacity", 0),
-             "source_catalogue_sha256": catalogue, "replayed_training_records_including_resumed_prefix": training_count,
+             "source_catalogue_sha256": catalogue, "curriculum": curriculum, "replayed_training_records_including_resumed_prefix": training_count,
              "verified_saved_probe_images": probe_count, "artifact_sha256": hashes,
              "native_peak_job_commit_bytes": root_job["peak_job_commit_bytes"],
              "curator_sha256": digest(Path(__file__)),

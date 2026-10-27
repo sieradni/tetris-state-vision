@@ -22,12 +22,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
-   baseline has reached2688 through bank2176+512 verified updates: dev2/18 boards
-   (both empty; nonempty0/14),0/36 layers,geometry2.05281cells. All2688 recipes and27 probes replayed;
-   docs/evidence/m2-stream-accuracy4096-s6/scope.json preserves step_partial2688/4096
+   baseline has reached2816 through bank2688+128 verified updates: dev0/18 boards,
+   nonempty0/14,0/36 layers,geometry1.94391cells. All2816 recipes and27 probes replayed;
+   docs/evidence/m2-stream-accuracy4096-s7/scope.json preserves step_partial2816/4096
    and native controller/child/curator receipts. The prior host-pressure stop
    logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
-   exactly,excluding time. New inference weightsdd93e387... retain original
+   exactly,excluding time. New inference weights29ffd032... retain original
    catalogue121fd05a; adequate learning remains open. Continue bounded resumable
    training and use saved error reports to track misses,false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or

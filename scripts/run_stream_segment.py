@@ -80,6 +80,10 @@ def segment_plan(args):
     architecture = checkpoint_architecture(profile, profile_manifest)
     capacity = profile["config"].get("component_capacity", 0)
     layer_evidence = profile["config"].get("layer_evidence", False)
+    curriculum = profile.get("curriculum", "stream-v1")
+    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
+            curriculum == "all-class-fit-v1" and capacity):
+        raise ValueError("supported curriculum/capacity identity required")
     if (capacity != 0 and not 10 <= capacity <= 64 or
             not args.name.startswith("m3-stream-" if capacity else "m2-stream-") or
             args.component_capacity is not None and args.component_capacity != capacity):
@@ -113,6 +117,7 @@ def segment_plan(args):
                 contract["config"] != profile["config"] or contract["profile_square"] is not False or
                 contract["weight_decay"] != .01 or contract["max_side"] != 512 or contract["threads"] != 1 or
                 contract["rng"] != "torch_cpu_only" or contract["native_cache_limits"] != NATIVE_CACHE_LIMITS or
+                contract.get("curriculum", "stream-v1") != curriculum or
                 capacity and contract.get("input_policy") != "M3-final-capture-v1" or
                 not capacity and contract.get("input_policy", "M2-prepared-resize-v1") != "M2-prepared-resize-v1"):
             raise ValueError("resume target/source differs; finished diagnostics cannot silently extend")
@@ -127,7 +132,7 @@ def segment_plan(args):
         raise ValueError("archived supervisor differs from live guard")
     validate_admission(profile, profile_job, catalogue=archive["catalogue_sha256"], model=profile["model_kind"],
                        config=profile["config"], ceiling=ceiling, development_groups=recipe["development_groups"],
-                       supervisor_sha=supervisor_sha)
+                       supervisor_sha=supervisor_sha, curriculum=curriculum)
     budget = min(args.updates, args.target_steps-start)
     trainer = code/"scripts/train_m2_stream.py"
     if not trainer.is_file():
@@ -141,10 +146,12 @@ def segment_plan(args):
         worker += ["--component-capacity", str(capacity)]
     if layer_evidence:
         worker += ["--layer-evidence"]
+    if curriculum != "stream-v1":
+        worker += ["--curriculum", curriculum]
     if args.resume_from is not None:
         worker += ["--resume-from", str(args.resume_from.resolve())]
     return {"run": run, "pipeline": pipeline, "start": start, "budget": budget, "worker": worker,
-            "memory_mib": ceiling//1024**2, "component_capacity": capacity, "config": profile["config"],
+            "memory_mib": ceiling//1024**2, "component_capacity": capacity, "config": profile["config"], "curriculum": curriculum,
             "model_kind": profile["model_kind"], "layer_evidence": layer_evidence, "catalogue_sha256": archive["catalogue_sha256"],
             "architecture": architecture, "development_groups": recipe["development_groups"], "target_steps": args.target_steps}
 
@@ -156,10 +163,12 @@ def validate_segment(summary, job, manifest, plan):
             not 0 < summary["updates_this_run"] <= plan["budget"] or job["work_items"] != plan["budget"] or
             job["memory_bytes"] != plan["memory_mib"]*1024**2 or summary["config"] != plan["config"] or
             summary["catalogue_sha256"] != plan["catalogue_sha256"] or summary["model_kind"] != plan["model_kind"] or
-            architecture != plan["architecture"] or summary.get("component_capacity", 0) != plan["component_capacity"]):
+            architecture != plan["architecture"] or summary.get("component_capacity", 0) != plan["component_capacity"] or
+            summary.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1")):
         raise ValueError("saved segment cursor/configuration/resource identity differs")
     probes = 0
-    for field, expected in (("final_training_probe", 9), ("development", 3*plan["development_groups"])):
+    training_images = 32 if plan.get("curriculum", "stream-v1") == "all-class-fit-v1" else 9
+    for field, expected in (("final_training_probe", training_images), ("development", 3*plan["development_groups"])):
         if (summary[field]["images"] != expected or len(summary[field]["cases"]) != expected or
                 len({row["sample_id"] for row in summary[field]["cases"]}) != expected):
             raise ValueError("saved probe count differs from declared population")
@@ -210,7 +219,8 @@ def main(argv=None):
     if (evidence["status"] != expected or evidence["steps"] != summary["steps"] or
             evidence["source_catalogue_sha256"] != plan["catalogue_sha256"] or evidence["weights_sha256"] != summary["checkpoint_sha256"] or
             evidence["core_architecture"] != manifest["architecture"] or evidence["component_capacity"] != plan["component_capacity"] or
-            evidence.get("layer_evidence", False) != plan["layer_evidence"]):
+            evidence.get("layer_evidence", False) != plan["layer_evidence"] or
+            evidence.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1")):
         raise ValueError("curated status/step differs")
     require_controller_source(controller_sha)
     result = {"status": "segment_verified", "training_status": summary["status"], "global_steps": summary["steps"],
@@ -220,6 +230,7 @@ def main(argv=None):
               "core_architecture": manifest["architecture"], "component_capacity": plan["component_capacity"],
               "model_kind": summary["model_kind"], "verified_probe_images": probes,
               "layer_evidence": plan["layer_evidence"],
+              "curriculum": plan.get("curriculum", "stream-v1"),
               "next_resume_from": str(run) if summary["steps"] < args.target_steps else None,
               "controller_sha256": controller_sha,
               "scope": "One bounded training segment and replayed explicit-status evidence; not full goal, adequate convergence or model quality."}

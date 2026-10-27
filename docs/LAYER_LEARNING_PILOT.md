@@ -67,7 +67,7 @@ recipe/raw-case/aggregate audit at79,507,456B under128MiB. All owned processes
 were verified gone; native receipts and raw sources are preserved with the scope.
 
 Continue the separate original larger4096-update baseline from its original
-archive; its verified position is2688/4096. Do not replace it with this pilot.
+archive; its verified position is2816/4096. Do not replace it with this pilot.
 The next learning investigation should use an explicit all-class positive-control
 fit and distinguish geometry, observed-piece localization and false absence.
 Keep ordinary inference free of supplied truth and require joint exact-state

@@ -46,9 +46,12 @@ def arguments(argv=None):
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--component-capacity", type=int, default=0)
     parser.add_argument("--layer-evidence", action="store_true")
+    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1"), default="stream-v1")
     args = parser.parse_args(argv)
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint gate capacity must cover renderer10 slots and stay<=64;0 keeps M2")
+    if args.curriculum == "all-class-fit-v1" and args.component_capacity:
+        parser.error("all-class fit is capacity0 only")
     return args
 
 
@@ -68,6 +71,8 @@ def main():
                   "--development-groups", "3", "--evaluate-every", "3", "--checkpoint-every", "3"]
         if args.layer_evidence:
             worker += ["--layer-evidence"]
+        if args.curriculum != "stream-v1":
+            worker += ["--curriculum", args.curriculum]
         if profile:
             worker += ["--profile-square"]
         else:
@@ -92,7 +97,8 @@ def main():
         if (summary["status"] != ("complete" if expected == 0 else "step_partial") or
                 not summary["checkpoint_round_trip_exact"] or summary["component_capacity"] != args.component_capacity or
                 summary["config"]["component_capacity"] != args.component_capacity or
-                summary["config"].get("layer_evidence", False) is not args.layer_evidence):
+                summary["config"].get("layer_evidence", False) is not args.layer_evidence or
+                summary.get("curriculum", "stream-v1") != args.curriculum):
             raise ValueError("gate completion/partial/parity contract differs")
         if not Path(summary["driver_source_path"]).resolve().is_relative_to(run/"code"):
             raise ValueError("trainer main source path is not archived")
@@ -164,6 +170,7 @@ def main():
     proof = {"status": "passed", "source_catalogue_sha256": catalogue,
              "architecture": inference_record["architecture"], "component_capacity": args.component_capacity,
              "config": runs["continuous"]["config"],
+             "curriculum": args.curriculum,
              "updates": {name: summary["updates_this_run"] for name, summary in runs.items()},
              "partial_status": runs["partial"]["status"], "global_steps": 6,
              "exact_data_ledger": True, "exact_loss_terms_gradient_curve": True,

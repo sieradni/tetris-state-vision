@@ -145,3 +145,16 @@ Original2816 terminal; shared root helpers can now be changed for new frozen
 policy after this sampler-only scope. Do not mislabel these5 as whole integration.
 Sampler curator launcher5152, exact command verified.
 Adapter source curation PASS,28 hashes rechecked, all known PIDs gone, raw receipts/logs copied. Next core integration uses this unchanged adapter plus pure32-case fit criterion; source archive must include all3 new scripts. Shared original s7 is terminal.
+
+Candidate frozen fit integration is implemented, UNADMITTED: train/admission/
+recovery/config/summary/controller/curators carry explicit curriculum; source
+archive now includes3 new scripts. Fit reports balanced class/status/semantic
+metrics and predeclared32-case criterion; existing stream math/recipes preserved.
+No neural source math changes. Historical original121 archives remain authoritative.
+NEXT six selected metadata groups in runs/fit-protocol-plan-r1.json (42 cases),
+each expected<110MiB,128MiB/30s,finite exact test-file selection, nativeguards.
+Receipts/logs runs/STEM.json/.log/.stderr.log from that exact plan. These are
+small metadata jobs; combined six ceilings768MiB, no model Job overlaps. Freeze
+selected source while gates run. Then source-pin receipts; fresh native warm/
+continuous6==3+3 fit gate and current-default numerical probe remain required
+before any long fit. Full objective/32-case fit criterion unchanged.

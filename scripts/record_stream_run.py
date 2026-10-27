@@ -39,6 +39,13 @@ def checkpoint_architecture(summary, manifest):
     declared = summary.get("component_capacity", 0)
     if type(capacity) is not int or not 0 <= capacity <= 64 or type(declared) is not int or declared != capacity:
         raise ValueError("checkpoint component capacity identity differs")
+    if "curriculum" in summary:
+        curriculum = summary["curriculum"]
+        if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
+                curriculum == "all-class-fit-v1" and capacity or
+                summary.get("recovery_contract", {}).get("curriculum") != curriculum or
+                manifest.get("metadata", {}).get("recovery_contract", {}).get("curriculum") != curriculum):
+            raise ValueError("checkpoint curriculum identity differs")
     expected = "TetrisStateNet-M3" if capacity else "TetrisStateNet-M2"
     if manifest["architecture"] != expected or manifest["config"] != summary["config"]:
         raise ValueError("checkpoint architecture/configuration identity differs")
@@ -72,12 +79,25 @@ def main():
     archive = verify_source(code, summary["catalogue_sha256"])
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
+    curriculum = summary.get("curriculum", "stream-v1")
+    if type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1"):
+        raise ValueError("unsupported recorded curriculum")
+    new_curriculum_contract = "curriculum" in summary
+    if new_curriculum_contract:
+        from m2_curriculum import probe_specs, sample_for, training_case
+        from m2_fit_contract import summarize_fit
+        if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
+               for function in (probe_specs, sample_for, training_case, summarize_fit)):
+            raise ValueError("curriculum implementation is not frozen")
+        if summary["recovery_contract"].get("curriculum") != curriculum:
+            raise ValueError("curriculum recovery identity differs")
     if summary.get("resource_profile_version", 0) >= 2 and summary["profile_square"]:
         from train_m2_stream import validate_admission
         validate_admission(summary, job, catalogue=archive["catalogue_sha256"],
                            model=summary["model_kind"], config=summary["config"],
                            ceiling=summary["job_ceiling_bytes"], development_groups=summary["development_groups"],
-                           supervisor_sha=archive["files"]["scripts/run_bounded.py"])
+                           supervisor_sha=archive["files"]["scripts/run_bounded.py"],
+                           **({"curriculum": curriculum} if new_curriculum_contract else {}))
     from PIL import Image
     from m2_stream_data import sample_case
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
@@ -162,11 +182,17 @@ def main():
     rows = [json.loads(line) for line in ledger.read_text().splitlines()]
     if [row["step"] for row in rows] != list(range(1, summary["steps"]+1)):
         raise ValueError("stream ledger incomplete")
+    if new_curriculum_contract and len({row["group_id"] for row in rows}) != summary["fresh_parent_groups"]:
+        raise ValueError("distinct training ancestry count differs")
     for row in rows:
         if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
             raise ValueError("stream capture policy differs from joint model contract")
-        extra = {"final_capture": True} if row.get("final_capture") else {}
-        replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
+        if new_curriculum_contract:
+            replay = training_case(row["step"], summary["arguments"]["seed"], curriculum=curriculum,
+                                   component_capacity=summary.get("component_capacity", 0), profile_square=summary["profile_square"])
+        else:
+            extra = {"final_capture": True} if row.get("final_capture") else {}
+            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
         if {key: value for key, value in row.items() if key != "step"} != json.loads(json.dumps(replay.record)):
             raise ValueError("stream source does not reproduce the recorded pixels/labels/recipe")
     curve = [json.loads(line) for line in (run/"curve.jsonl").read_text().splitlines()]
@@ -174,12 +200,22 @@ def main():
         raise ValueError("optimizer steps and source ledger differ")
     probe_images = 0
     for split in ("training", "development"):
-        for line in (run/(split+"-probe.jsonl")).read_text().splitlines():
+        lines = (run/(split+"-probe.jsonl")).read_text().splitlines()
+        if new_curriculum_contract:
+            specs = probe_specs(split, 3 if split == "training" else summary["development_groups"], curriculum)
+            if len(lines) != len(specs):
+                raise ValueError("declared probe population differs")
+        for index, line in enumerate(lines):
             row = json.loads(line)
             if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
                 raise ValueError("probe capture policy differs from joint model contract")
-            extra = {"final_capture": True} if row.get("final_capture") else {}
-            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], **extra)
+            if new_curriculum_contract:
+                group, view = specs[index]
+                replay = sample_for(group, view, split, summary["arguments"]["seed"], curriculum=curriculum,
+                                    component_capacity=summary.get("component_capacity", 0))
+            else:
+                extra = {"final_capture": True} if row.get("final_capture") else {}
+                replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], **extra)
             if json.loads(json.dumps(replay.record)) != row:
                 raise ValueError("probe metadata/pixels changed")
             folder = run/(split+"-probe")
@@ -189,6 +225,15 @@ def main():
             if digest(folder/(row["sample_id"]+".json")) != row["state_sha256"]:
                 raise ValueError("saved probe annotation changed")
             probe_images += 1
+    if curriculum == "all-class-fit-v1":
+        for field in ("initial_training_probe", "final_training_probe"):
+            score = summary[field]
+            actual_fit = summarize_fit(score["cases"])
+            if (actual_fit != score.get("fit") or score["images"] != 32 or score["ancestry_groups"] != 16 or
+                    score["exact_locked_boards"] != actual_fit["exact_locked_boards"] or
+                    score["exact_known_layers"] != actual_fit["exact_known_layers"] or score["known_layers"] != 64 or
+                    score["mean_geometry_error_cells"] != actual_fit["mean_geometry_error_cells"]):
+                raise ValueError("fit aggregates differ from32 declared cases")
     evidence = ROOT/"docs/evidence"/args.name
     evidence.mkdir(exist_ok=False)
     for name in ("summary.json", "progress.json", "training.jsonl", "curve.jsonl", "evaluations.jsonl", "training-probe.jsonl", "development-probe.jsonl"):
@@ -229,7 +274,8 @@ def main():
              "updates_this_run": summary.get("updates_this_run", summary["steps"]), "resume_parent": resume_parent,
              "curator_sha256": digest(Path(__file__)), "core_architecture": architecture,
              "component_capacity": summary["config"].get("component_capacity", 0),
-             "layer_evidence": summary["config"].get("layer_evidence", False)}
+             "layer_evidence": summary["config"].get("layer_evidence", False), "curriculum": curriculum,
+             "distinct_training_ancestries": len({row["group_id"] for row in rows})}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": scope["status"], "run_status": summary["status"], "steps": summary["steps"],
                       "requested_steps": summary["requested_steps"], "replayed_samples": len(rows),
