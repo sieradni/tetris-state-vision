@@ -1,5 +1,37 @@
 # All-class positive-control fit
 
+The fixed 1,024-update study is complete, but its fit criterion fails. Independent
+ordinary replay confirms all 32 locked boards, all 128 semantic labels and
+0.211-cell mean geometry error. Only 20/64 role labels are exact: 12/56 visible
+pieces and all eight absences. Every observed column, row and equivalent rotation
+is correct; wrong piece types account for the remaining 44 role errors.
+
+Each role predicts Z on 14 images, J on eight, L on six and absence on four.
+I/O/T/S are never predicted. For each role, Z/J/L have two correct views each;
+the other four visible classes have none. Development remains 2/9 exact boards
+(the two empty boards), 0/18 exact roles and 4.169-cell geometry error across
+only three ancestries. This establishes a failed memorization gate, not a
+generalization result or a release model.
+
+| Saved update | Exact boards | Exact visible roles | Exact absences | Correct semantics | Geometry, cells |
+|---|---:|---:|---:|---:|---:|
+| 128 | 28/32 | 0/56 | 8/8 | 128/128 | 0.216 |
+| 640 | 32/32 | 4/56 | 4/8 | 128/128 | 0.148 |
+| 1,024 | 32/32 | 12/56 | 8/8 | 128/128 | 0.211 |
+
+Final weights: 1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6;
+unchanged neural catalogue6147a558. Final ordinary replay: 41 forwards in32.816s,
+424,235,008B under640MiB. Source/recipe/snapshot/native proof is in
+docs/evidence/m2-stream-allclass1024-s3/; raw class/pose errors and their independent
+collector are in docs/evidence/m2-stream-allclass1024-errors-r1/.
+
+Next selected lever: the separate, conditional order-only comparison in
+INTERLEAVED_FIT.md. The original ordered run is finished and will not be extended.
+Its final row separation removes the earlier need to change role representations
+before checking whether class-blocked training causes recency bias. That cause
+remains unproven. A new ordering requires its own frozen identity, checks,
+resource/recovery admission and fresh initialization before any training.
+
 The completed layer pilot shows class collapse despite supported class exposure.
 This next diagnostic separates basic training-set fit from varied-layout learning.
 It does not select a release model or replace the original 4096-update baseline.

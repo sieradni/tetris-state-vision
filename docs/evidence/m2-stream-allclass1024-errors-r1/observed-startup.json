@@ -1,0 +1,5 @@
+{
+  "ProcessId": 10804,
+  "ParentProcessId": 10636,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 180 --work-items 41 --receipt runs/m2-stream-allclass1024-errors-r1-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-allclass1024-s3 --output runs/m2-stream-allclass1024-errors-r1"
+}

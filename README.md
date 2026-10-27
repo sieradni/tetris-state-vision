@@ -9,9 +9,10 @@ The [latest matched learning pilot](docs/LAYER_LEARNING_PILOT.md) completed two
 768-update studies and a192-image disjoint-ancestry diagnostic. The optional
 layer-evidence mechanism did not pass the joint learning gate and remains off
 by default. Resource/recovery checks passed; real-image accuracy remains untested.
-The current [balanced32-image fit](docs/ALL_CLASS_FIT.md) has640/1,024 updates
-verified. Independent replay finds32/32 exact locked boards but4/56 observed
-piece poses; the finite study is still in progress and has not passed its fit gate.
+The [balanced32-image fit](docs/ALL_CLASS_FIT.md) completed1,024 updates and fails
+its fit gate. Independent replay finds32/32 exact locked boards but12/56 correct
+visible piece labels; positions and rotations are correct, but types collapse
+to Z/J/L. A separate order-only comparison is being prepared.
 
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
 dependencies and generate three ancestry groups (15 images). Each receipt/output

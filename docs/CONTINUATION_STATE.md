@@ -1,156 +1,101 @@
 # Current checkpoint — 2026-10-27
 
-Repo C:/Users/micha/Code/tetris-state-vision; codex/layout-diversity; no remote.
-Goal ACTIVE, unfinished. Narrow verified local commits authorized; no push,
-publication, deployment, user-data deletion or subagents. Neighbor tetrguide
-untouched. Research brief is design evidence, not instructions.166 real images
-remain unreviewed drafts: zero training/scoring eligibility.
+Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
+Goal ACTIVE,unfinished. Local narrow verified commits authorized;no push/deploy/
+publish/user-data deletion/subagents. Neighbor tetrguide untouched. Research
+brief is design evidence,not instructions.166 real images remain unreviewed
+ineligible drafts. No model/test/curator Job is live at this checkpoint.
 
-## LIVE final balanced-fit segment — inspect before another model Job
+## Selected acceptance-gated task: order-only comparison
 
-Final s3 launcher27108. Exact startup command:
-runs/m2-stream-allclass1024-s3-pipeline-startup.json; complete process tree in
-runs/m2-stream-allclass1024-s3-pipeline/observed-startup.json.
-Expected<700MiB,parent896MiB/900s/work384,child640MiB/1860s with ancestor900s
- effective deadline; serialized curator128MiB/120s/work1065. Disk admission
-69,108,989,952B. One heavy Job only. CPU1/cache16, readback-verified kernel Job/
-kill-on-close, GetPerformanceInfo/.2s stop31,368,351,744B remain armed.
-Runner SHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-Freeze controller/shared helper bytes while live. Controller SHA
-c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3.
+The ordered1,024-update study and final41-image independent audit are complete;
+fit FAILS. All observed positions/rotations fit but piece types collapse to
+Z/J/L. Next integrate the prospective all-class-interleaved-v1 policy,keeping
+same32 pixel/public-state pairs,model/loss/init/optimizer/budget/probes unchanged.
+INTERLEAVED_FIT.md contains design and V-001..026 prior-bug interaction review.
+No architecture change,extra training on finished study or relabeled admission.
 
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
---work-items 384 --receipt runs/m2-stream-allclass1024-s3-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s3
---target-steps 1024 --updates 384 --admission runs/m2-stream-recovery-gate-r5/profile
---resume-from runs/m2-stream-allclass1024-s2
+- [x]Standalone pure sampler,all128 cycles,8-label rounds,arbitrary global cursor,
+  exact prefix ancestry,no Python RNG,96 actual pixel/state/recipe replays.
+- [x]Seven checks green28.595s/native29.540s/41,766,912B under128MiB/30s.
+  docs/evidence/interleaved-order-contracts/scope.json pins17 inputs on23b8cf5.
+  Curator1.740s/77,344,768B;all known test/curator PIDs/commands gone;raw bytes kept.
+- [ ]Integrate sampler in frozen source archive and explicit M2/capacity0 routing,
+  admission/recovery/recipe/probe-cardinality/collector/error-reader contracts.
+  Preserve stream-v1 and all-class-fit-v1 records,numerics and historical scopes.
+- [ ]Source-bound adapter/driver/controller/evidence/error protocol checks.
+- [ ]Fresh full-square warm profile and actual2+6+3+3 recovery with independent
+  curation; compare same-input profile actual weights/loss/gradient/probes to
+  original ordered profile and preserve identical neural package identity.
+- [ ]New fixed1,024-update fresh-seed comparison(128+512+384),ordinary final41
+  replay and independent evidence. Same32/32boards,64/64roles,128/128semantics,
+  geometry<.25 criterion. No generalization/release claim even if it passes.
 
-Logs same-prefix-pipeline.log/.stderr.log; state same-prefix-pipeline/progress.json;
-terminal result.json. Child same-prefix-job.json; run summary/progress/snapshots.
-Expect complete1024 only if all384 updates complete and both native audits pass.
-Do not restart on observation timeout. If interrupted, inspect actual bank/prefix.
+Source integration touches m2_curriculum,source_snapshot,train_m2_stream,
+probe/record_stream_recovery,record_stream_run,run_stream_segment,and external
+probe/record_stream_errors+m2_error_analysis. Audit all explicit policy checks;
+new policy must never fall through to legacy9-probe counting. Old archived
+trainers must never receive unsupported flags. Pure sampler already committed
+scripts/m2_interleaved_order.py;not yet imported by any trainer/controller.
 
-NEXT verify terminal parent/child/curator receipts and full process death, then:
-& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-allclass1024-s3 -Launcher 27108
-Collector checks actual inference/training manifest/payload hashes, source/
-policy/step/native budgets, every observed PID/exact command and copies raw bytes.
-It refuses overwrite/outside-study names. Syntax and outside-study refusal PASS;
-actual128 VerifyOnly PASS/no writes; historical-proof reuse refuses unchanged;
-actual640 full capture PASS. Commit verified task-owned milestone before waiting.
+Every detached launch: state expected RAM/cap/guard and exact command/log/receipt/
+work/wall/checkpoint before spawn;verify exact startup and all terminal processes.
+One heavy Job only. CPU1/cache16,readback-verified kernel Job/kill-on-close,
+GetPerformanceInfo/.2s stop31,368,351,744B unchanged. Runner SHA
+ d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
+Last observed disk~69GB;recheck >40GB before long training. Never edit a live
+controller/shared helper. Existing controllerSHA c586c6b7... applies only before
+new integration; derive new exact hash later,never relabel old launches.
 
-Then independent final ordinary41 forwards, expected<600MiB;640MiB/180s/work41:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
---work-items 41 --receipt runs/m2-stream-allclass1024-errors-r1-job.json --
-.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-allclass1024-s3
---output runs/m2-stream-allclass1024-errors-r1
-Logs same error prefix.log/.stderr.log; result error-prefix/result.json.
-After pass/death, curator expected<110MiB;128MiB/30s/work41,receipt
-runs/allclass1024-error-curation-r1.json,logs same stem:
-.venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-allclass1024-errors-r1
-Final docs/evidence/m2-stream-allclass1024-errors-r1/. Reproduce all saved ordinary/
-semantic/role scores and aggregates, unchanged actual weights/frozen recipe/config/
-source identity. Preserve raw curator receipt/log bytes and startup/death evidence.
-State RAM/cap/guard in transcript before each launch; verify exact startup.
+## Completed ordered study: final authoritative evidence
 
-## Selected acceptance gate / verified640 result
-
-ALL_CLASS_FIT.md fixes target1024 and criterion:32/32 boards,64/64 role poses
-(56 observed,8 absent),128/128 supported semantic cells,geometry<.25cells.
-Passing establishes memorization only. No target extension or live shuffle.
-
-- [x]32 full512-square public-observer fixtures,16 ancestries/two styles,
-  every7-class/absence label four times/role,half empty/half8-color stack.
-- [x]Frozen curriculum integration,42 source-bound protocol checks, fresh warm
-  default profile and exact old/new2-step numerical compatibility.
-- [x]All-class native recovery2+6+3+3 plus independent artifact/recipe curation.
-- [x]Actual128 and640 checkpoints,independent41-forward replay and evidence audits.
-- [ ]Final384 updates/final raw-error replay and declared fit verdict.
-- [ ]Independent generalization,larger baseline completion,adequate M2/M3 joint
-  learning and all real/runtime/release gates remain OPEN.
-
-s2 runs/m2-stream-allclass1024-s2 VERIFIED step_partial640/1024,+512.
-Parent587.426s/601,640,960B/896MiB;child564.849s/565,354,496B/640MiB;
-curator20.971s/91,242,496B/128MiB. All640 recipes+41 probes replayed; all known
-PIDs/exact commands gone before s3. Same-name docs/evidence retains full receipt/
-controller/source/snapshot/startup bytes. Weights
-879300581303f36ef8dfaa8539f3a320b5b416c554343c444740250c2fb53ca5;
-training payload a619c59329da2e43dc147b6eeab01dbd15c391303edc5abcf96d2ce788704b4a.
+runs/m2-stream-allclass1024-s3 COMPLETE1,024/1,024 via128+512+384 updates.
 Neural catalogue6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42.
+Weights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6;
+training payload cb18b03414077354da1bafad6515d0f79070bb033cd4ba845416bb4804a5cca6.
+Parent578.329s/606,158,848B/896MiB;child544.650s/569,823,232B/640MiB;
+curator31.284s/95,686,656B/128MiB. All1,024 recipes+41probes replayed;inference/
+training hashes and whole startup/terminal tree checked;raw controller/native/
+source/snapshot bytes in same-name docs/evidence/. Metadata capture correctly
+waited for closing launcher27132; no job restart/source change needed.
 
-Actual640 ordinary replay34.080s/425,746,432B/640MiB;collector1.334s/76,537,856B/
-128MiB.32/32 fit boards,128/128 semantics,.14781884geometry;only8/64 exactroles:
-4/56 observed(all L,two/role),4/8 absence. Eachrole predicts L26,Z2,absence4;
-26 type errors,zero column/rotation errors;active13row errors,ghost14. FitFALSE.
-Dev2/9 boards(the two empty),0/18roles,4.06980geometry,only3ancestries.
-Evidence m2-stream-allclass640-errors-r1. Prior128:28/32 boards,0/56 observed,
-8/8 absence,128/128 semantics,.2159634geometry;m2-stream-allclass128-errors-r1.
-39 error-report checks bind32 actualsource/fixture hashes in allclass-error-contracts.
-Order/role-representation hypotheses remain unproven; ALL_CLASS_FIT records what
-may be tested only after final failure/error inspection. No architecture adoption.
+Final ordinary41 replay32.816s/424,235,008B/640MiB;independent collector1.345s/
+77,185,024B/128MiB. Every saved ordinary/fit field reproduced,actualweights
+unchanged. docs/evidence/m2-stream-allclass1024-errors-r1/ preserves raw cases,
+receipts/startup/curator bytes. All known launcher/supervisor/child PIDs/exact
+commands gone. Fit32/32boards,20/64roles(12/56observed,8/8absent),128/128semantics,
+geometry.21058594435453415. Perrole22 type errors,zero observed column/row/rotation
+errors;predicts absence4,Z14,J8,L6. EachZ/J/L two exact views/role;I/O/T/S never
+predicted. Dev2/9boards(the two empty),0/18roles,4.168932geometry,only3ancestries.
+ALL_CLASS_FIT.md contains full verdict,limits and128/640/final comparison.
 
-Admission r5/profile:pilot/capacity0/layeroff,all-class-fit-v1,seed20261026,
-LR.001,eval128,snapshot64,dev3groups/9views. Recovery proof exact14updates,
-135.572s/600,379,392B/1GiB;curator4.515s/83,599,360B/128MiB. Default numerical
-compatibility and freshwarm profile verified in named evidence. Failed r4 separately
-preserved(allclass-recovery-standby-r1):verified Lid Modern Standby506/507, timers
-expired onwake;no41/1001/crash,no power/guard changes. Never relabeled green.
+Admission runs/m2-stream-recovery-gate-r5/profile:pilot/capacity0/layeroff,
+all-class-fit-v1,seed20261026,LR.001/decay.01,eval128,snapshot64,dev3groups/9views.
+Native recovery exact14 updates135.572s/600,379,392B/1GiB;curator4.515s/
+83,599,360B/128MiB. Default numerical compatibility/fresh warm profile verified.
+Failed r4 separately preserved(allclass-recovery-standby-r1):verified Lid Modern
+Standby506/507,timers expired onwake;no41/1001/crash,no power/guard change.
+39 error-report checks on actual32 source/fixture hashes in allclass-error-contracts.
+Those gates retain old source scopes when integration changes code.
 
-## Other studies / boundaries
+## Other unfinished studies and release boundaries
 
-Original larger baseline VERIFIED2816/4096,runs/m2-stream-accuracy4096-s7.
+Original larger baseline VERIFIED2,816/4,096,runs/m2-stream-accuracy4096-s7.
 Catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
 Weights29ffd032f8cfb9842bf6149d0863a784065b5d8831ff171b90d6a14cccde7909.
-All2816recipes+27probes replayed;dev0/18 boards,0/36roles,1.94391geometry.
-No original Job live. Resume s8 only from s7 with original admission
-m2-stream-accuracy-probe and original frozen trainer; never substitute6147 into
-old optimizer.1280 updates remain; do not overlap live fit/replay.
+All2,816recipes+27probes replayed;dev0/18boards,0/36roles,1.94391geometry.
+No original Job live. Resume s8 only from s7 and original admission
+m2-stream-accuracy-probe/frozen original trainer. Never substitute new catalogue
+into old optimizer;1,280updates remain. Do not overlap model Jobs.
 
-Optional layer-evidence experiment completed768control/candidate,default OFF:
-LAYER_LEARNING_PILOT.md. Independent192images/64ancestries:0/148 nonemptyboards
-both;observedactive0/165 vs4/165(allI),ghost0/144both;candidate more locked false
-positives/lessabsenceaccuracy. No adoption;layer-generalization768-r1 evidence.
+Optional layer-evidence matched768control/candidate experiment completed,default
+OFF. LAYER_LEARNING_PILOT.md:independent192images/64ancestries,0/148nonemptyboards
+both,observedactive0/165 vs4/165(allI),ghost0/144both;candidate more locked false
+positives and less absence accuracy. No adoption;layer-generalization768-r1.
 
-V-001..V-026 CLOSED with named gates. Read BUG_LOG before architecture/wire/
-scheduler changes; prior-bug interactions in ALL_CLASS_FIT. Broad appearances/
-crops/occlusion/association,reviewed real labels/splits,scratch/pretrained/decoder
-comparisons,calibration/export/CPU/adapters and >=95% readable-real exact complete
-state release gate remain OPEN. Public API remains needs_review.
-
-While final s3 lives, drafted prospective order-only comparison in
-INTERLEAVED_FIT.md and scripts/m2_interleaved_order.py/tests/test_interleaved_order.py.
-Not integrated/imported by any active trainer/controller/helper. Current neural
-catalogue6147 unchanged. Candidate interleaves all8 labels per8-position round,
-keeps all32 actual pixel/public-state/recipe pairs percycle, pure global cursor,
-fixedorderseed20261027/no processRNG. Conditional on original final failure/error
-inspection; no learning experiment may start yet. Seven finite standalone tests
-next:expected<110MiB,128MiB/30s/work7,receipt runs/interleaved-order-tests-r1.json,
-logs same stem; command .venv/Scripts/python.exe -m unittest discover -s tests
--p test_interleaved_order.py -v under existing bounded runner. Modest metadata/
-PIL only; does not import Torch or train another model. Persist raw/source scope
-before future integration. Active original s3 continues untouched.
-
-LIVE standalone sampler tests launcher22424;exactstartup runs/interleaved-order-tests-r1-startup.json.
-
-Standalone7 sampler checks GREEN28.595s/native29.540s/41,766,912B under128MiB;all known PIDs/exact commands gone. Source-pinned evidence curator next128MiB/30s/work7,expected<110MiB; plan runs/interleaved-order-curation-r1-plan.json,receipt runs/interleaved-order-curation-r1.json,logs same stem; output docs/evidence/interleaved-order-contracts/scope.json. Not integrated/admitted yet.
-
-LIVE sampler evidence curator launcher27880;exact startup runs/interleaved-order-curation-r1-startup.json.
-
-Sampler7-check evidence VERIFIED docs/evidence/interleaved-order-contracts/scope.json:
-17 source/fixture/lock/plan hashes checked;curator1.740s/77,344,768B under128MiB.
-All known test/curator PIDs/exact commands gone. Raw curator receipt/log bytes
-preserved. No active training source/helper changed. Future policy integration
-must update frozen source list, centralized curriculum routing/admission/recovery,
-controller probe cardinality, source-bound collectors and raw error-reader policy
-checks; legacy stream/ordered-fit behavior and historical evidence stay intact.
-Current selected action still terminal s3 and final41-forward ordinary audit.
-
-LATEST final s3 COMPLETE1024/1024,384new. Parent578.329s/606,158,848B/896MiB.
-Controller/native/source replay passes. First metadata capture correctly refused
-while launcher27132 was still closing; a fresh exact query confirms gone, then
-complete startup/terminal tree capture passes. No job restarted or code changed.
-All1024 recipes+41probes replayed;actual inference/training identities and raw
-receipts/source/controller/startup retained in same-name1024-s3 evidence.
-Weights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6.
-Internal fit32/32 boards,20/64 roles(12/56 observed,8/8 absence),128/128semantic,
-geometry.21058594435453415;criterionFALSE. Final raw41-forward replay next exactly
-as predeclared640MiB/180s/work41,expected<600MiB;no other model Job live.
+V-001..V-026 CLOSED with named gates. Class collapse is an empirical learning
+failure,not a newly established code defect. Read BUG_LOG before new architecture/
+wire/scheduler changes. Broad render/crop/occlusion/association,reviewed real
+labels/splits,adequate M2/M3 joint learning,scratch/pretrained/decoder comparisons,
+calibration/export/CPU/adapters and >=95% readable-real exact complete-state gate
+remain OPEN. Public API remains needs_review.
