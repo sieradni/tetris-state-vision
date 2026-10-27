@@ -133,3 +133,4 @@ pure curators, each expected<110MiB,128MiB/30s,native guards:
    Logs runs/positive-control-data-curation-r1.log/.stderr.log; final
    docs/evidence/positive-control-fixtures-r1/scope.json. Replays/copies all32 PNGs
    and public states with byte/file/pixel/source/coverage hashes. No training.
+Test curator launcher25212, exact command verified.
