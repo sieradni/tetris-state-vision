@@ -19,6 +19,13 @@ configuration separately passes its two full-square warm/reload profile in
 docs/evidence/m3-stream-large-profile-r1/scope.json. Neither finite check proves
 long varied-shape stability or complete-state learning.
 
+The optional dense layer-evidence pilot passes the same native gate in
+`docs/evidence/m2-stream-recovery-gate-r3/`: cataloguef095d352..., capacity0,
+layer_evidence=true. The six-update uninterrupted and3+3 trajectories agree
+exactly on data, loss terms/gradients, evaluations, model/Adam/RNG and modes.
+Peak aggregate593,793,024B under1GiB. This is a finite recovery result; learning
+and long varied-shape memory remain separate gates.
+
 The verified primitive's recovery boundary contains model tensors, complete AdamW state,
 Torch CPU randomness, module training modes and the completed global step.
 The caller supplies the exact source catalogue and data/training recipe as a

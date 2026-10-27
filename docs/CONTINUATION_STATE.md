@@ -129,3 +129,18 @@ NEXT curator expected<96MiB,128MiB/30s/work89 (17 rows+72 saved images):
 .venv/Scripts/python.exe scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r3
 Logs runs/layer-recovery-curation-r1.log/.stderr.log. Native guards unchanged.
 Curator launcher11744 exact command verified.
+Recovery curator PASS1.383s/82,821,120B,17 replayed training rows+72 saved probes;
+all3 curator PIDs gone, raw byte-exact receipt/logs copied to named evidence.
+NEXT matched true learning segment, expected<700MiB aggregate, native guards:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 128 --receipt runs/m2-stream-layer-evidence768-s1-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-layer-evidence768-s1 --target-steps 768 --updates 128
+--admission runs/m2-stream-layer-pilot-profile-r1
+Logs same-prefix-pipeline.log/.stderr.log; state same-prefix-pipeline/progress.json,
+result.json; training same-prefix/progress.json and summary.json; child same-prefix-job.json.
+Expected terminal step_partial128/768, not study completion. Child640MiB/128updates;
+ancestor420s deadline, native pressure/CPU1 guards; curator128MiB/120s.
+Then matching false study with same command, replace layer-evidence768 by
+layer-control768 and admission by runs/m2-stream-layer-control-profile-r1.
+Design/limits/comparison denominators predeclared in LAYER_EVIDENCE_EXPERIMENT.md.
