@@ -20,7 +20,9 @@ ORIGINAL source121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
 Controller11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4;
 native supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-No current trainer/model edits yet. Later s6 must execute s5 archive and preserve
+No current trainer/model edits yet. Entire BUG_LOG has now been read;
+LAYER_EVIDENCE_EXPERIMENT.md records exact optional-path design,all prior bug
+interactions and acceptance-gated implementation/testing/resource/learning todo. Later s6 must execute s5 archive and preserve
 fixed4096 target. At most512new ->2688;never substitute current optional M3 math.
 
 Selected next task: design/implement an OPTIONAL dense cell-evidence path for
