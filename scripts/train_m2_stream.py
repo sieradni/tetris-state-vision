@@ -25,7 +25,7 @@ def arguments(argv=None):
     parser.add_argument("--component-capacity", type=int, default=0,
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
-    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1"), default="stream-v1")
+    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
@@ -42,7 +42,7 @@ def arguments(argv=None):
         parser.error("steps 1..4096 and finite nonnegative seed required")
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
-    if args.curriculum == "all-class-fit-v1" and args.component_capacity:
+    if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
@@ -58,7 +58,7 @@ def arguments(argv=None):
 
 
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1"):
-    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
+    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
     if "curriculum" in summary and (summary.get("arguments", {}).get("curriculum") != curriculum or
@@ -137,7 +137,7 @@ def main(argv=None, *, _archive=None, _started=None):
     os.environ.update(NATIVE_CACHE_LIMITS)
     import torch
     from dataclasses import asdict, replace
-    from m2_curriculum import ALL_CLASS, distinct_training_groups, probe_specs, sample_for, training_case
+    from m2_curriculum import FIT_POLICIES, distinct_training_groups, probe_specs, sample_for, training_case
     from m2_fit_contract import summarize_fit
     from training_snapshot import load_training_snapshot, save_training_snapshot
     from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
@@ -149,6 +149,11 @@ def main(argv=None, *, _archive=None, _started=None):
     if (not Path(model_module.__file__).resolve().is_relative_to(code) or
             any(not Path(function.__code__.co_filename).resolve().is_relative_to(code) for function in (sample_for, training_case, summarize_fit))):
         raise RuntimeError("runtime did not import from the verified source archive")
+    if args.curriculum == "all-class-interleaved-v1":
+        from m2_interleaved_order import distinct_groups, interleaved_spec
+        if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
+               for function in (distinct_groups, interleaved_spec)):
+            raise RuntimeError("interleaved order implementation is not frozen")
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     torch.use_deterministic_algorithms(True)
@@ -208,14 +213,14 @@ def main(argv=None, *, _archive=None, _started=None):
                                  int(final["pose_row"][0, layer].argmax()) == int(target["row"][0, layer]) and
                                  bool(target["rotations"][0, layer, final["pose_rotation"][0, layer].argmax()]))
                     layers_right += int(right)
-                if args.curriculum == ALL_CLASS and split == "training":
+                if args.curriculum in FIT_POLICIES and split == "training":
                     kind = int(target["layer_type"][0, layer])
                     fit_roles[role] = {"known": known, "observed": observed, "exact": right,
                                        "class": (PIECE_NAMES[kind-1] if kind else "absent") if known else "unknown"}
             per_case.append({"sample_id": case.record["sample_id"], "loss": float(loss),
                              "exact_known_layers": layers_right, "known_layers": layers_known,
                              **diagnostic_metrics(output, target)})
-            if args.curriculum == ALL_CLASS and split == "training":
+            if args.curriculum in FIT_POLICIES and split == "training":
                 typed = target["typed"]
                 correct = (output["final"]["semantic"][:, :20].argmax(-1) == target["semantic"]) & typed
                 per_case[-1].update(group_id=case.record["group_id"],
@@ -249,7 +254,7 @@ def main(argv=None, *, _archive=None, _started=None):
             result.update(readable_component_cases=sum(row["components"]["component_state_readable"] for row in per_case),
                           exact_readable_components=sum(row["components"]["exact_readable_components"] is True for row in per_case),
                           supported_components_exact=sum(row["components"]["supported_components_exact"] for row in per_case))
-        if args.curriculum == ALL_CLASS and split == "training":
+        if args.curriculum in FIT_POLICIES and split == "training":
             result["fit"] = summarize_fit(per_case)
         return result
 

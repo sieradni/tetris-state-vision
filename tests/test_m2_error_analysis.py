@@ -47,6 +47,7 @@ class M2ErrorAnalysisTests(unittest.TestCase):
         self.assertEqual(analysis.recipe_strata({"density": "dense", "skin": "no_grid"}), ("dense", "no_grid"))
         base = {"curriculum": "all-class-fit-v1", "split": "fit", "index": 14, "view": 1}
         self.assertEqual(analysis.recipe_strata(base), ("sparse", "no_grid"))
+        self.assertEqual(analysis.recipe_strata({**base, "curriculum": "all-class-interleaved-v1"}), ("sparse", "no_grid"))
         self.assertEqual(analysis.recipe_strata({**base, "index": 15, "view": 0}), ("empty", "clean"))
         for change in ({"curriculum": "other"}, {"index": True}, {"index": 16}, {"view": False}, {"split": "training"}):
             with self.assertRaises(ValueError):

@@ -89,6 +89,9 @@ def main():
     if "curriculum" in summary:
         from m2_curriculum import replay_case
         require_frozen_callables(code, replay_case)
+        if curriculum == "all-class-interleaved-v1":
+            from m2_interleaved_order import distinct_groups, interleaved_spec
+            require_frozen_callables(code, distinct_groups, interleaved_spec)
     if not Path(model_module.__file__).resolve().is_relative_to(code):
         raise ValueError("error probe model/sampler/labels import is not frozen")
     torch.set_num_threads(1)
@@ -113,7 +116,7 @@ def main():
                 raise ValueError("probe ledger byte budget exceeded")
             recipes = [json.loads(line) for line in ledger.read_text().splitlines()]
             expected = {row["sample_id"]: row for row in summary[field]["cases"]}
-            training_limit = 32 if curriculum == "all-class-fit-v1" else 9
+            training_limit = 32 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 9
             if not 1 <= len(recipes) <= (training_limit if split == "training" else 36) or len(recipes) != len(expected):
                 raise ValueError("finite declared probe budget or saved population differs")
             for recipe in recipes:
@@ -142,7 +145,7 @@ def main():
                 known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
                 baseline.update(loss=float(loss), known_layers=len(known_layers),
                                 exact_known_layers=sum(layer["exact"] for layer in known_layers))
-                if curriculum == "all-class-fit-v1" and split == "training":
+                if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and split == "training":
                     baseline.update(group_id=recipe["group_id"], fit_case=fit_metrics_from_diagnostics(diagnostics))
                 if capacity:
                     baseline["components"] = component_metrics(output["final"]["components"], target["components"])[0]
@@ -166,7 +169,7 @@ def main():
         raise ValueError("read-only error probe changed model tensors")
     if sources != {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in source_paths}:
         raise ValueError("diagnostic source changed during execution")
-    totals = summarize(records, max_cases=68 if curriculum == "all-class-fit-v1" else 45)
+    totals = summarize(records, max_cases=68 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 45)
     if capacity:
         for split, values in summarize_components(records).items():
             totals[split]["components"] = values

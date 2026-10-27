@@ -60,6 +60,11 @@ def main():
         if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
                for function in (probe_specs, sample_for, training_case, summarize_fit)):
             raise ValueError("recovery curriculum implementation is not frozen")
+        if curriculum == "all-class-interleaved-v1":
+            from m2_interleaved_order import distinct_groups, interleaved_spec
+            if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
+                   for function in (distinct_groups, interleaved_spec)):
+                raise ValueError("recovery interleaved order implementation is not frozen")
     from m2_stream_data import sample_case
     from PIL import Image
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
@@ -139,7 +144,7 @@ def main():
                 if digest(path.with_suffix(".json")) != row["state_sha256"] or json.loads(json.dumps(replay.record)) != row:
                     raise ValueError("recovery saved probe labels/recipe differ")
                 probe_count += 1
-        if curriculum == "all-class-fit-v1":
+        if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1"):
             for field in ("initial_training_probe", "final_training_probe"):
                 if summarize_fit(summary[field]["cases"]) != summary[field].get("fit"):
                     raise ValueError("recovery fit aggregates differ")

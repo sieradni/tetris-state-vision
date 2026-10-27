@@ -81,8 +81,8 @@ def segment_plan(args):
     capacity = profile["config"].get("component_capacity", 0)
     layer_evidence = profile["config"].get("layer_evidence", False)
     curriculum = profile.get("curriculum", "stream-v1")
-    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
-            curriculum == "all-class-fit-v1" and capacity):
+    if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
+            curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and capacity):
         raise ValueError("supported curriculum/capacity identity required")
     if (capacity != 0 and not 10 <= capacity <= 64 or
             not args.name.startswith("m3-stream-" if capacity else "m2-stream-") or
@@ -167,7 +167,7 @@ def validate_segment(summary, job, manifest, plan):
             summary.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1")):
         raise ValueError("saved segment cursor/configuration/resource identity differs")
     probes = 0
-    training_images = 32 if plan.get("curriculum", "stream-v1") == "all-class-fit-v1" else 9
+    training_images = 32 if plan.get("curriculum", "stream-v1") in ("all-class-fit-v1", "all-class-interleaved-v1") else 9
     for field, expected in (("final_training_probe", training_images), ("development", 3*plan["development_groups"])):
         if (summary[field]["images"] != expected or len(summary[field]["cases"]) != expected or
                 len({row["sample_id"] for row in summary[field]["cases"]}) != expected):

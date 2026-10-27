@@ -5,12 +5,44 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from m2_curriculum import (ALL_CLASS, STREAM, distinct_training_groups, probe_specs,
+from m2_curriculum import (ALL_CLASS, INTERLEAVED, STREAM, distinct_training_groups, probe_specs,
                            replay_case, sample_for, training_case, training_spec, validate_curriculum)
 from m2_stream_data import sample_case
+from m2_interleaved_order import cycle_order, distinct_groups, interleaved_spec
 
 
 class CurriculumTests(unittest.TestCase):
+    def test_interleaved_training_preserves_exact_old_pixels_labels_and_probe_order(self):
+        actual_order = []
+        for step in range(1, 33):
+            index, view = interleaved_spec(step)
+            self.assertEqual(training_spec(step, INTERLEAVED), (index, view))
+            actual = training_case(step, 20, curriculum=INTERLEAVED)
+            original = sample_for(index, view, "training", 20, curriculum=ALL_CLASS)
+            self.assertEqual(actual.frame.image.tobytes(), original.frame.image.tobytes())
+            self.assertEqual(actual.frame.state.to_json(), original.frame.state.to_json())
+            self.assertEqual({key: value for key, value in actual.record.items() if key != "curriculum"},
+                             {key: value for key, value in original.record.items() if key != "curriculum"})
+            self.assertEqual(actual.record["curriculum"], INTERLEAVED)
+            actual_order.append((index, view))
+        self.assertEqual(tuple(actual_order), cycle_order(0))
+        for split in ("training", "development"):
+            self.assertEqual(probe_specs(split, 3, INTERLEAVED), probe_specs(split, 3, ALL_CLASS))
+        for cursor in (0, 1, 7, 8, 9, 31, 32, 33, 640, 1024, 4096):
+            self.assertEqual(distinct_training_groups(cursor, INTERLEAVED), distinct_groups(cursor))
+
+    def test_ordered_and_interleaved_recipes_require_their_declared_policy(self):
+        for policy, other in ((ALL_CLASS, INTERLEAVED), (INTERLEAVED, ALL_CLASS)):
+            case = sample_for(0, 0, "training", 20, curriculum=policy)
+            record = json.loads(json.dumps(case.record))
+            self.assertEqual(replay_case(record, split="training", curriculum=policy).record, case.record)
+            with self.assertRaises(ValueError):
+                replay_case(record, split="training", curriculum=other)
+        self.assertEqual(training_spec(1, INTERLEAVED, profile_square=True), (0, 0))
+        self.assertEqual(training_spec(2, INTERLEAVED, profile_square=True), (0, 0))
+        with self.assertRaises(ValueError):
+            validate_curriculum(INTERLEAVED, 64)
+
     def test_stream_default_keeps_original_records_pixels_and_global_order(self):
         for step in (1, 2, 3, 4, 17):
             group, view = training_spec(step)
@@ -46,7 +78,7 @@ class CurriculumTests(unittest.TestCase):
         self.assertNotEqual(train.record["image_pixels_sha256"], dev.record["image_pixels_sha256"])
 
     def test_complete_record_replay_refuses_policy_or_raster_or_metadata_changes(self):
-        for curriculum in (STREAM, ALL_CLASS):
+        for curriculum in (STREAM, ALL_CLASS, INTERLEAVED):
             for split in ("training", "development"):
                 case = sample_for(0, 0, split, 20, curriculum=curriculum)
                 record = json.loads(json.dumps(case.record))
@@ -62,7 +94,7 @@ class CurriculumTests(unittest.TestCase):
             replay_case(fit, split="development", curriculum=ALL_CLASS)
 
     def test_two_square_steps_and_invalid_policy_capacity_and_cursors(self):
-        for policy in (STREAM, ALL_CLASS):
+        for policy in (STREAM, ALL_CLASS, INTERLEAVED):
             cases = [training_case(step, 20, curriculum=policy, profile_square=True) for step in (1, 2)]
             self.assertEqual(cases[0].frame.image.size, (512, 512))
             self.assertEqual(cases[0].record, cases[1].record)

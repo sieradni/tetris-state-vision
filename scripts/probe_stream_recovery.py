@@ -46,11 +46,11 @@ def arguments(argv=None):
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--component-capacity", type=int, default=0)
     parser.add_argument("--layer-evidence", action="store_true")
-    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1"), default="stream-v1")
+    parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     args = parser.parse_args(argv)
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint gate capacity must cover renderer10 slots and stay<=64;0 keeps M2")
-    if args.curriculum == "all-class-fit-v1" and args.component_capacity:
+    if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is capacity0 only")
     return args
 

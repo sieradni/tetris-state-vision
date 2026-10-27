@@ -41,8 +41,8 @@ def checkpoint_architecture(summary, manifest):
         raise ValueError("checkpoint component capacity identity differs")
     if "curriculum" in summary:
         curriculum = summary["curriculum"]
-        if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1") or
-                curriculum == "all-class-fit-v1" and capacity or
+        if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
+                curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and capacity or
                 summary.get("recovery_contract", {}).get("curriculum") != curriculum or
                 manifest.get("metadata", {}).get("recovery_contract", {}).get("curriculum") != curriculum):
             raise ValueError("checkpoint curriculum identity differs")
@@ -80,7 +80,7 @@ def main():
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     curriculum = summary.get("curriculum", "stream-v1")
-    if type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1"):
+    if type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"):
         raise ValueError("unsupported recorded curriculum")
     new_curriculum_contract = "curriculum" in summary
     if new_curriculum_contract:
@@ -91,6 +91,11 @@ def main():
             raise ValueError("curriculum implementation is not frozen")
         if summary["recovery_contract"].get("curriculum") != curriculum:
             raise ValueError("curriculum recovery identity differs")
+        if curriculum == "all-class-interleaved-v1":
+            from m2_interleaved_order import distinct_groups, interleaved_spec
+            if any(not Path(function.__code__.co_filename).resolve().is_relative_to(code)
+                   for function in (distinct_groups, interleaved_spec)):
+                raise ValueError("interleaved order implementation is not frozen")
     if summary.get("resource_profile_version", 0) >= 2 and summary["profile_square"]:
         from train_m2_stream import validate_admission
         validate_admission(summary, job, catalogue=archive["catalogue_sha256"],
@@ -225,7 +230,7 @@ def main():
             if digest(folder/(row["sample_id"]+".json")) != row["state_sha256"]:
                 raise ValueError("saved probe annotation changed")
             probe_images += 1
-    if curriculum == "all-class-fit-v1":
+    if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1"):
         for field in ("initial_training_probe", "final_training_probe"):
             score = summary[field]
             actual_fit = summarize_fit(score["cases"])

@@ -99,3 +99,23 @@ wire/scheduler changes. Broad render/crop/occlusion/association,reviewed real
 labels/splits,adequate M2/M3 joint learning,scratch/pretrained/decoder comparisons,
 calibration/export/CPU/adapters and >=95% readable-real exact complete-state gate
 remain OPEN. Public API remains needs_review.
+
+Interleaved integration drafted/reviewed after all ordered-model processes and
+final ordinary curator exited. New source archive includes pure order module;
+new policy routes32 fixed probes and same fit metrics,exact global training order,
+actual ancestry counts; capacity0 and distinct admission/recovery identity enforced.
+Frozen callable checks include new order helpers. No src/tetris_vision model,
+loss,target,optimizer math or old sampling rule changed. Legacy report caps kept.
+New/parameterized adversarial checks cover cross-policy admission/snapshot/recipe
+refusal and unchanged old/new pixels/state/probes. Gates not yet claimed green.
+NEXT88 checks,eight finite read-only selections in runs/interleave-protocol-plan-r1.json:
+7 adapter+4 fit+6 driver+5 evidence+20 controller+4 source+3 recoveryparser+39 error.
+Per metadata gate expected<110MiB,128MiB/30s;error expected<350MiB,512MiB/60s;
+expected aggregate<900MiB (sum ceilings1,408MiB),no other model Job. Every command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib PLAN.memory
+--wall-seconds PLAN.wall --work-items PLAN.count --receipt runs/PLAN.stem.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p PLAN.pattern -v
+Logs same PLAN.stem.log/.stderr.log. Startup exact commands and PIDs in
+runs/interleave-protocol-startup-r1.json. Source remains frozen through all gates;
+then verify every result/count/death,source-pin named gates and obtain fresh
+native admissions before any study. Kernel/pressure/pre-import CPU1 unchanged.

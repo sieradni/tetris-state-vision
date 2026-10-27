@@ -39,7 +39,7 @@ def digest(path):
 def validate_report(result, job, summary, manifest, recipes, *, name):
     """Pure metadata gate; neural/pixel replay belongs to the recorded worker."""
     curriculum = summary.get("curriculum", "stream-v1")
-    max_cases = 68 if curriculum == "all-class-fit-v1" else 45
+    max_cases = 68 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 45
     if (result["status"] != "passed" or result.get("diagnostic_format_version") != 2 or
             job["status"] != "passed" or job["exit_code"] != 0 or
             type(result["forwards"]) is not int or not 1 <= result["forwards"] <= max_cases or
@@ -67,7 +67,7 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
         expected = {row["sample_id"]: row for row in summary[field]["cases"]}
         labels = {row["sample_id"]: row for row in recipes[split]}
         cases = [row for row in result["cases"] if row["split"] == split]
-        training_limit = 32 if curriculum == "all-class-fit-v1" else 9
+        training_limit = 32 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 9
         if (not 1 <= len(cases) <= (training_limit if split == "training" else 36) or len(expected) != len(summary[field]["cases"]) or
                 len(labels) != len(recipes[split]) or len(cases) != len(expected) or
                 {row["sample_id"] for row in cases} != set(expected) or set(labels) != set(expected)):
@@ -81,7 +81,7 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
             if ordinary != {key: value for key, value in expected[row["sample_id"]].items() if key != "sample_id"}:
                 raise ValueError("saved ordinary metrics differ")
             diagnostic = row["diagnostics"]
-            if curriculum == "all-class-fit-v1" and split == "training":
+            if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and split == "training":
                 if ordinary.get("fit_case") != fit_metrics_from_diagnostics(diagnostic) or ordinary.get("group_id") != recipe["group_id"]:
                     raise ValueError("fit raw-head decomposition differs")
             layers = [value for value in diagnostic["layers"].values() if value["target_known"]]

@@ -150,7 +150,7 @@ def analyze_case(prediction, target):
 def recipe_strata(recipe):
     if recipe.get("curriculum") is None:
         return recipe["density"], recipe["skin"]
-    if (recipe["curriculum"] != "all-class-fit-v1" or recipe.get("split") != "fit" or
+    if (recipe["curriculum"] not in ("all-class-fit-v1", "all-class-interleaved-v1") or recipe.get("split") != "fit" or
             type(recipe.get("index")) is not int or not 0 <= recipe["index"] < 16 or
             type(recipe.get("view")) is not int or recipe["view"] not in (0, 1)):
         raise ValueError("supported fit recipe strata required")

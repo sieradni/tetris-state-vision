@@ -5,7 +5,8 @@ from pathlib import Path
 import shutil
 
 SCRIPTS = ("train_m2_stream.py", "m2_stream_data.py", "source_snapshot.py", "probe_model.py", "run_bounded.py",
-           "training_snapshot.py", "atomic_write.py", "m2_curriculum.py", "m2_positive_control_data.py", "m2_fit_contract.py")
+           "training_snapshot.py", "atomic_write.py", "m2_curriculum.py", "m2_positive_control_data.py", "m2_fit_contract.py",
+           "m2_interleaved_order.py")
 
 
 def sha(path):
