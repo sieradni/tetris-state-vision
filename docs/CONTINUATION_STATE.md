@@ -115,3 +115,4 @@ Logs runs/m2-stream-accuracy4096-s7-pipeline.log/.stderr.log; state same-prefix
 -pipeline/progress.json/result.json. Child same-prefix-job.json; actual training
 summary/progress/checkpoints in runs/m2-stream-accuracy4096-s7/. Freeze controller.
 Verified prelaunch C: free 41565855744 bytes, more than40GB.
+LIVE original s7 launcher18952, exact command verified. Inspect same receipt/handle, never restart on an observation timeout.
