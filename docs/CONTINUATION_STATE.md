@@ -28,9 +28,9 @@ RUNNING original M2 s3 with the limits below. Verified exact command tree:
 launcher31560/root supervisor28556;controller24128/13692;
 child supervisor30464/23160;archived trainer6248/26544.
 Pipeline progress confirms start704,target4096,at most512new, original archived
-trainer from s2/code/scripts/train_m2_stream.py. Worker first state capturing_source
-at step0 is initialization, not lost recovery; require restored704/current cursor
-on next check. No other heavy project Job. Inspect SAME receipts/progress before
+trainer from s2/code/scripts/train_m2_stream.py. Startup verified: worker26544
+restored704 and reached708,loss3.0668354 at39.005s; stderr empty. No other heavy
+project Job. Inspect SAME receipts/progress before
 any relaunch; missing summary or a stale running child does not mean success.
 
 Latest host commit26,569,433,088B < stop31,368,351,744B; headroom restored after
@@ -87,6 +87,12 @@ Controller MUST execute original parent archived trainer/catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b, not current M3.
 Preserve4096 target,recipe,Adam/RNG,cursor and partial tags. Supervisor SHA
 d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db unchanged.
+Next session: read pipeline/worker progress and native receipts. If terminal,
+verify every matching process gone, inspect controller result and curated scope,
+commit narrow evidence; if pressure/wall interruption, preserve receipts and
+latest committed pointer and diagnose before another launch. If still running,
+do independent source/review work; do not start another heavy model Job or
+hold a session open merely waiting. No s4 launch until actual s3 outcome reviewed.
 Historical pressure229logged/192banked retains raw stale child and terminal ancestor;
 37updates recomputed and all229 loss/data/gradient records match, not old229 tensors.
 
