@@ -24,11 +24,13 @@ child11844 all absent after completion. Named native receipt
 runs/m3-large-profile-curation-r1.json and matching.log/.stderr.log. Curated
 docs/evidence/m3-stream-large-profile-r1/scope.json, actualM3,7,997,016 parameters,
 weightsad14d69afe645b726b3e765ba10e7574695b157e72245dc7be05720fcb6fe160.
-No model/curation Job live. Next original M2 s3 when disk/memory margins permit.
+No model/curation Job live. NEXT launch original M2 s3 with the limits below.
 
-Latest host commit26,862,620,672B < stop31,368,351,744B; headroom restored after
-prior blocker. C: free40,307,924,992B (~37.54GiB). Recheck disk before a long
-training window; planned margin is>40GiB. No evidence or user data deletion.
+Latest host commit26,569,433,088B < stop31,368,351,744B; headroom restored after
+prior blocker. C: free40,304,672,768B (~40.30GB/37.54GiB), above the40GB prelaunch
+minimum. The earlier40GiB wording conflated units. Actual previous512-update
+vision segment occupies774,265,684B; budget1GiB additional disk here. This is
+not a neighboring engine search/checkpoint. No evidence or user data deletion.
 
 ## Verified source / gates
 
@@ -67,7 +69,13 @@ Resume NEW m2-stream-accuracy4096-s3 using run_stream_segment.py arguments:
 Parent1280MiB/2100s/work512; training child1024MiB/1860s outer/1800s inner,
 checkpoint64,CPU1/cache16; serial curator128MiB/120s. Expected<1100MiB aggregate.
 Receipt runs/m2-stream-accuracy4096-s3-pipeline-job.json; pipeline logs/state under
-same prefix. Verify memory/disk and exact commands, record PIDs before waiting.
+same prefix: runs/m2-stream-accuracy4096-s3-pipeline.log/.stderr.log,
+runs/m2-stream-accuracy4096-s3-pipeline/progress.json and result.json.
+No automatic restart. Verify memory/disk and exact commands, record PIDs before
+waiting. ROOT command .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib 1280 --wall-seconds 2100 --work-items 512
+--receipt runs/m2-stream-accuracy4096-s3-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py [arguments above].
 Controller MUST execute original parent archived trainer/catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b, not current M3.
 Preserve4096 target,recipe,Adam/RNG,cursor and partial tags. Supervisor SHA
