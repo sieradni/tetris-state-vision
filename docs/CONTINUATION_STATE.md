@@ -120,3 +120,16 @@ runs/m2-positive-control-fixtures-r1/complete.json and manifest.jsonl.32images,
 16ancestries, no model forward/optimizer/training admission. This short fixture
 check does not start a long training window. C:38,727,614,464B; keep long training parked.
 Generation launcher21628, exact command verified.
+Fixture generation PASS; exact native generation/known PIDs gone. NEXT two serial
+pure curators, each expected<110MiB,128MiB/30s,native guards:
+1. Full exact command/source list in runs/positive-control-curation-plan-r1.json;
+   receipt runs/positive-control-contract-curation-r1.json,work5;
+   record_test_gates.py --name positive-control-fixture-contracts --base594277c
+   --gate positive-control-tests-r1:5 with complete26-file source list.
+   Logs same-stem.log/.stderr.log; final docs/evidence/positive-control-fixture-contracts/scope.json.
+2. .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+   --work-items 32 --receipt runs/positive-control-data-curation-r1.json --
+   .venv/Scripts/python.exe docs/experiments/record_positive_control.py
+   Logs runs/positive-control-data-curation-r1.log/.stderr.log; final
+   docs/evidence/positive-control-fixtures-r1/scope.json. Replays/copies all32 PNGs
+   and public states with byte/file/pixel/source/coverage hashes. No training.
