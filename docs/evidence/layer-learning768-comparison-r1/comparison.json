@@ -1,0 +1,213 @@
+{
+  "status": "verified_matched_diagnostic",
+  "control": {
+    "name": "m2-stream-layer-control768-s3",
+    "steps": 768,
+    "requested_steps": 768,
+    "status": "complete",
+    "parameters": 647098,
+    "config": {
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ],
+      "dimension": 64,
+      "heads": 4,
+      "blocks": 2,
+      "refinements": 2,
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "component_capacity": 0,
+      "layer_evidence": false
+    },
+    "weights_sha256": "d183a22afcbe0e08d64b59bc1bd3cb2c337bd58e1d4d048f6406407943f43a74",
+    "source_catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+    "last_32_update_mean_terms": {
+      "geometry": 0.8508364239241928,
+      "occupancy": 0.40071562491357327,
+      "semantic": 1.781054899096489,
+      "visibility": 0.013698920141905546,
+      "registration": 0.021688326196454,
+      "layers": 2.27338532730937,
+      "layer_visibility": 0.0064363978871140315,
+      "pose": 3.3112586587667465
+    },
+    "populations": {
+      "training": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.7950000100665622,
+        "exact_known_layers": 12,
+        "known_layers": 18,
+        "mean_geometry_error_cells": 3.0098905165990195,
+        "empty_boards": 2,
+        "exact_empty_boards": 0,
+        "nonempty_boards": 7,
+        "exact_nonempty_boards": 0,
+        "supported_layer_classes_or_statuses": {
+          "active": {
+            "J": 3,
+            "absent": 3,
+            "O": 3
+          },
+          "ghost": {
+            "absent": 9
+          }
+        }
+      },
+      "development": {
+        "images": 18,
+        "ancestry_groups": 6,
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.8822222153345743,
+        "exact_known_layers": 0,
+        "known_layers": 36,
+        "mean_geometry_error_cells": 1.852207945452796,
+        "empty_boards": 4,
+        "exact_empty_boards": 0,
+        "nonempty_boards": 14,
+        "exact_nonempty_boards": 0,
+        "supported_layer_classes_or_statuses": {
+          "active": {
+            "L": 6,
+            "J": 3,
+            "T": 6,
+            "S": 3
+          },
+          "ghost": {
+            "L": 6,
+            "J": 3,
+            "T": 6,
+            "S": 3
+          }
+        }
+      }
+    },
+    "native_training_peak_bytes": 518434816
+  },
+  "candidate": {
+    "name": "m2-stream-layer-evidence768-s3",
+    "steps": 768,
+    "requested_steps": 768,
+    "status": "complete",
+    "parameters": 647228,
+    "config": {
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ],
+      "dimension": 64,
+      "heads": 4,
+      "blocks": 2,
+      "refinements": 2,
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "component_capacity": 0,
+      "layer_evidence": true
+    },
+    "weights_sha256": "a026ec06f2100076b1fa3d16d735cef70035ee80545df91f5f4becc225f622a2",
+    "source_catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+    "last_32_update_mean_terms": {
+      "geometry": 0.8933881418779492,
+      "occupancy": 0.43034089799039066,
+      "semantic": 1.8790138810873032,
+      "visibility": 0.003063419595036976,
+      "registration": 0.0014974677105783485,
+      "layers": 2.1624893890693784,
+      "layer_visibility": 0.004952662144205533,
+      "pose": 2.9141297787427902,
+      "layer_cells": 0.4425730435177684
+    },
+    "populations": {
+      "training": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.65111110607783,
+        "exact_known_layers": 4,
+        "known_layers": 18,
+        "mean_geometry_error_cells": 2.734254969490899,
+        "empty_boards": 2,
+        "exact_empty_boards": 0,
+        "nonempty_boards": 7,
+        "exact_nonempty_boards": 0,
+        "supported_layer_classes_or_statuses": {
+          "active": {
+            "J": 3,
+            "absent": 3,
+            "O": 3
+          },
+          "ghost": {
+            "absent": 9
+          }
+        },
+        "dense_layer_grids_known": 18,
+        "dense_layer_grids_exact": 0,
+        "dense_observed_visible_grids_known": 6,
+        "dense_observed_visible_grids_exact": 0
+      },
+      "development": {
+        "images": 18,
+        "ancestry_groups": 6,
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.6805555522441864,
+        "exact_known_layers": 0,
+        "known_layers": 36,
+        "mean_geometry_error_cells": 2.0114230745368533,
+        "empty_boards": 4,
+        "exact_empty_boards": 0,
+        "nonempty_boards": 14,
+        "exact_nonempty_boards": 0,
+        "supported_layer_classes_or_statuses": {
+          "active": {
+            "L": 6,
+            "J": 3,
+            "T": 6,
+            "S": 3
+          },
+          "ghost": {
+            "L": 6,
+            "J": 3,
+            "T": 6,
+            "S": 3
+          }
+        },
+        "dense_layer_grids_known": 36,
+        "dense_layer_grids_exact": 0,
+        "dense_observed_visible_grids_known": 36,
+        "dense_observed_visible_grids_exact": 0
+      }
+    },
+    "native_training_peak_bytes": 521826304
+  },
+  "identical_recovery_recipe_except_option": true,
+  "identical_data_ledgers": true,
+  "common_loss_terms": [
+    "geometry",
+    "layer_visibility",
+    "layers",
+    "occupancy",
+    "pose",
+    "registration",
+    "semantic",
+    "visibility"
+  ],
+  "ledger_sha256": {
+    "training.jsonl": "79325f5a30e78f938a400b65aadbeedeea39646fe678c0b8a63c83731c3a23b5",
+    "training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff"
+  },
+  "analysis_sha256": "ab6957f9c64bc13e6fd1e46097bb4df2c96853f548de20055382f73c9248927d",
+  "scope": "Same-source/data synthetic pilot. Total objectives differ; 18 development views cover six ancestries and omit classes/statuses. No convergence, real accuracy or model selection claim."
+}

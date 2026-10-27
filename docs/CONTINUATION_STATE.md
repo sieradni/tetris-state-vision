@@ -151,3 +151,17 @@ NEXT matched final comparison, expected<96MiB,128MiB/30s/work1590:
 Logs runs/layer-learning768-comparison-r1.log/.stderr.log. Then predeclared
 broader diagnostic640MiB/180s/work384, expected<600MiB (exact command below).
 Comparison launcher29692 exact command verified.
+768 matched comparison PASS; true/false source/config recipe identity and all768
+training/27 fixed-probe recipes match. Raw report/script/native receipt preserved.
+NEXT exact predeclared broader diagnostic, expected<600MiB,640MiB/180s/work384:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 384 --receipt runs/layer-generalization768-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/probe_layer_generalization.py
+--control m2-stream-layer-control768-s3 --candidate m2-stream-layer-evidence768-s3
+--output docs/evidence/layer-generalization768-r1
+Logs runs/layer-generalization768-r1.log/.stderr.log;
+state docs/evidence/layer-generalization768-r1/progress.json, terminal result.json.
+192 images/model,384 forwards,64 development ancestries,groups100..163/views0..2.
+No optimizer/GT input; verify immutable models, raw source/recipe/prediction hashes,
+actual class/status denominators and independent metric reproduction before claims.
+LIVE broader probe launcher31472, exact command verified; freeze diagnostic helpers.
