@@ -42,3 +42,10 @@ input summary/probe recipes/receipt and source/weight manifests with hashes.
 Historical pilot geometry reports keep their old scope; new format2 evidence
 does not retroactively upgrade them. Metadata fixtures are distinct from actual
 paired forwards. V-024 remains open until native replay and curation pass.
+
+Ten scoped metadata checks pass in.113s,35,180,544B under128MiB/30s on eaf5bee:
+`docs/evidence/geometry-evidence-contracts/scope.json` pins18 source/fixture
+files. They include the preserved pilot's negative oracle effect, changed
+aggregates and native command, missing/duplicate cases, explicit partial
+admission, wrong architecture and unsupported/nonfinite targets. Historical
+fixture data is adapted only in memory; it is not a new model evaluation.

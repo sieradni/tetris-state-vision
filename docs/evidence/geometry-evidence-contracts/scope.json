@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "source_base_commit": "eaf5bee8f439840b888a1b7746da8f484bb8b146",
+  "sources": {
+    "scripts/probe_stream_geometry.py": "0992e434ba6981839b9eb7c8619bc795b3f9549fc29b7e813e69acc6f68d25e8",
+    "scripts/geometry_contract.py": "2e023d6d011de60e8f2a496b23347c35b486ee6cb4b2c14d7bd988aaf5b41996",
+    "scripts/record_stream_geometry.py": "be168eca169425ed300311128898c3fe476e8d147f235cf5799e0e0685878054",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "tests/test_geometry_evidence.py": "93b73a6c7667944414d733a58c9cc6395575a07682d534622714b4767122a1c9",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb",
+    "docs/evidence/m2-stream-pilot-geometry/result.json": "afdaf20c7dd593abc8a7d984c629247f60abc1752538198dca26da4d07993b36",
+    "docs/evidence/m2-stream-pilot-geometry/input-checkpoint-manifest.json": "b445b16ae87934f44a8a6791f03ecad626ccf0e308271c93961fe5137b2326ed",
+    "docs/evidence/m2-stream-pilot-geometry/m2-stream-pilot-geometry-job.json": "e0bd0020c4751b2a0865be51076b58bf823c4cc5843cadc736344e3911c9f1e2",
+    "docs/evidence/m2-stream-learn768-r3/summary.json": "2f70b011e75e529cb68097fb05515fee49031e711fc9240c7b2ef24f41f7c93f",
+    "docs/evidence/m2-stream-learn768-r3/m2-stream-learn768-r3-job.json": "60e592f47d2fe5f7a82abbdc2fac42f09ad18a5ff594041d254f802c012a7f01",
+    "docs/evidence/m2-stream-learn768-r3/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "docs/evidence/m2-stream-learn768-r3/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff"
+  },
+  "gates": [
+    {
+      "stem": "geometry-evidence-tests-r2",
+      "tests": 10,
+      "raw_peak_job_commit_bytes": 35180544
+    }
+  ],
+  "tests_across_scoped_runs": 10,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

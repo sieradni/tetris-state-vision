@@ -1,0 +1,50 @@
+test_changed_automatic_metric_and_oracle_target_count_refuse (test_geometry_evidence.GeometryEvidenceTests.test_changed_automatic_metric_and_oracle_target_count_refuse) ... ok
+test_checkpoint_configuration_weight_and_partial_tag_are_bound (test_geometry_evidence.GeometryEvidenceTests.test_checkpoint_configuration_weight_and_partial_tag_are_bound) ... ok
+test_command_output_work_memory_and_oracle_policy_are_bound (test_geometry_evidence.GeometryEvidenceTests.test_command_output_work_memory_and_oracle_policy_are_bound) ... ok
+test_controlled_partial_requires_explicit_flag_and_preserves_status (test_geometry_evidence.GeometryEvidenceTests.test_controlled_partial_requires_explicit_flag_and_preserves_status) ... ERROR
+test_failed_or_incomplete_source_and_wrong_architecture_refuse (test_geometry_evidence.GeometryEvidenceTests.test_failed_or_incomplete_source_and_wrong_architecture_refuse) ... ok
+test_forged_aggregate_is_recomputed (test_geometry_evidence.GeometryEvidenceTests.test_forged_aggregate_is_recomputed) ... FAIL
+test_legacy_reports_do_not_silently_acquire_new_scope (test_geometry_evidence.GeometryEvidenceTests.test_legacy_reports_do_not_silently_acquire_new_scope) ... ok
+test_missing_duplicate_case_and_changed_ancestry_refuse (test_geometry_evidence.GeometryEvidenceTests.test_missing_duplicate_case_and_changed_ancestry_refuse) ... ok
+test_native_completed_metadata_and_negative_oracle_effect_are_valid (test_geometry_evidence.GeometryEvidenceTests.test_native_completed_metadata_and_negative_oracle_effect_are_valid) ... ERROR
+test_nonfinite_unsupported_metrics_and_tautological_geometry_refuse (test_geometry_evidence.GeometryEvidenceTests.test_nonfinite_unsupported_metrics_and_tautological_geometry_refuse) ... ok
+
+======================================================================
+ERROR: test_controlled_partial_requires_explicit_flag_and_preserves_status (test_geometry_evidence.GeometryEvidenceTests.test_controlled_partial_requires_explicit_flag_and_preserves_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\tests\test_geometry_evidence.py", line 51, in test_controlled_partial_requires_explicit_flag_and_preserves_status
+    self.assertEqual(validate_report(report, job, summary, source_job, manifest, recipes, name=NAME), "TetrisStateNet-M2")
+                     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_stream_geometry.py", line 34, in validate_report
+    raise ValueError("native exact-source conditional diagnostic-only gate required")
+ValueError: native exact-source conditional diagnostic-only gate required
+
+======================================================================
+ERROR: test_native_completed_metadata_and_negative_oracle_effect_are_valid (test_geometry_evidence.GeometryEvidenceTests.test_native_completed_metadata_and_negative_oracle_effect_are_valid)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\tests\test_geometry_evidence.py", line 38, in test_native_completed_metadata_and_negative_oracle_effect_are_valid
+    self.assertEqual(validate_report(*values, name=NAME), "TetrisStateNet-M2")
+                     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_stream_geometry.py", line 34, in validate_report
+    raise ValueError("native exact-source conditional diagnostic-only gate required")
+ValueError: native exact-source conditional diagnostic-only gate required
+
+======================================================================
+FAIL: test_forged_aggregate_is_recomputed (test_geometry_evidence.GeometryEvidenceTests.test_forged_aggregate_is_recomputed)
+----------------------------------------------------------------------
+ValueError: native exact-source conditional diagnostic-only gate required
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\tests\test_geometry_evidence.py", line 70, in test_forged_aggregate_is_recomputed
+    with self.assertRaisesRegex(ValueError, "aggregate"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "aggregate" does not match "native exact-source conditional diagnostic-only gate required"
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.071s
+
+FAILED (failures=1, errors=2)

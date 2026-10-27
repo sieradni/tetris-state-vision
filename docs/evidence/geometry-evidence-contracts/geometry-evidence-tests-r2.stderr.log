@@ -1,0 +1,15 @@
+test_changed_automatic_metric_and_oracle_target_count_refuse (test_geometry_evidence.GeometryEvidenceTests.test_changed_automatic_metric_and_oracle_target_count_refuse) ... ok
+test_checkpoint_configuration_weight_and_partial_tag_are_bound (test_geometry_evidence.GeometryEvidenceTests.test_checkpoint_configuration_weight_and_partial_tag_are_bound) ... ok
+test_command_output_work_memory_and_oracle_policy_are_bound (test_geometry_evidence.GeometryEvidenceTests.test_command_output_work_memory_and_oracle_policy_are_bound) ... ok
+test_controlled_partial_requires_explicit_flag_and_preserves_status (test_geometry_evidence.GeometryEvidenceTests.test_controlled_partial_requires_explicit_flag_and_preserves_status) ... ok
+test_failed_or_incomplete_source_and_wrong_architecture_refuse (test_geometry_evidence.GeometryEvidenceTests.test_failed_or_incomplete_source_and_wrong_architecture_refuse) ... ok
+test_forged_aggregate_is_recomputed (test_geometry_evidence.GeometryEvidenceTests.test_forged_aggregate_is_recomputed) ... ok
+test_legacy_reports_do_not_silently_acquire_new_scope (test_geometry_evidence.GeometryEvidenceTests.test_legacy_reports_do_not_silently_acquire_new_scope) ... ok
+test_missing_duplicate_case_and_changed_ancestry_refuse (test_geometry_evidence.GeometryEvidenceTests.test_missing_duplicate_case_and_changed_ancestry_refuse) ... ok
+test_native_completed_metadata_and_negative_oracle_effect_are_valid (test_geometry_evidence.GeometryEvidenceTests.test_native_completed_metadata_and_negative_oracle_effect_are_valid) ... ok
+test_nonfinite_unsupported_metrics_and_tautological_geometry_refuse (test_geometry_evidence.GeometryEvidenceTests.test_nonfinite_unsupported_metrics_and_tautological_geometry_refuse) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.113s
+
+OK
