@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "compared_optimizer_updates": 2,
+  "runs": [
+    "m2-stream-layer-control-profile-r1",
+    "m2-stream-default-policy-profile-r1"
+  ],
+  "source_catalogues": [
+    "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+    "6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42"
+  ],
+  "identical_actual_weight_bytes": true,
+  "identical_data_bytes": true,
+  "identical_all_four_probe_metric_objects": true,
+  "exact_loss_terms_gradients_samples_excluding_elapsed": true,
+  "identical_neural_package_sources": true,
+  "weights_sha256": "32f49c3b187863596e2781fc70acec3386b1deab4ed5897c99e426d1514bb8ca",
+  "input_sha256": {
+    "m2-stream-layer-control-profile-r1": {
+      "summary.json": "48c555ae20d70f235d1a012c8a405dc394195711eb4e23c904404f1bca54df75",
+      "curve.jsonl": "6249eaea052af05238bf7420c08a574d71fc235ab9de742a2b5fc3f1fc680d57",
+      "training.jsonl": "3ff705a0f76ae1f9df879c0d85d09400dfef0cc58b9e255b715ac93c32d8896d",
+      "checkpoint/weights.pt": "32f49c3b187863596e2781fc70acec3386b1deab4ed5897c99e426d1514bb8ca"
+    },
+    "m2-stream-default-policy-profile-r1": {
+      "summary.json": "9f0fadcd08c4e886fe01ac62026d2288f68819abbc0317e695002ab142dda6c0",
+      "curve.jsonl": "19267a3a4c2a4276546983d1baf180439b3e9a4d2d0a230a5a5d1f58bb4e8801",
+      "training.jsonl": "3ff705a0f76ae1f9df879c0d85d09400dfef0cc58b9e255b715ac93c32d8896d",
+      "checkpoint/weights.pt": "32f49c3b187863596e2781fc70acec3386b1deab4ed5897c99e426d1514bb8ca"
+    }
+  },
+  "script_sha256": "47d9b2800eb2140fdab33d8f36ad7c688f47a0144cbcad4dabbf8a071cac8a93",
+  "scope": "Actual default two-step warm-profile numerical compatibility only. Not long training, all-class learning, convergence or real accuracy."
+}

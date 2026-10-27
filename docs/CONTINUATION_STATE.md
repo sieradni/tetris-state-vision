@@ -191,3 +191,5 @@ Then profile curator128MiB/30s/work29,record_stream_run.py --name
 m2-stream-default-policy-profile-r1;receipt runs/default-policy-profile-curation-r1.json,
 logs same-stem. Native guards unchanged; no neural fit is admitted yet.
 Numerical comparator launcher25592, exact command verified.
+Default numerical comparison PASS.349s/36,122,624B: actual weight bytes, data bytes, all4 metric objects,loss/terms/grad/sample curves exact. All known PIDs and exact command gone; raw source/receipt/logs preserved. Next profile curator exact command/caps recorded above, no model Job live.
+Default profile curator launcher5780, exact command verified.
