@@ -143,3 +143,14 @@ must update frozen source list, centralized curriculum routing/admission/recover
 controller probe cardinality, source-bound collectors and raw error-reader policy
 checks; legacy stream/ordered-fit behavior and historical evidence stay intact.
 Current selected action still terminal s3 and final41-forward ordinary audit.
+
+LATEST final s3 COMPLETE1024/1024,384new. Parent578.329s/606,158,848B/896MiB.
+Controller/native/source replay passes. First metadata capture correctly refused
+while launcher27132 was still closing; a fresh exact query confirms gone, then
+complete startup/terminal tree capture passes. No job restarted or code changed.
+All1024 recipes+41probes replayed;actual inference/training identities and raw
+receipts/source/controller/startup retained in same-name1024-s3 evidence.
+Weights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6.
+Internal fit32/32 boards,20/64 roles(12/56 observed,8/8 absence),128/128semantic,
+geometry.21058594435453415;criterionFALSE. Final raw41-forward replay next exactly
+as predeclared640MiB/180s/work41,expected<600MiB;no other model Job live.
