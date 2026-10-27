@@ -101,3 +101,17 @@ Full objective remains OPEN: adequate scratch learning,broad visibility/renderin
 complete queue/hold,reviewed real truth/independent splits,initialization/direct
 comparison,calibration/export/CPU latency and>=95% exact readable real complete
 state with abstentions failing. Public API remains needs_review/unsupported.
+
+FRESH disk floor PASS before launch; short original s7 selected,128 new instead
+of the queued512 budget. Global4096/source/recipe unchanged; expected saved2816.
+Expected<1100MiB aggregate,parent1280MiB/600s/work128,child1GiB/1860s with ancestor
+600s deadline;native Job/pressure/CPU1 guards. Exact command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 600
+--work-items 128 --receipt runs/m2-stream-accuracy4096-s7-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-accuracy4096-s7 --target-steps 4096 --updates 128
+--admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s6
+Logs runs/m2-stream-accuracy4096-s7-pipeline.log/.stderr.log; state same-prefix
+-pipeline/progress.json/result.json. Child same-prefix-job.json; actual training
+summary/progress/checkpoints in runs/m2-stream-accuracy4096-s7/. Freeze controller.
+Verified prelaunch C: free 41565855744 bytes, more than40GB.
