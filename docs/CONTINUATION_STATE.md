@@ -177,3 +177,16 @@ runs/m2-stream-layer-control-profile-r1,excluding elapsed/source metadata only.
 Fresh catalogue will be derived from actual archive; no guessed hash.
 Protocol curator launcher8652, exact command verified.
 42-case scope preserved, all31 source hashes rechecked; curator PIDs gone. LIVE default profile launcher25072, exact predeclared command verified; no other owned Job.
+Current default profile PASS23.517s/560,971,776B under640MiB,warm/restore/all-output
+parity true,catalogue6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42.
+All launcher/supervisor/child/worker PIDs gone. No model Job live.
+NEXT exact numerical comparator,expected<110MiB,128MiB/30s/work172:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 172 --receipt runs/default-curriculum-numerics-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/verify_default_curriculum.py
+Logs runs/default-curriculum-numerics-r1.log/.stderr.log; final
+ docs/evidence/default-curriculum-numerics-r1/scope.json.108 metric cases+4curve+
+4training+54 probe-ledger rows+2actual weights, finite source-bound read-only audit.
+Then profile curator128MiB/30s/work29,record_stream_run.py --name
+m2-stream-default-policy-profile-r1;receipt runs/default-policy-profile-curation-r1.json,
+logs same-stem. Native guards unchanged; no neural fit is admitted yet.
