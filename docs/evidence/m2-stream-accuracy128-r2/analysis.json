@@ -1,0 +1,74 @@
+{
+  "status": "passed",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "1ed5a3113ec3322a80f3b3d56f8a5c88df7e9c4e1813de67ecf8a555a766dc78",
+  "parameters": 7694010,
+  "steps": 128,
+  "exact_data_prefix_records": 128,
+  "matched_update_count": true,
+  "segments": [
+    {
+      "name": "m2-stream-accuracy128",
+      "status": "wall_partial",
+      "global_steps": 93,
+      "updates_this_run": 93,
+      "native_elapsed_seconds": 331.04
+    },
+    {
+      "name": "m2-stream-accuracy128-r2",
+      "status": "complete",
+      "global_steps": 128,
+      "updates_this_run": 35,
+      "native_elapsed_seconds": 184.763
+    }
+  ],
+  "larger_training": {
+    "images": 9,
+    "ancestry_groups": 3,
+    "exact_locked_boards": 0,
+    "cell_accuracy": 0.9044444561004639,
+    "exact_known_layers": 0,
+    "known_layers": 18,
+    "mean_geometry_error_cells": 4.460477352142334,
+    "loss": 7.543146133422852
+  },
+  "larger_development": {
+    "images": 18,
+    "ancestry_groups": 6,
+    "exact_locked_boards": 4,
+    "cell_accuracy": 0.8905555605888367,
+    "exact_known_layers": 0,
+    "known_layers": 36,
+    "mean_geometry_error_cells": 2.478502028518253,
+    "loss": 6.670747862921821
+  },
+  "pilot_development_at128": {
+    "images": 18,
+    "ancestry_groups": 6,
+    "exact_locked_boards": 0,
+    "cell_accuracy": 0.8305555515819125,
+    "exact_known_layers": 0,
+    "known_layers": 36,
+    "mean_geometry_error_cells": 2.2121861941284604,
+    "loss": 4.863693846596612
+  },
+  "locked_board_populations": {
+    "training": {
+      "empty_locked_boards": 2,
+      "exact_empty_locked_boards": 0,
+      "nonempty_locked_boards": 7,
+      "exact_nonempty_locked_boards": 0
+    },
+    "development": {
+      "empty_locked_boards": 4,
+      "exact_empty_locked_boards": 4,
+      "nonempty_locked_boards": 14,
+      "exact_nonempty_locked_boards": 0
+    }
+  },
+  "initializations_differ_by_architecture": true,
+  "adequately_converged_model_ranking_allowed": false,
+  "complete_state_accuracy_established": false,
+  "script_sha256": "0ee7602c242621bb28092bb82f6d409f5a55827157e55a595c218abebe8399de",
+  "scope": "Native larger128 diagnostic, exact data exposure and carried93+new35 records. Equal step count/one seed does not tune optimization, establish convergence, select architecture, or prove real/complete-state accuracy."
+}

@@ -109,6 +109,35 @@ worker inner300s, one CPU. Command:
 Hidden logs .log/.stderr.log; verify exact PID/tree and saved parent cursor93.
 Curator must preserve parent wall_partial93 receipt, snapshot/hash/ledger-prefix
 provenance and resumed35 count, not describe second Job as128updates.
+Resume COMPLETE:7624/23788/28444/22504 verified gone, global128, new35,
+183.639s inner/184.763s outer,910,688,256B/1GiB. Parent remainedwall_partial93
+with331.040s outer/917,159,936B. Curator verified parent tensor/manifest and
+all3 carried prefixes;128 new-data records and27 probes replayed. Weights
+1ed5a3113ec3322a80f3b3d56f8a5c88df7e9c4e1813de67ecf8a555a766dc78.
+Data prefix matches pilot128 exactly. Large dev4/18 boards are all zero-locked;
+nonempty0/14, layers0/36, geometry2.4785. No model ranking/convergence claim.
+
+Selected next work: fixed4096-update larger scratch baseline, at most512 per
+native segment with periodic64 recovery and automatic explicit-status curation.
+The128 run was diagnostic; a fresh fixed4096 target preserves a single optimizer
+history across future segments, without changing completed128's contract.
+Controller run_stream_segment.py is syntax-green; native integration pending.
+Partial-curation3 boundary tests + real93-step replay GREEN; source/evidence
+milestones must be committed before the trial and before any wait.
+
+NEXT controller trial: parent1280MiB/120s/one update, expected<1100MiB. It runs
+one larger update toward target3 in a child1GiB Job, then serial128MiB curation.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib1280
+--wall-seconds120 --work-items1 --receipt runs/m2-stream-accuracy-segment-probe-pipeline-job.json
+-- .venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-accuracy-segment-probe --target-steps3 --updates1
+--admission runs/m2-stream-accuracy-probe.
+Hidden root logs runs/m2-stream-accuracy-segment-probe-pipeline.log/.stderr.log;
+pipeline/progress.json and result.json distinguish segment success from an
+unfinished global target. Verify PID/tree, exact child status and death. Only
+after green launch512 toward4096 at parent1280MiB/2100s, child1GiB/1860s outer/
+1800s inner. Expected<1100MiB total, disk50.79GiB free (>40GiB), <1GiB new run
+state expected. No automatic restart or message/notification; one finite segment.
 
 Then adequately train larger scratch candidate and resolve geometry/layer/board
 errors. M3 labels8 green, heads/loss/runtime open. Unknown is not empty;

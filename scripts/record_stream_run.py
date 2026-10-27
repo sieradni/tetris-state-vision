@@ -14,6 +14,23 @@ from source_snapshot import verify_source
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def validate_completion(summary, job, *, allow_partial=False):
+    partial = summary.get("status") in {"wall_partial", "step_partial"}
+    steps, target = summary.get("steps"), summary.get("requested_steps")
+    if (type(steps) is not int or type(target) is not int or not 1 <= steps <= target <= 4096 or
+            not summary.get("checkpoint_round_trip_exact")):
+        raise ValueError("finite saved checkpoint and exact reload required")
+    if partial:
+        if not allow_partial or steps >= target or job.get("status") != "failed" or job.get("exit_code") != 2:
+            raise ValueError("explicit controlled partial with saved state required")
+    elif summary.get("status") != "complete" or steps != target or job.get("status") != "passed" or job.get("exit_code") != 0:
+        raise ValueError("complete native run required")
+    updates = summary.get("updates_this_run", steps)
+    if type(updates) is not int or not 0 < updates <= job.get("work_items", 0):
+        raise ValueError("new-update count exceeds declared cap")
+    return partial
+
+
 def digest(path, maximum=64*1024**2):
     value, consumed = hashlib.sha256(), 0
     with path.open("rb") as data:
@@ -29,14 +46,14 @@ def main():
     require_bounded_job()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", required=True)
+    parser.add_argument("--allow-partial", action="store_true", help="preserve controlled wall/step partial status; never a completion claim")
     args = parser.parse_args()
     if not re.fullmatch(r"m2-stream-[a-z0-9-]{1,40}", args.name):
         raise ValueError("owned stream run name required")
     run = ROOT/"runs"/args.name
     summary = json.loads((run/"summary.json").read_text())
     job = json.loads((ROOT/"runs"/(args.name+"-job.json")).read_text())
-    if summary["status"] != "complete" or job["status"] != "passed" or not summary["checkpoint_round_trip_exact"]:
-        raise ValueError("complete native run and all-head checkpoint parity required")
+    partial = validate_completion(summary, job, allow_partial=args.allow_partial)
     code = run/"code"
     archive = verify_source(code, summary["catalogue_sha256"])
     sys.path[:0] = [str(code/"scripts"), str(code)]
@@ -55,6 +72,8 @@ def main():
     if digest(run/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("weight checksum mismatch")
     recovery_manifest = None
+    resume_parent = None
+    resume_files = []
     if summary.get("resource_profile_version", 0) >= 3:
         pointer = json.loads((run/"latest-training.json").read_text())
         generation = pointer.get("generation", "")
@@ -73,6 +92,45 @@ def main():
         for name, cursor in recovery_manifest["ledgers"].items():
             if (run/name).stat().st_size != cursor["bytes"] or digest(run/name, 16*1024**2) != cursor["sha256"]:
                 raise ValueError("complete-run recovery ledger prefix differs")
+        if not 0 < summary["updates_this_run"] <= job["work_items"]:
+            raise ValueError("native new-update count exceeds declared segment cap")
+        if summary["resume"] is not None:
+            resume = summary["resume"]
+            parent = Path(resume["source_run"]).resolve()
+            if not parent.is_relative_to(ROOT/"runs"):
+                raise ValueError("resume evidence parent escaped owned runs")
+            verify_source(parent/"code", summary["catalogue_sha256"])
+            parent_pointer = resume["pointer"]
+            if not re.fullmatch(r"step-[0-9]{6}-[0-9a-f]{32}", parent_pointer["generation"]):
+                raise ValueError("resume parent generation invalid")
+            parent_folder = parent/"training-snapshots"/parent_pointer["generation"]
+            if not parent_folder.resolve().is_relative_to(parent) or digest(parent_folder/"manifest.json", 64*1024) != parent_pointer["manifest_sha256"]:
+                raise ValueError("resume parent manifest identity differs")
+            parent_manifest = json.loads((parent_folder/"manifest.json").read_text())
+            if (parent_manifest["step"] != resume["step"] or parent_manifest["contract"] != summary["recovery_contract"] or
+                    resume["step"]+summary["updates_this_run"] != summary["steps"] or
+                    digest(parent_folder/"tensors.pt", 256*1024**2) != parent_manifest["tensors_sha256"] or
+                    set(parent_manifest["ledgers"]) != {"curve.jsonl", "training.jsonl", "evaluations.jsonl"}):
+                raise ValueError("resume parent tensor/step/recipe identity differs")
+            for name, cursor in parent_manifest["ledgers"].items():
+                size = cursor["bytes"]
+                if type(size) is not int or not 0 <= size <= 16*1024**2 or cursor["sha256"] != resume["ledger_prefix_sha256"][name]:
+                    raise ValueError("resume prefix cursor differs")
+                for file in (parent/name, run/name):
+                    with file.open("rb") as stream:
+                        prefix = stream.read(size)
+                    if len(prefix) != size or hashlib.sha256(prefix).hexdigest() != cursor["sha256"]:
+                        raise ValueError("parent/resumed committed ledger prefix differs")
+            parent_job = json.loads((parent.parent/(parent.name+"-job.json")).read_text())
+            resume_parent = {"step": resume["step"], "run": str(parent), "native_status": parent_job["status"],
+                             "native_exit_code": parent_job["exit_code"], "manifest_sha256": parent_pointer["manifest_sha256"],
+                             "tensors_sha256": parent_manifest["tensors_sha256"]}
+            resume_files = [(parent_folder/"manifest.json", "resume-parent-snapshot-manifest.json"),
+                            (parent/"code/source.json", "resume-parent-source-manifest.json")]
+            for suffix in ("-job.json", ".log", ".stderr.log"):
+                resume_files.append((parent.parent/(parent.name+suffix), "resume-parent"+suffix))
+            if (parent/"summary.json").exists():
+                resume_files.append((parent/"summary.json", "resume-parent-summary.json"))
     ledger = run/"training.jsonl"
     if digest(ledger, 16*1024**2) != summary["stream_ledger_sha256"] or not 1 <= summary["steps"] <= 4096:
         raise ValueError("stream ledger budget/identity mismatch")
@@ -113,6 +171,8 @@ def main():
     if recovery_manifest is not None:
         shutil.copyfile(run/"latest-training.json", evidence/"latest-training.json")
         (evidence/"training-snapshot-manifest.json").write_text(json.dumps(recovery_manifest, indent=2)+"\n")
+    for source, name in resume_files:
+        shutil.copyfile(source, evidence/name)
     for suffix in ("-job.json", ".log", ".stderr.log"):
         source = ROOT/"runs"/(args.name+suffix)
         shutil.copyfile(source, evidence/source.name)
@@ -125,7 +185,9 @@ def main():
             raise ValueError("comparison is for another artifact/source")
         shutil.copyfile(run/"analysis.json", evidence/"analysis.json")
         comparison_status = comparison["status"]
-    scope = {"status": "passed", "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+    scope = {"status": "verified_partial" if partial else "passed", "run_status": summary["status"],
+             "steps": summary["steps"], "requested_steps": summary["requested_steps"],
+             "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "source_catalogue_sha256": archive["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
              "replayed_training_samples": len(rows), "verified_saved_probe_images": probe_images,
              "native_peak_job_commit_bytes": job["peak_job_commit_bytes"], "all_final_tensors_reload_exact": True,
@@ -133,9 +195,12 @@ def main():
              "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
              "training_snapshot_identity_verified": recovery_manifest is not None,
              "comparison_status": comparison_status,
+             "updates_this_run": summary.get("updates_this_run", summary["steps"]), "resume_parent": resume_parent,
              "curator_sha256": digest(Path(__file__)), "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
-    print(json.dumps({"status": "passed", "replayed_samples": len(rows), "verified_probe_images": probe_images, "scope": str(evidence/"scope.json")}))
+    print(json.dumps({"status": scope["status"], "run_status": summary["status"], "steps": summary["steps"],
+                      "requested_steps": summary["requested_steps"], "replayed_samples": len(rows),
+                      "verified_probe_images": probe_images, "scope": str(evidence/"scope.json")}))
 
 
 if __name__ == "__main__":

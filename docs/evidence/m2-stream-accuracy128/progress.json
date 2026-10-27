@@ -1,0 +1,11 @@
+{
+  "status": "wall_partial",
+  "pid": 30104,
+  "step": 93,
+  "requested_steps": 128,
+  "loss": 7.350346565246582,
+  "elapsed_seconds": 300.55830309999874,
+  "recovery_step": 93,
+  "summary": "summary.json",
+  "checkpoint": "checkpoint/manifest.json"
+}

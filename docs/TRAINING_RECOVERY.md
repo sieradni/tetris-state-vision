@@ -66,3 +66,16 @@ results, every model/optimizer tensor and CPU RNG exactly. Inference weight SHA
 f5145621be3ea9650e5126250d80baa568aec1e7748f66e9f2dd5834e5730f51 is identical
 for both. Partial status remains explicit. Child max554,541,056B under640MiB;
 outer590,663,680B under1GiB. Each native child process was verified dead.
+
+The larger model now demonstrates a real wall-limited continuation:93/128 saved
+at the300s inner limit, then35 updates from that exact Adam/RNG/data cursor.
+The completed artifact retains its parent's `wall_partial` receipt and all three
+ledger-prefix identities. Curated source/snapshot/tensor/prefix verification:
+docs/evidence/m2-stream-accuracy128-r2/scope.json. This does not relabel the first
+Job as complete or claim that the second Job performed128updates.
+
+`record_stream_run.py --allow-partial` now also preserves controlled `wall_partial`
+and `step_partial` artifacts explicitly. Default completion remains strict;
+outer timeout, pressure kill, crash and missing checkpoint/reload parity refuse.
+Three boundary fixtures and actual93-step partial replay pass. Segmented
+longer targets can therefore publish evidence without a completion claim.

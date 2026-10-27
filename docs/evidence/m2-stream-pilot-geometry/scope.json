@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "input_source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-learn768-r3\\code",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "d183a22afcbe0e08d64b59bc1bd3cb2c337bd58e1d4d048f6406407943f43a74",
+  "artifact_sha256": {
+    "result.json": "afdaf20c7dd593abc8a7d984c629247f60abc1752538198dca26da4d07993b36",
+    "progress.json": "ae0714f42f4ebc95a735f59d07908340dfc9c44460f31f134421b1bc52babfd9",
+    "source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "input-checkpoint-manifest.json": "b445b16ae87934f44a8a6791f03ecad626ccf0e308271c93961fe5137b2326ed",
+    "m2-stream-pilot-geometry-job.json": "e0bd0020c4751b2a0865be51076b58bf823c4cc5843cadc736344e3911c9f1e2",
+    "m2-stream-pilot-geometry.log": "81b4cedadc5fb9b9d73618293607f59ec4a8bf9508958b9f9e6ba1cb13a1ba28",
+    "m2-stream-pilot-geometry.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "curator_sha256": "396be865f6e92e9fdf425780bfe04dd7013fd71866e4f29c069abde08d5df8b6",
+  "scope": "54-forward conditional oracle-geometry diagnostic; ordinary metrics reproduced and weights unchanged. Labels enter oracle forward; not automatic accuracy, an upper bound or deployed correction."
+}

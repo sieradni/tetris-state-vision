@@ -1,0 +1,672 @@
+{
+  "status": "passed",
+  "forwards": 54,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "d183a22afcbe0e08d64b59bc1bd3cb2c337bd58e1d4d048f6406407943f43a74",
+  "model_kind": "pilot",
+  "job_ceiling_bytes": 805306368,
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "oracle_geometry_provided": true,
+  "automatic_accuracy_claim_allowed": false,
+  "totals": {
+    "training": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "automatic": {
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.7950000100665622,
+        "exact_known_layers": 12,
+        "known_layers": 18
+      },
+      "oracle_geometry": {
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.833333326710595,
+        "exact_known_layers": 12,
+        "known_layers": 18
+      }
+    },
+    "development": {
+      "images": 18,
+      "ancestry_groups": 6,
+      "automatic": {
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.8822222153345743,
+        "exact_known_layers": 0,
+        "known_layers": 36
+      },
+      "oracle_geometry": {
+        "exact_locked_boards": 0,
+        "cell_accuracy": 0.8583333194255829,
+        "exact_known_layers": 0,
+        "known_layers": 36
+      }
+    }
+  },
+  "cases": [
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v0",
+      "group_id": "ancestry-training-20261026",
+      "density": "empty",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9700000286102295,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.949999988079071,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v1",
+      "group_id": "ancestry-training-20261026",
+      "density": "empty",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9649999737739563,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9599999785423279,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v2",
+      "group_id": "ancestry-training-20261026",
+      "density": "empty",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8650000095367432,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8899999856948853,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v0",
+      "group_id": "ancestry-training-20261027",
+      "density": "sparse",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.6949999928474426,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v1",
+      "group_id": "ancestry-training-20261027",
+      "density": "sparse",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7549999952316284,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v2",
+      "group_id": "ancestry-training-20261027",
+      "density": "sparse",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7749999761581421,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 2,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v0",
+      "group_id": "ancestry-training-20261028",
+      "density": "dense",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7350000143051147,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8149999976158142,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v1",
+      "group_id": "ancestry-training-20261028",
+      "density": "dense",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7350000143051147,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8149999976158142,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v2",
+      "group_id": "ancestry-training-20261028",
+      "density": "dense",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8100000023841858,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 1,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v0",
+      "group_id": "ancestry-development-30261026",
+      "density": "empty",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.949999988079071,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9549999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v1",
+      "group_id": "ancestry-development-30261026",
+      "density": "empty",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9549999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9599999785423279,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v2",
+      "group_id": "ancestry-development-30261026",
+      "density": "empty",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9200000166893005,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v0",
+      "group_id": "ancestry-development-30261027",
+      "density": "sparse",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7950000166893005,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.6549999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v1",
+      "group_id": "ancestry-development-30261027",
+      "density": "sparse",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8899999856948853,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7549999952316284,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v2",
+      "group_id": "ancestry-development-30261027",
+      "density": "sparse",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8849999904632568,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7649999856948853,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v0",
+      "group_id": "ancestry-development-30261028",
+      "density": "dense",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8299999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8299999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v1",
+      "group_id": "ancestry-development-30261028",
+      "density": "dense",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8299999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8349999785423279,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v2",
+      "group_id": "ancestry-development-30261028",
+      "density": "dense",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8199999928474426,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8299999833106995,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v0",
+      "group_id": "ancestry-development-30261029",
+      "density": "empty",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8999999761581421,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9300000071525574,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v1",
+      "group_id": "ancestry-development-30261029",
+      "density": "empty",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9700000286102295,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9800000190734863,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v2",
+      "group_id": "ancestry-development-30261029",
+      "density": "empty",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8399999737739563,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.824999988079071,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v0",
+      "group_id": "ancestry-development-30261030",
+      "density": "sparse",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8450000286102295,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8100000023841858,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v1",
+      "group_id": "ancestry-development-30261030",
+      "density": "sparse",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8199999928474426,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.824999988079071,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v2",
+      "group_id": "ancestry-development-30261030",
+      "density": "sparse",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9200000166893005,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8799999952316284,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v0",
+      "group_id": "ancestry-development-30261031",
+      "density": "dense",
+      "skin": "clean",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v1",
+      "group_id": "ancestry-development-30261031",
+      "density": "dense",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v2",
+      "group_id": "ancestry-development-30261031",
+      "density": "dense",
+      "skin": "no_grid",
+      "automatic": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8999999761581421,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      },
+      "oracle_geometry": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8999999761581421,
+        "exact_locked_board": false,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "exact_known_layers": 0,
+        "known_layers": 2
+      }
+    }
+  ],
+  "elapsed_seconds": 15.505623300006846,
+  "script_sha256": "231a16d3411f82fae0b597d3b2e0fda091f8618e81ad57598c846e795f19a1fb",
+  "scope": "Conditional oracle geometry intervention on saved synthetic probes. Labels deliberately enter the diagnostic forward; not deployment accuracy, a capacity ceiling, training, or a production parser correction."
+}

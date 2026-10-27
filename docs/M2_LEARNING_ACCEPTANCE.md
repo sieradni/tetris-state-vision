@@ -159,8 +159,23 @@ resource profile; its first128-update optimization diagnostic is distinct from
 adequately converged scratch evaluation. It must retain explicit wall partial
 status and resume the same source/recipe/optimizer rather than reset learning.
 
-A planned oracle-lattice intervention deliberately supplies supported synthetic
+The oracle-lattice intervention deliberately supplies supported synthetic
 geometry only in a separate diagnostic forward, to distinguish localization
 from cell-reading effects. It cannot be reported as automatic parser accuracy,
 an upper bound or a production correction. Weights and ordinary output must
 remain unchanged, and ordinary scores must reproduce the saved artifact first.
+The54-forward gate passed on the saved pilot: all ordinary metrics reproduced,
+weights unchanged and decoder restored. Correct geometry gives0 exact boards
+in both splits; cell accuracy changes.7950->.8333 training and.8822->.8583 dev,
+with layers unchanged. These conditional effects do not isolate a universal
+capacity limit or prove that geometry alone is the bottleneck.
+docs/evidence/m2-stream-pilot-geometry/scope.json.
+
+The larger7,694,010-parameter model completed128updates as wall_partial93 plus
+exact resume35; the parent's partial tag, native receipt, snapshot and committed
+prefixes remain attached. All128 data recipes match the pilot's first128.
+Development at128: larger4/18 exact locked boards versus pilot0/18; all four
+larger successes have zero locked cells (nonempty0/14), with0/36 exact layers
+and2.4785-cell geometry. This one-seed, short-budget diagnostic does not select
+architecture or establish convergence. Full curation and counts are in
+docs/evidence/m2-stream-accuracy128-r2/analysis.json and scope.json.
