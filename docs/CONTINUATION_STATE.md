@@ -37,6 +37,17 @@ After20new compare all20 unbanked s3 data/loss/terms/gradient rows against s4
 recomputation (time excluded);old1172 tensors unavailable. If only long wait
 remains,commit live discovery state and end turn,do not babysit indefinitely.
 
+Live s4 verified worker30892 (redirector4208),child supervisor31064 (launcher27512),
+controller13492/30656,root33104/launch31508. At least12 new updates observed.
+NEXT finite read-only1172 prefix check once s4 curve reaches1172:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128
+--wall-seconds 30 --work-items 1172
+--receipt runs/m2-s4-prefix-r1-job.json --
+.venv/Scripts/python.exe runs/m2-s4-prefix-verify.py
+Logs runs/m2-s4-prefix-r1.log/.stderr.log;
+sentinel docs/evidence/m2-stream-accuracy1172-recomputed-r1/scope.json.
+Expected<96MiB;native Job/pressure guard. No Torch/forward/update and no live
+file edits;copy exactly1172 complete rows per ledger,exclude elapsed only.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:
