@@ -113,6 +113,8 @@ def main():
                 raise ValueError("finite45-probe budget or saved population differs")
             for recipe in recipes:
                 sample_kwargs, target_kwargs = replay_keywords(recipe, capacity)
+                if manifest["config"].get("layer_evidence", False):
+                    target_kwargs["layer_evidence"] = True
                 case = sample_case(recipe["group_index"], recipe["view"], split, recipe["base_seed"], **sample_kwargs)
                 if json.loads(json.dumps(case.record)) != recipe:
                     raise ValueError("error probe recipe/pixel/label identity differs")

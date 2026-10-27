@@ -9,7 +9,7 @@ TYPE_NAMES = tuple("IOTSZJLG")
 PIECE_NAMES = tuple("IOTSZJL")
 
 
-def targets_for(state, prepared, *, component_capacity=0):
+def targets_for(state, prepared, *, component_capacity=0, layer_evidence=False):
     check(state.board is None or (state.board.width == 10 and state.board.height == 20),
           "M2 target capacity is one 10x20 board")
     width, height = prepared.padded_size
@@ -79,6 +79,12 @@ def targets_for(state, prepared, *, component_capacity=0):
         "occupied": occupied, "known": known, "semantic": semantic, "typed": typed,
         "layer_type": layer_type, "layer_known": layer_known, "pose_known": pose_known,
         "column": column, "row": row, "rotations": rotations}.items()}
+    check(type(layer_evidence) is bool, "layer evidence target option must be boolean")
+    if layer_evidence:
+        from .layer_evidence import dense_targets
+        # Image support is independent of whether locked occupancy is certain.
+        support = cell_valid if registered and readable_scale else torch.zeros_like(known)
+        result["layer_cells"] = dense_targets(state, result, support[None])
     check(type(component_capacity) is int and 0 <= component_capacity <= 64, "bounded optional component target capacity required")
     if component_capacity:
         # Source Icon fields have no pixel support geometry. Until a resized
@@ -140,6 +146,11 @@ def stage_loss(output, target):
     result = {"geometry": geometry, "occupancy": occupancy, "semantic": semantic,
             "visibility": visibility, "registration": registration, "layers": layers,
             "layer_visibility": layer_visibility, "pose": pose}
+    check(("layer_cells" in output) == ("layer_cells" in target), "layer evidence outputs/targets must match")
+    if "layer_cells" in output:
+        label = target["layer_cells"]
+        result["layer_cells"] = balanced_occupancy(output["layer_cells"].flatten(0, 1),
+            label["occupied"].flatten(0, 1), label["known"].flatten(0, 1))
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -153,7 +164,7 @@ def joint_loss(outputs, target):
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1., "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
-               "components": .5}
+               "components": .5, "layer_cells": .5}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
@@ -167,7 +178,11 @@ def diagnostic_metrics(outputs, target):
     cell_accuracy = float((right & known).sum()/known.sum()) if count else None
     geometry = geometry_error(final["lattice"], target["lattice"]).norm(dim=-1).mean(-1)
     registered = target["registered"]
-    return {"known_cells": count, "cell_accuracy": cell_accuracy,
+    result = {"known_cells": count, "cell_accuracy": cell_accuracy,
             "exact_locked_board": bool(right.all()) if count == known.numel() else None,
             "mean_geometry_error_cells": float(geometry[registered].mean()) if bool(registered.any()) else None,
             "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."}
+    if "layer_cells" in final:
+        from .layer_evidence import grid_metrics
+        result.update(grid_metrics(final["layer_cells"], target["layer_cells"], target["layer_type"]))
+    return result

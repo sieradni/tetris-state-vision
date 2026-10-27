@@ -107,7 +107,8 @@ def main():
                 require(json.loads(json.dumps(case.record)) == {k: v for k, v in recipe.items() if k != "step"},
                         "source pixels/labels/recipe differ")
                 prepared = prepare_image(case.frame.image, max_side=512)
-                target = targets_for(case.frame.state, prepared)
+                target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                target = targets_for(case.frame.state, prepared, **target_kwargs)
                 require(prepared.pixels.shape[-2]*prepared.pixels.shape[-1] <= 512**2 and int(target["known"].sum()) == 200,
                         "actual trainer input/target admission differs")
                 raw = {key: target[key][0].tolist() for key in ("layer_known", "pose_known", "layer_type", "column", "row", "rotations")}

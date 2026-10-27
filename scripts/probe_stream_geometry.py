@@ -107,7 +107,8 @@ def main():
                     prepared = prepare_image(image, max_side=512)
                 if file_digest(stem.with_suffix(".json")) != recipe["state_sha256"]:
                     raise ValueError("saved geometry probe annotation differs")
-                target = targets_for(case.frame.state, prepared)
+                target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                target = targets_for(case.frame.state, prepared, **target_kwargs)
                 if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
                     raise ValueError("oracle geometry requires fully supported synthetic board")
                 automatic = model(prepared.pixels[None], prepared.valid[None])

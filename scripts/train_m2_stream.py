@@ -24,6 +24,7 @@ def arguments(argv=None):
     parser.add_argument("--model", choices=("pilot", "accuracy"), required=True)
     parser.add_argument("--component-capacity", type=int, default=0,
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
+    parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
@@ -142,7 +143,7 @@ def main(argv=None, *, _archive=None, _started=None):
     torch.use_deterministic_algorithms(True)
     torch.manual_seed(args.seed)
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
-    config = replace(config, component_capacity=args.component_capacity)
+    config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence)
     config_json = json.loads(json.dumps(asdict(config)))
     if args.admission is not None:
         admit = args.admission.resolve()
@@ -166,7 +167,8 @@ def main(argv=None, *, _archive=None, _started=None):
         maximum_pixels = max(maximum_pixels, prepared.pixels.shape[-2]*prepared.pixels.shape[-1])
         if maximum_pixels > 512**2:
             raise ValueError("512-square input budget exceeded")
-        target = targets_for(case.frame.state, prepared, component_capacity=args.component_capacity)
+        target = targets_for(case.frame.state, prepared, component_capacity=args.component_capacity,
+                             layer_evidence=args.layer_evidence)
         if int(target["known"].sum()) != 200:
             raise ValueError("curriculum input admission requires all 200 visible locked cells")
         return prepared, target
@@ -217,6 +219,10 @@ def main(argv=None, *, _archive=None, _started=None):
                 "mean_geometry_error_cells": sum(row["mean_geometry_error_cells"] for row in per_case)/len(per_case),
                 "exact_known_layers": sum(row["exact_known_layers"] for row in per_case),
                 "known_layers": sum(row["known_layers"] for row in per_case), "cases": per_case}
+        if args.layer_evidence:
+            for key in ("dense_layer_grids_known", "dense_layer_grids_exact",
+                        "dense_observed_visible_grids_known", "dense_observed_visible_grids_exact"):
+                result[key] = sum(row[key] for row in per_case)
         if args.component_capacity:
             result.update(readable_component_cases=sum(row["components"]["component_state_readable"] for row in per_case),
                           exact_readable_components=sum(row["components"]["exact_readable_components"] is True for row in per_case),

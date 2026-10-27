@@ -26,6 +26,7 @@ class ModelConfig:
     max_batch: int = 4
     max_pixels: int = 1_048_576
     component_capacity: int = 0
+    layer_evidence: bool = False
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -36,6 +37,7 @@ class ModelConfig:
         check(1 <= self.max_batch <= 4 and 4096 <= self.max_pixels <= 1536**2, "invalid work capacity")
         check(type(self.component_capacity) is int and 0 <= self.component_capacity <= 64,
               "component capacity must be0 (M2) or1..64 (M3)")
+        check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
 
     @classmethod
     def pilot(cls):
@@ -204,6 +206,11 @@ class TetrisStateNet(nn.Module):
         if config.component_capacity:
             from .components import ComponentDecoder
             self.components = ComponentDecoder(dimension, config.heads)
+        # Last initialization preserves common seeded tensors in paired studies.
+        self.layer_evidence = None
+        if config.layer_evidence:
+            from .layer_evidence import LayerEvidence
+            self.layer_evidence = LayerEvidence(dimension)
 
     def forward(self, pixels, valid):
         check(pixels.ndim == 4 and pixels.shape[1] == 3 and pixels.is_floating_point(), "expected BCHW floating RGB")
@@ -233,6 +240,10 @@ class TetrisStateNet(nn.Module):
             combined_valid = torch.cat((torch.ones(cells.shape[:2], dtype=torch.bool, device=pixels.device), context_valid), dim=1)
             layers = self.layer_reader(self.layer_queries.expand(batch, -1, -1)+board,
                                        combined, combined, key_padding_mask=~combined_valid, need_weights=False)[0]
+            layer_cells = None
+            if self.layer_evidence is not None:
+                layer_cells, local_layers = self.layer_evidence(cells)
+                layers = layers+local_layers
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
             stages.append({"lattice": lattice, "occupancy": self.occupancy(cells).reshape(batch, rows, columns),
                            "semantic": self.semantic(cells).reshape(batch, rows, columns, 8),
@@ -241,6 +252,8 @@ class TetrisStateNet(nn.Module):
                            "layer_type": self.layer_type(layers), "layer_known": self.layer_known(layers).squeeze(-1),
                            "pose_rotation": self.pose_rotation(layers), "pose_column": self.pose_column(layers),
                            "pose_row": self.pose_row(layers), "sample_points": points, "sample_offsets": offsets})
+            if layer_cells is not None:
+                stages[-1]["layer_cells"] = layer_cells
             if self.components is not None:
                 stages[-1]["components"] = self.components(combined, combined_valid, board, capacity=self.config.component_capacity)
         return {"stages": stages, "final": stages[-1]}

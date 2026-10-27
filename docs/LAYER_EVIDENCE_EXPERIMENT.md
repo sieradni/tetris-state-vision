@@ -17,7 +17,8 @@ truth never enters normal forward or evaluation. Locked predictions are unchange
 by any explicit layer subtraction,and overlapping active/ghost targets are legal.
 
 Targets derive solely from the supported public state and existing prepared
-canonical/layer masks. Unknown layer or unregistered cells supply no negatives.
+canonical image-coverage/layer masks,independent of locked occupancy certainty.
+Unknown layer or unregistered cells supply no negatives.
 Known absence supplies supported zeros. An observed layer supplies supported
 positive cells within the visible20 rows;spawn cells remain the existing pose
 head's responsibility. This visible-grid auxiliary target is not a complete

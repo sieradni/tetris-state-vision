@@ -21,7 +21,7 @@ ORIGINAL source121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
 Controller11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4;
 native supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-No current trainer/model edits yet;safe independent optional code may change
+Current optional trainer/model source edits are candidates;independent code may change
 current package while s6 executes frozen original archive. Do NOT edit active
 scripts/run_stream_segment.py until its entire process tree exits. Entire BUG_LOG has now been read;
 LAYER_EVIDENCE_EXPERIMENT.md records exact optional-path design,all prior bug
@@ -54,6 +54,15 @@ result.json;child same-prefix-job.json and .log/.stderr.log. Expected<1100MiB,
 parent1280MiB/2100s/work512,child1024MiB/1860s outer/1800s inner,curator128MiB/120s.
 Checkpoint exact launch/PIDs before wait and freeze active controller bytes.
 
+IN PROGRESS optional source path: new layer_evidence.py,default-off ModelConfig,
+predicted cell pooling,independent supported visible-cell targets/loss and separate
+observed/absent grid metrics are implemented but UNTESTED. Frozen trainer option
+and diagnostic keyword forwarding are drafted. Active controller remains untouched;
+controller routing update waits for s6 to exit. New neural catalogue invalidates
+fresh use of old M3 admissions;old archives/scopes remain valid on their bytes.
+Next implement paired-raster/overlap/gradient/default-off legacy/checkpoint tests,
+then run serialized bounded model checks and fresh warm admission. No new-path
+training/model-quality claim. Source checkpoints are candidates pending gates.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
