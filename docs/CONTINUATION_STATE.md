@@ -206,3 +206,21 @@ terminal proof.json. Serialized children640MiB/90s/work2,6,3,3;32 fit probes+
 and helper until terminal; then verify every PID/command death and exact curve/
 model/Adam/RNG/evaluation proof, native curators and fresh admission before fit.
 LIVE all-class recovery launcher20860, exact command verified; no other model Job.
+
+Native fit recovery r4 INTERRUPTED by verified OS Modern Standby, not model/RNG
+failure. Ancestor124/wall_timeout elapsed674.640s against420s; resumed124 elapsed
+569.190s against90s. System Kernel-Power506 Lid at12:11:29 and507 exit Lid at
+12:20:57,with battery-austerity transitions; no41/1001 in window. On wake overdue
+Jobs stopped within .2s. All15 known PIDs and exact commands gone. Profile2,
+continuous6 andpartial3 completed; resumed no reported update/summary. Full
+recovery remains UNPROVEN. Raw source receipts/curves/progress/power events in
+ docs/evidence/allclass-recovery-standby-r1/. No host crash,cap bypass,power edit
+or debugger. Preserve failed r4; never rerun its output. Source unchanged6147.
+NEXT fresh r5 after machine wake, same expected<700MiB and1GiB/420s/work14:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 420
+--work-items 14 --receipt runs/m2-stream-recovery-gate-r5-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_recovery.py --output runs/m2-stream-recovery-gate-r5
+--curriculum all-class-fit-v1
+Logs same-prefix.log/.stderr.log; state run/progress.json,terminal proof.json.
+Children640MiB/90s,2+6+3+3. Fresh invocation authorized by resolved external
+interruption; guards/source/recipe unchanged. Still no long fit admitted.
