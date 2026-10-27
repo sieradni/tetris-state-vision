@@ -44,7 +44,11 @@ No complete screenshot parser or real-image accuracy is claimed.
    locked false positives. It remains default off. LAYER_LEARNING_PILOT.md records
    raw source/data/artifact-bound results and coverage limits. Retain the original
    baseline; investigate class collapse with an all-class positive-control fit
-   before selecting another learning mechanism.
+   before selecting another learning mechanism. Its32 balanced public-observer
+   fixtures now pass5 source-bound checks and exact file/pixel/recipe replay;
+   ALL_CLASS_FIT.md predeclares the fit criterion. A frozen fit driver, fresh
+   warm resource admission and actual fitting remain open. Disk below40GB holds
+   long training; source work continues without deleting run data.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.

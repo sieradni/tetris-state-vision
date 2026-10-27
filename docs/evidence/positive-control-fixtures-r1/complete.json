@@ -1,0 +1,32 @@
+{
+  "status": "complete",
+  "images": 32,
+  "ancestry_groups": 16,
+  "split": "fit",
+  "role_class_counts": {
+    "active": {
+      "I": 4,
+      "O": 4,
+      "T": 4,
+      "S": 4,
+      "Z": 4,
+      "J": 4,
+      "L": 4,
+      "absent": 4
+    },
+    "ghost": {
+      "I": 4,
+      "O": 4,
+      "T": 4,
+      "S": 4,
+      "Z": 4,
+      "J": 4,
+      "L": 4,
+      "absent": 4
+    }
+  },
+  "generator_sha256": "484a9497d9acdf47471093fd693c2f3c5ad576e12a0592dc75ed3bc5ba03058a",
+  "package_sha256": "24462b0b712328bae37cc890296b0ec34542b50c7ad698575419377e66e216f8",
+  "manifest_sha256": "f6a2de4620cc43bed442c923a0b97e725de829ba11fa91c2118ddec9075ccb49",
+  "scope": "Image-supported synthetic fit fixtures only. No model forward, training admission or real accuracy."
+}

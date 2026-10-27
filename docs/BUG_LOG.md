@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-026 — OPEN: new fixture writer could change hashed newlines on Windows
+## V-026 — CLOSED: new fixture writer could change hashed newlines on Windows
 
 - Symptom: pre-run review found the new positive-control writer hashed UTF-8
   strings but used text-mode writes for states and the manifest. No affected
@@ -30,8 +30,15 @@ a named green run. An unrun gate leaves the entry OPEN.
   fixture: actual state/PNG/decoded-pixel/manifest hashes must match records,
   and output reuse must refuse without changing prior bytes. Extends the
   standing computed-byte-identity instrument.
-- Pending green gate: positive-control-tests-r1 (five cases), plus actual bounded
-  fixture generation/replay. Keep OPEN until named source-bound evidence runs.
+- Green gates: docs/evidence/positive-control-fixture-contracts/scope.json pins
+  positive-control-tests-r1.stderr.log,5/5 in1.335s (native1.690s,52,592,640B/
+  128MiB), including actual32-image state/PNG/pixel/manifest byte checks and
+  reuse refusal. docs/evidence/positive-control-fixtures-r1/scope.json separately
+  replays and byte-verifies all32 actual generated images/public states and
+  eight-class counts per role. Generation.652s/46,616,576B, replay.879s/
+  80,752,640B, both128MiB/30s. Native receipts and executed sources are retained;
+  every known process and exact Python command was verified gone. No training
+  admission or model-accuracy claim follows.
 
 ## V-025 — CLOSED: absence fixture hid part of the active spawn domain
 

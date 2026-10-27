@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "curator_seconds": 0.879,
+  "curator_peak_bytes": 80752640,
+  "verified_dead_pids": [
+    21596,
+    24488,
+    21512,
+    21628,
+    12232,
+    19276
+  ],
+  "artifact_sha256": {
+    "positive-control-data-curation-r1.log": "759c5056292cdb0ef58ff46157c96697f8926848a17affefeab589f21c21813d",
+    "positive-control-data-curation-r1.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "positive-control-data-curation-r1.json": "429fdc899effe76180c84bdd26983cf5f821decf7c6b8c2777231bed19b2cc19"
+  }
+}

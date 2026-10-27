@@ -34,6 +34,13 @@ two-full-square-step warm-Adam/restore/output parity, then a predeclared finite
 fit with explicit partial/recovery handling. No tensor cache, CPU1/cache16,
 unchanged kernel/pressure guards, and more than 40 GB free before long training.
 
+The fixture gate is now green: five public-label/coverage/replay/file-byte tests
+on26 hashed sources, and a separate native32-image generation plus exact PNG/
+state/recipe/source replay. Every role class, including absence, has four views.
+Evidence: `docs/evidence/positive-control-fixture-contracts/scope.json` and
+`docs/evidence/positive-control-fixtures-r1/scope.json`. These establish supported
+fit data, not a trained model or a resource admission for the future fit driver.
+
 Prior-bug interaction review (current ledger read before this diagnostic):
 
 - V-001/002/005/006/016: existing observer/prepared masks remain authoritative;

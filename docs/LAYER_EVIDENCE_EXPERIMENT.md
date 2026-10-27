@@ -1,5 +1,10 @@
 # Optional cell evidence for active and ghost learning
 
+Current outcome: both matched768-update studies and the192-image disjoint-ancestry
+audit are complete. The option remains default off; it did not establish improved
+joint learning. See [the verified pilot report](LAYER_LEARNING_PILOT.md). The
+protocol and earlier checkpoints below preserve what was declared before results.
+
 This is a controlled learning candidate,not a selected successor. The original
 4096-update baseline continues with its original source/optimizer/recipe. At2176,
 it still has0/18 exact development boards and0/36 exact layers. Exact target
