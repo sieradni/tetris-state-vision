@@ -46,9 +46,13 @@ Result architecture/capacity comes from the verified artifact. The controller
 captures its source identity before planning and refuses a verified result if
 the file changes while children run. Do not edit an active controller file.
 
-Sixteen scoped tests pass in1.298s,57,577,472B peak under192MiB/60s. Byte-level
+Sixteen scoped tests pass in1.275s,57,405,440B peak under192MiB/60s on b8eb48a:
+`docs/evidence/segment-controller-contracts/scope.json`. Byte-level
 source validation is isolated in planning fixtures and has separate source gates;
 dummy fixture trainers never execute. The negative named-Job check uses a real
 subprocess. These tests do not establish actual M3 training, native end-to-end
 controller recovery, long varied-shape memory or model quality. New actual
-1152 preflight/continuation and joint controller integration remain pending.
+continuation and joint controller integration remain pending. Actual original1152
+archive/snapshot/admission preflight passes in.353s,34,402,304B under128MiB/30s:
+`docs/evidence/m2-s4-preflight-r1/scope.json`. It selects the original archived
+trainer and original recipe, creates no output and performs no forward/update.
