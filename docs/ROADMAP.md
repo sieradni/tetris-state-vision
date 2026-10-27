@@ -18,10 +18,13 @@ No complete screenshot parser or real-image accuracy is claimed.
    error; M2 learning remains OPEN. See the named analysis below.
 2. The actual larger model (7,694,010 parameters) passed its first two-step
    characterization at1GiB:910,176,256B peak, full warm/recovery/output parity,
-   docs/evidence/m2-stream-accuracy-probe/scope.json. Next is a finite128-update
-   fresh-data optimization diagnostic, then adequately train fresh states/positions, measure board,
-   geometry and independent active/ghost errors, and repair the learning failure
-   before choosing architecture or initialization. Preserve explicit partial
+   docs/evidence/m2-stream-accuracy-probe/scope.json. Its128-update diagnostic
+   completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
+   boards0/14,layers0/36,geometry2.4785cells. Next verify the finite segment
+   controller, then adequately train a fixed4096-update fresh-state baseline in
+   bounded resumable segments. Measure board, geometry and independent active/
+   ghost errors and repair the learning failure before choosing architecture or
+   initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
    earlier fixed-fit criterion; a lower loss is not complete-state success.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
@@ -46,8 +49,11 @@ Verified foundations and their limits:
 | Fixed-data learning16/128/saved511 | docs/evidence/m2-learn16/, m2-learn128/, m2-learn512/ | Saved511/512 fits6 boards but layers10/12 and geometry.4106 fail joint fit; dev0/6 |
 | Local single-cell reading | docs/evidence/m2-local-reading/scope.json |36/36 probability direction, only20/36 targets and18/36 changed boards exact; two unrelated changes |
 | Streaming diverse memory/learning | docs/evidence/m2-stream-learn768-r3/analysis.json and scope.json | Resource gate green; dev0/18 boards,0/36 layers; no real/whole-state quality |
+| Larger model learning128 | docs/evidence/m2-stream-accuracy128-r2/analysis.json and scope.json | Exact93+35 continuation; all four exact dev boards have no locked blocks; nonempty0/14 |
+| Oracle-grid diagnostic | docs/evidence/m2-stream-pilot-geometry/scope.json | Deliberate supported-label intervention still0 exact boards; not automatic accuracy |
 | CPU resource/recovery contracts | docs/evidence/v015-contracts/scope.json;29 scoped checks on f583792 | Not a whole-suite or model-accuracy claim |
 | Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
+| Actual pressure interruption recovery | docs/evidence/segment-pressure-recovery/scope.json | Saved larger step1 restored; segment controller stopped before final evaluation/curation and remains unverified |
 | Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |
 | Queue/hold label policy | docs/evidence/m3-component-targets/scope.json;8 fixtures incl paired hidden rasters | No component neural heads/loss/runtime yet |
 | Corpus audit/review/split/seal tooling | docs/evidence/corpus-integrity-final/scope.json;26 adversarial checks | Correct reviewed labels and real-image model results |

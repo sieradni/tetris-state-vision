@@ -57,7 +57,8 @@ Version3 resource characterization includes actual snapshot save/load parity and
 a second full-square warm backward. Source execution itself is bound to the
 archive, fixing V-014's misleading parent-file traceback lines. The CPU worker
 requests a16-entry oneDNN cache before import; controlled cache-hit/miss logs
-verify eviction behavior, but V-013's long diverse-shape memory gate is OPEN.
+verify eviction behavior. V-013's finite768-update diverse-shape gate now passes
+at640MiB; broader untested shape/run behavior remains uncharacterized.
 
 Native gate: runs/m2-stream-recovery-gate-r2/proof.json, source catalogue
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
@@ -73,6 +74,13 @@ The completed artifact retains its parent's `wall_partial` receipt and all three
 ledger-prefix identities. Curated source/snapshot/tensor/prefix verification:
 docs/evidence/m2-stream-accuracy128-r2/scope.json. This does not relabel the first
 Job as complete or claim that the second Job performed128updates.
+
+An actual OS-pressure interruption also saved recovery step1 before final
+evaluation was killed (native exit125). A separate512MiB restore loaded the
+larger model,238 Adam parameter states, CPU RNG and committed ledgers without
+another forward/update. It passed at467,935,232B raw peak. The interrupted run
+has no final summary; this verifies saved-state recovery, not successful segment
+completion. Evidence: docs/evidence/segment-pressure-recovery/scope.json.
 
 `record_stream_run.py --allow-partial` now also preserves controlled `wall_partial`
 and `step_partial` artifacts explicitly. Default completion remains strict;

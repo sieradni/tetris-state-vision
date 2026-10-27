@@ -78,6 +78,12 @@ peak growth. Development still has0/18 exact boards and1.85-cell mean geometry
 error. [Evidence](docs/evidence/m2-stream-learn768-r3/analysis.json) establishes
 resource/recovery progress; M2 learning and whole-state quality remain open.
 
+The larger7.69-million-parameter candidate also passed its1GiB resource profile
+and completed a128-update diagnostic using exact93+35 recovery. Its four exact
+development boards all have no locked blocks; nonempty boards remain0/14 and
+active/ghost layers0/36. [Recorded comparison](docs/evidence/m2-stream-accuracy128-r2/analysis.json)
+does not establish convergence or real-image accuracy.
+
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
 unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with
