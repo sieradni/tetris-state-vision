@@ -159,3 +159,19 @@ selected source while gates run. Then source-pin receipts; fresh native warm/
 continuous6==3+3 fit gate and current-default numerical probe remain required
 before any long fit. Full objective/32-case fit criterion unchanged.
 LIVE six fit metadata groups; exact launchers/commands in runs/fit-protocol-launches-r1.json, all verified after spawn. No other owned job. Freeze selected source and inspect each native terminal receipt/stdout/stderr/PID before curation.
+All42 selected protocol cases GREEN; every recorded launcher/supervisor/child
+PID verified gone. Exact raw outcomes in runs/fit-protocol-plan-r1.json stems.
+NEXT source curator expected<110MiB,128MiB/30s/work42; command in
+runs/fit-protocol-curation-r1-command.json. record_test_gates.py
+--name allclass-fit-protocol-contracts --base8b36668,6gates/31sources.
+Receipt/log runs/fit-protocol-curation-r1.json/.log/.stderr.log; final
+ docs/evidence/allclass-fit-protocol-contracts/scope.json. Nativeguards unchanged.
+Then current default profile2,expected<600MiB,640MiB/120s/work2:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 2 --receipt runs/m2-stream-default-policy-profile-r1-job.json --
+.venv/Scripts/python.exe scripts/train_m2_stream.py --output runs/m2-stream-default-policy-profile-r1
+--model pilot --steps 2 --wall-seconds 60 --development-groups 6 --profile-square
+Logs same-prefix.log/.stderr.log,terminal run/summary.json/progress.json;
+compare weights/data/loss/terms/gradients and every common metric to actual prior
+runs/m2-stream-layer-control-profile-r1,excluding elapsed/source metadata only.
+Fresh catalogue will be derived from actual archive; no guessed hash.
