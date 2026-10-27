@@ -147,3 +147,14 @@ Design/limits/comparison denominators predeclared in LAYER_EVIDENCE_EXPERIMENT.m
 LIVE true-learning launcher24808, exact command verified. Freeze controller and imported helpers during segment; no other model Job.
 True learning s1 VERIFIED step_partial128/768,parent42.626s/545,067,008B; all known PIDs gone; raw controller/curator receipts saved with hashes. Next false command predeclared above,896MiB/420s/128updates,640MiB child,expected<700MiB,native guards.
 LIVE false learning launcher35596, exact command verified. Freeze controller/helper bytes.
+Both matched s1 segments VERIFIED step_partial128/768. False parent42.238s/
+544,845,824B; all known PIDs gone. NEXT read-only comparison (no model forwards):
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 310 --receipt runs/layer-learning128-comparison-r1-job.json --
+.venv/Scripts/python.exe runs/compare_layer_studies.py
+--control m2-stream-layer-control768-s1 --candidate m2-stream-layer-evidence768-s1
+--output docs/evidence/layer-learning128-comparison-r1
+Logs runs/layer-learning128-comparison-r1.log/.stderr.log. Expected<96MiB,
+128MiB kernel cap/native pressure/CPU1 guards. Verify recipes/config/actualweights,
+27+27 supported states and256 curve records; total joint losses not compared.
+Comparison launcher18588, exact command verified.

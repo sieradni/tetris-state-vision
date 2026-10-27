@@ -1,0 +1,27 @@
+{
+  "artifact_sha256": {
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-result.json": "1f974982430d75a4f36c8a6d380d0c82f6cc1df8c3a89e32550a9f8ddf368301",
+    "controller-curation.log": "56d3907cdaa1def2b5772b4cfa60600834c0404619e73d38f6396d36c9a87911",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-job.json": "2dd60c9eadf0a1bd16d5d3bb2e53393faae9be7e963a0ad09202e5bdac7592d1",
+    "controller.log": "63f6bfe9d58f5662b1416676586315354894fd650b626b66a3f7a06d2f77dece",
+    "controller-curation-job.json": "ff50e0fd2da131b5f53ad295fcdab04bf273c52a1ee6cd9f28d651db19acdbd4"
+  },
+  "layer_evidence": false,
+  "requested_steps": 768,
+  "verified_dead_pids": [
+    35596,
+    28924,
+    15632,
+    14156,
+    14272,
+    33952,
+    10040,
+    21696
+  ],
+  "controller_sha256": "dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad",
+  "weights_sha256": "acf391b303542cfb99c8d1142c23b4d29d523077eb5b4efd845486db751c3803",
+  "status": "verified_partial",
+  "global_steps": 128
+}
