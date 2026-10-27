@@ -176,3 +176,4 @@ compare weights/data/loss/terms/gradients and every common metric to actual prio
 runs/m2-stream-layer-control-profile-r1,excluding elapsed/source metadata only.
 Fresh catalogue will be derived from actual archive; no guessed hash.
 Protocol curator launcher8652, exact command verified.
+42-case scope preserved, all31 source hashes rechecked; curator PIDs gone. LIVE default profile launcher25072, exact predeclared command verified; no other owned Job.

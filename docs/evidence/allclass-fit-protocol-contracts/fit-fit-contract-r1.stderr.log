@@ -1,0 +1,9 @@
+test_absence_cannot_replace_observed_classes_or_zero_semantic_support (test_fit_contract.FitContractTests.test_absence_cannot_replace_observed_classes_or_zero_semantic_support) ... ok
+test_any_board_pose_colour_or_geometry_miss_fails_fit (test_fit_contract.FitContractTests.test_any_board_pose_colour_or_geometry_miss_fails_fit) ... ok
+test_missing_duplicate_unknown_or_falsely_aggregated_support_refuses (test_fit_contract.FitContractTests.test_missing_duplicate_unknown_or_falsely_aggregated_support_refuses) ... ok
+test_perfect_declared_fit_has_explicit_observed_and_absent_denominators (test_fit_contract.FitContractTests.test_perfect_declared_fit_has_explicit_observed_and_absent_denominators) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.018s
+
+OK

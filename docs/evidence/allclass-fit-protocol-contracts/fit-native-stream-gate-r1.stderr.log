@@ -1,0 +1,8 @@
+test_fit_policy_is_explicit_and_refuses_joint_capacity (test_native_stream_gate.NativeStreamGateTests.test_fit_policy_is_explicit_and_refuses_joint_capacity) ... ok
+test_joint_gate_without_named_job_never_creates_or_launches_work (test_native_stream_gate.NativeStreamGateTests.test_joint_gate_without_named_job_never_creates_or_launches_work) ... ok
+test_m2_default_and_joint_capacity_are_explicit (test_native_stream_gate.NativeStreamGateTests.test_m2_default_and_joint_capacity_are_explicit) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.322s
+
+OK
