@@ -158,3 +158,4 @@ small metadata jobs; combined six ceilings768MiB, no model Job overlaps. Freeze
 selected source while gates run. Then source-pin receipts; fresh native warm/
 continuous6==3+3 fit gate and current-default numerical probe remain required
 before any long fit. Full objective/32-case fit criterion unchanged.
+LIVE six fit metadata groups; exact launchers/commands in runs/fit-protocol-launches-r1.json, all verified after spawn. No other owned job. Freeze selected source and inspect each native terminal receipt/stdout/stderr/PID before curation.
