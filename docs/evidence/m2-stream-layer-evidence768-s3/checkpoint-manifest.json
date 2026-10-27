@@ -1,0 +1,121 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M2",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 0,
+    "layer_evidence": true
+  },
+  "weights_sha256": "a026ec06f2100076b1fa3d16d735cef70035ee80545df91f5f4becc225f622a2",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 647228,
+  "metadata": {
+    "trained_steps": 768,
+    "catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+    "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "system_pressure_guard": "GetPerformanceInfo/0.2s",
+    "runtime_source_sha256": "24462b0b712328bae37cc890296b0ec34542b50c7ad698575419377e66e216f8",
+    "model_kind": "pilot",
+    "component_capacity": 0,
+    "input_policy": "M2-prepared-resize-v1",
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-layer-evidence768-s3",
+      "model": "pilot",
+      "component_capacity": 0,
+      "layer_evidence": true,
+      "steps": 768,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 1800.0,
+      "evaluate_every": 128,
+      "development_groups": 6,
+      "profile_square": false,
+      "admission": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-layer-pilot-profile-r1",
+      "checkpoint_every": 64,
+      "resume_from": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-layer-evidence768-s2",
+      "max_new_steps": 256
+    },
+    "stream_ledger_sha256": "79325f5a30e78f938a400b65aadbeedeea39646fe678c0b8a63c83731c3a23b5",
+    "cpu_only": true,
+    "resume": {
+      "source_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-layer-evidence768-s2",
+      "step": 512,
+      "pointer": {
+        "format": "tetris-vision-training-snapshot",
+        "generation": "step-000512-5cc47c6f44e84543836f10e078940582",
+        "manifest_sha256": "6c1511b1e400c4844859cf3635e58d992630abe4dae19ca86285efeb3959083c",
+        "version": 1
+      },
+      "ledger_prefix_sha256": {
+        "curve.jsonl": "900b601d3616c17de6078d6234ff871bb33413728216037046c3d3ccc737a9d7",
+        "evaluations.jsonl": "d21cf18f34aaff10c406d75a3593d0bbc4e75d220f1f5fddc72ceec2502c830b",
+        "training.jsonl": "4affb530eb6af2d53755a0cdc964d925cd1eed1d3308f5a9a527bd013e528fea"
+      }
+    },
+    "latest_training_snapshot": {
+      "format": "tetris-vision-training-snapshot",
+      "version": 1,
+      "generation": "step-000768-4b10604031f740ec9e952d7233ac82f5",
+      "manifest_sha256": "6ea435884ec7b2a4f929d21bb790d92a426111cc888ad262648dac9f68ff44dd"
+    },
+    "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-layer-evidence768-s3\\code\\scripts\\train_m2_stream.py",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "recovery_contract": {
+      "catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+      "config": {
+        "widths": [
+          16,
+          32,
+          64,
+          96
+        ],
+        "dimension": 64,
+        "heads": 4,
+        "blocks": 2,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576,
+        "component_capacity": 0,
+        "layer_evidence": true
+      },
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "weight_decay": 0.01,
+      "steps": 768,
+      "max_side": 512,
+      "development_groups": 6,
+      "evaluate_every": 128,
+      "checkpoint_every": 64,
+      "profile_square": false,
+      "threads": 1,
+      "rng": "torch_cpu_only",
+      "native_cache_limits": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      },
+      "input_policy": "M2-prepared-resize-v1"
+    },
+    "updates_this_run": 256
+  }
+}

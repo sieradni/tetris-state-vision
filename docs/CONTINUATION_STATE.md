@@ -99,3 +99,17 @@ direct decoder comparisons, calibration/export/CPU latency and >=95% exact reada
 real complete-state (abstentions fail). No selected release model; public API
 remains needs_review/unsupported. Target exposure/ordinary/oracle diagnostics are
 evidence, not proof of learning cause or whole-state success.
+True s3 VERIFIED complete768/768,256new frombank512. Parent77.074s/558,313,472B;
+all known PIDs/command tree gone, actual inference/training hashes verified and
+raw controller/curator receipts copied. Pressure-prefix equality still pending.
+NEXT false s2, expected<700MiB,896MiB aggregate/420s/work512,child640MiB:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 512 --receipt runs/m2-stream-layer-control768-s2-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-layer-control768-s2 --target-steps 768 --updates 512
+--admission runs/m2-stream-layer-control-profile-r1
+--resume-from runs/m2-stream-layer-control768-s1
+Logs same-prefix-pipeline.log/.stderr.log, state same-prefix-pipeline/progress.json,
+result.json; child same-prefix-job.json. Expected step_partial640/768. Freeze
+controller/imported helpers; native admission/pressure/CPU1 guards unchanged.
+LIVE false s2 launcher32316, exact command verified.
