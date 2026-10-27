@@ -1,0 +1,1311 @@
+{
+  "contract": {
+    "catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+    "checkpoint_every": 64,
+    "config": {
+      "blocks": 2,
+      "columns": 10,
+      "component_capacity": 0,
+      "dimension": 64,
+      "heads": 4,
+      "layer_evidence": true,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "refinements": 2,
+      "spawn_rows": 6,
+      "visible_rows": 20,
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ]
+    },
+    "development_groups": 6,
+    "evaluate_every": 128,
+    "input_policy": "M2-prepared-resize-v1",
+    "learning_rate": 0.001,
+    "max_side": 512,
+    "native_cache_limits": {
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16",
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "profile_square": true,
+    "rng": "torch_cpu_only",
+    "seed": 20261026,
+    "steps": 2,
+    "threads": 1,
+    "weight_decay": 0.01
+  },
+  "format": "tetris-vision-training-snapshot",
+  "ledgers": {
+    "curve.jsonl": {
+      "bytes": 889,
+      "sha256": "a58e5d337af4613fe028f1879e62fcf265b84ac4e2009bdeb47f570ac1e2b60e"
+    },
+    "evaluations.jsonl": {
+      "bytes": 13419,
+      "sha256": "58c0c5f833732b2b8eff9c766cb71054fbb8deb291541d45774e961a4aecede9"
+    },
+    "training.jsonl": {
+      "bytes": 2410,
+      "sha256": "3ff705a0f76ae1f9df879c0d85d09400dfef0cc58b9e255b715ac93c32d8896d"
+    }
+  },
+  "module_training": {
+    "": true,
+    "board_reader": true,
+    "board_reader.out_proj": true,
+    "box_refine": true,
+    "box_refine.0": true,
+    "box_refine.1": true,
+    "column_embedding": true,
+    "decoders": true,
+    "decoders.0": true,
+    "decoders.0.column": true,
+    "decoders.0.column.out_proj": true,
+    "decoders.0.context": true,
+    "decoders.0.context.out_proj": true,
+    "decoders.0.ff": true,
+    "decoders.0.ff.0": true,
+    "decoders.0.ff.1": true,
+    "decoders.0.ff.2": true,
+    "decoders.0.norms": true,
+    "decoders.0.norms.0": true,
+    "decoders.0.norms.1": true,
+    "decoders.0.norms.2": true,
+    "decoders.0.norms.3": true,
+    "decoders.0.row": true,
+    "decoders.0.row.out_proj": true,
+    "decoders.1": true,
+    "decoders.1.column": true,
+    "decoders.1.column.out_proj": true,
+    "decoders.1.context": true,
+    "decoders.1.context.out_proj": true,
+    "decoders.1.ff": true,
+    "decoders.1.ff.0": true,
+    "decoders.1.ff.1": true,
+    "decoders.1.ff.2": true,
+    "decoders.1.norms": true,
+    "decoders.1.norms.0": true,
+    "decoders.1.norms.1": true,
+    "decoders.1.norms.2": true,
+    "decoders.1.norms.3": true,
+    "decoders.1.row": true,
+    "decoders.1.row.out_proj": true,
+    "encoder": true,
+    "encoder.context16": true,
+    "encoder.context8": true,
+    "encoder.detail2": true,
+    "encoder.detail4": true,
+    "encoder.stages": true,
+    "encoder.stages.0": true,
+    "encoder.stages.0.0": true,
+    "encoder.stages.0.1": true,
+    "encoder.stages.0.2": true,
+    "encoder.stages.0.3": true,
+    "encoder.stages.0.3.layers": true,
+    "encoder.stages.0.3.layers.0": true,
+    "encoder.stages.0.3.layers.1": true,
+    "encoder.stages.0.3.layers.2": true,
+    "encoder.stages.0.3.layers.3": true,
+    "encoder.stages.0.3.layers.4": true,
+    "encoder.stages.1": true,
+    "encoder.stages.1.0": true,
+    "encoder.stages.1.1": true,
+    "encoder.stages.1.2": true,
+    "encoder.stages.1.3": true,
+    "encoder.stages.1.3.layers": true,
+    "encoder.stages.1.3.layers.0": true,
+    "encoder.stages.1.3.layers.1": true,
+    "encoder.stages.1.3.layers.2": true,
+    "encoder.stages.1.3.layers.3": true,
+    "encoder.stages.1.3.layers.4": true,
+    "encoder.stages.2": true,
+    "encoder.stages.2.0": true,
+    "encoder.stages.2.1": true,
+    "encoder.stages.2.2": true,
+    "encoder.stages.2.3": true,
+    "encoder.stages.2.3.layers": true,
+    "encoder.stages.2.3.layers.0": true,
+    "encoder.stages.2.3.layers.1": true,
+    "encoder.stages.2.3.layers.2": true,
+    "encoder.stages.2.3.layers.3": true,
+    "encoder.stages.2.3.layers.4": true,
+    "encoder.stages.3": true,
+    "encoder.stages.3.0": true,
+    "encoder.stages.3.1": true,
+    "encoder.stages.3.2": true,
+    "encoder.stages.3.3": true,
+    "encoder.stages.3.3.layers": true,
+    "encoder.stages.3.3.layers.0": true,
+    "encoder.stages.3.3.layers.1": true,
+    "encoder.stages.3.3.layers.2": true,
+    "encoder.stages.3.3.layers.3": true,
+    "encoder.stages.3.3.layers.4": true,
+    "encoder.window": true,
+    "encoder.window.attention": true,
+    "encoder.window.attention.out_proj": true,
+    "encoder.window.norm": true,
+    "initial_box": true,
+    "initial_box.0": true,
+    "initial_box.1": true,
+    "layer_evidence": true,
+    "layer_evidence.cells": true,
+    "layer_known": true,
+    "layer_reader": true,
+    "layer_reader.out_proj": true,
+    "layer_type": true,
+    "observability": true,
+    "occupancy": true,
+    "offsets": true,
+    "pose_column": true,
+    "pose_rotation": true,
+    "pose_row": true,
+    "registration": true,
+    "row_embedding": true,
+    "sample_reader": true,
+    "sample_reader.0": true,
+    "sample_reader.1": true,
+    "semantic": true
+  },
+  "signature": {
+    "parameter_groups": [
+      [
+        "board_query",
+        "layer_queries",
+        "encoder.stages.0.0.weight",
+        "encoder.stages.0.1.weight",
+        "encoder.stages.0.1.bias",
+        "encoder.stages.0.3.layers.0.weight",
+        "encoder.stages.0.3.layers.1.weight",
+        "encoder.stages.0.3.layers.1.bias",
+        "encoder.stages.0.3.layers.3.weight",
+        "encoder.stages.0.3.layers.4.weight",
+        "encoder.stages.0.3.layers.4.bias",
+        "encoder.stages.1.0.weight",
+        "encoder.stages.1.1.weight",
+        "encoder.stages.1.1.bias",
+        "encoder.stages.1.3.layers.0.weight",
+        "encoder.stages.1.3.layers.1.weight",
+        "encoder.stages.1.3.layers.1.bias",
+        "encoder.stages.1.3.layers.3.weight",
+        "encoder.stages.1.3.layers.4.weight",
+        "encoder.stages.1.3.layers.4.bias",
+        "encoder.stages.2.0.weight",
+        "encoder.stages.2.1.weight",
+        "encoder.stages.2.1.bias",
+        "encoder.stages.2.3.layers.0.weight",
+        "encoder.stages.2.3.layers.1.weight",
+        "encoder.stages.2.3.layers.1.bias",
+        "encoder.stages.2.3.layers.3.weight",
+        "encoder.stages.2.3.layers.4.weight",
+        "encoder.stages.2.3.layers.4.bias",
+        "encoder.stages.3.0.weight",
+        "encoder.stages.3.1.weight",
+        "encoder.stages.3.1.bias",
+        "encoder.stages.3.3.layers.0.weight",
+        "encoder.stages.3.3.layers.1.weight",
+        "encoder.stages.3.3.layers.1.bias",
+        "encoder.stages.3.3.layers.3.weight",
+        "encoder.stages.3.3.layers.4.weight",
+        "encoder.stages.3.3.layers.4.bias",
+        "encoder.window.norm.weight",
+        "encoder.window.norm.bias",
+        "encoder.window.attention.in_proj_weight",
+        "encoder.window.attention.in_proj_bias",
+        "encoder.window.attention.out_proj.weight",
+        "encoder.window.attention.out_proj.bias",
+        "encoder.detail2.weight",
+        "encoder.detail2.bias",
+        "encoder.detail4.weight",
+        "encoder.detail4.bias",
+        "encoder.context8.weight",
+        "encoder.context8.bias",
+        "encoder.context16.weight",
+        "encoder.context16.bias",
+        "board_reader.in_proj_weight",
+        "board_reader.in_proj_bias",
+        "board_reader.out_proj.weight",
+        "board_reader.out_proj.bias",
+        "initial_box.0.weight",
+        "initial_box.0.bias",
+        "initial_box.1.weight",
+        "initial_box.1.bias",
+        "box_refine.0.weight",
+        "box_refine.0.bias",
+        "box_refine.1.weight",
+        "box_refine.1.bias",
+        "row_embedding.weight",
+        "column_embedding.weight",
+        "offsets.weight",
+        "offsets.bias",
+        "sample_reader.0.weight",
+        "sample_reader.0.bias",
+        "sample_reader.1.weight",
+        "sample_reader.1.bias",
+        "decoders.0.row.in_proj_weight",
+        "decoders.0.row.in_proj_bias",
+        "decoders.0.row.out_proj.weight",
+        "decoders.0.row.out_proj.bias",
+        "decoders.0.column.in_proj_weight",
+        "decoders.0.column.in_proj_bias",
+        "decoders.0.column.out_proj.weight",
+        "decoders.0.column.out_proj.bias",
+        "decoders.0.context.in_proj_weight",
+        "decoders.0.context.in_proj_bias",
+        "decoders.0.context.out_proj.weight",
+        "decoders.0.context.out_proj.bias",
+        "decoders.0.norms.0.weight",
+        "decoders.0.norms.0.bias",
+        "decoders.0.norms.1.weight",
+        "decoders.0.norms.1.bias",
+        "decoders.0.norms.2.weight",
+        "decoders.0.norms.2.bias",
+        "decoders.0.norms.3.weight",
+        "decoders.0.norms.3.bias",
+        "decoders.0.ff.0.weight",
+        "decoders.0.ff.0.bias",
+        "decoders.0.ff.2.weight",
+        "decoders.0.ff.2.bias",
+        "decoders.1.row.in_proj_weight",
+        "decoders.1.row.in_proj_bias",
+        "decoders.1.row.out_proj.weight",
+        "decoders.1.row.out_proj.bias",
+        "decoders.1.column.in_proj_weight",
+        "decoders.1.column.in_proj_bias",
+        "decoders.1.column.out_proj.weight",
+        "decoders.1.column.out_proj.bias",
+        "decoders.1.context.in_proj_weight",
+        "decoders.1.context.in_proj_bias",
+        "decoders.1.context.out_proj.weight",
+        "decoders.1.context.out_proj.bias",
+        "decoders.1.norms.0.weight",
+        "decoders.1.norms.0.bias",
+        "decoders.1.norms.1.weight",
+        "decoders.1.norms.1.bias",
+        "decoders.1.norms.2.weight",
+        "decoders.1.norms.2.bias",
+        "decoders.1.norms.3.weight",
+        "decoders.1.norms.3.bias",
+        "decoders.1.ff.0.weight",
+        "decoders.1.ff.0.bias",
+        "decoders.1.ff.2.weight",
+        "decoders.1.ff.2.bias",
+        "occupancy.weight",
+        "occupancy.bias",
+        "semantic.weight",
+        "semantic.bias",
+        "observability.weight",
+        "observability.bias",
+        "registration.weight",
+        "registration.bias",
+        "layer_reader.in_proj_weight",
+        "layer_reader.in_proj_bias",
+        "layer_reader.out_proj.weight",
+        "layer_reader.out_proj.bias",
+        "layer_type.weight",
+        "layer_type.bias",
+        "layer_known.weight",
+        "layer_known.bias",
+        "pose_rotation.weight",
+        "pose_rotation.bias",
+        "pose_column.weight",
+        "pose_column.bias",
+        "pose_row.weight",
+        "pose_row.bias",
+        "layer_evidence.cells.weight",
+        "layer_evidence.cells.bias"
+      ]
+    ],
+    "tensors": {
+      "base_offsets": [
+        [
+          1,
+          1,
+          9,
+          2
+        ],
+        "torch.float32"
+      ],
+      "board_query": [
+        [
+          1,
+          1,
+          64
+        ],
+        "torch.float32"
+      ],
+      "board_reader.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "board_reader.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "board_reader.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "board_reader.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "box_refine.0.bias": [
+        [
+          4
+        ],
+        "torch.float32"
+      ],
+      "box_refine.0.weight": [
+        [
+          4,
+          64
+        ],
+        "torch.float32"
+      ],
+      "box_refine.1.bias": [
+        [
+          4
+        ],
+        "torch.float32"
+      ],
+      "box_refine.1.weight": [
+        [
+          4,
+          64
+        ],
+        "torch.float32"
+      ],
+      "column_embedding.weight": [
+        [
+          10,
+          64
+        ],
+        "torch.float32"
+      ],
+      "column_ids": [
+        [
+          260
+        ],
+        "torch.int64"
+      ],
+      "coordinates": [
+        [
+          260,
+          2
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.column.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.column.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.column.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.column.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.context.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.context.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.context.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.context.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.ff.0.bias": [
+        [
+          128
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.ff.0.weight": [
+        [
+          128,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.ff.2.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.ff.2.weight": [
+        [
+          64,
+          128
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.0.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.0.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.1.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.1.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.2.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.2.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.3.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.norms.3.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.row.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.row.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.row.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.0.row.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.column.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.column.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.column.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.column.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.context.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.context.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.context.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.context.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.ff.0.bias": [
+        [
+          128
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.ff.0.weight": [
+        [
+          128,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.ff.2.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.ff.2.weight": [
+        [
+          64,
+          128
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.0.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.0.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.1.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.1.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.2.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.2.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.3.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.norms.3.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.row.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.row.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.row.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "decoders.1.row.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.context16.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.context16.weight": [
+        [
+          64,
+          96,
+          1,
+          1
+        ],
+        "torch.float32"
+      ],
+      "encoder.context8.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.context8.weight": [
+        [
+          64,
+          64,
+          1,
+          1
+        ],
+        "torch.float32"
+      ],
+      "encoder.detail2.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.detail2.weight": [
+        [
+          64,
+          16,
+          1,
+          1
+        ],
+        "torch.float32"
+      ],
+      "encoder.detail4.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.detail4.weight": [
+        [
+          64,
+          32,
+          1,
+          1
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.0.weight": [
+        [
+          16,
+          3,
+          4,
+          4
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.1.bias": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.1.weight": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.0.weight": [
+        [
+          16,
+          16,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.1.bias": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.1.weight": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.3.weight": [
+        [
+          16,
+          16,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.4.bias": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.0.3.layers.4.weight": [
+        [
+          16
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.0.weight": [
+        [
+          32,
+          16,
+          4,
+          4
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.1.bias": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.1.weight": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.0.weight": [
+        [
+          32,
+          32,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.1.bias": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.1.weight": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.3.weight": [
+        [
+          32,
+          32,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.4.bias": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.1.3.layers.4.weight": [
+        [
+          32
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.0.weight": [
+        [
+          64,
+          32,
+          4,
+          4
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.1.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.1.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.0.weight": [
+        [
+          64,
+          64,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.1.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.1.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.3.weight": [
+        [
+          64,
+          64,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.4.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.2.3.layers.4.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.0.weight": [
+        [
+          96,
+          64,
+          4,
+          4
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.1.bias": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.1.weight": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.0.weight": [
+        [
+          96,
+          96,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.1.bias": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.1.weight": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.3.weight": [
+        [
+          96,
+          96,
+          3,
+          3
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.4.bias": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.stages.3.3.layers.4.weight": [
+        [
+          96
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.attention.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.attention.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.attention.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.attention.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.norm.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "encoder.window.norm.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "initial_box.0.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "initial_box.0.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "initial_box.1.bias": [
+        [
+          4
+        ],
+        "torch.float32"
+      ],
+      "initial_box.1.weight": [
+        [
+          4,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_evidence.cells.bias": [
+        [
+          2
+        ],
+        "torch.float32"
+      ],
+      "layer_evidence.cells.weight": [
+        [
+          2,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_known.bias": [
+        [
+          1
+        ],
+        "torch.float32"
+      ],
+      "layer_known.weight": [
+        [
+          1,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_queries": [
+        [
+          1,
+          2,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_reader.in_proj_bias": [
+        [
+          192
+        ],
+        "torch.float32"
+      ],
+      "layer_reader.in_proj_weight": [
+        [
+          192,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_reader.out_proj.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_reader.out_proj.weight": [
+        [
+          64,
+          64
+        ],
+        "torch.float32"
+      ],
+      "layer_type.bias": [
+        [
+          8
+        ],
+        "torch.float32"
+      ],
+      "layer_type.weight": [
+        [
+          8,
+          64
+        ],
+        "torch.float32"
+      ],
+      "observability.bias": [
+        [
+          1
+        ],
+        "torch.float32"
+      ],
+      "observability.weight": [
+        [
+          1,
+          64
+        ],
+        "torch.float32"
+      ],
+      "occupancy.bias": [
+        [
+          1
+        ],
+        "torch.float32"
+      ],
+      "occupancy.weight": [
+        [
+          1,
+          64
+        ],
+        "torch.float32"
+      ],
+      "offsets.bias": [
+        [
+          18
+        ],
+        "torch.float32"
+      ],
+      "offsets.weight": [
+        [
+          18,
+          64
+        ],
+        "torch.float32"
+      ],
+      "pose_column.bias": [
+        [
+          10
+        ],
+        "torch.float32"
+      ],
+      "pose_column.weight": [
+        [
+          10,
+          64
+        ],
+        "torch.float32"
+      ],
+      "pose_rotation.bias": [
+        [
+          4
+        ],
+        "torch.float32"
+      ],
+      "pose_rotation.weight": [
+        [
+          4,
+          64
+        ],
+        "torch.float32"
+      ],
+      "pose_row.bias": [
+        [
+          26
+        ],
+        "torch.float32"
+      ],
+      "pose_row.weight": [
+        [
+          26,
+          64
+        ],
+        "torch.float32"
+      ],
+      "registration.bias": [
+        [
+          1
+        ],
+        "torch.float32"
+      ],
+      "registration.weight": [
+        [
+          1,
+          64
+        ],
+        "torch.float32"
+      ],
+      "row_embedding.weight": [
+        [
+          26,
+          64
+        ],
+        "torch.float32"
+      ],
+      "row_ids": [
+        [
+          260
+        ],
+        "torch.int64"
+      ],
+      "sample_reader.0.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "sample_reader.0.weight": [
+        [
+          64,
+          576
+        ],
+        "torch.float32"
+      ],
+      "sample_reader.1.bias": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "sample_reader.1.weight": [
+        [
+          64
+        ],
+        "torch.float32"
+      ],
+      "semantic.bias": [
+        [
+          8
+        ],
+        "torch.float32"
+      ],
+      "semantic.weight": [
+        [
+          8,
+          64
+        ],
+        "torch.float32"
+      ]
+    }
+  },
+  "step": 2,
+  "tensors_sha256": "0dee2e1529091fe18810c9aefa9739a3b02bb26ee944d8b506508b5687b9fbf2",
+  "torch_version": "2.14.1+cpu",
+  "version": 1
+}

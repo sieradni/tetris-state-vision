@@ -96,3 +96,4 @@ Logs runs/layer-pilot-profile-curation-r1.log/.stderr.log; scope in same named d
 Expected<96MiB, native guards. Then false profile command exactly as above true,
 omit --layer-evidence, replace run stem with m2-stream-layer-control-profile-r1.
 Curator launcher25376 exact command verified.
+True curator PASS; exact raw copies preserved; all3 PIDs gone. LIVE false profile launcher16012, exact command verified; same documented640MiB/120s/2 envelope.
