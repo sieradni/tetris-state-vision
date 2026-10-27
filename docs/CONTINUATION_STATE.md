@@ -7,7 +7,8 @@ native RAM/pressure/CPU guards armed. No subagents authorized.
 
 ## Current state and next selected work
 
-No owned model/audit/curator Job live. Original baseline s5 VERIFIED
+LIVE original s6 launch34116 exact command verified;next inspect child
+receipt/progress and record actual worker/archived trainer. No other owned Job. Original baseline s5 VERIFIED
 step_partial2176/4096,512new from1664. All2176 training recipes+27 probes replayed;
 actual inference/training hashes and entire process death verified. Evidence:
 docs/evidence/m2-stream-accuracy4096-s5/scope.json and controller-receipt-scope.json.
@@ -20,7 +21,9 @@ ORIGINAL source121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,CPU1/cache16.
 Controller11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4;
 native supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-No current trainer/model edits yet. Entire BUG_LOG has now been read;
+No current trainer/model edits yet;safe independent optional code may change
+current package while s6 executes frozen original archive. Do NOT edit active
+scripts/run_stream_segment.py until its entire process tree exits. Entire BUG_LOG has now been read;
 LAYER_EVIDENCE_EXPERIMENT.md records exact optional-path design,all prior bug
 interactions and acceptance-gated implementation/testing/resource/learning todo. Later s6 must execute s5 archive and preserve
 fixed4096 target. At most512new ->2688;never substitute current optional M3 math.
@@ -39,7 +42,7 @@ native resource admission before training. Do not edit any active controller.
 Latest host commit29,819,006,976B,available11,035,897,856B,C:48,263,901,184B free.
 Recheck before training;require>40GB disk and full native reservation headroom.
 No guard bypass/app closure/data deletion. Source work can proceed while host
-pressure is high. Pending original s6 command,not launched:
+pressure is high. LIVE original s6 command:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
 --wall-seconds 2100 --work-items 512
 --receipt runs/m2-stream-accuracy4096-s6-pipeline-job.json --
