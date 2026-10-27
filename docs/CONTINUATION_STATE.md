@@ -36,10 +36,15 @@ runs/m2-stream-accuracy1152-recovery-r1-job.json and matching.log/.stderr.log.
 No new forward/update. Current commit30,270,418,944B fits512MiB reservation but
 does not provide a stable1GiB model window. Verify exact command/PIDs/terminal
 receipt and freeze its proof before considering any model report.
+Semantic restore PASSED6.428s,477,442,048B/512MiB,238 Adam parameter states,
+all at1152,7,694,010 model parameters, original121fd05a source/pointer/tensor
+identities,0 forwards/updates. No matching recovery processes after exit.
+Evidence docs/evidence/m2-stream-accuracy1152-recovery-r1/scope.json. No final
+inference checkpoint or1172 tensor-equality/quality claim. Training remains stopped.
 
 Next serialized model checks, only if fresh native headroom admission succeeds:
 1. New format2 ordinary M2 report on ORIGINAL saved704 runs/m2-stream-accuracy4096-s2,
-   output m2-stream-accuracy704-errors-r3.1GiB/120s/27forwards,expected<600MiB.
+   output m2-stream-accuracy704-errors-r3.640MiB/120s/27forwards,expected<600MiB.
    Native runs/m2-stream-accuracy704-errors-r3-job.json/log/stderr. Compare ordinary
    metrics/diagnostics/totals to prior704 report, then scripts/record_stream_errors.py
    --name m2-stream-accuracy704-errors-r3 under128MiB/30s/work27 (expected<96MiB).
@@ -48,6 +53,10 @@ Next serialized model checks, only if fresh native headroom admission succeeds:
    experimentally bounded. Then same128MiB/30s/work27 collector. These2-step
    weights establish replay/plumbing only, not trained accuracy or learning.
 Use fresh receipts/output, hidden logs and checkpoint entry/PID verification.
+M2 report cap lowered from planned1GiB to640MiB because prior same-model reports
+peaked551,600,128B (~526MiB); full model/all27 probes unchanged. Host around
+30.30GB commit fits640MiB reservation while1GiB is marginal. Kernel/OS guards
+remain armed. NEXT launch this M2 report; verify process and terminal outcome.
 If a headroom gate parks, preserve receipt; do useful source work rather than
 repeatedly launching into unchanged pressure. No model process currently live.
 

@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "parked_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s3",
+  "parked_exit_code": 125,
+  "recovered_step": 1152,
+  "target_steps": 4096,
+  "optimizer_parameter_states": 238,
+  "model_parameters": 7694010,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "pointer": {
+    "format": "tetris-vision-training-snapshot",
+    "generation": "step-001152-504c55a0ae90490486c24cbc479fbcf0",
+    "manifest_sha256": "c51fb2d140e201e63e7d915249f13232eff93f71fecc6bb44ad5e1bfc0e0d23b",
+    "version": 1
+  },
+  "snapshot_tensors_sha256": "c27f05730eae13ca75b56ddf33aea6b9d96c19fc36755a66024d3d40acadf861",
+  "job_ceiling_bytes": 536870912,
+  "new_forwards": 0,
+  "new_updates": 0,
+  "final_run_summary_available": false,
+  "script_sha256": "672a669bebc64b30a946f8bedef0ff96d2505cd044c840aa01d622e15e868c16",
+  "scope": "Pressure-parked model/Adam/RNG/ledger recovery only. No new optimizer update, parser accuracy, or completed target claim."
+}

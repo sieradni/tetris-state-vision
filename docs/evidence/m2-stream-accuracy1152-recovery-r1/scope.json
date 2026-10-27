@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "source_base_commit": "99b7d72f906614357ea027f9e28a6c707396fd4e",
+  "recovered_step": 1152,
+  "target_steps": 4096,
+  "optimizer_parameter_states": 238,
+  "model_parameters": 7694010,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "snapshot_tensors_sha256": "c27f05730eae13ca75b56ddf33aea6b9d96c19fc36755a66024d3d40acadf861",
+  "pointer_manifest_sha256": "c51fb2d140e201e63e7d915249f13232eff93f71fecc6bb44ad5e1bfc0e0d23b",
+  "stop_scope_sha256": "1938a8290e61567aa118aee4edbd511b3f630367b36d8f9eb01743427f9ce84f",
+  "native_peak_job_commit_bytes": 477442048,
+  "native_elapsed_seconds": 6.428,
+  "probe_script_sha256": "672a669bebc64b30a946f8bedef0ff96d2505cd044c840aa01d622e15e868c16",
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "new_forwards": 0,
+  "new_updates": 0,
+  "final_inference_artifact_available": false,
+  "artifact_sha256": {
+    "m2-stream-accuracy1152-recovery-r1.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "m2-stream-accuracy1152-recovery-r1.json": "ea940871a132f2a19cc4bd25ca5024e586bfb971668ac2c97eed818146b1d813",
+    "m2-stream-accuracy1152-recovery-r1.log": "2b8bddc0b3b464f1abe32c73e1ce819f93d69b361dc692a7523f5d7bde5ed721",
+    "m2-stream-accuracy1152-recovery-r1-job.json": "f67793ed11b15fcb9aed7caa828bdbf89568d90a2d2b4f816b80900b54636ef4"
+  },
+  "scope": "Pressure-parked model/Adam/RNG/ledger recovery only. No new optimizer update, parser accuracy, or completed target claim."
+}
