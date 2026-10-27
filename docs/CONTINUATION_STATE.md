@@ -5,7 +5,7 @@ Goal ACTIVE and unfinished. Local commits authorized; no push/deploy/publish or
 user-data deletion. Neighboring engine/apps/run data untouched. One heavy model
 Job at a time; native memory/OS pressure/CPU thread guards remain armed.
 
-LIVE planned p1: .venv/Scripts/python.exe scripts/run_bounded.py
+LIVE p1 launch12036/supervisor8600/controller26392 verified, child supervisor23720; poll exact processes and terminal receipts. Command: .venv/Scripts/python.exe scripts/run_bounded.py
 --memory-mib 1280 --wall-seconds 120 --work-items 1
 --receipt runs/m3-stream-controller-recovery-p1-pipeline-job.json --
 .venv/Scripts/python.exe scripts/run_stream_segment.py
