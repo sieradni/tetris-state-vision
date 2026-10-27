@@ -105,3 +105,19 @@ all launcher/supervisor/child/worker PIDs gone. NEXT curator:
 Logs runs/layer-control-profile-curation-r1.log/.stderr.log. Expected<96MiB,native guards.
 New recovery-helper optional flag is drafted; actual2+6+3+3 native gate pending.
 False curator launcher32132 exact command verified.
+Both current-source true/false pilot warm profiles curated. True647,228params,
+false647,098; same cataloguef095d352. Old profile source scopes unchanged.
+NEXT native actual recovery:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 420
+--work-items 14 --receipt runs/m2-stream-recovery-gate-r3-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_recovery.py
+--output runs/m2-stream-recovery-gate-r3 --layer-evidence
+Expected<700MiB aggregate,1GiB parent; children640MiB/90s each,
+profile2+continuous6+partial3+resumed3. Windows Job/pressure/thread guards unchanged.
+Logs runs/m2-stream-recovery-gate-r3.log/.stderr.log;
+state same named run/progress.json; final proof.json. Freeze probe until terminal.
+Next inspect proof/receipt and entire process death, then128MiB/30s curator
+scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r3, work92
+(17 replayed training rows including resumed prefix +72 saved probe images=89;
+use exact curator count after inspecting; no accuracy claim).
+Recovery launcher25328, exact command verified.
