@@ -121,3 +121,11 @@ scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r3, work92
 (17 replayed training rows including resumed prefix +72 saved probe images=89;
 use exact curator count after inspecting; no accuracy claim).
 Recovery launcher25328, exact command verified.
+Recovery r3 PASS38.156s/593,793,024B under1GiB; all recorded PIDs and matching
+commands gone. Exact source/config/data/loss/terms/grad/evaluations/model/Adam/RNG.
+NEXT curator expected<96MiB,128MiB/30s/work89 (17 rows+72 saved images):
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 89 --receipt runs/layer-recovery-curation-r1.json --
+.venv/Scripts/python.exe scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r3
+Logs runs/layer-recovery-curation-r1.log/.stderr.log. Native guards unchanged.
+Curator launcher11744 exact command verified.
