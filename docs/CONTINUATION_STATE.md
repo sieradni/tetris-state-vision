@@ -1,163 +1,94 @@
 # Current checkpoint — 2026-10-26
 
-Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity, no
-remote. Goal ACTIVE and unfinished. Neighboring engine/apps/data untouched.
-Local milestones committed; no push/deploy/publish/deletion authorized.
+Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity,
+no remote. Full objective unfinished. Neighboring engine/apps/run data untouched.
+No push/deploy/publish/deletion authorized. Source candidate f542096 committed;
+working tree clean before this checkpoint. Goal blocking audit passed below.
 
-TERMINAL SUCCESSFUL SEGMENT: runs/m2-stream-accuracy4096-s2, ORIGINAL M2 from bank192,
-fixed global4096, at most512 new updates (up to704). Hidden root24896/20316,
-controller23208/21624, training supervisor18008/15176, actual worker9836
-(launcher26436). Exact command lines verified. Startup passed: global199 at
-55.183s, original archived trainer, no stderr. Later290/4096 at242.158s, bank256
-published. Final704/4096,512new,step_partial; root passed0 at1293.239s,
-964,603,904B/1280MiB; child928,505,856B/1GiB. All matching model processes gone.
-Native controller segment_verified, data704+27 probe replay/round-trip GREEN.
-Global4096 remains unfinished. No heavy vision Job currently live.
-704 weights36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
-Development0/18 boards,0/36 layers,geometry1.84647,cells.90472,loss4.68184;
-training0/9 boards,0/18 layers,geometry3.27837. Data704/probes27 replayed;
-source/snapshot/final-tensor parity and ancestor125/stale-child metadata verified
-by native curator. docs/evidence/m2-stream-accuracy4096-s2/scope.json.
+BLOCKER: host OS commit31,934,693,376B > guard stop31,368,351,744B, before any
+worker reservation. Same condition across three consecutive goal turns: follow-up
+jobs parked before launch (~32.2GB, later33.9GB); next turn source work completed
+but no tests could launch (~31.7GB); current audit31.93GB. All matching704-report/
+s2/capture-curator Python processes absent. No model/training Job running.
+No guard changes/opt-out, no repeated doomed launches, no user apps stopped.
+Further source changes before testing the ready candidate would not resolve the
+critical path. Need lower host commit for verification and training. Goal should
+be BLOCKED pending external headroom and user resume; never call it complete.
 
-CURRENT PRESSURE: OS commit~32.2GB exceeds31,368,351,744B stop. Follow-up
-runs/m2-stream-accuracy704-errors-job.json and runs/m3-model-capture-curation-job.json
-both parked125 at admission before any child. No output/evidence from those
-attempts; preserve receipts/logs, retry only in NEW paths after genuine headroom.
-Capture9 test itself PASSED before this pressure; its source curator is pending.
-After headroom: retry704 report as m2-stream-accuracy704-errors-r2 (new receipt,
-logs and output,1GiB/120s/27). Retry capture curator with NEW receipt stem
-m3-model-capture-curation-r2, same09fa4ef base/9-case original green receipt.
-No failed child was started and no current model process is live. Until then,
-source work is possible; never lower/disable the OS pressure guard to force tests.
-Check live PID and terminal receipts; stale running/progress alone proves nothing.
+NEXT after resume, first read actual memory/process state. Keep the native
+pressure guard and pre-import CPU pools1. New receipt/output names only:
+1. Verify current candidate: stream data10, stream driver5, stream evidence3,
+   joint metrics7, components15, final capture9; relevant source/recovery gates
+   afterward. No new-source test gate has run. Do NOT attach historical full-file
+   source scopes to changed files. Keep logs, case/work caps, ceilings/wall limits.
+2. Run704 error report in runs/m2-stream-accuracy704-errors-r2:1GiB/120s/27
+   ordinary forwards; expected<600MiB from same-architecture546MiB report. Command:
+   .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024
+   --wall-seconds 120 --work-items 27
+   --receipt runs/m2-stream-accuracy704-errors-r2-job.json --
+   .venv/Scripts/python.exe scripts/probe_stream_errors.py
+   --run m2-stream-accuracy4096-s2 --output runs/m2-stream-accuracy704-errors-r2
+   Hidden matching .log/.stderr.log; verify exact spawned/terminal processes.
+3. Resume ORIGINAL M2 bank704 toward fixed4096 in NEW s3: parent1280MiB/2100s/
+   at most512new updates, child1024MiB/1860s outer/1800s inner, checkpoint64,
+   one CPU/cache16; serial curator128MiB/120s. Expected<1100MiB total. Verify
+   >40GiB free (last50.07GiB), native segment/partial status and all artifacts.
+   Controller arguments: --name m2-stream-accuracy4096-s3 --target-steps 4096
+   --updates 512 --admission runs/m2-stream-accuracy-probe
+   --resume-from runs/m2-stream-accuracy4096-s2.
+4. Fresh native M3 full-square2 warm/recovery profile on actual component-capacity64
+   config before any joint learning. Old M2 admissions do not cover current M3.
+   Serialize heavy jobs. Do not run release builds or another heavy model beside it.
 
-Native parent1280MiB/2100s/512new updates, child1024MiB/1860s outer/1800s inner,
-one CPU, cache16, checkpoints64. Serial curator128MiB/120s. Expected<1100MiB
-aggregate,<1GiB new disk; last disk50.07GiB free (>40GiB). Native named Job /
-kill-on-close and GetPerformanceInfo/.2s pressure guard remain armed.
-Exact launch command from repo root:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
---wall-seconds 2100 --work-items 512
---receipt runs/m2-stream-accuracy4096-s2-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m2-stream-accuracy4096-s2 --target-steps 4096 --updates 512
---admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s1
-Root logs/receipt prefix runs/m2-stream-accuracy4096-s2-pipeline; controller
-runs/m2-stream-accuracy4096-s2-pipeline/{progress,result}.json. Worker
-runs/m2-stream-accuracy4096-s2/{progress,latest-training,summary}.json and
-runs/m2-stream-accuracy4096-s2-job.json/.log/.stderr.log.
-
-NEXT preserve verified704 evidence, run ordinary error report on its actual saved
-artifact under1GiB/120s/27forwards (same model envelope as prior546MiB report).
-Then resume704 toward4096 in new s3, unchanged original source/recipe,512new.
-For each segment_verified,
-verify actual new/global counts, partial tag, source/artifact and ancestor-stop
-provenance, terminal tree and curated evidence. Commit narrow milestone, then
-run error probe on actual saved segment before selecting learning changes.
-On pressure/timeout/crash preserve everything, inspect latest valid bank and
-reason before any new resume. If only a long wait remains, leave the finite
-controller detached. No auto-restart/scheduler/notification.
-
-CRITICAL source separation: current M3 package changed after original M2 study.
-All4096 continuations MUST execute the parent's verified archive, original recipe,
-Adam/RNG/global cursor, not current source or completed128 diagnostic. Original
-catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
+SOURCE SEPARATION: every4096 continuation must execute its original verified
+archive, not current package. Controller selects the parent archived trainer.
+Original catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
 Supervisor SHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-Pre-import CPU pools1, finite native cache16; no opt-out, ceiling increase or deletion.
+Do not change target/recipe, reset Adam/RNG or silently extend completed128.
 
-Prior s1 TERMINAL pressure125 at748.552s,956,899,328B/1280MiB; OS commit
-31,456,382,976B > stop31,368,351,744B. All matching processes verified gone.
-229 updates logged; bank192 valid,37 later updates not restored. Raw child receipt
-remains running/null because ancestor killed it before final publication; preserve
-terminating ancestor receipt alongside it. No summary/final weights/segment pass.
-docs/evidence/m2-stream-accuracy4096-s1-stop/scope.json verifies archived source,
-tensor hash and all3 committed prefixes. Bank generation:
-step-000192-e7873277a86a4428a7c8aa71898e44c0; tensor SHA
-2d0e8e86f485baa1761842978c4d39ebea90c48b40fbc977bf1a7d7044f3927b.
-Curator now retains ancestor receipt/logs and explicitly marks stale child status
-on resumed histories. Three partial-evidence boundary fixtures reran GREEN;
-actual s2 final curation will exercise ancestor metadata. Hashes alone are not
-semantic restoration; real resumed updates now run from bank192.
-Actual pressure replay GREEN: docs/evidence/m2-stream-accuracy4096-pressure-replay/
-scope.json; all229 recorded data/loss/terms/gradient norms match (elapsed excluded),
-including37 updates recomputed after bank192. All3 committed prefixes identical.
-No old229 tensor artifact survived, so no final-model tensor equality claim.
+Latest M2: runs/m2-stream-accuracy4096-s2, segment_verified at704/4096,512new
+from bank192. step_partial, root1293.239s/964,603,904B under1280MiB; child
+928,505,856B/1GiB. All matching processes verified gone. Data704+27 probes
+replayed; snapshot/all-final-tensor parity GREEN. Evidence:
+docs/evidence/m2-stream-accuracy4096-s2/scope.json and controller-result.json.
+704 weights36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
+Dev0/18 exact boards,0/36 layers,geometry1.84647cells,cells.90472,loss4.68184;
+train0/9 boards,0/18 layers,geometry3.27837. Adequate learning not established.
 
-M2 evidence: pilot768 complete, resource/recovery gate GREEN at640MiB,
-519,782,400B peak,2.6MiB second-half growth, exact565 old records; dev0/18 exact
-boards,0/36 layers,geometry1.8522cells. Larger7,694,010-parameter profile GREEN
-at1GiB/910,176,256B. Larger128 completed93+resume35; all128 data recipes match
-pilot128. Dev4/18 boards all zero-locked,nonempty0/14,layers0/36,geometry2.4785.
-docs/evidence/m2-stream-accuracy128-r2/{scope,analysis}.json. Neither converged.
+Prior s1 ancestor pressure125:229 logged,192 banked; stale child running/null
+receipt kept beside terminating ancestor. Resume recomputed37 later updates
+with all229 recorded data/loss/terms/gradient norms equal, three prefixes equal.
+No old229 model tensors survived, so no final-model tensor equality claim.
+docs/evidence/m2-stream-accuracy4096-s1-stop/ and ...4096-pressure-replay/.
 
-NEW native error report on old larger128: docs/evidence/m2-stream-accuracy128-errors/
-scope.json/result.json,27 ordinary forwards,32.419s outer,546,164,736B/1GiB.
-All saved metrics reproduced, weights unchanged, no labels passed to model;
-all probe processes verified gone before s2. Dev401 positive cells:15 TP,386 FN,
-8 FP; active18/18 and ghost18/18 predicted unknown. Mean origin error2.1934,
-per-column basis error.4096,per-row.1366 source-cell units; no causal/accuracy
-claim. Six dev ancestry groups with dependent triplets. Pure analyzer12 fixtures
-GREEN on1531769. Pilot oracle-grid intervention separately still0 exact boards.
+Earlier evidence: pilot768 resource gate GREEN at640MiB/519,782,400B,2.6MiB
+second-half growth; learning dev0/18 boards. Larger128 completed93+35 exact
+recovery,4/18 dev boards all zero-locked (nonempty0/14). Its27-forward report
+reproduces saved metrics,546,164,736B/1GiB;15 TP,386 FN,8 FP on401 positive
+cells, all active/ghost unknown. Six dev ancestry groups, dependent triplets.
+Named scope docs/evidence/m2-stream-accuracy128-errors/. No real accuracy claim.
 
-NEW optional M3 model/loss milestone fdb0c81: shared role/index queries/chunks,
-capacity1..64 plus EOS64, independent presence/slot/status/start/end/hold heads,
-masked semantic losses and shared encoder gradients. Capacity0 retains M2 state/
-outputs; explicit M3 checkpoint identity/legacy loading tested. Source-bound
-44 scoped checks:15 new,14 M2 numerical,7 inspection,8 labels, in
- docs/evidence/m3-joint-contracts/scope.json. No whole-suite/quality claim.
-V-016 unsafe prepared-component admission and V-017 bad fixture CLOSED on15-case
-r2 gate. V-001..V-017 now closed on named source-scoped evidence; no new crash.
+M3 VERIFIED HISTORY: fdb0c81 optional shared role/index heads and masked losses;
+44 scoped checks (15 new,14 M2 numerical,7 inspection,8 labels),
+docs/evidence/m3-joint-contracts/scope.json.09fa4ef final-model-size renderer/
+observer:9 tests,2.057s,255,062,016B/512MiB; raw runs/m3-model-capture-tests.*.
+Its source curator parked at admission; current source has changed since then,
+so rerun9 rather than curating old full-file hashes as current.
 
-M3 LIMITS: source Icon fields lack resized support geometry. M3 targets currently
-refuse resized or invalid-alpha pixels; unchanged valid source/padding only.
-Need explicit resized component observer + paired-raster gate, fresh full-square
-warm optimizer/resource profile, actual M3 training and reviewed runtime decoding.
-API always needs_review/unsupported, queue/hold unknown. No old M2 admission
-covers new M3 heads/current package. See docs/M3_COMPONENT_TARGETS.md.
+M3 CURRENT CANDIDATE f542096 (UNVERIFIED): --component-capacity10..64 in the
+stream driver selects shared heads, final-capture samples and masked losses;
+0 keeps M2. Records bind capture policy/pixels/labels. Metrics separate known-
+field matches from readable components; unknown middle/tail/hold never becomes
+complete success. Nested output parity checks dtype/shape/value. Curator supports
+M2/M3 recipes without new keywords on old samplers. Added7 joint metric/parity,
+3 sampler and1 driver fixtures. Manual diff review only; tests/profile pending.
 
-Whole goal still open: adequate M2/joint learning, broad rendering/crops/layouts,
-reviewed real pilot and controlled scratch/pretrained/direct comparisons,
-calibration, export and release. User's166 images are unlabeled drafts, zero
-training/scoring eligibility; seven private sheets. Unknown is not empty;
-locked/active/ghost separate, bottom-first. Torch2.14.1+cpu, no GPU.
-
-Selected next M3 data milestone: render synthetic captures directly at the
-bounded model size and re-run existing observe() on that exact final transform.
-Do not resize known source Icon labels afterward or invent support geometry.
-Keep the V-016 refusal for arbitrary post-labeled resize/invalid alpha. Acceptance:
-noninteger crop/resize geometry, size budget, weakened icon identity masks,
-paired hidden panels, paired occluded middle slots, paired unseen-start spans,
-and final-frame targets admitted without another resize. No training admission
-or queue/hold accuracy claim from these label fixtures. Prior contracts:
-V-001/002/005/006/016 observation support + paired-raster standing instrument;
-V-003/014 current source vs original4096 archive; V-011/013 new data/M3 config
-requires fresh bounded warm profile. No changes to the original running recipe.
-Final-capture9 checks GREEN2.057s/255,062,016B under512MiB/60s. This admits
-synthetic final-frame labels without a second resize; arbitrary post-labeled
-resize/alpha still refuses. No M3 training/resource or component quality claim.
-
-Selected source task under pressure: wire final-capture synthetic sampling into
-an explicit component-capacity joint training mode, masked component diagnostics,
-recursive saved-output parity and M3 recipe replay. Preserve M2 default behavior
-and original archive121fd05a for all4096 continuations. New M3 work is a CANDIDATE
-until gates run; no profile/admission/learning result inferred from source edits.
-Todo: (1) sampler/policy plus readable-vs-masked metrics, (2) driver/curator
-integration, (3) adversarial unit checks after genuine headroom, (4) fresh native
-2-square warm/recovery profile on actual M3 config before any joint study.
-Prior bug interactions: V-001/002/005/006/016 final image support/unknown holes;
-V-003/014 source/archive identity; V-007 exact Job; V-010 pressure unchanged;
-V-011 every new parameter's warm Adam state; V-012 pre-import pools unchanged;
-V-013 bounded queries/cache/input/steps; V-015 atomic snapshot publication intact.
-No runner/guard changes. Memory last35.2GB committed; do not force a launch.
-Candidate source now includes final-capture sampler policy, explicit joint
-capacity10..64, masked/readable component metrics, recursive nested tensor parity
-and curator replay for M2/M3 records. Added7 joint fixtures,3 sampler fixtures
-(10 total),1 driver fixture (5 total). NONE of these new gates has run yet.
-Manual diff/whitespace review only; current host commit31.75GB still exceeds
-31,368,351,744B stop even before reserving a Job. No child launched/retried.
-Next tests after actual headroom: stream data10/driver5/evidence3, joint7,
-component15 and capture9 on this NEW source. The old capture9 gate was09fa4ef;
-rerun it rather than attaching its full-file source scope to changed components.
-Then run a fresh native M3 profile (component-capacity64,2 full512-square updates)
-before any joint learning run. Preserve original M2 bank704/source121fd05a...
-for s3. Candidate code is not an admitted model or verified training milestone.
+V-001..V-017 closed only on their named historical source scopes. Current changes
+retain unknown masks, bottom-first rows and independent locked/active/ghost.
+V-016 still refuses arbitrary post-labeled resize/invalid alpha; synthetic M3
+captures instead reobserve exact final pixels. General resized real observations,
+actual M3 learning/admission and reviewed component runtime decoding remain open.
+API always needs_review/unsupported, queue/hold unknown. User's166 screenshots
+remain unlabeled drafts, zero training/scoring eligibility; seven private sheets.
+Broad rendering, real review, scratch/pretrained/direct comparisons, calibration,
+export and >=95% complete-state release evidence all remain OPEN. CPU Torch2.14.1.
