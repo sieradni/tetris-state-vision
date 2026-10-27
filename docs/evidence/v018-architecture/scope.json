@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "source_base_commit": "371bfd8d2dead8c9d13aec9ddab40c926a041f17",
+  "sources": {
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "tests/test_stream_evidence.py": "8cd2e2a493ba00abdd4e72b2f5bfff356440cd1ab978990bdbe65e5d2f93802a",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "AGENTS.md": "785983f6603f15959254a57db9ed9be6d95e7c14512aef6080daad4676531ae6"
+  },
+  "gates": [
+    {
+      "stem": "v018-architecture-tests-r1",
+      "tests": 4,
+      "raw_peak_job_commit_bytes": 33808384
+    }
+  ],
+  "tests_across_scoped_runs": 4,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

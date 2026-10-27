@@ -37,6 +37,11 @@ math changed. Unit scopes onf542096 remain historical; narrow collector delta
 has its own4-case gate. Next pilot M3 profile:640MiB/300s/2 full512-square warm
 updates, component-capacity64, one CPU/cache16. Expected<600MiB; first actual
 joint measurement. Fresh runs/m3-stream-pilot-profile-r1 output/receipt/logs.
+LAUNCHED profile: root12780/18288, actual33644 (launcher28620), exact command
+lines verified. Source371bfd8; inspect same receipt/progress and terminate-state
+before any other heavy Job. Named4-case source scope now
+docs/evidence/v018-architecture/scope.json; V-018 still OPEN until native M3
+artifact curation passes. Never infer admission from these unit fixtures.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any
