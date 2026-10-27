@@ -1,0 +1,41 @@
+{
+  "status": "verified_partial",
+  "steps": 2688,
+  "requested_steps": 4096,
+  "new_updates": 512,
+  "controller_sha256": "11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4",
+  "parent_seconds": 690.48,
+  "parent_peak_bytes": 1014280192,
+  "child_seconds": 671.384,
+  "child_peak_bytes": 978317312,
+  "curator_seconds": 18.34,
+  "curator_peak_bytes": 113209344,
+  "weights_sha256": "dd93e38745abb4aa2b02ddf47cc4e79a6dd835e7e037b747b0878fa51d643702",
+  "snapshot_manifest_sha256": "01a693013fc2531bae1614bc911e7954575d82ed312f3b65304178e8cb2cc7ed",
+  "snapshot_payload_sha256": "2408d17b5d91cddb073e972de3fce7d5d5c98ba930713a105b7f27a774a81d14",
+  "verified_dead_pids": [
+    34116,
+    26336,
+    34928,
+    23480,
+    31384,
+    26336,
+    34928,
+    23480,
+    26424,
+    32672,
+    1652
+  ],
+  "development_exact_empty_boards": 2,
+  "development_exact_nonempty_boards": 0,
+  "artifact_sha256": {
+    "controller-job.json": "c99ca951bfb4e7b6ae01aeac5dcceafc601785afaa2ee13de60c6b82b6802f34",
+    "controller.log": "3a14ff3f56a8eed91fbb6a7d73400faecaba2dfdb33daec50121316e5089756c",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation-job.json": "47c417c589677c716c4326e84293acb3dc1f91823c3e45eab95a433a10fcd200",
+    "controller-curation.log": "8d4ef8d0173cdb5c10d161d4762cbc277839fb3d041185073f06250c1b01dcbd",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-result.json": "cfe58cfbcde571d56b2aaea06be675914b36845509c586a572d8fbc04b5eb44d"
+  },
+  "scope": "Native terminal controller/child/curator receipts,hashed inference/training artifacts and process death. Global4096 target and learning acceptance remain open. Controller origin comes from executed result,not later edited source."
+}

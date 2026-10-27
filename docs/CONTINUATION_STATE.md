@@ -94,6 +94,15 @@ source unchanged. NEXT layer-evidence-model-tests-r2.json/.log/.stderr.log,
 same640MiB/60s/work15,expected<600MiB,native guards. Other14 checks including
 actual legacy numerical equality,paired rasters,gradients,reload and M3 passed;
 full15-source claim waits for corrected gate and curation.
+Layer-model r2 GREEN15/15,1.267s,446,099,456B/640MiB;36168/30612/17036 dead.
+Corrected observer-validated full-spawn absence plus cropped-spawn unknown pass;
+V-025 awaits source-bound scope. NEXT required4 compatibility groups in exact
+runs/layer-compatibility-plan-r1.json (14model,15components,7runtime,9capture).
+Each detached .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
+--wall-seconds 60 --work-items COUNT --receipt runs/STEM.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p PATTERN -v
+Logs runs/STEM.log/.stderr.log;expected<600MiB,native guards. Serialize,verify
+terminal receipt/PIDs before next launch;no code edits during these gates.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
