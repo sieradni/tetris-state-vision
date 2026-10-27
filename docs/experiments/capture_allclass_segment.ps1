@@ -63,6 +63,12 @@ if ($training.step -ne $finish -or $training.contract.curriculum -ne $summary.cu
     (Get-FileHash ($snapshot+'/tensors.pt')).Hash.ToLower() -ne $training.tensors_sha256) { throw 'snapshot payload/contract differs' }
 $ids = @($Launcher,$parent.supervisor_pid,$parent.child_pid,$child.supervisor_pid,$child.child_pid,
          $progress.pid,$curator.supervisor_pid,$curator.child_pid) | Sort-Object -Unique
+$startupPath = $pipe+'/observed-startup.json'
+if (Test-Path -LiteralPath $startupPath) {
+    $observed = @(Get-Content $startupPath -Raw | ConvertFrom-Json)
+    if (-not $observed.Count -or @($observed | Where-Object { $_.CommandLine -notmatch $Name }).Count) { throw 'observed startup identity differs' }
+    $ids = @($ids)+@($observed.ProcessId) | Sort-Object -Unique
+} elseif ($number -gt 1) { throw 'observed startup tree required for new segments' }
 foreach ($processId in $ids) {
     if (Get-CimInstance Win32_Process -Filter "ProcessId=$processId") { throw "recorded PID live: $processId" }
 }
@@ -78,6 +84,7 @@ $copies = @{
     ($pipe+'/curation.stderr.log')='controller-curation.stderr.log';($pipe+'/result.json')='controller-result.json'
     $PSCommandPath='controller-collector.ps1'
 }
+if (Test-Path -LiteralPath $startupPath) { $copies[$startupPath]='observed-startup.json' }
 $hashes = @{}
 foreach ($sourcePath in $copies.Keys) {
     if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf) -or
