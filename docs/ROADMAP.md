@@ -25,7 +25,7 @@ No complete screenshot parser or real-image accuracy is claimed.
    baseline has reached704 through bank192+512 verified updates: dev0/18 boards,
    0/36 layers,geometry1.84647cells. All704 recipes and27 probes replayed; the
    global target is still partial. Continue bounded resumable training and
-   inspect the704 error report when host RAM permits. Measure board, geometry and independent active/
+   use the verified704 error report to track misses, false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
@@ -34,8 +34,11 @@ No complete screenshot parser or real-image accuracy is claimed.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
    Capacity0 preserves M2; capacity1..64 uses explicit M3 checkpoint identity.
-   Joint streaming integration now passes68 scoped unit/contract checks on
-   f542096; native M3 resource characterization and learning remain pending.
+   Joint streaming integration passes68 scoped unit/contract checks onf542096.
+   Native pilot recovery6==3+3 is exact, and both pilot and larger capacity64
+   configurations pass full512-square warm/reload resource profiles. The larger
+   has7,997,016 parameters and942,903,296B peak under1GiB. Joint learning and
+   varied-shape long memory remain pending; no quality admission follows.
    Synthetic final-model-size
    captures now reobserve labels at that exact transform (9 checks). Arbitrary
    post-labeled resize/invalid alpha still refuses; the API keeps queue/
@@ -66,7 +69,8 @@ Verified foundations and their limits:
 | Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
 | Actual pressure interruption recovery | docs/evidence/segment-pressure-recovery/scope.json; m2-stream-accuracy-segment-probe-r2/controller-gate.json | Saved larger step1 restored then resumed one update with explicit partial status and evidence replay; global target3 unfinished |
 | Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |
-| Queue/hold labels and optional joint heads/loss | docs/M3_COMPONENT_TARGETS.md; source-pinned gates in checkpoint | Raw joint numerical/compatibility gates only; resized supervision, M3 training/admission and runtime decoding open |
+| Queue/hold joint heads, masked losses and final synthetic captures | docs/M3_COMPONENT_TARGETS.md; joint-stream-contracts/ and joint-recovery-contracts/ | Joint learning, general resized real supervision and runtime decoding open |
+| Native M3 resource/recovery | docs/evidence/m3-stream-pilot-profile-r1/, m3-stream-large-profile-r1/, m3-stream-recovery-gate-r1/ | Larger/pilot warm profiles and finite pilot recovery only; long varied-shape memory and quality open |
 | Corpus audit/review/split/seal tooling | docs/evidence/corpus-integrity-final/scope.json;26 adversarial checks | Correct reviewed labels and real-image model results |
 | Unlabeled real stress set | docs/evidence/real-drafts/scope.json;166 images/seven private sheets | Zero training/scoring eligibility; independent review and permission needed |
 

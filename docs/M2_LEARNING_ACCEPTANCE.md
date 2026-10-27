@@ -216,13 +216,13 @@ an adequately converged comparison. Ordinary inference took33.423s under1GiB,
 551,600,128B peak, model tensors unchanged. Source/artifact/case evidence:
 docs/evidence/m2-stream-accuracy704-errors-r2/scope.json and result.json.
 
-The current4096-target segment still needs its own saved-artifact report after
-its Job ends. Use a NEW output,1GiB/120s/27 forwards on9+18 probes, one CPU.
+Future4096-target segments need their own saved-artifact report after their
+Job ends. Use a NEW output,1GiB/120s/27 forwards on9+18 probes, one CPU.
 Expected below the admitted training envelope, experimentally capped; do not
 run another heavy model process while training is live. Suggested command:
 
 ```
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy4096-s1-errors-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s1 --output runs/m2-stream-accuracy4096-s1-errors
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy4096-s3-errors-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s3 --output runs/m2-stream-accuracy4096-s3-errors
 ```
 
 Hidden logs/state and exact process verification are required. A saved controlled

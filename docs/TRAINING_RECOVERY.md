@@ -11,6 +11,14 @@ on host pressure; r2 hit an OpenBLAS import allocation failure before tests.
 V-012's pre-import thread policy repaired that harness at the same ceiling.
 Committed-source scope and raw logs: `docs/evidence/v012/scope.json` (7cbc68c).
 
+Optional M3 heads now pass the same native continuous6 versus3+resume3 pilot
+gate: all model/Adam tensors, data/losses/gradient norms, evaluations, CPU RNG
+and module modes match exactly. Sourceb6bb05f3..., capacity64. Named evidence
+docs/evidence/m3-stream-recovery-gate-r1/scope.json/proof.json. The actual larger
+configuration separately passes its two full-square warm/reload profile in
+docs/evidence/m3-stream-large-profile-r1/scope.json. Neither finite check proves
+long varied-shape stability or complete-state learning.
+
 The verified primitive's recovery boundary contains model tensors, complete AdamW state,
 Torch CPU randomness, module training modes and the completed global step.
 The caller supplies the exact source catalogue and data/training recipe as a

@@ -1,0 +1,104 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M3",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      48,
+      96,
+      192,
+      256
+    ],
+    "dimension": 192,
+    "heads": 6,
+    "blocks": 6,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 64
+  },
+  "weights_sha256": "ad14d69afe645b726b3e765ba10e7574695b157e72245dc7be05720fcb6fe160",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 7997016,
+  "metadata": {
+    "trained_steps": 2,
+    "catalogue_sha256": "b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255",
+    "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "system_pressure_guard": "GetPerformanceInfo/0.2s",
+    "runtime_source_sha256": "8f7906863e8a27ae870a0e696ceaaf8ead38b6e2d3dd805c9b9f706b821bccc8",
+    "model_kind": "accuracy",
+    "component_capacity": 64,
+    "input_policy": "M3-final-capture-v1",
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-stream-large-profile-r1",
+      "model": "accuracy",
+      "component_capacity": 64,
+      "steps": 2,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 240.0,
+      "evaluate_every": 128,
+      "development_groups": 6,
+      "profile_square": true,
+      "admission": null,
+      "checkpoint_every": 64,
+      "resume_from": null,
+      "max_new_steps": null
+    },
+    "stream_ledger_sha256": "130b2ce1459c74f6bc7478480b44e6b5a7c5e73910529c0cec47488378a99891",
+    "cpu_only": true,
+    "resume": null,
+    "latest_training_snapshot": {
+      "format": "tetris-vision-training-snapshot",
+      "version": 1,
+      "generation": "step-000002-7c4e7d0274a74271a39d928a7286fe54",
+      "manifest_sha256": "151de8b793477a32b88a0bd1d992e7f2de7f667744586e45c5d233a735fe81f5"
+    },
+    "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-stream-large-profile-r1\\code\\scripts\\train_m2_stream.py",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "recovery_contract": {
+      "catalogue_sha256": "b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255",
+      "config": {
+        "widths": [
+          48,
+          96,
+          192,
+          256
+        ],
+        "dimension": 192,
+        "heads": 6,
+        "blocks": 6,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576,
+        "component_capacity": 64
+      },
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "weight_decay": 0.01,
+      "steps": 2,
+      "max_side": 512,
+      "development_groups": 6,
+      "evaluate_every": 128,
+      "checkpoint_every": 64,
+      "profile_square": true,
+      "threads": 1,
+      "rng": "torch_cpu_only",
+      "native_cache_limits": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      },
+      "input_policy": "M3-final-capture-v1"
+    },
+    "updates_this_run": 2
+  }
+}

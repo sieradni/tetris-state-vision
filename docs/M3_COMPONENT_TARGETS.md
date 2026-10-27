@@ -85,13 +85,14 @@ This supports an initial synthetic M3 curriculum, not real-image relabeling,
 component accuracy or arbitrary post-labeled resizing/invalid alpha.
 
 The public inspection API remains needs_review; it identifies M3 artifacts but
-leaves queue/hold unknown. M3 training, warm optimizer/resource admission,
-general resized-component supervision and reviewed runtime decoding are still OPEN.
+leaves queue/hold unknown. Joint learning, general resized-component supervision
+and reviewed runtime decoding are still OPEN. Native resource/recovery profiles
+are now verified below and retain their exact configuration/source scope.
 No M2 admission covers the changed package or new heads. The partial4096-target
 M2 study must continue from its original archive and optimizer history.
 
-The joint streaming driver now passes its scoped unit/contract gates; native
-M3 resource characterization and learning remain pending.
+The joint streaming driver passes its scoped unit/contract gates; adequate
+joint learning remains pending.
 `train_m2_stream.py --component-capacity 10..64` selects the optional M3 heads,
 final-capture sample policy and component targets/loss. Zero keeps the M2 path.
 The lower joint bound covers all10 renderer slots without silent truncation;
@@ -109,9 +110,9 @@ all nested component outputs and rejects changed tensor shape/dtype/value.
 Current sourcef542096:57 selected cases pass across stream/joint25, component23
 and capture9;11 more source/recovery cases pass separately. Source-pinned scopes:
 docs/evidence/joint-stream-contracts/scope.json and joint-recovery-contracts/scope.json.
-These68 cases are not a whole-suite, trained-model or accuracy claim. Next profile
-the actual M3 configuration with2 full-square optimizer steps, all resident Adam
-states, recovery parity and nested final-output parity under a NEW native cap.
+These68 cases are not a whole-suite, trained-model or accuracy claim. Actual M3
+configurations were subsequently profiled with2 full-square optimizer steps,
+all resident Adam states, recovery parity and nested final-output parity below.
 No prior M2 or earlier-source admission permits joint training.
 
 First actual M3 pilot profile now passes: capacity64,682,584 parameters,
@@ -133,3 +134,14 @@ child max561,909,760B/640MiB,95.148s outer. Named evidence:
 docs/evidence/m3-stream-recovery-gate-r1/scope.json and proof.json.
 This finite pilot recovery gate does not characterize the larger configuration,
 long varied-shape memory or model accuracy.
+
+The larger M3 capacity64 profile also passes:7,997,016 parameters,264 initialized
+parameter tensors and63,977,184B resident Adam state. Both optimizer updates use
+full512-square inputs; the second backward has warm optimizer state resident.
+Native1GiB/300s,942,903,296B peak,43.663s outer, exact training recovery and all
+nested final outputs after inference reload. Source remainsb6bb05f3...;
+weightsad14d69a...; actual configuration/architecture and replayed2 recipes+27
+saved probes are pinned by docs/evidence/m3-stream-large-profile-r1/scope.json.
+The metadata replay itself passed under128MiB/30s. This admits that larger
+configuration for bounded studies; varied-shape long memory, optimization,
+complete-state accuracy and release decoding remain unverified.

@@ -18,11 +18,13 @@ matching Python command lines absent after completion. All264 parameter tensors
 initialized;63,977,184B Adam state. Warm backward, training recovery and nested
 final inference tensor parity passed. No learning/quality admission implied.
 Actual source catalogue b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
-NEXT curate via scripts/record_stream_run.py --name m3-stream-large-profile-r1
-under128MiB/30s/work29 (2 recipe rows+27 probes). Expected<128MiB. Native receipt
-runs/m3-large-profile-curation-r1.json; hidden logs with same prefix.log/.stderr.log.
-Record verified launch PID, inspect terminal receipt/scope and matching processes;
-commit artifact-derived evidence with updated roadmap/M3 scope.
+Profile curation PASSED0 in.925s,81,620,992B peak under128MiB/30s/work29;
+2 recipes+27 saved probes replayed. Verified launcher30356,supervisor4468,
+child11844 all absent after completion. Named native receipt
+runs/m3-large-profile-curation-r1.json and matching.log/.stderr.log. Curated
+docs/evidence/m3-stream-large-profile-r1/scope.json, actualM3,7,997,016 parameters,
+weightsad14d69afe645b726b3e765ba10e7574695b157e72245dc7be05720fcb6fe160.
+No model/curation Job live. Next original M2 s3 when disk/memory margins permit.
 
 Latest host commit26,862,620,672B < stop31,368,351,744B; headroom restored after
 prior blocker. C: free40,307,924,992B (~37.54GiB). Recheck disk before a long
