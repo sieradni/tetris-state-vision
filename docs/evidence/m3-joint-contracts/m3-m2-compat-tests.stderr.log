@@ -1,0 +1,19 @@
+test_all_unknown_targets_have_finite_loss_and_gradients (test_model.ModelContractTests.test_all_unknown_targets_have_finite_loss_and_gradients) ... ok
+test_aspect_ratio_rounding_and_padding_own_geometry (test_model.ModelContractTests.test_aspect_ratio_rounding_and_padding_own_geometry) ... ok
+test_checkpoint_round_trip_and_corruption_refusal (test_model.ModelContractTests.test_checkpoint_round_trip_and_corruption_refusal) ... ok
+test_forward_has_finite_complete_heads_and_bounded_samples (test_model.ModelContractTests.test_forward_has_finite_complete_heads_and_bounded_samples) ... ok
+test_lattice_is_nonfolding_even_for_extreme_logits (test_model.ModelContractTests.test_lattice_is_nonfolding_even_for_extreme_logits) ... ok
+test_one_valid_pixel_never_creates_all_masked_attention_nan (test_model.ModelContractTests.test_one_valid_pixel_never_creates_all_masked_attention_nan) ... ok
+test_recognition_loss_reaches_learned_geometry_without_geometry_loss (test_model.ModelContractTests.test_recognition_loss_reaches_learned_geometry_without_geometry_loss) ... ok
+test_sample_coordinates_and_gradient_reach_lattice (test_model.ModelContractTests.test_sample_coordinates_and_gradient_reach_lattice) ... ok
+test_symmetric_rotation_targets_are_sets_not_arbitrary_labels (test_model.ModelContractTests.test_symmetric_rotation_targets_are_sets_not_arbitrary_labels) ... ok
+test_transparent_rgb_is_not_hidden_evidence (test_model.ModelContractTests.test_transparent_rgb_is_not_hidden_evidence) ... ok
+test_unknown_types_do_not_gate_occupancy_or_train_type_head (test_model.ModelContractTests.test_unknown_types_do_not_gate_occupancy_or_train_type_head) ... ok
+test_unregistered_crop_supplies_no_canonical_training_targets (test_model.ModelContractTests.test_unregistered_crop_supplies_no_canonical_training_targets) ... ok
+test_values_in_padding_cannot_change_predictions (test_model.ModelContractTests.test_values_in_padding_cannot_change_predictions) ... ok
+test_work_budget_and_empty_mask_fail_before_encoder (test_model.ModelContractTests.test_work_budget_and_empty_mask_fail_before_encoder) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.756s
+
+OK

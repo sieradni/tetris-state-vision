@@ -1,0 +1,13 @@
+test_absent_is_not_visible_empty (test_component_targets.ComponentTargetTests.test_absent_is_not_visible_empty) ... ok
+test_capacity_boundary_has_explicit_end_position (test_component_targets.ComponentTargetTests.test_capacity_boundary_has_explicit_end_position) ... ok
+test_hold_status_and_identity_are_independent (test_component_targets.ComponentTargetTests.test_hold_status_and_identity_are_independent) ... ok
+test_identical_raster_hidden_queue_and_hold_have_equal_masked_targets (test_component_targets.ComponentTargetTests.test_identical_raster_hidden_queue_and_hold_have_equal_masked_targets) ... ok
+test_identified_model_output_is_not_admitted_as_ground_truth (test_component_targets.ComponentTargetTests.test_identified_model_output_is_not_admitted_as_ground_truth) ... ok
+test_unknown_middle_retains_index_and_presence (test_component_targets.ComponentTargetTests.test_unknown_middle_retains_index_and_presence) ... ok
+test_unseen_start_masks_absolute_slots_even_when_end_visible (test_component_targets.ComponentTargetTests.test_unseen_start_masks_absolute_slots_even_when_end_visible) ... ok
+test_unseen_tail_never_trains_eos_or_hidden_length (test_component_targets.ComponentTargetTests.test_unseen_tail_never_trains_eos_or_hidden_length) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.018s
+
+OK

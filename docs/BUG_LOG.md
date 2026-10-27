@@ -28,6 +28,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Green gate: runs/m3-component-tests-r2.stderr.log,15/15 in1.774s under512MiB/
   60s,357,052,416B raw peak. Corrected fixture executes finite joint backward and
   isolated component-to-encoder gradients. Earlier red established no joint grad.
+  Committed-source scope: docs/evidence/m3-joint-contracts/scope.json onfdb0c81.
 
 ## V-016 — CLOSED: M3 source component labels lacked prepared-pixel admission
 
@@ -45,6 +46,7 @@ a named green run. An unrun gate leaves the entry OPEN.
   refusal and exact paired-hidden-raster tensor targets under512MiB/60s.
   This closes the unsafe admission; implementing resized-component observation
   remains a feature gap. No M3 learning/runtime quality claimed.
+  Committed-source scope: docs/evidence/m3-joint-contracts/scope.json onfdb0c81.
 
 ## V-015 — CLOSED: transient receipt replacement denied before child launch
 

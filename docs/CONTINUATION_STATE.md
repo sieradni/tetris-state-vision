@@ -46,7 +46,7 @@ boundary cases: docs/evidence/stream-evidence-contracts/scope.json. No unified
 suite claim. V-013 closes observed565-update memory failure on finite768/cache16
 gate, not every untested shape/run. Raw failed565/cache evidence retained.
 
-Frozen training catalogue (neural package/sampler/lock unchanged):
+ORIGINAL frozen4096-history catalogue (current M3 package has since changed):
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
 Supervisor SHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
 Seven archived helpers; pre-import CPU pools1; native cache16; exact named
@@ -97,8 +97,9 @@ On pressure/timeout/crash, preserve receipts/logs/latest state, diagnose first;
 do not promote an uncurated result to success. No auto-restart. A missing result
 is not a completed segment. Leave this finite controller detached while waiting.
 
-Then adequately train and repair geometry/layer/board errors. M3 labels8 green,
-heads/loss/runtime open. API review-only, queue/hold unknown. User's166 images
+Then adequately train and repair geometry/layer/board errors. Optional M3 heads/
+loss now have scoped gates; M3 training/admission/resize observer/runtime open.
+API review-only, queue/hold unknown. User's166 images
 remain unlabeled drafts, zero training/scoring eligibility, seven private sheets;
 legacy guesses are not truth. Broad rendering, reviewed real labels, controlled
 initialization comparisons, calibration and export/release remain open.
@@ -113,8 +114,8 @@ heavy job while this training process lives. Pure12 fixtures GREEN in0.014s,
 pending until training is terminal; exact diagnostic command and limits are in
 docs/M2_LEARNING_ACCEPTANCE.md. Do not claim runtime gate from pure fixtures.
 Source-pinned12-case receipt: docs/evidence/m2-error-analysis-contracts/scope.json
-(1531769). No package/training-source files changed; catalogue121fd05a... remains
-unchanged. Review detailed errors after this segment before altering model math.
+(1531769). That analyzer-only milestone left package/training source unchanged;
+the later M3 milestone below changes current source, not the original archive.
 Prior contracts: V-001/002/005/006 unknowns and separate layers; V-003/014 frozen
 sources/weights; V-004 raw resource counters. No architectural change/fix claim.
 
@@ -133,6 +134,10 @@ M2 numerical14 GREEN1.756s/431,362,048B under768MiB; runtime7 GREEN.562s
 under512MiB; pure observation targets8 GREEN.018s under128MiB. V-016/017 CLOSED
 on named r2 gate. Current package/source changed; old model admissions are NOT
 current M3 admissions. Read docs/M3_COMPONENT_TARGETS.md for explicit limits.
+44-case committed-source scope: docs/evidence/m3-joint-contracts/scope.json,
+fdb0c81. Three separate explicit-partial evidence fixtures reran green after
+adding terminating-ancestor receipt retention to record_stream_run.py; native
+curation of a resumed192 history will exercise the added parent metadata.
 Prior bug review: V-001/002/005/006 observation masks + paired-raster instrument;
 V-003/014 source/weight identity and frozen execution; V-007 exact native Job;
 V-011 every new trainable moment needs new warm profile; V-012 pre-import pools;
@@ -141,3 +146,23 @@ V-015 existing atomic persistence unchanged. V-004 raw counters retained.
 M3 package edits change current catalogue; active M2 and future4096 resumes MUST
 execute original verified archive121fd05a..., not current changed package.
 Memory~30.6GB committed: do source work first; no second heavy model process.
+
+Stopped4096-s1 evidence: docs/evidence/m2-stream-accuracy4096-s1-stop/scope.json;
+verified source/tensor/three ledger prefixes and saved process IDs terminal.
+Bank192 generation step-000192-e7873277a86a4428a7c8aa71898e44c0, tensors
+2d0e8e86f485baa1761842978c4d39ebea90c48b40fbc977bf1a7d7044f3927b.
+All229 logged records retained;37 later optimizer updates are not in recovery.
+Child receipt stays raw running/null; terminating ancestor is pressure125.
+Semantic restore still needs the actual resume; hashes alone do not prove it.
+
+NEXT native error-report gate while no model Job lives: old completed larger128
+artifact,27 forwards,1GiB/120s, estimated<750MiB (bounded experiment). Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024
+--wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy128-errors-job.json
+-- .venv/Scripts/python.exe scripts/probe_stream_errors.py
+--run m2-stream-accuracy128-r2 --output runs/m2-stream-accuracy128-errors
+Hidden logs runs/m2-stream-accuracy128-errors.log/.stderr.log. Preserve all outputs;
+require saved metrics reproduction and unchanged weights, verify terminal tree.
+Then resume192 toward4096 with a NEW s2 controller output using
+--resume-from runs/m2-stream-accuracy4096-s1, ORIGINAL archive121fd05a...,
+parent1280MiB/2100s/512new updates, unchanged snapshot64/recipe/Adam/RNG.

@@ -1,0 +1,20 @@
+test_budgets_empty_context_and_prediction_targets_refuse (test_components.ComponentTests.test_budgets_empty_context_and_prediction_targets_refuse) ... ok
+test_cropped_tail_has_no_eos_or_future_presence_gradient (test_components.ComponentTests.test_cropped_tail_has_no_eos_or_future_presence_gradient) ... ok
+test_eos_after_item64_is_supervised_without_extra_item (test_components.ComponentTests.test_eos_after_item64_is_supervised_without_extra_item) ... ok
+test_identical_hidden_rasters_have_equal_tensor_targets (test_components.ComponentTests.test_identical_hidden_rasters_have_equal_tensor_targets) ... ok
+test_joint_loss_reaches_encoder_and_component_queries (test_components.ComponentTests.test_joint_loss_reaches_encoder_and_component_queries) ... ok
+test_m2_outputs_unchanged_with_shared_board_weights (test_components.ComponentTests.test_m2_outputs_unchanged_with_shared_board_weights) ... ok
+test_m3_checkpoint_round_trip_and_legacy_config (test_components.ComponentTests.test_m3_checkpoint_round_trip_and_legacy_config) ... ok
+test_m3_component_targets_refuse_resize_and_invalid_alpha (test_components.ComponentTests.test_m3_component_targets_refuse_resize_and_invalid_alpha) ... ok
+test_masked_context_values_cannot_change_predictions (test_components.ComponentTests.test_masked_context_values_cannot_change_predictions) ... ok
+test_shared_parameters_and_prefix_predictions_extend_to64 (test_components.ComponentTests.test_shared_parameters_and_prefix_predictions_extend_to64) ... ok
+test_target_masks_cannot_smuggle_hidden_start_end_or_hold_identity (test_components.ComponentTests.test_target_masks_cannot_smuggle_hidden_start_end_or_hold_identity) ... ok
+test_uncalibrated_api_keeps_components_unknown (test_components.ComponentTests.test_uncalibrated_api_keeps_components_unknown) ... ok
+test_unknown_middle_does_not_shift_or_train_its_identity (test_components.ComponentTests.test_unknown_middle_does_not_shift_or_train_its_identity) ... ok
+test_unknown_semantics_have_zero_gradient_but_visibility_learns (test_components.ComponentTests.test_unknown_semantics_have_zero_gradient_but_visibility_learns) ... ok
+test_unseen_start_does_not_admit_hidden_absolute_length (test_components.ComponentTests.test_unseen_start_does_not_admit_hidden_absolute_length) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.774s
+
+OK

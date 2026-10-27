@@ -56,7 +56,9 @@ The initial15-case native gate passes,357,052,416B raw peak under512MiB/60s,
 hidden rasters, board-weight compatibility, finite joint/encoder gradients and
 legacy/M3 checkpoint round trips. M3 has explicit checkpoint architecture
 identity. This is numerical/contract evidence, not trained component accuracy.
-Current committed-source evidence and any pending gates are in CONTINUATION_STATE.md.
+Committed-source scope: docs/evidence/m3-joint-contracts/scope.json onfdb0c81,
+15 new cases plus14 M2 numerical,7 inspection and8 observation-target cases.
+These44 checks are scoped contracts, not a whole-suite or accuracy result.
 
 V-016 input admission: source Icon fields do not contain support geometry for
 model resizing/invalid alpha. M3 `targets_for` therefore temporarily requires

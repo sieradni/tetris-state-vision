@@ -129,6 +129,16 @@ def main():
                             (parent/"code/source.json", "resume-parent-source-manifest.json")]
             for suffix in ("-job.json", ".log", ".stderr.log"):
                 resume_files.append((parent.parent/(parent.name+suffix), "resume-parent"+suffix))
+            enclosing = parent.parent/(parent.name+"-pipeline-job.json")
+            if enclosing.exists():
+                if enclosing.stat().st_size > 64*1024:
+                    raise ValueError("resume enclosing receipt budget exceeded")
+                enclosing_job = json.loads(enclosing.read_text())
+                resume_parent.update(enclosing_native_status=enclosing_job["status"],
+                                     enclosing_native_exit_code=enclosing_job["exit_code"],
+                                     child_receipt_stale_after_ancestor_stop=parent_job["exit_code"] is None and enclosing_job["exit_code"] is not None)
+                for suffix in ("-job.json", ".log", ".stderr.log"):
+                    resume_files.append((parent.parent/(parent.name+"-pipeline"+suffix), "resume-parent-enclosing"+suffix))
             if (parent/"summary.json").exists():
                 resume_files.append((parent/"summary.json", "resume-parent-summary.json"))
     ledger = run/"training.jsonl"
