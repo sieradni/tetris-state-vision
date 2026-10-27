@@ -107,3 +107,4 @@ NEXT five cases, expected<110MiB,128MiB/30s/work5, native Job/pressure/thread gu
 .venv/Scripts/python.exe -m unittest discover -s tests -p test_positive_control_data.py -v
 Logs runs/positive-control-tests-r1.log/.stderr.log. New source is UNVERIFIED until
 this actual gate and32-fixture generation/replay pass. Disk floor still holds long training.
+LIVE positive fixture tests launcher21692, exact command verified.
