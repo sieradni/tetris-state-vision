@@ -24,6 +24,11 @@ runs/m2-stream-accuracy704-errors-job.json and runs/m3-model-capture-curation-jo
 both parked125 at admission before any child. No output/evidence from those
 attempts; preserve receipts/logs, retry only in NEW paths after genuine headroom.
 Capture9 test itself PASSED before this pressure; its source curator is pending.
+After headroom: retry704 report as m2-stream-accuracy704-errors-r2 (new receipt,
+logs and output,1GiB/120s/27). Retry capture curator with NEW receipt stem
+m3-model-capture-curation-r2, same09fa4ef base/9-case original green receipt.
+No failed child was started and no current model process is live. Until then,
+source work is possible; never lower/disable the OS pressure guard to force tests.
 Check live PID and terminal receipts; stale running/progress alone proves nothing.
 
 Native parent1280MiB/2100s/512new updates, child1024MiB/1860s outer/1800s inner,

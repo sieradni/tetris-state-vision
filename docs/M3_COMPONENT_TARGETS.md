@@ -78,12 +78,14 @@ unchanged capture, size/refusal bounds and paired identical rasters for hidden
 panels, occluded middle slots and different unseen prefixes. The latter retains
 visible T/I order without a hidden absolute count. Prepared tensor targets also
 agree for indistinguishable images. Tests took2.057s,255,062,016B raw peak under
-512MiB/60s. Source-bound evidence will be pinned at this milestone's commit.
+512MiB/60s, source milestone09fa4ef. Raw gate is runs/m3-model-capture-tests.json
+and its stderr log. The source curator parked125 before child launch at host
+commit32.2GB; automated curated scope remains pending, not a failed test run.
 This supports an initial synthetic M3 curriculum, not real-image relabeling,
 component accuracy or arbitrary post-labeled resizing/invalid alpha.
 
 The public inspection API remains needs_review; it identifies M3 artifacts but
 leaves queue/hold unknown. M3 training, warm optimizer/resource admission,
 general resized-component supervision and reviewed runtime decoding are still OPEN.
-No M2 admission covers the changed package or new heads. The running4096-target
+No M2 admission covers the changed package or new heads. The partial4096-target
 M2 study must continue from its original archive and optimizer history.

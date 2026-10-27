@@ -21,9 +21,11 @@ No complete screenshot parser or real-image accuracy is claimed.
    docs/evidence/m2-stream-accuracy-probe/scope.json. Its128-update diagnostic
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
-   passes an actual pressure-saved step1+resume1/curation gate. Next train a
-   fixed4096-update fresh-state baseline in
-   bounded resumable segments. Measure board, geometry and independent active/
+   passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
+   baseline has reached704 through bank192+512 verified updates: dev0/18 boards,
+   0/36 layers,geometry1.84647cells. All704 recipes and27 probes replayed; the
+   global target is still partial. Continue bounded resumable training and
+   inspect the704 error report when host RAM permits. Measure board, geometry and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
@@ -32,8 +34,9 @@ No complete screenshot parser or real-image accuracy is claimed.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
    Capacity0 preserves M2; capacity1..64 uses explicit M3 checkpoint identity.
-   No M3 learning or resource admission exists yet. Resized/invalid component
-   evidence is refused until its observer is implemented; the API keeps queue/
+   No M3 learning or resource admission exists yet. Synthetic final-model-size
+   captures now reobserve labels at that exact transform (9 checks). Arbitrary
+   post-labeled resize/invalid alpha still refuses; the API keeps queue/
    hold unknown. Current M2 training must resume its original archive.
    Preserve unknown middle positions and unobserved queue ends; never infer
    hidden length or delete locked cells using a guessed active/ghost footprint.
