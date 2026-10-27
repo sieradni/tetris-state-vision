@@ -20,12 +20,12 @@ geometry below.25 cells. Passing establishes memorization only.
 - [x]All-class native recovery2+6+3+3 and independent artifact/recipe curation.
 - [x]First actual fit:128/1024 banked and verified.
 - [x]External raw-head error reader extended;39 bounded checks GREEN.
-- [ ]Source-pin39 checks;41 ordinary forwards plus independent audit.
+- [x]Source-pin39 checks;41 ordinary forwards plus independent audit.
 - [ ]Continue same admitted fixed study to1,024; inspect failure if it fails.
 - [ ]Independent generalization, original larger baseline completion, adequate
   whole-state learning and real/runtime/release gates remain OPEN.
 
-No model Job live. Test launcher26152/supervisor24672/child6300 and matching
+LIVE s2 model Job (launcher27580,worker11748); exact command and next actions below. Prior test launcher26152/supervisor24672/child6300 and matching
 commands verified gone. Last observed free disk69,224,476,672B; recheck >40GB
 before long training. Runner unchanged SHA
  d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
@@ -33,7 +33,7 @@ Kernel Job readback/kill-on-close,GetPerformanceInfo/.2s stop31,368,351,744B,
 pre-import CPU1/cache16 unchanged. One heavy Job at a time. State RAM/cap/guard
 before every launch; verify exact startup/terminal commands and known PIDs.
 
-## Immediate next commands (hidden detached)
+## Completed128-update diagnostic commands (historical receipts)
 
 Curate39 checks: expected <110MiB;128MiB/30s/work39. Exact arguments and32 source
 paths in runs/fit-error-curation-r1-plan.json. Receipt runs/fit-error-curation-r1.json,
@@ -67,7 +67,7 @@ child/curator raw receipts/logs and actual inference/training hashes.
 Weights f880c24dd6b8b16b276504c3e79420139ccdee2bc1ba2de9832d9a40c1f7ba81.
 Neural catalogue6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42.
 Internal fit28/32 boards,8/64 roles(8 absences,0/56 observed),128/128 semantic
-cells,geometry.21596340788528323; criterion FALSE. Independent replay pending.
+cells,geometry.21596340788528323; criterion FALSE. Independent replay PASSED; exact error evidence below.
 Dev2/9 boards on only3 independent ancestries; not broad generalization.
 
 Admission runs/m2-stream-recovery-gate-r5/profile; pilot/capacity0/layeroff,
