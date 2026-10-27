@@ -21,7 +21,7 @@ child runs/m2-stream-accuracy4096-s4-job.json and s4.log/.stderr.log;
 sentinel docs/evidence/m2-stream-accuracy4096-s4/scope.json if controlled finish.
 Child1024MiB/1860s outer/1800s inner,checkpoint64,CPU1/cache16;serialized
 curator128MiB/120s. Expected<1100MiB aggregate;native Job/pressure guard stays on.
-Current commit26,539,560,960B,available14,388,453,376B,C:free51,524,427,776B;
+Launchcheck commit26,539,560,960B,available14,388,453,376B,C:free51,524,427,776B;
 recheck before launch,require>40GB disk. User freed disk;no data deleted here.
 
 Controller b8eb48a,SHA11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4
@@ -32,22 +32,33 @@ Execute ORIGINAL s3/code/scripts/train_m2_stream.py,catalogue
 Actual1152 preflight PASS.353s,34,402,304B/128MiB/30s/work1:
 docs/evidence/m2-s4-preflight-r1/scope.json. Start1152,target4096,budget512;
 accuracy/capacity0,seed20261026,LR.001,eval128,checkpoint64,groups6,no componentflag.
-At most512new ->1664;target stays4096. Verify exact launch/PIDs and checkpoint.
-After20new compare all20 unbanked s3 data/loss/terms/gradient rows against s4
-recomputation (time excluded);old1172 tensors unavailable. If only long wait
+At most512new ->1664;target stays4096. Launch/PIDs and20 recomputed rows verified. If only long wait
 remains,commit live discovery state and end turn,do not babysit indefinitely.
 
-Live s4 verified worker30892 (redirector4208),child supervisor31064 (launcher27512),
-controller13492/30656,root33104/launch31508. At least12 new updates observed.
-NEXT finite read-only1172 prefix check once s4 curve reaches1172:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128
---wall-seconds 30 --work-items 1172
---receipt runs/m2-s4-prefix-r1-job.json --
-.venv/Scripts/python.exe runs/m2-s4-prefix-verify.py
-Logs runs/m2-s4-prefix-r1.log/.stderr.log;
-sentinel docs/evidence/m2-stream-accuracy1172-recomputed-r1/scope.json.
-Expected<96MiB;native Job/pressure guard. No Torch/forward/update and no live
-file edits;copy exactly1172 complete rows per ledger,exclude elapsed only.
+LIVE s4: verified worker30892 (redirector4208),child supervisor31064 (launcher27512),
+controller13492/30656,root33104/launch31508. Last observed training1235 at111.993s;
+new bank1216 manifest/payload hashes verified. Pointer manifest
+59e01068f65e5bc3b28696dffbe889c6110ce27cf100e837570359f4bc9e45f8;
+payload a8f33371ec362b9e5d1010d3c30325d80ea1a81323f1838712fd4e76b218941b.
+This is a saved training snapshot,not a final inference/accuracy result. Latest
+resource check commit27,967,053,824B,available13,263,626,240B,disk51,421,515,776B.
+
+Recomputation PASS.335s,52,961,280B/128MiB/30s/work1172:
+docs/evidence/m2-stream-accuracy1172-recomputed-r1/scope.json. All1172 data rows
+byte-exact;all1172 loss/terms/gradient/sample rows equal excluding elapsed,
+including20 unbanked s3 updates1153..1172. Original1172 tensors unavailable.
+Raw old/new finite prefixes,verifier,receipt/logs preserved with hashes. Launch
+25364/supervisor27564/child17992 and matching proof commands gone. No live-file
+edits,new forward/update or completed-target claim from the read-only proof.
+
+NEXT inspect existing pipeline receipt and exact PID30892 before doing anything.
+While confirmed live,do not restart or edit controller/training catalogue. If
+controlled finish,inspect result.json,child/curator/parent terminal receipts,
+summary/actual architecture,curated scope and process death;preserve ancestor
+logs/results/receipts and inspect updated learning metrics. If pressure125,
+record actual bank/logged cursor and raw statuses,verify all owned processes
+are gone,then verify recovery rather than relaunching automatically. Target4096
+remains unfinished. Only long wait remains;live discovery state is committed.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:
