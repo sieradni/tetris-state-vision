@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-023 — OPEN: new proof checker mistook normalized JSON for a raw copy
+## V-023 — CLOSED: new proof checker mistook normalized JSON for a raw copy
 
 - Symptom: runs/m3-controller-recovery-proof-r1.stderr.log rejects actual p1
   evidence before publishing proof; all three native controller runs passed.
@@ -28,9 +28,13 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Instrument: explicit current-manifest value comparison, raw byte comparison
   for every other selected artifact, complete parent mappings; four regression
   cases reject changed state and reformatted raw parent files.
-- Pending gate: named four-case contract run and actual native proof rerun.
+- Green gates: docs/evidence/m3-controller-recovery-r1/test-scope.json pins four
+  controller-evidence-tests-r1 cases (.076s,35,454,976B/128MiB). Actual native
+  proof-r2 PASS.413s,72,044,544B/128MiB; scope.json verifies all three cases,
+  complete parent mappings and unchanged copied content with explicit normalized
+  current manifests. Failed proof-r1 remains preserved in the same folder.
 
-## V-022 — OPEN: controller result could identify edited source instead of its launch source
+## V-022 — CLOSED: controller result could identify edited source instead of its launch source
 
 - Symptom: review found controller_sha256 was computed only after both children
   finished. Editing the controller while it waited could label old executed
@@ -41,7 +45,12 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Instrument: capture controller source hash before planning/spawn; require it
   unchanged before writing a verified result and record that launch hash. New
   source-change fixture must refuse; do not edit an active controller file.
-- Pending gate: scoped segment-controller fixtures and actual native integration.
+- Green gates: docs/evidence/segment-controller-contracts/scope.json,16 cases
+  on b8eb48a/controller11a0a81a,including changed-source refusal. Actual native
+  docs/evidence/m3-controller-recovery-r1/scope.json verifies three unchanged
+  controller executions (13.512/11.658/11.088s),partial1+resume2==continuous3,
+  exact model/optimizer/RNG payload, data/loss/gradient/evaluation and curation
+  identities. This is finite integration evidence, not a long-memory/quality gate.
 
 ## V-021 — CLOSED: stop collector text assumed the child receipt was stale
 

@@ -1,0 +1,9 @@
+test_normalization_does_not_accept_changed_state (test_controller_evidence.EvidenceCopyContract.test_normalization_does_not_accept_changed_state) ... ok
+test_normalized_current_manifest_keeps_every_value (test_controller_evidence.EvidenceCopyContract.test_normalized_current_manifest_keeps_every_value) ... ok
+test_raw_copy_requires_identical_bytes (test_controller_evidence.EvidenceCopyContract.test_raw_copy_requires_identical_bytes) ... ok
+test_raw_parent_manifest_reformat_is_rejected (test_controller_evidence.EvidenceCopyContract.test_raw_parent_manifest_reformat_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.076s
+
+OK

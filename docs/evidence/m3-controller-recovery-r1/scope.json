@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "base_commit": "d43a1a94ad3cc7da92a5fe1a183a952af9752541",
+  "controller_sha256": "11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4",
+  "source_catalogue_sha256": "b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255",
+  "architecture": "TetrisStateNet-M3",
+  "component_capacity": 64,
+  "model_kind": "pilot",
+  "continuous_steps": 3,
+  "partial_then_resumed_updates": [
+    1,
+    2
+  ],
+  "exact_data_loss_terms_gradients_evaluations": true,
+  "byte_identical_model_optimizer_rng_payload": true,
+  "exact_module_modes_signature": true,
+  "replayed_training_rows_across_cases": 7,
+  "verified_saved_probe_images_across_cases": 81,
+  "weights_sha256": "5a69097af40f0660ec464e795e40c4b7085ecc8d69bfb63b588ec7e6322b491c",
+  "training_payload_sha256": "510be7353c6819de3a79aa4d9c8a5224945cb8bce8b5ad996ef0510d658767d9",
+  "cases": {
+    "p1": {
+      "parent_seconds": 13.512,
+      "parent_peak_bytes": 526790656,
+      "child_peak_bytes": 490283008
+    },
+    "p2": {
+      "parent_seconds": 11.658,
+      "parent_peak_bytes": 531968000,
+      "child_peak_bytes": 495423488
+    },
+    "full": {
+      "parent_seconds": 11.088,
+      "parent_peak_bytes": 532938752,
+      "child_peak_bytes": 496304128
+    }
+  },
+  "artifact_sha256": {
+    "p1/result.json": "89c41855194d9986bd9d09b7809253f71b2cdbf479c30bdc82647b7e68a40bd9",
+    "p1/progress.json": "89c41855194d9986bd9d09b7809253f71b2cdbf479c30bdc82647b7e68a40bd9",
+    "p1/curation-job.json": "bb35ed21f78f78abb6217c0fb116fc04cd5ae019dc63f5b9833d0d2080df10b7",
+    "p1/curation.log": "f1bf03b4b7477e8c02521bedf581ae1235c9fa44066fc88bca4ffd5f19df8291",
+    "p1/curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p1/pipeline-job.json": "0ace8df454a46e87867146df33bb399f2f82889d620ee8f1d8e7c603090bede4",
+    "p1/pipeline.log": "f9614168de3de2a03ee1d104e9254df7eb92e590ea717e9e54425219edf6873b",
+    "p1/pipeline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2/result.json": "4a7485d19a68de000a688d2581e59348777ca5b0884235b1e37b5a10f7df7f83",
+    "p2/progress.json": "4a7485d19a68de000a688d2581e59348777ca5b0884235b1e37b5a10f7df7f83",
+    "p2/curation-job.json": "46f59de0247ee3daa9c157017bfd7bf99d88e3118d828b3df2e49cd279b4e052",
+    "p2/curation.log": "b19b82be7bdfdf70e31dddf0700bb13b655edcceaf5a99ee427bd680f35aa207",
+    "p2/curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2/pipeline-job.json": "a9eb4c820c4f8e64e9e49ed3fd4efd0d4307f666a7ae9d5484fb470aae155c5c",
+    "p2/pipeline.log": "98e0e3f3e97b33af6c7d139f4934106a547925ce485d8f36a14443cc75760bb4",
+    "p2/pipeline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full/result.json": "350bb1009ae0086f06817fdfbdf5ef1a68d0e7321ee0c2d05e70426fea1848ac",
+    "full/progress.json": "350bb1009ae0086f06817fdfbdf5ef1a68d0e7321ee0c2d05e70426fea1848ac",
+    "full/curation-job.json": "322b59f1979ad44b7fc3d6954a021aec1283ce2b06482dda5b6b82f56cb70c0f",
+    "full/curation.log": "ae2e297fd8f2cff29f82396e6fd57ef77aacae80501f0e23f74caa5cef274814",
+    "full/curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full/pipeline-job.json": "879ea1572e7bda615e2b6342a870e789947386c8bf692eac0796accf032521a1",
+    "full/pipeline.log": "3a59c2a48bbcb85129aca2fac92053b498275dba3f596def387d8a094cc840a1",
+    "full/pipeline.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "record_controller_recovery.py": "3b58cb8588980d47636d4be54ae4138021ed1377b920d586410ee26e7825560f"
+  },
+  "scope": "Native finite controller archive/routing/recovery/curation identity only; no convergence, long-shape memory or real accuracy claim."
+}

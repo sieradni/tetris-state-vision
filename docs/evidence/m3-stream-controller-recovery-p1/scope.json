@@ -1,0 +1,23 @@
+{
+  "status": "verified_partial",
+  "run_status": "step_partial",
+  "steps": 1,
+  "requested_steps": 3,
+  "base_commit": "5829806e5e7f94c7c67f3cfdf5ce7347f9e7056e",
+  "source_catalogue_sha256": "b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255",
+  "weights_sha256": "6f1de4fc444036f0bc72e393d767082ae0b18c3a91b10372658b9f8d59306553",
+  "replayed_training_samples": 1,
+  "verified_saved_probe_images": 27,
+  "native_peak_job_commit_bytes": 490283008,
+  "all_final_tensors_reload_exact": true,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-stream-controller-recovery-p1\\code",
+  "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+  "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
+  "training_snapshot_identity_verified": true,
+  "comparison_status": null,
+  "updates_this_run": 1,
+  "resume_parent": null,
+  "curator_sha256": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+  "core_architecture": "TetrisStateNet-M3",
+  "component_capacity": 64
+}

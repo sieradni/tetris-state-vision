@@ -39,7 +39,10 @@ No complete screenshot parser or real-image accuracy is claimed.
    Capacity0 preserves M2; capacity1..64 uses explicit M3 checkpoint identity.
    Joint streaming integration passes68 scoped unit/contract checks onf542096.
    Native pilot recovery6==3+3 is exact, and both pilot and larger capacity64
-   configurations pass full512-square warm/reload resource profiles. The larger
+   configurations pass full512-square warm/reload resource profiles. The finite
+   controller now also passes actual continuous3==partial1+resume2 routing,
+   curation and byte-identical model/Adam/RNG recovery on the admitted pilot;
+   docs/evidence/m3-controller-recovery-r1/scope.json. The larger
    has7,997,016 parameters and942,903,296B peak under1GiB. Joint learning and
    varied-shape long memory remain pending; no quality admission follows.
    Synthetic final-model-size

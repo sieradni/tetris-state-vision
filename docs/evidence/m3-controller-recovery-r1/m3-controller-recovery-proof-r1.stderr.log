@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_controller_recovery.py", line 166, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_controller_recovery.py", line 116, in main
+    require(copy.name in originals and digest(copy) == digest(originals[copy.name]), "curated bytes differ")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_controller_recovery.py", line 44, in require
+    raise ValueError(message)
+ValueError: curated bytes differ

@@ -1,0 +1,18 @@
+{
+  "status": "segment_verified",
+  "training_status": "complete",
+  "global_steps": 3,
+  "target_steps": 3,
+  "updates_this_segment": 3,
+  "target_complete": true,
+  "weights_sha256": "5a69097af40f0660ec464e795e40c4b7085ecc8d69bfb63b588ec7e6322b491c",
+  "source_catalogue_sha256": "b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255",
+  "evidence_status": "passed",
+  "core_architecture": "TetrisStateNet-M3",
+  "component_capacity": 64,
+  "model_kind": "pilot",
+  "verified_probe_images": 27,
+  "next_resume_from": null,
+  "controller_sha256": "11a0a81aeccddbb62451c46d24d2d4a844d762653b44cdb7b5edbb168bec0ac4",
+  "scope": "One bounded training segment and replayed explicit-status evidence; not full goal, adequate convergence or model quality."
+}

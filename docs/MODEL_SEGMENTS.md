@@ -50,9 +50,24 @@ Sixteen scoped tests pass in1.275s,57,405,440B peak under192MiB/60s on b8eb48a:
 `docs/evidence/segment-controller-contracts/scope.json`. Byte-level
 source validation is isolated in planning fixtures and has separate source gates;
 dummy fixture trainers never execute. The negative named-Job check uses a real
-subprocess. These tests do not establish actual M3 training, native end-to-end
-controller recovery, long varied-shape memory or model quality. New actual
-continuation and joint controller integration remain pending. Actual original1152
+subprocess. They are distinct from actual M3 training and native controller
+recovery. Long varied-shape memory and model quality remain open. Actual original1152
 archive/snapshot/admission preflight passes in.353s,34,402,304B under128MiB/30s:
 `docs/evidence/m2-s4-preflight-r1/scope.json`. It selects the original archived
 trainer and original recipe, creates no output and performs no forward/update.
+
+Actual joint controller integration passes on the same unchanged controller:
+`docs/evidence/m3-controller-recovery-r1/scope.json`. Three serialized native
+1280MiB/120s parents execute admitted640MiB children: partial1/3, resumed3/3
+(two new updates), continuous3/3. Times13.512/11.658/11.088s; aggregate peaks
+526,790,656/531,968,000/532,938,752B. All descendants verified gone.
+
+Continuous3 and resumed1+2 match the data ledger, loss terms, gradients,
+evaluation sequence and fixed probes. Their full serialized model/Adam/CPU-RNG
+payload is byte-identical (510be7353c6819de...), as are inference weights
+(5a69097af40f0660...). All seven ledger rows and81 saved probes across the three
+cases passed each run's independent recipe replay. Current snapshot evidence
+uses normalized JSON; parent manifests and other selected files are raw copies.
+Four copy-contract regressions and native proof-r2 verify that distinction;
+the initial checker failure is retained. These three updates establish wrapper
+recovery and provenance, with no convergence or accuracy acceptance.
