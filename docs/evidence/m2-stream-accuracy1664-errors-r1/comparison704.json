@@ -1,0 +1,85 @@
+{
+  "status": "compared",
+  "same_source_architecture_config": true,
+  "probe_recipe_bytes_identical": true,
+  "old_steps": 704,
+  "new_steps": 1664,
+  "old_run_status": "step_partial",
+  "new_run_status": "step_partial",
+  "old_weights_sha256": "36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda",
+  "new_weights_sha256": "7b1e4587437514db77cc58b19463ecbc1c0e23ed6bd9ff19b697b23cee70f4fb",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "splits": {
+    "training": [
+      {
+        "steps": 704,
+        "images": 9,
+        "ancestry_groups": 3,
+        "true_positive": 88,
+        "false_positive": 268,
+        "false_negative": 80,
+        "exact_boards": 0,
+        "exact_layers": 0,
+        "known_layers": 18,
+        "geometry_mean_cells": 3.27836594112267,
+        "active_type_errors": 9,
+        "ghost_type_errors": 9
+      },
+      {
+        "steps": 1664,
+        "images": 9,
+        "ancestry_groups": 3,
+        "true_positive": 86,
+        "false_positive": 140,
+        "false_negative": 82,
+        "exact_boards": 0,
+        "exact_layers": 8,
+        "known_layers": 18,
+        "geometry_mean_cells": 2.897292906887566,
+        "active_type_errors": 9,
+        "ghost_type_errors": 1
+      }
+    ],
+    "development": [
+      {
+        "steps": 704,
+        "images": 18,
+        "ancestry_groups": 6,
+        "true_positive": 384,
+        "false_positive": 326,
+        "false_negative": 17,
+        "exact_boards": 0,
+        "exact_layers": 0,
+        "known_layers": 36,
+        "geometry_mean_cells": 1.8464714131136288,
+        "active_type_errors": 18,
+        "ghost_type_errors": 18
+      },
+      {
+        "steps": 1664,
+        "images": 18,
+        "ancestry_groups": 6,
+        "true_positive": 384,
+        "false_positive": 270,
+        "false_negative": 17,
+        "exact_boards": 0,
+        "exact_layers": 2,
+        "known_layers": 36,
+        "geometry_mean_cells": 2.229410834718566,
+        "active_type_errors": 15,
+        "ghost_type_errors": 15
+      }
+    ]
+  },
+  "artifact_sha256": {
+    "docs/evidence/m2-stream-accuracy704-errors-r3/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "docs/evidence/m2-stream-accuracy1664-errors-r1/training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff",
+    "docs/evidence/m2-stream-accuracy1664-errors-r1/development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/scope.json": "a89f60d96e33c133187e63a758503bbd69ba66f7f19bcc0f71a7efad248f7fe5",
+    "docs/evidence/m2-stream-accuracy704-errors-r3/result.json": "280ab0d3537ab1b4436eba3163d9a2d6a32e2c5732a0338565a6b644400daef1",
+    "docs/evidence/m2-stream-accuracy1664-errors-r1/scope.json": "ab3c8058635f74472da3b6c30e9f85d09539aeed1c4abfb1c60e3b363cbdef05",
+    "docs/evidence/m2-stream-accuracy1664-errors-r1/result.json": "23cc40ab8b4767a10a7f5bd43570cc80a2e4c1a6444e0612fdcb0b0fa23fc086"
+  },
+  "scope": "Saved synthetic dependent fixed probes only. Ordinary raw-head diagnostics at704 and1664,not convergence,calibration,complete-state or real-image quality. No training or confidence interval."
+}

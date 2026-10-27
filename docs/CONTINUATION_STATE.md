@@ -60,6 +60,17 @@ state runs/m2-stream-accuracy1664-geometry-r1/progress.json,result.json.
 Expected<850MiB;1GiB/120s/54forwards,native pressure/Job guard. No othermodel Job.
 After terminal verify unchanged weights,reproduced automatic metrics and actual
 partial status,then record_stream_geometry under128MiB/30s/work54.
+Conditional1664 geometry native PASS23.894s,585,072,640B/1GiB/120s/work54;
+9692/7656/12532 and matching commands gone. All ordinary metrics reproduced,
+weights unchanged,explicit step_partial1664/4096 preserved. NEXT curator:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128
+--wall-seconds 30 --work-items 54 --receipt runs/accuracy1664-geometry-curation-r1.json
+-- .venv/Scripts/python.exe scripts/record_stream_geometry.py
+--name m2-stream-accuracy1664-geometry-r1
+Logs runs/accuracy1664-geometry-curation-r1.log/.stderr.log;
+sentinel docs/evidence/m2-stream-accuracy1664-geometry-r1/scope.json.
+Expected<96MiB;native pressure/Job guard. No model Job live;after curation,
+close V-024 only on named actual native scope,document actual conditional effect.
 ## Selected diagnostic task
 
 Ordinary error replay first: scripts/probe_stream_errors.py
