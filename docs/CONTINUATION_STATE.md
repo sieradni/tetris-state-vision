@@ -274,3 +274,4 @@ another training Job. Receipt runs/fit-error-protocol-r1.json,logs same-stem.
 Freeze external report sources through gate; then source-pin and run actual41
 ordinary forwards on saved firstfit checkpoint after its process tree exits.
 First fit s1 VERIFIED step_partial128/1024. Parent119.679s/600,002,560B; all known PIDs/exact commands gone, actual inference/training hashes and native receipts preserved. Fit score is internal until ordinary raw-head replay; no acceptance claim. Next39 error protocol tests exactly as predeclared,512MiB/60s,expected<350MiB,nativeguards. No other model Job live.
+Error protocol launcher26152, exact command verified; freeze report source.
