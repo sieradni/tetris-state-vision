@@ -5,6 +5,15 @@ no remote. Full objective unfinished. Neighboring engine/apps/run data untouched
 No push/deploy/publish/deletion authorized. Source candidate f542096 committed;
 working tree clean before this checkpoint. Goal blocking audit passed below.
 
+RESUMED: goal service ACTIVE; fresh OS commit27,527,557,120B, headroom restored.
+Selected acceptance task: execute f542096 candidate's pending scoped tests,
+then actual704 error report and a fresh M3 square warm/recovery profile. Preserve
+all original4096 source/cursor state. First unit gate:25 stream/joint cases,
+512MiB/60s, one CPU; logs runs/joint-stream-tests-r1.log/.stderr.log, receipt
+runs/joint-stream-tests-r1.json. No model training authorized by unit pass alone.
+Launch PID13560 exact supervisor command verified; inspect native receipt/logs
+and matching worker before waiting. No other owned model process was present.
+
 BLOCKER: host OS commit31,934,693,376B > guard stop31,368,351,744B, before any
 worker reservation. Same condition across three consecutive goal turns: follow-up
 jobs parked before launch (~32.2GB, later33.9GB); next turn source work completed
