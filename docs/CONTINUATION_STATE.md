@@ -71,6 +71,14 @@ Logs runs/target-exposure-tests-r1.log/.stderr.log;expected<96MiB,native guards.
 No Torch import;safe modest work beside verified live s5. Actual1691-target audit
 on saved1664 waits for s5 entire process tree to exit;640MiB/120s/work1691,
 expected<550MiB. Native output/receipt paths must be checkpointed before launch.
+Target-exposure14 pure cases GREEN.040s,35,467,264B/128MiB/30s. Testlaunch26752/
+supervisor20532/child36000 gone. Sourcee454345;no Torch/model/optimizer.
+NEXT source curator exact command array runs/target-exposure-curation-r1-command.json:
+128MiB/30s/work14,record_test_gates --name target-exposure-contracts --base e454345
+--gate target-exposure-tests-r1:14 and12 sources. Logs
+runs/target-exposure-curation-r1.log/.stderr.log,receipt same-prefix.json;
+sentinel docs/evidence/target-exposure-contracts/scope.json. Expected<96MiB,
+native guards;modest metadata job beside s5. Actual target audit still unrun.
 ## Verified s4 and ordinary/conditional diagnostics
 
 M2_BASELINE_1664.md explains latest evidence and limits. s4 is verified
