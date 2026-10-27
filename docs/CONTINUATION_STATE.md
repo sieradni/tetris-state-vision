@@ -149,3 +149,16 @@ Then s1 ordinary mode must refuse existing controller evidence without changes.
 Verify actual640 hashes/raw copies/PID death; preserve startup file, then commit.
 Helper bounds exactly predeclared s1=128,s2=512,s3=384,target1024; no overwrite.
 ALL_CLASS_FIT records order/representation hypotheses as unproven, no live change.
+
+POST640 ordinary replay, only after entire s2 process tree/collector pass:
+expected<600MiB,640MiB/180s/work41 with native/pressure guards:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 41 --receipt runs/m2-stream-allclass640-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-allclass1024-s2
+--output runs/m2-stream-allclass640-errors-r1
+Logs runs/m2-stream-allclass640-errors-r1.log/.stderr.log;result same-prefix/result.json.
+Then curator expected<110MiB,128MiB/30s/work41,receipt runs/allclass640-error-curation-r1.json:
+.venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-allclass640-errors-r1
+Logs same curator stem;final docs/evidence/m2-stream-allclass640-errors-r1/.
+Preserve curator raw receipts/logs and exact startup/death; independently reproduce
+all ordinary and fit scores before acceptance/next training. No target extension.
