@@ -9,13 +9,26 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021 (5) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, unwrapped callable origin, actual receipt status and checkpoint architecture/config tripwire |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022 (6) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config tripwire |
 | test-instrument | V-004, V-011, V-012, V-017, V-019 (5) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-022 — OPEN: controller result could identify edited source instead of its launch source
+
+- Symptom: review found controller_sha256 was computed only after both children
+  finished. Editing the controller while it waited could label old executed
+  instructions with the hash of new file bytes. No such historical edit is claimed.
+- Root cause: completion-time file identity was mistaken for launch identity,
+  the same provenance boundary as V-014.
+- Detection class: provenance.
+- Instrument: capture controller source hash before planning/spawn; require it
+  unchanged before writing a verified result and record that launch hash. New
+  source-change fixture must refuse; do not edit an active controller file.
+- Pending gate: scoped segment-controller fixtures and actual native integration.
 
 ## V-021 — CLOSED: stop collector text assumed the child receipt was stale
 

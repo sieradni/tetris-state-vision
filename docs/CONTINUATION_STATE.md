@@ -1,5 +1,24 @@
 # Current checkpoint — 2026-10-26
 
+LIVE update: disk50,624,167,936B and commit25,698,631,680B, headroom restored.
+Final16 controller cases PASS1.298s,57,577,472B/192MiB. Launch27216/supervisor27164/
+child33928 and matching tests gone. Source docs/MODEL_SEGMENTS.md describes
+admission/archive/recipe/capacity/probe/source identity scope. V-022 remains OPEN
+until named source-bound fixtures and actual native integration. NEXT commit,
+then actual1152 --plan-only gate runs/m2-s4-preflight-r1-job.json/.log/.stderr.log,
+128MiB/30s/work1,expected<96MiB, no output directory/child/model update.
+First15 controller cases PASS1.438s/57,757,696B under192MiB; launcher28700,
+supervisor32204,child30048 and matching tests gone. Added a guarded --plan-only
+branch for actual archive/snapshot admission without training. NEXT final16-case
+gate runs/segment-controller-tests-r2.json/.log/.stderr.log,same192MiB/60s,
+expected<128MiB. Then actual1152 preflight under128MiB/30s/work1 before s4.
+Controller candidate now derives profile/frozen trainer/capacity/envelope,
+inherits full exposed resume recipe, verifies population/config/status, and
+refuses changed launch-source identity (V-022 OPEN). NEXT15 metadata/routing/
+native-refusal cases: runs/segment-controller-tests-r1.json/.log/.stderr.log,
+192MiB/60s/work15,expected<128MiB; no model forward/update. Current neural
+catalogues121fd05a/b6bb05f3 and supervisor d2fb1478 are unchanged.
+
 Repo C:/Users/micha/Code/tetris-state-vision; codex/layout-diversity,no remote.
 Goal ACTIVE and unfinished. No owned job running. Neighboring engine/apps/run data
 untouched. Local commits authorized; no push/deploy/publish/deletion. One heavy
@@ -8,20 +27,24 @@ model Job at a time; native RAM/OS pressure/CPU thread guards remain armed.
 ## Next action and resource window
 
 Next learning segment is ORIGINAL M2 s4 from verified bank1152 toward fixed4096.
-The user's machine rule (tetrguide/AGENTS.md:299-301) requires>40GB free before
-long windows. Latest C:35,191,177,216B, OS commit29,166,284,800B; no long launch.
-An asynchronous question asks user to free at least5GB; awaiting response/state,
-not permission to delete data or close apps. Recheck actual disk/memory before
-launch even after a reply. First disk-headroom blocker this goal turn; do not
-mark the full goal complete or blocked on this single occurrence.
+The user replied they will free disk space; actual C:45,113,274,368B now clears
+the>40GB rule. Host commit33,176,813,568B exceeds native stop31,368,351,744B, so
+no model/test launch until actual headroom returns. No owned Python Job live.
+No guard changes, user apps closed or user data deleted. Goal remains ACTIVE.
 
-Independent next source task if disk remains low: extend the finite segment
+Selected independent source task while RAM is high: extend the finite segment
 controller to optional M3 capacity/configuration while preserving old archived
 M2 calls and target/Adam/RNG history. Current controller hardcodes M2 names and
 capacity0. Work outside the training catalogue; keep all native caps and serial
 children. Read BUG_LOG provenance/recovery/resource contracts before changes;
 require scoped admission/resume fixtures and later actual native gate. Do not
-start another heavy Job to bypass the disk floor. No source changes started yet.
+start another heavy Job to bypass a headroom refusal. Acceptance: preflight,
+legacy/M3 routing, inherited recipe and result/admission/cursor fixtures, then
+actual serialized native gate when admitted. V-003/V-014/V-018/V-020/V-021 require
+computed actual source/config/status identities; V-007/V-010/V-011/V-012 retain
+native membership/pressure/warm/import-thread policy unchanged; V-013 keeps long
+memory separate; V-015 atomic writes unchanged; V-001/V-005/V-006/V-016 label
+masks/independent layers untouched. No training catalogue or supervisor changes.
 
 ## Verified1152 recovery after actual pressure stop
 
