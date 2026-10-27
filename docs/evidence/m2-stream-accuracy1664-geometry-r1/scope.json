@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "input_source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s4\\code",
+  "run_status": "step_partial",
+  "global_steps": 1664,
+  "target_steps": 4096,
+  "core_architecture": "TetrisStateNet-M2",
+  "component_capacity": 0,
+  "diagnostic_sources": {
+    "scripts/probe_stream_geometry.py": "0992e434ba6981839b9eb7c8619bc795b3f9549fc29b7e813e69acc6f68d25e8",
+    "scripts/geometry_contract.py": "2e023d6d011de60e8f2a496b23347c35b486ee6cb4b2c14d7bd988aaf5b41996",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "7b1e4587437514db77cc58b19463ecbc1c0e23ed6bd9ff19b697b23cee70f4fb",
+  "artifact_sha256": {
+    "result.json": "50516bf6c1316966113ee4b5606ec0e69f40ab6b075c1ba5c6221cb77496925d",
+    "progress.json": "ae0714f42f4ebc95a735f59d07908340dfc9c44460f31f134421b1bc52babfd9",
+    "source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "input-checkpoint-manifest.json": "a8801886fbe40ddfc97b3315de379128d476fa4ffd2d9dbbc3412dd52850cecd",
+    "input-summary.json": "bca0c14067e31b7e52e08b6868cf310db672071415cfe8de0c50542d1a9251cc",
+    "input-job.json": "15cfbebbdb4d598be8cf45caac827ba8bd2c0d119d7ce5712e58670e128dbb5b",
+    "training-probe.jsonl": "16c435f7b4613da6445e69e242968ae311f942287bee03b149eb948d2b235703",
+    "development-probe.jsonl": "73b985538d186dc06b3b88de15d8cc927fbfda62edf6a1b6b6ebd73e274393ff",
+    "m2-stream-accuracy1664-geometry-r1-job.json": "40259cb83f88636d85be78cbc77583610ff7ab1c51c315e38f2f081a5c439444",
+    "m2-stream-accuracy1664-geometry-r1.log": "9a4ad4d1c299d78946a617bdc7cd083decd2b4f7c7f4f5d439e0f353b7259d4d",
+    "m2-stream-accuracy1664-geometry-r1.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "curator_sha256": "be168eca169425ed300311128898c3fe476e8d147f235cf5799e0e0685878054",
+  "scope": "54-forward conditional oracle-geometry diagnostic; ordinary metrics reproduced and weights unchanged. Labels enter oracle forward; not automatic accuracy, an upper bound or deployed correction."
+}

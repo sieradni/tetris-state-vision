@@ -41,7 +41,7 @@ ordinary metric and recomputed ordinary/conditional totals. It preserves raw
 input summary/probe recipes/receipt and source/weight manifests with hashes.
 Historical pilot geometry reports keep their old scope; new format2 evidence
 does not retroactively upgrade them. Metadata fixtures are distinct from actual
-paired forwards. V-024 remains open until native replay and curation pass.
+paired forwards. V-024 closes only on named native replay and curation evidence.
 
 Ten scoped metadata checks pass in.113s,35,180,544B under128MiB/30s on eaf5bee:
 `docs/evidence/geometry-evidence-contracts/scope.json` pins18 source/fixture
@@ -49,3 +49,12 @@ files. They include the preserved pilot's negative oracle effect, changed
 aggregates and native command, missing/duplicate cases, explicit partial
 admission, wrong architecture and unsupported/nonfinite targets. Historical
 fixture data is adapted only in memory; it is not a new model evaluation.
+
+Actual saved1664 format2 replay/curation passes at
+`docs/evidence/m2-stream-accuracy1664-geometry-r1/scope.json`:54 forwards in23.894s,
+585,072,640B under1GiB;collector.288s,64,712,704B under128MiB. All ordinary
+metrics reproduce and weights remain unchanged. Both modes have0/18 exact
+development boards;cell accuracy decreases from.920278 to.904444 with the
+supplied lattice,and exact known layers from2/36 to0/36. This shows that this
+intervention alone does not repair this checkpoint. It neither identifies a
+capacity ceiling nor proves which architecture/training change will work.

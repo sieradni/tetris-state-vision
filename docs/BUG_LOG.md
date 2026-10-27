@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-024 — OPEN: geometry collector trusted aggregates and incompletely bound native command
+## V-024 — CLOSED: geometry collector trusted aggregates and incompletely bound native command
 
 - Symptom: review of the historical geometry collector found altered oracle
   aggregate counts would not be recomputed, and a report's native output path
@@ -29,11 +29,16 @@ a named green run. An unrun gate leaves the entry OPEN.
   validates unique cases/ancestry, exact command/output/work/memory and actual
   checkpoint identity. Explicit partial admission preserves original status;
   conditional labels never become automatic accuracy. Old scopes remain old.
-- Pending gate: geometry metadata regressions and actual native replay/curation.
+- Green gates: docs/evidence/geometry-evidence-contracts/scope.json,10 metadata
+  cases on eaf5bee (.113s,35,180,544B/128MiB),and actual native
+  docs/evidence/m2-stream-accuracy1664-geometry-r1/scope.json:54 paired forwards,
+  23.894s,585,072,640B/1GiB;curator.288s,64,712,704B/128MiB. All ordinary
+  metrics reproduce saved1664,weights unchanged,actual partial status and both
+  conditional populations/aggregates verified. No automatic-quality claim.
 - Candidate gate geometry-evidence-tests-r1 rejected the preserved valid768MiB
   historical envelope before positive cases reached aggregate checks. The new
   collector now includes that measured envelope alongside640MiB/1GiB; no live
-  cap changed. Raw failing gate remains retained; rerun required.
+  cap changed. Raw failing gate remains retained beside the green r2 scope.
 
 ## V-023 — CLOSED: new proof checker mistook normalized JSON for a raw copy
 
