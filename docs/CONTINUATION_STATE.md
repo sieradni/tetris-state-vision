@@ -112,3 +112,27 @@ release gate remain OPEN. Public API remains needs_review.
 LIVE39-check curator launcher27272; exact startup command in runs/fit-error-curation-r1-startup.json.
 
 39-check scope VERIFIED allclass-error-contracts;32 actual input/source hashes checked. Curator.590s/78,630,912B under128MiB; all known PIDs/exact commands gone. NEXT ordinary41-forward command above,640MiB/180s.
+
+LIVE ordinary41-forward launcher11604; exact startup command in runs/m2-stream-allclass128-errors-r1-startup.json.
+
+Ordinary41-forward replay PASS17.475s/440,119,296B/640MiB; all saved metrics reproduced, weights unchanged. All known PIDs/exact commands gone. Curator next as declared128MiB/30s/work41,expected<110MiB.
+
+LIVE error curator launcher11204; startup command runs/allclass128-error-curation-r1-startup.json.
+
+128-update ordinary evidence VERIFIED:41 forwards17.475s/440,119,296B;
+curator.731s/77,279,232B. All known PIDs/exact commands gone, raw curator logs/
+receipts copied byte-checked. Both roles predict absence on all32 fit images;
+0/56 observed,8/8 absent; four locked misses/no false positives. Dev2/2 empty,
+0/7 nonempty,0/18 roles. ALL_CLASS_FIT.md records breakdown. No fit success.
+NEXT same fixed study s2,+512 ->640, expected<700MiB aggregate;
+896MiB/900s/work512,child640MiB/1860s with ancestor900s effective deadline:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
+--work-items 512 --receipt runs/m2-stream-allclass1024-s2-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s2
+--target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r5/profile
+--resume-from runs/m2-stream-allclass1024-s1
+Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
+terminal result.json; child same-prefix-job.json; run summary/progress/snapshots.
+Curator128MiB/120s/work681. Freeze controller/shared helper bytes until all gone.
+Controller c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3.
+Disk admission69,196,193,792B. Native guards unchanged; one heavy Job only.

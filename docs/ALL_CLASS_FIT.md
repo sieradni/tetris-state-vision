@@ -26,20 +26,20 @@ Only ordinary pixels/validity enter forward. Any supplied-geometry intervention
 is a separate conditional diagnostic, never ordinary accuracy. Passing this
 memorization criterion still does not demonstrate independent generalization.
 
-No fit is admitted yet. The new fixture module must be included in a frozen
-source archive before a driver can train on it; old resource profiles cannot
-admit that changed recipe/catalogue. Reuse the bounded streaming/checkpoint
-mechanisms, not the historical unarchived fixed-pilot driver. Require fresh
-two-full-square-step warm-Adam/restore/output parity, then a predeclared finite
-fit with explicit partial/recovery handling. No tensor cache, CPU1/cache16,
-unchanged kernel/pressure guards, and more than 40 GB free before long training.
+The fixture and curriculum modules are now in frozen catalogue6147a558. Fresh
+two-full-square-step warm-Adam/restore/output parity, default numerical
+compatibility and actual2+6+3+3 recovery are verified; the new fit is admitted
+by runs/m2-stream-recovery-gate-r5/profile. Historical profiles cannot admit
+this changed recipe/catalogue. Use bounded streaming/checkpoint mechanisms
+with explicit partial/recovery handling. No tensor cache, CPU1/cache16,
+unchanged kernel/pressure guards, and more than40GB free before long training.
 
 The fixture gate is now green: five public-label/coverage/replay/file-byte tests
 on26 hashed sources, and a separate native32-image generation plus exact PNG/
 state/recipe/source replay. Every role class, including absence, has four views.
 Evidence: `docs/evidence/positive-control-fixture-contracts/scope.json` and
 `docs/evidence/positive-control-fixtures-r1/scope.json`. These establish supported
-fit data, not a trained model or a resource admission for the future fit driver.
+fit data; separate fresh driver/resource/recovery evidence admits training.
 
 Driver integration contract: add an explicit `curriculum` identity, default
 `stream-v1`; `all-class-fit-v1` is M2/capacity0 only. Preserve every existing
@@ -71,6 +71,24 @@ the default; an explicit fit policy may use a bounded68-case population. Bind
 policy, family metadata, actual checkpoint and all aggregates in the collector.
 These external diagnostic helpers are outside the frozen neural catalogue and
 must not alter a live trainer, controller, or its imported helpers.
+
+At128/1,024 updates, independent ordinary replay reproduces every saved score:
+28/32 exact boards (all16 empty and12/16 nonempty),128/128 semantic head labels,
+and.2159634-cell mean geometry. Both roles predict known absence on every fit
+image:8/64 exact layers are the eight real absences;0/56 observed poses succeed.
+Each role has28 type errors and14 column errors; active has28 row errors,ghost14,
+and neither has an equivalent-rotation error. Four locked occupied cells are
+missed, with zero locked false positives. The fit criterion is FALSE.
+
+On the narrow9-image/3-ancestry development population, only the two empty boards
+are exact;nonempty0/7 and roles0/18. This is not independent all-class coverage.
+Evidence: docs/evidence/m2-stream-allclass128-errors-r1/scope.json, actual weights
+f880c24d..., catalogue6147a558..., explicit step_partial128/1024. The41-forward
+worker used440,119,296B/640MiB in17.475s; independent collector used77,279,232B/
+128MiB in.731s. All known processes terminated; raw receipts/logs are preserved.
+The39 error-report checks bind actual historical fixture/source hashes in
+docs/evidence/allclass-error-contracts/scope.json. Continue the unchanged finite
+study before choosing another mechanism or extending its target.
 
 Prior-bug interaction review (current ledger read before this diagnostic):
 

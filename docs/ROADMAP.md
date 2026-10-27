@@ -46,9 +46,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    baseline; investigate class collapse with an all-class positive-control fit
    before selecting another learning mechanism. Its32 balanced public-observer
    fixtures now pass5 source-bound checks and exact file/pixel/recipe replay;
-   ALL_CLASS_FIT.md predeclares the fit criterion. A frozen fit driver, fresh
-   warm resource admission and actual fitting remain open. Disk below40GB holds
-   long training; source work continues without deleting run data.
+   ALL_CLASS_FIT.md predeclares the fixed1,024-update fit criterion. The frozen
+   driver, fresh warm admission and exact2+6+3+3 recovery are verified on
+   catalogue6147a558. The first128 updates are banked; internal28/32 boards,
+   0/56 observed role poses and128/128 supported semantic cells still fail fit.
+   Independent ordinary-forward error replay and the remaining896 updates
+   are next. More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
