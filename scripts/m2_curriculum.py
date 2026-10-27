@@ -63,10 +63,14 @@ def training_case(step, seed, *, curriculum=STREAM, component_capacity=0, profil
                       component_capacity=component_capacity, profile_square=profile_square)
 
 
-def distinct_training_groups(completed, curriculum=STREAM):
+def distinct_training_groups(completed, curriculum=STREAM, *, profile_square=False):
     validate_curriculum(curriculum)
     if type(completed) is not int or not 0 <= completed <= 4096:
         raise ValueError("completed cursor0..4096 required")
+    if type(profile_square) is not bool or profile_square and completed > 2:
+        raise ValueError("boolean profile flag and at most two square updates required")
+    if profile_square:
+        return int(completed > 0)
     if curriculum == INTERLEAVED:
         return interleaved_groups(completed)
     return min(16, (completed + 1) // 2) if curriculum == ALL_CLASS else (completed + 2) // 3

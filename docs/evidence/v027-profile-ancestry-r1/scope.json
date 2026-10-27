@@ -1,0 +1,25 @@
+{
+  "declared_training_ancestries": 2,
+  "status": "failed_audit_preserved",
+  "independent_collector": "failed",
+  "weights_sha256": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42",
+  "catalogue_sha256": "e3e05948e7b3c24a140fa1519a220c23b2d62adbba9c815c4e23a2ee81871fd3",
+  "scope": "Raw rejected new-profile accounting evidence; not a study admission or a model-quality result.",
+  "actual_training_ancestries": 1,
+  "bug": "V-027",
+  "native_profile": "passed",
+  "artifact_sha256": {
+    "failed-train_m2_stream.py": "4e1f87a76b20c5a4a3e0bd36143e0ad7294348f23650b9bd33810d841fd55015",
+    "profile-native.json": "d8c5a123441d88c5b6078225d208beeca0586d759eae3b36b28a2b85a408d77b",
+    "collector.py": "de8efae091afab523831844cebbf7c693d6c82eb4b39465609d4389d7608e5f7",
+    "profile-training.jsonl": "66253702ad44dba996dad37e3a6f089512233b0d63ead07fab94b753cd1e0e0f",
+    "profile-summary.json": "29586d6cf2396b00f5febc2941267a2b07ce2d55f1c2134aaf6428f8c368332a",
+    "profile-native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "failed-m2_curriculum.py": "af819e95aaa60a2887e28863604f12638d4e0b0c726fe87ade8cccd8af546d96",
+    "profile-native.log": "86adac15bf0583b7f5590bc1949735ffc1cbf5745d01f6610a94113e2c68cd0f",
+    "failed-curator.json": "f3d6336e0e2915830547ce4084474e3768bdd08907a4ce90fa23f003c2ec853a",
+    "failed-curator.log": "32af3ae4064222a710d103901f517fce979cfb54e68a2b2ffe509d73745250a5",
+    "failed-curator.stderr.log": "e7e323a281caa70f8817c3be6a3ede6b5e4fb686de19d7f1fd6e173ca6e22423",
+    "source-manifest.json": "05007e48048301210ed563ac39c2bd91e6a852ac6c2583891faaab3b885a2cbe"
+  }
+}

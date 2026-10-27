@@ -9,13 +9,35 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026 (8) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027 (9) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes; profile ancestry must match actual profile recipes |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-027 — OPEN: interleaved profile counted the ordinary schedule's ancestry
+
+- Symptom: native interleave-profile-r1 completed its two warm square updates,
+  but runs/interleave-profile-curation-r1.stderr.log refused the claimed two
+  training ancestries; its actual ledger repeats index0/view0 and has one.
+- Root cause: distinct_training_groups used the interleaved normal schedule's
+  first two positions even when profile_square overrides both positions to0/0.
+  The original ordered schedule happened to have one group in its first two
+  positions, masking this mismatch before the new policy.
+- Detection class: provenance. The existing independent recipe/aggregate
+  collector caught it before publishing evidence or admitting study training.
+- Instrument: explicit profile flag in ancestry counting, bounded0..2 profile
+  cursor, and a regression comparing the reported count with actual repeated
+  public-observer recipes for every policy, including zero updates. Extends the
+  standing actual-recipe aggregate instrument; unknown is never counted as truth.
+- Failed gate: runs/interleave-profile-curation-r1.json, rc1 in1.087s,
+  40,968,192B/128MiB; failed profile/collector sources and receipts remain intact.
+  No user data or prior run was overwritten. Original native profile itself
+  passed65.797s/552,042,496B/640MiB; it is not a curated training admission.
+- Closure pending: new8-case adapter regression and a fresh source-bound r2
+  native profile plus independent recipe/ancestry curation. No green claim yet.
 
 ## V-026 — CLOSED: new fixture writer could change hashed newlines on Windows
 

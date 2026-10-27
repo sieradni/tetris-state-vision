@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_stream_run.py", line 291, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_stream_run.py", line 191, in main
+    raise ValueError("distinct training ancestry count differs")
+ValueError: distinct training ancestry count differs

@@ -158,3 +158,34 @@ logs same stem. Then comparator128MiB/30s/work256,expected<110MiB;receipt
 runs/interleave-profile-numerics-r1-job.json,logs runs/interleave-profile-numerics-r1.log/.stderr.log,
 final docs/evidence/interleave-profile-numerics-r1/scope.json. Fixed256 comparison
 rows/weights(164 metriccase rows+86 recipes+4 curve rows+2 actual weights).
+
+LIVE fresh profile launcher6648;exactstartup runs/m2-stream-interleave-profile-r1-startup.json. No other model Job.
+
+Fresh profile PASS65.797s/552,042,496B/640MiB;two full-square updates,warm Adam,
+training recovery and all-final-output reload exact. Entire observed process tree
+and matching commands gone. Catalogue e3e05948e7b3c24a140fa1519a220c23b2d62adbba9c815c4e23a2ee81871fd3;
+weights c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42.
+Next profile collector and same-input comparison as predeclared128MiB/30s/work43,
+then256;expected<110MiB each. No other model Job live. No source edits until audits.
+
+LIVE profile collector launcher27544;exactstartup runs/interleave-profile-curation-r1-startup.json.
+
+V-027 OPEN: profile_r1's new interleaved summary claimed2 training ancestries,
+actual square-profile ledger repeats0/0 and has1. Independent collector refused
+before any evidence/admission publication. Nativeprofile65.797s/552,042,496B
+passed;collector1.087s/40,968,192B failed. All known PIDs/exact commands gone.
+Raw failed receipts/logs/summary/2rows/source/collector copied byte-verified to
+ docs/evidence/v027-profile-ancestry-r1/;runs/originalarchive untouched.
+Root fix: explicit boolean profile flag in distinct_training_groups,0..2 profile
+cursor yields0/1 actualgroups;driver passes flag. No model/data/optimizer math
+change. Added actual public-recipe count tripwire for all3 policies. BUG_LOG entry
+stays OPEN until named8-test and fresh r2 native profile/independent curator GREEN.
+NEXT8 adapter checks,expected<110MiB,128MiB/30s/work8:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 8 --receipt runs/v027-adapter-tests-r1.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_curriculum.py -v
+Logs runs/v027-adapter-tests-r1.log/.stderr.log. Then source-pin adapter gate128MiB/
+30s/work8 (stem v027-adapter-curation-r1) and fresh r2 profile with same exact
+r1 args except output/receipt/log names changed to m2-stream-interleave-profile-r2.
+Do not reuse r1 as an admission or rewrite its archive. Derive r2's new catalogue.
+Same-input comparator now names r2;no comparator has run yet.

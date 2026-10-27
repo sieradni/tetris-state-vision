@@ -12,6 +12,19 @@ from m2_interleaved_order import cycle_order, distinct_groups, interleaved_spec
 
 
 class CurriculumTests(unittest.TestCase):
+    def test_square_profile_ancestry_count_matches_actual_repeated_samples_for_every_policy(self):
+        for policy in (STREAM, ALL_CLASS, INTERLEAVED):
+            for completed in (0, 1, 2):
+                actual = {training_case(step, 20, curriculum=policy, profile_square=True).record["group_id"]
+                          for step in range(1, completed + 1)}
+                self.assertEqual(distinct_training_groups(completed, policy, profile_square=True), len(actual))
+            for invalid in (3, 32):
+                with self.assertRaises(ValueError):
+                    distinct_training_groups(invalid, policy, profile_square=True)
+            for invalid_flag in (0, 1, None):
+                with self.assertRaises(ValueError):
+                    distinct_training_groups(2, policy, profile_square=invalid_flag)
+
     def test_interleaved_training_preserves_exact_old_pixels_labels_and_probe_order(self):
         actual_order = []
         for step in range(1, 33):

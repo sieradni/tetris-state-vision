@@ -32,7 +32,7 @@ def rows(path):
 
 def main():
     require_bounded_job()
-    names = ("m2-stream-recovery-gate-r5/profile", "m2-stream-interleave-profile-r1")
+    names = ("m2-stream-recovery-gate-r5/profile", "m2-stream-interleave-profile-r2")
     policies = ("all-class-fit-v1", "all-class-interleaved-v1")
     runs, summaries, archives, inputs = [], [], [], {}
     for name, policy in zip(names, policies):
