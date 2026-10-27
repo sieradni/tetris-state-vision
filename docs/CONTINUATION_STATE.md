@@ -70,6 +70,17 @@ V-023 raw diagnostic copies stay byte-checked. Visibility/labels/optimizer and
 running controller/training catalogue stay unchanged. Historical geometry scope
 retains old sources;new format2 scope required. Diagnostic label input must remain
 explicit and cannot be described as automatic accuracy or model capacity bound.
+Candidate conditional geometry format2 ready outside frozen neural catalogue;
+V-024 OPEN: old collector trusted oracle totals and did not bind full native
+command/output. Ten metadata regressions use adapted preserved pilot data;
+no neural forwards. NEXT bounded gate: .venv/Scripts/python.exe
+scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 10
+--receipt runs/geometry-evidence-tests-r1.json -- .venv/Scripts/python.exe
+-m unittest discover -s tests -p test_geometry_evidence.py -v
+Logs runs/geometry-evidence-tests-r1.log/.stderr.log. Expected<96MiB;native
+pressure/Job/CPU guards;modest read-only metadata job can coexist with s4.
+Acceptance: explicit partial/source/command/population/aggregate/masking refusal
+fixtures,then actual serialized saved-artifact conditional forwards/curation.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:

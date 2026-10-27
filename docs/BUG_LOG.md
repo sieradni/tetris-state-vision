@@ -9,13 +9,27 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022 (6) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config tripwire |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024 (7) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023 (6) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-024 — OPEN: geometry collector trusted aggregates and incompletely bound native command
+
+- Symptom: review of the historical geometry collector found altered oracle
+  aggregate counts would not be recomputed, and a report's native output path
+  and full command were not bound. No historical forged report is alleged.
+- Root cause: it verified ordinary per-case metrics and source weights but
+  treated conditional totals and partial native command parsing as evidence.
+- Detection class: provenance.
+- Instrument: pure format2 contract recomputes both conditional populations,
+  validates unique cases/ancestry, exact command/output/work/memory and actual
+  checkpoint identity. Explicit partial admission preserves original status;
+  conditional labels never become automatic accuracy. Old scopes remain old.
+- Pending gate: geometry metadata regressions and actual native replay/curation.
 
 ## V-023 — CLOSED: new proof checker mistook normalized JSON for a raw copy
 

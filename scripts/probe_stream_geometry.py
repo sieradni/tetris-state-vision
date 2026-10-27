@@ -6,6 +6,7 @@ this trained model; they are not a capacity ceiling or real-image benchmark.
 """
 import argparse
 import hashlib
+import inspect
 import json
 import os
 from pathlib import Path
@@ -15,22 +16,32 @@ import time
 
 from probe_model import require_bounded_job
 from source_snapshot import verify_source
+from geometry_contract import REPORT_SOURCES, input_contract, summarize
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def read(path):
+    if path.stat().st_size > 1024**2:
+        raise ValueError("geometry JSON byte budget exceeded")
+    return json.loads(path.read_text())
+
+
 def main():
     ceiling = require_bounded_job()
+    sources = {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in REPORT_SOURCES}
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--allow-partial", action="store_true", help="explicit saved controlled partial; preserve its original status")
     args = parser.parse_args()
     if not re.fullmatch(r"m2-stream-[a-z0-9-]{1,40}", args.run):
         raise ValueError("owned source-frozen stream run required")
     run = ROOT/"runs"/args.run
-    summary = json.loads((run/"summary.json").read_text())
-    if summary["status"] != "complete" or not summary["checkpoint_round_trip_exact"]:
-        raise ValueError("completed exact-round-trip artifact required")
+    summary = read(run/"summary.json")
+    source_job = read(ROOT/"runs"/(args.run+"-job.json"))
+    checkpoint = read(run/"checkpoint/manifest.json")
+    architecture = input_contract(summary, source_job, checkpoint, allow_partial=args.allow_partial)
     args.output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
     code = run/"code"
@@ -47,12 +58,15 @@ def main():
     import tetris_vision.model as model_module
     if not Path(model_module.__file__).resolve().is_relative_to(code):
         raise ValueError("geometry probe model import is not frozen")
+    if any(not Path(inspect.unwrap(function).__code__.co_filename).resolve().is_relative_to(code)
+           for function in (sample_case, load_checkpoint, diagnostic_metrics, targets_for, prepare_image)):
+        raise ValueError("geometry probe callable implementation is not frozen")
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     torch.use_deterministic_algorithms(True)
     model, manifest = load_checkpoint(run/"checkpoint")
     model.eval()
-    if manifest["weights_sha256"] != summary["checkpoint_sha256"]:
+    if manifest != checkpoint or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("geometry probe weight identity differs")
     weights = {name: value.clone() for name, value in model.state_dict().items()}
     original_decode = model_module.decode_lattice
@@ -109,27 +123,24 @@ def main():
                 finally:
                     model_module.decode_lattice = original_decode
                 records.append({"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
-                                "density": recipe["density"], "skin": recipe["skin"],
+                                "density": recipe["density"], "skin": recipe["skin"], "view": recipe["view"],
                                 "automatic": baseline, "oracle_geometry": oracle})
                 (args.output/"progress.json").write_text(json.dumps({"forwards": forwards, "sample_id": recipe["sample_id"]})+"\n")
     if forwards > 54 or not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()) or model_module.decode_lattice is not original_decode:
         raise ValueError("geometry intervention mutated weights/decoder or exceeded budget")
-    totals = {}
-    for split in ("training", "development"):
-        cases = [row for row in records if row["split"] == split]
-        totals[split] = {"images": len(cases), "ancestry_groups": len({row["group_id"] for row in cases})}
-        for mode in ("automatic", "oracle_geometry"):
-            totals[split][mode] = {
-                "exact_locked_boards": sum(row[mode]["exact_locked_board"] for row in cases),
-                "cell_accuracy": sum(row[mode]["cell_accuracy"] for row in cases)/len(cases),
-                "exact_known_layers": sum(row[mode]["exact_known_layers"] for row in cases),
-                "known_layers": sum(row[mode]["known_layers"] for row in cases)}
+    totals = summarize(records)
+    if sources != {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in REPORT_SOURCES}:
+        raise ValueError("geometry diagnostic sources changed during execution")
     result = {"status": "passed", "forwards": forwards, "source_catalogue_sha256": summary["catalogue_sha256"],
+              "diagnostic_format_version": 2, "run": args.run, "run_status": summary["status"],
+              "global_steps": summary["steps"], "target_steps": summary["requested_steps"],
+              "core_architecture": architecture, "config": manifest["config"], "component_capacity": 0,
               "weights_sha256": summary["checkpoint_sha256"], "model_kind": summary["model_kind"],
               "job_ceiling_bytes": ceiling, "automatic_metrics_reproduced": True, "weights_unchanged": True,
               "oracle_geometry_provided": True, "automatic_accuracy_claim_allowed": False,
               "totals": totals, "cases": records, "elapsed_seconds": time.monotonic()-started,
               "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              "sources": sources,
               "scope": "Conditional oracle geometry intervention on saved synthetic probes. Labels deliberately enter the diagnostic forward; not deployment accuracy, a capacity ceiling, training, or a production parser correction."}
     (args.output/"result.json").write_text(json.dumps(result, indent=2)+"\n")
     print(json.dumps({key: value for key, value in result.items() if key != "cases"}), flush=True)
