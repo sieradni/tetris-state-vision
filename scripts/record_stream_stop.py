@@ -105,7 +105,7 @@ def main():
               "snapshot_tensors_sha256": snapshot["tensors_sha256"], "artifact_sha256": hashes,
               "semantic_restore_verified": False, "target_complete": False,
               "curator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-              "scope": "Real ancestor OS-pressure stop; saved PIDs dead, frozen sources and banked tensor/ledger hashes verified. Raw stale child receipt retained. No semantic restoration, final inference artifact, completed target or accuracy claim."}
+              "scope": "Real ancestor OS-pressure stop; saved PIDs dead, frozen sources and banked tensor/ledger hashes verified. Raw child receipt preserved verbatim; its actual terminal status is reported above. No semantic restoration, final inference artifact, completed target or accuracy claim."}
     (evidence/"scope.json").write_text(json.dumps(result, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({key: value for key, value in result.items() if key != "artifact_sha256"}), flush=True)
 

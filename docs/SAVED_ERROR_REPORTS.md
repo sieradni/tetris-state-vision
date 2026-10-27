@@ -24,11 +24,12 @@ M3; use1GiB/120s with native Job and OS pressure guards. Serialize model jobs.
 Launch detached with hidden matching.log/.stderr.log and a checkpoint/PID entry:
 
 ```text
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy1216-errors-r1-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s3 --output runs/m2-stream-accuracy1216-errors-r1
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy704-errors-r3-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s2 --output runs/m2-stream-accuracy704-errors-r3
 ```
 
-The example's1216 name is only appropriate if s3 actually saves1216; inspect
-its terminal result first. Every output/receipt name must be new. Larger18..36
+The example replays the eligible saved704 artifact. s3 stopped at OS pressure
+with bank1152 but no final inference artifact; do not analyze it as a completed
+segment. Every output/receipt name must be new. Larger18..36
 development populations require their actual finite count, not a copied27 cap.
 The worker itself refuses more than45 total probes.
 
@@ -36,7 +37,7 @@ After verifying termination, curate under128MiB/30s with a finite work cap equal
 to the report's actual probe count (expected collector peak<96MiB):
 
 ```text
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 27 --receipt runs/accuracy1216-error-curation-r1.json -- .venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-accuracy1216-errors-r1
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 27 --receipt runs/accuracy704-error-curation-r1.json -- .venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-accuracy704-errors-r3
 ```
 
 The collector checks the native command/output/work/memory identity, actual
@@ -51,4 +52,5 @@ Eight metadata fixtures use preserved704-report data, adapted in memory to the
 format2 schema. They do no inference and do not upgrade historical reports.
 With the27 existing decomposition/compatibility cases,35 tests pass in1.906s,
 248,700,928B peak under512MiB/60s (runs/error-evidence-tests-r1). Native format2
-M2/M3 replay and collector integration remain pending until s3 finishes.
+M2/M3 replay and collector integration remain pending. Source-bound35-case scope:
+docs/evidence/error-evidence-contracts/scope.json on77128c4 (32 selected hashes).

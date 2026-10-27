@@ -9,13 +9,26 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020 (4) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, unwrapped callable origin and checkpoint architecture/config tripwire |
+| provenance | V-003, V-014, V-018, V-020, V-021 (5) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, unwrapped callable origin, actual receipt status and checkpoint architecture/config tripwire |
 | test-instrument | V-004, V-011, V-012, V-017, V-019 (5) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; validated fixtures before model gates; named queue anchor flags |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-021 — OPEN: stop collector text assumed the child receipt was stale
+
+- Symptom: the s3 ancestor and child both recorded memory_pressure/125, but
+  pre-curation review found fixed scope wording calling the child receipt stale.
+- Root cause: prose inherited the first ancestor-only stop even though structured
+  child_receipt_status/terminal fields already support both cases.
+- Detection class: provenance.
+- Instrument: neutral verbatim-receipt wording plus actual structured terminal
+  fields. Historical s1 scope remains unchanged; its running/null child was stale.
+- Acceptance: actual s3 stop collection must retain both terminal125 receipts,
+  verify bank1152 hashes/prefixes and saved PIDs, and avoid a stale-child claim.
+  Pending docs/evidence/m2-stream-accuracy4096-s3-stop/scope.json.
 
 ## V-020 — CLOSED: joint diagnostic would reject a decorated frozen metric
 
