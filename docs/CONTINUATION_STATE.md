@@ -5,6 +5,14 @@ Goal ACTIVE,unfinished. Local commits authorized;no push/deploy/publish/user-dat
 deletion. Neighboring engine/apps/data untouched. One heavy model Job at a time;
 native RAM/pressure/CPU guards armed. No subagents authorized.
 
+S5 TERMINAL verified step_partial2176/4096,512 new from1664. Root PASS707.301s,
+995,926,016B/1280MiB;child controlled2;curator passed. Actual inference/training
+hashes and all recorded PIDs/commands verified dead. Scope and raw parent/curator
+receipts copied to docs/evidence/m2-stream-accuracy4096-s5/. Weights
+2a4eeeb93975a0aab43673cdaf631875e9a62e984ca89f973c0e933d43b43fb5;
+original121fd05a recipe. All2176 recipes+27 probes replayed. Dev0/18boards,
+0/36 layers,geometry1.85661909cells. Next job is planned1664 target replay below;
+no model Job live. Old LIVE s5 block below is historical pending cleanup.
 ## Next action: original baseline s5 from verified1664
 
 LIVE s5 launch18820/root20148/controller29040 verified;exact command:
