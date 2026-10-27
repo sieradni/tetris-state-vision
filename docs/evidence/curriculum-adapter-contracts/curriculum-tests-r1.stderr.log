@@ -1,0 +1,10 @@
+test_complete_record_replay_refuses_policy_or_raster_or_metadata_changes (test_curriculum.CurriculumTests.test_complete_record_replay_refuses_policy_or_raster_or_metadata_changes) ... ok
+test_fit_cycle_is_balanced_and_reuses_the_same_sixteen_ancestries (test_curriculum.CurriculumTests.test_fit_cycle_is_balanced_and_reuses_the_same_sixteen_ancestries) ... ok
+test_probe_population_and_independent_development_are_explicit (test_curriculum.CurriculumTests.test_probe_population_and_independent_development_are_explicit) ... ok
+test_stream_default_keeps_original_records_pixels_and_global_order (test_curriculum.CurriculumTests.test_stream_default_keeps_original_records_pixels_and_global_order) ... ok
+test_two_square_steps_and_invalid_policy_capacity_and_cursors (test_curriculum.CurriculumTests.test_two_square_steps_and_invalid_policy_capacity_and_cursors) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.929s
+
+OK

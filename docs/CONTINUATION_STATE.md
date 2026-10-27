@@ -144,3 +144,4 @@ with28 source paths. Receipt runs/curriculum-curation-r1.json,logs same-stem
 Original2816 terminal; shared root helpers can now be changed for new frozen
 policy after this sampler-only scope. Do not mislabel these5 as whole integration.
 Sampler curator launcher5152, exact command verified.
+Adapter source curation PASS,28 hashes rechecked, all known PIDs gone, raw receipts/logs copied. Next core integration uses this unchanged adapter plus pure32-case fit criterion; source archive must include all3 new scripts. Shared original s7 is terminal.
