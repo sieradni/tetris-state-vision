@@ -178,3 +178,4 @@ NEXT read-only curator, expected<110MiB,128MiB/30s/work576:
 Logs runs/layer-generalization-curation-r1.log/.stderr.log; terminal scope.json
 in docs/evidence/layer-generalization768-r1.192 replayed recipes+384 raw cases,
 all aggregates rederived, native guards. Source review and actual gate pending.
+Broader curator launcher6368, exact command verified.
