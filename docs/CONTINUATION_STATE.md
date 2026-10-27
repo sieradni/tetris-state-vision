@@ -104,6 +104,20 @@ After terminal/dead verification,curate under128MiB/30s/work1691 with fresh
 runs/accuracy1664-exposure-curation-r1.json/.log/.stderr.log and
 record_stream_exposure.py --name m2-stream-accuracy1664-exposure-r1;
 evidence sentinel docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
+Native target replay PASS33.834s,361,013,248B/640MiB/120s/work1691;
+launch18156/supervisor18344/worker20180 and all matching commands gone.
+Actual frozen1664 updates+9training+18dev targets,zero model forwards/updates;
+weights unchanged. All training labels known;active1376observed/288absent,
+ghost1046observed/618absent;all7 observed classes supervised. Ghost training
+poses allrow10;training probe ghosts allabsent. Independent curation pending.
+NEXT exact collector: .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib 128 --wall-seconds 30 --work-items 1691
+--receipt runs/accuracy1664-exposure-curation-r1.json --
+.venv/Scripts/python.exe scripts/record_stream_exposure.py
+--name m2-stream-accuracy1664-exposure-r1
+Hidden logs runs/accuracy1664-exposure-curation-r1.log/.stderr.log;
+sentinel docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.
+Expected<96MiB,native pressure/Job guard. No model/target Job live.
 ## Verified s4 and ordinary/conditional diagnostics
 
 M2_BASELINE_1664.md explains latest evidence and limits. s4 is verified
