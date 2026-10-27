@@ -25,6 +25,14 @@ class StreamAdmissionTests(unittest.TestCase):
             arguments(base[:-1])
         self.assertTrue(arguments(base).profile_square)
 
+    def test_joint_capacity_is_explicit_and_covers_renderer_without_truncation(self):
+        base = ["--output", "unused", "--model", "pilot", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments(base).component_capacity, 0)
+        self.assertEqual(arguments([*base, "--component-capacity", "64"]).component_capacity, 64)
+        for capacity in ("-1", "1", "9", "65"):
+            with self.subTest(capacity=capacity), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                arguments([*base, "--component-capacity", capacity])
+
     def admission(self):
         config = {"dimension": 64}
         summary = {"status": "complete", "steps": 2, "profile_square": True, "checkpoint_round_trip_exact": True,

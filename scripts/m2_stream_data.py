@@ -5,6 +5,7 @@ import random
 import struct
 
 from tetris_vision.layout import Layout, sample_layout
+from tetris_vision.model_capture import model_capture_style
 from tetris_vision.render import Appearance, render, sample_scene
 
 
@@ -14,11 +15,13 @@ class StreamCase:
     record: dict
 
 
-def sample_case(group_index, view, split, seed, *, profile_square=False):
+def sample_case(group_index, view, split, seed, *, profile_square=False, final_capture=False):
     if type(group_index) is not int or not 0 <= group_index < 4096 or type(view) is not int or view not in (0, 1, 2):
         raise ValueError("group 0..4095 and view 0/1/2 required")
     if split not in {"training", "development"} or type(seed) is not int or not 0 <= seed <= 2**31-1:
         raise ValueError("explicit curriculum split and finite seed required")
+    if type(final_capture) is not bool:
+        raise ValueError("explicit final-capture policy required")
     scene_seed = seed+group_index+(10_000_000 if split == "development" else 0)
     density = ("empty", "sparse", "dense")[group_index % 3]
     scene = sample_scene(scene_seed, density, varied=True)
@@ -44,6 +47,8 @@ def sample_case(group_index, view, split, seed, *, profile_square=False):
         locked[r][c] = None if before else "IOTSZJLG"[(scene_seed+c+3*r) % 8]
         scene = replace(scene, locked=tuple(tuple(row) for row in locked))
         intervention = {"cell": [c, r], "before": before, "after": not before}
+    if final_capture:
+        appearance = model_capture_style(appearance, layout, max_side=512)
     frame = render(scene, appearance, layout)
     if frame.state.board is None or frame.state.board.lattice is None or any(cell.occupied is None for row in frame.state.board.rows for cell in row):
         raise ValueError("clean curriculum requires 200 supported source cells")
@@ -56,4 +61,7 @@ def sample_case(group_index, view, split, seed, *, profile_square=False):
               "image_pixels_sha256": pixel_hash,
               "state_sha256": hashlib.sha256(frame.state.to_json().encode()).hexdigest(),
               "policy": "M2-stream-v1: full visible clean/no-grid/single-cell; existing observe.py; no latent target fields."}
+    if final_capture:
+        record.update(final_capture=True, capture_max_side=512,
+                      policy="M3-stream-final-capture-v1: observe the actual bounded model frame; unknown components stay masked; no latent target fields.")
     return StreamCase(frame, record)

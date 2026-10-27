@@ -48,7 +48,7 @@ def main():
     parser.add_argument("--name", required=True)
     parser.add_argument("--allow-partial", action="store_true", help="preserve controlled wall/step partial status; never a completion claim")
     args = parser.parse_args()
-    if not re.fullmatch(r"m2-stream-[a-z0-9-]{1,40}", args.name):
+    if not re.fullmatch(r"m[23]-stream-[a-z0-9-]{1,40}", args.name):
         raise ValueError("owned stream run name required")
     run = ROOT/"runs"/args.name
     summary = json.loads((run/"summary.json").read_text())
@@ -148,7 +148,10 @@ def main():
     if [row["step"] for row in rows] != list(range(1, summary["steps"]+1)):
         raise ValueError("stream ledger incomplete")
     for row in rows:
-        replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"])
+        if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
+            raise ValueError("stream capture policy differs from joint model contract")
+        extra = {"final_capture": True} if row.get("final_capture") else {}
+        replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
         if {key: value for key, value in row.items() if key != "step"} != json.loads(json.dumps(replay.record)):
             raise ValueError("stream source does not reproduce the recorded pixels/labels/recipe")
     curve = [json.loads(line) for line in (run/"curve.jsonl").read_text().splitlines()]
@@ -158,7 +161,10 @@ def main():
     for split in ("training", "development"):
         for line in (run/(split+"-probe.jsonl")).read_text().splitlines():
             row = json.loads(line)
-            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"])
+            if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
+                raise ValueError("probe capture policy differs from joint model contract")
+            extra = {"final_capture": True} if row.get("final_capture") else {}
+            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], **extra)
             if json.loads(json.dumps(replay.record)) != row:
                 raise ValueError("probe metadata/pixels changed")
             folder = run/(split+"-probe")

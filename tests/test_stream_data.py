@@ -1,4 +1,5 @@
 import hashlib
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -75,6 +76,40 @@ class StreamDataTests(unittest.TestCase):
         self.assertEqual(sum(cell.occupied is not None for row in case.frame.state.board.rows for cell in row), 200)
         with self.assertRaises(ValueError):
             sample_case(1, 0, "training", 20, profile_square=True)
+
+    def test_default_m2_sample_preserves_named_historical_record(self):
+        path = Path(__file__).resolve().parents[1]/"docs/evidence/m2-stream-learn768-r3/training.jsonl"
+        with path.open(encoding="utf-8") as source:
+            historical = json.loads(source.readline())
+        historical.pop("step")
+        actual = sample_case(historical["group_index"], historical["view"], historical["split"], historical["base_seed"])
+        self.assertEqual(json.loads(json.dumps(actual.record)), historical)
+        self.assertNotIn("final_capture", actual.record)
+
+    def test_m3_final_captures_are_bounded_deterministic_and_distinct_policy(self):
+        for group in (0, 1, 2, 5, 11):
+            with self.subTest(group=group):
+                first, second = (sample_case(group, 0, "training", 20, final_capture=True) for _ in range(2))
+                self.assertLessEqual(max(first.frame.image.size), 512)
+                self.assertEqual(first.frame.image.tobytes(), second.frame.image.tobytes())
+                self.assertEqual(first.record, second.record)
+                self.assertTrue(first.record["final_capture"])
+                self.assertEqual(first.record["capture_max_side"], 512)
+                self.assertEqual(tuple(first.record["appearance"]["output_size"]), first.frame.image.size)
+                self.assertTrue(first.record["policy"].startswith("M3-stream-final-capture-v1"))
+                self.assertEqual(sum(cell.occupied is not None for row in first.frame.state.board.rows for cell in row), 200)
+        with self.assertRaises(ValueError):
+            sample_case(0, 0, "training", 20, final_capture=1)
+
+    def test_joint_square_profile_and_counterfactual_keep_fixed_budget(self):
+        case = sample_case(0, 0, "training", 20, profile_square=True, final_capture=True)
+        self.assertEqual(case.frame.image.size, (512, 512))
+        original, changed = (sample_case(2, view, "training", 20, final_capture=True) for view in (0, 2))
+        delta = [(c, r) for r in range(20) for c in range(10)
+                 if original.frame.state.board.rows[r][c] != changed.frame.state.board.rows[r][c]]
+        self.assertEqual(delta, [tuple(changed.record["intervention"]["cell"])])
+        for field in ("active", "ghost", "queue", "hold"):
+            self.assertEqual(getattr(original.frame.state, field), getattr(changed.frame.state, field))
 
 
 if __name__ == "__main__":

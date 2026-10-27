@@ -135,3 +135,29 @@ requires fresh bounded warm profile. No changes to the original running recipe.
 Final-capture9 checks GREEN2.057s/255,062,016B under512MiB/60s. This admits
 synthetic final-frame labels without a second resize; arbitrary post-labeled
 resize/alpha still refuses. No M3 training/resource or component quality claim.
+
+Selected source task under pressure: wire final-capture synthetic sampling into
+an explicit component-capacity joint training mode, masked component diagnostics,
+recursive saved-output parity and M3 recipe replay. Preserve M2 default behavior
+and original archive121fd05a for all4096 continuations. New M3 work is a CANDIDATE
+until gates run; no profile/admission/learning result inferred from source edits.
+Todo: (1) sampler/policy plus readable-vs-masked metrics, (2) driver/curator
+integration, (3) adversarial unit checks after genuine headroom, (4) fresh native
+2-square warm/recovery profile on actual M3 config before any joint study.
+Prior bug interactions: V-001/002/005/006/016 final image support/unknown holes;
+V-003/014 source/archive identity; V-007 exact Job; V-010 pressure unchanged;
+V-011 every new parameter's warm Adam state; V-012 pre-import pools unchanged;
+V-013 bounded queries/cache/input/steps; V-015 atomic snapshot publication intact.
+No runner/guard changes. Memory last35.2GB committed; do not force a launch.
+Candidate source now includes final-capture sampler policy, explicit joint
+capacity10..64, masked/readable component metrics, recursive nested tensor parity
+and curator replay for M2/M3 records. Added7 joint fixtures,3 sampler fixtures
+(10 total),1 driver fixture (5 total). NONE of these new gates has run yet.
+Manual diff/whitespace review only; current host commit31.75GB still exceeds
+31,368,351,744B stop even before reserving a Job. No child launched/retried.
+Next tests after actual headroom: stream data10/driver5/evidence3, joint7,
+component15 and capture9 on this NEW source. The old capture9 gate was09fa4ef;
+rerun it rather than attaching its full-file source scope to changed components.
+Then run a fresh native M3 profile (component-capacity64,2 full512-square updates)
+before any joint learning run. Preserve original M2 bank704/source121fd05a...
+for s3. Candidate code is not an admitted model or verified training milestone.

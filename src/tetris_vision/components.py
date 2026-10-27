@@ -84,16 +84,16 @@ def component_tensors(states, *, capacity):
     return result
 
 
-def component_loss(output, target):
-    """Masked semantic/observation losses; all coefficients are pilot hypotheses."""
+def _validate_contract(output, target):
     capacity = target["capacity"]
     check(type(capacity) is int and 1 <= capacity <= 64, "bounded component loss capacity required")
+    check(torch.is_tensor(output["queue_tokens"]) and output["queue_tokens"].ndim == 3, "rank3 component token logits required")
     batch = output["queue_tokens"].shape[0]
     check(1 <= batch <= 4, "bounded component loss batch required")
     shapes = {"queue_tokens": (batch, capacity+1, 8), "queue_presence": (batch, capacity),
               "queue_slot_status": (batch, capacity, 3), "queue_status": (batch, 4), "queue_anchors": (batch, 2),
               "hold_status": (batch, 5), "hold_piece": (batch, 7)}
-    check(all(output[key].shape == shape and bool(torch.isfinite(output[key]).all()) for key, shape in shapes.items()),
+    check(all(output[key].shape == shape and output[key].is_floating_point() and bool(torch.isfinite(output[key]).all()) for key, shape in shapes.items()),
           "finite component output shapes required")
     target_shapes = {"queue_tokens": (batch, capacity+1), "queue_token_known": (batch, capacity+1),
                      "queue_slot_status": (batch, capacity), "queue_slot_status_known": (batch, capacity),
@@ -106,12 +106,20 @@ def component_loss(output, target):
               for key, shape in target_shapes.items()), "component target shapes/dtypes differ")
     check(torch.equal(target["queue_token_known"], target["queue_tokens"] >= 0) and
           torch.equal(target["queue_slot_status_known"], target["queue_slot_status"] >= 0), "component uncertainty mask differs")
+    for key, low, high in (("queue_tokens", -1, 7), ("queue_slot_status", -1, 2),
+                           ("queue_status", 0, 3), ("hold_status", 0, 4), ("hold_piece", 0, 6)):
+        check(bool(((target[key] >= low) & (target[key] <= high)).all()), "component target class outside vocabulary")
     start = target["queue_start_observed"]
     indexed = target["queue_token_known"].any(1) | target["queue_slot_status_known"].any(1) | target["queue_presence_known"].any(1)
     check(not bool((indexed & ~start).any()), "unseen queue start cannot have absolute indexed targets")
     eos = ((target["queue_tokens"] == 7) & target["queue_token_known"]).any(1)
     check(not bool((eos & ~target["queue_end_observed"]).any()), "unseen queue end cannot train EOS")
     check(torch.equal(target["hold_piece_known"], target["hold_status"] == 0), "unobserved hold cannot train piece identity")
+
+
+def component_loss(output, target):
+    """Masked semantic/observation losses; all coefficients are pilot hypotheses."""
+    _validate_contract(output, target)
     def masked(value, mask):
         return (value*mask).sum()/mask.sum().clamp_min(1)
     def semantic(key, mask):
@@ -130,3 +138,41 @@ def component_loss(output, target):
     weights = {"queue_tokens": 1., "queue_slot_status": .25, "queue_presence": .25,
                "queue_status": .25, "queue_anchors": .25, "hold_status": .5, "hold_piece": 1.}
     return sum(weights[key]*value for key, value in terms.items()), terms
+
+
+@torch.no_grad()
+def component_metrics(output, target):
+    """Per-image raw-head diagnostics, separating readable and uncertain targets.
+
+    Matching the known parts of a cropped/unknown target is not a complete
+    component success. These values are not decoded/API or calibrated accuracy.
+    """
+    _validate_contract(output, target)
+    batch = output["queue_tokens"].shape[0]
+    def masked_equal(predicted, truth, mask):
+        return ((predicted == truth) | ~mask).reshape(batch, -1).all(1)
+    token_right = masked_equal(output["queue_tokens"].argmax(-1), target["queue_tokens"], target["queue_token_known"])
+    slot_right = masked_equal(output["queue_slot_status"].argmax(-1), target["queue_slot_status"], target["queue_slot_status_known"])
+    presence_right = masked_equal(output["queue_presence"] > 0, target["queue_presence"], target["queue_presence_known"])
+    anchors = torch.stack((target["queue_start_observed"], target["queue_end_observed"]), -1)
+    queue_right = ((output["queue_status"].argmax(-1) == target["queue_status"]) &
+                   ((output["queue_anchors"] > 0) == anchors).all(1) & token_right & slot_right & presence_right)
+    hold_right = ((output["hold_status"].argmax(-1) == target["hold_status"]) &
+                  masked_equal(output["hold_piece"].argmax(-1), target["hold_piece"], target["hold_piece_known"]))
+    present = target["queue_presence"] & target["queue_presence_known"]
+    identities_known = (((target["queue_slot_status"] == 0) & target["queue_token_known"][:, :target["capacity"]]) | ~present).all(1)
+    eos_known = ((target["queue_tokens"] == 7) & target["queue_token_known"]).any(1)
+    queue_readable = ((target["queue_status"] == 1) | ((target["queue_status"] == 0) &
+                      target["queue_start_observed"] & target["queue_end_observed"] & identities_known & eos_known))
+    hold_readable = target["hold_status"] <= 2  # observed, empty or absent.
+    result = []
+    for index in range(batch):
+        readable = bool(queue_readable[index] & hold_readable[index])
+        right = bool(queue_right[index] & hold_right[index])
+        result.append({"queue_supported_exact": bool(queue_right[index]), "hold_supported_exact": bool(hold_right[index]),
+                       "supported_components_exact": right, "component_state_readable": readable,
+                       "exact_readable_components": right if readable else None,
+                       "known_queue_tokens": int(target["queue_token_known"][index].sum()),
+                       "known_presence_positions": int(target["queue_presence_known"][index].sum()),
+                       "hold_identity_known": bool(target["hold_piece_known"][index])})
+    return result

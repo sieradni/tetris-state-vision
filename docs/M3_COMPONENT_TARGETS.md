@@ -89,3 +89,25 @@ leaves queue/hold unknown. M3 training, warm optimizer/resource admission,
 general resized-component supervision and reviewed runtime decoding are still OPEN.
 No M2 admission covers the changed package or new heads. The partial4096-target
 M2 study must continue from its original archive and optimizer history.
+
+The joint streaming driver is now a source candidate, awaiting new gates.
+`train_m2_stream.py --component-capacity 10..64` selects the optional M3 heads,
+final-capture sample policy and component targets/loss. Zero keeps the M2 path.
+The lower joint bound covers all10 renderer slots without silent truncation;
+the64-slot profile is required before a64-slot study. Ledger records include the
+final appearance, capture policy and pixel/state identities. The curator checks
+that the replay policy matches the joint contract and can replay old M2 records
+without sending new keywords to their frozen sampler.
+
+Per-case raw-head metrics separate matching supported fields from matching fully
+readable components. A cropped tail, unknown middle identity or unknown hold can
+never become an exact readable-component success. These are prototype diagnostics,
+not decoded runtime/whole-state accuracy. Recursive checkpoint parity now covers
+all nested component outputs and rejects changed tensor shape/dtype/value.
+
+Pending gates: joint metrics7, sampler10, driver5, component15 and capture9, plus
+explicit-partial/source/recovery contracts as relevant. Host memory currently
+prevents execution; source edits are not a green gate. After those pass, profile
+the actual M3 configuration with2 full-square optimizer steps, all resident Adam
+states, recovery parity and nested final-output parity under a NEW native cap.
+No prior M2 or earlier-source admission permits joint training.

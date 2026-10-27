@@ -22,6 +22,8 @@ def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--model", choices=("pilot", "accuracy"), required=True)
+    parser.add_argument("--component-capacity", type=int, default=0,
+                        help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
@@ -36,6 +38,8 @@ def arguments(argv=None):
     args = parser.parse_args(argv)
     if not 1 <= args.steps <= 4096 or not 0 <= args.seed <= 2**31-1:
         parser.error("steps 1..4096 and finite nonnegative seed required")
+    if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
+        parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
@@ -74,6 +78,18 @@ def atomic_json(path, value):
     replace_retry(temporary, path)
 
 
+def equal_tree(left, right):
+    """Exact nested tensor parity for warm recovery and M2/M3 final outputs."""
+    import torch
+    if torch.is_tensor(left):
+        return (torch.is_tensor(right) and left.dtype == right.dtype and left.shape == right.shape and torch.equal(left, right))
+    if isinstance(left, dict):
+        return isinstance(right, dict) and left.keys() == right.keys() and all(equal_tree(left[key], right[key]) for key in left)
+    if isinstance(left, (list, tuple)):
+        return type(left) is type(right) and len(left) == len(right) and all(equal_tree(a, b) for a, b in zip(left, right))
+    return type(left) is type(right) and left == right
+
+
 def main(argv=None, *, _archive=None, _started=None):
     args = arguments(argv)
     ceiling = require_bounded_job()
@@ -110,7 +126,7 @@ def main(argv=None, *, _archive=None, _started=None):
     os.environ["MKL_NUM_THREADS"] = "1"
     os.environ.update(NATIVE_CACHE_LIMITS)
     import torch
-    from dataclasses import asdict
+    from dataclasses import asdict, replace
     from m2_stream_data import sample_case
     from training_snapshot import load_training_snapshot, save_training_snapshot
     from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
@@ -126,6 +142,7 @@ def main(argv=None, *, _archive=None, _started=None):
     torch.use_deterministic_algorithms(True)
     torch.manual_seed(args.seed)
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
+    config = replace(config, component_capacity=args.component_capacity)
     config_json = json.loads(json.dumps(asdict(config)))
     if args.admission is not None:
         admit = args.admission.resolve()
@@ -139,13 +156,17 @@ def main(argv=None, *, _archive=None, _started=None):
     warm_optimizer_backward = None
     recovery_profile_exact = False
 
+    def sample(group, view, split, *, profile_square=False):
+        return sample_case(group, view, split, args.seed, profile_square=profile_square,
+                           final_capture=bool(args.component_capacity))
+
     def prepare(case):
         nonlocal maximum_pixels
         prepared = prepare_image(case.frame.image, max_side=512)
         maximum_pixels = max(maximum_pixels, prepared.pixels.shape[-2]*prepared.pixels.shape[-1])
         if maximum_pixels > 512**2:
             raise ValueError("512-square input budget exceeded")
-        target = targets_for(case.frame.state, prepared)
+        target = targets_for(case.frame.state, prepared, component_capacity=args.component_capacity)
         if int(target["known"].sum()) != 200:
             raise ValueError("curriculum input admission requires all 200 visible locked cells")
         return prepared, target
@@ -156,7 +177,7 @@ def main(argv=None, *, _archive=None, _started=None):
         records, per_case = [], []
         for group in range(groups):
             for view in range(3):
-                case = sample_case(group, view, split, args.seed)
+                case = sample(group, view, split)
                 prepared, target = prepare(case)
                 output = model(prepared.pixels[None], prepared.valid[None])
                 loss, _ = joint_loss(output, target)
@@ -175,6 +196,9 @@ def main(argv=None, *, _archive=None, _started=None):
                 per_case.append({"sample_id": case.record["sample_id"], "loss": float(loss),
                                  "exact_known_layers": layers_right, "known_layers": layers_known,
                                  **diagnostic_metrics(output, target)})
+                if args.component_capacity:
+                    from tetris_vision.components import component_metrics
+                    per_case[-1]["components"] = component_metrics(output["final"]["components"], target["components"])[0]
                 records.append(case.record)
                 if persist:
                     folder = args.output/(split+"-probe")
@@ -187,12 +211,17 @@ def main(argv=None, *, _archive=None, _started=None):
         evaluation_identities[split] = identity
         if persist:
             (args.output/(split+"-probe.jsonl")).write_text("".join(json.dumps(row)+"\n" for row in records))
-        return {"images": len(per_case), "ancestry_groups": groups, "loss": sum(row["loss"] for row in per_case)/len(per_case),
+        result = {"images": len(per_case), "ancestry_groups": groups, "loss": sum(row["loss"] for row in per_case)/len(per_case),
                 "exact_locked_boards": sum(row["exact_locked_board"] for row in per_case),
                 "cell_accuracy": sum(row["cell_accuracy"] for row in per_case)/len(per_case),
                 "mean_geometry_error_cells": sum(row["mean_geometry_error_cells"] for row in per_case)/len(per_case),
                 "exact_known_layers": sum(row["exact_known_layers"] for row in per_case),
                 "known_layers": sum(row["known_layers"] for row in per_case), "cases": per_case}
+        if args.component_capacity:
+            result.update(readable_component_cases=sum(row["components"]["component_state_readable"] for row in per_case),
+                          exact_readable_components=sum(row["components"]["exact_readable_components"] is True for row in per_case),
+                          supported_components_exact=sum(row["components"]["supported_components_exact"] for row in per_case))
+        return result
 
     initial_train, initial_dev = evaluate("training", 3, True), evaluate("development", args.development_groups, True)
     completed = 0
@@ -202,6 +231,7 @@ def main(argv=None, *, _archive=None, _started=None):
                          "evaluate_every": args.evaluate_every, "checkpoint_every": args.checkpoint_every,
                          "profile_square": args.profile_square, "threads": 1, "rng": "torch_cpu_only"}
     recovery_contract["native_cache_limits"] = NATIVE_CACHE_LIMITS
+    recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
     ledger_names = ("curve.jsonl", "training.jsonl", "evaluations.jsonl")
     resume_record = None
     if args.resume_from is not None:
@@ -240,7 +270,7 @@ def main(argv=None, *, _archive=None, _started=None):
             # Both characterization steps must use the maximum shape. Step two
             # includes Adam's moment tensors, allocated lazily by the first step.
             group, view = (0, 0) if args.profile_square else ((step-1)//3, (step-1) % 3)
-            case = sample_case(group, view, "training", args.seed, profile_square=args.profile_square)
+            case = sample(group, view, "training", profile_square=args.profile_square)
             prepared, target = prepare(case)
             model.train()
             optimizer.zero_grad(set_to_none=True)
@@ -296,14 +326,6 @@ def main(argv=None, *, _archive=None, _started=None):
                 # peak; the native cap remains authoritative.
                 expected_state = copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
                 recovery = load_training_snapshot(args.output, model, optimizer, contract=recovery_contract)
-                def equal_tree(left, right):
-                    if torch.is_tensor(left):
-                        return torch.equal(left, right)
-                    if isinstance(left, dict):
-                        return left.keys() == right.keys() and all(equal_tree(left[key], right[key]) for key in left)
-                    if isinstance(left, (list, tuple)):
-                        return len(left) == len(right) and all(equal_tree(a, b) for a, b in zip(left, right))
-                    return left == right
                 recovery_profile_exact = recovery["step"] == 1 and equal_tree(expected_state, (model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
                 del expected_state, recovery
                 if not recovery_profile_exact:
@@ -316,6 +338,7 @@ def main(argv=None, *, _archive=None, _started=None):
     metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
                 "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
                 "runtime_source_sha256": source_digest(), "model_kind": args.model,
+                "component_capacity": args.component_capacity, "input_policy": recovery_contract["input_policy"],
                 "arguments": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
                 "stream_ledger_sha256": file_digest(args.output/"training.jsonl"), "cpu_only": torch.version.cuda is None,
                 "resume": resume_record, "latest_training_snapshot": latest_snapshot,
@@ -324,11 +347,11 @@ def main(argv=None, *, _archive=None, _started=None):
                 "recovery_contract": recovery_contract, "updates_this_run": completed-started_step}
     checkpoint = save_checkpoint(args.output/"checkpoint", model.eval(), metadata)
     restored, _ = load_checkpoint(args.output/"checkpoint")
-    example, _ = prepare(sample_case(0, 0, "development", args.seed))
+    example, _ = prepare(sample(0, 0, "development"))
     with torch.no_grad():
         expected = model(example.pixels[None], example.valid[None])["final"]
         actual = restored.eval()(example.pixels[None], example.valid[None])["final"]
-    if any(not torch.equal(expected[key], actual[key]) for key in expected):
+    if not equal_tree(expected, actual):
         raise RuntimeError("saved checkpoint changes a final output tensor")
     status = "complete" if completed == args.steps else "step_partial" if completed == final_step else "wall_partial"
     summary = {"status": status, "steps": completed, "requested_steps": args.steps,
