@@ -5,6 +5,17 @@ Goal ACTIVE and unfinished. Local commits authorized; no push/deploy/publish or
 user-data deletion. Neighboring engine/apps/run data untouched. One heavy model
 Job at a time; native memory/OS pressure/CPU thread guards remain armed.
 
+LIVE planned p1: .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib 1280 --wall-seconds 120 --work-items 1
+--receipt runs/m3-stream-controller-recovery-p1-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m3-stream-controller-recovery-p1 --target-steps 3 --updates 1
+--admission runs/m3-stream-pilot-profile-r1
+Logs runs/m3-stream-controller-recovery-p1-pipeline.log/.stderr.log;
+state runs/m3-stream-controller-recovery-p1-pipeline/progress.json,result.json;
+child runs/m3-stream-controller-recovery-p1-job.json; evidence same-name folder.
+Expected<750MiB;1280MiB parent/120s/work1;640MiB child;native pressure guard.
+Next verify launch/exact command, terminal receipts, then p2 resume. No retry.
 ## Selected task and next action
 
 Controller source b8eb48a, SHA
