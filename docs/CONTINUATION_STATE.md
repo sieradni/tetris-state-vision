@@ -140,3 +140,14 @@ Logs same-prefix-pipeline.log/.stderr.log, state same-prefix-pipeline/progress.j
 result.json; child same-prefix-job.json. Child640MiB,aggregate896MiB/420s/work128.
 Freeze controller/helpers; expect complete768. Then matched report and generalization.
 LIVE false s3 launcher32604, exact command verified.
+False s3 VERIFIED complete768/768,128new; parent45.403s/554,913,792B. All known
+PIDs/commands gone; actual inference/training identity and receipts preserved.
+NEXT matched final comparison, expected<96MiB,128MiB/30s/work1590:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 1590 --receipt runs/layer-learning768-comparison-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/compare_layer_studies.py
+--control m2-stream-layer-control768-s3 --candidate m2-stream-layer-evidence768-s3
+--output docs/evidence/layer-learning768-comparison-r1
+Logs runs/layer-learning768-comparison-r1.log/.stderr.log. Then predeclared
+broader diagnostic640MiB/180s/work384, expected<600MiB (exact command below).
+Comparison launcher29692 exact command verified.
