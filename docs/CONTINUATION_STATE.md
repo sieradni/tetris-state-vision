@@ -239,3 +239,22 @@ ALL_CLASS_FIT.md,32-case criterion unchanged. Admission nested r5/profile includ
 3 independent development groups/9views, not full-class generalization. No fit
 has started yet. Resource/curation evidence must pass before launching it.
 Recovery curator launcher6824, exact command verified.
+
+All-class recovery curator GREEN4.515s/83,599,360B under128MiB;17 training rows+
+164 saved images replayed,actual model/checkpoint/recovery/config/source identity
+verified. All known PIDs/exact command gone. Raw curator receipts/logs preserved
+in docs/evidence/m2-stream-recovery-gate-r5/. r4 standby failure stays separate.
+NEXT FIRST ACTUAL fit,expected<700MiB aggregate,896MiB/420s/work128:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 128 --receipt runs/m2-stream-allclass1024-s1-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-allclass1024-s1
+--target-steps 1024 --updates 128 --admission runs/m2-stream-recovery-gate-r5/profile
+Logs runs/m2-stream-allclass1024-s1-pipeline.log/.stderr.log; state same-prefix
+-pipeline/progress.json/result.json. Child same-prefix-job.json; trainer state/
+summary/snapshots/code in runs/m2-stream-allclass1024-s1/. Child640MiB,ancestor
+420s effective deadline;curator128MiB/120s. Fresh seed20261026,pilot/capacity0,
+layeroff,curriculum all-class-fit-v1,LR.001,eval128,snapshot64,dev3groups/9views,
+fixed1024 globaltarget. Expect step_partial128/1024,not completion or fit success.
+Freeze controller/shared helpers; external error-reader source can be extended
+without changing the frozen neural catalogue. No GT supplied to forward.
+LIVE first fit launcher18588, exact command verified. Source catalogue6147; no other model Job.

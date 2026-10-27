@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "source_catalogue_sha256": "6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42",
+  "architecture": "TetrisStateNet-M2",
+  "component_capacity": 0,
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 0,
+    "layer_evidence": false
+  },
+  "curriculum": "all-class-fit-v1",
+  "updates": {
+    "profile": 2,
+    "continuous": 6,
+    "partial": 3,
+    "resumed": 3
+  },
+  "partial_status": "step_partial",
+  "global_steps": 6,
+  "exact_data_ledger": true,
+  "exact_loss_terms_gradient_curve": true,
+  "exact_evaluations": true,
+  "exact_model_optimizer_rng": true,
+  "all_final_tensors_reload_exact": true,
+  "weights_sha256": {
+    "profile": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42",
+    "continuous": "1873f44e66cbecc9bfa3004fa306b513b2c5aabb836afd03c8d9f3493fc9766f",
+    "partial": "aba2678e110d7c27035fd7bda136818ffcbacb11b7db12c73ae832351e853137",
+    "resumed": "1873f44e66cbecc9bfa3004fa306b513b2c5aabb836afd03c8d9f3493fc9766f"
+  },
+  "child_peak_job_commit_bytes": {
+    "profile": 562245632,
+    "continuous": 564068352,
+    "partial": 558419968,
+    "resumed": 561717248
+  },
+  "orchestrator_sha256": "60e0d5475c4795e9e67b19782d35714733e6779ac4a3307a2b4429526cbac385",
+  "claim": "Finite source-frozen stream recovery equivalence only; no accuracy or release acceptance."
+}
