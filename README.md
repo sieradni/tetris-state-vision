@@ -5,6 +5,11 @@ exact-state scoring, synthetic scenes and a scratch lattice-query model with
 optional joint queue/hold heads.
 **There is no released complete screenshot parser or validated model yet.**
 
+The [latest matched learning pilot](docs/LAYER_LEARNING_PILOT.md) completed two
+768-update studies and a192-image disjoint-ancestry diagnostic. The optional
+layer-evidence mechanism did not pass the joint learning gate and remains off
+by default. Resource/recovery checks passed; real-image accuracy remains untested.
+
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
 dependencies and generate three ancestry groups (15 images). Each receipt/output
 path must be new; an existing run is preserved. The launcher refuses other OSes

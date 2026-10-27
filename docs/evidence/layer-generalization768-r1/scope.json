@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "replayed_recipes": 192,
+  "raw_cases_recomputed": 384,
+  "all_reported_aggregates_recomputed": true,
+  "result_sha256": "088b5ecef4ddf02f4321f065f8c9af1c3e4c83d72c8b9b7b5e24afaa27d321f8",
+  "curator_sha256": "48477df456c66b611efcc4845f3c54418b650f757f87612b0952ad34d4ea01c1",
+  "additional_raw_diagnostics": {
+    "control": {
+      "exact_observed_active_ancestries": [],
+      "joint_exact_locked_and_both_supported_layers": 2,
+      "predicted_types_by_role": {
+        "active": {
+          "0": 192
+        },
+        "ghost": {
+          "0": 192
+        }
+      }
+    },
+    "candidate": {
+      "exact_observed_active_ancestries": [
+        "ancestry-development-30261135",
+        "ancestry-development-30261185"
+      ],
+      "joint_exact_locked_and_both_supported_layers": 0,
+      "predicted_types_by_role": {
+        "active": {
+          "2": 41,
+          "1": 119,
+          "0": 32
+        },
+        "ghost": {
+          "1": 172,
+          "0": 20
+        }
+      }
+    }
+  },
+  "scope": "Synthetic source/artifact/recipe/raw-diagnostic/aggregate verification only. No real or complete-state quality acceptance."
+}

@@ -38,8 +38,13 @@ No complete screenshot parser or real-image accuracy is claimed.
    observed piece classes were supervised,but training ghosts only occur at
    row10 and fixed probes omit classes/statuses. TARGET_EXPOSURE.md records
    counts and limits. A separate optional dense layer-evidence experiment is
-   the next learning lever;retain the original baseline and predeclare new
-   source/config/resource/learning gates before using its results.
+   now a completed matched768-update pilot: both studies pass resource/recovery,
+   but broader192-image evaluation gives0/148 exact nonempty boards for both,
+   only4/165 observed active poses and0/144 ghosts for the candidate, with more
+   locked false positives. It remains default off. LAYER_LEARNING_PILOT.md records
+   raw source/data/artifact-bound results and coverage limits. Retain the original
+   baseline; investigate class collapse with an all-class positive-control fit
+   before selecting another learning mechanism.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.

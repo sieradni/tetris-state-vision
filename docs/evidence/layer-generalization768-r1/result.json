@@ -1,0 +1,467 @@
+{
+  "status": "passed",
+  "population": "development groups100..163, views0..2, seed20261026",
+  "source_catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+  "models": {
+    "control": {
+      "run": "m2-stream-layer-control768-s3",
+      "weights_sha256": "d183a22afcbe0e08d64b59bc1bd3cb2c337bd58e1d4d048f6406407943f43a74",
+      "config": {
+        "widths": [
+          16,
+          32,
+          64,
+          96
+        ],
+        "dimension": 64,
+        "heads": 4,
+        "blocks": 2,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576,
+        "component_capacity": 0,
+        "layer_evidence": false
+      }
+    },
+    "candidate": {
+      "run": "m2-stream-layer-evidence768-s3",
+      "weights_sha256": "a026ec06f2100076b1fa3d16d735cef70035ee80545df91f5f4becc225f622a2",
+      "config": {
+        "widths": [
+          16,
+          32,
+          64,
+          96
+        ],
+        "dimension": 64,
+        "heads": 4,
+        "blocks": 2,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576,
+        "component_capacity": 0,
+        "layer_evidence": true
+      }
+    }
+  },
+  "images_per_model": 192,
+  "forwards": 384,
+  "job_ceiling_bytes": 671088640,
+  "type_index": [
+    "absent",
+    "I",
+    "O",
+    "T",
+    "S",
+    "Z",
+    "J",
+    "L"
+  ],
+  "results": {
+    "control": {
+      "images": 192,
+      "ancestry_groups": 64,
+      "populations": {
+        "empty": {
+          "images": 44,
+          "exact_boards": 2,
+          "known_cells": 8800,
+          "true_positive": 0,
+          "true_negative": 8026,
+          "false_positive": 774,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 148,
+          "exact_boards": 0,
+          "known_cells": 29600,
+          "true_positive": 3613,
+          "true_negative": 20369,
+          "false_positive": 5350,
+          "false_negative": 268
+        }
+      },
+      "roles_by_target_class": {
+        "active": {
+          "1": {
+            "images": 45,
+            "exact": 0,
+            "type_errors": 45,
+            "pose_known": 45,
+            "column_errors": 40,
+            "row_errors": 42,
+            "rotation_errors": 27
+          },
+          "5": {
+            "images": 33,
+            "exact": 0,
+            "type_errors": 33,
+            "pose_known": 33,
+            "column_errors": 30,
+            "row_errors": 24,
+            "rotation_errors": 15
+          },
+          "3": {
+            "images": 24,
+            "exact": 0,
+            "type_errors": 24,
+            "pose_known": 24,
+            "column_errors": 21,
+            "row_errors": 18,
+            "rotation_errors": 18
+          },
+          "4": {
+            "images": 15,
+            "exact": 0,
+            "type_errors": 15,
+            "pose_known": 15,
+            "column_errors": 12,
+            "row_errors": 9,
+            "rotation_errors": 9
+          },
+          "0": {
+            "images": 27,
+            "exact": 27,
+            "type_errors": 0,
+            "pose_known": 0,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "7": {
+            "images": 27,
+            "exact": 0,
+            "type_errors": 27,
+            "pose_known": 27,
+            "column_errors": 24,
+            "row_errors": 12,
+            "rotation_errors": 24
+          },
+          "2": {
+            "images": 9,
+            "exact": 0,
+            "type_errors": 9,
+            "pose_known": 9,
+            "column_errors": 6,
+            "row_errors": 3,
+            "rotation_errors": 0
+          },
+          "6": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 12,
+            "row_errors": 12,
+            "rotation_errors": 9
+          }
+        },
+        "ghost": {
+          "1": {
+            "images": 39,
+            "exact": 0,
+            "type_errors": 39,
+            "pose_known": 39,
+            "column_errors": 36,
+            "row_errors": 0,
+            "rotation_errors": 22
+          },
+          "5": {
+            "images": 27,
+            "exact": 0,
+            "type_errors": 27,
+            "pose_known": 27,
+            "column_errors": 24,
+            "row_errors": 0,
+            "rotation_errors": 15
+          },
+          "3": {
+            "images": 24,
+            "exact": 0,
+            "type_errors": 24,
+            "pose_known": 24,
+            "column_errors": 21,
+            "row_errors": 0,
+            "rotation_errors": 20
+          },
+          "4": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 9,
+            "row_errors": 0,
+            "rotation_errors": 6
+          },
+          "0": {
+            "images": 48,
+            "exact": 48,
+            "type_errors": 0,
+            "pose_known": 0,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "7": {
+            "images": 21,
+            "exact": 0,
+            "type_errors": 21,
+            "pose_known": 21,
+            "column_errors": 21,
+            "row_errors": 0,
+            "rotation_errors": 19
+          },
+          "2": {
+            "images": 9,
+            "exact": 0,
+            "type_errors": 9,
+            "pose_known": 9,
+            "column_errors": 6,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "6": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 12,
+            "row_errors": 0,
+            "rotation_errors": 8
+          }
+        }
+      },
+      "pose_rows_by_role": {
+        "active": {
+          "14": 63,
+          "16": 57,
+          "15": 45
+        },
+        "ghost": {
+          "10": 144
+        }
+      },
+      "mean_geometry_error_cells": 1.9966917588996391,
+      "missing_observed_piece_classes_by_role": {
+        "active": [],
+        "ghost": []
+      }
+    },
+    "candidate": {
+      "images": 192,
+      "ancestry_groups": 64,
+      "populations": {
+        "empty": {
+          "images": 44,
+          "exact_boards": 0,
+          "known_cells": 8800,
+          "true_positive": 0,
+          "true_negative": 5977,
+          "false_positive": 2823,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 148,
+          "exact_boards": 0,
+          "known_cells": 29600,
+          "true_positive": 3798,
+          "true_negative": 15602,
+          "false_positive": 10117,
+          "false_negative": 83
+        }
+      },
+      "roles_by_target_class": {
+        "active": {
+          "1": {
+            "images": 45,
+            "exact": 4,
+            "type_errors": 23,
+            "pose_known": 45,
+            "column_errors": 36,
+            "row_errors": 32,
+            "rotation_errors": 29
+          },
+          "5": {
+            "images": 33,
+            "exact": 0,
+            "type_errors": 33,
+            "pose_known": 33,
+            "column_errors": 25,
+            "row_errors": 23,
+            "rotation_errors": 19
+          },
+          "3": {
+            "images": 24,
+            "exact": 0,
+            "type_errors": 24,
+            "pose_known": 24,
+            "column_errors": 12,
+            "row_errors": 18,
+            "rotation_errors": 19
+          },
+          "4": {
+            "images": 15,
+            "exact": 0,
+            "type_errors": 15,
+            "pose_known": 15,
+            "column_errors": 6,
+            "row_errors": 0,
+            "rotation_errors": 9
+          },
+          "0": {
+            "images": 27,
+            "exact": 17,
+            "type_errors": 10,
+            "pose_known": 0,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "7": {
+            "images": 27,
+            "exact": 0,
+            "type_errors": 27,
+            "pose_known": 27,
+            "column_errors": 21,
+            "row_errors": 13,
+            "rotation_errors": 24
+          },
+          "2": {
+            "images": 9,
+            "exact": 0,
+            "type_errors": 6,
+            "pose_known": 9,
+            "column_errors": 6,
+            "row_errors": 4,
+            "rotation_errors": 0
+          },
+          "6": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 10,
+            "row_errors": 7,
+            "rotation_errors": 4
+          }
+        },
+        "ghost": {
+          "1": {
+            "images": 39,
+            "exact": 0,
+            "type_errors": 3,
+            "pose_known": 39,
+            "column_errors": 30,
+            "row_errors": 0,
+            "rotation_errors": 29
+          },
+          "5": {
+            "images": 27,
+            "exact": 0,
+            "type_errors": 27,
+            "pose_known": 27,
+            "column_errors": 24,
+            "row_errors": 0,
+            "rotation_errors": 21
+          },
+          "3": {
+            "images": 24,
+            "exact": 0,
+            "type_errors": 24,
+            "pose_known": 24,
+            "column_errors": 15,
+            "row_errors": 0,
+            "rotation_errors": 11
+          },
+          "4": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 6,
+            "row_errors": 0,
+            "rotation_errors": 6
+          },
+          "0": {
+            "images": 48,
+            "exact": 10,
+            "type_errors": 38,
+            "pose_known": 0,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "7": {
+            "images": 21,
+            "exact": 0,
+            "type_errors": 21,
+            "pose_known": 21,
+            "column_errors": 12,
+            "row_errors": 0,
+            "rotation_errors": 12
+          },
+          "2": {
+            "images": 9,
+            "exact": 0,
+            "type_errors": 9,
+            "pose_known": 9,
+            "column_errors": 9,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "6": {
+            "images": 12,
+            "exact": 0,
+            "type_errors": 12,
+            "pose_known": 12,
+            "column_errors": 11,
+            "row_errors": 0,
+            "rotation_errors": 10
+          }
+        }
+      },
+      "pose_rows_by_role": {
+        "active": {
+          "14": 63,
+          "16": 57,
+          "15": 45
+        },
+        "ghost": {
+          "10": 144
+        }
+      },
+      "mean_geometry_error_cells": 1.96942814749976,
+      "missing_observed_piece_classes_by_role": {
+        "active": [],
+        "ghost": []
+      },
+      "dense_layer_grids_known": 384,
+      "dense_layer_grids_exact": 0,
+      "dense_observed_visible_grids_known": 309,
+      "dense_observed_visible_grids_exact": 0
+    }
+  },
+  "sources": {
+    "scripts/probe_stream_errors.py": "3d9722e1bdb29976555e138753b9198fa2428834b45ec0d15ca2939d2da2b3c2",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/record_stream_run.py": "bd65c67fae1cbea1db9ee71abf0b412083700f4c1dbe4023f22b59135d5cd1f0",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db"
+  },
+  "artifact_sha256": {
+    "control.jsonl": "149ee32dac936dacace9de255fb64be2c50065fb693cbebc0b55c410b23298f9",
+    "candidate.jsonl": "cf6cc8d4cd5e5901720ed3ed5bb5794bdfbd138934289b76602266af825c9372",
+    "recipes.jsonl": "35f502838fadc37e881b18c8d4b2323abd6731977da87c0d71344d6512de2c8e",
+    "analysis-source.py": "a6a9f0dc03e66a7995ab500017480c307844ab05ada849fd08c09649248a42a3"
+  },
+  "all_model_tensors_unchanged": true,
+  "scope": "Disjoint-ancestry synthetic diagnostic within the same generator. Masks govern support; queue/hold and real accuracy untested. Related views are not independent trials. No model-selection or whole-state release claim."
+}
