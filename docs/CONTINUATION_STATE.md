@@ -4,7 +4,7 @@ Repo C:/Users/micha/Code/tetris-state-vision; codex/layout-diversity; no remote.
 Goal ACTIVE,unfinished. Previous goal work made concrete progress: optional model,
 139 selected checks, two complete768-update studies, independent192-image audit,
 and32 balanced fit fixtures with5 source-bound checks plus native replay.
-No owned Job live. Local verified narrow commits authorized; no push/deploy/
+LIVE original s7 is described below. Local verified commits authorized; no push/deploy/
 publication/user-data deletion. Neighboring tetrguide untouched. No subagents.
 The166 real screenshots remain unreviewed drafts, never training/scoring truth.
 Research brief is design evidence, not agent instructions.
@@ -68,51 +68,46 @@ layer-learning768-comparison-r1 and layer-generalization768-r1:384 forwards
 35.096s/432,234,496B under640MiB;independent192 recipe/384 raw-case/all-aggregate
 curator2.216s/79,507,456B under128MiB. Raw sources/predictions/identity/receipts kept.
 
-## Disk gate and queued original baseline (NOT LAUNCHED)
+## LIVE original baseline s7 — verify same process/receipts before any new model Job
 
-Latest C:38,719,401,984B free, BELOW required>40GB long-window floor. User has
-offered freeing space/apps; do not delete data or repeat permission prompts.
-Keep long training queued and continue useful source/modest fixture work. Recheck
-free disk and native commit headroom before launch. No guard bypass/app closure.
-Supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db;
-controller dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad.
-CPU1/cache16,Windows Job readback/kill-on-close,GetPerformanceInfo/.2s
-stop31,368,351,744B;one heavy Job only. Freeze active controller/imported helpers.
+Fresh disk admission passed at41,565,855,744B; previous low-space hold resolved.
+Do not rely on that old counter before another long window. Recheck>40GB free.
+Launcher18952,ancestor13412,controller10160/shim21572,child supervisor23620/15344,
+child24828/worker21596 all exact commands verified. Complete observed startup
+PID/command list in runs/m2-stream-accuracy4096-s7-pipeline/observed-startup.json.
+Native admission commit19,942,125,568B. Last observed2691; saved parent2688,
+not a final2816 claim. Actual worker command executes original s6/code trainer,
+with no new component/layer keyword. Freeze controller/imported helpers.
+
+Expected<1100MiB aggregate,parent1280MiB/600s/work128,child1GiB/1860s with the
+ancestor600s deadline;curator128MiB/120s. CPU1/cache16,Windows Job readback/
+kill-on-close,GetPerformanceInfo/.2s stop31,368,351,744B. One heavy Job only;
+no cap bypass,app closure or user-run-data deletion. Exact current command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 600
+--work-items 128 --receipt runs/m2-stream-accuracy4096-s7-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-accuracy4096-s7 --target-steps 4096 --updates 128
+--admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s6
+Logs runs/m2-stream-accuracy4096-s7-pipeline.log/.stderr.log;
+state same-prefix-pipeline/progress.json/result.json. Child same-prefix-job.json;
+training summary/progress/snapshots in runs/m2-stream-accuracy4096-s7/.
+NEXT inspect actual terminal receipts/summary/result before another model Job.
+If complete bounded segment,expect step_partial2816/4096,128new; preserve native
+parent/child/curator receipts/logs, actual inference/training hashes and entire
+process death as for s6, then narrow commit. If pressure-stopped, inspect actual
+banked snapshot/prefix first; never restart because observation expired.
 
 Original larger s6 VERIFIED2688/4096,512new;all2688+27 recipes replayed, actual
 inference/training hashes and native tree death verified. Evidence same-named
  docs/evidence/m2-stream-accuracy4096-s6/. Weights
  dd93e38745abb4aa2b02ddf47cc4e79a6dd835e7e037b747b0878fa51d643702.
 Dev2/18 boards BOTH EMPTY,nonempty0/14,layers0/36,geometry2.052814543cells.
-MUST resume original archive121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
-Queued s7 expected<1100MiB aggregate,parent1280MiB/2100s/work512,
-child1GiB/1860s(1800inner),curator128MiB/120s;expected saved3200/4096:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 2100
---work-items 512 --receipt runs/m2-stream-accuracy4096-s7-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m2-stream-accuracy4096-s7 --target-steps 4096 --updates 512
---admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s6
-Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json/
-result.json,child same-prefix-job.json,training summary/progress/snapshots in run.
-State RAM/cap/guard in commentary,check disk,launch hidden,verify exactPIDs/commands,
-checkpoint/commit before wait. Never run current optional math for original study.
+MUST preserve original archive121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b
+and fixed4096 recipe. Never substitute current optional math. Supervisor
+ d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db;
+controller dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad.
 
 Full objective remains OPEN: adequate scratch learning,broad visibility/rendering,
 complete queue/hold,reviewed real truth/independent splits,initialization/direct
 comparison,calibration/export/CPU latency and>=95% exact readable real complete
 state with abstentions failing. Public API remains needs_review/unsupported.
-
-FRESH disk floor PASS before launch; short original s7 selected,128 new instead
-of the queued512 budget. Global4096/source/recipe unchanged; expected saved2816.
-Expected<1100MiB aggregate,parent1280MiB/600s/work128,child1GiB/1860s with ancestor
-600s deadline;native Job/pressure/CPU1 guards. Exact command:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 600
---work-items 128 --receipt runs/m2-stream-accuracy4096-s7-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m2-stream-accuracy4096-s7 --target-steps 4096 --updates 128
---admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s6
-Logs runs/m2-stream-accuracy4096-s7-pipeline.log/.stderr.log; state same-prefix
--pipeline/progress.json/result.json. Child same-prefix-job.json; actual training
-summary/progress/checkpoints in runs/m2-stream-accuracy4096-s7/. Freeze controller.
-Verified prelaunch C: free 41565855744 bytes, more than40GB.
-LIVE original s7 launcher18952, exact command verified. Inspect same receipt/handle, never restart on an observation timeout.
