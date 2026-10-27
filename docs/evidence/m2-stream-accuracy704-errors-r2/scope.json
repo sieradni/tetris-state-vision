@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "source_base_commit": "8696f121f5d2512e7ed4487c150f741c6ea15493",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda",
+  "global_steps": 704,
+  "target_steps": 4096,
+  "run_status": "step_partial",
+  "forwards": 27,
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "native_peak_job_commit_bytes": 551600128,
+  "native_elapsed_seconds": 33.423,
+  "diagnostic_sources": {
+    "scripts/probe_stream_errors.py": "201338c09738dd5a5d7179748a5227b1d4b40c05b888614b99266b7fe416fca3",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/record_stream_run.py": "c1b200c6bc5734d1de34850d672ed5bd45aafba9e240244f826af9baafe28684",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "artifact_sha256": {
+    "result.json": "b09d4b2f0d8193ba8bb7b73fa923f1a6b5ce037ca3d1673f96b992cab56e7588",
+    "progress.json": "e74ec6b27a23c8ab2437ea1dc4669759c503bfc12e48f09a1e160f0be42cfddd",
+    "native-job.json": "00a4dc6035196450633fdc300e5b856b3d3ff4f67d95a60d663125c3d2cfed05",
+    "native.log": "58a9da69737bd53fb2333450f494ddfcc6269924addfafa5ae2530cfeaa996d1",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-manifest.json": "b8228f71a39c82ec578a6bd2ea030b68d1db5f56589a013af2deb135d84cacb6",
+    "checkpoint-manifest.json": "2eee20553a4612f0c43b011c93625082a3e85d837e78b7c462014a1866cca217"
+  },
+  "scope": "Saved synthetic M2 error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, complete-state or real accuracy claim. No training/label/production-output changes."
+}

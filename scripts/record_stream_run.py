@@ -31,6 +31,18 @@ def validate_completion(summary, job, *, allow_partial=False):
     return partial
 
 
+def checkpoint_architecture(summary, manifest):
+    """Bind the report's model identity to the actual checkpoint configuration."""
+    capacity = summary["config"].get("component_capacity", 0)
+    declared = summary.get("component_capacity", 0)
+    if type(capacity) is not int or not 0 <= capacity <= 64 or type(declared) is not int or declared != capacity:
+        raise ValueError("checkpoint component capacity identity differs")
+    expected = "TetrisStateNet-M3" if capacity else "TetrisStateNet-M2"
+    if manifest["architecture"] != expected or manifest["config"] != summary["config"]:
+        raise ValueError("checkpoint architecture/configuration identity differs")
+    return expected
+
+
 def digest(path, maximum=64*1024**2):
     value, consumed = hashlib.sha256(), 0
     with path.open("rb") as data:
@@ -69,6 +81,7 @@ def main():
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
         raise ValueError("sampler did not import from archived source")
     manifest = json.loads((run/"checkpoint/manifest.json").read_text())
+    architecture = checkpoint_architecture(summary, manifest)
     if digest(run/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("weight checksum mismatch")
     recovery_manifest = None
@@ -212,7 +225,8 @@ def main():
              "training_snapshot_identity_verified": recovery_manifest is not None,
              "comparison_status": comparison_status,
              "updates_this_run": summary.get("updates_this_run", summary["steps"]), "resume_parent": resume_parent,
-             "curator_sha256": digest(Path(__file__)), "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."}
+             "curator_sha256": digest(Path(__file__)), "core_architecture": architecture,
+             "component_capacity": summary["config"].get("component_capacity", 0)}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": scope["status"], "run_status": summary["status"], "steps": summary["steps"],
                       "requested_steps": summary["requested_steps"], "replayed_samples": len(rows),

@@ -3,10 +3,26 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
-from record_stream_run import validate_completion
+from record_stream_run import checkpoint_architecture, validate_completion
 
 
 class StreamEvidenceTests(unittest.TestCase):
+    def test_architecture_identity_comes_from_matching_checkpoint_config(self):
+        old = {"config": {"dimension": 64}}
+        manifest = {"architecture": "TetrisStateNet-M2", "config": old["config"]}
+        self.assertEqual(checkpoint_architecture(old, manifest), "TetrisStateNet-M2")
+        joint = {"config": {"dimension": 64, "component_capacity": 64}, "component_capacity": 64}
+        manifest = {"architecture": "TetrisStateNet-M3", "config": joint["config"]}
+        self.assertEqual(checkpoint_architecture(joint, manifest), "TetrisStateNet-M3")
+        for changed in ({**manifest, "architecture": "TetrisStateNet-M2"},
+                        {**manifest, "config": {"dimension": 192, "component_capacity": 64}}):
+            with self.assertRaises(ValueError):
+                checkpoint_architecture(joint, changed)
+        with self.assertRaises(ValueError):
+            checkpoint_architecture({**joint, "component_capacity": 0}, manifest)
+        with self.assertRaises(ValueError):
+            checkpoint_architecture({"config": {"component_capacity": True}, "component_capacity": True}, manifest)
+
     def test_completed_resume_counts_new_updates_separately_from_global_target(self):
         summary = {"status": "complete", "steps": 128, "requested_steps": 128,
                    "updates_this_run": 35, "checkpoint_round_trip_exact": True}

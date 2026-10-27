@@ -207,6 +207,15 @@ per-row basis error). The high mean cell accuracy mainly reflects empty cells;
 this short-budget report does not select a causal architectural repair. Continue
 the original longer study before ranking/tuning its alternatives.
 
+At global704 (verified bank192+512new segment), the same saved27 probes now
+reproduce with384/401 development positive cells recognized,17 misses and326
+false positives. Both piece layers predict known, but each has18/18 wrong types;
+no development board or known layer is exact. Mean geometry error1.84647cells.
+The change trades missed cells for invented cells; it is not a quality pass or
+an adequately converged comparison. Ordinary inference took33.423s under1GiB,
+551,600,128B peak, model tensors unchanged. Source/artifact/case evidence:
+docs/evidence/m2-stream-accuracy704-errors-r2/scope.json and result.json.
+
 The current4096-target segment still needs its own saved-artifact report after
 its Job ends. Use a NEW output,1GiB/120s/27 forwards on9+18 probes, one CPU.
 Expected below the admitted training envelope, experimentally capped; do not

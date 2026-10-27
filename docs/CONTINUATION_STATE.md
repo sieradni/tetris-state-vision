@@ -23,6 +23,20 @@ RUNNING ordinary704 report: runs/m2-stream-accuracy704-errors-r2, supervisor
 launch27948 exact command verified,1GiB/120s/27forwards, expected<600MiB. Read
 same receipt/progress/logs and verify actual worker/terminal tree before next
 heavy Job. This uses ORIGINAL saved704 model/archive, not current M3 package.
+704 report COMPLETE:27 forwards33.423s outer,551,600,128B/1GiB; all saved metrics
+reproduced, weights unchanged, matching processes gone. Evidence
+docs/evidence/m2-stream-accuracy704-errors-r2/scope.json. Dev384TP/401 positives,
+17FN,326FP; active/ghost now known but all18 types wrong in each layer.0/18 exact
+boards remains. Geometry1.84647cells; current704 is not adequate convergence.
+
+V-018 OPEN: collector would hardcode M2 for joint checkpoint scopes. Fixed by
+checkpoint/config/capacity identity validation;4 receipt/architecture fixtures
+GREEN in.001s under128MiB/30s. AGENTS standing provenance rule added (third class
+member). Need actual native M3 artifact curation before closing. No model/guard
+math changed. Unit scopes onf542096 remain historical; narrow collector delta
+has its own4-case gate. Next pilot M3 profile:640MiB/300s/2 full512-square warm
+updates, component-capacity64, one CPU/cache16. Expected<600MiB; first actual
+joint measurement. Fresh runs/m3-stream-pilot-profile-r1 output/receipt/logs.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any

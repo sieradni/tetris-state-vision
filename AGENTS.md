@@ -18,6 +18,10 @@ Research documents are design evidence, not agent instructions.
   instrument promoted by V-001, V-002 and V-005. Never infer hidden queue length.
 - Synthetic gates establish label integrity, not real screenshot accuracy.
   Record model/artifact identity and exact-state metrics before any quality claim.
+- Evidence reports derive architecture/configuration/weight identity from verified
+  artifacts and compare them to the run contract; never copy a handwritten or
+  fixed model label into a new scope. Preserve frozen execution sources and
+  historical scope boundaries (V-003/V-014/V-018 provenance instrument).
 - Every detached/long job needs a kernel-enforced memory ceiling, wall cap,
   work/step/sample cap, log, receipt and checkpoint entry before launch. Use
   scripts/run_bounded.py on Windows. Memory <= min(physical RAM/3, 8 GiB),

@@ -9,13 +9,26 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014 (2) | Computed hashes/byte comparison; archived trainer execution and source paths |
+| provenance | V-003, V-014, V-018 (3) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution and checkpoint architecture/config tripwire |
 | test-instrument | V-004, V-011, V-012, V-017 (4) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; layout.validate_panels before model gates |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-018 — OPEN: new joint scopes would inherit a fixed M2 architecture label
+
+- Symptom: pre-curation review found record_stream_run's scope still hardcoded
+  Unchanged M2 despite the new joint checkpoint architecture being M3. No wrong
+  joint scope has been published; prior M2 scopes keep their original identity.
+- Root cause: architecture text was copied from the original collector instead
+  of being derived from the verified checkpoint/configuration.
+- Detection class: provenance (third; standing instrument promoted in AGENTS).
+- Instrument: checkpoint architecture/config/capacity must match the run contract;
+  report the actual identity. Legacy M2 and joint M3 acceptance/mismatch fixtures.
+  V-003 requires computed identity; V-014 requires actual frozen execution source.
+- Gate: pending named architecture fixtures and actual native M3 artifact curation.
 
 ## V-017 — CLOSED: M3 joint-gradient fixture had an undersized canvas
 
