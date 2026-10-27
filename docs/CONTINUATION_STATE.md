@@ -62,6 +62,9 @@ serialized child640MiB/90s, profile2+continuous6+partial3+resume3. Expected tota
 <750MiB. Root receipt/log prefix runs/m3-stream-recovery-gate-r1; progress/proof
 inside output. No other heavy Job live. Require actual source/data/loss/eval/model/
 Adam/RNG/module-mode equality; partial status remains explicit. No quality claim.
+LAUNCHED: root33284/15296, orchestrator27504/28044 exact commands verified;
+source656a0a5. Inspect same progress/receipts/proof and current child before any
+wait or new heavy launch. No other owned model Job live at launch.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any
