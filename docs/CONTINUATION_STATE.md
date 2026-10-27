@@ -4,9 +4,9 @@ Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity,
 no remote. Goal ACTIVE and unfinished. Neighboring engine/apps/run data untouched.
 Local reviewed commits authorized; no push/deploy/publish/deletion authorized.
 
-Selected acceptance task: curate the completed larger M3 resource profile, then
-resume the original fixed4096 M2 study from its verified704 bank if resource
-headroom permits. One heavy model Job at a time. Kernel Job/OS pressure guards
+Selected acceptance task: finish/review the running original M2 s3 segment,
+then execute and curate ordinary format2 M2/M3 saved-model error reports.
+One heavy model Job at a time. Kernel Job/OS pressure guards
 and one-thread pre-import policy remain armed; no automatic restarts.
 
 Selected independent source task while s3 trains: extend the ordinary saved-probe
@@ -27,6 +27,21 @@ them. Red/intermediate gates retained. Metadata curation r2 passed.452s,
 72,228,864B/128MiB/30s; launch31888/supervisor31112/child12044 gone.
 No model forward/update. NEXT actual frozen M2/M3 error replay after s3 ends.
 Actual frozen M2/M3 replay is deferred while s3's heavy model Job is live.
+Selected independent task: add a bounded saved-error evidence collector. Bind
+native report command/limits, actual architecture/config/weights, original partial
+tag, every sample/ancestry/ordinary metric and recomputed aggregates. Persist the
+ordinary per-case metrics in new report format2; old reports remain historical.
+Acceptance: adversarial pure metadata gates, then serialized actual M2/M3 replay
+and curation after s3. V-003/V-014/V-018/V-020 provenance contracts apply; no
+training archive, observation policy, model architecture or guard changes.
+NEXT gate runs/error-evidence-tests-r1.json/.log/.stderr.log,512MiB/60s/work35,
+expected<350MiB:8 new metadata fixtures plus27 existing diagnostics. No model
+forward/update. Pipeline worker26544 live at1128,bank1088,elapsed1080.378s.
+Gate PASS35 in1.906s,248,700,928B/512MiB. Launcher28252/supervisor15636/
+child25044 and all matching test commands gone. New report format2/collector
+documented in docs/SAVED_ERROR_REPORTS.md; actual forward/curation integration
+still pending. NEXT commit source milestone, curate35-case source scope under
+128MiB/30s/work35 (expected<96MiB), then serialized actual reports after s3.
 
 ## Current processes and next action
 

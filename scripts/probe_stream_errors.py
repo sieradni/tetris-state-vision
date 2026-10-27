@@ -149,7 +149,7 @@ def main():
                     raise ValueError("independent decomposition disagrees with frozen metrics")
                 records.append({"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
                                 "density_recipe": recipe["density"], "skin": recipe["skin"], "view": recipe["view"],
-                                "diagnostics": diagnostics})
+                                "ordinary_metrics": baseline, "diagnostics": diagnostics})
                 (args.output/"progress.json").write_text(json.dumps({"forwards": len(records), "sample_id": recipe["sample_id"]})+"\n")
     if not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()):
         raise ValueError("read-only error probe changed model tensors")
@@ -159,7 +159,8 @@ def main():
     if capacity:
         for split, values in summarize_components(records).items():
             totals[split]["components"] = values
-    result = {"status": "passed", "run": args.run, "run_status": summary["status"], "global_steps": summary["steps"],
+    result = {"status": "passed", "diagnostic_format_version": 2,
+              "run": args.run, "run_status": summary["status"], "global_steps": summary["steps"],
               "target_steps": summary["requested_steps"], "forwards": len(records), "job_ceiling_bytes": ceiling,
               "source_catalogue_sha256": summary["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
               "automatic_metrics_reproduced": True, "weights_unchanged": True, "label_inputs_to_model": False,
