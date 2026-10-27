@@ -122,3 +122,15 @@ while original s7 tree lives. Wire/admit after exact terminal/death verification
 Adapter source/test gate expected<110MiB under128MiB/30s, finite tests; no neural
 Job overlaps. New source remains a candidate until native tests and frozen
 integration/warm/recovery gates run. Full fit goal/32-case criterion unchanged.
+
+Original s7 VERIFIED step_partial2816/4096,128new; parent398.142s/971,010,048B.
+All observed startup/receipt PIDs and matching commands gone before any shared
+helper edits. Native child/curator receipts, actual inference/training hashes,
+whole2816+27 recipe replay and outcome preserved in same-named docs/evidence.
+Current selected adapter is ready for5 bounded cases (UNRUN), expected<110MiB:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 5 --receipt runs/curriculum-tests-r1.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_curriculum.py -v
+Logs runs/curriculum-tests-r1.log/.stderr.log. No model Job live; nativeguards.
+After adapter gate, wire explicit policy into frozen training/admission/recovery/
+summary/controller/curation; old default maths/records remain unchanged.

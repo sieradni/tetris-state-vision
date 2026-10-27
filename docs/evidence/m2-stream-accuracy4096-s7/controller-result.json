@@ -1,0 +1,19 @@
+{
+  "status": "segment_verified",
+  "training_status": "step_partial",
+  "global_steps": 2816,
+  "target_steps": 4096,
+  "updates_this_segment": 128,
+  "target_complete": false,
+  "weights_sha256": "29ffd032f8cfb9842bf6149d0863a784065b5d8831ff171b90d6a14cccde7909",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "evidence_status": "verified_partial",
+  "core_architecture": "TetrisStateNet-M2",
+  "component_capacity": 0,
+  "model_kind": "accuracy",
+  "verified_probe_images": 27,
+  "layer_evidence": false,
+  "next_resume_from": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s7",
+  "controller_sha256": "dadaee6df6761ce0f32f494979758111d56329466290ca3d408c2cfd8bcc46ad",
+  "scope": "One bounded training segment and replayed explicit-status evidence; not full goal, adequate convergence or model quality."
+}
