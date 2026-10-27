@@ -79,6 +79,7 @@ def segment_plan(args):
     profile_manifest = read(admission/"checkpoint/manifest.json")
     architecture = checkpoint_architecture(profile, profile_manifest)
     capacity = profile["config"].get("component_capacity", 0)
+    layer_evidence = profile["config"].get("layer_evidence", False)
     if (capacity != 0 and not 10 <= capacity <= 64 or
             not args.name.startswith("m3-stream-" if capacity else "m2-stream-") or
             args.component_capacity is not None and args.component_capacity != capacity):
@@ -138,11 +139,13 @@ def segment_plan(args):
         worker += [flag, str(recipe[key])]
     if capacity:
         worker += ["--component-capacity", str(capacity)]
+    if layer_evidence:
+        worker += ["--layer-evidence"]
     if args.resume_from is not None:
         worker += ["--resume-from", str(args.resume_from.resolve())]
     return {"run": run, "pipeline": pipeline, "start": start, "budget": budget, "worker": worker,
             "memory_mib": ceiling//1024**2, "component_capacity": capacity, "config": profile["config"],
-            "model_kind": profile["model_kind"], "catalogue_sha256": archive["catalogue_sha256"],
+            "model_kind": profile["model_kind"], "layer_evidence": layer_evidence, "catalogue_sha256": archive["catalogue_sha256"],
             "architecture": architecture, "development_groups": recipe["development_groups"], "target_steps": args.target_steps}
 
 
@@ -206,7 +209,8 @@ def main(argv=None):
     expected = "passed" if summary["status"] == "complete" else "verified_partial"
     if (evidence["status"] != expected or evidence["steps"] != summary["steps"] or
             evidence["source_catalogue_sha256"] != plan["catalogue_sha256"] or evidence["weights_sha256"] != summary["checkpoint_sha256"] or
-            evidence["core_architecture"] != manifest["architecture"] or evidence["component_capacity"] != plan["component_capacity"]):
+            evidence["core_architecture"] != manifest["architecture"] or evidence["component_capacity"] != plan["component_capacity"] or
+            evidence.get("layer_evidence", False) != plan["layer_evidence"]):
         raise ValueError("curated status/step differs")
     require_controller_source(controller_sha)
     result = {"status": "segment_verified", "training_status": summary["status"], "global_steps": summary["steps"],
@@ -215,6 +219,7 @@ def main(argv=None):
               "source_catalogue_sha256": summary["catalogue_sha256"], "evidence_status": evidence["status"],
               "core_architecture": manifest["architecture"], "component_capacity": plan["component_capacity"],
               "model_kind": summary["model_kind"], "verified_probe_images": probes,
+              "layer_evidence": plan["layer_evidence"],
               "next_resume_from": str(run) if summary["steps"] < args.target_steps else None,
               "controller_sha256": controller_sha,
               "scope": "One bounded training segment and replayed explicit-status evidence; not full goal, adequate convergence or model quality."}

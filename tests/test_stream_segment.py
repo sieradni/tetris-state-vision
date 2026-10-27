@@ -98,6 +98,34 @@ def outcome(case, plan, updates=2, complete=False):
 
 
 class StreamSegmentTests(unittest.TestCase):
+    def test_layer_evidence_routes_only_from_verified_configuration_and_resume(self):
+        for joint in (False, True):
+            with fixture(joint) as case:
+                case.profile["config"]["layer_evidence"] = True
+                case.manifest["config"]["layer_evidence"] = True
+                write(case.admission/"summary.json", case.profile)
+                write(case.admission/"checkpoint/manifest.json", case.manifest)
+                plan = segment.segment_plan(case.args)
+                self.assertTrue(plan["layer_evidence"])
+                self.assertIn("--layer-evidence", plan["worker"])
+                record, path = resume(case)
+                self.assertIn("--layer-evidence", segment.segment_plan(case.args)["worker"])
+                record["contract"]["config"]["layer_evidence"] = False
+                write(path, record)
+                publish(case, case.args.resume_from, path)
+                with self.assertRaises(ValueError):
+                    segment.segment_plan(case.args)
+
+    def test_legacy_archive_omits_new_layer_keyword_and_nonboolean_refuses(self):
+        with fixture() as case:
+            self.assertNotIn("--layer-evidence", segment.segment_plan(case.args)["worker"])
+            case.profile["config"]["layer_evidence"] = 1
+            case.manifest["config"]["layer_evidence"] = 1
+            write(case.admission/"summary.json", case.profile)
+            write(case.admission/"checkpoint/manifest.json", case.manifest)
+            with self.assertRaises(ValueError):
+                segment.segment_plan(case.args)
+
     def test_arguments_keep_finite_names_targets_updates_and_capacity(self):
         base = ["--name", "m3-stream-study", "--target-steps", "4096", "--updates", "512", "--admission", "unused"]
         self.assertIsNone(segment.arguments(base).component_capacity)

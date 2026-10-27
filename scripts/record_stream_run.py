@@ -33,6 +33,8 @@ def validate_completion(summary, job, *, allow_partial=False):
 
 def checkpoint_architecture(summary, manifest):
     """Bind the report's model identity to the actual checkpoint configuration."""
+    if type(summary["config"].get("layer_evidence", False)) is not bool:
+        raise ValueError("checkpoint layer evidence identity must be boolean")
     capacity = summary["config"].get("component_capacity", 0)
     declared = summary.get("component_capacity", 0)
     if type(capacity) is not int or not 0 <= capacity <= 64 or type(declared) is not int or declared != capacity:
@@ -226,7 +228,8 @@ def main():
              "comparison_status": comparison_status,
              "updates_this_run": summary.get("updates_this_run", summary["steps"]), "resume_parent": resume_parent,
              "curator_sha256": digest(Path(__file__)), "core_architecture": architecture,
-             "component_capacity": summary["config"].get("component_capacity", 0)}
+             "component_capacity": summary["config"].get("component_capacity", 0),
+             "layer_evidence": summary["config"].get("layer_evidence", False)}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": scope["status"], "run_status": summary["status"], "steps": summary["steps"],
                       "requested_steps": summary["requested_steps"], "replayed_samples": len(rows),

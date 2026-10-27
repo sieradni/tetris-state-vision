@@ -63,6 +63,19 @@ fresh use of old M3 admissions;old archives/scopes remain valid on their bytes.
 Next implement paired-raster/overlap/gradient/default-off legacy/checkpoint tests,
 then run serialized bounded model checks and fresh warm admission. No new-path
 training/model-quality claim. Source checkpoints are candidates pending gates.
+S6 TERMINAL PASS;all matching Python commands gone before controller edits.
+Saved step_partial2688/4096,512new from2176. Native parent690.48s,
+1,014,280,192B/1280MiB. Summarydev2/18 exactboards,0/36 layers,2.05281454cells;
+weightsdd93e38745abb4aa2b02ddf47cc4e79a6dd835e7e037b747b0878fa51d643702.
+Detailed artifact/receipt curation preservation pending;no model Job live.
+New controller draft now forwards --layer-evidence only when verified configTrue,
+keeps old archived kwargs unchanged,and records option in derived scopes/results.
+15 new model/visibility/legacy-reference/checkpoint cases and18 controller cases
+are ready but UNRUN. New byte-exact5-file originalM2 test reference (full original
+source manifest) is curated under tests/fixtures/m2_original so clean checkouts
+can run numerical compatibility;raw bytes protected in .gitattributes.
+Next commit candidate,then bounded serialized tests,then fresh warm profile.
+All source changes are UNADMITTED for new training until gates pass.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.

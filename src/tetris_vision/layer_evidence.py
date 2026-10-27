@@ -20,6 +20,7 @@ class LayerEvidence(nn.Module):
 
 def dense_targets(state, base, canonical_support):
     """Project only supported public layer cells through prepared image masks."""
+    check(state.model_id is None, "observation labels required, not a model output")
     check(canonical_support.shape == (1, 20, 10) and canonical_support.dtype == torch.bool,
           "one prepared canonical image-coverage mask required")
     known = (canonical_support[:, None].expand(-1, 2, -1, -1) &
