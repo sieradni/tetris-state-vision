@@ -225,3 +225,17 @@ Logs same-prefix.log/.stderr.log; state run/progress.json,terminal proof.json.
 Children640MiB/90s,2+6+3+3. Fresh invocation authorized by resolved external
 interruption; guards/source/recipe unchanged. Still no long fit admitted.
 LIVE r5 launcher28564, exact command verified. Keep helper/core bytes frozen.
+
+Native all-class r5 GREEN135.572s/600,379,392B under1GiB; exact14-update profile2+
+continuous6+partial3+resumed3 proof. All known PIDs/matching commands gone.
+No r4 failure relabeled. Catalogue6147 unchanged; rawpower interruption retained.
+NEXT recovery curator expected<110MiB,128MiB/30s/work181 (17rows+164savedimages):
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 181 --receipt runs/allclass-recovery-curation-r1.json --
+.venv/Scripts/python.exe scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r5
+Logs runs/allclass-recovery-curation-r1.log/.stderr.log; final same-name docs/evidence/scope.json.
+Then first fit1024-s1,128 new, fresh seed/pilot/capacity0/layeroff; predeclared in
+ALL_CLASS_FIT.md,32-case criterion unchanged. Admission nested r5/profile includes
+3 independent development groups/9views, not full-class generalization. No fit
+has started yet. Resource/curation evidence must pass before launching it.
+Recovery curator launcher6824, exact command verified.

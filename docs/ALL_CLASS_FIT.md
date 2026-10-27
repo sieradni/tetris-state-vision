@@ -54,6 +54,15 @@ Readers replay the declared policy and compare the complete serialized record,
 not merely a sample ID. Preserve all default numerical behavior; obtain fresh
 source-bound gates/admissions before using the new catalogue.
 
+The first fit study has a fixed1,024-update target, fresh initialization
+seed20261026, pilot/capacity0, layer evidence off, AdamW LR.001/decay.01,
+evaluation128 and snapshots64. Start with128 new updates and preserve explicit
+partial128/1024. Use the admitted all-class recovery gate's nested profile,
+including its three independent development groups (nine views); these are a
+narrow diagnostic, not an all-class generalization population. Training cycles
+the32 fit images, without cached tensors. If the criterion fails at1,024, record
+the failure and inspect raw errors before declaring any extended study.
+
 Prior-bug interaction review (current ledger read before this diagnostic):
 
 - V-001/002/005/006/016: existing observer/prepared masks remain authoritative;
