@@ -179,3 +179,33 @@ larger successes have zero locked cells (nonempty0/14), with0/36 exact layers
 and2.4785-cell geometry. This one-seed, short-budget diagnostic does not select
 architecture or establish convergence. Full curation and counts are in
 docs/evidence/m2-stream-accuracy128-r2/analysis.json and scope.json.
+
+For the fixed4096-target study, first distinguish missed/invented locked cells,
+grid translation/basis errors and active/ghost type/row/column/rotation failures.
+`scripts/probe_stream_errors.py` makes one ordinary pixel-only forward per saved
+synthetic probe, after verifying the native complete/controlled-partial receipt,
+frozen source, weights/config/runtime and replayed pixels/annotations. It must
+reproduce the saved metrics before decomposing them; no oracle geometry enters
+the model. Empty and nonempty populations derive from actual supported labels,
+not the generator's density name (a counterfactual can add a cell to an empty
+scene). Unknown labels are excluded and repeated ancestry is counted explicitly.
+
+The pure analyzer has12 adversarial fixtures: empty-cell accuracy hiding one
+miss, bottom-first false positives, unknown-label invariance, no-evidence null
+scores, analytic translation/scale, symmetric rotations, independent layers,
+type/occupancy disagreement, strict zero threshold, malformed contracts and
+dependent aggregates. These fixtures do not verify neural replay or accuracy.
+Native inference acceptance remains pending until the active training Job ends.
+Then use a NEW output,1GiB/120s/27 forwards on the current9+18 probes, one CPU.
+Expected below the admitted training envelope, experimentally capped; do not
+run another heavy model process while training is live. Suggested command:
+
+```
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy4096-s1-errors-job.json -- .venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s1 --output runs/m2-stream-accuracy4096-s1-errors
+```
+
+Hidden logs/state and exact process verification are required. A saved controlled
+partial segment may be analyzed with its original partial tag; a pressure stop
+without final weights/summary is not eligible. Geometry components use the same
+axis-normalized units as the frozen M2 loss; they do not establish rotated-board
+accuracy. Confidence values are raw diagnostics, not calibration or API policy.

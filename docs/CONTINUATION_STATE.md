@@ -99,3 +99,15 @@ heads/loss/runtime open. API review-only, queue/hold unknown. User's166 images
 remain unlabeled drafts, zero training/scoring eligibility, seven private sheets;
 legacy guesses are not truth. Broad rendering, reviewed real labels, controlled
 initialization comparisons, calibration and export/release remain open.
+
+Selected concurrent source task: decompose existing M2 prediction errors without
+changing neural math, labels, training recipes or the live archive. Add a pure
+bounded analyzer and adversarial fixtures, then a separate post-run probe that
+replays saved rasters/labels and reproduces existing metrics before reporting
+missed/invented cells, grid translation/scale and active/ghost causes. No second
+heavy job while this training process lives. Pure12 fixtures GREEN in0.014s,
+33,021,952B/128MiB; driver syntax GREEN separately. Actual model replay remains
+pending until training is terminal; exact diagnostic command and limits are in
+docs/M2_LEARNING_ACCEPTANCE.md. Do not claim runtime gate from pure fixtures.
+Prior contracts: V-001/002/005/006 unknowns and separate layers; V-003/014 frozen
+sources/weights; V-004 raw resource counters. No architectural change/fix claim.
