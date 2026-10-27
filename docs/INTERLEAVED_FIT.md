@@ -1,9 +1,11 @@
-# Conditional order-only fit comparison
+# Order-only fit comparison
 
-This is a prospective follow-up, not an admitted or running experiment. Finish
-the original all-class1,024-update study and its ordinary error replay first.
-Proceed only if that fit fails and its class/pose errors still motivate testing
-training order. The existing study's source, schedule and target stay unchanged.
+This follow-up is selected after the original1,024-update study and its independent
+ordinary replay failed the fit gate. All visible positions/rotations fit, but44
+piece labels are wrong; predictions use only Z/J/L and absence. See ALL_CLASS_FIT.
+The new policy is integrated and88 selected checks pass. Training remains
+unadmitted pending fresh resource/recovery evidence. The completed original
+study keeps its source, schedule and target.
 
 Question: does interleaving classes improve fit when the images, public labels,
 model, initialization and optimizer are unchanged? The original cycle contains

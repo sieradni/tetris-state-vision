@@ -207,3 +207,7 @@ terminal summary. Expected<600MiB with640MiB cap/native pressure guard.
 After complete/death,r2 curator128MiB/30s/work43 (expected<110MiB),receipt/logs
 runs/interleave-profile-curation-r2;record_stream_run.py --name m2-stream-interleave-profile-r2.
 Only actual green r2 curation closes V027. Old r1 remains failed audit evidence.
+
+LIVE V027 regression curator launcher29692;exactstartup runs/v027-adapter-curation-r1-startup.json.
+
+V0278-test source scope VERIFIED;curator0.692s/76812288B;raw receipt/log copies byte-checked,all known PIDs/exact commands gone. Next fresh r2 profile as above;V027 remains OPEN until actual curator pass.
