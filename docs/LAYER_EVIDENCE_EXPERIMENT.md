@@ -116,3 +116,25 @@ Predeclared matched learning pilot (before any learning segment):
   aggregate896MiB/420s ancestor deadline. Expected peak<700MiB from the native
   warm/recovery gates. Native pressure guards and source/recipe replay remain
   mandatory; inspect the saved result before choosing the next bounded segment.
+
+The first128-update comparison verifies identical recipes, probe states and
+source/configuration except the option. Both are0/18 development boards and
+0/36 layers. True has.90222 cell accuracy and1.94832-cell geometry versus
+false.83056 and2.21219; neither is adequate. Exact training layers are3/18 versus
+7/18; that probe's nine ghosts are all absent. Named raw report and analysis:
+`docs/evidence/layer-learning128-comparison-r1/`. Continue the fixed768 target,
+not selection from these results.
+
+Predeclared additional diagnostic before seeing its predictions: at768, evaluate
+both actual frozen artifacts on development groups100..163, all three original
+views (192 images from64 ancestries), seed20261026. These are distinct from the
+fixed six development groups and every training ancestry (the frozen generator
+uses a disjoint development seed domain). Require both models see identical
+pixels/validity and no truth enters forward. Preserve every recipe/pixel/state
+hash and raw predictions/targets. Report empty/nonempty boards, separate active/
+ghost class/status denominators and type/pose errors, plus observed visible-grid
+exactness for the enabled model. Do not count absent-grid success as observed
+localization. Explicitly audit actual class coverage and position concentration.
+This expands ancestry/class sampling within the same clean/no-grid generator;
+it does not test unseen appearance families, realistic occlusion or real images.
+No confidence interval treating three related views as independent trials.
