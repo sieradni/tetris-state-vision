@@ -1,0 +1,36 @@
+{
+  "child_peak_bytes": 564109312,
+  "training_payload_sha256": "0c8d796d8fbd442c19446a6207f7219e8844ddcfed39924bc2dc42188e9b0b4a",
+  "scope": "Actual first128 optimizer updates and native artifact/replay identity; fixed1024 target and fit criterion remain open pending raw-error replay.",
+  "controller_sha256": "c586c6b7ca43cc33be14d40014c79e9ce2895a2f7b3588dd1a02b257132955c3",
+  "weights_sha256": "f880c24dd6b8b16b276504c3e79420139ccdee2bc1ba2de9832d9a40c1f7ba81",
+  "parent_peak_bytes": 600002560,
+  "verified_dead_pids": [
+    18588,
+    8380,
+    29184,
+    21668,
+    29668,
+    26108,
+    26840,
+    25696
+  ],
+  "parent_seconds": 119.679,
+  "child_seconds": 115.072,
+  "training_manifest_sha256": "70ef3a551b00505bb9dc0c71bace0b4eda107f1ad22f62a71a8934923207c3c1",
+  "curriculum": "all-class-fit-v1",
+  "curator_seconds": 3.466,
+  "steps": 128,
+  "curator_peak_bytes": 83984384,
+  "status": "verified_partial",
+  "artifact_sha256": {
+    "controller-job.json": "090a261ca9466cda3bd9395c14a5c175297e7a89036b6bf58a1a03f85fbcc705",
+    "controller-curation-job.json": "151b9542753d507b145079b3c65862909ea66e70336beadf409e9e8f3d36ff69",
+    "controller-result.json": "cb54689ccf873a23e9984c34ebb5bf6d72478f4d5c1861f8b43c8e96269b4e1f",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller.log": "f79fc5d63b5ac96ab15e17e1ab6594367445016a5222411525ae78964bbd35dc",
+    "controller-curation.log": "2481042044eafef0239fcdf09f973f378453379fe24d45f72da564e614566415"
+  },
+  "target_steps": 1024
+}
