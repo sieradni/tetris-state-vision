@@ -59,6 +59,17 @@ logs/results/receipts and inspect updated learning metrics. If pressure125,
 record actual bank/logged cursor and raw statuses,verify all owned processes
 are gone,then verify recovery rather than relaunching automatically. Target4096
 remains unfinished. Only long wait remains;live discovery state is committed.
+Selected independent task while s4 is confirmed live: admit explicit controlled
+partial M2 artifacts to oracle-lattice diagnostic,with artifact-derived identity,
+frozen callable origin and verified metadata/aggregate evidence. Todo: add pure
+contract helpers and regressions,run bounded metadata tests,commit;after s4 ends,
+run ordinary errors then conditional geometry under serialized native caps.
+V-003/V-014/V-018 require actual architecture/config/weights/frozen imports;
+V-020 uses inspect.unwrap;V-021 preserves original partial/receipt status;
+V-023 raw diagnostic copies stay byte-checked. Visibility/labels/optimizer and
+running controller/training catalogue stay unchanged. Historical geometry scope
+retains old sources;new format2 scope required. Diagnostic label input must remain
+explicit and cannot be described as automatic accuracy or model capacity bound.
 ## Verified controller/recovery milestone
 
 Final16 source-bound controller unit cases PASS1.275s,57,405,440B/192MiB/60s:
