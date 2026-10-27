@@ -1,0 +1,6625 @@
+{
+  "status": "passed",
+  "diagnostic_format_version": 2,
+  "run": "m2-stream-accuracy4096-s4",
+  "run_status": "step_partial",
+  "global_steps": 1664,
+  "target_steps": 4096,
+  "forwards": 27,
+  "job_ceiling_bytes": 671088640,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "7b1e4587437514db77cc58b19463ecbc1c0e23ed6bd9ff19b697b23cee70f4fb",
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "label_inputs_to_model": false,
+  "core_architecture": "TetrisStateNet-M2",
+  "config": {
+    "widths": [
+      48,
+      96,
+      192,
+      256
+    ],
+    "dimension": 192,
+    "heads": 6,
+    "blocks": 6,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576
+  },
+  "component_capacity": 0,
+  "totals": {
+    "training": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "locked_populations": {
+        "empty": {
+          "images": 2,
+          "exact_boards": 0,
+          "known_cells": 400,
+          "true_positive": 0,
+          "true_negative": 391,
+          "false_positive": 9,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 7,
+          "exact_boards": 0,
+          "known_cells": 1400,
+          "true_positive": 86,
+          "true_negative": 1101,
+          "false_positive": 131,
+          "false_negative": 82
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 9,
+          "exact": 0,
+          "unknown_predictions": 0,
+          "type_errors": 9,
+          "column_errors": 6,
+          "row_errors": 5,
+          "rotation_errors": 3
+        },
+        "ghost": {
+          "known": 9,
+          "exact": 8,
+          "unknown_predictions": 0,
+          "type_errors": 1,
+          "column_errors": 0,
+          "row_errors": 0,
+          "rotation_errors": 0
+        }
+      },
+      "geometry": {
+        "supported_images": 9,
+        "mean_cells": 2.897292906887566,
+        "origin_error_cells": 3.5982474124182664,
+        "per_column_basis_error_cells": 0.3435641039263966,
+        "per_row_basis_error_cells": 0.11686987303519371,
+        "worst_point_cells": 7.967872703599021
+      }
+    },
+    "development": {
+      "images": 18,
+      "ancestry_groups": 6,
+      "locked_populations": {
+        "empty": {
+          "images": 4,
+          "exact_boards": 0,
+          "known_cells": 800,
+          "true_positive": 0,
+          "true_negative": 771,
+          "false_positive": 29,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 14,
+          "exact_boards": 0,
+          "known_cells": 2800,
+          "true_positive": 384,
+          "true_negative": 2158,
+          "false_positive": 241,
+          "false_negative": 17
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 18,
+          "exact": 0,
+          "unknown_predictions": 0,
+          "type_errors": 15,
+          "column_errors": 18,
+          "row_errors": 15,
+          "rotation_errors": 9
+        },
+        "ghost": {
+          "known": 18,
+          "exact": 2,
+          "unknown_predictions": 0,
+          "type_errors": 15,
+          "column_errors": 15,
+          "row_errors": 0,
+          "rotation_errors": 13
+        }
+      },
+      "geometry": {
+        "supported_images": 18,
+        "mean_cells": 2.229410834718566,
+        "origin_error_cells": 2.880729732104622,
+        "per_column_basis_error_cells": 0.18646021521712638,
+        "per_row_basis_error_cells": 0.1045806010119764,
+        "worst_point_cells": 7.597255881770554
+      }
+    }
+  },
+  "cases": [
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v0",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9800000190734863,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.7922046184539795,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.8003406524658203,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 196,
+          "false_positive": 4,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.98,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1100011000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4290575540187454
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44288143812217673
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4939468191577386
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4998626720660439
+            }
+          ],
+          "minimum_correct_class_probability": 0.4290575540187454,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.792204815225666,
+          "rms_cells": 2.7935777826298227,
+          "max_cells": 3.060103404207246,
+          "corner_errors_cells": [
+            2.892433047151495,
+            2.790796223241185,
+            3.060103404207246,
+            2.964221225186129
+          ],
+          "origin_error_cells": 2.892433047151495,
+          "per_column_basis_error_cells": 0.010657834623024234,
+          "per_row_basis_error_cells": 0.108503955214277
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v1",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9750000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.7949955463409424,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.918731212615967,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 195,
+          "false_positive": 5,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.975,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011011",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4183804545879326
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.43059316616305066
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4436713316082647
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.47795138274048143
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.499180169812292
+            }
+          ],
+          "minimum_correct_class_probability": 0.4183804545879326,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.794995816412073,
+          "rms_cells": 2.7963455988172075,
+          "max_cells": 3.0601052289385193,
+          "corner_errors_cells": [
+            2.8882523434546767,
+            2.790748048911466,
+            3.0601052289385193,
+            2.9682515198696677
+          ],
+          "origin_error_cells": 2.8882523434546767,
+          "per_column_basis_error_cells": 0.01020300959713259,
+          "per_row_basis_error_cells": 0.1074108740176803
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261026-v2",
+      "group_id": "ancestry-training-20261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9449999928474426,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.796334743499756,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 4.41009521484375,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 188,
+          "false_positive": 11,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.945,
+          "precision": 0.08333333333333333,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            7,
+            3,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0101111111",
+            "0000000111",
+            "0000000000",
+            "0000000001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1050252624323537
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.12020603271219275
+            },
+            {
+              "column": 4,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24083289343774358
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24861111645390493
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2964881294216552
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4576680815243022
+            },
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.46011831941159914
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.46430803750482996
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4705930399642886
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.47175063457403243
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4964448526330638
+            }
+          ],
+          "minimum_correct_class_probability": 0.1050252624323537,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.7963347877092417,
+          "rms_cells": 2.7976804688527372,
+          "max_cells": 3.0615918947136427,
+          "corner_errors_cells": [
+            2.8960047093730514,
+            2.7965426083932363,
+            3.0615918947136427,
+            2.967684655354107
+          ],
+          "origin_error_cells": 2.8960047093730514,
+          "per_column_basis_error_cells": 0.010428984844451232,
+          "per_row_basis_error_cells": 0.1083453751945023
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v0",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8650000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.0819687843322754,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 2.302363872528076,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 172,
+          "false_positive": 26,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.865,
+          "precision": 0.037037037037037035,
+          "recall": 0.5,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            9,
+            4,
+            8,
+            5,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111011111",
+            "1100001110",
+            "1001011111",
+            "0001111010",
+            "0001000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.0048412543547319276
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.12412920695552876
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1615546583785939
+            },
+            {
+              "column": 8,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1833336085313818
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.19101450561102123
+            },
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2311774942659604
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24311280688071724
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27431824262322857
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27603800990439775
+            },
+            {
+              "column": 2,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29667001201638477
+            },
+            {
+              "column": 3,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3087582961740856
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.33198445915594615
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3399749131947458
+            },
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3403282574544894
+            },
+            {
+              "column": 8,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.35125317401834105
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.35220178204788966
+            }
+          ],
+          "minimum_correct_class_probability": 0.0048412543547319276,
+          "typed_cells": 2,
+          "correct_type_head_cells": 1,
+          "correct_joint_occupied_type_cells": 1
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0819688614851057,
+          "rms_cells": 1.2371409505515436,
+          "max_cells": 2.372373079126216,
+          "corner_errors_cells": [
+            1.7250248097028273,
+            2.372373079126216,
+            1.6792420799596108,
+            2.339294208854373
+          ],
+          "origin_error_cells": 1.7250248097028273,
+          "per_column_basis_error_cells": 0.39899244734648104,
+          "per_row_basis_error_cells": 0.03480070388827705
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v1",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.875,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.0821669101715088,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 2.312708616256714,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 174,
+          "false_positive": 24,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.875,
+          "precision": 0.04,
+          "recall": 0.5,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            2,
+            4,
+            3,
+            3,
+            0,
+            8,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100000110",
+            "0001001010",
+            "0001011000",
+            "0001100010",
+            "1000001010",
+            "0000000000",
+            "1101111110",
+            "0001100000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.020480469988057057
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.19552576489798035
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.230547827672035
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.26354409606015144
+            },
+            {
+              "column": 5,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.28093178021287346
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29536705211905595
+            },
+            {
+              "column": 8,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3052334161102508
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3105354030769624
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.347735113854174
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3655199873126468
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3715129820827163
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3752075285371781
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3791766250135468
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4207069665191219
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.42197959658969453
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4250542658182029
+            }
+          ],
+          "minimum_correct_class_probability": 0.020480469988057057,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0821667856634245,
+          "rms_cells": 1.236108679280778,
+          "max_cells": 2.3775760108939616,
+          "corner_errors_cells": [
+            1.7081862954531273,
+            2.3775760108939616,
+            1.6527432928624155,
+            2.338060662110003
+          ],
+          "origin_error_cells": 1.7081862954531273,
+          "per_column_basis_error_cells": 0.3962818835621141,
+          "per_row_basis_error_cells": 0.036128269620758
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261027-v2",
+      "group_id": "ancestry-training-20261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8849999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.0837255716323853,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 2.4900949001312256,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 2,
+          "true_negative": 175,
+          "false_positive": 22,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.885,
+          "precision": 0.08333333333333333,
+          "recall": 0.6666666666666666,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            2,
+            3,
+            3,
+            3,
+            0,
+            7,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100000110",
+            "0000011010",
+            "0001111000",
+            "0001100010",
+            "0001001010",
+            "0000000000",
+            "1101111010",
+            "0001000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.09309364891343054
+            },
+            {
+              "column": 5,
+              "row": 16,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09435983224280038
+            },
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20283011194727849
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.21016146264554242
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2971355254369629
+            },
+            {
+              "column": 8,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3367389310880815
+            },
+            {
+              "column": 5,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.33679220958145795
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3493582374739589
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3643207203578525
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.36508461070146475
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.37833313671641366
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3993580684437753
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.42988134394891964
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4327371909198311
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4332359001617615
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.472843844344632
+            }
+          ],
+          "minimum_correct_class_probability": 0.09309364891343054,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.0837254531878933,
+          "rms_cells": 1.2379472472178727,
+          "max_cells": 2.38151196729727,
+          "corner_errors_cells": [
+            1.7095257361746357,
+            2.38151196729727,
+            1.653801798792865,
+            2.341832914071198
+          ],
+          "origin_error_cells": 1.7095257361746357,
+          "per_column_basis_error_cells": 0.3967835843700018,
+          "per_row_basis_error_cells": 0.036135294453862335
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v0",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7900000214576721,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.80850076675415,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 5.807957649230957,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 28,
+          "true_negative": 130,
+          "false_positive": 17,
+          "false_negative": 25,
+          "known_cells": 200,
+          "positive_cells": 53,
+          "negative_cells": 147,
+          "cell_accuracy": 0.79,
+          "precision": 0.6222222222222222,
+          "recall": 0.5283018867924528,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            3,
+            4,
+            8,
+            4,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0101111100",
+            "1111111110",
+            "1111101000",
+            "1111111110",
+            "1111111111",
+            "0101101001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.012773611183285976
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.059645886510281444
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06979814620524821
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07801750246753444
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08206687164034314
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08840673503781431
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0948882974600302
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1075004577343772
+            },
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.15249304730752292
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.15536512518855702
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.17660459177358254
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.17912656980393618
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1830760552059481
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.19070251691996823
+            },
+            {
+              "column": 5,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.20449385642005305
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2153522335914881
+            }
+          ],
+          "minimum_correct_class_probability": 0.012773611183285976,
+          "typed_cells": 53,
+          "correct_type_head_cells": 11,
+          "correct_joint_occupied_type_cells": 3
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 1,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.8085009151193905,
+          "rms_cells": 4.98504241927021,
+          "max_cells": 7.934145512362333,
+          "corner_errors_cells": [
+            6.186535257885255,
+            7.934145512362333,
+            2.248431184197572,
+            5.452787296819314
+          ],
+          "origin_error_cells": 6.186535257885255,
+          "per_column_basis_error_cells": 0.621957248122137,
+          "per_row_basis_error_cells": 0.20685039152427925
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v1",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7850000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.825930595397949,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 5.832949638366699,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 25,
+          "true_negative": 132,
+          "false_positive": 15,
+          "false_negative": 28,
+          "known_cells": 200,
+          "positive_cells": 53,
+          "negative_cells": 147,
+          "cell_accuracy": 0.785,
+          "precision": 0.625,
+          "recall": 0.4716981132075472,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            4,
+            4,
+            6,
+            4,
+            3,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0101011100",
+            "0101111110",
+            "0101001010",
+            "1111111110",
+            "1111111111",
+            "0101011001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.01403003269385307
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.06856976788419775
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07587309027953376
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07823769610463452
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08126658907257191
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08314355035085988
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09630198832626509
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1016541573620171
+            },
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.14740901672811565
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.16012721032861593
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.18551443648651045
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.19176917753415598
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1950985192160958
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.21434444041485426
+            },
+            {
+              "column": 5,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.2156682108750794
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.233696237679665
+            }
+          ],
+          "minimum_correct_class_probability": 0.01403003269385307,
+          "typed_cells": 53,
+          "correct_type_head_cells": 13,
+          "correct_joint_occupied_type_cells": 5
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 1,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.825930825598112,
+          "rms_cells": 5.003618574417759,
+          "max_cells": 7.967872703599021,
+          "corner_errors_cells": [
+            6.192676282857867,
+            7.967872703599021,
+            2.241907216462826,
+            5.492167499604881
+          ],
+          "origin_error_cells": 6.192676282857867,
+          "per_column_basis_error_cells": 0.6247321423183062,
+          "per_row_basis_error_cells": 0.20726211060193017
+        }
+      }
+    },
+    {
+      "split": "training",
+      "sample_id": "training-20261028-v2",
+      "group_id": "ancestry-training-20261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.7900000214576721,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.809807777404785,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 5.831783294677734,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 28,
+          "true_negative": 130,
+          "false_positive": 16,
+          "false_negative": 26,
+          "known_cells": 200,
+          "positive_cells": 54,
+          "negative_cells": 146,
+          "cell_accuracy": 0.79,
+          "precision": 0.6363636363636364,
+          "recall": 0.5185185185185185,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            4,
+            6,
+            7,
+            2,
+            4,
+            8,
+            4,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0101101100",
+            "1111111110",
+            "1111101000",
+            "1111111110",
+            "1111111111",
+            "0101101001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.01177777053916254
+            },
+            {
+              "column": 7,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0542424632145442
+            },
+            {
+              "column": 6,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.05822118368794726
+            },
+            {
+              "column": 4,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07066881150042945
+            },
+            {
+              "column": 5,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.07393896524998121
+            },
+            {
+              "column": 2,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.08405613944280758
+            },
+            {
+              "column": 3,
+              "row": 2,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09248745095658731
+            },
+            {
+              "column": 3,
+              "row": 14,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.09341974709217407
+            },
+            {
+              "column": 0,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.10661465433482567
+            },
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.14963006778759233
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1528899250135199
+            },
+            {
+              "column": 4,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.15485757872633374
+            },
+            {
+              "column": 5,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1634509015508139
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1756503121124313
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.17756680391735663
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.1821995289373337
+            }
+          ],
+          "minimum_correct_class_probability": 0.01177777053916254,
+          "typed_cells": 54,
+          "correct_type_head_cells": 11,
+          "correct_joint_occupied_type_cells": 4
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 2,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": false,
+            "target_type": 0,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": null,
+            "row_correct": null,
+            "rotation_correct": null
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.809807901587189,
+          "rms_cells": 4.9856917539949,
+          "max_cells": 7.9312645996960525,
+          "corner_errors_cells": [
+            6.185588229711466,
+            7.9312645996960525,
+            2.2566949740456503,
+            5.4530843207060045
+          ],
+          "origin_error_cells": 6.185588229711466,
+          "per_column_basis_error_cells": 0.6220398005539208,
+          "per_row_basis_error_cells": 0.20639188280117687
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v0",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9549999833106995,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.4990859031677246,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.9528212547302246,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 191,
+          "false_positive": 9,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.955,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            9,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1101111111",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27228685325409263
+            },
+            {
+              "column": 4,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.30981608536230254
+            },
+            {
+              "column": 3,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3204617559035771
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3495670496078137
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.356938485670243
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3655944147335691
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.39990478463207085
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.40267967240028446
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.43544564708347855
+            }
+          ],
+          "minimum_correct_class_probability": 0.27228685325409263,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.4990859426269676,
+          "rms_cells": 2.5303473683181403,
+          "max_cells": 3.430564051101043,
+          "corner_errors_cells": [
+            2.9948654070796277,
+            3.430564051101043,
+            1.689621601709029,
+            2.3778923565095123
+          ],
+          "origin_error_cells": 2.9948654070796277,
+          "per_column_basis_error_cells": 0.06928758176514258,
+          "per_row_basis_error_cells": 0.11263992550055409
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v1",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9750000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.509944438934326,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.973672389984131,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 195,
+          "false_positive": 5,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.975,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011010",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000001",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 9,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.22470059637522677
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.38730446286731623
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44085790302195726
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4488373279782271
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4600125149825279
+            }
+          ],
+          "minimum_correct_class_probability": 0.22470059637522677,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.509944540750497,
+          "rms_cells": 2.540953872775014,
+          "max_cells": 3.4419391750643706,
+          "corner_errors_cells": [
+            2.998989449155182,
+            3.4419391750643706,
+            1.699594133687125,
+            2.3961693988452466
+          ],
+          "origin_error_cells": 2.998989449155182,
+          "per_column_basis_error_cells": 0.07010725935066316,
+          "per_row_basis_error_cells": 0.1126617805363204
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261026-v2",
+      "group_id": "ancestry-development-30261026",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9399999976158142,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.50423526763916,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 4.856853485107422,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 188,
+          "false_positive": 11,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.94,
+          "precision": 0.0,
+          "recall": 0.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            9,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111101",
+            "0000000001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24061672833217432
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27078485160304244
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.2803662877934176
+            },
+            {
+              "column": 3,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2939150415819442
+            },
+            {
+              "column": 4,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29946383695287077
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3156037782596299
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3356655678955768
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.34753159582501497
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3568740221780186
+            },
+            {
+              "column": 2,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.36711859619853093
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.39883235347206814
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.48067367979707315
+            }
+          ],
+          "minimum_correct_class_probability": 0.24061672833217432,
+          "typed_cells": 1,
+          "correct_type_head_cells": 1,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.504234980301767,
+          "rms_cells": 2.5359678957946863,
+          "max_cells": 3.4410762461467983,
+          "corner_errors_cells": [
+            3.013907412039259,
+            3.4410762461467983,
+            1.6935818505505342,
+            2.3718320615011366
+          ],
+          "origin_error_cells": 3.013907412039259,
+          "per_column_basis_error_cells": 0.06826929787039096,
+          "per_row_basis_error_cells": 0.1137631650637637
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v0",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8500000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.192018508911133,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 5.55580472946167,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 2,
+          "true_negative": 168,
+          "false_positive": 29,
+          "false_negative": 1,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.85,
+          "precision": 0.06451612903225806,
+          "recall": 0.6666666666666666,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            0,
+            0,
+            6,
+            6,
+            4,
+            7,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000000011",
+            "0000000000",
+            "0000000000",
+            "0111111000",
+            "1111111000",
+            "0011110000",
+            "0111111000",
+            "0101111000",
+            "0100000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 3,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.23603219239975914
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.23719915079824624
+            },
+            {
+              "column": 4,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2580612045484925
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.26490300735145833
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2693095683016341
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2700507051285222
+            },
+            {
+              "column": 5,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2977252970571208
+            },
+            {
+              "column": 1,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29796559121554467
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3317884040493896
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.33233357447927697
+            },
+            {
+              "column": 2,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.35569503338064673
+            },
+            {
+              "column": 5,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.35776755933387727
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.36575302295349393
+            },
+            {
+              "column": 6,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3799313373181977
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.3935101084000386
+            },
+            {
+              "column": 0,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4011847838950744
+            }
+          ],
+          "minimum_correct_class_probability": 0.23603219239975914,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.192018203940676,
+          "rms_cells": 4.452388354325381,
+          "max_cells": 7.58824470198758,
+          "corner_errors_cells": [
+            4.908962185636367,
+            7.58824470198758,
+            0.8708332577285257,
+            5.851657754858948
+          ],
+          "origin_error_cells": 4.908962185636367,
+          "per_column_basis_error_cells": 0.6296046729444761,
+          "per_row_basis_error_cells": 0.20819648790066708
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v1",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.949999988079071,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.199865818023682,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 5.806401252746582,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 189,
+          "false_positive": 8,
+          "false_negative": 2,
+          "known_cells": 200,
+          "positive_cells": 3,
+          "negative_cells": 197,
+          "cell_accuracy": 0.95,
+          "precision": 0.1111111111111111,
+          "recall": 0.3333333333333333,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            0,
+            0,
+            2,
+            1,
+            0,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000011010",
+            "0000000000",
+            "0000000000",
+            "1100000000",
+            "0000000000",
+            "0000000000",
+            "0100000000",
+            "0100000000",
+            "1100000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.22024653763236554
+            },
+            {
+              "column": 1,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2754393971300103
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.4377654918799981
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44934142818348916
+            },
+            {
+              "column": 0,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4517449697632102
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.46522109375085563
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4655953692057317
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.47033816882935914
+            },
+            {
+              "column": 1,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4935267319684843
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4982221213126664
+            }
+          ],
+          "minimum_correct_class_probability": 0.22024653763236554,
+          "typed_cells": 3,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.199865433933373,
+          "rms_cells": 4.458595864726813,
+          "max_cells": 7.590639775121904,
+          "corner_errors_cells": [
+            4.952993856199832,
+            7.590639775121904,
+            0.862713196614584,
+            5.816350927834597
+          ],
+          "origin_error_cells": 4.952993856199832,
+          "per_column_basis_error_cells": 0.6244633253743749,
+          "per_row_basis_error_cells": 0.21044872387575025
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261027-v2",
+      "group_id": "ancestry-development-30261027",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9599999785423279,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 4.202584266662598,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 6.131466865539551,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 191,
+          "false_positive": 5,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 4,
+          "negative_cells": 196,
+          "cell_accuracy": 0.96,
+          "precision": 0.16666666666666666,
+          "recall": 0.25,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0000001010",
+            "0000000000",
+            "0000000000",
+            "0100000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0100000000",
+            "1100000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 14,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.0847219447481844
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.23019249304168765
+            },
+            {
+              "column": 1,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2758663274412458
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.40638175094841955
+            },
+            {
+              "column": 0,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4549495468357391
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.47456168163712403
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4816826358207308
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4888427313727277
+            }
+          ],
+          "minimum_correct_class_probability": 0.0847219447481844,
+          "typed_cells": 4,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 6,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 4.202584457313807,
+          "rms_cells": 4.461833032521637,
+          "max_cells": 7.597255881770554,
+          "corner_errors_cells": [
+            4.950048672511578,
+            7.597255881770554,
+            0.8630874871805808,
+            5.827541083801241
+          ],
+          "origin_error_cells": 4.950048672511578,
+          "per_column_basis_error_cells": 0.625706231211033,
+          "per_row_basis_error_cells": 0.21030969604388333
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v0",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8450000286102295,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.7150611877441406,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 4.069247722625732,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 53,
+          "true_negative": 116,
+          "false_positive": 28,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 56,
+          "negative_cells": 144,
+          "cell_accuracy": 0.845,
+          "precision": 0.654320987654321,
+          "recall": 0.9464285714285714,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            4,
+            5,
+            2,
+            6,
+            2,
+            1,
+            5,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000010000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.16245254243698207
+            },
+            {
+              "column": 9,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.17431196131270535
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.17713509123420693
+            },
+            {
+              "column": 4,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.19836768053157847
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2004525006031317
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20660254741856712
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20952428773467643
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.21233225766758207
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24659785622841673
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.26116893196523977
+            },
+            {
+              "column": 3,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2659052777692556
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2699318875081731
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27006435822495656
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.28233677182549755
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29920421472459685
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.30054333243673925
+            }
+          ],
+          "minimum_correct_class_probability": 0.16245254243698207,
+          "typed_cells": 56,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 7
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": true,
+            "row_correct": true,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.715060800112787,
+          "rms_cells": 2.7257193627445546,
+          "max_cells": 3.251234479536334,
+          "corner_errors_cells": [
+            3.251234479536334,
+            3.0775660162140333,
+            2.501265498426722,
+            2.2709504699243217
+          ],
+          "origin_error_cells": 3.251234479536334,
+          "per_column_basis_error_cells": 0.02362792355444754,
+          "per_row_basis_error_cells": 0.08060261061315394
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v1",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8399999737739563,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.7109856605529785,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 4.061463832855225,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 53,
+          "true_negative": 115,
+          "false_positive": 29,
+          "false_negative": 3,
+          "known_cells": 200,
+          "positive_cells": 56,
+          "negative_cells": 144,
+          "cell_accuracy": 0.84,
+          "precision": 0.6463414634146342,
+          "recall": 0.9464285714285714,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            4,
+            5,
+            2,
+            6,
+            2,
+            1,
+            5,
+            5,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000010001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1709974062191352
+            },
+            {
+              "column": 9,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.17687856275578762
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.18512453308122512
+            },
+            {
+              "column": 4,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2011125020650229
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20814029878825843
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20826029390379056
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2123807894184395
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2125984843191824
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2546446098182675
+            },
+            {
+              "column": 3,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.25986287133195257
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27706883505524577
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2872220019512595
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.2913049517612753
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.29289965092228404
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3084326390819868
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3122502852225752
+            }
+          ],
+          "minimum_correct_class_probability": 0.1709974062191352,
+          "typed_cells": 56,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 7
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": true,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.710985323735169,
+          "rms_cells": 2.7218597197982,
+          "max_cells": 3.254039474567114,
+          "corner_errors_cells": [
+            3.254039474567114,
+            3.073394085687272,
+            2.5000254388867624,
+            2.259890594470766
+          ],
+          "origin_error_cells": 3.254039474567114,
+          "per_column_basis_error_cells": 0.024630952176738885,
+          "per_row_basis_error_cells": 0.08100911215572744
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261028-v2",
+      "group_id": "ancestry-development-30261028",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.8399999737739563,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.716911792755127,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 4.12114953994751,
+        "known_layers": 2,
+        "exact_known_layers": 1
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 53,
+          "true_negative": 115,
+          "false_positive": 28,
+          "false_negative": 4,
+          "known_cells": 200,
+          "positive_cells": 57,
+          "negative_cells": 143,
+          "cell_accuracy": 0.84,
+          "precision": 0.654320987654321,
+          "recall": 0.9298245614035088,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            2,
+            4,
+            5,
+            2,
+            6,
+            2,
+            1,
+            5,
+            4,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000010000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 19,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.004222890354127431
+            },
+            {
+              "column": 8,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.16301747384289447
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.17801833649044096
+            },
+            {
+              "column": 9,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.18045633903622238
+            },
+            {
+              "column": 4,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.19513309745331772
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20042376698214362
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.20643134661439846
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2079235878967155
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2111241182616106
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.24817768613284794
+            },
+            {
+              "column": 7,
+              "row": 8,
+              "target_occupied": true,
+              "predicted_occupied": false,
+              "correct_class_probability": 0.24825963740297158
+            },
+            {
+              "column": 3,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2674626294270286
+            },
+            {
+              "column": 1,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2718511238442822
+            },
+            {
+              "column": 9,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2753385708418064
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2844244737743783
+            },
+            {
+              "column": 5,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2973385954799551
+            }
+          ],
+          "minimum_correct_class_probability": 0.004222890354127431,
+          "typed_cells": 57,
+          "correct_type_head_cells": 8,
+          "correct_joint_occupied_type_cells": 7
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": true,
+            "type_correct": true,
+            "column_correct": true,
+            "row_correct": true,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 2.7169116021787243,
+          "rms_cells": 2.7275922725564046,
+          "max_cells": 3.2538220404248,
+          "corner_errors_cells": [
+            3.2538220404248,
+            3.0799831754090357,
+            2.5028337840566537,
+            2.272248982982249
+          ],
+          "origin_error_cells": 3.2538220404248,
+          "per_column_basis_error_cells": 0.023654702750919163,
+          "per_row_basis_error_cells": 0.08070979253528683
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v0",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9800000190734863,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.925096869468689,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 2.7923026084899902,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 196,
+          "false_positive": 4,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.98,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            3,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1100010000",
+            "0000000000",
+            "0000000000",
+            "0100000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4239606418958625
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.48223320131650066
+            },
+            {
+              "column": 1,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.49262110913720975
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4986529096492555
+            }
+          ],
+          "minimum_correct_class_probability": 0.4239606418958625,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": true
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.9250969942510006,
+          "rms_cells": 1.973452954449654,
+          "max_cells": 2.8293732418335944,
+          "corner_errors_cells": [
+            2.8293732418335944,
+            1.607604060868185,
+            2.52017646372736,
+            0.9645347496286883
+          ],
+          "origin_error_cells": 2.8293732418335944,
+          "per_column_basis_error_cells": 0.1607538064713149,
+          "per_row_basis_error_cells": 0.047710126522658304
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v1",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9449999928474426,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.9220433235168457,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 2.913473129272461,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 0,
+          "true_negative": 189,
+          "false_positive": 11,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 0,
+          "negative_cells": 200,
+          "cell_accuracy": 0.945,
+          "precision": 0.0,
+          "recall": null,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "empty",
+          "row_errors_bottom_first": [
+            6,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011111",
+            "0000000001",
+            "0000000000",
+            "0000000001",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0101100000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 4,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.19442717850889332
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.40039373695121316
+            },
+            {
+              "column": 1,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4029339730257413
+            },
+            {
+              "column": 8,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.409741211710945
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4326064193266648
+            },
+            {
+              "column": 9,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4334816169408174
+            },
+            {
+              "column": 3,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.45721083874355967
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.46162635192763996
+            },
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4772178454274308
+            },
+            {
+              "column": 9,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.49230812175629557
+            },
+            {
+              "column": 7,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.49870056322894435
+            }
+          ],
+          "minimum_correct_class_probability": 0.19442717850889332,
+          "typed_cells": 0,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.9220433525438454,
+          "rms_cells": 1.970453824107438,
+          "max_cells": 2.8243540824754887,
+          "corner_errors_cells": [
+            2.8243540824754887,
+            1.5992603023774095,
+            2.5199060514675606,
+            0.9646678390965238
+          ],
+          "origin_error_cells": 2.8243540824754887,
+          "per_column_basis_error_cells": 0.1602954158169976,
+          "per_row_basis_error_cells": 0.04773972548838587
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261029-v2",
+      "group_id": "ancestry-development-30261029",
+      "density_recipe": "empty",
+      "skin": "no_grid",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.9271358251571655,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.7740888595581055,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 180,
+          "false_positive": 19,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.905,
+          "precision": 0.05,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            0,
+            0,
+            3,
+            3,
+            2,
+            3,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "0100011000",
+            "0000000000",
+            "0000000000",
+            "0000000111",
+            "0000001111",
+            "0000000011",
+            "0000001011",
+            "0000001010",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0101100000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 9,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.12664809881805073
+            },
+            {
+              "column": 9,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1820896046896035
+            },
+            {
+              "column": 4,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.18602725497168124
+            },
+            {
+              "column": 8,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.26379238661255583
+            },
+            {
+              "column": 7,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.34177517337955676
+            },
+            {
+              "column": 6,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.36077240575874664
+            },
+            {
+              "column": 8,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.37347654567813415
+            },
+            {
+              "column": 6,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.39521022485327906
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.40395588679553945
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4159838896809445
+            },
+            {
+              "column": 5,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4242963795864732
+            },
+            {
+              "column": 3,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4362030817148156
+            },
+            {
+              "column": 6,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44152411628364613
+            },
+            {
+              "column": 9,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44992287110248713
+            },
+            {
+              "column": 1,
+              "row": 16,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4557225996343062
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4589924126013752
+            }
+          ],
+          "minimum_correct_class_probability": 0.12664809881805073,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": true,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 4,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.9271359764570541,
+          "rms_cells": 1.975832555174262,
+          "max_cells": 2.8341808115405906,
+          "corner_errors_cells": [
+            2.8341808115405906,
+            1.6061921345914647,
+            2.526397963183637,
+            0.9643438023324649
+          ],
+          "origin_error_cells": 2.8341808115405906,
+          "per_column_basis_error_cells": 0.16101091354673575,
+          "per_row_basis_error_cells": 0.04813637512037794
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v0",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9549999833106995,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 0.833932101726532,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.210723876953125,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 2,
+          "true_negative": 189,
+          "false_positive": 9,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.955,
+          "precision": 0.18181818181818182,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            1,
+            0,
+            1,
+            0,
+            1,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1110000000",
+            "1100000000",
+            "0000000000",
+            "1000000000",
+            "0000000000",
+            "0000100000",
+            "0001100000",
+            "0001100000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.144540201919796
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.22735500129289554
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4094523834275402
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4143044040961116
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.43984558986087674
+            },
+            {
+              "column": 2,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4554953149363905
+            },
+            {
+              "column": 4,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4897421101946138
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.49537850760043767
+            },
+            {
+              "column": 4,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4955583200405824
+            }
+          ],
+          "minimum_correct_class_probability": 0.144540201919796,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 0.8339321658967291,
+          "rms_cells": 0.8986300626417285,
+          "max_cells": 1.629489725820648,
+          "corner_errors_cells": [
+            1.629489725820648,
+            1.5131750780197393,
+            1.1878428977750068,
+            1.0224640824887292
+          ],
+          "origin_error_cells": 1.629489725820648,
+          "per_column_basis_error_cells": 0.21988189563771138,
+          "per_row_basis_error_cells": 0.061665397112530385
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v1",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.925000011920929,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 0.8356996178627014,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.241412401199341,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 2,
+          "true_negative": 183,
+          "false_positive": 15,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 2,
+          "negative_cells": 198,
+          "cell_accuracy": 0.925,
+          "precision": 0.11764705882352941,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            1,
+            0,
+            0,
+            1,
+            2,
+            2,
+            6,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1110000000",
+            "1100000000",
+            "0000000000",
+            "0000000000",
+            "0001000000",
+            "0001100000",
+            "0011100000",
+            "1111110000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.16128656419437373
+            },
+            {
+              "column": 3,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1663729857297738
+            },
+            {
+              "column": 4,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2093981718472675
+            },
+            {
+              "column": 2,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.25325475821633886
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2957969137969835
+            },
+            {
+              "column": 0,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2965558910844461
+            },
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.30495914414914754
+            },
+            {
+              "column": 5,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.31679725752023996
+            },
+            {
+              "column": 1,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3736642634330415
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3816885989701142
+            },
+            {
+              "column": 4,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3994114991662477
+            },
+            {
+              "column": 3,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4154472434330996
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4284706573855186
+            },
+            {
+              "column": 2,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4554394944941387
+            },
+            {
+              "column": 2,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.48920548914858786
+            }
+          ],
+          "minimum_correct_class_probability": 0.16128656419437373,
+          "typed_cells": 2,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 0,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 0.8356996231853535,
+          "rms_cells": 0.9010905253202584,
+          "max_cells": 1.6364685329048156,
+          "corner_errors_cells": [
+            1.6364685329048156,
+            1.5214267519412128,
+            1.1899717311351297,
+            1.0260325644127903
+          ],
+          "origin_error_cells": 1.6364685329048156,
+          "per_column_basis_error_cells": 0.22021493657302443,
+          "per_row_basis_error_cells": 0.06267513149008547
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261030-v2",
+      "group_id": "ancestry-development-30261030",
+      "density_recipe": "sparse",
+      "skin": "clean",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9750000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 0.8265724778175354,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.274402141571045,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 1,
+          "true_negative": 194,
+          "false_positive": 5,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 1,
+          "negative_cells": 199,
+          "cell_accuracy": 0.975,
+          "precision": 0.16666666666666666,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            3,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1110000000",
+            "1100000000",
+            "0000000000",
+            "1000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 1,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.08730745897130014
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.25716383054105435
+            },
+            {
+              "column": 0,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27015421866623734
+            },
+            {
+              "column": 0,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3692120861190384
+            },
+            {
+              "column": 2,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.44076913176039656
+            }
+          ],
+          "minimum_correct_class_probability": 0.08730745897130014,
+          "typed_cells": 1,
+          "correct_type_head_cells": 0,
+          "correct_joint_occupied_type_cells": 0
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": false
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 3,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 0.8265724961635874,
+          "rms_cells": 0.8905946815831097,
+          "max_cells": 1.613575563444743,
+          "corner_errors_cells": [
+            1.613575563444743,
+            1.5009123854240711,
+            1.1794697385264907,
+            1.0199317398106131
+          ],
+          "origin_error_cells": 1.613575563444743,
+          "per_column_basis_error_cells": 0.21881381771194394,
+          "per_row_basis_error_cells": 0.060877334278146455
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v0",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "clean",
+      "view": 0,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9100000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.203476905822754,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.677504062652588,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 72,
+          "true_negative": 110,
+          "false_positive": 18,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 72,
+          "negative_cells": 128,
+          "cell_accuracy": 0.91,
+          "precision": 0.8,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            1,
+            1,
+            3,
+            2,
+            1,
+            1,
+            5,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.08306101943686048
+            },
+            {
+              "column": 8,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.1360985781675476
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2065637621384843
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2407882158579157
+            },
+            {
+              "column": 0,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.28031667163224117
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2998089784130265
+            },
+            {
+              "column": 2,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.30305680617012876
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3064925458481605
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3222747533224547
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3230966240797008
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3377731025681169
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3424475474308221
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3575206424584301
+            },
+            {
+              "column": 8,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3593868283934529
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.37408978894918327
+            },
+            {
+              "column": 8,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4115364391622796
+            }
+          ],
+          "minimum_correct_class_probability": 0.08306101943686048,
+          "typed_cells": 72,
+          "correct_type_head_cells": 3,
+          "correct_joint_occupied_type_cells": 3
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.2034770854811654,
+          "rms_cells": 1.2198513019762878,
+          "max_cells": 1.7435128505001236,
+          "corner_errors_cells": [
+            1.6316974189929236,
+            1.7435128505001236,
+            1.284823514747149,
+            1.4241390580832038
+          ],
+          "origin_error_cells": 1.6316974189929236,
+          "per_column_basis_error_cells": 0.019001724617178094,
+          "per_row_basis_error_cells": 0.11405791002436315
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v1",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 1,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9100000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.202290415763855,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.6927733421325684,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 72,
+          "true_negative": 110,
+          "false_positive": 18,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 72,
+          "negative_cells": 128,
+          "cell_accuracy": 0.91,
+          "precision": 0.8,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            1,
+            1,
+            3,
+            2,
+            1,
+            1,
+            5,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.06658178264796917
+            },
+            {
+              "column": 8,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.13177975762502248
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.21805202173127794
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.26589203756975094
+            },
+            {
+              "column": 0,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2787454731685068
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3152620733090598
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3183886850886074
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.32707812478412035
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3338280758213718
+            },
+            {
+              "column": 2,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.34346644820120587
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3483554186241909
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.37013331359015705
+            },
+            {
+              "column": 8,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3716533613294897
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.37253971366419064
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3817156780045965
+            },
+            {
+              "column": 8,
+              "row": 2,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.4186784853720562
+            }
+          ],
+          "minimum_correct_class_probability": 0.06658178264796917,
+          "typed_cells": 72,
+          "correct_type_head_cells": 2,
+          "correct_joint_occupied_type_cells": 2
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.2022906418294632,
+          "rms_cells": 1.218965931239245,
+          "max_cells": 1.7454343203615048,
+          "corner_errors_cells": [
+            1.637029641928527,
+            1.7454343203615048,
+            1.2864152250762309,
+            1.421808372971237
+          ],
+          "origin_error_cells": 1.637029641928527,
+          "per_column_basis_error_cells": 0.01852753040183498,
+          "per_row_basis_error_cells": 0.11458254061483085
+        }
+      }
+    },
+    {
+      "split": "development",
+      "sample_id": "development-30261031-v2",
+      "group_id": "ancestry-development-30261031",
+      "density_recipe": "dense",
+      "skin": "no_grid",
+      "view": 2,
+      "ordinary_metrics": {
+        "known_cells": 200,
+        "cell_accuracy": 0.9049999713897705,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.2024552822113037,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "loss": 3.7056500911712646,
+        "known_layers": 2,
+        "exact_known_layers": 0
+      },
+      "diagnostics": {
+        "locked": {
+          "true_positive": 71,
+          "true_negative": 110,
+          "false_positive": 19,
+          "false_negative": 0,
+          "known_cells": 200,
+          "positive_cells": 71,
+          "negative_cells": 129,
+          "cell_accuracy": 0.905,
+          "precision": 0.7888888888888889,
+          "recall": 1.0,
+          "exact_supported_cells": false,
+          "exact_board": false,
+          "population": "nonempty",
+          "row_errors_bottom_first": [
+            1,
+            1,
+            3,
+            2,
+            1,
+            1,
+            6,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "row_known_bottom_first": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "predicted_rows_bottom_first": [
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "1111111111",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000",
+            "0000000000"
+          ],
+          "worst_errors": [
+            {
+              "column": 6,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.0656576182774874
+            },
+            {
+              "column": 8,
+              "row": 8,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.13064180383676915
+            },
+            {
+              "column": 1,
+              "row": 0,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2176734264176463
+            },
+            {
+              "column": 3,
+              "row": 4,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.2675984445104468
+            },
+            {
+              "column": 0,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.27939000795338736
+            },
+            {
+              "column": 0,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.32727867821118656
+            },
+            {
+              "column": 6,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3297707552247088
+            },
+            {
+              "column": 8,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.33207979835595064
+            },
+            {
+              "column": 1,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3357929920774057
+            },
+            {
+              "column": 8,
+              "row": 7,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.337088432118632
+            },
+            {
+              "column": 4,
+              "row": 3,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.34912674173243896
+            },
+            {
+              "column": 8,
+              "row": 5,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3718250025085376
+            },
+            {
+              "column": 7,
+              "row": 1,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3741362503862786
+            },
+            {
+              "column": 3,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.38098453547505723
+            },
+            {
+              "column": 4,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.3970553373859624
+            },
+            {
+              "column": 2,
+              "row": 6,
+              "target_occupied": false,
+              "predicted_occupied": true,
+              "correct_class_probability": 0.42048536769551753
+            }
+          ],
+          "minimum_correct_class_probability": 0.0656576182774874,
+          "typed_cells": 71,
+          "correct_type_head_cells": 2,
+          "correct_joint_occupied_type_cells": 2
+        },
+        "visibility": {
+          "false_known": 0,
+          "false_unknown": 0
+        },
+        "layers": {
+          "active": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 4,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": false,
+            "rotation_correct": true
+          },
+          "ghost": {
+            "target_known": true,
+            "target_pose_known": true,
+            "target_type": 7,
+            "predicted_type": 3,
+            "predicted_known": true,
+            "exact": false,
+            "type_correct": false,
+            "column_correct": false,
+            "row_correct": true,
+            "rotation_correct": false
+          }
+        },
+        "registration_correct": true,
+        "geometry": {
+          "supported": true,
+          "mean_cells": 1.2024554042322195,
+          "rms_cells": 1.219160716705215,
+          "max_cells": 1.745885872473736,
+          "corner_errors_cells": [
+            1.6381031817917733,
+            1.745885872473736,
+            1.2870877948112787,
+            1.421735009437134
+          ],
+          "origin_error_cells": 1.6381031817917733,
+          "per_column_basis_error_cells": 0.018431886133347515,
+          "per_row_basis_error_cells": 0.11466498333908968
+        }
+      }
+    }
+  ],
+  "sources": {
+    "scripts/probe_stream_errors.py": "1ee17598ba01e9297e6dd1cc6f8e3b0cca04623e980c6cd41a24186b91ef33d5",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "elapsed_seconds": 15.017358099998091,
+  "scope": "Saved synthetic raw-head error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, decoded complete-state or real accuracy claim. Unknown component targets are excluded. No training/label/production-output changes."
+}

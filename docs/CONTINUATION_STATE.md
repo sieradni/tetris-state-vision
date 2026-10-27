@@ -47,6 +47,19 @@ Logs runs/accuracy1664-error-curation-r1.log/.stderr.log;
 sentinel docs/evidence/m2-stream-accuracy1664-errors-r1/scope.json.
 Expected<96MiB,native pressure/Job guard. Then conditional54-forward job;
 no model Job live at this checkpoint.
+Ordinary1664 curation PASS;new report scopes preserved,probe ledgers byte-identical
+to saved704. All associated native processes gone. NEXT conditional geometry:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024
+--wall-seconds 120 --work-items 54
+--receipt runs/m2-stream-accuracy1664-geometry-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_geometry.py
+--run m2-stream-accuracy4096-s4 --output runs/m2-stream-accuracy1664-geometry-r1
+--allow-partial
+Logs runs/m2-stream-accuracy1664-geometry-r1.log/.stderr.log;
+state runs/m2-stream-accuracy1664-geometry-r1/progress.json,result.json.
+Expected<850MiB;1GiB/120s/54forwards,native pressure/Job guard. No othermodel Job.
+After terminal verify unchanged weights,reproduced automatic metrics and actual
+partial status,then record_stream_geometry under128MiB/30s/work54.
 ## Selected diagnostic task
 
 Ordinary error replay first: scripts/probe_stream_errors.py
