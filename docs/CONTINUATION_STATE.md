@@ -143,3 +143,4 @@ with28 source paths. Receipt runs/curriculum-curation-r1.json,logs same-stem
 .log/.stderr.log; final docs/evidence/curriculum-adapter-contracts/scope.json.
 Original2816 terminal; shared root helpers can now be changed for new frozen
 policy after this sampler-only scope. Do not mislabel these5 as whole integration.
+Sampler curator launcher5152, exact command verified.
