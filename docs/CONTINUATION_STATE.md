@@ -115,3 +115,20 @@ scheduler changes; prior-bug interactions in ALL_CLASS_FIT. Broad appearances/
 crops/occlusion/association,reviewed real labels/splits,scratch/pretrained/decoder
 comparisons,calibration/export/CPU/adapters and >=95% readable-real exact complete
 state release gate remain OPEN. Public API remains needs_review.
+
+While final s3 lives, drafted prospective order-only comparison in
+INTERLEAVED_FIT.md and scripts/m2_interleaved_order.py/tests/test_interleaved_order.py.
+Not integrated/imported by any active trainer/controller/helper. Current neural
+catalogue6147 unchanged. Candidate interleaves all8 labels per8-position round,
+keeps all32 actual pixel/public-state/recipe pairs percycle, pure global cursor,
+fixedorderseed20261027/no processRNG. Conditional on original final failure/error
+inspection; no learning experiment may start yet. Seven finite standalone tests
+next:expected<110MiB,128MiB/30s/work7,receipt runs/interleaved-order-tests-r1.json,
+logs same stem; command .venv/Scripts/python.exe -m unittest discover -s tests
+-p test_interleaved_order.py -v under existing bounded runner. Modest metadata/
+PIL only; does not import Torch or train another model. Persist raw/source scope
+before future integration. Active original s3 continues untouched.
+
+LIVE standalone sampler tests launcher22424;exactstartup runs/interleaved-order-tests-r1-startup.json.
+
+Standalone7 sampler checks GREEN28.595s/native29.540s/41,766,912B under128MiB;all known PIDs/exact commands gone. Source-pinned evidence curator next128MiB/30s/work7,expected<110MiB; plan runs/interleaved-order-curation-r1-plan.json,receipt runs/interleaved-order-curation-r1.json,logs same stem; output docs/evidence/interleaved-order-contracts/scope.json. Not integrated/admitted yet.
