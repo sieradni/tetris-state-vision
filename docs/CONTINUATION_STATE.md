@@ -61,6 +61,16 @@ and all active files stay unchanged. Acceptance: unknown padded values cannot
 change counts,absent distinct from observed,poses only when known,unique group
 exposures distinct from repeated views,exact native recipe/target replay and
 artifact/receipt provenance. Class balance alone cannot explain model failure.
+Target-exposure candidate ready: scripts/target_exposure.py (mask-first pure),
+probe_stream_exposure.py (frozen resize/targets,no model),record_stream_exposure.py
+(independent metadata/aggregate/recipe/source curator). NEXT14 pure checks:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128
+--wall-seconds 30 --work-items 14 --receipt runs/target-exposure-tests-r1.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_target_exposure.py -v
+Logs runs/target-exposure-tests-r1.log/.stderr.log;expected<96MiB,native guards.
+No Torch import;safe modest work beside verified live s5. Actual1691-target audit
+on saved1664 waits for s5 entire process tree to exit;640MiB/120s/work1691,
+expected<550MiB. Native output/receipt paths must be checkpointed before launch.
 ## Verified s4 and ordinary/conditional diagnostics
 
 M2_BASELINE_1664.md explains latest evidence and limits. s4 is verified
