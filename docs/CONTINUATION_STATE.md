@@ -16,13 +16,16 @@ and archived sampler compatibility; derive architecture/config from artifacts.
 Acceptance: adversarial pure diagnostics and replay-policy fixtures under a
 modest native cap, then actual frozen M2/M3 forward replay only after s3 ends.
 No training catalogue/guard/label changes; no decoded-runtime/quality claim.
-Candidate scripts/m3_error_analysis.py + probe_stream_errors.py:15 new adversarial/
+Verified source577c7ec scripts/m3_error_analysis.py + probe_stream_errors.py:15 new adversarial/
 metric-compatibility fixtures +12 existing M2 cases PASS27 in1.745s,246,988,800B
 peak under512MiB/60s, native runs/joint-error-diagnostics-r3.json/log/stderr.
-Verified launcher30812/supervisor32908/child11212 gone. r1 invalid fixture and
-r2 intermediate evidence preserved; V-019/V-020 remain OPEN pending curated
-final-source unit scope. No model forward/update. NEXT record_test_gates source
-scope joint-error-diagnostics,128MiB/30s/work27,expected<64MiB, then commit.
+Verified launcher30812/supervisor32908/child11212 and all matching test commands
+gone. V-019/V-020 CLOSED on final source-bound scope
+docs/evidence/joint-error-diagnostics-full/scope.json,31 explicit source hashes,
+same27 cases as the earlier12-source joint-error-diagnostics/ scope. Do not sum
+them. Red/intermediate gates retained. Metadata curation r2 passed.452s,
+72,228,864B/128MiB/30s; launch31888/supervisor31112/child12044 gone.
+No model forward/update. NEXT actual frozen M2/M3 error replay after s3 ends.
 Actual frozen M2/M3 replay is deferred while s3's heavy model Job is live.
 
 ## Current processes and next action
@@ -45,7 +48,7 @@ launcher31560/root supervisor28556;controller24128/13692;
 child supervisor30464/23160;archived trainer6248/26544.
 Pipeline progress confirms start704,target4096,at most512new, original archived
 trainer from s2/code/scripts/train_m2_stream.py. Startup verified: worker26544
-restored704 and reached896 at581.736s,latest reported bank832; stderr empty. No other heavy
+restored704 and reached962 at726.762s,latest reported bank960; stderr empty. No other heavy
 project Job. Inspect SAME receipts/progress before
 any relaunch; missing summary or a stale running child does not mean success.
 
@@ -61,7 +64,7 @@ Current training sourcef542096 passes68 scoped checks: stream/joint25,
 component23, capture9 plus source/recovery11. Named scopes:
 docs/evidence/joint-stream-contracts/scope.json (57) and
 joint-recovery-contracts/scope.json (11). Historical scope, not whole-suite.
-V-001..V-018 CLOSED on their named runs. V-018 artifact identity repair has4
+V-001..V-020 CLOSED on their named runs. V-018 artifact identity repair has4
 fixtures and an actual M3 native artifact; standing provenance rule in AGENTS.
 Subsequent recovery wrapper/collector changes do not alter training catalogue.
 

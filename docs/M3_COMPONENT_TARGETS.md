@@ -161,3 +161,7 @@ decorated metric's implementation passes its source-origin check and rejects
 the wrong tree; identity inspection unwraps Torch's decorator. Native M2/M3
 saved-model forward replay remains pending while the original M2 study runs.
 No training source catalogue, observation policy or model weights changed.
+Source-pinned evidence: docs/evidence/joint-error-diagnostics-full/scope.json
+on577c7ec,31 explicit source hashes. The earlier joint-error-diagnostics/ scope
+selects only12 report/test/dependency files; both refer to the same27-case run,
+not54 different cases. Raw failing/intermediate gates remain preserved.

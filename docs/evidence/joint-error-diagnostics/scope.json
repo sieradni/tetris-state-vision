@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "source_base_commit": "577c7ec07eef8188a70de177a747c08cd661ea1f",
+  "sources": {
+    "scripts/probe_stream_errors.py": "4a754ca1ce863a941c7cc8580a1a1a2c993a10219d6c039f834523f66e711714",
+    "scripts/m2_error_analysis.py": "beff77e71669150961a04dcb6ff72f0611651209e6ca76bb591f1983d993435d",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/record_stream_run.py": "dfaaf3ce3d738bd6444e30ff727483d70c78ac28fc5b1ef3b1e74a0a53aab06c",
+    "scripts/source_snapshot.py": "bd403bf162cc058e928e84761659705f20418c471b71edc4ef352a415d4e5b6f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/record_test_gates.py": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506",
+    "tests/test_m2_error_analysis.py": "7278e8904619f5f545e1cda5016cf69ee0fd4e72a6b7629a66774a8bd313ca5c",
+    "tests/test_m3_error_analysis.py": "c4f2b713a928030a3ee30ef8201aff53e66266a466d78026f2e0a814bc4e9373",
+    "pyproject.toml": "3c155a7cb09ace64a56f8615d00da4ab92f61da2447813f78449c8f01db9515d",
+    "uv.lock": "22a59ad6030bcec7f4e4838d219c8ef4a039f27d033449ea016d6bbf3f87e2eb"
+  },
+  "gates": [
+    {
+      "stem": "joint-error-diagnostics-r3",
+      "tests": 27,
+      "raw_peak_job_commit_bytes": 246988800
+    }
+  ],
+  "tests_across_scoped_runs": 27,
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

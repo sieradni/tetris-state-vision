@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-020 — OPEN: joint diagnostic would reject a decorated frozen metric
+## V-020 — CLOSED: joint diagnostic would reject a decorated frozen metric
 
 - Symptom: pre-native review found the new component origin check inspected
   component_metrics.__code__, which belongs to Torch's no_grad decorator.
@@ -27,10 +27,12 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Instrument: inspect.unwrap before checking the implementation's resolved
   source path. Actual decorated component metric must pass for its source tree
   and fail for the scripts tree. The source archive is verified separately.
-- Next green gate: runs/joint-error-diagnostics-r3,27 selected cases. No actual
-  native M3 forward replay is claimed until the heavy M2 Job ends.
+- Green gate: docs/evidence/joint-error-diagnostics-full/scope.json on577c7ec,
+  runs/joint-error-diagnostics-r3,27/27 in1.745s,246,988,800B/512MiB. The actual
+  Torch-decorated component metric passes its implementation tree and rejects
+  the wrong tree. No native M3 model forward replay is claimed by this unit gate.
 
-## V-019 — OPEN: component diagnostic fixture swapped queue anchor flags
+## V-019 — CLOSED: component diagnostic fixture swapped queue anchor flags
 
 - Symptom: the first27-case diagnostic gate had26 passes and one fixture error
   before component analysis; Queue rejected a cropped panel with end_observed=True.
@@ -43,9 +45,11 @@ a named green run. An unrun gate leaves the entry OPEN.
   metrics against actual component_tensors/component_metrics on valid states.
 - Failing gate: runs/joint-error-diagnostics-r1.stderr.log,27 cases, one error;
   native512MiB/60s,245,854,208B peak. No model forward/update was attempted.
-- Intermediate green: runs/joint-error-diagnostics-r2,27/27 in1.785s,
-  246,317,056B/512MiB. Updated provenance tripwire now also needs r3 on the final
-  sources; remains OPEN until that named evidence is reviewed and preserved.
+- Green gate: docs/evidence/joint-error-diagnostics-full/scope.json,27/27
+  on577c7ec in1.745s,246,988,800B/512MiB. It executes component tensors/metrics
+  on the corrected cropped queue plus absent, empty and unknown-middle states.
+  Red r1 and intermediate r2 raw receipts/logs are retained beside this scope;
+  only the final r3 contributes the27-case claim.
 
 ## V-018 — CLOSED: new joint scopes would inherit a fixed M2 architecture label
 
