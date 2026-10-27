@@ -48,3 +48,33 @@ unit fixtures alone cannot establish training data quality or model accuracy.
 Fourteen pure accounting/protocol checks pass in.040s,35,467,264B under128MiB/30s:
 `docs/evidence/target-exposure-contracts/scope.json` pins12 source files on
 e454345. Its logical metadata fixtures do not claim actual native target values.
+
+Actual1691-target replay passes in33.834s,361,013,248B under640MiB;independent
+curation passes in.535s,90,492,928B under128MiB. Source/config/weights and original
+step_partial1664/4096 are bound in
+`docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json`. No model forwards
+or updates occurred,and inference weights remained unchanged.
+
+| Supervised layer type | Active updates | Ghost updates |
+|---|---:|---:|
+| Absent |288|618|
+| I |186|138|
+| O |200|146|
+| T |183|144|
+| S |195|168|
+| Z |186|138|
+| J |207|150|
+| L |219|162|
+
+All1664 updates have known layer targets:1376 observed active and1046 observed
+ghost targets across555 ancestry groups. Every observed class received
+supervision;the active head's fixed-development collapse is not explained by a
+missing target class in this prefix. Counts alone do not establish the cause.
+
+All1046 observed training ghosts have bottom-first row10. Active rows are14,15
+or16 (470/456/450 updates). The fixed training probes contain only O/J observed
+active pieces,three absent active targets,and nine absent ghosts. Development
+contains T/S/J/L,with no absence,I,O or Z;its18 views represent six ancestry
+groups. These limits constrain interpretation of both the original probe scores
+and any future comparison. They do not change the original run's recipe or
+qualify the renderer as broadly representative.

@@ -22,18 +22,24 @@ No complete screenshot parser or real-image accuracy is claimed.
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
-   baseline has reached1664 through bank1152+512 verified updates: dev0/18 boards,
-   2/36 layers,geometry2.22941cells. All1664 recipes and27 probes replayed;
-   docs/evidence/m2-stream-accuracy4096-s4/scope.json preserves step_partial1664/4096
+   baseline has reached2176 through bank1664+512 verified updates: dev0/18 boards,
+   0/36 layers,geometry1.85662cells. All2176 recipes and27 probes replayed;
+   docs/evidence/m2-stream-accuracy4096-s5/scope.json preserves step_partial2176/4096
    and native controller/child/curator receipts. The prior host-pressure stop
    logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
-   exactly,excluding time. New inference weights7b1e4587... retain original
+   exactly,excluding time. New inference weights2a4eeeb9... retain original
    catalogue121fd05a; adequate learning remains open. Continue bounded resumable
    training and use saved error reports to track misses,false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
    earlier fixed-fit criterion; a lower loss is not complete-state success.
+   Exact masked-target audit of the investigated1664 prefix confirms all seven
+   observed piece classes were supervised,but training ghosts only occur at
+   row10 and fixed probes omit classes/statuses. TARGET_EXPOSURE.md records
+   counts and limits. A separate optional dense layer-evidence experiment is
+   the next learning lever;retain the original baseline and predeclare new
+   source/config/resource/learning gates before using its results.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
    with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
