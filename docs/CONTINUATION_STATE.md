@@ -9,18 +9,21 @@ Actual p1 PASS13.512s,526,790,656B/1280MiB; step_partial1/3,1new,
 M3/pilot/capacity64/sourceb6bb05f3. Result and curated evidence present; exact
 matching Python commands gone. Recorded12036/8600/26392/23720 no longer live.
 
-LIVE p2 launch29056/controller31820 verified; poll receipt and exact commands. Command: .venv/Scripts/python.exe scripts/run_bounded.py
---memory-mib 1280 --wall-seconds 120 --work-items 2
---receipt runs/m3-stream-controller-recovery-p2-pipeline-job.json --
+Actual p2 PASS11.658s,531,968,000B/1280MiB, complete3/3 with2new from1.
+M3/pilot/cap64/sourceb6bb05f3;result/evidence present. Matching commands gone.
+Recorded launch29056/controller31820 dead. Final weights5a69097af40f0660...
+
+LIVE planned full: .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib 1280 --wall-seconds 120 --work-items 3
+--receipt runs/m3-stream-controller-recovery-full-pipeline-job.json --
 .venv/Scripts/python.exe scripts/run_stream_segment.py
---name m3-stream-controller-recovery-p2 --target-steps 3 --updates 2
+--name m3-stream-controller-recovery-full --target-steps 3 --updates 3
 --admission runs/m3-stream-pilot-profile-r1
---resume-from runs/m3-stream-controller-recovery-p1
-Logs runs/m3-stream-controller-recovery-p2-pipeline.log/.stderr.log;
+Logs runs/m3-stream-controller-recovery-full-pipeline.log/.stderr.log;
 state same-prefix-pipeline/progress.json,result.json;child same-prefix-job.json;
-evidence docs/evidence/m3-stream-controller-recovery-p2/. Expected<750MiB;
-1280MiB parent/120s/work2;640MiB child;native pressure guard. Next verify exact
-launch/terminal/PIDs, then continuous3. No retry or concurrent model job.
+evidence docs/evidence/m3-stream-controller-recovery-full/. Expected<750MiB;
+1280MiB parent/120s/work3;640MiB child;native pressure guard. Next verify terminal
+and exact process death, compare3 against1+2, curate proof and commit. No retry.
 ## Selected task and next action
 
 Controller source b8eb48a, SHA
