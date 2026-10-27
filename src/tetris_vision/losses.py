@@ -9,7 +9,7 @@ TYPE_NAMES = tuple("IOTSZJLG")
 PIECE_NAMES = tuple("IOTSZJL")
 
 
-def targets_for(state, prepared):
+def targets_for(state, prepared, *, component_capacity=0):
     check(state.board is None or (state.board.width == 10 and state.board.height == 20),
           "M2 target capacity is one 10x20 board")
     width, height = prepared.padded_size
@@ -74,11 +74,21 @@ def targets_for(state, prepared):
             column[index], row[index], pose_known[index] = left, bottom, True
             rotations[index] = torch.tensor([normalize(layer.cells) == rotated_shape(layer.piece, rotation)
                                               for rotation in range(4)])
-    return {key: value.unsqueeze(0) for key, value in {
+    result = {key: value.unsqueeze(0) for key, value in {
         "lattice": lattice, "registered": torch.tensor(registered),
         "occupied": occupied, "known": known, "semantic": semantic, "typed": typed,
         "layer_type": layer_type, "layer_known": layer_known, "pose_known": pose_known,
         "column": column, "row": row, "rotations": rotations}.items()}
+    check(type(component_capacity) is int and 0 <= component_capacity <= 64, "bounded optional component target capacity required")
+    if component_capacity:
+        # Source Icon fields have no pixel support geometry. Until a resized
+        # component observer exists, refuse altered/invalid source evidence.
+        check(prepared.source_size == prepared.resized_size and
+              bool(prepared.valid[:, :prepared.resized_size[1], :prepared.resized_size[0]].all()),
+              "M3 component targets require unchanged fully valid source pixels")
+        from .components import component_tensors
+        result["components"] = component_tensors([state], capacity=component_capacity)
+    return result
 
 
 def masked_mean(value, mask):
@@ -127,9 +137,14 @@ def stage_loss(output, target):
     column_error = F.cross_entropy(output["pose_column"].transpose(1, 2), target["column"], reduction="none")
     row_error = F.cross_entropy(output["pose_row"].transpose(1, 2), target["row"], reduction="none")
     pose = masked_mean(rotation_error+column_error+row_error, target["pose_known"])
-    return {"geometry": geometry, "occupancy": occupancy, "semantic": semantic,
+    result = {"geometry": geometry, "occupancy": occupancy, "semantic": semantic,
             "visibility": visibility, "registration": registration, "layers": layers,
             "layer_visibility": layer_visibility, "pose": pose}
+    check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
+    if "components" in output:
+        from .components import component_loss
+        result["components"] = component_loss(output["components"], target["components"])[0]
+    return result
 
 
 def joint_loss(outputs, target):
@@ -137,7 +152,8 @@ def joint_loss(outputs, target):
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1., "semantic": .25, "visibility": .25,
-               "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25}
+               "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
+               "components": .5}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 

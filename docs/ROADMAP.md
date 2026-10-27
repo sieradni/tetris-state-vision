@@ -29,7 +29,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
    earlier fixed-fit criterion; a lower loss is not complete-state success.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
-   The pure labels are verified, but model/loss/runtime integration is open.
+   Optional shared role/index heads and masked losses now pass15 scoped checks,
+   with14 M2 numerical,7 runtime and8 observation-target compatibility checks.
+   Capacity0 preserves M2; capacity1..64 uses explicit M3 checkpoint identity.
+   No M3 learning or resource admission exists yet. Resized/invalid component
+   evidence is refused until its observer is implemented; the API keeps queue/
+   hold unknown. Current M2 training must resume its original archive.
    Preserve unknown middle positions and unobserved queue ends; never infer
    hidden length or delete locked cells using a guessed active/ghost footprint.
 4. Expand synthetic appearances, crops/occlusion, queue arrangements and board
@@ -56,7 +61,7 @@ Verified foundations and their limits:
 | Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
 | Actual pressure interruption recovery | docs/evidence/segment-pressure-recovery/scope.json; m2-stream-accuracy-segment-probe-r2/controller-gate.json | Saved larger step1 restored then resumed one update with explicit partial status and evidence replay; global target3 unfinished |
 | Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |
-| Queue/hold label policy | docs/evidence/m3-component-targets/scope.json;8 fixtures incl paired hidden rasters | No component neural heads/loss/runtime yet |
+| Queue/hold labels and optional joint heads/loss | docs/M3_COMPONENT_TARGETS.md; source-pinned gates in checkpoint | Raw joint numerical/compatibility gates only; resized supervision, M3 training/admission and runtime decoding open |
 | Corpus audit/review/split/seal tooling | docs/evidence/corpus-integrity-final/scope.json;26 adversarial checks | Correct reviewed labels and real-image model results |
 | Unlabeled real stress set | docs/evidence/real-drafts/scope.json;166 images/seven private sheets | Zero training/scoring eligibility; independent review and permission needed |
 

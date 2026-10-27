@@ -8,14 +8,43 @@ a named green run. An unrun gate leaves the entry OPEN.
 
 | Detection class | Entries | Standing instrument |
 |---|---|---|
-| visibility-contract | V-001, V-002, V-005, V-006 (4) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md and test_layout.py |
+| visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014 (2) | Computed hashes/byte comparison; archived trainer execution and source paths |
-| test-instrument | V-004, V-011, V-012 (3) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy and live child tripwire in AGENTS.md |
+| test-instrument | V-004, V-011, V-012, V-017 (4) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; layout.validate_panels before model gates |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-017 — CLOSED: M3 joint-gradient fixture had an undersized canvas
+
+- Symptom: first M3 gate passed14/15; joint-gradient case failed before model
+  invocation with source panel outside canvas (m3-component-tests.stderr.log).
+- Root cause: fixture queue panel ended at195px on a192px-wide canvas.
+- Detection class: test-instrument.
+- Instrument: existing layout.validate_panels refuses unsupported fixtures before
+  rendering/model work; widen fixture to208px, preserve full source resolution.
+- Green gate: runs/m3-component-tests-r2.stderr.log,15/15 in1.774s under512MiB/
+  60s,357,052,416B raw peak. Corrected fixture executes finite joint backward and
+  isolated component-to-encoder gradients. Earlier red established no joint grad.
+
+## V-016 — CLOSED: M3 source component labels lacked prepared-pixel admission
+
+- Symptom: review of the new optional M3 integration found source Icon labels
+  would survive input resizing or invalid alpha without component pixel geometry
+  to establish whether the prepared image still supports their identities.
+- Root cause: reusing a verified source-observation projection after a separate
+  image transform. M2 cell geometry/coverage masking does not cover icons.
+- Detection class: visibility-contract.
+- Instrument: M3 target preparation temporarily refuses resized or invalid source
+  pixels. Pure component labels stay unchanged; no latent identities/counts are
+  guessed. Resize/alpha refusal and paired-hidden-raster tensor fixtures required.
+  A future resized component observer needs its own paired-raster policy gate.
+- Green gate: runs/m3-component-tests-r2.stderr.log,15/15, includes resize/alpha
+  refusal and exact paired-hidden-raster tensor targets under512MiB/60s.
+  This closes the unsafe admission; implementing resized-component observation
+  remains a feature gap. No M3 learning/runtime quality claimed.
 
 ## V-015 — CLOSED: transient receipt replacement denied before child launch
 

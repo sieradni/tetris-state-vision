@@ -83,7 +83,7 @@ def decode_partial(output, prepared, *, model_id):
 
     return VisionState(Board(tuple(board_rows), lattice), layer(0), layer(1),
                        Queue((), "unknown", False, False), Icon("unknown"), "needs_review",
-                       producer="TetrisStateNet-M2-uncalibrated", model_id=model_id)
+                       producer="TetrisStateNet-M3-uncalibrated" if "components" in output else "TetrisStateNet-M2-uncalibrated", model_id=model_id)
 
 
 class ImageParser:

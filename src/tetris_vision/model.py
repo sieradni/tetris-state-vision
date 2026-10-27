@@ -1,7 +1,7 @@
-"""Random-initialized M2 lattice-query model; no detector or palette dependency.
+"""Random-initialized M2/M3 lattice-query model; no detector/palette dependency.
 
 This is the one-board, axis-aligned affine prototype. It deliberately exposes
-raw heads; complete queue/hold decoding and calibrated release parsing are M3+.
+raw heads; optional M3 components are experimental, with no calibrated parsing.
 """
 from dataclasses import dataclass
 import math
@@ -25,6 +25,7 @@ class ModelConfig:
     columns: int = 10
     max_batch: int = 4
     max_pixels: int = 1_048_576
+    component_capacity: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -33,6 +34,8 @@ class ModelConfig:
         check(1 <= self.blocks <= 6 and 0 <= self.refinements <= min(3, self.blocks), "bounded decoder configuration required")
         check(self.visible_rows == 20 and self.spawn_rows == 6 and self.columns == 10, "prototype capacity is one 10x20 board plus six spawn rows")
         check(1 <= self.max_batch <= 4 and 4096 <= self.max_pixels <= 1536**2, "invalid work capacity")
+        check(type(self.component_capacity) is int and 0 <= self.component_capacity <= 64,
+              "component capacity must be0 (M2) or1..64 (M3)")
 
     @classmethod
     def pilot(cls):
@@ -197,6 +200,10 @@ class TetrisStateNet(nn.Module):
         self.pose_rotation = nn.Linear(dimension, 4)
         self.pose_column = nn.Linear(dimension, config.columns)
         self.pose_row = nn.Linear(dimension, config.visible_rows+config.spawn_rows)
+        self.components = None
+        if config.component_capacity:
+            from .components import ComponentDecoder
+            self.components = ComponentDecoder(dimension, config.heads)
 
     def forward(self, pixels, valid):
         check(pixels.ndim == 4 and pixels.shape[1] == 3 and pixels.is_floating_point(), "expected BCHW floating RGB")
@@ -234,4 +241,6 @@ class TetrisStateNet(nn.Module):
                            "layer_type": self.layer_type(layers), "layer_known": self.layer_known(layers).squeeze(-1),
                            "pose_rotation": self.pose_rotation(layers), "pose_column": self.pose_column(layers),
                            "pose_row": self.pose_row(layers), "sample_points": points, "sample_offsets": offsets})
+            if self.components is not None:
+                stages[-1]["components"] = self.components(combined, combined_valid, board, capacity=self.config.component_capacity)
         return {"stages": stages, "final": stages[-1]}

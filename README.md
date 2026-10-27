@@ -84,6 +84,13 @@ development boards all have no locked blocks; nonempty boards remain0/14 and
 active/ghost layers0/36. [Recorded comparison](docs/evidence/m2-stream-accuracy128-r2/analysis.json)
 does not establish convergence or real-image accuracy.
 
+Optional joint queue/hold heads are available with `component_capacity=1..64`;
+zero retains the board-only model. Shared role/index queries and masked losses
+have numerical and compatibility checks, including unknown-slot and hidden-tail
+cases. They are untrained experiments. [M3 scope](docs/M3_COMPONENT_TARGETS.md)
+records the current source-pixel admission limit and remaining training/runtime
+work; the public inspection API still leaves queue and hold unknown.
+
 The inspection API is `ImageParser.from_checkpoint(path).parse_image(image)` in
 `tetris_vision.runtime`. It uses the full image, always returns needs_review (or
 unsupported), and leaves queue/hold unknown until M3. Run the guarded CLI with

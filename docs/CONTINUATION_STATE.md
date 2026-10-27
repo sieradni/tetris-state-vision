@@ -2,15 +2,18 @@
 
 Repo C:/Users/micha/Code/tetris-state-vision; local branch codex/layout-diversity,
 no remote. User's lower-memory reply enabled substantial verified work. Goal
-service last reported BLOCKED (resume is user-controlled); actual work resumed.
+service now reports ACTIVE; full objective remains open.
 Neighboring engine, user apps and run data untouched. Whole goal remains open.
 
-RUNNING: first larger4096-target segment, at most512 new updates. Hidden detached
-root26644/20696, controller31560/21424, training supervisor6232/28724 and actual
-worker8988 (launcher15820), exact command lines verified. Source145b76a; only
-heavy vision job. Startup verified training step10/4096 at61.093s, PID8988 alive,
-no stderr, host commit27.37GB. Inspect paths below before any new launch;
-progress/receipt marked running can be stale, verify process tree.
+TERMINAL: first larger4096-target segment pressure-parked by outer native Job
+at748.552s,125,956,899,328B raw peak/1280MiB; OS commit31,456,382,976B above
+31,368,351,744B stop. All matching Python processes verified absent. Source145b76a,
+catalogue121fd05a...;229 updates logged, recovery192 selected. Child receipt is
+stale running/null because the ancestor killed its whole tree before child final
+publication. Preserve raw child receipt and terminating pipeline receipt together.
+No summary/final weights/result; cannot call this a verified512-step segment.
+NEXT after small M3 gates: resume192 from this ORIGINAL archive in fresh s2 if
+headroom permits. Never start from current changed M3 package or reset history.
 
 Completed finite pilot: runs/m2-stream-learn768-r3, COMPLETE768,458.494s inner,
 459.718s outer, one CPU,640MiB native cap,519,782,400B raw peak. Exact565 prior
@@ -72,7 +75,7 @@ training842,248,192B/1GiB,curator82,022,400B/128MiB. All matching Python process
 verified gone. docs/evidence/m2-stream-accuracy-segment-probe-r2/controller-gate.json
 pins actual controller source89138cd8... and receipts. This is not target3 complete.
 
-ACTIVE first larger long baseline: expected<1100MiB total,<1GiB new disk; latest
+Original first larger long baseline launch: expected<1100MiB total,<1GiB new disk;
 OS commit26.4GB,disk50.33GiB free (>40GiB). Native parent1280MiB/2100s/512updates;
 child1GiB/1860s outer/1800s inner,checkpoint64; serial curator128MiB/120s.
 Hidden detached command from repo root:
@@ -114,3 +117,27 @@ Source-pinned12-case receipt: docs/evidence/m2-error-analysis-contracts/scope.js
 unchanged. Review detailed errors after this segment before altering model math.
 Prior contracts: V-001/002/005/006 unknowns and separate layers; V-003/014 frozen
 sources/weights; V-004 raw resource counters. No architectural change/fix claim.
+
+Selected M3 source milestone while the frozen M2 run continues: optional shared
+role/index component decoder integrated into the image encoder/cell context;
+queue/hold tensor labels and masked losses. Default capacity0 preserves M2 state
+keys/outputs; positive capacity1..64 adds explicit M3 checkpoint identity. Shared
+parameters/chunks at all indices, separate presence/slot status/start/end/EOS and
+hold status/type; no hidden count supervision, no locked-footprint erasure.
+Acceptance: adversarial masks/symmetry/paired hidden rasters, finite joint grads,
+capacity64, M2 default compatibility and M3 tensor-only checkpoint round trip.
+No M3 training or automatic runtime/accuracy claim before fresh admission.
+M3 gate GREEN: runs/m3-component-tests-r2.stderr.log,15/15,1.774s tests/4.938s
+outer,357,052,416B under512MiB/60s. First14/15 fixture error retained (V-017).
+M2 numerical14 GREEN1.756s/431,362,048B under768MiB; runtime7 GREEN.562s
+under512MiB; pure observation targets8 GREEN.018s under128MiB. V-016/017 CLOSED
+on named r2 gate. Current package/source changed; old model admissions are NOT
+current M3 admissions. Read docs/M3_COMPONENT_TARGETS.md for explicit limits.
+Prior bug review: V-001/002/005/006 observation masks + paired-raster instrument;
+V-003/014 source/weight identity and frozen execution; V-007 exact native Job;
+V-011 every new trainable moment needs new warm profile; V-012 pre-import pools;
+V-013 bound tokens/chunks/cache and do not reuse M2 memory admission for M3;
+V-015 existing atomic persistence unchanged. V-004 raw counters retained.
+M3 package edits change current catalogue; active M2 and future4096 resumes MUST
+execute original verified archive121fd05a..., not current changed package.
+Memory~30.6GB committed: do source work first; no second heavy model process.

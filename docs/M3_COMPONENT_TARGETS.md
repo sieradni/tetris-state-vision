@@ -1,8 +1,7 @@
 # Queue/hold target contract
 
 `component_targets.py` is a pure projection of validated schema 1.1 observation
-fields for a future joint decoder. No component head, loss or runtime decoding
-is wired yet. Eight fixtures passed in .013 s under a 128 MiB /45 s Job,
+fields for the optional joint decoder. Eight original fixtures passed in .013 s under a 128 MiB /45 s Job,
 including paired identical-raster queue/hold uncertainty. Named logs and source
 hashes: docs/evidence/m3-component-targets/scope.json. This proves the target
 contract, not complete M3 modeling or accuracy.
@@ -38,7 +37,35 @@ V-006 visibility instrument. Other fixtures cover unknown middle slots, missing
 starts/tails, absence versus visible-empty, all hold statuses, capacity64 and
 model-output refusal.
 
-Next: add bounded shared role/index queries and joint losses,
-preserving legacy checkpoint behavior and keeping all inference review-only
-until quality/calibration gates run. Model architecture work should follow the
-verified target contract and retain its paired-raster uncertainty fixtures.
+`components.py` now supplies optional shared role/index queries and masked joint
+losses. `ModelConfig.component_capacity=0` retains M2;1..64 adds M3 components
+at every board decoder stage. Each index uses the same classifier/attention
+parameters, with a fixed sinusoidal index code and chunks of at most16 queries.
+The capacity includes64 item slots plus one extra EOS position. Queue role and
+hold role attend the board/cell/spatial context; component gradients reach the
+shared image encoder. Parameter sharing permits additional indices, but does
+not establish queue-length extrapolation accuracy.
+
+Queue heads predict token, slot presence, slot status, panel status and observed
+start/end independently. Hold has separate status/type heads. Semantic losses
+mask unknown identities; presence does not disappear when identity is unknown.
+No count loss uses an unseen endpoint. Loss coefficients are untuned hypotheses.
+
+The initial15-case native gate passes,357,052,416B raw peak under512MiB/60s,
+1.774s tests/4.938s outer. It checks hidden-label gradients, capacity64, paired
+hidden rasters, board-weight compatibility, finite joint/encoder gradients and
+legacy/M3 checkpoint round trips. M3 has explicit checkpoint architecture
+identity. This is numerical/contract evidence, not trained component accuracy.
+Current committed-source evidence and any pending gates are in CONTINUATION_STATE.md.
+
+V-016 input admission: source Icon fields do not contain support geometry for
+model resizing/invalid alpha. M3 `targets_for` therefore temporarily requires
+unchanged, fully valid source pixels (padding is allowed). It refuses altered
+evidence instead of guessing which identities survived. A resized component
+observer and its paired-raster gate remain OPEN before broad M3 training.
+
+The public inspection API remains needs_review; it identifies M3 artifacts but
+leaves queue/hold unknown. M3 training, warm optimizer/resource admission,
+resized-component supervision and reviewed runtime decoding are still OPEN.
+No M2 admission covers the changed package or new heads. The running4096-target
+M2 study must continue from its original archive and optimizer history.
