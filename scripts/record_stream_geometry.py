@@ -8,7 +8,7 @@ import shutil
 
 from probe_model import require_bounded_job
 from source_snapshot import verify_source
-from geometry_contract import REPORT_SOURCES, input_contract, summarize
+from geometry_contract import DENSE_METRICS, REPORT_SOURCES, input_contract, summarize
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -45,7 +45,8 @@ def validate_report(result, job, summary, source_job, manifest, recipes, *, name
             result["model_kind"] != summary["model_kind"] or result["job_ceiling_bytes"] != job["memory_bytes"] or
             result["source_catalogue_sha256"] != summary["catalogue_sha256"]):
         raise ValueError("geometry checkpoint/partial-status identity differs")
-    totals = summarize(result["cases"])
+    layer_evidence = manifest["config"].get("layer_evidence", False)
+    totals = summarize(result["cases"], layer_evidence=layer_evidence)
     for split, field in (("training", "final_training_probe"), ("development", "development")):
         expected = {row["sample_id"]: row for row in summary[field]["cases"]}
         labels = {row["sample_id"]: row for row in recipes[split]}
@@ -61,6 +62,9 @@ def validate_report(result, job, summary, source_job, manifest, recipes, *, name
                 raise ValueError("ordinary artifact metrics differ")
             if row["automatic"]["known_layers"] != row["oracle_geometry"]["known_layers"]:
                 raise ValueError("oracle target population changed")
+            if layer_evidence and any(row["automatic"][key] != row["oracle_geometry"][key]
+                                      for key in (DENSE_METRICS[0], DENSE_METRICS[2])):
+                raise ValueError("oracle dense target population changed")
     if result["totals"] != totals:
         raise ValueError("geometry aggregate differs")
     return architecture
@@ -115,6 +119,7 @@ def main():
     scope = {"status": "passed", "input_source_archive": str(source/"code"),
              "run_status": summary["status"], "global_steps": summary["steps"], "target_steps": summary["requested_steps"],
              "core_architecture": architecture, "component_capacity": 0, "diagnostic_sources": result["sources"],
+             "layer_evidence": manifest["config"].get("layer_evidence", False),
              "source_catalogue_sha256": result["source_catalogue_sha256"], "weights_sha256": result["weights_sha256"],
              "artifact_sha256": hashes, "curator_sha256": digest(Path(__file__)),
              "scope": "54-forward conditional oracle-geometry diagnostic; ordinary metrics reproduced and weights unchanged. Labels enter oracle forward; not automatic accuracy, an upper bound or deployed correction."}

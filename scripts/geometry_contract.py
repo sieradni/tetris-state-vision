@@ -5,6 +5,8 @@ from record_stream_run import checkpoint_architecture, validate_completion
 
 REPORT_SOURCES = tuple("scripts/"+name for name in
     ("probe_stream_geometry.py", "geometry_contract.py", "record_stream_run.py", "source_snapshot.py", "probe_model.py"))
+DENSE_METRICS = ("dense_layer_grids_known", "dense_layer_grids_exact",
+                 "dense_observed_visible_grids_known", "dense_observed_visible_grids_exact")
 
 
 def input_contract(summary, job, manifest, *, allow_partial=False):
@@ -16,7 +18,9 @@ def input_contract(summary, job, manifest, *, allow_partial=False):
     return architecture
 
 
-def summarize(records):
+def summarize(records, *, layer_evidence=False):
+    if type(layer_evidence) is not bool:
+        raise ValueError("explicit layer-evidence dialect required")
     if type(records) is not list or len(records) != 27:
         raise ValueError("exact27-case conditional diagnostic required")
     if (any(row["split"] not in {"training", "development"} or type(row["sample_id"]) is not str or
@@ -32,7 +36,10 @@ def summarize(records):
         for mode in ("automatic", "oracle_geometry"):
             for row in cases:
                 metric = row[mode]
-                if (set(metric) != {"known_cells", "cell_accuracy", "exact_locked_board", "note", "exact_known_layers", "known_layers"} or
+                fields = {"known_cells", "cell_accuracy", "exact_locked_board", "note", "exact_known_layers", "known_layers"}
+                if layer_evidence:
+                    fields.update(DENSE_METRICS)
+                if (set(metric) != fields or
                         type(metric["known_cells"]) is not int or metric["known_cells"] != 200 or
                         type(metric["cell_accuracy"]) not in (int, float) or not math.isfinite(metric["cell_accuracy"]) or
                         not 0 <= metric["cell_accuracy"] <= 1 or type(metric["exact_locked_board"]) is not bool or
@@ -40,8 +47,16 @@ def summarize(records):
                         type(metric["known_layers"]) is not int or not 0 <= metric["known_layers"] <= 2 or
                         type(metric["exact_known_layers"]) is not int or not 0 <= metric["exact_known_layers"] <= metric["known_layers"]):
                     raise ValueError("finite supported diagnostic metrics required; oracle geometry error is excluded")
+                if layer_evidence:
+                    known, exact, observed, observed_exact = (metric[key] for key in DENSE_METRICS)
+                    if (any(type(metric[key]) is not int or not 0 <= metric[key] <= 2 for key in DENSE_METRICS) or
+                            not 0 <= observed <= known <= metric["known_layers"] or not 0 <= observed_exact <= min(observed, exact) or
+                            exact > known or exact-observed_exact > known-observed):
+                        raise ValueError("dense visible-grid counts or denominators differ")
             totals[split][mode] = {"exact_locked_boards": sum(row[mode]["exact_locked_board"] for row in cases),
                                    "cell_accuracy": sum(row[mode]["cell_accuracy"] for row in cases)/count,
                                    "exact_known_layers": sum(row[mode]["exact_known_layers"] for row in cases),
                                    "known_layers": sum(row[mode]["known_layers"] for row in cases)}
+            if layer_evidence:
+                totals[split][mode].update({key: sum(row[mode][key] for row in cases) for key in DENSE_METRICS})
     return totals

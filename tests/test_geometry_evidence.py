@@ -7,7 +7,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"scripts"))
-from geometry_contract import input_contract, summarize
+from geometry_contract import DENSE_METRICS, input_contract, summarize
 from record_stream_geometry import validate_report
 
 NAME = "m2-stream-geometry-fixture"
@@ -32,6 +32,32 @@ def fixture():
 
 
 class GeometryEvidenceTests(unittest.TestCase):
+    def test_dense_dialect_preserves_explicit_observed_and_absent_denominators(self):
+        values = fixture()
+        report, _, summary, _, manifest, _ = values
+        for population in (summary, manifest):
+            population["config"]["layer_evidence"] = True
+        for row in report["cases"]:
+            for mode in ("automatic", "oracle_geometry"):
+                row[mode].update(dict(zip(DENSE_METRICS, (2, 0, 1, 0))))
+            field = "final_training_probe" if row["split"] == "training" else "development"
+            saved = next(case for case in summary[field]["cases"] if case["sample_id"] == row["sample_id"])
+            saved.update(dict(zip(DENSE_METRICS, (2, 0, 1, 0))))
+        report["totals"] = summarize(report["cases"], layer_evidence=True)
+        self.assertEqual(validate_report(*values, name=NAME), "TetrisStateNet-M2")
+        self.assertEqual(report["totals"]["development"]["automatic"]["dense_observed_visible_grids_known"], 18)
+        with self.assertRaises(ValueError):
+            summarize(report["cases"])
+
+    def test_dense_counts_cannot_hide_missing_observed_or_overcount_exact_grids(self):
+        records = fixture()[0]["cases"]
+        for row in records:
+            for mode in ("automatic", "oracle_geometry"):
+                row[mode].update(dict(zip(DENSE_METRICS, (2, 0, 1, 0))))
+        records[0]["automatic"]["dense_layer_grids_exact"] = 2
+        with self.assertRaisesRegex(ValueError, "dense"):
+            summarize(records, layer_evidence=True)
+
     def test_native_completed_metadata_and_negative_oracle_effect_are_valid(self):
         values = fixture()
         before = copy.deepcopy(values)

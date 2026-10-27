@@ -103,6 +103,19 @@ Each detached .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640
 .venv/Scripts/python.exe -m unittest discover -s tests -p PATTERN -v
 Logs runs/STEM.log/.stderr.log;expected<600MiB,native guards. Serialize,verify
 terminal receipt/PIDs before next launch;no code edits during these gates.
+All60 selected model checks GREEN:15new+14legacyModel+15components+7runtime+9capture.
+Native compatibility runs layer-legacy-model-r1(2.973s,445,009,920B),
+layer-component-compat-r1(3.052s,356,990,976B),layer-runtime-compat-r1(2.543s,
+272,490,496B),layer-capture-compat-r1(2.119s,253,419,520B);all640MiB/60s,
+all recorded PIDs verified gone. No trained-candidate/whole-suite claim.
+NEXT core-source curator exact array runs/layer-core-curation-r1-command.json,
+128MiB/30s/work60,expected<96MiB,native guards. Source52ff808,32 selected files
+including portable byte-exact legacy reference. Logs runs/layer-core-curation-r1
+.log/.stderr.log;receipt same-prefix.json;sentinel
+ docs/evidence/layer-evidence-core-contracts/scope.json. Preserve failed model r1.
+Geometry's strict report contract now also supports explicit optional dense-grid
+counts/observed denominators (12 metadata cases pending),so new True artifacts
+can use diagnostic replay. Other metadata/controller tests remain pending.
 ## Exact target exposure audit — evidence now green
 
 TARGET_EXPOSURE.md and docs/evidence/m2-stream-accuracy1664-exposure-r1/scope.json.

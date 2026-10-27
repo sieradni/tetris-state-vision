@@ -129,7 +129,7 @@ def main():
                 (args.output/"progress.json").write_text(json.dumps({"forwards": forwards, "sample_id": recipe["sample_id"]})+"\n")
     if forwards > 54 or not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()) or model_module.decode_lattice is not original_decode:
         raise ValueError("geometry intervention mutated weights/decoder or exceeded budget")
-    totals = summarize(records)
+    totals = summarize(records, layer_evidence=manifest["config"].get("layer_evidence", False))
     if sources != {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in REPORT_SOURCES}:
         raise ValueError("geometry diagnostic sources changed during execution")
     result = {"status": "passed", "forwards": forwards, "source_catalogue_sha256": summary["catalogue_sha256"],
