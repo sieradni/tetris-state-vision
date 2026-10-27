@@ -144,3 +144,4 @@ ancestor420s deadline, native pressure/CPU1 guards; curator128MiB/120s.
 Then matching false study with same command, replace layer-evidence768 by
 layer-control768 and admission by runs/m2-stream-layer-control-profile-r1.
 Design/limits/comparison denominators predeclared in LAYER_EVIDENCE_EXPERIMENT.md.
+LIVE true-learning launcher24808, exact command verified. Freeze controller and imported helpers during segment; no other model Job.
