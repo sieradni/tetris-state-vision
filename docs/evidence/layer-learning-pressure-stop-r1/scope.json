@@ -1,0 +1,52 @@
+{
+  "peak_job_commit_bytes": 554323968,
+  "training_snapshot_manifest_sha256": "6c1511b1e400c4844859cf3635e58d992630abe4dae19ca86285efeb3959083c",
+  "status": "pressure_stopped",
+  "logged_step": 541,
+  "artifact_sha256": {
+    "child.log": "dd288ddc16615d0321189e2622cc50beb59c4d03e7a2ff1b29110e3c04f26ebd",
+    "snapshot-manifest.json": "6c1511b1e400c4844859cf3635e58d992630abe4dae19ca86285efeb3959083c",
+    "latest-training.json": "bd6947233857da4c0d1111fb5a953342dcc9f52192c9fa8a4b779e96c7cb514d",
+    "evaluations.jsonl": "d21cf18f34aaff10c406d75a3593d0bbc4e75d220f1f5fddc72ceec2502c830b",
+    "ancestor.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "child.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curve.jsonl": "5067662551778a8fc076b6bd9353167b52e83cd4011621070e03ba54403de287",
+    "ancestor.log": "8c9db2b69313fb10b3e855241e76bde6a234aba11d375e3bc6368cd82a7c7006",
+    "training.jsonl": "f21557f235f091edc208a133e13f4d133c16d44e2b52a5377689d611652f85e6",
+    "child-stale-job.json": "6009a457f90d477aa278dcccacf37e56832bae6c3dcf5d856e4fed90f79d2f86",
+    "progress.json": "26d35c242693ecb1563ae3f3e9d4fd87d2d7cfb846bfa2066276d290d703948c",
+    "ancestor-job.json": "b07473c773996e267d4a0b58fdb057cedff3bfd56e26559c6bbd127878159de0",
+    "source-manifest.json": "eb093fed3e2b97675b165d6e148d024134b761037d370c508e583f40a83d1254"
+  },
+  "elapsed_seconds": 106.503,
+  "ancestor_native_exit": 125,
+  "verified_dead_pids": [
+    20076,
+    32176,
+    20444,
+    29368,
+    22800,
+    21656,
+    22424
+  ],
+  "scope": "Native host-pressure stop, not saved inference/complete segment. Banked512 hash identity only; actual restore and recomputed29-update equality pending.",
+  "ancestor_native_status": "memory_pressure",
+  "child_receipt_stale_after_ancestor_stop": false,
+  "last_system_memory": {
+    "commit_bytes": 31445913600,
+    "commit_limit_bytes": 51769446400,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 12324294656,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "unbanked_logged_updates": 29,
+  "banked_step": 512,
+  "stop_guard": {
+    "reason": "os_commit_pressure",
+    "stop_commit_bytes": 31368351744,
+    "minimum_available_physical_bytes": 2147483648,
+    "reserved_job_bytes": 0
+  },
+  "training_snapshot_payload_sha256": "715fc59c913b1f97dda2c56ad9085d5be06894322b4652cd043c2b8e9d04b672",
+  "requested_steps": 768
+}

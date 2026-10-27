@@ -174,3 +174,14 @@ and result.json, child same-prefix-job.json; expected step_partial640/768.
 Native guards/source/recipe freeze unchanged. After terminal capture exact receipts
 with runs/capture_layer_segment.ps1 -Name NAME -Launcher PID; verify death before next Job.
 LIVE true s2 launcher20076, exact command verified.
+PRESSURE STOP s2, not a verified640 segment. Parent native125/memory_pressure,
+106.503s/554,323,968B aggregate. Logged541,banked512,29unbanked. Entire exact
+command tree/PIDs gone. docs/evidence/layer-learning-pressure-stop-r1 preserves
+ancestor terminal receipt, stale child receipt, progress, complete data/loss prefixes
+and snapshot manifests/hashes. No inference summary; do not call completed.
+Next actual restore/recompute29 under a fresh cap when admitted; resume from
+runs/m2-stream-layer-evidence768-s2 uses bank512, keeps global768. New s3 would
+need256 updates to finish. Never rerun s2 output or use logged541 as cursor.
+False remains verified128/768. Final768 matched comparison/generalization pending.
+Draft diagnostic sources runs/probe_layer_generalization.py and
+runs/capture_layer_segment.ps1; first predeclared groups100..163 not evaluated yet.
