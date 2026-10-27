@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "banked_step": 512,
+  "logged_steps": 541,
+  "recomputed_updates": 29,
+  "all_prefix_rows_compared": 541,
+  "source_catalogue_sha256": "f095d3526162e5bbee45e0800c017296d05d45ec78cd76f4583642c2c5b7ce47",
+  "parent_pointer": {
+    "format": "tetris-vision-training-snapshot",
+    "generation": "step-000512-5cc47c6f44e84543836f10e078940582",
+    "manifest_sha256": "6c1511b1e400c4844859cf3635e58d992630abe4dae19ca86285efeb3959083c",
+    "version": 1
+  },
+  "exact_recipe_bytes": true,
+  "exact_loss_terms_gradients_samples_excluding_elapsed": true,
+  "artifact_sha256": {
+    "old-training.jsonl": "f21557f235f091edc208a133e13f4d133c16d44e2b52a5377689d611652f85e6",
+    "new-training.jsonl": "f21557f235f091edc208a133e13f4d133c16d44e2b52a5377689d611652f85e6",
+    "old-curve.jsonl": "5067662551778a8fc076b6bd9353167b52e83cd4011621070e03ba54403de287",
+    "new-curve.jsonl": "1b99500664f76fdc94159a3f373356992018a6a6640fa8e64366988d68a90bb4"
+  },
+  "script_sha256": "047c19361dc6db01e4c80e526fc10c42d3c3e1934deb444e7446adb8dc52cd45",
+  "scope": "Exact recovery/recomputed trajectory only. No old541 tensor artifact exists for equality;541 was not a saved checkpoint."
+}

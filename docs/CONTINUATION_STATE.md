@@ -121,3 +121,9 @@ Logs runs/layer-pressure-prefix-r1.log/.stderr.log; final
  docs/evidence/layer-learning541-recomputed-r1/scope.json. Four541-row finite inputs.
 May coexist with the one640MiB training child; no second heavy workload.
 Prefix audit launcher19788, exact command verified.
+Pressure-prefix gate PASS.308s/42,455,040B under128MiB; native receipt/log copies
+byte-exact, all3 PIDs gone. ALL541 data recipes and sample/loss/term/gradient rows
+match excluding elapsed time, including29 recomputed updates513..541. Evidence
+layer-learning541-recomputed-r1/; no old541 tensor comparison claimed.
+Broader diagnostic source review now adds full recipe/seed/config/frozen-model
+origin checks and independent ordinary/dense metric recomputation; still UNRUN.

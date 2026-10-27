@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -47,14 +48,19 @@ def main():
         summary = read(run / "summary.json")
         validate_completion(summary, read(ROOT / "runs" / (name + "-job.json")))
         if (summary["steps"] != 768 or summary["config"]["layer_evidence"] is not enabled or
-                summary["config"]["component_capacity"] != 0):
+                summary["config"]["component_capacity"] != 0 or summary["model_kind"] != "pilot" or
+                summary["recovery_contract"]["seed"] != 20261026):
             raise ValueError("complete768 pilot with actual option required")
         verify_source(run / "code", summary["catalogue_sha256"])
         summaries[label], runs[label] = summary, run
     configs = [dict(summaries[label]["config"]) for label in ("control", "candidate")]
     for config in configs:
         config.pop("layer_evidence")
+    contracts = [json.loads(json.dumps(summaries[label]["recovery_contract"])) for label in ("control", "candidate")]
+    for contract in contracts:
+        contract["config"].pop("layer_evidence")
     if (configs[0] != configs[1] or summaries["control"]["catalogue_sha256"] != summaries["candidate"]["catalogue_sha256"] or
+            contracts[0] != contracts[1] or
             (runs["control"] / "training.jsonl").read_bytes() != (runs["candidate"] / "training.jsonl").read_bytes()):
         raise ValueError("matched frozen models/data required")
     code = runs["control"] / "code"
@@ -73,6 +79,7 @@ def main():
     models, weights, identities = {}, {}, {}
     for label, run in runs.items():
         model, manifest = load_checkpoint(run / "checkpoint")
+        require_frozen_callables(code, type(model).__init__)
         checkpoint_architecture(summaries[label], manifest)
         if sha(run / "checkpoint/weights.pt") != summaries[label]["checkpoint_sha256"]:
             raise ValueError("actual weights differ")
@@ -96,13 +103,28 @@ def main():
                     prediction, truth = pack(output["final"], target)
                     diagnostic = analyze_case(prediction, truth)
                     metrics = diagnostic_metrics(output, target)
-                    if metrics["exact_locked_board"] != diagnostic["locked"]["exact_board"]:
-                        raise ValueError("independent board metric disagreement")
+                    if (metrics["exact_locked_board"] != diagnostic["locked"]["exact_board"] or
+                            not math.isclose(metrics["cell_accuracy"], diagnostic["locked"]["cell_accuracy"], abs_tol=1e-6) or
+                            not math.isclose(metrics["mean_geometry_error_cells"], diagnostic["geometry"]["mean_cells"], rel_tol=1e-5, abs_tol=1e-5)):
+                        raise ValueError("independent ordinary metric disagreement")
                     row = {"sample_id": case.record["sample_id"], "group_id": case.record["group_id"],
                            "prediction": prediction, "target": truth, "metrics": metrics, "diagnostics": diagnostic}
                     if label == "candidate":
                         row["dense_prediction"] = output["final"]["layer_cells"][0].tolist()
                         row["dense_target"] = {key: value[0].tolist() for key, value in target["layer_cells"].items()}
+                        counts = Counter({key: 0 for key in ("dense_layer_grids_known", "dense_layer_grids_exact",
+                                          "dense_observed_visible_grids_known", "dense_observed_visible_grids_exact")})
+                        for i in range(2):
+                            if all(all(line) for line in row["dense_target"]["known"][i]):
+                                exact = all((row["dense_prediction"][i][r][c] > 0) == bool(row["dense_target"]["occupied"][i][r][c])
+                                            for r in range(20) for c in range(10))
+                                counts["dense_layer_grids_known"] += 1
+                                counts["dense_layer_grids_exact"] += int(exact)
+                                if truth["layers"][i]["type"] > 0:
+                                    counts["dense_observed_visible_grids_known"] += 1
+                                    counts["dense_observed_visible_grids_exact"] += int(exact)
+                        if any(metrics[key] != value for key, value in counts.items()):
+                            raise ValueError("independent dense metric disagreement")
                     records[label].append(row)
             if (group - 99) % 16 == 0:
                 progress = {"groups": group - 99, "images_per_model": len(recipes), "forwards": 2 * len(recipes)}
@@ -137,6 +159,9 @@ def main():
                     pose_rows[str(row["target"]["layers"][index]["row"])] += 1
             totals["roles_by_target_class"][role] = classes
             totals["pose_rows_by_role"][role] = pose_rows
+        totals["missing_observed_piece_classes_by_role"] = {
+            role: ["IOTSZJL"[i-1] for i in range(1, 8) if str(i) not in totals["roles_by_target_class"][role]]
+            for role in ("active", "ghost")}
         for key in rows[0]["metrics"]:
             if key.startswith("dense_"):
                 totals[key] = sum(row["metrics"][key] for row in rows)
