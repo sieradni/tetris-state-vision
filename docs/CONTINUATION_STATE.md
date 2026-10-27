@@ -58,29 +58,27 @@ docs/evidence/segment-pressure-recovery/scope.json. Generation:
 step-000001-df559785b6354034af8e1d2ed89f76f0; tensors:
 c60115c5dea3aca0cbc730a4ab2f74a63f56fb2521199242a4a64a208d6b0122.
 
-NEXT fresh resume trial (only when baseline plus1.25GiB fits OS guard; latest
-baseline~28.3GB). Expected<1100MiB; parent1280MiB/120s/one update, serial training
-1024MiB and curation128MiB. Hidden detached command from repo root:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
---wall-seconds 120 --work-items 1
---receipt runs/m2-stream-accuracy-segment-probe-r2-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m2-stream-accuracy-segment-probe-r2 --target-steps 3 --updates 1
---admission runs/m2-stream-accuracy-probe
---resume-from runs/m2-stream-accuracy-segment-probe
-Logs runs/m2-stream-accuracy-segment-probe-r2-pipeline.log/.stderr.log;
-pipeline/progress.json/result.json. Verify exact supervisor/worker PID/tree,
-global2/new1, explicit step_partial and curated parent exit125, then tree death.
-Native refusal/pressure stop is not a complete segment.
-LAUNCHED resume trial: root27516/25860 and controller20136/7012 exact command
-lines verified. Source8f6c1e8; inspect these logs/receipt and real worker PID
-before waiting. No other vision heavy job live; original pressure trial is dead.
+Resume trial GREEN: runs/m2-stream-accuracy-segment-probe-r2-pipeline/result.json,
+segment_verified,global2/target3,new1,step_partial,2 recipes+27 probes replayed.
+Parent exit125/snapshot retained. Native parent68.815s,878,436,352B/1280MiB;
+training842,248,192B/1GiB,curator82,022,400B/128MiB. All matching Python processes
+verified gone. docs/evidence/m2-stream-accuracy-segment-probe-r2/controller-gate.json
+pins actual controller source89138cd8... and receipts. This is not target3 complete.
 
-Only after green, launch fresh runs/m2-stream-accuracy4096-s1 with controller
---target-steps 4096 --updates 512 --admission runs/m2-stream-accuracy-probe under
-parent1280MiB/2100s/512updates. Child1GiB/1860s outer/1800s inner; checkpoint64;
-serial curator128MiB/120s. Expected<1100MiB total,<1GiB new disk; verify >40GiB
-free (last50.79GiB). Root receipt/log prefix runs/m2-stream-accuracy4096-s1-pipeline.
+NEXT first larger long baseline: expected<1100MiB total,<1GiB new disk; latest
+OS commit26.4GB,disk50.33GiB free (>40GiB). Native parent1280MiB/2100s/512updates;
+child1GiB/1860s outer/1800s inner,checkpoint64; serial curator128MiB/120s.
+Hidden detached command from repo root:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280
+--wall-seconds 2100 --work-items 512
+--receipt runs/m2-stream-accuracy4096-s1-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py
+--name m2-stream-accuracy4096-s1 --target-steps 4096 --updates 512
+--admission runs/m2-stream-accuracy-probe
+Root receipt/log prefix runs/m2-stream-accuracy4096-s1-pipeline; controller state
+runs/m2-stream-accuracy4096-s1-pipeline/{progress,result}.json; actual training
+runs/m2-stream-accuracy4096-s1/{progress,latest-training,summary}.json. Preserve
+partial/pressure/timeout honestly. Only controlled segment results enter curation.
 Record launch/PIDs here, commit before waiting. If only long wait remains, leave
 finite controller detached with discoverable logs/result and end turn.
 

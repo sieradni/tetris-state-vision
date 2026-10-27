@@ -1,0 +1,112 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M2",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      48,
+      96,
+      192,
+      256
+    ],
+    "dimension": 192,
+    "heads": 6,
+    "blocks": 6,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576
+  },
+  "weights_sha256": "a09932e793d1e9fd8f57f0936e5b974fa20d8f11b619d64a15688c0aaba0f51f",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 7694010,
+  "metadata": {
+    "trained_steps": 2,
+    "catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+    "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "system_pressure_guard": "GetPerformanceInfo/0.2s",
+    "runtime_source_sha256": "95211a0d82d7a4ed250eecdbd8d8a102703c904e2a091f56f3a9100781f4104f",
+    "model_kind": "accuracy",
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-segment-probe-r2",
+      "model": "accuracy",
+      "steps": 3,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "wall_seconds": 1800.0,
+      "evaluate_every": 128,
+      "development_groups": 6,
+      "profile_square": false,
+      "admission": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe",
+      "checkpoint_every": 64,
+      "resume_from": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-segment-probe",
+      "max_new_steps": 1
+    },
+    "stream_ledger_sha256": "631b39b1104c40f377dc59a758f0d3f82eb6d38f0138fca44f28b84d99aa77d5",
+    "cpu_only": true,
+    "resume": {
+      "source_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-segment-probe",
+      "step": 1,
+      "pointer": {
+        "format": "tetris-vision-training-snapshot",
+        "generation": "step-000001-df559785b6354034af8e1d2ed89f76f0",
+        "manifest_sha256": "90fc7f01e8a3807c9ae2bad4c1b3e32747b4b08fbb4c7399c329d3ae4cf5ac64",
+        "version": 1
+      },
+      "ledger_prefix_sha256": {
+        "curve.jsonl": "78545cd327409bc567cedb93171ba846209888fc74f3222c7d454df5b0e8356a",
+        "evaluations.jsonl": "c38612a87d29a5ff392fe6a46ed860005995d2ca81739a236c6af40f1306e185",
+        "training.jsonl": "415356fb4f800c987f069dd4f9b2f3cd549276ddf1108c02e2b5d18541232f52"
+      }
+    },
+    "latest_training_snapshot": {
+      "format": "tetris-vision-training-snapshot",
+      "version": 1,
+      "generation": "step-000002-41c6171a74f34ac68a7bcb406e1ea3cb",
+      "manifest_sha256": "89dba592ca7df5d037606d634f0815de40b8d0ca3cd545ae98f0f869e4ba5bbb"
+    },
+    "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-segment-probe-r2\\code\\scripts\\train_m2_stream.py",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "recovery_contract": {
+      "catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+      "config": {
+        "widths": [
+          48,
+          96,
+          192,
+          256
+        ],
+        "dimension": 192,
+        "heads": 6,
+        "blocks": 6,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576
+      },
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "weight_decay": 0.01,
+      "steps": 3,
+      "max_side": 512,
+      "development_groups": 6,
+      "evaluate_every": 128,
+      "checkpoint_every": 64,
+      "profile_square": false,
+      "threads": 1,
+      "rng": "torch_cpu_only",
+      "native_cache_limits": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      }
+    },
+    "updates_this_run": 1
+  }
+}

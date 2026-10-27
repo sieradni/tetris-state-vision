@@ -20,8 +20,9 @@ No complete screenshot parser or real-image accuracy is claimed.
    characterization at1GiB:910,176,256B peak, full warm/recovery/output parity,
    docs/evidence/m2-stream-accuracy-probe/scope.json. Its128-update diagnostic
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
-   boards0/14,layers0/36,geometry2.4785cells. Next verify the finite segment
-   controller, then adequately train a fixed4096-update fresh-state baseline in
+   boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
+   passes an actual pressure-saved step1+resume1/curation gate. Next train a
+   fixed4096-update fresh-state baseline in
    bounded resumable segments. Measure board, geometry and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
@@ -53,7 +54,7 @@ Verified foundations and their limits:
 | Oracle-grid diagnostic | docs/evidence/m2-stream-pilot-geometry/scope.json | Deliberate supported-label intervention still0 exact boards; not automatic accuracy |
 | CPU resource/recovery contracts | docs/evidence/v015-contracts/scope.json;29 scoped checks on f583792 | Not a whole-suite or model-accuracy claim |
 | Exact stream recovery and archived driver execution | docs/evidence/m2-stream-recovery-gate-r2/scope.json | Native2+6+3+3 matches losses/gradients/data/evaluation/model/Adam/RNG; long memory remains separate |
-| Actual pressure interruption recovery | docs/evidence/segment-pressure-recovery/scope.json | Saved larger step1 restored; segment controller stopped before final evaluation/curation and remains unverified |
+| Actual pressure interruption recovery | docs/evidence/segment-pressure-recovery/scope.json; m2-stream-accuracy-segment-probe-r2/controller-gate.json | Saved larger step1 restored then resumed one update with explicit partial status and evidence replay; global target3 unfinished |
 | Review-only one-image API | docs/evidence/m2-runtime/scope.json | Always needs_review/unsupported; queue/hold unresolved |
 | Queue/hold label policy | docs/evidence/m3-component-targets/scope.json;8 fixtures incl paired hidden rasters | No component neural heads/loss/runtime yet |
 | Corpus audit/review/split/seal tooling | docs/evidence/corpus-integrity-final/scope.json;26 adversarial checks | Correct reviewed labels and real-image model results |

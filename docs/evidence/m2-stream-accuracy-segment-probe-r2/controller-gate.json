@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "controller_sha256": "89138cd841f33583e16be47315931b4b70ad5a799fce24e1d3f45ebb6304e680",
+  "curator_sha256": "8d39f4cee404f96a9712b595ea9292af80219debf06b4b05bfe81c8a40f0a5a5",
+  "source_base_commit": "b65820136104a5858ccaa2faa7dc44d064e795bd",
+  "global_step": 2,
+  "target_steps": 3,
+  "new_updates": 1,
+  "training_status": "step_partial",
+  "parent_native_exit_code": 125,
+  "terminal_matching_python_processes": 0,
+  "native_peak_job_commit_bytes": 878436352,
+  "native_elapsed_seconds": 68.815,
+  "artifact_sha256": {
+    "controller-job.json": "593a13847ce52bb8c9c56a07befe680aa2616bdc095fa9bdb927e9fe26306235",
+    "controller.log": "7e5a384c25bc994135e916d380f7e0e1884d5bc85314940f96dc5f6e7547ecc9",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-result.json": "fbb08deb695c3a2786663feaefd6b6602054ab7247800a53f21db98d514c32b3",
+    "controller-curation-job.json": "6cfdd73e573fafd72aa11573845a976abfb4ffb14bb1d563c5dd67258b0d181d",
+    "controller-curation.log": "bc7e34d61f1aec649f8bff61da184f844c1a217bc63736829ecc5ec937b958c9",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "One actual native controller integration: pressure-saved step 1 resumed by one update, explicit partial status, serialized evidence replay and terminal process verification. Not completed target or model quality."
+}

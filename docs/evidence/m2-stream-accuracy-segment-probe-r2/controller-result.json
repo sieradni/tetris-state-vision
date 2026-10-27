@@ -1,0 +1,14 @@
+{
+  "status": "segment_verified",
+  "training_status": "step_partial",
+  "global_steps": 2,
+  "target_steps": 3,
+  "updates_this_segment": 1,
+  "target_complete": false,
+  "weights_sha256": "a09932e793d1e9fd8f57f0936e5b974fa20d8f11b619d64a15688c0aaba0f51f",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "evidence_status": "verified_partial",
+  "next_resume_from": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-segment-probe-r2",
+  "controller_sha256": "89138cd841f33583e16be47315931b4b70ad5a799fce24e1d3f45ebb6304e680",
+  "scope": "One bounded training segment and replayed explicit-status evidence; not full goal, adequate convergence or model quality."
+}

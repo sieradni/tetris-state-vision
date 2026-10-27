@@ -77,8 +77,11 @@ The parent must supply its own1.25GiB/2100s ceiling and update budget. Curation
 uses128MiB/120s and explicitly preserves partial status. A successful segment
 is `segment_verified`; only `target_complete` denotes reaching the fixed global
 target. Resume a new output using the preceding source archive and committed
-state. Completed diagnostics cannot silently extend their recipe. The controller
-integration gate is pending; current status is in CONTINUATION_STATE.md.
+state. Completed diagnostics cannot silently extend their recipe. Its native
+integration passes: actual pressure-saved step1 resumed by one update, global2/3
+explicitly partial,27 saved probes replayed, parent receipt125 retained, process
+tree gone. docs/evidence/m2-stream-accuracy-segment-probe-r2/controller-gate.json.
+This does not complete target3 or establish model quality.
 
 All output/receipt paths must be new. Use hidden detached launches with logs,
 explicit RAM/wall/update caps and the current guarded supervisor. Never invoke
