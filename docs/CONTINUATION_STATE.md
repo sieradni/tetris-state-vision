@@ -13,6 +13,17 @@ published. Final704/4096,512new,step_partial; root passed0 at1293.239s,
 964,603,904B/1280MiB; child928,505,856B/1GiB. All matching model processes gone.
 Native controller segment_verified, data704+27 probe replay/round-trip GREEN.
 Global4096 remains unfinished. No heavy vision Job currently live.
+704 weights36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
+Development0/18 boards,0/36 layers,geometry1.84647,cells.90472,loss4.68184;
+training0/9 boards,0/18 layers,geometry3.27837. Data704/probes27 replayed;
+source/snapshot/final-tensor parity and ancestor125/stale-child metadata verified
+by native curator. docs/evidence/m2-stream-accuracy4096-s2/scope.json.
+
+CURRENT PRESSURE: OS commit~32.2GB exceeds31,368,351,744B stop. Follow-up
+runs/m2-stream-accuracy704-errors-job.json and runs/m3-model-capture-curation-job.json
+both parked125 at admission before any child. No output/evidence from those
+attempts; preserve receipts/logs, retry only in NEW paths after genuine headroom.
+Capture9 test itself PASSED before this pressure; its source curator is pending.
 Check live PID and terminal receipts; stale running/progress alone proves nothing.
 
 Native parent1280MiB/2100s/512new updates, child1024MiB/1860s outer/1800s inner,

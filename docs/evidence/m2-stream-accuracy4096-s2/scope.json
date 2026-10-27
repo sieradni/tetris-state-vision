@@ -1,0 +1,32 @@
+{
+  "status": "verified_partial",
+  "run_status": "step_partial",
+  "steps": 704,
+  "requested_steps": 4096,
+  "base_commit": "5cca5c25c738a2cb72b0115558fb1ba548086b9f",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "weights_sha256": "36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda",
+  "replayed_training_samples": 704,
+  "verified_saved_probe_images": 27,
+  "native_peak_job_commit_bytes": 928505856,
+  "all_final_tensors_reload_exact": true,
+  "source_archive": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s2\\code",
+  "scope": "Bounded curriculum plumbing/source binding/resource admission, not model accuracy.",
+  "test_gate_scope": "Separate named, source-pinned fixture receipts; this curator does not attach historical fixture logs to new runs.",
+  "training_snapshot_identity_verified": true,
+  "comparison_status": null,
+  "updates_this_run": 512,
+  "resume_parent": {
+    "step": 192,
+    "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s1",
+    "native_status": "running",
+    "native_exit_code": null,
+    "manifest_sha256": "3a12f4cb6f51138c817544fbd4c70f0397f6c697a7853cfc1e136cb44fc9ffbd",
+    "tensors_sha256": "2d0e8e86f485baa1761842978c4d39ebea90c48b40fbc977bf1a7d7044f3927b",
+    "enclosing_native_status": "memory_pressure",
+    "enclosing_native_exit_code": 125,
+    "child_receipt_stale_after_ancestor_stop": true
+  },
+  "curator_sha256": "754bde0391177cc7080be2cc3ebf3438acb8273b38b0969c743fe924abd5f880",
+  "core_architecture": "Unchanged M2; pilot and accuracy configurations explicit."
+}
