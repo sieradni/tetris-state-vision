@@ -1,166 +1,84 @@
 # Current checkpoint — 2026-10-26
 
 Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity,
-no remote. Full objective unfinished. Neighboring engine/apps/run data untouched.
-No push/deploy/publish/deletion authorized. Sourcef542096 now has68 scoped green
-contract checks. Goal ACTIVE after actual memory recovery; full goal unfinished.
+no remote. Goal ACTIVE and unfinished. Neighboring engine/apps/run data untouched.
+Local reviewed commits authorized; no push/deploy/publish/deletion authorized.
 
-RESUMED: goal service ACTIVE; fresh OS commit27,527,557,120B, headroom restored.
-Selected acceptance task: execute f542096 candidate's pending scoped tests,
-then actual704 error report and a fresh M3 square warm/recovery profile. Preserve
-all original4096 source/cursor state. First unit gate:25 stream/joint cases,
-512MiB/60s, one CPU; logs runs/joint-stream-tests-r1.log/.stderr.log, receipt
-runs/joint-stream-tests-r1.json. No model training authorized by unit pass alone.
-Launch PID13560 exact supervisor command verified; inspect native receipt/logs
-and matching worker before waiting. No other owned model process was present.
-First25 PASS1.185s/274,456,576B under512MiB; component23 PASS2.560s and capture9
-PASS1.832s, both512MiB; recovery7 PASS2.279s/512MiB, source4 PASS.414s/128MiB.
-Committed-source scopes: docs/evidence/joint-stream-contracts/scope.json57 and
-docs/evidence/joint-recovery-contracts/scope.json11; sourcef542096. No whole-suite,
-M3 admission or learning claim. All test Jobs terminal.
+Selected acceptance task: curate the completed larger M3 resource profile, then
+resume the original fixed4096 M2 study from its verified704 bank if resource
+headroom permits. One heavy model Job at a time. Kernel Job/OS pressure guards
+and one-thread pre-import policy remain armed; no automatic restarts.
 
-RUNNING ordinary704 report: runs/m2-stream-accuracy704-errors-r2, supervisor
-launch27948 exact command verified,1GiB/120s/27forwards, expected<600MiB. Read
-same receipt/progress/logs and verify actual worker/terminal tree before next
-heavy Job. This uses ORIGINAL saved704 model/archive, not current M3 package.
-704 report COMPLETE:27 forwards33.423s outer,551,600,128B/1GiB; all saved metrics
-reproduced, weights unchanged, matching processes gone. Evidence
-docs/evidence/m2-stream-accuracy704-errors-r2/scope.json. Dev384TP/401 positives,
-17FN,326FP; active/ghost now known but all18 types wrong in each layer.0/18 exact
-boards remains. Geometry1.84647cells; current704 is not adequate convergence.
+## Current processes and next action
 
-V-018 OPEN: collector would hardcode M2 for joint checkpoint scopes. Fixed by
-checkpoint/config/capacity identity validation;4 receipt/architecture fixtures
-GREEN in.001s under128MiB/30s. AGENTS standing provenance rule added (third class
-member). Need actual native M3 artifact curation before closing. No model/guard
-math changed. Unit scopes onf542096 remain historical; narrow collector delta
-has its own4-case gate. Next pilot M3 profile:640MiB/300s/2 full512-square warm
-updates, component-capacity64, one CPU/cache16. Expected<600MiB; first actual
-joint measurement. Fresh runs/m3-stream-pilot-profile-r1 output/receipt/logs.
-LAUNCHED profile: root12780/18288, actual33644 (launcher28620), exact command
-lines verified. Source371bfd8; inspect same receipt/progress and terminate-state
-before any other heavy Job. Named4-case source scope now
-docs/evidence/v018-architecture/scope.json; V-018 still OPEN until native M3
-artifact curation passes. Never infer admission from these unit fixtures.
-Pilot M3 profile COMPLETE and curated:22.728s outer,558,497,792B/640MiB,
-682,584 parameters,168 initialized parameter tensors/5,461,344B Adam, two full
-512-square updates, warm backward/recovery/nested output parity. All matching
-processes gone. docs/evidence/m3-stream-pilot-profile-r1/scope.json, actualM3/
-capacity64;2 recipes+27 probes replayed. V-018 CLOSED on this plus4-case gate.
-M3 sourceb6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
-No larger-M3 or learning admission implied. Next verify native continuous6 vs
-3+resume3 for joint heads; then characterize actual larger M3 separately before
-long studies. Original M2 bank704/source121fd05a remains next s3 baseline.
-Joint recovery gate extended to explicit component-capacity64 and actual saved
-configuration; frozen driver's nested parity comparator and module modes checked.
-Collector replays final-capture policy and derives actual artifact identity.
-Two native-gate argument/no-Job admission fixtures GREEN.263s under128MiB/30s.
-These wrapper/collector files are outside the7 training helpers, so admitted M3
-catalogueb6bb05f3... and original121fd05a... training math are unchanged.
-NEXT native runs/m3-stream-recovery-gate-r1: parent1024MiB/420s/14new updates,
-serialized child640MiB/90s, profile2+continuous6+partial3+resume3. Expected total
-<750MiB. Root receipt/log prefix runs/m3-stream-recovery-gate-r1; progress/proof
-inside output. No other heavy Job live. Require actual source/data/loss/eval/model/
-Adam/RNG/module-mode equality; partial status remains explicit. No quality claim.
-LAUNCHED: root33284/15296, orchestrator27504/28044 exact commands verified;
-source656a0a5. Inspect same progress/receipts/proof and current child before any
-wait or new heavy launch. No other owned model Job live at launch.
-Native joint recovery COMPLETE95.148s,597,655,552B/1GiB parent; childmax
-561,909,760B/640MiB. Continuous6/3+resume3 exact data/loss/gradient/evaluation/
-model/Adam/CPU RNG/module modes, identical inference SHA2f97b540...;17 recipes
-and72 probes independently replayed. All matching processes gone. Evidence
-docs/evidence/m3-stream-recovery-gate-r1/scope.json. Wrapper2 source-bound unit
-fixtures in docs/evidence/joint-native-gate-contracts/scope.json.
-NEXT larger M3 characterization: runs/m3-stream-large-profile-r1, --model accuracy
---component-capacity64,2 full512-square updates,1GiB/300s outer/240s inner,CPU1.
-Expected<1GiB; unknown larger-head peak is bounded experimentally. Original
-M2 bank704 still next long s3 after this serial characterization. No quality claim.
+Larger M3 profile runs/m3-stream-large-profile-r1 is COMPLETE2, native receipt
+runs/m3-stream-large-profile-r1-job.json PASSED0,43.663s outer,942,903,296B peak
+under1GiB/300s,2 full512-square updates,240s inner. Supervisor6880/child30540;
+matching Python command lines absent after completion. All264 parameter tensors
+initialized;63,977,184B Adam state. Warm backward, training recovery and nested
+final inference tensor parity passed. No learning/quality admission implied.
+Actual source catalogue b6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
+NEXT curate via scripts/record_stream_run.py --name m3-stream-large-profile-r1
+under128MiB/30s/work29 (2 recipe rows+27 probes). Expected<128MiB. Native receipt
+runs/m3-large-profile-curation-r1.json; hidden logs with same prefix.log/.stderr.log.
+Record verified launch PID, inspect terminal receipt/scope and matching processes;
+commit artifact-derived evidence with updated roadmap/M3 scope.
 
-HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
-guard stop31,368,351,744B, before any
-worker reservation. Same condition across three consecutive goal turns: follow-up
-jobs parked before launch (~32.2GB, later33.9GB); next turn source work completed
-but no tests could launch (~31.7GB); current audit31.93GB. All matching704-report/
-s2/capture-curator Python processes absent. No model/training Job running.
-No guard changes/opt-out, no repeated doomed launches, no user apps stopped.
-Further source changes before testing the ready candidate would not resolve the
-critical path. Need lower host commit for verification and training. Goal should
-be BLOCKED pending external headroom and user resume; never call it complete.
+Latest host commit26,862,620,672B < stop31,368,351,744B; headroom restored after
+prior blocker. C: free40,307,924,992B (~37.54GiB). Recheck disk before a long
+training window; planned margin is>40GiB. No evidence or user data deletion.
 
-NEXT after resume, first read actual memory/process state. Keep the native
-pressure guard and pre-import CPU pools1. New receipt/output names only:
-1. Verify current candidate: stream data10, stream driver5, stream evidence3,
-   joint metrics7, components15, final capture9; relevant source/recovery gates
-   afterward. No new-source test gate has run. Do NOT attach historical full-file
-   source scopes to changed files. Keep logs, case/work caps, ceilings/wall limits.
-2. Run704 error report in runs/m2-stream-accuracy704-errors-r2:1GiB/120s/27
-   ordinary forwards; expected<600MiB from same-architecture546MiB report. Command:
-   .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024
-   --wall-seconds 120 --work-items 27
-   --receipt runs/m2-stream-accuracy704-errors-r2-job.json --
-   .venv/Scripts/python.exe scripts/probe_stream_errors.py
-   --run m2-stream-accuracy4096-s2 --output runs/m2-stream-accuracy704-errors-r2
-   Hidden matching .log/.stderr.log; verify exact spawned/terminal processes.
-3. Resume ORIGINAL M2 bank704 toward fixed4096 in NEW s3: parent1280MiB/2100s/
-   at most512new updates, child1024MiB/1860s outer/1800s inner, checkpoint64,
-   one CPU/cache16; serial curator128MiB/120s. Expected<1100MiB total. Verify
-   >40GiB free (last50.07GiB), native segment/partial status and all artifacts.
-   Controller arguments: --name m2-stream-accuracy4096-s3 --target-steps 4096
-   --updates 512 --admission runs/m2-stream-accuracy-probe
-   --resume-from runs/m2-stream-accuracy4096-s2.
-4. Fresh native M3 full-square2 warm/recovery profile on actual component-capacity64
-   config before any joint learning. Old M2 admissions do not cover current M3.
-   Serialize heavy jobs. Do not run release builds or another heavy model beside it.
+## Verified source / gates
 
-SOURCE SEPARATION: every4096 continuation must execute its original verified
-archive, not current package. Controller selects the parent archived trainer.
-Original catalogue121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
-Supervisor SHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db.
-Do not change target/recipe, reset Adam/RNG or silently extend completed128.
+Current training sourcef542096 passes68 scoped checks: stream/joint25,
+component23, capture9 plus source/recovery11. Named scopes:
+docs/evidence/joint-stream-contracts/scope.json (57) and
+joint-recovery-contracts/scope.json (11). Historical scope, not whole-suite.
+V-001..V-018 CLOSED on their named runs. V-018 artifact identity repair has4
+fixtures and an actual M3 native artifact; standing provenance rule in AGENTS.
+Subsequent recovery wrapper/collector changes do not alter training catalogue.
 
-Latest M2: runs/m2-stream-accuracy4096-s2, segment_verified at704/4096,512new
-from bank192. step_partial, root1293.239s/964,603,904B under1280MiB; child
-928,505,856B/1GiB. All matching processes verified gone. Data704+27 probes
-replayed; snapshot/all-final-tensor parity GREEN. Evidence:
-docs/evidence/m2-stream-accuracy4096-s2/scope.json and controller-result.json.
-704 weights36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
-Dev0/18 exact boards,0/36 layers,geometry1.84647cells,cells.90472,loss4.68184;
-train0/9 boards,0/18 layers,geometry3.27837. Adequate learning not established.
+Pilot M3: capacity64,682,584 parameters,640MiB ceiling,558,497,792B peak,
+22.728s outer,2 full-square warm updates and reload/recovery parity.
+docs/evidence/m3-stream-pilot-profile-r1/scope.json. Pilot configuration only.
+Native joint recovery: continuous6 ==3+resume3 exactly for data/loss/gradients/
+evaluations/model/Adam/CPU RNG/module modes; sourceb6bb05f3...,14 updates total.
+Parent597,655,552B/1GiB,childmax561,909,760B/640MiB,95.148s. Matching processes
+gone. docs/evidence/m3-stream-recovery-gate-r1/scope.json;17 recipe rows+72 probes
+replayed. Two wrapper fixtures: joint-native-gate-contracts/scope.json.
 
-Prior s1 ancestor pressure125:229 logged,192 banked; stale child running/null
-receipt kept beside terminating ancestor. Resume recomputed37 later updates
-with all229 recorded data/loss/terms/gradient norms equal, three prefixes equal.
-No old229 model tensors survived, so no final-model tensor equality claim.
-docs/evidence/m2-stream-accuracy4096-s1-stop/ and ...4096-pressure-replay/.
+## Original M2 continuation — keep immutable history separate
 
-Earlier evidence: pilot768 resource gate GREEN at640MiB/519,782,400B,2.6MiB
-second-half growth; learning dev0/18 boards. Larger128 completed93+35 exact
-recovery,4/18 dev boards all zero-locked (nonempty0/14). Its27-forward report
-reproduces saved metrics,546,164,736B/1GiB;15 TP,386 FN,8 FP on401 positive
-cells, all active/ghost unknown. Six dev ancestry groups, dependent triplets.
-Named scope docs/evidence/m2-stream-accuracy128-errors/. No real accuracy claim.
+Latest runs/m2-stream-accuracy4096-s2: verified704/4096,512new from bank192,
+step_partial. Parent1293.239s/964,603,904B under1280MiB; child928,505,856B/1GiB.
+All704 recipes+27 probes replayed; snapshot/all-final-tensor parity green.
+Evidence docs/evidence/m2-stream-accuracy4096-s2/scope.json/controller-result.json.
+Weights36f3dcf78ed807d021a5c8c0c5de47440a9032d208cc44dd396aa762fa04adda.
+Ordinary704 error report complete27forwards33.423s/551,600,128B,weights unchanged.
+Dev384TP/401positives,17FN,326FP;0/18 exact boards,0/36 layers,each layer18/18
+wrong types. Geometry1.84647cells. docs/evidence/m2-stream-accuracy704-errors-r2/.
+No adequately converged or real-image quality result.
 
-M3 VERIFIED HISTORY: fdb0c81 optional shared role/index heads and masked losses;
-44 scoped checks (15 new,14 M2 numerical,7 inspection,8 labels),
-docs/evidence/m3-joint-contracts/scope.json.09fa4ef final-model-size renderer/
-observer:9 tests,2.057s,255,062,016B/512MiB; raw runs/m3-model-capture-tests.*.
-Its source curator parked at admission; current source has changed since then,
-so rerun9 rather than curating old full-file hashes as current.
+Resume NEW m2-stream-accuracy4096-s3 using run_stream_segment.py arguments:
+--name m2-stream-accuracy4096-s3 --target-steps 4096 --updates 512
+--admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s2.
+Parent1280MiB/2100s/work512; training child1024MiB/1860s outer/1800s inner,
+checkpoint64,CPU1/cache16; serial curator128MiB/120s. Expected<1100MiB aggregate.
+Receipt runs/m2-stream-accuracy4096-s3-pipeline-job.json; pipeline logs/state under
+same prefix. Verify memory/disk and exact commands, record PIDs before waiting.
+Controller MUST execute original parent archived trainer/catalogue
+121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b, not current M3.
+Preserve4096 target,recipe,Adam/RNG,cursor and partial tags. Supervisor SHA
+d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db unchanged.
+Historical pressure229logged/192banked retains raw stale child and terminal ancestor;
+37updates recomputed and all229 loss/data/gradient records match, not old229 tensors.
 
-M3 CURRENT CANDIDATE f542096 (UNVERIFIED): --component-capacity10..64 in the
-stream driver selects shared heads, final-capture samples and masked losses;
-0 keeps M2. Records bind capture policy/pixels/labels. Metrics separate known-
-field matches from readable components; unknown middle/tail/hold never becomes
-complete success. Nested output parity checks dtype/shape/value. Curator supports
-M2/M3 recipes without new keywords on old samplers. Added7 joint metric/parity,
-3 sampler and1 driver fixtures. Manual diff review only; tests/profile pending.
+## Remaining scope
 
-V-001..V-017 closed only on their named historical source scopes. Current changes
-retain unknown masks, bottom-first rows and independent locked/active/ghost.
-V-016 still refuses arbitrary post-labeled resize/invalid alpha; synthetic M3
-captures instead reobserve exact final pixels. General resized real observations,
-actual M3 learning/admission and reviewed component runtime decoding remain open.
-API always needs_review/unsupported, queue/hold unknown. User's166 screenshots
-remain unlabeled drafts, zero training/scoring eligibility; seven private sheets.
-Broad rendering, real review, scratch/pretrained/direct comparisons, calibration,
-export and >=95% complete-state release evidence all remain OPEN. CPU Torch2.14.1.
+M3 joint learning and varied-shape long memory remain open; larger profile is
+separate from pilot admission. API remains needs_review/unsupported with unknown
+queue/hold. No real labeled benchmark:166 approved screenshots remain drafts,
+zero training/scoring eligibility; seven private contact sheets for visual review.
+Unknown!=empty; layers independent; rows bottom-first; no guessed footprint erasure.
+Broad rendering/real review, scratch/pretrained/direct comparisons, calibration,
+export and>=95% exact complete-state release evidence all remain OPEN.
