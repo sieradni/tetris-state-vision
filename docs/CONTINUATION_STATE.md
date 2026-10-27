@@ -189,3 +189,21 @@ Logs runs/v027-adapter-tests-r1.log/.stderr.log. Then source-pin adapter gate128
 r1 args except output/receipt/log names changed to m2-stream-interleave-profile-r2.
 Do not reuse r1 as an admission or rewrite its archive. Derive r2's new catalogue.
 Same-input comparator now names r2;no comparator has run yet.
+
+LIVE V027 adapter8 regression launcher7724;exactstartup runs/v027-adapter-tests-r1-startup.json.
+
+V0278 regression GREEN2.598s/native3.108s/48,918,528B/128MiB;all known test
+PIDs/exact commands gone. Next source-bound collector exactly in
+runs/v027-adapter-curation-r1-plan.json (30 hashed inputs,base158a534),128MiB/30s/
+work8,expected<110MiB;receipt runs/v027-adapter-curation-r1.json,logs same stem,
+final docs/evidence/v027-adapter-contracts/scope.json. Then fresh r2 profile:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 2 --receipt runs/m2-stream-interleave-profile-r2-job.json --
+.venv/Scripts/python.exe scripts/train_m2_stream.py --output runs/m2-stream-interleave-profile-r2
+--model pilot --steps 2 --wall-seconds 60 --development-groups 3 --evaluate-every 3
+--checkpoint-every 3 --profile-square --curriculum all-class-interleaved-v1
+Logs runs/m2-stream-interleave-profile-r2.log/.stderr.log;state run/progress.json,
+terminal summary. Expected<600MiB with640MiB cap/native pressure guard.
+After complete/death,r2 curator128MiB/30s/work43 (expected<110MiB),receipt/logs
+runs/interleave-profile-curation-r2;record_stream_run.py --name m2-stream-interleave-profile-r2.
+Only actual green r2 curation closes V027. Old r1 remains failed audit evidence.
