@@ -134,3 +134,4 @@ Current selected adapter is ready for5 bounded cases (UNRUN), expected<110MiB:
 Logs runs/curriculum-tests-r1.log/.stderr.log. No model Job live; nativeguards.
 After adapter gate, wire explicit policy into frozen training/admission/recovery/
 summary/controller/curation; old default maths/records remain unchanged.
+LIVE curriculum tests launcher24616, exact command verified.
