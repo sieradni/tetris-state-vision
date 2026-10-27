@@ -63,6 +63,23 @@ is CLOSED. Development0/18 exact boards and1.85-cell geometry still fail the
 learning objective. No failed/partial result becomes complete by curation, and
 no synthetic result establishes real screenshot accuracy.
 
+The larger7,694,010-parameter configuration separately passes its1GiB warm
+profile at910,176,256B peak. Its128-step diagnostic completed as93+resume35 with
+the exact same global recipe and Adam/RNG cursor. Development4/18 exact boards
+are all zero-locked; nonempty0/14 and layers0/36 remain failures. See
+docs/evidence/m2-stream-accuracy128-r2/analysis.json. This short diagnostic does
+not establish adequately converged training or select a release configuration.
+
+`scripts/run_stream_segment.py` runs one immediate finite larger-model segment
+then serial evidence replay. Its default training child is1GiB/1860s outer/
+1800s inner, at most512 new updates, snapshots64, global target at most4096.
+The parent must supply its own1.25GiB/2100s ceiling and update budget. Curation
+uses128MiB/120s and explicitly preserves partial status. A successful segment
+is `segment_verified`; only `target_complete` denotes reaching the fixed global
+target. Resume a new output using the preceding source archive and committed
+state. Completed diagnostics cannot silently extend their recipe. The controller
+integration gate is pending; current status is in CONTINUATION_STATE.md.
+
 All output/receipt paths must be new. Use hidden detached launches with logs,
 explicit RAM/wall/update caps and the current guarded supervisor. Never invoke
 an archived pre-pressure supervisor. Preserve all run/snapshot evidence.
