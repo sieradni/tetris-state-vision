@@ -108,3 +108,7 @@ Broad appearances/crops/occlusion/association, reviewed real labels/independent
 splits, adequate M2/M3 joint learning, scratch/pretrained/decoder comparisons,
 calibration/export/CPU/adapters and >=95% readable-real exact complete-state
 release gate remain OPEN. Public API remains needs_review.
+
+LIVE39-check curator launcher27272; exact startup command in runs/fit-error-curation-r1-startup.json.
+
+39-check scope VERIFIED allclass-error-contracts;32 actual input/source hashes checked. Curator.590s/78,630,912B under128MiB; all known PIDs/exact commands gone. NEXT ordinary41-forward command above,640MiB/180s.
