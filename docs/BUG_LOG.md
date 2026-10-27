@@ -46,6 +46,10 @@ a named green run. An unrun gate leaves the entry OPEN.
   runs/joint-error-diagnostics-r3,27/27 in1.745s,246,988,800B/512MiB. The actual
   Torch-decorated component metric passes its implementation tree and rejects
   the wrong tree. No native M3 model forward replay is claimed by this unit gate.
+  Later actual frozen M3 replay also passes27 forwards plus evidence collection:
+  docs/evidence/m3-stream-large-profile-errors-r1/scope.json,25.603s,
+  563,679,232B/640MiB. This separately verifies the decorated implementation
+  origin in a real archived-model run; it does not establish model accuracy.
 
 ## V-019 — CLOSED: component diagnostic fixture swapped queue anchor flags
 

@@ -88,8 +88,10 @@ does not establish convergence or real-image accuracy.
 The fixed4096-update board-model study has a verified saved704-update checkpoint.
 Its development probes still have0/18 exact boards and0/36 exact active/ghost
 layers. [Error analysis](docs/evidence/m2-stream-accuracy704-errors-r2/scope.json)
-finds384/401 positive cells recognized but326 invented cells. Further training
-continues from the original model/optimizer/source history; this is not a release
+finds384/401 positive cells recognized but326 invented cells. A later host-memory
+stop left a1152-update training snapshot; model/optimizer recovery is verified,
+but there is no final1152 inference artifact or updated accuracy result. Further
+training retains the original source/optimizer history. This is not a release
 or an adequately converged comparison.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;

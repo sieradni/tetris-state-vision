@@ -51,10 +51,13 @@ Raw images/tensors remain in their original local run; no evidence is deleted.
 Eight metadata fixtures use preserved704-report data, adapted in memory to the
 format2 schema. They do no inference and do not upgrade historical reports.
 With the27 existing decomposition/compatibility cases,35 tests pass in1.906s,
-248,700,928B peak under512MiB/60s (runs/error-evidence-tests-r1). Native format2
+248,700,928B peak under512MiB/60s (runs/error-evidence-tests-r1).
 Native format2 M2 replay/collector integration now passes on saved704:27 forwards,
 576,446,464B under640MiB/120s,18.831s; collector72,908,800B under128MiB/30s.
 All previous27 case diagnostics and aggregates compare exactly. Named evidence:
-docs/evidence/m2-stream-accuracy704-errors-r3/scope.json. Actual M3 replay remains
-pending. Source-bound35-case scope:
+docs/evidence/m2-stream-accuracy704-errors-r3/scope.json. Actual larger M3 replay
+also passes27 forwards,563,679,232B/640MiB/120s,25.603s; collector.446s,
+73,121,792B/128MiB/30s. Its two-update checkpoint establishes replay/plumbing,
+not trained quality: docs/evidence/m3-stream-large-profile-errors-r1/scope.json.
+Source-bound35-case scope:
 docs/evidence/error-evidence-contracts/scope.json on77128c4 (32 selected hashes).

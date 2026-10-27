@@ -146,7 +146,7 @@ The metadata replay itself passed under128MiB/30s. This admits that larger
 configuration for bounded studies; varied-shape long memory, optimization,
 complete-state accuracy and release decoding remain unverified.
 
-The ordinary saved-probe error report now has a joint diagnostic candidate.
+The ordinary saved-probe error report now passes actual joint checkpoint replay.
 It checks actual checkpoint architecture/configuration, uses final-capture
 recipes only for M3 and leaves legacy M2 sampler/target calls unchanged. Queue
 piece/EOS, slot status, presence, start/end and hold errors have separate known
@@ -159,9 +159,25 @@ Twenty-seven scoped diagnostic fixtures pass:12 existing M2 plus15 new pure/
 tensor compatibility cases,1.745s,246,988,800B peak under512MiB/60s. The actual
 decorated metric's implementation passes its source-origin check and rejects
 the wrong tree; identity inspection unwraps Torch's decorator. Native M2/M3
-saved-model forward replay remains pending while the original M2 study runs.
+saved-model forward replay and evidence collection subsequently pass below.
 No training source catalogue, observation policy or model weights changed.
 Source-pinned evidence: docs/evidence/joint-error-diagnostics-full/scope.json
 on577c7ec,31 explicit source hashes. The earlier joint-error-diagnostics/ scope
 selects only12 report/test/dependency files; both refer to the same27-case run,
 not54 different cases. Raw failing/intermediate gates remain preserved.
+
+Format2 retains every ordinary metric beside its error decomposition. Its
+collector adds8 metadata fixtures (35 combined cases on77128c4): altered
+weights/config/partial tags, native command/budgets, samples/ancestry, metrics,
+decomposition and aggregate corruption all refuse. Named source scope:
+docs/evidence/error-evidence-contracts/scope.json. Actual M2 saved704 replay
+reproduces all27 case diagnostics/aggregates from the earlier report; see
+docs/evidence/m2-stream-accuracy704-errors-r3/scope.json.
+
+Actual larger M3 replay passes27 ordinary forwards in25.603s,563,679,232B peak
+under640MiB/120s. All saved board/layer/component metrics reproduce exactly;
+weights remain unchanged. Curator passes under128MiB/30s in.446s,73,121,792B.
+Sourceb6bb05f3..., actualM3/capacity64/weightsad14d69a... are pinned by
+docs/evidence/m3-stream-large-profile-errors-r1/scope.json. This uses the two-
+update resource-profile checkpoint, so its0/18 readable component successes
+are a plumbing diagnostic, not a trained-model or complete-state quality study.
