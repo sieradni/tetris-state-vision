@@ -119,3 +119,17 @@ Logs same PLAN.stem.log/.stderr.log. Startup exact commands and PIDs in
 runs/interleave-protocol-startup-r1.json. Source remains frozen through all gates;
 then verify every result/count/death,source-pin named gates and obtain fresh
 native admissions before any study. Kernel/pressure/pre-import CPU1 unchanged.
+
+LIVE eight protocol gates; exact verified startup trees in runs/interleave-protocol-startup-r1.json. No model Job.
+
+All88 selected checks GREEN,including both policies/cross-policy refusals. Every
+known launcher/supervisor/child PID and exact command verified gone. Gates retain
+native individual resource receipts/counts;no whole-suite/modelaccuracy claim.
+NEXT three source-bound curators,expected<110MiB each,128MiB/30s/work42,7,39.
+Exact args/sources in runs/interleave-protocol-curation-plan-r1.json; output scopes
+interleave-driver-contracts(42),interleave-adapter-contracts(7),interleave-error-contracts(39).
+Receipt/log stems interleave-{driver,adapter,error}-curation-r1. Base25251c8.
+Sources31/29/32 respectively;error scope pins actual six historical fixture files.
+Same existing record_test_gates.py, no source-budget change. CPU1/native/pressure
+unchanged. After pass/full process death/byte-copy verification,commit evidence;
+only then fresh same-input warm native profile and numerical compatibility.
