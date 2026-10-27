@@ -135,3 +135,4 @@ pure curators, each expected<110MiB,128MiB/30s,native guards:
    and public states with byte/file/pixel/source/coverage hashes. No training.
 Test curator launcher25212, exact command verified.
 Five-case source curation PASS;26 source hashes rechecked, raw curator receipt/log bytes preserved, all known PIDs gone. Final32-data replay uses exact command recorded above; freeze its helpers until terminal.
+LIVE fixture data curator launcher21596, exact command verified; source/helper bytes frozen.
