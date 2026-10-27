@@ -48,6 +48,19 @@ model-free gap. Pure metadata/code review can proceed while s5 trains.
 Do useful read-only/modest metadata work between polls;only long wait remaining
 means checkpoint/commit/end turn,not prolonged babysitting.
 
+Selected task: exact target-exposure audit for saved1664 using its original
+frozen sample_case/prepare_image/targets_for,not source-visible counts. Todo:
+implement pure mask-first layer packing/counting and protocol fixtures;bounded
+metadata tests;commit;after s5 exits,serial native1691-target replay (1664updates+
+9trainingprobes+18devprobes),then independent metadata/aggregate/source curator.
+No model forward,training/source-catalogue/label-policy changes. V-001/V-005/V-006
+require unknown masks and independent roles;V-003/V-014/V-018/V-020 bind actual
+arch/config/archive/callables;V-021 original partial status;V-024 recomputed
+unique populations/command/aggregate;V-023 raw copies byte-checked. Native runner
+and all active files stay unchanged. Acceptance: unknown padded values cannot
+change counts,absent distinct from observed,poses only when known,unique group
+exposures distinct from repeated views,exact native recipe/target replay and
+artifact/receipt provenance. Class balance alone cannot explain model failure.
 ## Verified s4 and ordinary/conditional diagnostics
 
 M2_BASELINE_1664.md explains latest evidence and limits. s4 is verified
