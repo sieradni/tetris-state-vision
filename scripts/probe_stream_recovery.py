@@ -41,11 +41,19 @@ def verify_dead(pid):
             kernel.CloseHandle(handle)
 
 
-def main():
-    require_bounded_job()
+def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
-    args = parser.parse_args()
+    parser.add_argument("--component-capacity", type=int, default=0)
+    args = parser.parse_args(argv)
+    if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
+        parser.error("joint gate capacity must cover renderer10 slots and stay<=64;0 keeps M2")
+    return args
+
+
+def main():
+    require_bounded_job()
+    args = arguments()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     runs, receipts = {}, {}
@@ -55,6 +63,7 @@ def main():
         receipt = output/(name+"-job.json")
         worker = [sys.executable, str(ROOT/"scripts/train_m2_stream.py"), "--output", str(run),
                   "--model", "pilot", "--steps", "2" if profile else "6", "--wall-seconds", "60",
+                  "--component-capacity", str(args.component_capacity),
                   "--development-groups", "3", "--evaluate-every", "3", "--checkpoint-every", "3"]
         if profile:
             worker += ["--profile-square"]
@@ -78,7 +87,8 @@ def main():
         if job["memory_bytes"] != 640*1024**2 or job["work_items"] != updates or summary["updates_this_run"] != updates:
             raise ValueError("gate resource/work envelope differs")
         if (summary["status"] != ("complete" if expected == 0 else "step_partial") or
-                not summary["checkpoint_round_trip_exact"]):
+                not summary["checkpoint_round_trip_exact"] or summary["component_capacity"] != args.component_capacity or
+                summary["config"]["component_capacity"] != args.component_capacity):
             raise ValueError("gate completion/partial/parity contract differs")
         if not Path(summary["driver_source_path"]).resolve().is_relative_to(run/"code"):
             raise ValueError("trainer main source path is not archived")
@@ -122,34 +132,34 @@ def main():
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     import torch
+    torch.set_num_threads(1)
     from tetris_vision.checkpoint import load_checkpoint
     from tetris_vision.model import ModelConfig, TetrisStateNet
     from training_snapshot import load_training_snapshot
-    if not Path(load_training_snapshot.__code__.co_filename).resolve().is_relative_to(code):
+    from train_m2_stream import equal_tree
+    if (not Path(load_training_snapshot.__code__.co_filename).resolve().is_relative_to(code) or
+            not Path(equal_tree.__code__.co_filename).resolve().is_relative_to(code)):
         raise ValueError("gate recovery import is not frozen")
-    def equal_tree(left, right):
-        if torch.is_tensor(left):
-            return torch.equal(left, right)
-        if isinstance(left, dict):
-            return left.keys() == right.keys() and all(equal_tree(left[key], right[key]) for key in left)
-        if isinstance(left, (tuple, list)):
-            return len(left) == len(right) and all(equal_tree(a, b) for a, b in zip(left, right))
-        return left == right
-    expected_model, _ = load_checkpoint(full/"checkpoint")
+    expected_model, inference_record = load_checkpoint(full/"checkpoint")
     resumed_model, _ = load_checkpoint(resumed/"checkpoint")
     if not equal_tree(expected_model.state_dict(), resumed_model.state_dict()):
         raise ValueError("resumed inference model tensors differ")
     saved = []
+    config = dict(runs["continuous"]["config"])
+    config["widths"] = tuple(config["widths"])
     for run in (full, resumed):
-        model = TetrisStateNet(ModelConfig.pilot())
+        model = TetrisStateNet(ModelConfig(**config))
         optimizer = torch.optim.AdamW(model.parameters(), lr=.001)
         recovery = load_training_snapshot(run, model, optimizer, contract=runs["continuous"]["recovery_contract"])
         if recovery["step"] != 6 or not equal_tree(expected_model.state_dict(), model.state_dict()):
             raise ValueError("recovery artifact does not match final inference model")
-        saved.append(copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state())))
+        saved.append(copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state(),
+                                    {name: module.training for name, module in model.named_modules()})))
     if not equal_tree(*saved):
         raise ValueError("resumed snapshot model/optimizer/RNG differs")
     proof = {"status": "passed", "source_catalogue_sha256": catalogue,
+             "architecture": inference_record["architecture"], "component_capacity": args.component_capacity,
+             "config": runs["continuous"]["config"],
              "updates": {name: summary["updates_this_run"] for name, summary in runs.items()},
              "partial_status": runs["partial"]["status"], "global_steps": 6,
              "exact_data_ledger": True, "exact_loss_terms_gradient_curve": True,

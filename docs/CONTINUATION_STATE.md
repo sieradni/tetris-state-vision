@@ -51,6 +51,17 @@ M3 sourceb6bb05f3a82b68ae41f5fb6ba8a256a89ddb69ed94c917807511bb636cf34255.
 No larger-M3 or learning admission implied. Next verify native continuous6 vs
 3+resume3 for joint heads; then characterize actual larger M3 separately before
 long studies. Original M2 bank704/source121fd05a remains next s3 baseline.
+Joint recovery gate extended to explicit component-capacity64 and actual saved
+configuration; frozen driver's nested parity comparator and module modes checked.
+Collector replays final-capture policy and derives actual artifact identity.
+Two native-gate argument/no-Job admission fixtures GREEN.263s under128MiB/30s.
+These wrapper/collector files are outside the7 training helpers, so admitted M3
+catalogueb6bb05f3... and original121fd05a... training math are unchanged.
+NEXT native runs/m3-stream-recovery-gate-r1: parent1024MiB/420s/14new updates,
+serialized child640MiB/90s, profile2+continuous6+partial3+resume3. Expected total
+<750MiB. Root receipt/log prefix runs/m3-stream-recovery-gate-r1; progress/proof
+inside output. No other heavy Job live. Require actual source/data/loss/eval/model/
+Adam/RNG/module-mode equality; partial status remains explicit. No quality claim.
 
 HISTORICAL BLOCKER (headroom restored above): OS commit31,934,693,376B >
 guard stop31,368,351,744B, before any

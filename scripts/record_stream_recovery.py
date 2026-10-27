@@ -10,6 +10,7 @@ import sys
 
 from probe_model import require_bounded_job
 from source_snapshot import verify_source
+from record_stream_run import checkpoint_architecture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -36,7 +37,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", required=True)
     args = parser.parse_args()
-    if not re.fullmatch(r"m2-stream-recovery-gate(?:-r[0-9]{1,2})?", args.name):
+    if not re.fullmatch(r"m[23]-stream-recovery-gate(?:-r[0-9]{1,2})?", args.name):
         raise ValueError("owned finite recovery gate name required")
     run = ROOT/"runs"/args.name
     proof = read(run/"proof.json")
@@ -70,6 +71,11 @@ def main():
                 not Path(summary["driver_source_path"]).resolve().is_relative_to(child/"code")):
             raise ValueError("child status/resource/archive contract differs")
         inference = read(child/"checkpoint/manifest.json")
+        architecture = checkpoint_architecture(summary, inference)
+        if (proof.get("architecture", architecture) != architecture or
+                proof.get("component_capacity", summary.get("component_capacity", 0)) != summary.get("component_capacity", 0) or
+                proof.get("config", summary["config"]) != summary["config"]):
+            raise ValueError("recovery proof architecture/configuration differs")
         if digest(child/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or inference["weights_sha256"] != summary["checkpoint_sha256"]:
             raise ValueError("recovery-gate inference weight identity differs")
         pointer = read(child/"latest-training.json")
@@ -90,14 +96,20 @@ def main():
         if len(rows) != summary["steps"] or not 1 <= len(rows) <= 6:
             raise ValueError("finite recovery ledger count differs")
         for row in rows:
-            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"])
+            if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
+                raise ValueError("recovery capture policy differs from model")
+            extra = {"final_capture": True} if row.get("final_capture") else {}
+            replay = sample_case(row["group_index"], row["view"], row["split"], row["base_seed"], profile_square=row["profile_square"], **extra)
             if {key: value for key, value in row.items() if key != "step"} != json.loads(json.dumps(replay.record)):
                 raise ValueError("recovery training recipe/pixels differ")
             training_count += 1
         for split in ("training", "development"):
             for line in (child/(split+"-probe.jsonl")).read_text().splitlines():
                 row = json.loads(line)
-                replay = sample_case(row["group_index"], row["view"], split, row["base_seed"])
+                if bool(row.get("final_capture", False)) != bool(summary.get("component_capacity", 0)):
+                    raise ValueError("recovery probe capture policy differs from model")
+                extra = {"final_capture": True} if row.get("final_capture") else {}
+                replay = sample_case(row["group_index"], row["view"], split, row["base_seed"], **extra)
                 path = child/(split+"-probe")/row["sample_id"]
                 with Image.open(path.with_suffix(".png")) as stored:
                     if stored.mode != replay.frame.image.mode or stored.size != replay.frame.image.size or stored.tobytes() != replay.frame.image.tobytes():
@@ -134,10 +146,12 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
     scope = {"status": "passed", "source_base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+             "architecture": architecture, "component_capacity": summary_rows["continuous"].get("component_capacity", 0),
              "source_catalogue_sha256": catalogue, "replayed_training_records_including_resumed_prefix": training_count,
              "verified_saved_probe_images": probe_count, "artifact_sha256": hashes,
              "native_peak_job_commit_bytes": root_job["peak_job_commit_bytes"],
              "curator_sha256": digest(Path(__file__)),
+             "identity_validator_sha256": digest(ROOT/"scripts/record_stream_run.py"),
              "claim": "Native2+6+3+3 recovery/archived-source equivalence; not long-shape memory or model accuracy acceptance."}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n")
     print(json.dumps({"status": "passed", "replayed_training_records": training_count, "saved_probe_images": probe_count, "scope": str(evidence/"scope.json")}))
