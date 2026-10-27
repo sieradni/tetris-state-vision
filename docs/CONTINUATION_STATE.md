@@ -13,17 +13,19 @@ Actual p2 PASS11.658s,531,968,000B/1280MiB, complete3/3 with2new from1.
 M3/pilot/cap64/sourceb6bb05f3;result/evidence present. Matching commands gone.
 Recorded launch29056/controller31820 dead. Final weights5a69097af40f0660...
 
-LIVE planned full: .venv/Scripts/python.exe scripts/run_bounded.py
---memory-mib 1280 --wall-seconds 120 --work-items 3
---receipt runs/m3-stream-controller-recovery-full-pipeline-job.json --
-.venv/Scripts/python.exe scripts/run_stream_segment.py
---name m3-stream-controller-recovery-full --target-steps 3 --updates 3
---admission runs/m3-stream-pilot-profile-r1
-Logs runs/m3-stream-controller-recovery-full-pipeline.log/.stderr.log;
-state same-prefix-pipeline/progress.json,result.json;child same-prefix-job.json;
-evidence docs/evidence/m3-stream-controller-recovery-full/. Expected<750MiB;
-1280MiB parent/120s/work3;640MiB child;native pressure guard. Next verify terminal
-and exact process death, compare3 against1+2, curate proof and commit. No retry.
+Actual full PASS11.088s,532,938,752B/1280MiB,complete3/3;launch24596/controller31612
+and matching Python commands gone. Actual final inference SHA5a69097af40f0660...
+and training payload510be7353c6819de... match p2 byte-for-byte. Full proof pending.
+
+NEXT finite byte/metadata verifier: .venv/Scripts/python.exe scripts/run_bounded.py
+--memory-mib 128 --wall-seconds 30 --work-items 7
+--receipt runs/m3-controller-recovery-proof-r1-job.json --
+.venv/Scripts/python.exe scripts/record_controller_recovery.py
+Logs runs/m3-controller-recovery-proof-r1.log/.stderr.log;
+sentinel docs/evidence/m3-controller-recovery-r1/scope.json. Expected<96MiB,
+native pressure/Job guards; no model import/forward/update. Verify7 data/curve
+rows,3 native source-bound controllers,81 replayed probes,all copied bytes and
+whole tensor payload identity (model/optimizer/RNG),terminal PIDs;then commit.
 ## Selected task and next action
 
 Controller source b8eb48a, SHA
