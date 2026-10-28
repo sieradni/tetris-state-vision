@@ -3,10 +3,12 @@ param(
     [Parameter(Mandatory=$true)][int]$Launcher,
     [switch]$VerifyOnly
 )
-# Metadata-only audit of the three predeclared segments; never launches training.
+# Metadata-only audit of either predeclared three-segment study; no training.
 $ErrorActionPreference = 'Stop'
-if ($Name -notmatch '^m2-stream-allclass1024-s([1-3])$') { throw 'owned fixed-study segment required' }
-$number = [int]$Matches[1]
+if ($Name -notmatch '^(m2-stream-(allclass|interleave)1024)-s([1-3])$') { throw 'owned fixed-study segment required' }
+$study = $Matches[1]
+$kind = $Matches[2]
+$number = [int]$Matches[3]
 $starts = @(0,128,640)
 $updates = @(128,512,384)
 $start = $starts[$number-1]
@@ -24,6 +26,16 @@ $progress = Get-Content ($run+'/progress.json') -Raw | ConvertFrom-Json
 $scope = Get-Content ($output+'/scope.json') -Raw | ConvertFrom-Json
 $controller = (Get-FileHash scripts/run_stream_segment.py).Hash.ToLower()
 $catalogue = '6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42'
+$policy = 'all-class-fit-v1'
+if ($kind -eq 'interleave') {
+    $admission = Get-Content runs/m2-stream-recovery-gate-r6/profile/summary.json -Raw | ConvertFrom-Json
+    $admissionScope = Get-Content docs/evidence/m2-stream-recovery-gate-r6/scope.json -Raw | ConvertFrom-Json
+    $policy = 'all-class-interleaved-v1'
+    $catalogue = $admission.catalogue_sha256
+    if ($admission.status -ne 'complete' -or $admission.steps -ne 2 -or -not $admission.profile_square -or
+        $admission.curriculum -ne $policy -or $admissionScope.status -ne 'passed' -or
+        $admissionScope.source_catalogue_sha256 -ne $catalogue) { throw 'actual curated interleaved admission differs' }
+}
 $status = if ($finish -eq 1024) {'complete'} else {'step_partial'}
 $evidenceStatus = if ($finish -eq 1024) {'passed'} else {'verified_partial'}
 $exit = if ($finish -eq 1024) {0} else {2}
@@ -38,7 +50,7 @@ if ($parent.status -ne 'passed' -or $parent.exit_code -ne 0 -or
     $result.updates_this_segment -ne $count -or $summary.updates_this_run -ne $count -or
     $result.target_steps -ne 1024 -or $summary.requested_steps -ne 1024 -or
     $result.target_complete -ne ($finish -eq 1024) -or $scope.verified_saved_probe_images -ne 41 -or
-    $summary.curriculum -ne 'all-class-fit-v1' -or $result.curriculum -ne $summary.curriculum -or
+    $summary.curriculum -ne $policy -or $result.curriculum -ne $summary.curriculum -or
     $scope.curriculum -ne $summary.curriculum -or $summary.model_kind -ne 'pilot' -or
     $summary.config.component_capacity -ne 0 -or $summary.config.layer_evidence -ne $false -or
     $summary.catalogue_sha256 -ne $catalogue -or $scope.source_catalogue_sha256 -ne $catalogue -or
@@ -47,7 +59,7 @@ if ($parent.status -ne 'passed' -or $parent.exit_code -ne 0 -or
     throw 'fixed-study identity/status/native budget differs'
 }
 if ($start -gt 0 -and ($summary.resume.step -ne $start -or
-    (Split-Path $summary.resume.source_run -Leaf) -ne ('m2-stream-allclass1024-s'+($number-1)))) {
+    (Split-Path $summary.resume.source_run -Leaf) -ne ($study+'-s'+($number-1)))) {
     throw 'resume ancestry differs'
 }
 if ($start -eq 0 -and $null -ne $summary.resume) { throw 'fresh study has a resume parent' }

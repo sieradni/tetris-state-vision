@@ -211,3 +211,20 @@ Only actual green r2 curation closes V027. Old r1 remains failed audit evidence.
 LIVE V027 regression curator launcher29692;exactstartup runs/v027-adapter-curation-r1-startup.json.
 
 V0278-test source scope VERIFIED;curator0.692s/76812288B;raw receipt/log copies byte-checked,all known PIDs/exact commands gone. Next fresh r2 profile as above;V027 remains OPEN until actual curator pass.
+
+LIVE fresh r2 profile launcher25196;exactstartup runs/m2-stream-interleave-profile-r2-startup.json. Freeze root neural/shared helper bytes until completion.
+
+2026-10-28 authoritative recheck: fresh r2 profile COMPLETE2,correct fresh_parent_groups1,
+25.915s/561,860,608B under640MiB,model/Adam/reload exact. Catalogue
+68bb40e31e87d62fd9648085699e300ee614da516d09ac24b237e53ada2fe2c1;
+weights c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42.
+Recorded launcher25196/native receipt/progress PIDs and all exact owned commands
+gone,scope runs/m2-stream-interleave-profile-r2-process-death.json. Complete r2
+startup tree was not captured;initial launcher command is recorded. No model Job.
+NEXT r2 collector128MiB/30s/work43,expected<110MiB as declared;then numerical
+comparator128MiB/30s/work256. No admission/bug-closure claim before green audit.
+Disk now59,592,454,144B free;recheck before long runs.
+External capture_allclass_segment.ps1 now supports the two fixed study names,
+new mode binds catalogue from actual curated r6 admission. Syntax/outside-study
+refusal pass;actual interleaved segment capture still pending after first study.
+No neural catalogue/source changes from this external metadata helper.
