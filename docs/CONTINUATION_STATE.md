@@ -28,13 +28,13 @@ no processRNG;recover from global step. M2/capacity0/layeroff. Criterion unchang
   interleave-adapter-contracts7,interleave-error-contracts39 on25251c8.
 - [x]V027 fix and8 adapter checks on158a534,30 hashes in v027-adapter-contracts.
 - [x]Fresh r2 native warm profile complete;independent audit is still pending.
-- [ ]Independent r2 audit,V027 closure,same-input numerical comparison.
+- [x]Independent r2 audit and V027 closure; numerical comparison running below.
 - [ ]Actual new-policy2+6+3+3 recovery/curation before study admission.
 - [ ]Fresh1,024 study and ordinary final41-forward error report/curation.
 
-## Open defects inventory
+## Open defects inventory: none
 
-V-027 OPEN: normal interleaved prefix ancestry was incorrectly used for repeated
+V-027 CLOSED on named8-test and actual r2/independent r3 audit: normal interleaved prefix ancestry was incorrectly used for repeated
 square-profile samples. r1 native2 passed but curator refused actual1 vsclaimed2.
 Raw rejected evidence v027-profile-ancestry-r1;no study/admission published. Root
 fix passes explicit profile flag;profile0..2 counts actual0/1. Eight actual public
@@ -108,3 +108,29 @@ V-001..026 CLOSED;V027 inventory above. Broad renders/occlusion/association,
 reviewed real labels/splits,adequate M2/M3 learning,scratch/pretrained/decoder
 comparisons,calibration/export/CPU/adapters and>=95% readable-real exact complete
 state remain OPEN. Public API stays needs_review. Goal is not complete.
+
+LIVE audit retry launcher14148,exactstartup runs/interleave-profile-curation-r3-startup.json.
+
+Fresh r2 independent audit GREEN0.951s/82956288B/128MiB;2 training recipes+41 images replayed,correct ancestry1 and actual snapshot/source confirmed. All known PIDs/exact commands gone;raw curator/startup/death bytes preserved. V027 closure conditions met;name exact green evidence in ledger next. No model Job live.
+
+LIVE comparator launcher38324,exactstartup runs/interleave-profile-numerics-r1-startup.json;128MiB/30s/work256 as predeclared.
+
+Same-input numerical comparison GREEN0.248s/36585472B/128MiB;actual weights/package sources/all4 metric objects/recipes/loss/gradients exact except policy/output/elapsed metadata. All known PIDs/exact commands gone;raw native receipts/log bytes preserved in interleave-profile-numerics-r1. This is profile compatibility,not interleaved learning. Next predeclare native2+6+3+3 recovery gate r6.
+
+NEXT actual interleaved recovery gate r6,expected<700MiB aggregate,1GiB/420s/work14:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 420
+--work-items 14 --receipt runs/m2-stream-recovery-gate-r6-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_recovery.py
+--output runs/m2-stream-recovery-gate-r6 --curriculum all-class-interleaved-v1
+Logs runs/m2-stream-recovery-gate-r6.log/.stderr.log;state run/progress.json,
+terminal proof.json. Serialized children640MiB/90s,profile2+continuous6+partial3+
+resumed3. Every child uses same current frozen catalogue68bb40e3...,32 fit probes+
+9dev images. Freeze root scripts/helper bytes until all terminal. No other owned
+model Job. Current native pressure guard/kernel/pre-import CPU1/cache16 unchanged.
+After native PASS/whole process death,curator expected<110MiB,128MiB/30s/work181:
+.venv/Scripts/python.exe scripts/record_stream_recovery.py --name m2-stream-recovery-gate-r6
+Receipt runs/interleave-recovery-curation-r1.json,logs same stem;final
+ docs/evidence/m2-stream-recovery-gate-r6/scope.json. Require17 source-replayed
+training rows+164 saved images,actual optimizer/RNG/mode/model equality and
+native receipts. Compare fresh nested profile actual weight hash to r2's c32...
+No1,024 comparison study is admitted before that independent curator passes.

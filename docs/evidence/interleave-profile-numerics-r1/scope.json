@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "runs": [
+    "m2-stream-recovery-gate-r5/profile",
+    "m2-stream-interleave-profile-r2"
+  ],
+  "policies": [
+    "all-class-fit-v1",
+    "all-class-interleaved-v1"
+  ],
+  "source_catalogues": [
+    "6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42",
+    "68bb40e31e87d62fd9648085699e300ee614da516d09ac24b237e53ada2fe2c1"
+  ],
+  "identical_actual_weights": true,
+  "identical_neural_package_sources": true,
+  "identical_all_four_probe_metric_objects": true,
+  "identical_loss_terms_gradients_samples_excluding_elapsed": true,
+  "identical_pixel_state_recipe_ledgers_except_declared_policy": true,
+  "compared_optimizer_updates": 2,
+  "compared_probe_recipes_per_run": 41,
+  "weights_sha256": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42",
+  "input_sha256": {
+    "m2-stream-recovery-gate-r5/profile": {
+      "summary.json": "4aed907962dfb3e0cc414e4c2b1eadd3e89500b0f742dd280e00c559ad7c7c91",
+      "curve.jsonl": "233d7f8a259542a50fb5e72af248b9f4b74d9d3bff6e783c2347fc972c375818",
+      "training.jsonl": "90c21d02cad5495d45b7fe7868b45e446ea99b33c5671a8cc26b1077a4fe6cb4",
+      "training-probe.jsonl": "cc04eeec9d2319fb03b2bb536ea07059a71e4e8965b406b6ce71386d11ac6532",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "checkpoint/manifest.json": "5502e88e182f65eea7c5142cb630b31a89db435836a33f12151f54f3bb5761f0",
+      "checkpoint/weights.pt": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42",
+      "code/source.json": "6b54225fe9d7e880e261d844cf2aedd33f3039940c56ce5d630b31fff9d11028",
+      "native-job.json": "b306efb82c3fbc5fe58a772fe458d0e58ec6df321b38c7d7abc79c361152b7b6"
+    },
+    "m2-stream-interleave-profile-r2": {
+      "summary.json": "da5be8a43c70435619ebc9a22044120b6843fbcc4f254d0bd45aa162b5405aa4",
+      "curve.jsonl": "7295c3301bfb793dea124882ba581cefa925c52defcc7aff48ab8af0f4f40a2b",
+      "training.jsonl": "66253702ad44dba996dad37e3a6f089512233b0d63ead07fab94b753cd1e0e0f",
+      "training-probe.jsonl": "616f65d78b90a18fa6d10d83b93f5bcb700f74e728b2d4bd457ce19b75e9bb55",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "checkpoint/manifest.json": "e60187b1de8272be1624be3edf1c1945b27d5b0cbd6b6e387dceab5dede385ee",
+      "checkpoint/weights.pt": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42",
+      "code/source.json": "445cffb34e2cea06375f4f492c3cdddc77a2eae56256219597eb4b9faea92f81",
+      "native-job.json": "4931f7f6954fa8c1d93ee3140e66a5aa337fcaa9dacaf8fff48ec5d5a02842e9"
+    }
+  },
+  "script_sha256": "7a6a9a532fead289818e7f022e20abd0e63e5c1554414e8e4fc114c16b7015a9",
+  "scope": "Same-input warm-profile numerical compatibility only. Interleaved training order, adequate learning and real accuracy are separate gates."
+}

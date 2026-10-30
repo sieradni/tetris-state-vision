@@ -1,0 +1,5 @@
+{
+  "ProcessId": 25196,
+  "ParentProcessId": 23800,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 2 --receipt runs/m2-stream-interleave-profile-r2-job.json -- .venv/Scripts/python.exe scripts/train_m2_stream.py --output runs/m2-stream-interleave-profile-r2 --model pilot --steps 2 --wall-seconds 60 --development-groups 3 --evaluate-every 3 --checkpoint-every 3 --profile-square --curriculum all-class-interleaved-v1"
+}

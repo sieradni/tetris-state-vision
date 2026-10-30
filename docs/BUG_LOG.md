@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 
-## V-027 — OPEN: interleaved profile counted the ordinary schedule's ancestry
+## V-027 — CLOSED: interleaved profile counted the ordinary schedule's ancestry
 
 - Symptom: native interleave-profile-r1 completed its two warm square updates,
   but runs/interleave-profile-curation-r1.stderr.log refused the claimed two
@@ -36,8 +36,17 @@ a named green run. An unrun gate leaves the entry OPEN.
   40,968,192B/128MiB; failed profile/collector sources and receipts remain intact.
   No user data or prior run was overwritten. Original native profile itself
   passed65.797s/552,042,496B/640MiB; it is not a curated training admission.
-- Closure pending: new8-case adapter regression and a fresh source-bound r2
-  native profile plus independent recipe/ancestry curation. No green claim yet.
+- Green gates: docs/evidence/v027-adapter-contracts/scope.json pins the8-case
+  regression on158a534 (2.598s,native3.108s/48,918,528B under128MiB), including
+  actual public recipes for all three policies. Separately,
+  docs/evidence/m2-stream-interleave-profile-r2/scope.json verifies fresh r2:
+  two warm updates25.915s/561,860,608B under640MiB; actual ancestry1 and all43
+  training/probe recipes pass independent interleave-profile-curation-r3 in
+  .951s/82,956,288B under128MiB. Actual source catalogue68bb40e3..., snapshot
+  and weights are bound; all known PIDs/exact commands gone. The prior r2 audit
+  attempt was parked before child spawn by OS pressure, not relabeled green;
+  its receipt is preserved in interleave-profile-pressure-r1. This closes the
+  accounting defect, not the separate recovery/learning/quality gates.
 
 ## V-026 — CLOSED: new fixture writer could change hashed newlines on Windows
 

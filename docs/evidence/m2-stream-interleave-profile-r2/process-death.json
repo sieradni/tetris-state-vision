@@ -1,0 +1,10 @@
+{
+  "scope": "Recorded launcher/native receipt/progress PIDs and exact owned command; no claim of a captured complete startup tree.",
+  "matching_python_commands": 0,
+  "verified_dead_pids": [
+    25100,
+    25196,
+    26720,
+    27416
+  ]
+}
