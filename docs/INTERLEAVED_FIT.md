@@ -1,4 +1,49 @@
-# Order-only fit comparison
+# Completed order-only fit comparison
+
+Both matched1,024-update studies are complete and independently audited. The
+interleaved schedule improves visible piece labels on this fixed seed and32
+controlled drawings, while exact boards and geometry regress. Both fail the
+unchanged joint-fit criterion. No ordering is selected as a release solution,
+and neither finished study is extended.
+
+| Final diagnostic | Ordered | Interleaved | Required |
+|---|---:|---:|---:|
+| Exact locked boards | 32/32 | 28/32 | 32/32 |
+| Exact visible piece type and pose | 12/56 | 30/56 | 56/56 |
+| Exact absence | 8/8 | 7/8 | 8/8 |
+| Correct supported semantic cells | 128/128 | 128/128 | 128/128 |
+| Mean geometry error, cells | 0.211 | 0.386 | <0.25 |
+| Exact nonempty development boards | 0/7 | 0/7 | Separate diagnostic |
+| Exact development roles | 0/18 | 0/18 | Separate diagnostic |
+
+All observed columns, rows and equivalent rotations are correct in both final
+fit populations. The remaining role errors are type errors:44 ordered versus27
+interleaved. Candidate exact visible labels by target class(total8 per class,
+four views per role):I8,O4,T2,S4,Z2,J6,L4. This improves class coverage but leaves
+substantial class-reading failure. Both exact development boards are empty;
+the nine development views represent only three ancestries.
+
+The final verifier confirms identical neural/loss/target package sources,
+matching model/optimizer/input/step recipes and identical32-pair pixel/public
+state populations in all32 completed cycles, with actually different training
+order. The earlier matched-start proof supplies identical initial predictions
+and same-input warm tensors. Fit verdicts are recomputed from each independent
+ordinary raw-head report, not copied from a declared success flag.
+Evidence: docs/evidence/interleave1024-comparison-r1/scope.json; native metadata
+comparison.350s/51,212,288B under128MiB/30s. Candidate final ordinary41 replay
+7.370s/424,361,984B under640MiB and independent collector.398s/78,548,992B under
+128MiB. Actual final weights93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273,
+catalogue68bb40e3. Source/controller/snapshot/native receipts are retained in
+m2-stream-interleave1024-s3; raw errors in m2-stream-interleave1024-errors-r1.
+
+Next complete the existing larger4,096-update baseline from its verified2,816
+checkpoint with the original frozen trainer/optimizer. Retain both failed fit
+studies; inspect the class-feature path before adopting another mechanism.
+This comparison does not establish independent-generalization or real-image
+quality. The locked fit population contains only empty boards and one fixed
+eight-cell bottom row, not a broad board-reading benchmark.
+
+## Protocol and earlier checkpoints
 
 This follow-up is selected after the original1,024-update study and its independent
 ordinary replay failed the fit gate. All visible positions/rotations fit, but44
@@ -6,10 +51,9 @@ piece labels are wrong; predictions use only Z/J/L and absence. See ALL_CLASS_FI
 The new policy is integrated with88 selected checks on25251c8. A later profile
 ancestry fix has its own8-case/source-bound and native replay gate (V-027).
 Fresh warm admission, same-input numerical comparison and exact continuous/
-recovered training pass on catalogue68bb40e3. The finite comparison study is
-running. Its first128 updates and independent ordinary replay are verified;
-the next512 updates are in progress. The completed original study keeps its
-source, schedule and target.
+recovered training pass on catalogue68bb40e3. The completed studies retain their
+declared sources,schedules and targets. The protocol below records the planned
+controls and earlier partial checkpoint evidence.
 
 Both studies' initial predictions/losses and model/optimizer recipe match
 exactly. The first four completed32-step cycles contain identical pixel/public

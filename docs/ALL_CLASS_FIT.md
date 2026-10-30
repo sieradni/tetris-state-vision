@@ -25,12 +25,13 @@ unchanged neural catalogue6147a558. Final ordinary replay: 41 forwards in32.816s
 docs/evidence/m2-stream-allclass1024-s3/; raw class/pose errors and their independent
 collector are in docs/evidence/m2-stream-allclass1024-errors-r1/.
 
-Next selected lever: the separate, conditional order-only comparison in
-INTERLEAVED_FIT.md. The original ordered run is finished and will not be extended.
-Its final row separation removes the earlier need to change role representations
-before checking whether class-blocked training causes recency bias. That cause
-remains unproven. A new ordering requires its own frozen identity, checks,
-resource/recovery admission and fresh initialization before any training.
+The separate order-only comparison is now complete in INTERLEAVED_FIT.md:
+30/56 visible labels,28/32 boards and.386-cell geometry still fail its fit gate.
+Both studies are finished and will not be extended.
+The ordered run's final row separation narrowed the follow-up to class reading.
+The matched intervention changes class coverage, but it does not supply a
+sufficient joint-fit solution. Its separate frozen identity, resource/recovery
+admission, matched initialization and complete-data audit are retained.
 
 The completed layer pilot shows class collapse despite supported class exposure.
 This next diagnostic separates basic training-set fit from varied-layout learning.

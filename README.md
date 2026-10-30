@@ -12,7 +12,8 @@ by default. Resource/recovery checks passed; real-image accuracy remains unteste
 The [balanced32-image fit](docs/ALL_CLASS_FIT.md) completed1,024 updates and fails
 its fit gate. Independent replay finds32/32 exact locked boards but12/56 correct
 visible piece labels; positions and rotations are correct, but types collapse
-to Z/J/L. A separate order-only comparison is being prepared.
+to Z/J/L. The completed [order-only comparison](docs/INTERLEAVED_FIT.md) reaches
+30/56 visible labels and28/32 boards and also fails the joint-fit gate.
 
 Requires Python 3.11+ and uv. On Windows, these commands install the locked
 dependencies and generate three ancestry groups (15 images). Each receipt/output

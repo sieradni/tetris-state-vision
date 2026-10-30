@@ -56,8 +56,13 @@ No complete screenshot parser or real-image accuracy is claimed.
    integrated, with88 scoped checks plus the8-case profile-ancestry regression.
    Fresh640MiB warm admission and independent replay pass; the same-input
    comparison has identical actual weights,losses,gradients,recipes and probes.
-   New-policy continuous/recovered training is being verified before the finite
-   comparison study. Do not extend the original finished study.
+   New-policy recovery and the full matched1,024-update comparison are now
+   complete:visible labels12/56->30/56,but boards32/32->28/32 and geometry
+   .211->.386. Both fit gates fail;INTERLEAVED_FIT.md records controls,raw evidence
+   and limits. Do not extend either finished study or adopt this ordering as a
+   release fix. Next complete the original larger4,096 baseline's remaining
+   1,280 updates using its original frozen source/optimizer,then inspect the
+   class-feature path before selecting another learning mechanism.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,

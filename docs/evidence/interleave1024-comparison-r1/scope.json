@@ -1,0 +1,512 @@
+{
+  "status": "passed",
+  "runs": [
+    "m2-stream-allclass1024-s3",
+    "m2-stream-interleave1024-s3"
+  ],
+  "policies": [
+    "all-class-fit-v1",
+    "all-class-interleaved-v1"
+  ],
+  "updates_each": 1024,
+  "all32_completed_cycles_have_identical_pixel_state_pairs": true,
+  "actual_training_order_differs": true,
+  "neural_package_sources_identical": true,
+  "common_training_recipe": {
+    "config": {
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ],
+      "dimension": 64,
+      "heads": 4,
+      "blocks": 2,
+      "refinements": 2,
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "component_capacity": 0,
+      "layer_evidence": false
+    },
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "steps": 1024,
+    "max_side": 512,
+    "development_groups": 3,
+    "evaluate_every": 128,
+    "checkpoint_every": 64,
+    "profile_square": false,
+    "threads": 1,
+    "rng": "torch_cpu_only",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "input_policy": "M2-prepared-resize-v1"
+  },
+  "matched_start_scope_sha256": "73c61219c266b82e2d0a2aabee894ffdb3ff9aab92d7996fd5463a35b0c29b37",
+  "warm_scope_sha256": "a75d90e837a13200dc3ab3fb479b03aaecbe2a0efa51d7f92e8ca08a0c9c49ad",
+  "outcomes": {
+    "m2-stream-allclass1024-s3": {
+      "training_fit": {
+        "passed": false,
+        "images": 32,
+        "ancestry_groups": 16,
+        "exact_locked_boards": 32,
+        "known_layers": 64,
+        "exact_known_layers": 20,
+        "observed_layers": 56,
+        "exact_observed_layers": 12,
+        "absent_layers": 8,
+        "exact_absent_layers": 8,
+        "known_semantic_cells": 128,
+        "correct_semantic_cells": 128,
+        "mean_geometry_error_cells": 0.21058594435453415,
+        "roles_by_target_class": {
+          "active": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 0
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 2
+            },
+            "J": {
+              "known": 4,
+              "exact": 2
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 4
+            }
+          },
+          "ghost": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 0
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 2
+            },
+            "J": {
+              "known": 4,
+              "exact": 2
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 4
+            }
+          }
+        },
+        "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+        "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+      },
+      "development": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "locked_populations": {
+          "empty": {
+            "images": 2,
+            "exact_boards": 2,
+            "known_cells": 400,
+            "true_positive": 0,
+            "true_negative": 400,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 7,
+            "exact_boards": 0,
+            "known_cells": 1400,
+            "true_positive": 18,
+            "true_negative": 1217,
+            "false_positive": 3,
+            "false_negative": 162
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 6,
+            "rotation_errors": 3
+          },
+          "ghost": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 9,
+            "rotation_errors": 3
+          }
+        },
+        "geometry": {
+          "supported_images": 9,
+          "mean_cells": 4.168932326409487,
+          "origin_error_cells": 3.946945741367227,
+          "per_column_basis_error_cells": 0.2521416214476693,
+          "per_row_basis_error_cells": 0.13343939827482104,
+          "worst_point_cells": 7.549032390773832
+        }
+      },
+      "training_errors": {
+        "images": 32,
+        "ancestry_groups": 16,
+        "locked_populations": {
+          "empty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 0,
+            "true_negative": 3200,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 128,
+            "true_negative": 3072,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 32,
+            "exact": 10,
+            "unknown_predictions": 0,
+            "type_errors": 22,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "ghost": {
+            "known": 32,
+            "exact": 10,
+            "unknown_predictions": 0,
+            "type_errors": 22,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          }
+        },
+        "geometry": {
+          "supported_images": 32,
+          "mean_cells": 0.21058597152422973,
+          "origin_error_cells": 0.26559971929549614,
+          "per_column_basis_error_cells": 0.05554616451263428,
+          "per_row_basis_error_cells": 0.017962604761123657,
+          "worst_point_cells": 0.7233509670183458
+        }
+      },
+      "weights_sha256": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6"
+    },
+    "m2-stream-interleave1024-s3": {
+      "training_fit": {
+        "passed": false,
+        "images": 32,
+        "ancestry_groups": 16,
+        "exact_locked_boards": 28,
+        "known_layers": 64,
+        "exact_known_layers": 37,
+        "observed_layers": 56,
+        "exact_observed_layers": 30,
+        "absent_layers": 8,
+        "exact_absent_layers": 7,
+        "known_semantic_cells": 128,
+        "correct_semantic_cells": 128,
+        "mean_geometry_error_cells": 0.38617656473070383,
+        "roles_by_target_class": {
+          "active": {
+            "I": {
+              "known": 4,
+              "exact": 4
+            },
+            "O": {
+              "known": 4,
+              "exact": 2
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 2
+            },
+            "Z": {
+              "known": 4,
+              "exact": 2
+            },
+            "J": {
+              "known": 4,
+              "exact": 2
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 4
+            }
+          },
+          "ghost": {
+            "I": {
+              "known": 4,
+              "exact": 4
+            },
+            "O": {
+              "known": 4,
+              "exact": 2
+            },
+            "T": {
+              "known": 4,
+              "exact": 2
+            },
+            "S": {
+              "known": 4,
+              "exact": 2
+            },
+            "Z": {
+              "known": 4,
+              "exact": 0
+            },
+            "J": {
+              "known": 4,
+              "exact": 4
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 3
+            }
+          }
+        },
+        "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+        "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+      },
+      "development": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "locked_populations": {
+          "empty": {
+            "images": 2,
+            "exact_boards": 2,
+            "known_cells": 400,
+            "true_positive": 0,
+            "true_negative": 400,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 7,
+            "exact_boards": 0,
+            "known_cells": 1400,
+            "true_positive": 18,
+            "true_negative": 1217,
+            "false_positive": 3,
+            "false_negative": 162
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 6,
+            "rotation_errors": 3
+          },
+          "ghost": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 9,
+            "rotation_errors": 3
+          }
+        },
+        "geometry": {
+          "supported_images": 9,
+          "mean_cells": 3.8209083590840884,
+          "origin_error_cells": 4.01497728861052,
+          "per_column_basis_error_cells": 0.23910441175976047,
+          "per_row_basis_error_cells": 0.1238365398234297,
+          "worst_point_cells": 7.629959117165509
+        }
+      },
+      "training_errors": {
+        "images": 32,
+        "ancestry_groups": 16,
+        "locked_populations": {
+          "empty": {
+            "images": 16,
+            "exact_boards": 14,
+            "known_cells": 3200,
+            "true_positive": 0,
+            "true_negative": 3198,
+            "false_positive": 2,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 16,
+            "exact_boards": 14,
+            "known_cells": 3200,
+            "true_positive": 128,
+            "true_negative": 3070,
+            "false_positive": 2,
+            "false_negative": 0
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 32,
+            "exact": 18,
+            "unknown_predictions": 0,
+            "type_errors": 14,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "ghost": {
+            "known": 32,
+            "exact": 19,
+            "unknown_predictions": 0,
+            "type_errors": 13,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          }
+        },
+        "geometry": {
+          "supported_images": 32,
+          "mean_cells": 0.3861765744225128,
+          "origin_error_cells": 0.11364286709395491,
+          "per_column_basis_error_cells": 0.018500465899705887,
+          "per_row_basis_error_cells": 0.029901914298534393,
+          "worst_point_cells": 0.9009864862968328
+        }
+      },
+      "weights_sha256": "93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273"
+    }
+  },
+  "input_sha256": {
+    "m2-stream-allclass1024-s3": {
+      "summary.json": "7fc8eb57534111f0b8e9616cb99335c8bdcaa5867b2fbbdd0682665e4cba8597",
+      "training.jsonl": "91c5bb06c1b209477c2c0342ba4c27fd69cbb93ef49a62b9bf8bdda01509ae5c",
+      "curve.jsonl": "6d11f0b0154e12052e211047e88606e4437c0c0c7bdad1ce84f24212ddee8259",
+      "training-probe.jsonl": "cc04eeec9d2319fb03b2bb536ea07059a71e4e8965b406b6ce71386d11ac6532",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "checkpoint/manifest.json": "ed3c00c17f90c101bae7e3ec28c493ad2d32a86f53bbead287a2eb797e3a4d4c",
+      "checkpoint/weights.pt": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6",
+      "code/source.json": "6b54225fe9d7e880e261d844cf2aedd33f3039940c56ce5d630b31fff9d11028",
+      "ordinary_report_sha256": "05290ace0485dc22664382449abb71605f1c9bfc8500c2c03c13d5e5c1cb6394",
+      "ordinary_scope_sha256": "4ae3b995d6acc035eafcf3dc573b8267205332a993f552732c4bda44f54d402e"
+    },
+    "m2-stream-interleave1024-s3": {
+      "summary.json": "39713f044655eadbbbe84851525e8736453bf5ce17c9114087a1d55676d77882",
+      "training.jsonl": "f35986d57548bb49011d45551980fa68abaa8eb33c7e9d8df1113cc7cd314ae2",
+      "curve.jsonl": "a67d9fcafc95df9cf3020fe349e348bfe1789946de814faeb8da4a6f57ee9caa",
+      "training-probe.jsonl": "616f65d78b90a18fa6d10d83b93f5bcb700f74e728b2d4bd457ce19b75e9bb55",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "checkpoint/manifest.json": "cd206ba73a6f2553953ee06e6eb3ec2c0c77e9b4c7636ecf321071e3d313bab8",
+      "checkpoint/weights.pt": "93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273",
+      "code/source.json": "445cffb34e2cea06375f4f492c3cdddc77a2eae56256219597eb4b9faea92f81",
+      "ordinary_report_sha256": "0d6c0774d441904ff2ce58cac0fd89de3db2b0a20593abf96455cbf7e2baa04a",
+      "ordinary_scope_sha256": "56dd9a34b4aa5308c789e49c9b93b8777c244eb7d0e6a4a3ff853744c0d0f675"
+    }
+  },
+  "comparison_sources": {
+    "docs/experiments/verify_interleaved_finish.py": "2a167e8a18df75eaf446a3ad0a55ab8efff033708f43da718df55f3ffd4aa2d7",
+    "docs/experiments/verify_interleaved_start.py": "78bf15db6f0ef1f2d10ec520f554fa30489c4535f59254fdf89e61ee9fe8df20",
+    "scripts/m2_fit_contract.py": "444a0667a5039a92f0cde6b093d981dd17995419908172cc6e330371596f32a2"
+  },
+  "scope": "One matched seed and32 controlled drawings;actual fit verdict only. Views share ancestry. Not a real screenshot,independent-generalization or complete-state release result."
+}
