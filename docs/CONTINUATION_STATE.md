@@ -197,3 +197,32 @@ Logs runs/interleave128-match-r1.log/.stderr.log;final
 binds actual curated artifacts,initial predictions/losses/config/recipe,identical
 32pairs eachcycle/fixedprobes,and actually different optimizer sample order.
 This is not final1,024-update learning or independent generalization.
+
+LIVE first128 raw/matched audits;exactstartup runs/interleave128-audit-startup-r1.json. No training Job.
+
+Matched-start/data audit GREEN.274s/38,363,136B/128MiB:actualinitialtraining+
+development losses/predictions exact,common recovery recipe/modelpackage same,
+all32 image/public-state pairs once percycle/fixedprobes same,actual optimizer
+sample order differs. Native receipt/log copies byte-verified in
+interleave128-matched-start-r1. Raw ordinary41 forwards GREEN7.460s/
+425,586,688B/640MiB,all savedmetrics reproduced,weightsunchanged. All recorded
+PIDs/exactcommands gone. NEXT raw evidence curator128MiB/30s/work41 as declared,
+expected<110MiB;no other model Job live.
+
+LIVE first128 raw evidence curator launcher26084,exactstartup runs/interleave128-error-curation-r1-startup.json.
+
+First128 ordinary error evidence GREEN;curator0.396s/78340096B/128MiB. All known PIDs/exactcommands gone;raw curator/source/ordinary metrics preserved. Scores remainfitFALSE:32boards,2/56observed,4/8absent,.30311geometry. Next same fixedstudy+512->640,not an altered/extended target.
+NEXT s2,+512 ->640/1024,expected<700MiB,parent896MiB/900s/work512,
+child640MiB/1860s with ancestor900s effective deadline;curator128MiB/120s/work681:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
+--work-items 512 --receipt runs/m2-stream-interleave1024-s2-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s2
+--target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r6/profile
+--resume-from runs/m2-stream-interleave1024-s1
+Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
+terminal result.json;child same-prefix-job.json;run summary/progress/snapshots.
+Controller50d7fc6e...,source68bb40e3 unchanged. Freeze all shared helpers. One
+heavy Job only;recheck>40GB disk. Capture observedstartup while worker exists,
+then actual128+512=640 artifacts/curation and whole exactprocess termination.
+Metadata collector capture_allclass_segment.ps1 -Name m2-stream-interleave1024-s2
+-Launcher LAUNCHER_BELOW. No source/policy/optimizer/recipe change.

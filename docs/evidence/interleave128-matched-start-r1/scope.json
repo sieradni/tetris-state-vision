@@ -1,0 +1,260 @@
+{
+  "status": "passed",
+  "runs": [
+    "m2-stream-allclass1024-s1",
+    "m2-stream-interleave1024-s1"
+  ],
+  "policies": [
+    "all-class-fit-v1",
+    "all-class-interleaved-v1"
+  ],
+  "steps": 128,
+  "fixed_target": 1024,
+  "initial_prediction_loss_metrics_exact": true,
+  "common_training_recipe": {
+    "config": {
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ],
+      "dimension": 64,
+      "heads": 4,
+      "blocks": 2,
+      "refinements": 2,
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "component_capacity": 0,
+      "layer_evidence": false
+    },
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "steps": 1024,
+    "max_side": 512,
+    "development_groups": 3,
+    "evaluate_every": 128,
+    "checkpoint_every": 64,
+    "profile_square": false,
+    "threads": 1,
+    "rng": "torch_cpu_only",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "input_policy": "M2-prepared-resize-v1"
+  },
+  "fixed_probe_recipes_exact_except_policy": true,
+  "each_cycle_has_identical32_pixel_state_pairs": true,
+  "actual_training_order_differs": true,
+  "neural_package_sources_identical": true,
+  "same_input_warm_actual_tensors_exact": true,
+  "input_sha256": {
+    "m2-stream-allclass1024-s1": {
+      "summary.json": "15f5db1716fa6f34837732e7c0b641f86379d8435633f4135f98fa92d574c9c0",
+      "training.jsonl": "9e4d4248c516f4e7bdceadc2c2449906f37c121fbec1e052f04c9d607bf912be",
+      "training-probe.jsonl": "cc04eeec9d2319fb03b2bb536ea07059a71e4e8965b406b6ce71386d11ac6532",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "curve.jsonl": "1c5ff5d4d81f20363848f0d7ae57f2aa980b11a8ed30f3158196096910984954",
+      "checkpoint/manifest.json": "40dcaa71ec950fa5ee2f4f050eb34dc2cb84ad678384171d284a7a04192f169a",
+      "checkpoint/weights.pt": "f880c24dd6b8b16b276504c3e79420139ccdee2bc1ba2de9832d9a40c1f7ba81",
+      "code/source.json": "6b54225fe9d7e880e261d844cf2aedd33f3039940c56ce5d630b31fff9d11028",
+      "native-job.json": "a6b531e7796220e7de522b7b6f97c589650d9b4066c56a3dd48d68b7ee82f278",
+      "curated-scope.json": "8f15f39c3c69ecf47090d79e6077b2949ca1bddf1eac9a361ec6b1427932f8a6"
+    },
+    "m2-stream-interleave1024-s1": {
+      "summary.json": "f458199a02920ec3a8aca76f77396abb3513b3fd3c93495d15864d1297da1c77",
+      "training.jsonl": "7dabadc9059ef8948e253f59cc37130421cf3b6ee06ad9df659a3ad90ded64a4",
+      "training-probe.jsonl": "616f65d78b90a18fa6d10d83b93f5bcb700f74e728b2d4bd457ce19b75e9bb55",
+      "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+      "curve.jsonl": "902f24e3c94093c2ee378367a688a53b779d2775c5ef513403db0b876bd5c4cf",
+      "checkpoint/manifest.json": "1ba8e3a74db0b43b8dcb445eb7b7caa82fd3bbf68e7540739c69d3f940eb08a6",
+      "checkpoint/weights.pt": "0accfd645c6ff69ff6edb3fc3abe2ec2398402afa9e7e443df7360970817710d",
+      "code/source.json": "445cffb34e2cea06375f4f492c3cdddc77a2eae56256219597eb4b9faea92f81",
+      "native-job.json": "7fa513e17c2df61ac42d4377e79b60527ac5c8a119a6edbce2ff801ed099a3c4",
+      "curated-scope.json": "d269a95a8bb32af6d47529845a6f225e8edb04f353c30f2667a1db2e9928f188"
+    }
+  },
+  "training_fit_at128": {
+    "m2-stream-allclass1024-s1": {
+      "passed": false,
+      "images": 32,
+      "ancestry_groups": 16,
+      "exact_locked_boards": 28,
+      "known_layers": 64,
+      "exact_known_layers": 8,
+      "observed_layers": 56,
+      "exact_observed_layers": 0,
+      "absent_layers": 8,
+      "exact_absent_layers": 8,
+      "known_semantic_cells": 128,
+      "correct_semantic_cells": 128,
+      "mean_geometry_error_cells": 0.21596340788528323,
+      "roles_by_target_class": {
+        "active": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 4
+          }
+        },
+        "ghost": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 4
+          }
+        }
+      },
+      "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+      "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+    },
+    "m2-stream-interleave1024-s1": {
+      "passed": false,
+      "images": 32,
+      "ancestry_groups": 16,
+      "exact_locked_boards": 32,
+      "known_layers": 64,
+      "exact_known_layers": 6,
+      "observed_layers": 56,
+      "exact_observed_layers": 2,
+      "absent_layers": 8,
+      "exact_absent_layers": 4,
+      "known_semantic_cells": 128,
+      "correct_semantic_cells": 128,
+      "mean_geometry_error_cells": 0.3031107531860471,
+      "roles_by_target_class": {
+        "active": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 2
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 2
+          }
+        },
+        "ghost": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 2
+          }
+        }
+      },
+      "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+      "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+    }
+  },
+  "script_sha256": "78bf15db6f0ef1f2d10ec520f554fa30489c4535f59254fdf89e61ee9fe8df20",
+  "scope": "Matched starts,recipes,neural package and data populations with actual changed order.128/1024 is partial;not final causal,independent-generalization or real-accuracy acceptance."
+}
