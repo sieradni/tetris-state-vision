@@ -17,7 +17,7 @@ from source_snapshot import verify_source
 
 def main():
     require_bounded_job()
-    sources = (Path(__file__), Path(__file__).with_name("verify_interleaved_start.py"), ROOT / "scripts/m2_fit_contract.py")
+    sources = (Path(__file__).resolve(), Path(__file__).resolve().with_name("verify_interleaved_start.py"), ROOT / "scripts/m2_fit_contract.py")
     source_hashes = {path.relative_to(ROOT).as_posix(): sha(path) for path in sources}
     names = ("m2-stream-allclass1024-s3", "m2-stream-interleave1024-s3")
     reports = ("m2-stream-allclass1024-errors-r1", "m2-stream-interleave1024-errors-r1")

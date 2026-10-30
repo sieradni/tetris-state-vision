@@ -315,3 +315,14 @@ archived121fd source and2,816 pointer,1GiB child and original recipe,with no new
 curriculum/layer flags sent to legacy worker. Next actual large-model leg will
 require explicit RAM/disk/command/checkpoint after all comparison audits finish.
 This is completing the existing baseline,not extending either finished1,024 study.
+
+LIVE finalcurator/originalplan metadata jobs;exactstartup runs/final-audit-and-original-plan-startup-r1.json. No modeltraining Job.
+
+Final candidate ordinary evidence VERIFIED:collector.398s/78,548,992B/128MiB,
+41 source/weight-bound ordinary predictions reproduce finalmetrics. All known
+PIDs/exactcommands gone;raw curator/startup copies byte-verified.
+Original s8 plan-only GREEN.312s/34,316,288B/128MiB,recorded PIDs/commands gone;
+actual oldsource121fd path,current controller50d7,2816start,512updates,1GiBchild,
+originalseed/LR/eval/snapshot/dev6 recipe,NO newcurriculum/layerflags. No optimizer
+ran. Raw native/source scope in docs/evidence/accuracy-s8-plan-r1/.
+NEXT final comparison helper128MiB/30s/work8192(expected<110MiB),as declared.

@@ -1,0 +1,16 @@
+{
+  "start_step": 2816,
+  "status": "verified_plan_only",
+  "target_steps": 4096,
+  "child_memory_mib": 1024,
+  "scope": "Read-only original frozen-source/admission/snapshot recipe routing;no optimizer execution or model-quality claim.",
+  "actual_new_training_updates": 0,
+  "controller_sha256": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+  "new_update_cap": 512,
+  "artifact_sha256": {
+    "native.log": "8614cfdc2246a00ac312671bed4845a17bd724dca2efd0c750f1210f3ab4e1a3",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observed-startup.json": "f0bc4db945f6296fdac7e29d67fe4cc8765b1e4206f827813cce1de200ad22fc",
+    "native-job.json": "d722a3eadab47c496b5c11551eadb0d7d905590acd4518abd2b8dac53e86b41b"
+  }
+}
