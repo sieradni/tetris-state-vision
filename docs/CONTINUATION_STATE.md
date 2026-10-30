@@ -166,3 +166,34 @@ Require ordinary41-forward replay+independent curator before accepting fit score
 Also compare both initial training/development metrics and all32 pixel/state/
 probe recipes to completed ordered s1,holding config/seed/optimizer constant.
 The same-input warm profile already has byte-identical actualweights and package.
+
+LIVE FIRST matched study s1 launcher9732,exactstartup runs/m2-stream-interleave1024-s1-pipeline-startup.json. Root source frozen.
+
+FIRST interleaved s1 VERIFIED step_partial128/1024,+128. Parent52.438s/
+601,968,640B/896MiB;child50.229s/564,973,568B/640MiB;curator1.619s/84,103,168B/
+128MiB. All128 recipes+41probes replayed,actual training/inference hashes and
+recorded PIDs/exact owned commands checked by two-study collector. Only the
+actual root launcher was directly observed at spawn;pipeline/observed-startup.json
+is byte-copy of that observation,not a full descendant tree. Supplemental
+startup-observation-scope.json makes this explicit. No model Job live.
+Weights0accfd645c6ff69ff6edb3fc3abe2ec2398402afa9e7e443df7360970817710d.
+Internal fit32/32boards,6/64roles(2/56observed,4/8absent),128/128semantics,
+geometry.30311075;fitFALSE. Dev2/9boards,0/18roles,3.90562geometry. These scores
+still require ordinary independent raw-head replay. No early final verdict.
+NEXT ordinary41-forward replay,expected<600MiB,640MiB/180s/work41:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 41 --receipt runs/m2-stream-interleave128-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-interleave1024-s1
+--output runs/m2-stream-interleave128-errors-r1
+Logs runs/m2-stream-interleave128-errors-r1.log/.stderr.log;final same-prefix/result.json.
+Then independent collector128MiB/30s/work41(expected<110MiB),receipt/logs
+runs/interleave128-error-curation-r1;record_stream_errors.py --name m2-stream-interleave128-errors-r1.
+Separately matched-start/data verifier expected<110MiB,128MiB/30s/work512:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 512 --receipt runs/interleave128-match-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/verify_interleaved_start.py
+Logs runs/interleave128-match-r1.log/.stderr.log;final
+ docs/evidence/interleave128-matched-start-r1/scope.json. External metadata helper
+binds actual curated artifacts,initial predictions/losses/config/recipe,identical
+32pairs eachcycle/fixedprobes,and actually different optimizer sample order.
+This is not final1,024-update learning or independent generalization.

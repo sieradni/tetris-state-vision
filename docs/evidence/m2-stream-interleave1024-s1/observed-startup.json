@@ -1,0 +1,5 @@
+{
+  "ProcessId": 9732,
+  "ParentProcessId": 23824,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 896 --wall-seconds 420 --work-items 128 --receipt runs/m2-stream-interleave1024-s1-pipeline-job.json -- .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s1 --target-steps 1024 --updates 128 --admission runs/m2-stream-recovery-gate-r6/profile"
+}

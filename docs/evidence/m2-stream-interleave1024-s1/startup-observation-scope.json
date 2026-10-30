@@ -1,0 +1,4 @@
+{
+  "observed_launcher_file_sha256": "9dcda27a1337dabd18ecb4f8cd077dc9e5360d8e5f1a46d46d1fa145a44f3e5a",
+  "scope": "Only the root launcher command was directly captured at spawn;no complete descendant startup tree was captured. Native receipt/progress PIDs and all exact owned commands were independently checked at termination."
+}
