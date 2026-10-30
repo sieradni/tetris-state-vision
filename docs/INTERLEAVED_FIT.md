@@ -5,10 +5,34 @@ ordinary replay failed the fit gate. All visible positions/rotations fit, but44
 piece labels are wrong; predictions use only Z/J/L and absence. See ALL_CLASS_FIT.
 The new policy is integrated with88 selected checks on25251c8. A later profile
 ancestry fix has its own8-case/source-bound and native replay gate (V-027).
-Fresh warm admission and the same-input numerical comparison now pass on
-catalogue68bb40e3. Continuous/recovered training is being verified before the
-finite comparison study. The completed original study keeps its source,
-schedule and target.
+Fresh warm admission, same-input numerical comparison and exact continuous/
+recovered training pass on catalogue68bb40e3. The finite comparison study is
+running. Its first128 updates and independent ordinary replay are verified;
+the next512 updates are in progress. The completed original study keeps its
+source, schedule and target.
+
+Both studies' initial predictions/losses and model/optimizer recipe match
+exactly. The first four completed32-step cycles contain identical pixel/public
+state pairs once each, with a verified different optimizer sample order.
+Evidence: docs/evidence/interleave128-matched-start-r1/scope.json. The warm
+same-input comparison also has byte-identical actual weights and unchanged
+neural/loss/target package sources. This supports the comparison's controls;
+it does not decide whether interleaving improves learning.
+
+| At128 updates | Ordered | Interleaved |
+|---|---:|---:|
+| Exact locked boards | 28/32 | 32/32 |
+| Exact visible piece type and pose | 0/56 | 2/56 |
+| Exact absence | 8/8 | 4/8 |
+| Correct supported semantic cells | 128/128 | 128/128 |
+| Mean geometry error, cells | 0.216 | 0.303 |
+
+Both partial checkpoints fail the unchanged joint-fit criterion. Neither has
+correct nonempty development boards or development roles; their two exact
+development boards are empty. Final1,024-update evidence remains required.
+Candidate ordinary replay7.460s/425,586,688B/640MiB and independent collector
+.396s/78,340,096B/128MiB reproduce every saved score; named scope is
+docs/evidence/m2-stream-interleave128-errors-r1/scope.json.
 
 Question: does interleaving classes improve fit when the images, public labels,
 model, initialization and optimizer are unchanged? The original cycle contains
