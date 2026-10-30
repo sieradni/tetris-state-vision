@@ -18,8 +18,8 @@ All still fail adequate/jointlearning. No releasequality or convergence claim.
 - [x]Finalordinary27forward errors+independentcurator,rawreceipts/startup/deathscope.
 - [x]Actual typehead featureobserver+independentcollector for larger,ordered,interleaved.
 - [x]V028JSONroundtrip red/green regression;all28defects CLOSED with namedgates.
-- [ ]Choose/predeclare finite head-only fullbatch diagnostic recipe and acceptance.
-- [ ]Implement with actual feature/head/source/label binding and initial-logit replay.
+- [x]Choose/predeclare finite head-only fullbatch diagnostic recipe and acceptance.
+- [x]Implement with actual feature/head/source/label binding and initial-logit replay.
 - [ ]Native bounded warm/resource/optimizercheck,then fixed study/audit for each
   controlledmodel;report trainingfit vsdevelopment,unknownexclusions and limits.
 - [ ]Select next learningmechanism from actual evidence;preserve fullroadmap goal.
@@ -65,8 +65,22 @@ work84(82vectors+2curve),expected<100MiB,receipt sameprefix-curation-job.json/lo
 independentcollector mustpass beforefit. No originalmodel/data/optimizerwrites.
 NativeprofilePASS2.896s/333,045,760B,initialfloat32exact,conditionedinitialmaxerror
 2.6645352591003757e-15,tensor/Adamreload and continuous/reloadednextupdateEXACT;
-headbank2,actualoptimizerwork4. Independentcollector pending;it also recomputes
+headbank2,actualoptimizerwork4. Independentcollector PASS.381s/79,106,048B;it recomputes
 training-onlymean/std,normalized/raw/float32headconversion and bankedstepcount.
+AllknownPIDs/commandsgone;rawsource/native/collector/startup/death scope preserved
+docs/evidence/type-head-ordered-profile-r1/. This admits only fixedhead diagnostic.
+NEXT orderedfit expected<400MiB frommeasured333MBwarm,640MiB/120s/work1024,
+inner100s,CPU1/unchangedpressureguard. Freshseparate optimizerstartsoriginalhead;
+first2records mustmatchwarmprofile,NOoriginalimageoptimizer/modelwrite.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 1024 --receipt runs/type-head-ordered-fit-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode fit
+--output runs/type-head-ordered-fit-r1 --admission runs/type-head-ordered-profile-r1
+Hiddenlogs runs/type-head-ordered-fit-r1.log/.stderr.log;state/results/payload inside
+sameprefix/. Actualstartup/death/rawbytesrequired;freeze worker/contract/helpers.
+Afterterminal independent record_type_head_fit.py --name type-head-ordered-fit-r1
+under128MiB/30s/work1106(1024curve+82vectors),expected<100MiB;receipt
+sameprefix-curation-job.json,hiddenlogs sameprefix-curation.log/.stderr.log.
 
 ## Completed original baseline / ordinary errors
 

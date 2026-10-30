@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 29960,
+    "ParentProcessId": 24488,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 60 --work-items 4 --receipt runs/type-head-ordered-profile-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode profile --output runs/type-head-ordered-profile-r1"
+  },
+  {
+    "ProcessId": 6728,
+    "ParentProcessId": 29960,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 60 --work-items 4 --receipt runs/type-head-ordered-profile-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode profile --output runs/type-head-ordered-profile-r1"
+  },
+  {
+    "ProcessId": 21872,
+    "ParentProcessId": 6728,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode profile --output runs/type-head-ordered-profile-r1"
+  },
+  {
+    "ProcessId": 22524,
+    "ParentProcessId": 21872,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode profile --output runs/type-head-ordered-profile-r1"
+  }
+]

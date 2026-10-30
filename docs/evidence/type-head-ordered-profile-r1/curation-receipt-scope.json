@@ -1,0 +1,26 @@
+{
+  "artifact_sha256": {
+    "curation.log": "cf5cf3270bfab5e6262f81fc50cffb380623a0b841d5de5856e240813fd0fe83",
+    "observed-startup.json": "99228b5b98be3d73da404703902b4ad5f01f6b0862ebaef872249d88b56bfd95",
+    "curation-job.json": "04a5b4fa5e43a3bfad5e3298efcb30ca43e7432fac1e2c1744f0af28db0bd07c",
+    "curation-startup.json": "c0109333dc679e4c874e50990e72fbf98d8a5789f61dcbda5136120926197ecc",
+    "curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "steps": 2,
+  "native_seconds": 2.896,
+  "curator_peak_bytes": 79106048,
+  "scope": "Source/input-bound warm head-only diagnostic and independent collector. Four-command worker startup observed;curator root only observed. Native/progress PIDs and all matching commands gone. No whole-image model or learning-quality claim.",
+  "native_peak_bytes": 333045760,
+  "optimizer_work": 4,
+  "curator_seconds": 0.381,
+  "verified_dead_pids": [
+    6728,
+    17512,
+    21152,
+    21872,
+    22524,
+    29960,
+    39308
+  ],
+  "status": "passed"
+}

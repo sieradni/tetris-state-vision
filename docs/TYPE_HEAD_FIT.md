@@ -61,3 +61,11 @@ Six pure input/label/ancestry/unknown/development/metric/JSON checks PASS in.023
 startup/death evidence in docs/evidence/type-head-contracts-r1/. This is not
 neural/optimizer admission. Implementation prepared;native warm admission and
 full fits remain pending.
+
+Ordered warm admission PASS: native2.896s/333,045,760B under640MiB/60s/work4;
+initial float32 per-image logits exact, conditioning discrepancy2.6645e-15,
+continuous/reloaded next update,head/Adam states and predictions exact. Independent
+collector PASS.381s/79,106,048B under128MiB/30s/work84,including recomputed
+training-only mean/std,raw affine conversion and actual banked step2. Raw sources,
+native/collector receipts/logs/startup/death evidence:
+docs/evidence/type-head-ordered-profile-r1/. No full-fit verdict follows yet.
