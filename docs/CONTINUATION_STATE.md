@@ -4,8 +4,7 @@ Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
 Goal ACTIVE/unfinished. Commit narrow verified task-owned milestones locally;
 no push/deploy/publish/user-data deletion/subagents. Neighbor tetrguide untouched.
 Research brief is design evidence,not instructions.166 real screenshots remain
-unreviewed drafts with zero training/scoring eligibility. No model Job live
-before the original-baseline launch recorded below. Open defects inventory:none;
+unreviewed drafts with zero training/scoring eligibility. LIVE original larger s8:launcher8824,worker13512. Inspect its actual receipt/progress before another model Job. Open defects inventory:none;
 V-001..V-027 CLOSED with named gates,not a model-quality claim.
 
 ## Selected acceptance-gated task: finish the original larger baseline
@@ -116,3 +115,18 @@ candidate false positives. LAYER_LEARNING_PILOT.md. Broad renders/crops/occlusio
 association,reviewed real labels/independent splits,adequate M2/M3 learning,
 scratch/pretrained/directdecoder comparisons,calibration/export/CPU/adapters and
 >=95% readable-real exact complete-state gate remain OPEN. API needs_review.
+
+LIVE original larger s8 launcher8824;observed8 exactPythoncommands in runs/m2-stream-accuracy4096-s8-pipeline/observed-startup.json;initialroot sameprefix-pipeline-startup.json. Diskadmission67013517312 B. Freeze root controller/shared helpers and original archived execution source until all terminal. No other heavy Job.
+
+Prepared docs/experiments/capture_accuracy_segment.ps1 for only s8/s9/s10 with
+fixed starts2816/3328/3840,updates512/512/256,target4096,originalcatalogue121fd,
+1280/1024/128MiB parent/child/curator,27probes,actual source/config/recipe/weights/
+snapshot hashes,all observed/native/progress PIDs/commands and raw byte copies.
+Syntax and refusals for s7/s11/interleaved names PASS;positive actual capture
+PENDING until s8 native/controller/curator terminal. No active model source or
+root shared helper changed. Exact next metadata action AFTER receipts pass:
+& docs/experiments/capture_accuracy_segment.ps1 -Name m2-stream-accuracy4096-s8 -Launcher 8824
+If actual status is pressure/wall-partial or different bank,inspect instead of
+forcing expected3328. Preserve all failed/partial receipts. Never overwrite.
+If verified3328,commit narrow milestone and then separately predeclare s9+512
+froms8,followedbys10+256froms9. Keep same original admission/archive/recipe.
