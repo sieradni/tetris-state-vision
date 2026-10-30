@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 3320,
+    "ParentProcessId": 32380,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 60 --work-items 4 --receipt runs/type-head-interleaved-profile-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode profile --output runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 22732,
+    "ParentProcessId": 3320,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 60 --work-items 4 --receipt runs/type-head-interleaved-profile-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode profile --output runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 11788,
+    "ParentProcessId": 22732,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode profile --output runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 23232,
+    "ParentProcessId": 11788,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode profile --output runs/type-head-interleaved-profile-r1"
+  }
+]

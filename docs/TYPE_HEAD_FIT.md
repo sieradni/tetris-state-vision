@@ -81,3 +81,9 @@ Development remains0/18;cross entropy worsens3.27902->58.59039. Float64/rawfloat
 class counts agree;raw affine conversion maximum discrepancy3.02e-14. This
 establishes substantial class information in these saved vectors,not an image
 model improvement or independent generalization. Interleaved fit remains pending.
+
+Interleaved warm admission also PASS: native2.877s/333,144,064B under640MiB/60s/
+work4;initial float32 logits exact,conditioning error5.3291e-15,continuous/reloaded
+next update and tensor/Adam state exact. Independentcollector PASS.349s/
+78,077,952B under128MiB/30s/work84. Raw source/payload/receipts/logs/startup/death
+evidence docs/evidence/type-head-interleaved-profile-r1/. Full fit pending.

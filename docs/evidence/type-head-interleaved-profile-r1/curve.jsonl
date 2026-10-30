@@ -1,0 +1,2 @@
+{"step": 1, "cross_entropy_before_update": 0.7750628428404759, "gradient_l2": 0.5704363319261078, "training_correct_after_update": 40}
+{"step": 2, "cross_entropy_before_update": 0.7025817589017431, "gradient_l2": 0.3633557715436413, "training_correct_after_update": 42}

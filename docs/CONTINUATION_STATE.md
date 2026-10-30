@@ -97,8 +97,23 @@ NEXT interleavedwarmprofile expected<400MiB frommeasuredorderedprofile,640MiB/
 --output runs/type-head-interleaved-profile-r1
 Hiddenlogs sameprefix.log/.stderr.log;state/results/payload inside sameprefix/;
 actualstartup/death required. Then128MiB/30s/work84 independentcollector
+TERMINAL interleavedprofile launcher3320,supervisor22732,child11788,worker23232;actual4commands
+captured sameprefix-observed-startup.json,initialroot sameprefix-startup.json.
 record_type_head_fit.py --name type-head-interleaved-profile-r1,receipt
 sameprefix-curation-job.json/logs,beforefixed1024fit. Freeze all execution sources.
+Interleavedwarm nativePASS2.877s/333,144,064B,initialfloat32exact/conditioning
+5.3291e-15,reloadnextupdate/head/Adam/predictionsEXACT;collectorPASS.349s/
+78,077,952B,allknownPIDs/commandsgone,rawbytes docs/evidence/type-head-interleaved-profile-r1/.
+NEXT interleavedfit fixed1024,expected<400MiB,640MiB/120s/work1024,inner100s,
+CPU1/unchangedpressureguard. Exactcommand:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 1024 --receipt runs/type-head-interleaved-fit-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode fit
+--output runs/type-head-interleaved-fit-r1 --admission runs/type-head-interleaved-profile-r1
+Hiddenlogs sameprefix.log/.stderr.log,state/result/payload inside sameprefix/;
+actualstartup/death/rawbytesrequired. Afterterminal independentcollector
+record_type_head_fit.py --name type-head-interleaved-fit-r1 under128MiB/30s/
+work1106,expected<100MiB,receipt sameprefix-curation-job.json/logs. No extensions.
 
 ## Completed original baseline / ordinary errors
 
