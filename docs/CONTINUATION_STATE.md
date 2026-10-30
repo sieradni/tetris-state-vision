@@ -226,3 +226,14 @@ heavy Job only;recheck>40GB disk. Capture observedstartup while worker exists,
 then actual128+512=640 artifacts/curation and whole exactprocess termination.
 Metadata collector capture_allclass_segment.ps1 -Name m2-stream-interleave1024-s2
 -Launcher LAUNCHER_BELOW. No source/policy/optimizer/recipe change.
+
+LIVE s2 launcher29084,observed8 exact Pythoncommands in runs/m2-stream-interleave1024-s2-pipeline/observed-startup.json;initial root in same-prefix-pipeline-startup.json. Diskadmission67113185280 B. Source frozen.
+
+While s2 runs, drafted external final comparison verifier
+ docs/experiments/verify_interleaved_finish.py,unexecuted. Does not alter any
+active trainer/controller/helper. Requires both complete1,024 studies and their
+independent41-forward reports,actual source/weights/M2/config/recipe identity,
+all32 cycles' exact pixel/state populations with changed order,matched start+
+warm proof,raw recomputed fit criterion and explicit source-freeze check. Final
+execution/caps/receipt must be predeclared only after candidate final audit passes.
+Current first128 matched-start verifier/source snapshot remains unchanged.
