@@ -281,3 +281,18 @@ verify_interleaved_finish.py under128MiB/30s/work8192(expected<110MiB),receipt
 runs/interleave1024-comparison-r1-job.json,logs samebase,final
  docs/evidence/interleave1024-comparison-r1/scope.json. Formalfit verdict mayfail;
 recorditwithouttargetextension. No broadgeneralization/realqualityclaim.
+
+LIVE final s3 launcher30236,observed8 exactPythoncommands in runs/m2-stream-interleave1024-s3-pipeline/observed-startup.json;initialroot sameprefix-pipeline-startup.json. Diskadmission67039387648 B,source frozen.
+
+Final interleaved s3 VERIFIED complete1024/1024,+384. Parent144.628s/630951936B;child135.755s/594030592B;curator8.227s/93212672B. All1024recipes+41probes replayed,actual model/snapshot/source and8 observedstartup+native/progress PIDs/exactcommands checked. Weights93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273,payload6e3892f0a7c7f9247a4d982f357c745ee8fa533cd88259f4db69fe78f230fb23. No model Job live.
+Internal final fit28/32boards,37/64roles(30/56observed,7/8absent),128/128semantics,
+geometry.38617656;fitFALSE. Raw ordinary41 replay NEXT (expected<600MiB):
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 41 --receipt runs/m2-stream-interleave1024-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-interleave1024-s3
+--output runs/m2-stream-interleave1024-errors-r1
+Logs same-prefix.log/.stderr.log;result same-prefix/result.json. Then independent
+collector128MiB/30s/work41(expected<110MiB),receipt/logs
+runs/interleave1024-error-curation-r1;record_stream_errors.py --name m2-stream-interleave1024-errors-r1.
+Only after raw proof:final comparison helper128MiB/30s/work8192 as already planned.
+Do not adopt/extend based on internal scores;no further training yet.
