@@ -1,0 +1,22 @@
+{
+  "scope": "Root launcher and all native receipt/progress PIDs,exact owned commands;not a captured complete startup tree.",
+  "matching_python_commands": 0,
+  "verified_dead_pids": [
+    4444,
+    5260,
+    6732,
+    7568,
+    9628,
+    17940,
+    17964,
+    21656,
+    22020,
+    28532,
+    28780,
+    31336,
+    31600,
+    32868,
+    39804
+  ],
+  "current_fresh_profile_weights_sha256": "c32ecbded2fd78548c1592a2ccaff55e85b4a7e6315e12593e0765125e35ff42"
+}

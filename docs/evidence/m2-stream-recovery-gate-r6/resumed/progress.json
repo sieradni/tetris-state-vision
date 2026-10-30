@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "pid": 22020,
+  "step": 6,
+  "requested_steps": 6,
+  "loss": 1.8176169395446777,
+  "elapsed_seconds": 8.533508299995447,
+  "recovery_step": 6,
+  "summary": "summary.json",
+  "checkpoint": "checkpoint/manifest.json"
+}

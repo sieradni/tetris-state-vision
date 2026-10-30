@@ -136,3 +136,33 @@ native receipts. Compare fresh nested profile actual weight hash to r2's c32...
 No1,024 comparison study is admitted before that independent curator passes.
 
 LIVE recovery r6 launcher39804,exactstartup runs/m2-stream-recovery-gate-r6-startup.json. Root shared sources frozen.
+
+Recovery r6 native GREEN67.986s/599588864B/1GiB;all14 updates and source68bb40e3 exact model/Adam/RNG/data/loss/gradient/evaluation proof. All recorded root/child receipt/progress PIDs and exact owned commands gone;scope runs/m2-stream-recovery-gate-r6-process-death.json. Complete startup tree was not captured. Fresh post-restart nested profile actualweights equal r2 c32...;no environmental numerical drift found. Next independent curator128MiB/30s/work181 as declared.
+
+LIVE recovery evidence curator launcher25224,exactstartup runs/interleave-recovery-curation-r1-startup.json.
+
+Recovery independent audit GREEN2.027s/83,611,648B/128MiB:17training records+
+164saved images,actual model/Adam/RNG/modes/source/curves verified. All known
+PIDs/exact commands gone;raw curator receipt/log and root startup/death copies
+preserved. New study is admitted by actual nested r6/profile. No model Job live.
+NEXT FIRST interleaved study segment,s1,128new ->128/1024,fresh initialization:
+expected<700MiB,parent896MiB/420s/work128,child640MiB/1860s with ancestor420s
+ effective deadline;serialized curator128MiB/120s/work169. Current controller SHA
+50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 420
+--work-items 128 --receipt runs/m2-stream-interleave1024-s1-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s1
+--target-steps 1024 --updates 128 --admission runs/m2-stream-recovery-gate-r6/profile
+Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
+terminal result.json;child same-prefix-job.json;run summary/progress/snapshots/code.
+Freeze root controller/helpers;catalogue68bb40e3,policy all-class-interleaved-v1,
+pilot/capacity0/layeroff,seed20261026,LR.001/decay.01,eval128,snapshot64,dev3groups.
+Disk admission67,122,073,600B;native/kernel/pressure/pre-import CPU1 unchanged.
+Expect step_partial128/1024,not completion. Capture startup tree while live into
+runs/m2-stream-interleave1024-s1-pipeline/observed-startup.json;then final receipts,
+all exact commands/PIDs dead,actual hashes and metadata collector:
+& docs/experiments/capture_allclass_segment.ps1 -Name m2-stream-interleave1024-s1 -Launcher LAUNCHER_BELOW
+Require ordinary41-forward replay+independent curator before accepting fit scores.
+Also compare both initial training/development metrics and all32 pixel/state/
+probe recipes to completed ordered s1,holding config/seed/optimizer constant.
+The same-input warm profile already has byte-identical actualweights and package.
