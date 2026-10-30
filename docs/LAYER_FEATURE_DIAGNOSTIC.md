@@ -67,3 +67,29 @@ command/cap/count, actual weights/configuration and execution-source byte copies
 Run it under128MiB/30s/work27 or41, after the corresponding observer terminates.
 Preserve collector receipts/startup/termination separately as well. Fixed output
 names are `m2-stream-{accuracy4096,allclass1024,interleave1024}-features-r1`.
+
+## Larger baseline: native observation and independent collector pass
+
+Evidence: docs/evidence/m2-stream-accuracy4096-features-r1/. The27-forward observer
+passes13.768s/590,053,376B under1GiB/120s. Its input vectors reconstruct every
+stage's actual type logits exactly;full weights are unchanged. Independent
+collector passes.355s/78,213,120B under128MiB/30s. Its ordinary cases and totals
+equal the separately curated final ordinary report, and the complete grouped
+analysis is recomputed after JSON readback. Execution sources and raw native/
+curator/startup bytes are preserved;all known PIDs/matching commands gone.
+
+| Role/population | Known | Eligible ancestry-excluded queries | Correct centroid readout |
+|---|---:|---:|---:|
+| Active training probes |9|0|0/0(no reference ancestry of same class)|
+| Active development |18|3|0/3|
+| Ghost training probes |9|9|9/9(all absence)|
+| Ghost development |18|0|0/0(no visible class in training references)|
+
+The larger baseline's saved probes cannot establish general type-feature
+separation. Most queries lack another ancestry of the target class;ghost
+reference labels are absence only. The sole eligible active development class
+is J,three matched views. Do not describe an ineligible query as a readout
+failure or compare these denominators to the balanced controlled studies.
+Next run those two completed models, where the training probes cover all eight
+classes with two ancestry groups per class. Their native observer/collector gates
+remain PENDING;preparation or the larger-model pass does not substitute for them.

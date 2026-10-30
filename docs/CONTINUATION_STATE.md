@@ -56,7 +56,7 @@ Hiddenlogs sameprefix-curation.log/.stderr.log;rawcurator/startup/deathscope and
 ordinary nativefiles preserved byte-exact. Full ordinarymetrics/source/weights
 and row-levelcounts checked;report written. Commit checkpoint before feature work.
 
-LIVE largerfeatureobserver launcher28716,supervisor26192,child35472,worker22212.
+TERMINAL largerfeatureobserver launcher28716,supervisor26192,child35472,worker22212.
 Actual4commands saved runs/m2-stream-accuracy4096-features-r1-observed-startup.json;
 initialroot sameprefix-startup.json. Expected<950MiB,1024MiB/120s/work27,CPU1/cache16,
 unchangedOSguard,oneheavyjob. Newoutput/receipt required:
@@ -71,6 +71,24 @@ allPIDs/commands gone,then record_layer_features.py --name
 m2-stream-accuracy4096-features-r1 under128MiB/30s/work27,expected<100MiB.
 Receipt runs/m2-stream-accuracy4096-features-r1-curation-job.json,hiddenlogs
 sameprefix-curation.log/.stderr.log;capture startup/death/rawbyte evidence.
+Nativeobserver PASS13.768s/590,053,376B;independentcollector PASS.355s/78,213,120B.
+Allordinarycases/totals equal separatelycurated ordinaryreport;actualstagehead
+inputs reconstructlogitsexactly,weights unchanged,JSONreadback analysisrecomputed.
+Rawsource/receipts/logs/startup/death docs/evidence/m2-stream-accuracy4096-features-r1/.
+AllknownPIDs/commands gone. Prototypeeligibility:activetrain0/9,activedev3/18
+(0/3correct,onlyJ);ghosttrain9/9(9correct,ALLabsence),ghostdev0/18. This sparse
+reference population cannot establish general classfeature separation.
+
+NEXT orderedmodel observer m2-stream-allclass1024-features-r1,model
+m2-stream-allclass1024-s3,41forwards,expected<600MiB,640MiB/120s/work41.
+Command samefeatureobserver route with --memory-mib640,--work-items41,
+--receipt runs/m2-stream-allclass1024-features-r1-job.json and model/output names.
+Hiddenlogs/startup/progress/result/features sameprefix;afterterminal independent
+record_layer_features.py --name m2-stream-allclass1024-features-r1 under128MiB/
+30s/work41,expected<100MiB,receipt sameprefix-curation-job.json/logs. Same guard,
+CPU1/cache16;serialize,actualstartup/death/rawcopies. Then interleavedmodel same
+caps/count and naming m2-stream-interleave1024-features-r1,modelinterleave1024-s3.
+No architecture change/adoption from unexecuted or ineligible diagnostics.
 
 ## Prepared feature diagnostic / V028
 

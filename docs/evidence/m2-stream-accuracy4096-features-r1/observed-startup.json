@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 28716,
+    "ParentProcessId": 35516,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy4096-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1"
+  },
+  {
+    "ProcessId": 26192,
+    "ParentProcessId": 28716,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120 --work-items 27 --receipt runs/m2-stream-accuracy4096-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1"
+  },
+  {
+    "ProcessId": 35472,
+    "ParentProcessId": 26192,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1"
+  },
+  {
+    "ProcessId": 22212,
+    "ParentProcessId": 35472,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1"
+  }
+]
