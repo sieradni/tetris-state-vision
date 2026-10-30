@@ -95,14 +95,17 @@ development boards all have no locked blocks; nonempty boards remain0/14 and
 active/ghost layers0/36. [Recorded comparison](docs/evidence/m2-stream-accuracy128-r2/analysis.json)
 does not establish convergence or real-image accuracy.
 
-The separate fixed4096-update board-model study has a verified2,816-update
-checkpoint. Its development probes still have0/18 exact boards and0/36 exact
-active/ghost layers, with1.94391-cell geometry error.
-[Current evidence](docs/evidence/m2-stream-accuracy4096-s7/scope.json) replays all
-2,816 training recipes and27 saved probe images and retains native controller/
+The separate fixed4096-update board-model study has a verified3,328-update
+checkpoint. Its development probes have3/18 exact boards and0/36 exact
+active/ghost layers, with2.17195-cell geometry error.
+[Current evidence](docs/evidence/m2-stream-accuracy4096-s8/scope.json) replays all
+3,328 training recipes and27 saved probe images and retains native controller/
 child/curator receipts. Earlier pressure interruptions and exact optimizer/data
 recovery remain recorded separately. Further training must retain this study's
 original frozen source and optimizer history. Adequate learning remains open.
+The [read-only type-feature diagnostic](docs/LAYER_FEATURE_DIAGNOSTIC.md) is
+prepared for after the baseline finishes; its analysis-only checks pass, while
+neural feature replay remains pending.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;
 zero retains the board-only model. Shared role/index queries and masked losses

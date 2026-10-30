@@ -39,7 +39,7 @@ LIVE s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->308
 Root startup runs/m2-stream-accuracy4096-s9-pipeline-startup.json;full8commands
 runs/m2-stream-accuracy4096-s9-pipeline/observed-startup.json. Last exact worker
 10352 exists,archived runs/m2-stream-accuracy4096-s8/code/scripts/train_m2_stream.py;
-last verified progress training at3367,58.201s;controller resumed3328.
+last verified progress training at3642,394.788s;recovery3584;controller resumed3328.
 Actual worker args include modelaccuracy,target4096,max-new512,innerwall1800,
 seed20261026,LR.001,eval128,snapshot64,dev6groups,resume s8;NO new policy/layer flags.
 
