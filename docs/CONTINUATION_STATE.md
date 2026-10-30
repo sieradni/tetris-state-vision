@@ -78,9 +78,27 @@ first2records mustmatchwarmprofile,NOoriginalimageoptimizer/modelwrite.
 --output runs/type-head-ordered-fit-r1 --admission runs/type-head-ordered-profile-r1
 Hiddenlogs runs/type-head-ordered-fit-r1.log/.stderr.log;state/results/payload inside
 sameprefix/. Actualstartup/death/rawbytesrequired;freeze worker/contract/helpers.
+TERMINAL orderedfit launcher28656,supervisor20748,child22060,worker36296;actual4commands
+captured sameprefix-observed-startup.json,initialroot sameprefix-startup.json.
 Afterterminal independent record_type_head_fit.py --name type-head-ordered-fit-r1
 under128MiB/30s/work1106(1024curve+82vectors),expected<100MiB;receipt
 sameprefix-curation-job.json,hiddenlogs sameprefix-curation.log/.stderr.log.
+Orderedfit COMPLETE1024,native3.209s/332,963,840B;collectorPASS.392s/79,159,296B.
+First2 exactwarmreplay,tensor/Adam reload exact,actualsource/input identities,
+normalization/conversion/metricschecked,allPIDs/commands gone,rawbytescurated
+docs/evidence/type-head-ordered-fit-r1/. Rawfloat32train20->62/64(active32,ghost30),
+criterion64/64 FAILS. RemainingT->S bothviewsall-class-04;dev0/18,CE3.279->58.590.
+No originalimageweightschanged and no furtherorderedheadfit updates selected.
+NEXT interleavedwarmprofile expected<400MiB frommeasuredorderedprofile,640MiB/
+60s/work4,inner45s,CPU1/unchangedguard. Newseparateadmissionforeachbank:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 60
+--work-items 4 --receipt runs/type-head-interleaved-profile-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode profile
+--output runs/type-head-interleaved-profile-r1
+Hiddenlogs sameprefix.log/.stderr.log;state/results/payload inside sameprefix/;
+actualstartup/death required. Then128MiB/30s/work84 independentcollector
+record_type_head_fit.py --name type-head-interleaved-profile-r1,receipt
+sameprefix-curation-job.json/logs,beforefixed1024fit. Freeze all execution sources.
 
 ## Completed original baseline / ordinary errors
 

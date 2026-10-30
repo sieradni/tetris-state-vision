@@ -1,0 +1,26 @@
+{
+  "artifact_sha256": {
+    "curation-startup.json": "e08e69366ae01708283deb2ac20cb26446a764cbc71ccd8116b1a0091afa25c2",
+    "curation.log": "9c551616eb69b4fdb358d4fb9bc9ff9ee9a2b8390107255082cb938824f691ab",
+    "curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curation-job.json": "8801cb6fbcb73f1a4dbe816fe4c1cb34a76eab4df9890a21eabac7b73acc7e19",
+    "observed-startup.json": "76b5e3c574020fe36a10ed4f0bed94cce750ece7cc34ea659d172eb5a2d729ca"
+  },
+  "native_seconds": 3.209,
+  "native_peak_bytes": 332963840,
+  "optimizer_work": 1024,
+  "curator_seconds": 0.392,
+  "status": "passed",
+  "scope": "Source/input/admission-bound finite head-only diagnostic. Four-command worker startup observed;curator root only observed. Native/progress PIDs and matching commands gone. Rawfloat32 training62/64 FAILS64/64;no whole-image or quality claim.",
+  "steps": 1024,
+  "curator_peak_bytes": 79159296,
+  "verified_dead_pids": [
+    20628,
+    20748,
+    22060,
+    25104,
+    26832,
+    28656,
+    36296
+  ]
+}

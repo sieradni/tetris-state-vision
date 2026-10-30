@@ -69,3 +69,15 @@ collector PASS.381s/79,106,048B under128MiB/30s/work84,including recomputed
 training-only mean/std,raw affine conversion and actual banked step2. Raw sources,
 native/collector receipts/logs/startup/death evidence:
 docs/evidence/type-head-ordered-profile-r1/. No full-fit verdict follows yet.
+
+Ordered fixed1,024-update fit COMPLETE;native3.209s/332,963,840B under640MiB/120s,
+first two optimizer records exactly match warm admission,tensor/Adam reload exact.
+Independent collector PASS.392s/79,159,296B under128MiB/30s/work1106. All known
+PIDs/commands gone;raw source/payload/native/collector/startup/death evidence:
+docs/evidence/type-head-ordered-fit-r1/. Raw float32 types improve20/64->62/64
+(active32/32,ghost30/32);the two remaining errors are T->S on both views of
+ancestryall-class-04. The64/64 criterion FAILS;no extension is selected.
+Development remains0/18;cross entropy worsens3.27902->58.59039. Float64/rawfloat32
+class counts agree;raw affine conversion maximum discrepancy3.02e-14. This
+establishes substantial class information in these saved vectors,not an image
+model improvement or independent generalization. Interleaved fit remains pending.
