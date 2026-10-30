@@ -35,7 +35,32 @@ A perfect trainingfit would prove representability on these savedvectors only;
 failed finite optimization is NOT proof of inseparability. Do not substitute
 this diagnostic for pixel-model learning or generalization. Do not blindly
 extend any finished image study or adopt centroid as runtime decoder.
-No head-only implementation/run/recipe-admission yet;current task starts there.
+Recipe now predeclared docs/TYPE_HEAD_FIT.md: freshcopiedhead/fullbatch64,
+AdamWLR.01/decay0/betas.9,.999/eps1e-8,training-onlymean/popstd floor1e-6,
+float64conditioning then rawfloat32 training64/64 criterion,fixed1024updates.
+Profile640MiB/60s/work4:2warm+continuousnext1+reloadednext1 exact. Fit640MiB/
+120s/work1024,inner100s;mustreplay admittedfirst2 exactly. Modelsremainfrozen.
+Implemented docs/experiments/type_head_fit.py,type_head_fit_contract.py,
+record_type_head_fit.py and test_type_head_fit.py. Nativeadmission/fit PENDING.
+Currentlightgate beforeprofile:expected<100MiB,128MiB/30s/work6,unchangedguard.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 6 --receipt runs/type-head-contracts-r1-job.json --
+.venv/Scripts/python.exe -m unittest discover -s docs/experiments -p test_type_head_fit.py -v
+Hiddenlogs runs/type-head-contracts-r1.log/.stderr.log,startup sameprefix-startup.json;
+native receipt is terminal sentinel. Bind actual sources/raw receipts/deadPIDs.
+Pure6checksPASS.023s(native.265s/35,033,088B),rawsource/receipt/startup/deadPIDs
+docs/evidence/type-head-contracts-r1/. Nativewarm/fitstillPENDING.
+NEXT orderedwarmprofile expected<500MiB,640MiB/60s/work4,inner45s;CPU1/guardunchanged.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 60
+--work-items 4 --receipt runs/type-head-ordered-profile-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/type_head_fit.py --study ordered --mode profile
+--output runs/type-head-ordered-profile-r1
+Hiddenlogs runs/type-head-ordered-profile-r1.log/.stderr.log;progress/result/head-state.pt
+inside sameprefix/;startup sameprefix-observed-startup.json. Verifyactualcommands,
+allknownPIDs gone atterminal;freeze worker/contract/roothelpers whilelive.
+Then record_type_head_fit.py --name type-head-ordered-profile-r1 under128MiB/30s/
+work84(82vectors+2curve),expected<100MiB,receipt sameprefix-curation-job.json/logs;
+independentcollector mustpass beforefit. No originalmodel/data/optimizerwrites.
 
 ## Completed original baseline / ordinary errors
 

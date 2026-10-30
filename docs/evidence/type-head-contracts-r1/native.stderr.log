@@ -1,0 +1,11 @@
+test_balanced_pairs_have_exact_expected_counts (test_type_head_fit.TypeHeadContractTests.test_balanced_pairs_have_exact_expected_counts) ... ok
+test_development_and_unknowns_cannot_supply_training_indices (test_type_head_fit.TypeHeadContractTests.test_development_and_unknowns_cannot_supply_training_indices) ... ok
+test_duplicate_unpaired_unbalanced_and_ancestry_collapse_refuse (test_type_head_fit.TypeHeadContractTests.test_duplicate_unpaired_unbalanced_and_ancestry_collapse_refuse) ... ok
+test_nonfinite_shape_and_boolean_label_refuse (test_type_head_fit.TypeHeadContractTests.test_nonfinite_shape_and_boolean_label_refuse) ... ok
+test_stable_cross_entropy_and_json_roundtrip (test_type_head_fit.TypeHeadContractTests.test_stable_cross_entropy_and_json_roundtrip) ... ok
+test_unknown_development_label_invariance (test_type_head_fit.TypeHeadContractTests.test_unknown_development_label_invariance) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.023s
+
+OK

@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "wall_seconds": 30.0,
+  "verified_dead_pids": [
+    22596,
+    5636,
+    18212
+  ],
+  "memory_bytes": 134217728,
+  "peak_job_commit_bytes": 35033088,
+  "scope": "Six pure bank/label/ancestry/unknown/development-exclusion/cross-entropy/JSON checks only;no native Torch head fit,admission,reload or image quality claim.",
+  "artifact_sha256": {
+    "type_head_fit_contract.py": "7cf4495218dc48123f809ade82213707bd7b0005f1d7eb87100326afff1513ad",
+    "native.log": "15b5aa833f519f50b9b9d789d88b4e76b8f1715becc80fb624f79cbd1e58b8dc",
+    "observed-startup.json": "7d60401b074f8e4da3be3c471d07916dd64c6a575ff73ab9e97d0dc02c07b0ee",
+    "native-job.json": "7067887d01802b8cd2570abbf3465873c898f1a7c9762c0c53647937a65b37db",
+    "test_type_head_fit.py": "59d13ba144e9c0eb64b73f00601479619d3366013028bf0f8a6ddd93ae05ee9b",
+    "native.stderr.log": "a491840c120b4c0ab9afd2b79807708d0eecb7fd60a1caa9ac46c3abeea81d4f"
+  },
+  "cases": 6,
+  "elapsed_seconds": 0.265
+}
