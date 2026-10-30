@@ -134,3 +134,5 @@ Receipt runs/interleave-recovery-curation-r1.json,logs same stem;final
 training rows+164 saved images,actual optimizer/RNG/mode/model equality and
 native receipts. Compare fresh nested profile actual weight hash to r2's c32...
 No1,024 comparison study is admitted before that independent curator passes.
+
+LIVE recovery r6 launcher39804,exactstartup runs/m2-stream-recovery-gate-r6-startup.json. Root shared sources frozen.

@@ -52,9 +52,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    complete:32/32 boards,12/56 observed role labels,8/8 absences,128/128 semantic
    cells and.211-cell geometry. All observed positions/rotations fit, but types
    collapse to Z/J/L and the fit gate FAILS. The next selected lever is the
-   order-only comparison in INTERLEAVED_FIT.md; its standalone sampler passes
-   seven source-bound checks, while integration and fresh resource/recovery
-   admissions are still required. Do not extend the original finished study.
+   order-only comparison in INTERLEAVED_FIT.md. Its sampler and policy are
+   integrated, with88 scoped checks plus the8-case profile-ancestry regression.
+   Fresh640MiB warm admission and independent replay pass; the same-input
+   comparison has identical actual weights,losses,gradients,recipes and probes.
+   New-policy continuous/recovered training is being verified before the finite
+   comparison study. Do not extend the original finished study.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,

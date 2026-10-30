@@ -3,9 +3,12 @@
 This follow-up is selected after the original1,024-update study and its independent
 ordinary replay failed the fit gate. All visible positions/rotations fit, but44
 piece labels are wrong; predictions use only Z/J/L and absence. See ALL_CLASS_FIT.
-The new policy is integrated and88 selected checks pass. Training remains
-unadmitted pending fresh resource/recovery evidence. The completed original
-study keeps its source, schedule and target.
+The new policy is integrated with88 selected checks on25251c8. A later profile
+ancestry fix has its own8-case/source-bound and native replay gate (V-027).
+Fresh warm admission and the same-input numerical comparison now pass on
+catalogue68bb40e3. Continuous/recovered training is being verified before the
+finite comparison study. The completed original study keeps its source,
+schedule and target.
 
 Question: does interleaving classes improve fit when the images, public labels,
 model, initialization and optimizer are unchanged? The original cycle contains
@@ -28,7 +31,7 @@ plus every-cycle pair/class/pose/style coverage and arbitrary-cursor recovery.
 Fixed probes keep original index/view order. Keep stream-v1 and all-class-fit-v1
 numerically and behaviorally unchanged; the new policy is M2/capacity0 only.
 
-If selected, integrate the new module in the frozen archive and explicit policy
+Integration contract: include the new module in the frozen archive and explicit policy
 identity. Require fresh source-bound protocol checks, full-square warm profile,
 matching resource admission, actual continuous/recovered training and curation.
 Old checkpoints/admissions cannot be relabeled as the new policy. Compare fresh
