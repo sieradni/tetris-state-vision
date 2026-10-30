@@ -1,0 +1,14 @@
+[
+  {
+    "TimeCreated": "2026-10-28T18:51:43.190522-07:00",
+    "Id": 6006,
+    "ProviderName": "EventLog",
+    "Message": "The Event log service was stopped."
+  },
+  {
+    "TimeCreated": "2026-10-28T18:51:31.396558-07:00",
+    "Id": 1074,
+    "ProviderName": "User32",
+    "Message": "The process C:\\WINDOWS\\Explorer.EXE (PROTEAN) has initiated the restart of computer PROTEAN on behalf of user Protean\\micha for the following reason: Other (Unplanned)\r\n Reason Code: 0x0\r\n Shutdown Type: restart\r\n Comment: "
+  }
+]

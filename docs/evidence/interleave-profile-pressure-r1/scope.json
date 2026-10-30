@@ -1,0 +1,16 @@
+{
+  "actual_audit_executed": false,
+  "status": "parked_before_child",
+  "run": "m2-stream-interleave-profile-r2",
+  "scope": "External host pressure prevented audit launch. Profile remains saved; neither audit pass nor bug closure is claimed.",
+  "artifact_sha256": {
+    "parked-job.json": "59c348bd5ccef0eaa616a8c688b9310a2a1d0153d465c515418b0166f3bf0395",
+    "parked.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observed-startup.json": "71292849c968476204505bda3aef2ba3e374feacf911e5d4ac7eabb952179778",
+    "restart-events.json": "03083d5e5b8abeefe7fb69d610fe97d63c2cfda0b08a4fa16eb3164ba72824b9",
+    "parked.log": "e7f2b61c22516be629c102a785b168add9596c5a9a322724db6ab8a508b38b4b"
+  },
+  "exit_code": 125,
+  "commit_bytes": 36423905280,
+  "stop_commit_bytes": 31368351744
+}
