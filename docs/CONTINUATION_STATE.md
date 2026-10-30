@@ -56,7 +56,9 @@ Hiddenlogs sameprefix-curation.log/.stderr.log;rawcurator/startup/deathscope and
 ordinary nativefiles preserved byte-exact. Full ordinarymetrics/source/weights
 and row-levelcounts checked;report written. Commit checkpoint before feature work.
 
-NEXT largerfeatureobserver,expected<950MiB,1024MiB/120s/work27,CPU1/cache16,
+LIVE largerfeatureobserver launcher28716,supervisor26192,child35472,worker22212.
+Actual4commands saved runs/m2-stream-accuracy4096-features-r1-observed-startup.json;
+initialroot sameprefix-startup.json. Expected<950MiB,1024MiB/120s/work27,CPU1/cache16,
 unchangedOSguard,oneheavyjob. Newoutput/receipt required:
 .venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120
 --work-items 27 --receipt runs/m2-stream-accuracy4096-features-r1-job.json --
