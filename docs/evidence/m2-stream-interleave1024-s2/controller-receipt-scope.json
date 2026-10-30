@@ -1,0 +1,41 @@
+{
+  "child_peak_bytes": 589139968,
+  "updates": 512,
+  "weights_sha256": "05c47675e27d3c4106b5c3093c63a835ef39f5077893e7ed0348ad7b64df98ca",
+  "training_payload_sha256": "a155b081944cba9dfed54bcbe3088fbe9e95b639d1ef970219c5eacf9f9e4311",
+  "scope": "Native bounded segment, source/artifact/replay identity only. Fit quality requires separate ordinary raw-head replay.",
+  "controller_sha256": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+  "artifact_sha256": {
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller.log": "eabe0bc9410fb28686a0bf1a17c3d0e9c7199f4bfd30ae35862a9376608f8a88",
+    "controller-job.json": "e6319049de3ae9c69b58408a36da3334413285906b931c33f4ca6a4f31970ad5",
+    "controller-curation.log": "7cfd4e549117cfb9c80decda89aefdfd7b2960545f5438911edbf4582ee5d8b1",
+    "controller-collector.ps1": "9f95878e471429a1232217f7cdecfdf2821968e4251c5b0615ac327cfadf474a",
+    "controller-result.json": "a016b31ae44f2a63580d83c63e32f26b726632b47c064f7c04c147213ccb6354",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation-job.json": "165ec5a960d61b57217a9697996f5efd2bb426472c9313942fcaf2875542a8bf",
+    "observed-startup.json": "d73aeadabfaef862ae8c9dcf70e3a1b4e6b875f7e99014317408b5e4c67eef35"
+  },
+  "status": "verified_partial",
+  "parent_seconds": 178.937,
+  "curator_seconds": 4.862,
+  "target_steps": 1024,
+  "curriculum": "all-class-interleaved-v1",
+  "verified_dead_pids": [
+    748,
+    4960,
+    5144,
+    27540,
+    29084,
+    29676,
+    30084,
+    33176,
+    33960,
+    37540
+  ],
+  "training_manifest_sha256": "003d1e550fe4223d75390c97c88a23f2b993c1b6b6a081d0251d45bef50aa7f9",
+  "steps": 640,
+  "parent_peak_bytes": 625283072,
+  "child_seconds": 173.427,
+  "curator_peak_bytes": 91521024
+}

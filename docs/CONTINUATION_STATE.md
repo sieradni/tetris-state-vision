@@ -237,3 +237,16 @@ all32 cycles' exact pixel/state populations with changed order,matched start+
 warm proof,raw recomputed fit criterion and explicit source-freeze check. Final
 execution/caps/receipt must be predeclared only after candidate final audit passes.
 Current first128 matched-start verifier/source snapshot remains unchanged.
+
+Interleaved s2 VERIFIED640/1024,+512;parent178.937s/625283072B,child173.427s/589139968B,curator4.862s/91521024B. All640 source recipes+41probes replayed,actual model/snapshot/source and8 observedstartup PIDs+native/progress PIDs/exactcommands checked. Source/controller remain frozen50d7/68bb. Weights05c47675e27d3c4106b5c3093c63a835ef39f5077893e7ed0348ad7b64df98ca. No model Job live.
+Internal640 fit32/32boards,17/64roles(15/56observed,2/8absent),128/128semantics,
+geometry.22007960;criterionFALSE. NEXT ordinary41 forwards and independentaudit:
+expected<600MiB,640MiB/180s/work41,
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 180
+--work-items 41 --receipt runs/m2-stream-interleave640-errors-r1-job.json --
+.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-interleave1024-s2
+--output runs/m2-stream-interleave640-errors-r1
+Logs same-prefix.log/.stderr.log;final same-prefix/result.json. After pass/death,
+collector expected<110MiB,128MiB/30s/work41,receipt/logs
+runs/interleave640-error-curation-r1;record_stream_errors.py --name m2-stream-interleave640-errors-r1.
+No new training before audit;next segment fixed384->1024 afterpredeclaration.

@@ -1,0 +1,42 @@
+[
+  {
+    "ProcessId": 29084,
+    "ParentProcessId": 7744,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 896 --wall-seconds 900 --work-items 512 --receipt runs/m2-stream-interleave1024-s2-pipeline-job.json -- .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s2 --target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r6/profile --resume-from runs/m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 30084,
+    "ParentProcessId": 29084,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 896 --wall-seconds 900 --work-items 512 --receipt runs/m2-stream-interleave1024-s2-pipeline-job.json -- .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s2 --target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r6/profile --resume-from runs/m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 27540,
+    "ParentProcessId": 30084,
+    "CommandLine": ".venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s2 --target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r6/profile --resume-from runs/m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 4960,
+    "ParentProcessId": 27540,
+    "CommandLine": ".venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s2 --target-steps 1024 --updates 512 --admission runs/m2-stream-recovery-gate-r6/profile --resume-from runs/m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 33960,
+    "ParentProcessId": 4960,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\scripts\\run_bounded.py --memory-mib 640 --wall-seconds 1860 --work-items 512 --receipt C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2-job.json -- C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2 --model pilot --steps 1024 --max-new-steps 512 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r6\\profile --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 3 --curriculum all-class-interleaved-v1 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 33176,
+    "ParentProcessId": 33960,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\scripts\\run_bounded.py --memory-mib 640 --wall-seconds 1860 --work-items 512 --receipt C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2-job.json -- C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2 --model pilot --steps 1024 --max-new-steps 512 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r6\\profile --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 3 --curriculum all-class-interleaved-v1 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 748,
+    "ParentProcessId": 33176,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2 --model pilot --steps 1024 --max-new-steps 512 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r6\\profile --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 3 --curriculum all-class-interleaved-v1 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1"
+  },
+  {
+    "ProcessId": 5144,
+    "ParentProcessId": 748,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s2 --model pilot --steps 1024 --max-new-steps 512 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r6\\profile --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 3 --curriculum all-class-interleaved-v1 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-interleave1024-s1"
+  }
+]
