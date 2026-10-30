@@ -34,6 +34,10 @@ executed analyzer/tests byte-copied into docs/evidence/layer-feature-analysis-co
 known9644/34832/15252 and exacttestcommands gone. Neuralobserver/replay PENDING;
 no model-hook/featurequality claim. Heavy s9 stays serialized. At actual4096complete,
 first run existing ordinary error worker+curator separately,thenfeature observer.
+Prepared separate docs/experiments/record_layer_features.py binds observer cases/
+totals to the previously curated independent ordinary report,all feature rows,
+actual identities/native command/cap/source bytes and recomputed groupedanalysis.
+It is reviewed but UNRUN;no native collector or observer pass claimed.
 
 LIVE s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->30880->10352.
 Root startup runs/m2-stream-accuracy4096-s9-pipeline-startup.json;full8commands

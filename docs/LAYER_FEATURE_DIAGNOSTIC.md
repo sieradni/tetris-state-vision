@@ -52,3 +52,12 @@ docs/evidence/layer-feature-analysis-contracts/scope.json. Actual source/test an
 raw receipt/log/startup bytes are preserved;all known test PIDs/commands gone.
 This gate covers analysis math/grouping only. Neural observer/replay is PENDING.
 Preparation alone provides no feature-separability result or quality claim.
+
+`docs/experiments/record_layer_features.py` is the prepared collector, also
+pending native execution. It requires a separate previously curated ordinary
+error report for the same model. Observer cases/totals must equal that report
+exactly; all feature rows and grouped analysis are rechecked, along with native
+command/cap/count, actual weights/configuration and execution-source byte copies.
+Run it under128MiB/30s/work27 or41, after the corresponding observer terminates.
+Preserve collector receipts/startup/termination separately as well. Fixed output
+names are `m2-stream-{accuracy4096,allclass1024,interleave1024}-features-r1`.
