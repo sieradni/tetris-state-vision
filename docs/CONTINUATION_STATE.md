@@ -15,7 +15,10 @@ Previous goal turn made verified progress;this turn verified original s9+s10.
 - [ ]Actual type-head feature observer+collector for larger,ordered,interleaved models.
 - [ ]Learning verdict and select next mechanism from actual evidence;no blind extension.
 
-No model job live at this checkpoint. Full study source
+LIVE ordinary final audit launcher36740,supervisor33352,child29768,worker26800;
+all4actualcommands observed runs/m2-stream-accuracy4096-errors-r1-observed-startup.json,
+initialroot sameprefix-startup.json. Inspect actualreceipt/progress;do notduplicate.
+Full completed study source
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 7,694,010params,capacity0/layeroff,CPU1/cache16,full512input,AdamWdecay.01,
 seed20261026/LR.001/eval128/snapshot64/dev6groups18views. Original admission
