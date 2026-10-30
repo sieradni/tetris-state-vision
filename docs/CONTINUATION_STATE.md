@@ -97,6 +97,16 @@ docs/evidence/. Actualordinarycases/totals identical to independent report.
 Trainingtype nativeactive10/32,ghost10/32;ancestryexcludedcentroid4/32,2/32;
 devboth0/9. All32trainingqueries and9dev perrole eligible;no ties. Analysis-only,
 not a causal bottleneck. Interleaved observer/collector remain next actualtask.
+NEXT exact command,expected<600MiB,640MiB/120s/work41,unchangedguard:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
+--work-items 41 --receipt runs/m2-stream-interleave1024-features-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/probe_layer_features.py
+--run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1
+Hiddenlogs sameprefix.log/.stderr.log,progress/result/features inside sameprefix/.
+LIVE interleavedobserver launcher21524,supervisor27568,child30044,worker18628;
+actual4commands captured sameprefix-observed-startup.json,initialroot sameprefix-startup.json.
+Then128MiB/30s/work41 record_layer_features.py --name samefeatureoutputname,
+receipt sameprefix-curation-job.json/logs;actualstartup/death/rawbytes required.
 
 ## Prepared feature diagnostic / V028
 
