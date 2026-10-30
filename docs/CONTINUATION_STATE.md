@@ -79,8 +79,10 @@ AllknownPIDs/commands gone. Prototypeeligibility:activetrain0/9,activedev3/18
 (0/3correct,onlyJ);ghosttrain9/9(9correct,ALLabsence),ghostdev0/18. This sparse
 reference population cannot establish general classfeature separation.
 
-NEXT orderedmodel observer m2-stream-allclass1024-features-r1,model
+LIVE orderedmodel observer m2-stream-allclass1024-features-r1,model
 m2-stream-allclass1024-s3,41forwards,expected<600MiB,640MiB/120s/work41.
+Launcher5284,supervisor2828,child35676,worker17180;all4commands observed in
+runs/m2-stream-allclass1024-features-r1-observed-startup.json,initialroot sameprefix-startup.json.
 Command samefeatureobserver route with --memory-mib640,--work-items41,
 --receipt runs/m2-stream-allclass1024-features-r1-job.json and model/output names.
 Hiddenlogs/startup/progress/result/features sameprefix;afterterminal independent
