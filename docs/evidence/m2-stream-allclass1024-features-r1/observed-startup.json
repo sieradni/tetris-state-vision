@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 5284,
+    "ParentProcessId": 5244,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 41 --receipt runs/m2-stream-allclass1024-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-allclass1024-s3 --output runs/m2-stream-allclass1024-features-r1"
+  },
+  {
+    "ProcessId": 2828,
+    "ParentProcessId": 5284,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 41 --receipt runs/m2-stream-allclass1024-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-allclass1024-s3 --output runs/m2-stream-allclass1024-features-r1"
+  },
+  {
+    "ProcessId": 35676,
+    "ParentProcessId": 2828,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-allclass1024-s3 --output runs/m2-stream-allclass1024-features-r1"
+  },
+  {
+    "ProcessId": 17180,
+    "ParentProcessId": 35676,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-allclass1024-s3 --output runs/m2-stream-allclass1024-features-r1"
+  }
+]

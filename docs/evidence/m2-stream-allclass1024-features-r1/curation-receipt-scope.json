@@ -1,0 +1,27 @@
+{
+  "scope": "Actual four-command native observer startup captured;curator root startup only captured. Native receipt PIDs and all matching commands verified gone. Observer ordinary cases/totals equal independent ordinary report;read-only feature analysis,not model quality.",
+  "native_seconds": 7.819,
+  "target_steps": 1024,
+  "verified_dead_pids": [
+    2828,
+    5284,
+    5560,
+    7240,
+    17180,
+    35676,
+    39804
+  ],
+  "status": "passed",
+  "curator_seconds": 0.355,
+  "artifact_sha256": {
+    "curation-startup.json": "7f2aadb3b8947bcfd2929d179690e9e84f5044e17640b8e4d340a82ae268e4db",
+    "observed-startup.json": "669a8932ae9576abc8f65201b53e6bedbb8b538c32b823386cb90220cf4f6c69",
+    "curation-job.json": "89865a8defb8e96e35ce38c9ea447e0dfd667f622f82a2ee3c05f36097c3c0a3",
+    "curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curation.log": "b2fb5aa7048a60e8836973235f9e021a9d4a295003510d5389180d2f77170883"
+  },
+  "curator_peak_bytes": 77811712,
+  "native_peak_bytes": 424955904,
+  "forwards": 41,
+  "global_steps": 1024
+}

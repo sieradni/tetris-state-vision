@@ -79,7 +79,7 @@ AllknownPIDs/commands gone. Prototypeeligibility:activetrain0/9,activedev3/18
 (0/3correct,onlyJ);ghosttrain9/9(9correct,ALLabsence),ghostdev0/18. This sparse
 reference population cannot establish general classfeature separation.
 
-LIVE orderedmodel observer m2-stream-allclass1024-features-r1,model
+TERMINAL orderedmodel observer m2-stream-allclass1024-features-r1,model
 m2-stream-allclass1024-s3,41forwards,expected<600MiB,640MiB/120s/work41.
 Launcher5284,supervisor2828,child35676,worker17180;all4commands observed in
 runs/m2-stream-allclass1024-features-r1-observed-startup.json,initialroot sameprefix-startup.json.
@@ -91,6 +91,12 @@ record_layer_features.py --name m2-stream-allclass1024-features-r1 under128MiB/
 CPU1/cache16;serialize,actualstartup/death/rawcopies. Then interleavedmodel same
 caps/count and naming m2-stream-interleave1024-features-r1,modelinterleave1024-s3.
 No architecture change/adoption from unexecuted or ineligible diagnostics.
+Ordered observer PASS7.819s/424,955,904B;curator PASS.355s/77,811,712B,allPIDs/
+commands gone and rawsource/native/curator/startup bytes preserved in same-name
+docs/evidence/. Actualordinarycases/totals identical to independent report.
+Trainingtype nativeactive10/32,ghost10/32;ancestryexcludedcentroid4/32,2/32;
+devboth0/9. All32trainingqueries and9dev perrole eligible;no ties. Analysis-only,
+not a causal bottleneck. Interleaved observer/collector remain next actualtask.
 
 ## Prepared feature diagnostic / V028
 

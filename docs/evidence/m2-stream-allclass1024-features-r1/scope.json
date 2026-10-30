@@ -1,0 +1,2449 @@
+{
+  "status": "passed",
+  "run": "m2-stream-allclass1024-s3",
+  "global_steps": 1024,
+  "target_steps": 1024,
+  "core_architecture": "TetrisStateNet-M2",
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 0,
+    "layer_evidence": false
+  },
+  "forwards": 41,
+  "weights_sha256": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6",
+  "source_catalogue_sha256": "6147a558d9b2736af7a1a89a485f79bc515fb7daebedd8b1961d74f14c91cb42",
+  "independent_ordinary_scope_sha256": "4ae3b995d6acc035eafcf3dc573b8267205332a993f552732c4bda44f54d402e",
+  "independent_ordinary_report_sha256": "05290ace0485dc22664382449abb71605f1c9bfc8500c2c03c13d5e5c1cb6394",
+  "observer_ordinary_cases_and_totals_identical": true,
+  "grouped_analysis_recomputed": true,
+  "native_elapsed_seconds": 7.819,
+  "native_peak_job_commit_bytes": 424955904,
+  "artifact_sha256": {
+    "features.json": "b331519f8996153769f8edf2dc2d516e6f2146c64445c1ff10699731afd4f398",
+    "observed-ordinary.json": "a73c9aa1f37c4febbc570295eb9d0b7925af681aa31f31852f86992b1b150faf",
+    "input-summary.json": "7fc8eb57534111f0b8e9616cb99335c8bdcaa5867b2fbbdd0682665e4cba8597",
+    "checkpoint-manifest.json": "ed3c00c17f90c101bae7e3ec28c493ad2d32a86f53bbead287a2eb797e3a4d4c",
+    "native-job.json": "4982e8baecad4ad2144380d6291a4568a65aaaeaa389167a04b4ab4e9e024369",
+    "native.log": "9ef341248f4229b965886d4c0d0ff962df9206f8dd3a29610d3dad00a4c4bc4a",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "execution-source/docs/experiments/probe_layer_features.py": "da560edc587e88af47668aaf047ae4eaf5f9faee7d6d35c50ccf9a70b0bf10e6",
+    "execution-source/docs/experiments/layer_feature_analysis.py": "cbbf16d23a318476872ddd54597403984c67c9bb6cf5d50d50ab8328ac6aa8a5",
+    "execution-source/scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "execution-source/scripts/probe_stream_errors.py": "0c2d97c61c98f4e7c944858171b3a4b4d5f15cdac8935eabf23c421f5e6d87ba",
+    "execution-source/scripts/m2_error_analysis.py": "72f997892f12295f0106931aa82bc9e089b69c3641dc7d89862e42c6984fbf6f",
+    "execution-source/scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "execution-source/scripts/record_stream_run.py": "de8efae091afab523831844cebbf7c693d6c82eb4b39465609d4389d7608e5f7",
+    "execution-source/scripts/source_snapshot.py": "ff2c1d2264b6d6686ac012b17075695edf264c4279bf36844733daabee93157f",
+    "execution-source/scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "execution-source/docs/experiments/record_layer_features.py": "112231d11ef28289f2fb462d36e4d5f65a6fed86f7507af8c730d806e9d4ddb4",
+    "execution-source/scripts/record_stream_errors.py": "52bb0cadb26da520a63b621ada77c0f22f36090cdc9512b0945f7dda8cdff819"
+  },
+  "execution_sources": {
+    "docs/experiments/probe_layer_features.py": "da560edc587e88af47668aaf047ae4eaf5f9faee7d6d35c50ccf9a70b0bf10e6",
+    "docs/experiments/layer_feature_analysis.py": "cbbf16d23a318476872ddd54597403984c67c9bb6cf5d50d50ab8328ac6aa8a5",
+    "scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "scripts/probe_stream_errors.py": "0c2d97c61c98f4e7c944858171b3a4b4d5f15cdac8935eabf23c421f5e6d87ba",
+    "scripts/m2_error_analysis.py": "72f997892f12295f0106931aa82bc9e089b69c3641dc7d89862e42c6984fbf6f",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/record_stream_run.py": "de8efae091afab523831844cebbf7c693d6c82eb4b39465609d4389d7608e5f7",
+    "scripts/source_snapshot.py": "ff2c1d2264b6d6686ac012b17075695edf264c4279bf36844733daabee93157f",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "docs/experiments/record_layer_features.py": "112231d11ef28289f2fb462d36e4d5f65a6fed86f7507af8c730d806e9d4ddb4",
+    "scripts/record_stream_errors.py": "52bb0cadb26da520a63b621ada77c0f22f36090cdc9512b0945f7dda8cdff819"
+  },
+  "analysis": {
+    "dimension": 64,
+    "roles": {
+      "active": {
+        "training": {
+          "known": 32,
+          "unknown_excluded": 0,
+          "ancestries": 16,
+          "target_counts": {
+            "0": 4,
+            "1": 4,
+            "2": 4,
+            "3": 4,
+            "4": 4,
+            "5": 4,
+            "6": 4,
+            "7": 4
+          },
+          "native_correct": 10,
+          "prototype_eligible": 32,
+          "prototype_correct": 4,
+          "prototype_ties": 0,
+          "cases": [
+            {
+              "sample_id": "all-class-00-v0",
+              "group_id": "all-class-00",
+              "target_type": 1,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 418.7978794855087,
+                "1": 425.58387150030103,
+                "2": 92.26621389743049,
+                "3": 78.32580125660382,
+                "4": 87.75254996076185,
+                "5": 80.88420939173653,
+                "6": 89.64310354256133,
+                "7": 90.39984064115465
+              }
+            },
+            {
+              "sample_id": "all-class-00-v1",
+              "group_id": "all-class-00",
+              "target_type": 1,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 431.18041765540846,
+                "1": 430.3342056541283,
+                "2": 90.0489876348554,
+                "3": 75.40525424030346,
+                "4": 88.75224637533506,
+                "5": 78.07002921738557,
+                "6": 87.21828727095685,
+                "7": 90.46157022979396
+              }
+            },
+            {
+              "sample_id": "all-class-01-v0",
+              "group_id": "all-class-01",
+              "target_type": 1,
+              "native_type": 7,
+              "prototype_type": 4,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 545.6570140011147,
+                "1": 429.4060551463217,
+                "2": 263.7014708044243,
+                "3": 273.8223866022499,
+                "4": 132.79847032912554,
+                "5": 272.5130423214854,
+                "6": 267.43329703649016,
+                "7": 138.83662514702482
+              }
+            },
+            {
+              "sample_id": "all-class-01-v1",
+              "group_id": "all-class-01",
+              "target_type": 1,
+              "native_type": 7,
+              "prototype_type": 4,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 549.383247472983,
+                "1": 426.4432425332552,
+                "2": 258.5778113057636,
+                "3": 268.4511354529716,
+                "4": 130.63924474934132,
+                "5": 267.20876631590323,
+                "6": 262.2819811148797,
+                "7": 136.09148522114916
+              }
+            },
+            {
+              "sample_id": "all-class-02-v0",
+              "group_id": "all-class-02",
+              "target_type": 2,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 486.8816432011927,
+                "1": 148.31860416989124,
+                "2": 364.36239398973163,
+                "3": 72.4299583103998,
+                "4": 119.18904837419133,
+                "5": 75.42282423059304,
+                "6": 85.69114012620265,
+                "7": 116.88532850880716
+              }
+            },
+            {
+              "sample_id": "all-class-02-v1",
+              "group_id": "all-class-02",
+              "target_type": 2,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 488.45265713473924,
+                "1": 148.56420393461894,
+                "2": 365.0618743509062,
+                "3": 72.75029298646871,
+                "4": 119.3884744692444,
+                "5": 75.75903497412848,
+                "6": 86.11657432024447,
+                "7": 117.03883231141495
+              }
+            },
+            {
+              "sample_id": "all-class-03-v0",
+              "group_id": "all-class-03",
+              "target_type": 2,
+              "native_type": 6,
+              "prototype_type": 6,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 448.22003766450496,
+                "1": 171.51668955632422,
+                "2": 364.47505148902945,
+                "3": 123.40775850632322,
+                "4": 176.336156850265,
+                "5": 114.52637324661525,
+                "6": 98.12407339233846,
+                "7": 170.48389248867542
+              }
+            },
+            {
+              "sample_id": "all-class-03-v1",
+              "group_id": "all-class-03",
+              "target_type": 2,
+              "native_type": 6,
+              "prototype_type": 6,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 447.90673273016205,
+                "1": 172.84841334987644,
+                "2": 364.95587565942816,
+                "3": 123.64457539970752,
+                "4": 177.54948010158412,
+                "5": 114.72340378306109,
+                "6": 98.32167324691024,
+                "7": 171.62914360114854
+              }
+            },
+            {
+              "sample_id": "all-class-04-v0",
+              "group_id": "all-class-04",
+              "target_type": 3,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 506.24784675585727,
+                "1": 145.16008567066635,
+                "2": 95.5616100388816,
+                "3": 299.8372796377601,
+                "4": 116.77834607523533,
+                "5": 78.64451225474882,
+                "6": 90.54007885982423,
+                "7": 113.60179604240489
+              }
+            },
+            {
+              "sample_id": "all-class-04-v1",
+              "group_id": "all-class-04",
+              "target_type": 3,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 508.3706298555668,
+                "1": 145.64958149450234,
+                "2": 95.85266960861914,
+                "3": 300.3539820154923,
+                "4": 117.15418973794465,
+                "5": 78.90817298996008,
+                "6": 90.9045523078509,
+                "7": 113.88910068611469
+              }
+            },
+            {
+              "sample_id": "all-class-05-v0",
+              "group_id": "all-class-05",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 478.18028734039774,
+                "1": 137.9855307246431,
+                "2": 68.47565107313667,
+                "3": 301.22275751625705,
+                "4": 134.91657189772874,
+                "5": 72.94803304540937,
+                "6": 68.57291004287946,
+                "7": 123.20982259107711
+              }
+            },
+            {
+              "sample_id": "all-class-05-v1",
+              "group_id": "all-class-05",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 480.2291907083189,
+                "1": 139.25815342737366,
+                "2": 67.73800087908141,
+                "3": 298.98543043006396,
+                "4": 135.71152525557696,
+                "5": 71.91911069358183,
+                "6": 67.79103305101712,
+                "7": 123.7651959994966
+              }
+            },
+            {
+              "sample_id": "all-class-06-v0",
+              "group_id": "all-class-06",
+              "target_type": 4,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 507.9083359761646,
+                "1": 142.86891153849095,
+                "2": 96.2209226732055,
+                "3": 77.03142346531536,
+                "4": 461.1195781211085,
+                "5": 80.59966304752012,
+                "6": 92.37553303122498,
+                "7": 113.32108034056786
+              }
+            },
+            {
+              "sample_id": "all-class-06-v1",
+              "group_id": "all-class-06",
+              "target_type": 4,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 511.739159850451,
+                "1": 143.61280005256214,
+                "2": 96.52387958089747,
+                "3": 77.11717656414592,
+                "4": 462.16417383197034,
+                "5": 80.7198542632074,
+                "6": 92.68482131874119,
+                "7": 113.59721689457227
+              }
+            },
+            {
+              "sample_id": "all-class-07-v0",
+              "group_id": "all-class-07",
+              "target_type": 4,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 540.7236212555458,
+                "1": 94.51209134657434,
+                "2": 251.05465911783375,
+                "3": 258.76953876841134,
+                "4": 464.13665096676647,
+                "5": 258.0319357608414,
+                "6": 253.5982639702207,
+                "7": 122.36503384376408
+              }
+            },
+            {
+              "sample_id": "all-class-07-v1",
+              "group_id": "all-class-07",
+              "target_type": 4,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 541.8053044004267,
+                "1": 92.57313102285785,
+                "2": 245.63469360103255,
+                "3": 253.21814294947794,
+                "4": 459.1790296458157,
+                "5": 252.53097700310275,
+                "6": 248.24278287166922,
+                "7": 119.3186851931362
+              }
+            },
+            {
+              "sample_id": "all-class-08-v0",
+              "group_id": "all-class-08",
+              "target_type": 5,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 506.7251299236132,
+                "1": 151.81232317800084,
+                "2": 93.77269267399666,
+                "3": 73.33989862938638,
+                "4": 122.08746127637603,
+                "5": 307.1314638345392,
+                "6": 88.45729234114062,
+                "7": 118.46576222950254
+              }
+            },
+            {
+              "sample_id": "all-class-08-v1",
+              "group_id": "all-class-08",
+              "target_type": 5,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 506.35034249382994,
+                "1": 151.48518191151135,
+                "2": 93.5921258086382,
+                "3": 73.27371184188686,
+                "4": 121.78240654470743,
+                "5": 306.9142894433814,
+                "6": 88.3085632647648,
+                "7": 118.20791562846877
+              }
+            },
+            {
+              "sample_id": "all-class-09-v0",
+              "group_id": "all-class-09",
+              "target_type": 5,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 454.55842060749427,
+                "1": 136.34232048498495,
+                "2": 67.68301714232373,
+                "3": 81.34488764607647,
+                "4": 135.98372503249504,
+                "5": 307.01571674494386,
+                "6": 69.71125917638268,
+                "7": 126.57015601938943
+              }
+            },
+            {
+              "sample_id": "all-class-09-v1",
+              "group_id": "all-class-09",
+              "target_type": 5,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 457.2653375853684,
+                "1": 137.99822262830736,
+                "2": 67.69237419749594,
+                "3": 81.37455805758746,
+                "4": 137.36641563146543,
+                "5": 307.03941729705514,
+                "6": 69.7368941412336,
+                "7": 127.76202880171168
+              }
+            },
+            {
+              "sample_id": "all-class-10-v0",
+              "group_id": "all-class-10",
+              "target_type": 6,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 473.5231096137067,
+                "1": 141.87984426368018,
+                "2": 88.96995752374364,
+                "3": 70.48763903792731,
+                "4": 114.08853467184358,
+                "5": 73.57943968608637,
+                "6": 332.7455965762709,
+                "7": 111.91489325395371
+              }
+            },
+            {
+              "sample_id": "all-class-10-v1",
+              "group_id": "all-class-10",
+              "target_type": 6,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 476.9001737107451,
+                "1": 141.92302996381989,
+                "2": 89.39115376482755,
+                "3": 70.7928983678046,
+                "4": 114.05162602597743,
+                "5": 73.9241474084493,
+                "6": 333.8124845004416,
+                "7": 111.81052604695918
+              }
+            },
+            {
+              "sample_id": "all-class-11-v0",
+              "group_id": "all-class-11",
+              "target_type": 6,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 452.63023463847924,
+                "1": 163.92715864447072,
+                "2": 79.61833750627717,
+                "3": 105.07991205703199,
+                "4": 165.35541005976953,
+                "5": 97.71630454256264,
+                "6": 333.79737708404406,
+                "7": 157.2577649694451
+              }
+            },
+            {
+              "sample_id": "all-class-11-v1",
+              "group_id": "all-class-11",
+              "target_type": 6,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 460.0128162629022,
+                "1": 164.11515763226527,
+                "2": 78.88910646195833,
+                "3": 104.66787257309915,
+                "4": 165.04992942769204,
+                "5": 97.30063786947757,
+                "6": 332.8045031142744,
+                "7": 156.84568166224255
+              }
+            },
+            {
+              "sample_id": "all-class-12-v0",
+              "group_id": "all-class-12",
+              "target_type": 7,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 473.83615537424396,
+                "1": 120.76699348115089,
+                "2": 90.67501660393819,
+                "3": 72.51655337775684,
+                "4": 96.77580647259056,
+                "5": 75.6857857254796,
+                "6": 86.68961416778075,
+                "7": 382.95515112020917
+              }
+            },
+            {
+              "sample_id": "all-class-12-v1",
+              "group_id": "all-class-12",
+              "target_type": 7,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 476.2092334732228,
+                "1": 121.7540649893212,
+                "2": 91.20048144029373,
+                "3": 73.05904350784634,
+                "4": 97.56166760153558,
+                "5": 76.21335885271137,
+                "6": 87.32259379387385,
+                "7": 384.37890882981253
+              }
+            },
+            {
+              "sample_id": "all-class-13-v0",
+              "group_id": "all-class-13",
+              "target_type": 7,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 598.1720672888239,
+                "1": 84.46825214292437,
+                "2": 207.34181488520744,
+                "3": 207.06669504308667,
+                "4": 98.3221865553134,
+                "5": 208.68715526145746,
+                "6": 207.8747452635052,
+                "7": 384.3439781466485
+              }
+            },
+            {
+              "sample_id": "all-class-13-v1",
+              "group_id": "all-class-13",
+              "target_type": 7,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 600.752788336229,
+                "1": 84.41304536142431,
+                "2": 205.7792913480678,
+                "3": 205.38768436104496,
+                "4": 97.93076783237758,
+                "5": 207.07039661882843,
+                "6": 206.28622590379095,
+                "7": 382.9905048736967
+              }
+            },
+            {
+              "sample_id": "all-class-14-v0",
+              "group_id": "all-class-14",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 180.18458331199943,
+                "1": 524.4410470647405,
+                "2": 569.2550331079962,
+                "3": 612.3708550943786,
+                "4": 560.2319152882429,
+                "5": 598.0319188932241,
+                "6": 576.522560324059,
+                "7": 603.7163140040182
+              }
+            },
+            {
+              "sample_id": "all-class-14-v1",
+              "group_id": "all-class-14",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 182.55212031703203,
+                "1": 536.7298932507781,
+                "2": 580.5985249359948,
+                "3": 624.1861210474375,
+                "4": 572.9795312009368,
+                "5": 609.6489943040357,
+                "6": 587.9539272983048,
+                "7": 616.7189201403569
+              }
+            },
+            {
+              "sample_id": "all-class-15-v0",
+              "group_id": "all-class-15",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 205.5716599175199,
+                "1": 271.32325290370886,
+                "2": 228.38738385855527,
+                "3": 265.14174092113166,
+                "4": 296.19336289559806,
+                "5": 253.25323641621324,
+                "6": 232.41270342490614,
+                "7": 312.6893745707028
+              }
+            },
+            {
+              "sample_id": "all-class-15-v1",
+              "group_id": "all-class-15",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 163.21370847533302,
+                "1": 371.9536771705949,
+                "2": 315.9960132346231,
+                "3": 358.7097756069438,
+                "4": 398.5765013266962,
+                "5": 344.43239181534653,
+                "6": 320.33793341402276,
+                "7": 419.66211279655107
+              }
+            }
+          ]
+        },
+        "development": {
+          "known": 9,
+          "unknown_excluded": 0,
+          "ancestries": 3,
+          "target_counts": {
+            "3": 3,
+            "6": 3,
+            "7": 3
+          },
+          "native_correct": 0,
+          "prototype_eligible": 9,
+          "prototype_correct": 0,
+          "prototype_ties": 0,
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 37.556715886959104,
+                "1": 370.7306608551829,
+                "2": 315.0504866278098,
+                "3": 357.75823969711746,
+                "4": 397.3366573427637,
+                "5": 343.5231415771778,
+                "6": 319.3393387678914,
+                "7": 418.44265805485185
+              }
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 38.25346253779033,
+                "1": 376.05533474379837,
+                "2": 319.1990767566483,
+                "3": 362.13703863744286,
+                "4": 402.7826088509952,
+                "5": 347.7866051396829,
+                "6": 323.5489138437206,
+                "7": 423.8922053144849
+              }
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 37.64987359782199,
+                "1": 371.5362892212572,
+                "2": 315.6882711702504,
+                "3": 358.4313232990577,
+                "4": 398.1612435585337,
+                "5": 344.1813110178444,
+                "6": 319.9791445718974,
+                "7": 419.266978606646
+              }
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 356.7267937906338,
+                "1": 46.58138279628448,
+                "2": 138.32910901801267,
+                "3": 140.72854685978257,
+                "4": 61.32830963313705,
+                "5": 139.08638191273192,
+                "6": 138.15984535095407,
+                "7": 65.73385151545467
+              }
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 385.2119272839204,
+                "1": 44.38981504450271,
+                "2": 129.01628774983666,
+                "3": 130.26689139348488,
+                "4": 57.05728695327164,
+                "5": 129.02598303479286,
+                "6": 128.69372012983905,
+                "7": 59.784508501038026
+              }
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 385.61437910992913,
+                "1": 43.504514238861724,
+                "2": 129.9587439443163,
+                "3": 131.148385676812,
+                "4": 56.53825595164765,
+                "5": 129.98009804071737,
+                "6": 129.76451080951998,
+                "7": 59.36603305257741
+              }
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 343.2064058546469,
+                "1": 97.56170237205905,
+                "2": 57.80747704988478,
+                "3": 55.38324709547482,
+                "4": 83.07420323801742,
+                "5": 55.06012336875034,
+                "6": 58.29505408012411,
+                "7": 88.21022926876415
+              }
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 345.7580590918968,
+                "1": 102.29990493061287,
+                "2": 55.80794387090924,
+                "3": 52.92834752162004,
+                "4": 86.59348751544091,
+                "5": 52.66978724429821,
+                "6": 55.969040589294536,
+                "7": 91.27526118269698
+              }
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 343.4132433969594,
+                "1": 97.55247840154827,
+                "2": 57.763885636990665,
+                "3": 55.317249049996704,
+                "4": 83.04288785563732,
+                "5": 55.0006962720901,
+                "6": 58.242138012396175,
+                "7": 88.16144802195036
+              }
+            }
+          ]
+        }
+      },
+      "ghost": {
+        "training": {
+          "known": 32,
+          "unknown_excluded": 0,
+          "ancestries": 16,
+          "target_counts": {
+            "0": 4,
+            "1": 4,
+            "2": 4,
+            "3": 4,
+            "4": 4,
+            "5": 4,
+            "6": 4,
+            "7": 4
+          },
+          "native_correct": 10,
+          "prototype_eligible": 32,
+          "prototype_correct": 2,
+          "prototype_ties": 0,
+          "cases": [
+            {
+              "sample_id": "all-class-00-v0",
+              "group_id": "all-class-00",
+              "target_type": 1,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 181.53463968900712,
+                "1": 374.96198570171714,
+                "2": 75.04021452127913,
+                "3": 74.17421276257467,
+                "4": 74.2963172572839,
+                "5": 72.75464288882768,
+                "6": 74.98581727556729,
+                "7": 78.15630655714023
+              }
+            },
+            {
+              "sample_id": "all-class-00-v1",
+              "group_id": "all-class-00",
+              "target_type": 1,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 193.4640733212781,
+                "1": 379.7934772506777,
+                "2": 73.22340611882672,
+                "3": 71.91747223148779,
+                "4": 75.34463618058427,
+                "5": 70.6295229989768,
+                "6": 72.91973290043634,
+                "7": 78.31828964179931
+              }
+            },
+            {
+              "sample_id": "all-class-01-v0",
+              "group_id": "all-class-01",
+              "target_type": 1,
+              "native_type": 7,
+              "prototype_type": 4,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 300.9113576222504,
+                "1": 378.31854742027116,
+                "2": 231.6170566919577,
+                "3": 230.66262866140698,
+                "4": 120.42443849467894,
+                "5": 230.2453425254999,
+                "6": 235.60458767258848,
+                "7": 123.90306284187835
+              }
+            },
+            {
+              "sample_id": "all-class-01-v1",
+              "group_id": "all-class-01",
+              "target_type": 1,
+              "native_type": 7,
+              "prototype_type": 4,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 303.83524197639883,
+                "1": 376.36377352127727,
+                "2": 227.16097744141422,
+                "3": 226.04357525747037,
+                "4": 118.80128055782939,
+                "5": 225.72334353764637,
+                "6": 231.02147128878286,
+                "7": 121.74631601680375
+              }
+            },
+            {
+              "sample_id": "all-class-02-v0",
+              "group_id": "all-class-02",
+              "target_type": 2,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 267.83418225223386,
+                "1": 137.89415298252666,
+                "2": 325.91757945518674,
+                "3": 77.40682378754049,
+                "4": 108.52047809796025,
+                "5": 77.15459378984468,
+                "6": 79.51124515295501,
+                "7": 106.91825534621853
+              }
+            },
+            {
+              "sample_id": "all-class-02-v1",
+              "group_id": "all-class-02",
+              "target_type": 2,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 269.0468428624082,
+                "1": 138.13793312145685,
+                "2": 326.80239237765585,
+                "3": 77.81299869270788,
+                "4": 108.67738777660051,
+                "5": 77.55941034150642,
+                "6": 79.93921866671089,
+                "7": 107.05079917266586
+              }
+            },
+            {
+              "sample_id": "all-class-03-v0",
+              "group_id": "all-class-03",
+              "target_type": 2,
+              "native_type": 6,
+              "prototype_type": 6,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 319.45841512626424,
+                "1": 139.7044978691532,
+                "2": 326.4485448548124,
+                "3": 88.49588254866849,
+                "4": 142.98073570029572,
+                "5": 87.05228580345194,
+                "6": 83.79550517176584,
+                "7": 133.49635899234815
+              }
+            },
+            {
+              "sample_id": "all-class-03-v1",
+              "group_id": "all-class-03",
+              "target_type": 2,
+              "native_type": 6,
+              "prototype_type": 6,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 321.3692585904692,
+                "1": 140.1888103222434,
+                "2": 326.273320003341,
+                "3": 88.33895327873611,
+                "4": 143.28152500544957,
+                "5": 86.922192882762,
+                "6": 83.66987711012226,
+                "7": 133.67696457862823
+              }
+            },
+            {
+              "sample_id": "all-class-04-v0",
+              "group_id": "all-class-04",
+              "target_type": 3,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 259.6245803822725,
+                "1": 130.86032561081856,
+                "2": 78.18424076468456,
+                "3": 298.08472989557396,
+                "4": 102.4933931713672,
+                "5": 74.12641495116034,
+                "6": 76.4588691193031,
+                "7": 101.25017317050646
+              }
+            },
+            {
+              "sample_id": "all-class-04-v1",
+              "group_id": "all-class-04",
+              "target_type": 3,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 261.5995850216709,
+                "1": 131.25506157750945,
+                "2": 78.52830135787833,
+                "3": 298.65058170567136,
+                "4": 102.73326544030085,
+                "5": 74.41650470944734,
+                "6": 76.77387486796118,
+                "7": 101.40674185604752
+              }
+            },
+            {
+              "sample_id": "all-class-05-v0",
+              "group_id": "all-class-05",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 338.6454984602325,
+                "1": 130.46785222702889,
+                "2": 73.99002952707735,
+                "3": 299.2019033923381,
+                "4": 129.6404176920184,
+                "5": 75.78229519832728,
+                "6": 74.68119988480375,
+                "7": 117.40446016993928
+              }
+            },
+            {
+              "sample_id": "all-class-05-v1",
+              "group_id": "all-class-05",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 341.0915460591733,
+                "1": 131.1140241843944,
+                "2": 73.36772182292191,
+                "3": 297.5415277320162,
+                "4": 129.84381555638234,
+                "5": 75.03192714807773,
+                "6": 73.9740015403547,
+                "7": 117.39489305240086
+              }
+            },
+            {
+              "sample_id": "all-class-06-v0",
+              "group_id": "all-class-06",
+              "target_type": 4,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 254.98125640507246,
+                "1": 129.5566798816183,
+                "2": 77.79080814973577,
+                "3": 74.18933050381668,
+                "4": 406.8541751095059,
+                "5": 73.84919779986022,
+                "6": 76.12954984154995,
+                "7": 100.63279334511964
+              }
+            },
+            {
+              "sample_id": "all-class-06-v1",
+              "group_id": "all-class-06",
+              "target_type": 4,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 257.45216039131356,
+                "1": 130.14269461555,
+                "2": 77.89779505408103,
+                "3": 74.23434439866087,
+                "4": 407.60541483975305,
+                "5": 73.90757737888462,
+                "6": 76.19432243569652,
+                "7": 100.87126376954072
+              }
+            },
+            {
+              "sample_id": "all-class-07-v0",
+              "group_id": "all-class-07",
+              "target_type": 4,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 293.7247459371743,
+                "1": 80.01423816610432,
+                "2": 216.3086565813262,
+                "3": 214.6231452966751,
+                "4": 408.8465623967761,
+                "5": 214.16791450413695,
+                "6": 219.901826187832,
+                "7": 106.09859934328857
+              }
+            },
+            {
+              "sample_id": "all-class-07-v1",
+              "group_id": "all-class-07",
+              "target_type": 4,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 295.3633452462431,
+                "1": 78.93223484841131,
+                "2": 212.3583022945682,
+                "3": 210.5438719954121,
+                "4": 405.6365773857886,
+                "5": 210.15729926117262,
+                "6": 215.8574771019325,
+                "7": 104.05573951900219
+              }
+            },
+            {
+              "sample_id": "all-class-08-v0",
+              "group_id": "all-class-08",
+              "target_type": 5,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 277.37714827008654,
+                "1": 140.21770360543118,
+                "2": 81.66510459117221,
+                "3": 77.3288481757042,
+                "4": 110.02036162596137,
+                "5": 308.6883841091649,
+                "6": 79.63671323209559,
+                "7": 107.78571740809242
+              }
+            },
+            {
+              "sample_id": "all-class-08-v1",
+              "group_id": "all-class-08",
+              "target_type": 5,
+              "native_type": 5,
+              "prototype_type": 3,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 277.4875727948289,
+                "1": 139.93395670366547,
+                "2": 81.64855035583106,
+                "3": 77.33111008460281,
+                "4": 109.75653682488989,
+                "5": 308.6665589859525,
+                "6": 79.62219822245706,
+                "7": 107.5354927238031
+              }
+            },
+            {
+              "sample_id": "all-class-09-v0",
+              "group_id": "all-class-09",
+              "target_type": 5,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 317.7941122529609,
+                "1": 124.60748551573457,
+                "2": 73.77836408336105,
+                "3": 77.4573716685919,
+                "4": 126.39986406871779,
+                "5": 308.5749065575783,
+                "6": 75.25853919415357,
+                "7": 116.08081926654977
+              }
+            },
+            {
+              "sample_id": "all-class-09-v1",
+              "group_id": "all-class-09",
+              "target_type": 5,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 320.93940409855566,
+                "1": 125.79740170948152,
+                "2": 73.91641984866045,
+                "3": 77.54413297466431,
+                "4": 127.32974698653997,
+                "5": 308.78565532832994,
+                "6": 75.35143864752412,
+                "7": 116.82659857598033
+              }
+            },
+            {
+              "sample_id": "all-class-10-v0",
+              "group_id": "all-class-10",
+              "target_type": 6,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 256.42771570795463,
+                "1": 130.95107052200316,
+                "2": 77.74924980071705,
+                "3": 74.07381525770482,
+                "4": 102.80652306150304,
+                "5": 73.77118766230339,
+                "6": 304.31644751368583,
+                "7": 101.66071857031426
+              }
+            },
+            {
+              "sample_id": "all-class-10-v1",
+              "group_id": "all-class-10",
+              "target_type": 6,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 257.32021054076915,
+                "1": 131.01274482766874,
+                "2": 77.86979646382274,
+                "3": 74.18232154012398,
+                "4": 102.8102546460928,
+                "5": 73.87636060744124,
+                "6": 304.53098158127045,
+                "7": 101.63490566482218
+              }
+            },
+            {
+              "sample_id": "all-class-11-v0",
+              "group_id": "all-class-11",
+              "target_type": 6,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 333.1236154512793,
+                "1": 139.4002595229053,
+                "2": 75.23235377029252,
+                "3": 80.46733199530735,
+                "4": 139.76033853086753,
+                "5": 79.58940202716393,
+                "6": 305.62457377296687,
+                "7": 128.80692859975528
+              }
+            },
+            {
+              "sample_id": "all-class-11-v1",
+              "group_id": "all-class-11",
+              "target_type": 6,
+              "native_type": 6,
+              "prototype_type": 2,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 336.6442180621485,
+                "1": 140.13230708939275,
+                "2": 74.14547936941436,
+                "3": 79.22987475707009,
+                "4": 139.8916571318351,
+                "5": 78.3930162405547,
+                "6": 303.24262861708837,
+                "7": 128.6592170766521
+              }
+            },
+            {
+              "sample_id": "all-class-12-v0",
+              "group_id": "all-class-12",
+              "target_type": 7,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 227.61503203910112,
+                "1": 107.51141977568196,
+                "2": 73.55717447939229,
+                "3": 71.06613688785909,
+                "4": 83.39074626010563,
+                "5": 70.09962054508458,
+                "6": 72.61162369567056,
+                "7": 337.3702640519991
+              }
+            },
+            {
+              "sample_id": "all-class-12-v1",
+              "group_id": "all-class-12",
+              "target_type": 7,
+              "native_type": 5,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 230.9078918987422,
+                "1": 108.5638200474086,
+                "2": 74.48511910607606,
+                "3": 71.88025902525148,
+                "4": 84.14678547782952,
+                "5": 70.92344985765318,
+                "6": 73.48914665805093,
+                "7": 338.64008334204317
+              }
+            },
+            {
+              "sample_id": "all-class-13-v0",
+              "group_id": "all-class-13",
+              "target_type": 7,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 329.5250718158543,
+                "1": 73.32635618244203,
+                "2": 173.23005262363324,
+                "3": 167.9780286546588,
+                "4": 87.65237749168328,
+                "5": 169.14913094229655,
+                "6": 175.00283031731655,
+                "7": 338.67724778666206
+              }
+            },
+            {
+              "sample_id": "all-class-13-v1",
+              "group_id": "all-class-13",
+              "target_type": 7,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 331.27521537632424,
+                "1": 73.26072343738876,
+                "2": 171.5246367441566,
+                "3": 166.17081337961298,
+                "4": 87.22765611132495,
+                "5": 167.391075431329,
+                "6": 173.23174080121052,
+                "7": 337.3349072127156
+              }
+            },
+            {
+              "sample_id": "all-class-14-v0",
+              "group_id": "all-class-14",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 182.63301240456323,
+                "1": 289.44634894437445,
+                "2": 399.01790249717794,
+                "3": 414.6955769520885,
+                "4": 316.60696798664515,
+                "5": 408.4505019155588,
+                "6": 407.41446630011734,
+                "7": 349.90097215672705
+              }
+            },
+            {
+              "sample_id": "all-class-14-v1",
+              "group_id": "all-class-14",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 184.50258281807044,
+                "1": 293.3181940010847,
+                "2": 403.4558427212054,
+                "3": 419.29646629735305,
+                "4": 320.8211264202525,
+                "5": 413.0093473015739,
+                "6": 411.9163099344572,
+                "7": 354.334481029143
+              }
+            },
+            {
+              "sample_id": "all-class-15-v0",
+              "group_id": "all-class-15",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 206.06899113643178,
+                "1": 95.62527533140225,
+                "2": 109.33303075285849,
+                "3": 118.620022389507,
+                "4": 114.17068033945144,
+                "5": 116.32894361209931,
+                "6": 114.51837566035785,
+                "7": 122.97600520867545
+              }
+            },
+            {
+              "sample_id": "all-class-15-v1",
+              "group_id": "all-class-15",
+              "target_type": 0,
+              "native_type": 0,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 163.1569169789975,
+                "1": 109.54700922990985,
+                "2": 125.20969823606812,
+                "3": 135.64128449542588,
+                "4": 128.33507310998365,
+                "5": 132.7972639016747,
+                "6": 130.89334994046112,
+                "7": 139.76492324801342
+              }
+            }
+          ]
+        },
+        "development": {
+          "known": 9,
+          "unknown_excluded": 0,
+          "ancestries": 3,
+          "target_counts": {
+            "3": 3,
+            "6": 3,
+            "7": 3
+          },
+          "native_correct": 0,
+          "prototype_eligible": 9,
+          "prototype_correct": 0,
+          "prototype_ties": 0,
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 36.10581807544122,
+                "1": 109.79751570326286,
+                "2": 125.28176097231808,
+                "3": 135.72775102175538,
+                "4": 128.56628931749367,
+                "5": 132.8854201878361,
+                "6": 130.96412196197477,
+                "7": 140.0159759538728
+              }
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 36.532676604643164,
+                "1": 110.22819121138697,
+                "2": 125.4441104419364,
+                "3": 135.91216519544093,
+                "4": 129.03749749171897,
+                "5": 133.0721840734748,
+                "6": 131.1310405954993,
+                "7": 140.45378460887773
+              }
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "target_type": 7,
+              "native_type": 0,
+              "prototype_type": 0,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 36.15839742645906,
+                "1": 109.89546578316126,
+                "2": 125.33269956833382,
+                "3": 135.78525907403733,
+                "4": 128.67358227442642,
+                "5": 132.94281077984945,
+                "6": 131.01597118307896,
+                "7": 140.11986365892744
+              }
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 216.03038727516196,
+                "1": 31.270337414324196,
+                "2": 131.48800611513383,
+                "3": 128.80418656140762,
+                "4": 45.89915306109489,
+                "5": 128.75654668187428,
+                "6": 134.22369311515791,
+                "7": 48.09879097606261
+              }
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 226.85918130387526,
+                "1": 32.22923478181991,
+                "2": 121.43884419255888,
+                "3": 118.32643158815655,
+                "4": 45.31129103500229,
+                "5": 118.61132278035298,
+                "6": 123.84303963700253,
+                "7": 45.87229926765591
+              }
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "target_type": 6,
+              "native_type": 7,
+              "prototype_type": 1,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 225.14689613729124,
+                "1": 32.3688042285773,
+                "2": 122.68764022767401,
+                "3": 119.69512144417644,
+                "4": 45.75382547044569,
+                "5": 119.92978776150731,
+                "6": 125.1529166072924,
+                "7": 46.51972570581219
+              }
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 163.36425070446208,
+                "1": 86.84434489653576,
+                "2": 52.667663823292195,
+                "3": 53.404318931823695,
+                "4": 69.87581328683245,
+                "5": 52.1374128061381,
+                "6": 53.01308794464565,
+                "7": 72.89910823270871
+              }
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 163.14647148695792,
+                "1": 89.52931592985273,
+                "2": 50.71182175570738,
+                "3": 51.26191397265963,
+                "4": 72.08218445946436,
+                "5": 50.14627144328109,
+                "6": 50.916685595553545,
+                "7": 74.76379377548717
+              }
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "target_type": 3,
+              "native_type": 6,
+              "prototype_type": 5,
+              "reference_classes": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "eligible": true,
+              "squared_distances": {
+                "0": 163.5204733017218,
+                "1": 86.85464721832513,
+                "2": 52.639550439646804,
+                "3": 53.36496547679114,
+                "4": 69.86701912828921,
+                "5": 52.10173919094609,
+                "6": 52.980521717405175,
+                "7": 72.8774379069514
+              }
+            }
+          ]
+        }
+      }
+    },
+    "scope": "Descriptive Euclidean class-centroid readout of frozen features; all views of query ancestry excluded. Training images were used to train the network. No independent generalization, causal bottleneck, calibrated confidence or replacement decoder claim. Missing reference classes are ineligible; exact ties abstain. Unknown targets are excluded."
+  },
+  "scope": "Descriptive Euclidean class-centroid readout of frozen features; all views of query ancestry excluded. Training images were used to train the network. No independent generalization, causal bottleneck, calibrated confidence or replacement decoder claim. Missing reference classes are ineligible; exact ties abstain. Unknown targets are excluded."
+}
