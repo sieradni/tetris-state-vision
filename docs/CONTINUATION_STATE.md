@@ -296,3 +296,22 @@ collector128MiB/30s/work41(expected<110MiB),receipt/logs
 runs/interleave1024-error-curation-r1;record_stream_errors.py --name m2-stream-interleave1024-errors-r1.
 Only after raw proof:final comparison helper128MiB/30s/work8192 as already planned.
 Do not adopt/extend based on internal scores;no further training yet.
+
+LIVE final rawreplay launcher39076,exactstartup runs/m2-stream-interleave1024-errors-r1-startup.json.
+
+Final raw41-forward replay GREEN7.370s/424,361,984B/640MiB;all savedmetrics
+reproduced,weightsunchanged,all recorded PIDs/exactcommands gone. Active14/ghost13
+type errors;zero observedcolumn/row/equivalentrotation errors. CandidatefitFALSE.
+NEXT independent finalcollector128MiB/30s/work41,expected<110MiB,as declared.
+Separately prepare original larger baseline completion WITHOUT launching training:
+metadata plan-only expected<110MiB,128MiB/30s/work512,
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 512 --receipt runs/accuracy-s8-plan-r1-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s8
+--target-steps 4096 --updates 512 --admission runs/m2-stream-accuracy-probe
+--resume-from runs/m2-stream-accuracy4096-s7 --plan-only
+Logs runs/accuracy-s8-plan-r1.log/.stderr.log. Read-only plan must resolve actual
+archived121fd source and2,816 pointer,1GiB child and original recipe,with no new
+curriculum/layer flags sent to legacy worker. Next actual large-model leg will
+require explicit RAM/disk/command/checkpoint after all comparison audits finish.
+This is completing the existing baseline,not extending either finished1,024 study.
