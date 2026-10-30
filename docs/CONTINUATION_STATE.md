@@ -11,13 +11,17 @@ Previous goal turn made verified progress;this turn verified original s9+s10.
 
 - [x]Original larger baseline COMPLETE4096/4096 with ORIGINAL source/optimizer.
 - [x]All4096recipes+27savedprobes replayed;native/controller/curator/snapshot/PIDs verified.
-- [ ]Ordinary final27forward report+independent curator and rawreceipt/process capture.
+- [x]Ordinary final27forward report+independent curator and rawreceipt/process capture.
 - [ ]Actual type-head feature observer+collector for larger,ordered,interleaved models.
 - [ ]Learning verdict and select next mechanism from actual evidence;no blind extension.
 
-LIVE ordinary final audit launcher36740,supervisor33352,child29768,worker26800;
+TERMINAL ordinary final audit launcher36740,supervisor33352,child29768,worker26800;
 all4actualcommands observed runs/m2-stream-accuracy4096-errors-r1-observed-startup.json,
-initialroot sameprefix-startup.json. Inspect actualreceipt/progress;do notduplicate.
+initialroot sameprefix-startup.json. AllPIDs/commands gone;native13.546s/586,768,384B,
+curator.406s/76,595,200B. Rawbytes/curatorrootstartup/deathscope preserved in
+docs/evidence/m2-stream-accuracy4096-errors-r1/. Modeloutputs/weights unchanged,
+savedmetrics reproduced. Dev813FP/32FN/369TP;0/18boards,0/36roles. Trainingghost
+9/9correct is ALLabsence. ACCURACY4096_BASELINE.md finalreport,notqualitypass.
 Full completed study source
 121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
 7,694,010params,capacity0/layeroff,CPU1/cache16,full512input,AdamWdecay.01,
@@ -49,8 +53,22 @@ Then independent collector,expected<100MiB,128MiB/30s/work27:
 --work-items 27 --receipt runs/m2-stream-accuracy4096-errors-r1-curation-job.json --
 .venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-accuracy4096-errors-r1
 Hiddenlogs sameprefix-curation.log/.stderr.log;rawcurator/startup/deathscope and
-ordinary nativefiles preserved byte-exact. Check full ordinarymetrics/source/
-weights equality and row-levelcounts,write report,commit before feature work.
+ordinary nativefiles preserved byte-exact. Full ordinarymetrics/source/weights
+and row-levelcounts checked;report written. Commit checkpoint before feature work.
+
+NEXT largerfeatureobserver,expected<950MiB,1024MiB/120s/work27,CPU1/cache16,
+unchangedOSguard,oneheavyjob. Newoutput/receipt required:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120
+--work-items 27 --receipt runs/m2-stream-accuracy4096-features-r1-job.json --
+.venv/Scripts/python.exe docs/experiments/probe_layer_features.py
+--run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1
+Hiddenlogs sameprefix.log/.stderr.log,state sameprefix/progress.json/result.json;
+features.json is finalfeatureproof. Saveactualstartup/death;freeze observer,
+analyzer and rootordinary helpers whilelive. Afteractualnativepassed verify
+allPIDs/commands gone,then record_layer_features.py --name
+m2-stream-accuracy4096-features-r1 under128MiB/30s/work27,expected<100MiB.
+Receipt runs/m2-stream-accuracy4096-features-r1-curation-job.json,hiddenlogs
+sameprefix-curation.log/.stderr.log;capture startup/death/rawbyte evidence.
 
 ## Prepared feature diagnostic / V028
 

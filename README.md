@@ -102,8 +102,10 @@ replays all4,096 training recipes and27 saved probe images and retains native co
 child/curator receipts. Earlier pressure interruptions and exact optimizer/data
 recovery remain recorded separately. The original source and optimizer history
 are preserved; this study is not extended. Adequate learning remains open.
+The [final baseline report](docs/ACCURACY4096_BASELINE.md) decomposes the independently
+replayed errors, including813 invented development cells and32 misses.
 The [read-only type-feature diagnostic](docs/LAYER_FEATURE_DIAGNOSTIC.md) is
-prepared for after the baseline finishes; its analysis-only checks pass, while
+prepared for inspection of the completed models; its analysis-only checks pass, while
 neural feature replay remains pending.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;

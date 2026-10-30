@@ -28,8 +28,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    and native controller/child/curator receipts. The prior host-pressure stop
    logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
    exactly,excluding time. New inference weights06751638... retain original
-   catalogue121fd05a; adequate learning remains open. Keep this study complete,
-   independently replay its final errors to track misses,false positives and independent active/
+   catalogue121fd05a; adequate learning remains open. Keep this study complete. Its
+   final ordinary27-forward replay and independent curator now pass,with813
+   invented development cells,32 misses,0/18boards and0/36roles. The entire9/18
+   training-probe layer score is ghost absence,not visible-ghost reading.
+   ACCURACY4096_BASELINE.md records source/artifact/native scope and limits.
+   Use those errors to track independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
@@ -61,7 +65,7 @@ No complete screenshot parser or real-image accuracy is claimed.
    .211->.386. Both fit gates fail;INTERLEAVED_FIT.md records controls,raw evidence
    and limits. Do not extend either finished study or adopt this ordering as a
    release fix. The original larger4,096 baseline is now complete with its
-   original frozen source/optimizer. Next audit its final errors and inspect the
+   original frozen source/optimizer and independently replayed final errors. Next inspect the
    class-feature path before selecting another learning mechanism;
    LAYER_FEATURE_DIAGNOSTIC.md has the read-only protocol and scoped pure checks.
    More than40GB free is required before each long training window.

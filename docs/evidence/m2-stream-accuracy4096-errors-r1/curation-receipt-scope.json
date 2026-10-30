@@ -1,0 +1,28 @@
+{
+  "curator_peak_bytes": 76595200,
+  "verified_dead_pids": [
+    19420,
+    25952,
+    26800,
+    27540,
+    29768,
+    33352,
+    36740
+  ],
+  "status": "passed",
+  "run_status": "complete",
+  "artifact_sha256": {
+    "curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "curation.log": "b9e868f295ec2bf09d4b0691e2708b3748261a698c3c2717d5bccdb518e9cfd8",
+    "curation-startup.json": "6778ba6ea2b2fad4edc0f7d4dd8504aee9e784fd15b96151ee41a0af0e9776f0",
+    "curation-job.json": "2702ee012fda4b98c9f4648b8f663401c535134a3e816f992cbf861fd9e09e25",
+    "observed-startup.json": "ff7a7c624178b9d3044682f754dd046170fe542d5ce3b103f11e5e00491b0761"
+  },
+  "target_steps": 4096,
+  "native_seconds": 13.546,
+  "global_steps": 4096,
+  "curator_seconds": 0.406,
+  "native_peak_bytes": 586768384,
+  "forwards": 27,
+  "scope": "Native ordinary four-command startup directly observed;curator root startup only directly observed. Native receipt PIDs and all matching commands verified gone after both completions. Raw native and curator bytes preserved;no accuracy claim from execution."
+}

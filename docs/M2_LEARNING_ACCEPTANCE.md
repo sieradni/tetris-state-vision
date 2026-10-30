@@ -230,3 +230,14 @@ partial segment may be analyzed with its original partial tag; a pressure stop
 without final weights/summary is not eligible. Geometry components use the same
 axis-normalized units as the frozen M2 loss; they do not establish rotated-board
 accuracy. Confidence values are raw diagnostics, not calibration or API policy.
+
+## Original larger baseline complete at4,096
+
+The fixed original study and independent final27-image ordinary replay are
+complete. Adequate learning remains OPEN: development0/18boards and0/36roles,
+813 invented cells,32 missed positives;all nine correct training-probe ghost
+labels are absence. See ACCURACY4096_BASELINE.md for artifact/source identities,
+raw errors,native receipts and scope. The study stays frozen at its declared
+budget. Next inspect the class-feature path with the read-only protocol in
+LAYER_FEATURE_DIAGNOSTIC.md before choosing another mechanism. These diagnostic
+probes do not establish convergence,reviewed-real accuracy or architecture ranking.
