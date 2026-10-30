@@ -1,0 +1,11 @@
+test_all_sibling_views_are_excluded_not_just_query_row (test_layer_feature_analysis.FeatureAnalysisTests.test_all_sibling_views_are_excluded_not_just_query_row) ... ok
+test_development_never_becomes_a_reference (test_layer_feature_analysis.FeatureAnalysisTests.test_development_never_becomes_a_reference) ... ok
+test_duplicate_nonfinite_and_mixed_dimensions_refuse (test_layer_feature_analysis.FeatureAnalysisTests.test_duplicate_nonfinite_and_mixed_dimensions_refuse) ... ok
+test_exact_ties_abstain (test_layer_feature_analysis.FeatureAnalysisTests.test_exact_ties_abstain) ... ok
+test_missing_reference_class_is_ineligible (test_layer_feature_analysis.FeatureAnalysisTests.test_missing_reference_class_is_ineligible) ... ok
+test_unknown_label_value_has_no_effect_and_roles_stay_separate (test_layer_feature_analysis.FeatureAnalysisTests.test_unknown_label_value_has_no_effect_and_roles_stay_separate) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.017s
+
+OK

@@ -20,6 +20,21 @@ neither is extended or adopted. Keep full roadmap/release scope.
 - [ ]s10 separately admitted +256=>4096,then full final ordinary error audit.
 - [ ]Inspect class-feature path from actual results before choosing new mechanism.
 
+Prepared read-only feature observer/pure analyzer in docs/experiments/, protocol
+docs/LAYER_FEATURE_DIAGNOSTIC.md. No active controller/shared source edited.
+Neural replay refuses until original s10 complete;no results claimed. Selected
+parallel lightweight gate only: six adversarial pure analysis checks,expected
+<100MiB,128MiB/30s/work6,unchanged OS guard,CPU1. Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
+--work-items 6 --receipt runs/layer-feature-analysis-tests-r1-job.json --
+.venv/Scripts/python.exe -m unittest discover -s docs/experiments
+-p test_layer_feature_analysis.py -v
+Six purechecks PASS.017s(native.234s/32,813,056B),raw receipt/log/startup and
+executed analyzer/tests byte-copied into docs/evidence/layer-feature-analysis-contracts/;
+known9644/34832/15252 and exacttestcommands gone. Neuralobserver/replay PENDING;
+no model-hook/featurequality claim. Heavy s9 stays serialized. At actual4096complete,
+first run existing ordinary error worker+curator separately,thenfeature observer.
+
 LIVE s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->30880->10352.
 Root startup runs/m2-stream-accuracy4096-s9-pipeline-startup.json;full8commands
 runs/m2-stream-accuracy4096-s9-pipeline/observed-startup.json. Last exact worker

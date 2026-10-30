@@ -1,0 +1,54 @@
+# Read-only piece-type feature diagnostic
+
+The completed controlled studies fit pose more readily than type. Before another
+architecture or training change, inspect the actual vectors entering the existing
+type head. This is a diagnostic of saved artifacts, with no training, replacement
+decoder, oracle geometry, model-output changes or real-image accuracy claim.
+
+Execution waits for the original larger baseline's fixed4,096 updates to finish.
+Then independently replay its ordinary errors using the existing worker and
+curator. Keep that result separate from these extra observations. Inspect the
+completed ordered and interleaved1,024 models with the same diagnostic afterward.
+They differ in capacity/population from the larger baseline; do not rank those
+three models as a controlled architecture comparison.
+
+`docs/experiments/probe_layer_features.py` calls the existing ordinary saved-probe
+worker. A Torch observer returns None on every call. It records actual Linear
+inputs/outputs, verifies the module is exactly the frozen model's `layer_type`,
+checks every stage and reconstructs its logits exactly. The existing worker must
+reproduce all saved ordinary metrics, exact pixels/public annotations, frozen
+source/configuration/runtime and unchanged full weights. No target enters forward.
+Record all final role features, logits and the actual head weights/bias for audit.
+Capture execution sources, native limits, raw logs and exact process identities.
+
+Analysis has one fixed descriptive rule: Euclidean nearest class centroid,
+separately for active and ghost, using only known training-probe labels and
+excluding **every view of the query ancestry**. Development never supplies a
+reference. Missing target classes make a query ineligible; exact ties abstain.
+Report denominators, unknown exclusions, class coverage and all distances, alongside
+the original native type head's correctness. No fitting iterations or new model
+artifact are created. Training views were used to train the network, so even
+ancestry-excluded readout is not an independent held-out representation test.
+
+A higher centroid count suggests that some class signal is available to this
+particular distance rule; a lower count does not prove an information bottleneck.
+Neither result establishes a causal repair. Do not select a new mechanism from
+an unexecuted feature probe or treat this readout as an inference dependency.
+
+This instrument changes no architecture/labels/scheduler/wire format. Relevant
+prior defects: V-003/V-014/V-018/V-020..V-024/V-026/V-027 require computed artifact
+and source identities, original scope and actual raw bytes; reuse ordinary
+replay and bind the observer/helper sources separately. V-004/V-011/V-012/V-017/
+V-019/V-023/V-025 require meaningful validated instruments: test sibling exclusion,
+unknown invariance, class support, ties and split/role separation, then prove the
+actual observer against unchanged neural outputs. V-001/V-002/V-005/V-006/V-016
+visibility policy is unchanged; unknown labels remain excluded. Resource controls
+stay unchanged. Pure checks may coexist with training under128MiB/30s/6cases;
+neural observation is serialized later, at1GiB/120s/27forwards for the larger
+model or640MiB/120s/41forwards for either controlled pilot, CPU1/cache16.
+
+Six pure adversarial checks PASS in0.017s(native.234s/32,813,056B under128MiB/30s),
+docs/evidence/layer-feature-analysis-contracts/scope.json. Actual source/test and
+raw receipt/log/startup bytes are preserved;all known test PIDs/commands gone.
+This gate covers analysis math/grouping only. Neural observer/replay is PENDING.
+Preparation alone provides no feature-separability result or quality claim.

@@ -1,0 +1,22 @@
+{
+  "scope": "Six pure analysis-only adversarial checks;not execution of Torch observer,neural replay,feature separation or model quality.",
+  "verified_dead_pids": [
+    9644,
+    34832,
+    15252
+  ],
+  "memory_bytes": 134217728,
+  "wall_seconds": 30.0,
+  "artifact_sha256": {
+    "native.log": "4e91bcb1d5221fbfa0b347b9aa9b8b04bb6f18a63978a8d0daf53fbba98fb6be",
+    "layer_feature_analysis.py": "3371e13e9f8a9b2bc87b7712763b715bce4b50c9a8a5033724fcb10839cd64a4",
+    "observed-startup.json": "5b6bb2dc678e5f0022f789431af19657539117a2f9a4860f5c1ce4f6201839aa",
+    "test_layer_feature_analysis.py": "f263e3fec92fd07d341f453656481ef92261dec52ea2165d281c2b246698dc2d",
+    "native-job.json": "d0c304cee80b11f3fc122bf813e54517e48dfbbc5d6bbca23646b2bf82d7fab4",
+    "native.stderr.log": "f8c07e303fc7ae660bff8a97b8187057ba69808b3fecfe2b10354817e01133b0"
+  },
+  "peak_job_commit_bytes": 32813056,
+  "status": "passed",
+  "cases": 6,
+  "elapsed_seconds": 0.234
+}
