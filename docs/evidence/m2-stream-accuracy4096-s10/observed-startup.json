@@ -1,0 +1,42 @@
+[
+  {
+    "ProcessId": 7816,
+    "ParentProcessId": 30912,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 1280 --wall-seconds 2100 --work-items 256 --receipt runs/m2-stream-accuracy4096-s10-pipeline-job.json -- .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s10 --target-steps 4096 --updates 256 --admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 36048,
+    "ParentProcessId": 7816,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 1280 --wall-seconds 2100 --work-items 256 --receipt runs/m2-stream-accuracy4096-s10-pipeline-job.json -- .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s10 --target-steps 4096 --updates 256 --admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 37000,
+    "ParentProcessId": 36048,
+    "CommandLine": ".venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s10 --target-steps 4096 --updates 256 --admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 20336,
+    "ParentProcessId": 37000,
+    "CommandLine": ".venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s10 --target-steps 4096 --updates 256 --admission runs/m2-stream-accuracy-probe --resume-from runs/m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 32224,
+    "ParentProcessId": 20336,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\scripts\\run_bounded.py --memory-mib 1024 --wall-seconds 1860 --work-items 256 --receipt C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10-job.json -- C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10 --model accuracy --steps 4096 --max-new-steps 256 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 6 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 23700,
+    "ParentProcessId": 32224,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\scripts\\run_bounded.py --memory-mib 1024 --wall-seconds 1860 --work-items 256 --receipt C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10-job.json -- C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10 --model accuracy --steps 4096 --max-new-steps 256 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 6 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 39672,
+    "ParentProcessId": 23700,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10 --model accuracy --steps 4096 --max-new-steps 256 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 6 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9"
+  },
+  {
+    "ProcessId": 17596,
+    "ParentProcessId": 39672,
+    "CommandLine": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9\\code\\scripts\\train_m2_stream.py --output C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s10 --model accuracy --steps 4096 --max-new-steps 256 --wall-seconds 1800 --admission C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy-probe --seed 20261026 --learning-rate 0.001 --evaluate-every 128 --checkpoint-every 64 --development-groups 6 --resume-from C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-accuracy4096-s9"
+  }
+]

@@ -22,14 +22,14 @@ No complete screenshot parser or real-image accuracy is claimed.
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
-   baseline has reached3840 through bank3328+512 verified updates: dev0/18 boards,
-   0/36 layers,geometry2.55382cells. All3840 recipes and27 probes replayed;
-   docs/evidence/m2-stream-accuracy4096-s9/scope.json preserves step_partial3840/4096
+   baseline is COMPLETE4096 through bank3840+256 verified updates: dev0/18 boards,
+   0/36 layers,geometry2.01544cells. All4096 recipes and27 probes replayed;
+   docs/evidence/m2-stream-accuracy4096-s10/scope.json preserves complete4096/4096
    and native controller/child/curator receipts. The prior host-pressure stop
    logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
-   exactly,excluding time. New inference weights34b489d9... retain original
-   catalogue121fd05a; adequate learning remains open. Continue bounded resumable
-   training and use saved error reports to track misses,false positives and independent active/
+   exactly,excluding time. New inference weights06751638... retain original
+   catalogue121fd05a; adequate learning remains open. Keep this study complete,
+   independently replay its final errors to track misses,false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
    initialization. Preserve explicit partial
    status and source/artifact identity. M2_LEARNING_ACCEPTANCE.md keeps the
@@ -60,9 +60,10 @@ No complete screenshot parser or real-image accuracy is claimed.
    complete:visible labels12/56->30/56,but boards32/32->28/32 and geometry
    .211->.386. Both fit gates fail;INTERLEAVED_FIT.md records controls,raw evidence
    and limits. Do not extend either finished study or adopt this ordering as a
-   release fix. Next complete the original larger4,096 baseline's remaining
-   256 updates using its original frozen source/optimizer,then inspect the
-   class-feature path before selecting another learning mechanism.
+   release fix. The original larger4,096 baseline is now complete with its
+   original frozen source/optimizer. Next audit its final errors and inspect the
+   class-feature path before selecting another learning mechanism;
+   LAYER_FEATURE_DIAGNOSTIC.md has the read-only protocol and scoped pure checks.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,

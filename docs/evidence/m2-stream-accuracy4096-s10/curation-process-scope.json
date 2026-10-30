@@ -1,0 +1,15 @@
+{
+  "pids": [
+    7816,
+    36048,
+    37000,
+    20336,
+    22640,
+    35972,
+    17048,
+    18088
+  ],
+  "scope": "Exact observed parent/controller/curator command tree during curation,all recorded PIDs gone after native completion;raw observation copied unchanged.",
+  "observed_curation_sha256": "d359dd7f117be044d787bc926618ba86e3f5b07b0f0529eabfbcf5112f42fb6d",
+  "status": "verified_dead"
+}

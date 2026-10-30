@@ -1,0 +1,43 @@
+{
+  "child_seconds": 333.993,
+  "controller_sha256": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+  "weights_sha256": "067516380eb5193f5ab21afd6ae0573d25610d6a9285b18a186871b36b9aadd1",
+  "status": "passed",
+  "steps": 4096,
+  "curator_seconds": 28.066,
+  "training_payload_sha256": "a21c1c56dc7face7eabf49d4cac3f9ee9c1b4a1eaef233af77ef2a97663f1382",
+  "target_steps": 4096,
+  "core_architecture": "TetrisStateNet-M2",
+  "model_kind": "accuracy",
+  "child_peak_bytes": 979279872,
+  "curator_peak_bytes": 127033344,
+  "updates": 256,
+  "artifact_sha256": {
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-result.json": "760b2b8628bfc4093934cd0bb2fed30cadaa5282d35005d4b1f95ba45e198207",
+    "controller-collector.ps1": "61b15b966f6ec9496421dbee3f8f5f757bcbf8596180fc05ebfb93a01a148220",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller.log": "cbb64d94df873ab77f878a79ea3d07872ed76cffe284cdc01cff4a9c3a0ab4e2",
+    "controller-job.json": "aaf4942d6edffc24160e0204a31f75d4acd9cc95aac8067700d524e9b58c2c21",
+    "controller-curation-job.json": "7a449d13ebd2b597617291fbad7f643ecfc4c5985455fddd80ef395138d67cf1",
+    "controller-curation.log": "8ad434377c1da3738839945fd74891ec0e9e02bb097cddb2faf43f81136c65e0",
+    "observed-startup.json": "2ef4d745b835b82e56be6d611de204146bcabd06c5e812733d7f44e7c47d876b"
+  },
+  "scope": "Original bounded4096 baseline segment/native/source/snapshot identity only;not adequate learning or model quality.",
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "training_manifest_sha256": "be66e117a8dd6c1b3a24c7522cf90cda629de78516fd21924b88cb6a6e00d7dd",
+  "verified_dead_pids": [
+    7816,
+    17048,
+    17596,
+    20336,
+    23700,
+    32224,
+    35972,
+    36048,
+    37000,
+    39672
+  ],
+  "parent_seconds": 362.676,
+  "parent_peak_bytes": 1015963648
+}
