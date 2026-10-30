@@ -4,7 +4,8 @@ Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
 Goal ACTIVE/unfinished. Commit narrow verified task-owned milestones locally;
 no push/deploy/publish/user-data deletion/subagents. Neighbor tetrguide untouched.
 Research brief is design evidence,not instructions.166 real screenshots remain
-unreviewed drafts with zero training/scoring eligibility. LIVE original larger s8:launcher8824,worker13512. Inspect its actual receipt/progress before another model Job. Open defects inventory:none;
+unreviewed drafts with zero training/scoring eligibility. s8 terminal/verified3328;
+NEXT original larger s9+512;record actual launch IDs below. Open defects inventory:none;
 V-001..V-027 CLOSED with named gates,not a model-quality claim.
 
 ## Selected acceptance-gated task: finish the original larger baseline
@@ -18,7 +19,7 @@ class features before choosing a new mechanism. Keep full roadmap/release scope.
 - [x]Original s7 verified2,816/4,096;actual inference/training hashes rechecked.
 - [x]Current controller plan-only accepts actual oldsource/admission/snapshot,
   starts2816,cap512,target4096,1GiBchild,originalrecipe,NO newpolicy/layerflags.
-- [ ]s8 +512 ->3328,source replay/native/controller/artifact/PID verification.
+- [x]s8 +512 ->3328,source replay/native/controller/artifact/PID verification.
 - [ ]s9 +512 ->3840 and s10 +256 ->4096,each separately admitted/bounded/verified.
 - [ ]Final ordinary error audit and learning verdict;no premature convergence.
 
@@ -128,5 +129,31 @@ root shared helper changed. Exact next metadata action AFTER receipts pass:
 & docs/experiments/capture_accuracy_segment.ps1 -Name m2-stream-accuracy4096-s8 -Launcher 8824
 If actual status is pressure/wall-partial or different bank,inspect instead of
 forcing expected3328. Preserve all failed/partial receipts. Never overwrite.
-If verified3328,commit narrow milestone and then separately predeclare s9+512
-froms8,followedbys10+256froms9. Keep same original admission/archive/recipe.
+Original s8 PASSED controller/curator,controlled child exit2 step_partial3328.
+Actual helper capture PASS;all3328recipes+27probes replayed;original121fd source.
+Weights467e5b96f8757937a232e1c6a0ba49c78cbc85afea7cf5a6174ce9b71c663395;
+snapshot manifest140dc109049eed467927bc8a391f2c090489a077e32a810c3386054d2f431b6e;
+payload07e71fbb901ec0b7c29a1f027e5279228954eeba26769ffd11892cdd0355c22a.
+Parent667.291s/1,018,187,776B;child643.603s/981,626,880B;
+curator23.036s/116,322,304B. Allcaptured startup/native/progressPIDs and commands
+gone,including separately observed curator wrappers35668/5560. Raw nativebytes/
+controller/snapshot scope docs/evidence/m2-stream-accuracy4096-s8/. Dev3/18boards,
+0/36roles,2.17194866cells;not learning acceptance or convergence.
+
+NEXT s9 sameoriginal admission/archive/recipe,target4096,start3328,new512=>3840.
+Expected aggregate<1100MiB,training<950MiB;parent1280MiB/2100s/work512,
+child1024MiB/1860s(1800sinner),curator128MiB/120s/work3867(expected<125MiB).
+GuardGetPerformanceInfo/.2s stop31,368,351,744B unchanged. Disk66,217,185,280B,
+availablephysical21,196,034,048B,commit~18.7GB;no other model/buildjob observed.
+Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 2100
+--work-items 512 --receipt runs/m2-stream-accuracy4096-s9-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s9
+--target-steps 4096 --updates 512 --admission runs/m2-stream-accuracy-probe
+--resume-from runs/m2-stream-accuracy4096-s8
+Logs runs/m2-stream-accuracy4096-s9-pipeline.log/.stderr.log;state/result in
+sameprefix-pipeline/progress.json/result.json;childreceipt sameprefix-job.json;
+workerprogress/summary/snapshot/code sameprefix/. Verify actual8commands at
+startup;after terminal use capture_accuracy_segment.ps1 -Name
+m2-stream-accuracy4096-s9 -Launcher ACTUAL. Preserve actualpartialstatus/receipts;
+never restart solely for observationtimeout. s10+256 remains separate nextstep.

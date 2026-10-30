@@ -1,0 +1,43 @@
+{
+  "artifact_sha256": {
+    "controller-curation-job.json": "f31c9f3340d237a2185160eaf6a09570f1d6135dbead2cfac8009b43ecc377ac",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-result.json": "702873f04345ce68679d720b3a1b732abedf3fd82f62b416b4a37847b1d0d35c",
+    "controller-job.json": "be078f254bcd58836d03702702f92f18e634693d5846c594b158eb71bdee1d79",
+    "controller-collector.ps1": "61b15b966f6ec9496421dbee3f8f5f757bcbf8596180fc05ebfb93a01a148220",
+    "observed-startup.json": "ac94f7a840a9993312386c4d5a69c255d2b630ccf6b490dd2f26029575fe0091",
+    "controller-curation.log": "dcf5ae0d8dc8140ded771d276079a7677ed3966ffc8632fa8c30bb583fe20099",
+    "controller.log": "cc298023ccd927592d122d3ddaae4fc234b84b998c86ddceb084e51327eecfe4"
+  },
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "parent_seconds": 667.291,
+  "core_architecture": "TetrisStateNet-M2",
+  "scope": "Original bounded4096 baseline segment/native/source/snapshot identity only;not adequate learning or model quality.",
+  "training_manifest_sha256": "140dc109049eed467927bc8a391f2c090489a077e32a810c3386054d2f431b6e",
+  "weights_sha256": "467e5b96f8757937a232e1c6a0ba49c78cbc85afea7cf5a6174ce9b71c663395",
+  "verified_dead_pids": [
+    432,
+    8824,
+    13512,
+    15764,
+    16640,
+    16928,
+    19436,
+    20064,
+    22984,
+    33576
+  ],
+  "controller_sha256": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+  "curator_peak_bytes": 116322304,
+  "child_peak_bytes": 981626880,
+  "training_payload_sha256": "07e71fbb901ec0b7c29a1f027e5279228954eeba26769ffd11892cdd0355c22a",
+  "target_steps": 4096,
+  "child_seconds": 643.603,
+  "curator_seconds": 23.036,
+  "model_kind": "accuracy",
+  "status": "verified_partial",
+  "parent_peak_bytes": 1018187776,
+  "updates": 512,
+  "steps": 3328
+}
