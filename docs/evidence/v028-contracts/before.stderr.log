@@ -1,0 +1,21 @@
+test_all_sibling_views_are_excluded_not_just_query_row (test_layer_feature_analysis.FeatureAnalysisTests.test_all_sibling_views_are_excluded_not_just_query_row) ... ok
+test_development_never_becomes_a_reference (test_layer_feature_analysis.FeatureAnalysisTests.test_development_never_becomes_a_reference) ... ok
+test_duplicate_nonfinite_and_mixed_dimensions_refuse (test_layer_feature_analysis.FeatureAnalysisTests.test_duplicate_nonfinite_and_mixed_dimensions_refuse) ... ok
+test_exact_ties_abstain (test_layer_feature_analysis.FeatureAnalysisTests.test_exact_ties_abstain) ... ok
+test_missing_reference_class_is_ineligible (test_layer_feature_analysis.FeatureAnalysisTests.test_missing_reference_class_is_ineligible) ... ok
+test_unknown_label_value_has_no_effect_and_roles_stay_separate (test_layer_feature_analysis.FeatureAnalysisTests.test_unknown_label_value_has_no_effect_and_roles_stay_separate) ... FAIL
+
+======================================================================
+FAIL: test_unknown_label_value_has_no_effect_and_roles_stay_separate (test_layer_feature_analysis.FeatureAnalysisTests.test_unknown_label_value_has_no_effect_and_roles_stay_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\docs\experiments\test_layer_feature_analysis.py", line 50, in test_unknown_label_value_has_no_effect_and_roles_stay_separate
+    self.assertEqual(before, json.loads(json.dumps(before)))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'dim[111 chars]s': {1: 2}, 'native_correct': 2, 'prototype_el[1698 chars]ed.'} != {'dim[111 chars]s': {'1': 2}, 'native_correct': 2, 'prototype_[1702 chars]ed.'}
+Diff is 4894 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.020s
+
+FAILED (failures=1)

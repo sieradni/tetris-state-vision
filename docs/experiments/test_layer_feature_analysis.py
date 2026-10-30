@@ -1,5 +1,6 @@
 """Adversarial analysis-only checks; no model imports or training."""
 import copy
+import json
 import unittest
 
 from layer_feature_analysis import analyze
@@ -46,6 +47,7 @@ class FeatureAnalysisTests(unittest.TestCase):
         rows = [row("a", "a", 1, 1), row("b", "b", 1, 1), row("u", "u", 0, 100, known=False),
                 row("a", "a", 2, 2, role="ghost"), row("b", "b", 2, 2, role="ghost")]
         before = analyze(rows)
+        self.assertEqual(before, json.loads(json.dumps(before)))
         rows[2]["target_type"] = 7
         self.assertEqual(before, analyze(rows))
         self.assertEqual(before["roles"]["active"]["training"]["unknown_excluded"], 1)

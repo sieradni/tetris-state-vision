@@ -1,0 +1,22 @@
+{
+  "peak_job_commit_bytes": 32563200,
+  "memory_bytes": 134217728,
+  "scope": "Six pure grouped/unknown/support/tie/role/split checks with exact JSON roundtrip on canonical string class-count keys. Before failure preserved separately. No neural observer or collector execution,feature separation or model quality claim.",
+  "verified_dead_pids": [
+    26756,
+    18724,
+    34548
+  ],
+  "cases": 6,
+  "wall_seconds": 30.0,
+  "artifact_sha256": {
+    "after-analyzer.py": "cbbf16d23a318476872ddd54597403984c67c9bb6cf5d50d50ab8328ac6aa8a5",
+    "after-startup.json": "70f769e63340002507be6eb9c9f992da63593c7b1a473fc1c256b2395068e4f2",
+    "after.log": "843751cd9043717a478a178a0835aeab900ce0d6aa1fd50e9b2a3271c553e628",
+    "after.stderr.log": "f8c07e303fc7ae660bff8a97b8187057ba69808b3fecfe2b10354817e01133b0",
+    "after-job.json": "a52db10c734cfb2ea4b99d9eac755143febe8edc9ed51d4966b7bf5c4e2a35c4",
+    "after-tests.py": "5442c31dd4f5f0139423e790198b24c7ce5d853e019539bc0212ebfa2e24648f"
+  },
+  "status": "passed",
+  "elapsed_seconds": 0.235
+}

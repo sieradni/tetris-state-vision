@@ -1,0 +1,20 @@
+{
+  "failures": 1,
+  "cases": 6,
+  "artifact_sha256": {
+    "before-analyzer.py": "3371e13e9f8a9b2bc87b7712763b715bce4b50c9a8a5033724fcb10839cd64a4",
+    "before-job.json": "8090e42172160ccc1615856e6f98f3fab30fefc5fe313d893132fe3ca9e03008",
+    "before.stderr.log": "47fc8345939b5eb06f2276f7174937744d785eb9aa4711c0ce8d4cedebd93ae6",
+    "before.log": "9044968c19418dc6907d37f4bdda01557d7c95f9df80111299c5d04465bebfbf",
+    "regression-tests.py": "5442c31dd4f5f0139423e790198b24c7ce5d853e019539bc0212ebfa2e24648f",
+    "collector.py": "112231d11ef28289f2fb462d36e4d5f65a6fed86f7507af8c730d806e9d4ddb4",
+    "before-startup.json": "6913a599a8077a1bbdf6e6c100ae697082c8d9c5865de2ab0a8e37ddca863371"
+  },
+  "scope": "Native sixcase pre-fix reproduction of integer versus serialized string class-count keys;no neural feature execution.",
+  "status": "expected_regression_failure",
+  "verified_dead_pids": [
+    18384,
+    29936,
+    37340
+  ]
+}

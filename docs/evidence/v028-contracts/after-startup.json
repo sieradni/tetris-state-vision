@@ -1,0 +1,5 @@
+{
+  "ProcessId": 26756,
+  "ParentProcessId": 33676,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 6 --receipt runs/layer-feature-analysis-tests-r3-job.json -- .venv/Scripts/python.exe -m unittest discover -s docs/experiments -p test_layer_feature_analysis.py -v"
+}

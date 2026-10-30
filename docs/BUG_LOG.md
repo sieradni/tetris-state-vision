@@ -9,13 +9,35 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027 (9) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes; profile ancestry must match actual profile recipes |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028 (10) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+
+## V-028 — CLOSED: feature class counts changed key type during JSON serialization
+
+- Symptom: collector review found its direct recomputation comparison would
+  reject a saved feature analysis. Native sixcase r2 reproduces the mismatch:
+  five pass, JSON roundtrip equality fails on integer1 versus string"1" keys.
+- Root cause: new pure analyzer returned integer keys in target_counts, while
+  JSON stores object keys as strings. The new collector correctly compares the
+  complete saved and recomputed analysis, exposing this representation mismatch.
+  No neural feature observer/collector has run or published an affected result.
+- Detection class: provenance; extends the existing actual-wire-identity pattern.
+- Instrument: canonical string keys in the analyzer and exact JSON roundtrip
+  equality in the grouped/unknown-invariance regression; sibling exclusion,
+  role/split separation, missing support and ties remain checked separately.
+- Failed gate: docs/evidence/v028-contracts/before-scope.json binds native r2,
+  sixcases/onefailure,.238s/32,243,712B under128MiB/30s/work6, original analyzer,
+  test and collector bytes, raw receipts/logs/startup;all known PIDs/commands gone.
+- Green gate: docs/evidence/v028-contracts/scope.json binds fresh native r3,
+  sixcases/sixpasses in.017s(native.235s/32,563,200B),same128MiB/30s/work6/guard,
+  actual fixed analyzer/test bytes and raw receipts/logs/startup;all known
+  PIDs/commands gone. This is reporting integrity, not a native feature-observer,
+  collector, feature-separation or model-quality gate.
 
 ## V-027 — CLOSED: interleaved profile counted the ordinary schedule's ancestry
 

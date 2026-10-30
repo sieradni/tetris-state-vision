@@ -55,7 +55,8 @@ def analyze(rows):
             role_result[split] = {"known": len(selected), "unknown_excluded": sum(
                 not row["known"] for row in role_rows if row["split"] == split),
                 "ancestries": len({row["group_id"] for row in selected}),
-                "target_counts": dict(sorted(Counter(row["target_type"] for row in selected).items())),
+                "target_counts": {str(label): count for label, count in sorted(Counter(
+                    row["target_type"] for row in selected).items())},
                 "native_correct": sum(case["native_type"] == case["target_type"] for case in cases),
                 "prototype_eligible": len(eligible),
                 "prototype_correct": sum(case["prototype_type"] == case["target_type"] for case in eligible),

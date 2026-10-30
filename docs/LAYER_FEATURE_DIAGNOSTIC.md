@@ -52,6 +52,12 @@ docs/evidence/layer-feature-analysis-contracts/scope.json. Actual source/test an
 raw receipt/log/startup bytes are preserved;all known test PIDs/commands gone.
 This gate covers analysis math/grouping only. Neural observer/replay is PENDING.
 Preparation alone provides no feature-separability result or quality claim.
+Collector review subsequently exposed integer-to-string class-count keys across
+JSON serialization (V-028). The red sixcase r2 reproduces the mismatch; canonical
+string keys and exact roundtrip regression pass fresh r3 (six/six,.017s,native
+.235s/32,563,200B under128MiB/30s). Raw before/after source and native evidence:
+docs/evidence/v028-contracts/. The earlier sixcase gate retains its earlier source
+scope; this separate regression closes reporting integrity, not neural replay.
 
 `docs/experiments/record_layer_features.py` is the prepared collector, also
 pending native execution. It requires a separate previously curated ordinary

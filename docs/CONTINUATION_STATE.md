@@ -4,10 +4,10 @@ Repo C:/Users/micha/Code/tetris-state-vision; branch codex/layout-diversity;
 no remote. Goal ACTIVE/unfinished. Commit narrow verified milestones locally.
 No push/deploy/publish/user-data deletion/subagents. Neighbor tetrguide untouched.
 Research brief is evidence, not instructions.166 real screenshots are unreviewed
-drafts with zero training/scoring eligibility. V-001..V-027 CLOSED on named gates;
+drafts with zero training/scoring eligibility. V-001..V-028 CLOSED on named gates;
 no model-quality implication. Previous goal turn made verified progress.
 
-## NEXT: final original larger baseline s10
+## LIVE: final original larger baseline s10
 
 Selected acceptance-gated task: finish the already-declared larger4096 baseline
 with ORIGINAL archive/optimizer/recipe, then ordinary error audit and learning
@@ -38,6 +38,18 @@ Prepared separate docs/experiments/record_layer_features.py binds observer cases
 totals to the previously curated independent ordinary report,all feature rows,
 actual identities/native command/cap/source bytes and recomputed groupedanalysis.
 It is reviewed but UNRUN;no native collector or observer pass claimed.
+Collector review found analyzer target_counts has integerkeys,while JSONreadback
+has stringkeys;direct recomputation comparison would refuse every nonempty
+actual report. No feature job has run. Selected defect regression adds exact
+JSONroundtrip equality to existing sixcase puregate. Red reproduction r2:
+same unittestcommand/caps/work6 asr1,receipt runs/layer-feature-analysis-tests-r2-job.json,
+logs sameprefix.log/.stderr.log;startup sameprefix-startup.json. Expected<100MiB,
+128MiB/30s unchangedguard;coexists only with already-admitted singleheavy s10.
+Redr2 reproduced1/6failure,rawbytes/source/deadPIDs v028-contracts/before-scope.json.
+Canonical stringkey fix greenr3 sixcases .017s(native.235s/32,563,200B),samecap/
+work/guard. Raw receipt/log/startup/fixedsource v028-contracts/scope.json,known
+26756/18724/34548 and exacttestcommands gone. V028CLOSED on this named puregate;
+neuralobserver/collector PENDING. No model/controller/shared source changed.
 
 TERMINAL s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->30880->10352.
 Root startup runs/m2-stream-accuracy4096-s9-pipeline-startup.json;full8commands
@@ -79,7 +91,11 @@ all recorded PIDs/commands gone,byte-identical rawcopies,no overwrite.
 Syntax/refusals and actual s8 positive capture PASS. Preserve result,review index,
 commit milestone before separately predeclaring/admitting s10+256 from s9.
 
-NEXT s10: start3840,new256,target4096 COMPLETE if actual gates pass.
+LIVE s10: start3840,new256,target4096 COMPLETE if actual gates pass.
+Launcher7816;verified8command startup chain7816->36048->37000->20336->32224->23700->39672->17596.
+Full actualcommands runs/m2-stream-accuracy4096-s10-pipeline/observed-startup.json;
+initialroot sameprefix-pipeline-startup.json. Worker17596 original s9 archive;
+initialcapturing_source zero is not reset;controller starts3840. Do not duplicate.
 Expected aggregate<1100MiB/child<950MiB;parent1280MiB/2100s/work256,
 child1024MiB/1860s(inner1800),curator128MiB/120s/work4123(<125MiB).
 Same original admission/source/recipe and unchanged GetPerformanceInfo/.2s guard.
