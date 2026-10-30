@@ -1,5 +1,9 @@
 # Tetris State Vision
 
+New contributors: start with the [core goals](docs/CORE_GOALS.md) and
+[contributor handoff guide](CONTRIBUTING.md). GitHub holds code/history; the
+separate handoff ZIP supplies current ignored model/run artifacts.
+
 An independent image-to-state model research project. It includes state contracts,
 exact-state scoring, synthetic scenes and a scratch lattice-query model with
 optional joint queue/hold heads.

@@ -1,4 +1,43 @@
-# Current checkpoint — 2026-10-30
+# Contributor handoff checkpoint — 2026-10-30
+
+## Current owner request: clean repository, GitHub push, ZIP and core goals
+
+Owner explicitly authorized creating a repository under sieradni and pushing it.
+GitHub CLI account verified as sieradni; target sieradni/tetris-state-vision was
+absent at preflight. Create PRIVATE; do not invite an unknown contributor.
+No research jobs are running and no further model training is selected during
+handoff. Research's next task below belongs to the incoming contributor.
+
+- [x]Commit the verified pending research results:64939f2.
+- [x]Write CONTRIBUTING.md and docs/CORE_GOALS.md with current evidence/limits.
+- [ ]Verify bounded ZIP build/restore, current artifact inventory and clean commit.
+- [ ]Create private GitHub repository, fast-forward local main, push and verify SHA.
+- [ ]Build ZIP outside repo, verify every file and test relocated current inputs.
+- [ ]Finish with clean local/remote source and explain clone plus artifact restore.
+
+New packaging scripts/handoff_bundle.py includes only Git source and an explicit
+allowlist of current synthetic/model/run artifacts,latest optimizer generation
+per included run. It excludes .git,.venv,data/private screenshots,neighbor and
+unselected historical runs. Max12000files/2GiB,streamingI/O. Restore checks source
+commit/cleanliness and preflights ALL collisions before writing ignored runs;
+tracked source is never overwritten. Output ZIP+SHA256 go to Downloads.
+First gate:expected<100MiB,128MiB/60s/work6,unchanged pressureguard,CPU1.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 60
+--work-items 6 --receipt runs/handoff-contracts-r1-job.json --
+.venv/Scripts/python.exe -m unittest discover -s tests -p test_handoff_bundle.py -v
+Hiddenlogs runs/handoff-contracts-r1.log/.stderr.log;receiptterminal sentinel;
+capture actualstartup/death. No remote exists yet. No user data deletion.
+Handoff sixcase transportgate PASS7.743s(native8.231s/120,905,728B under128MiB),
+rawsource/receipt/startup/death docs/evidence/handoff-contracts-r1/. Peak exceeded
+the100MiB forecast but stayed inside128MiB;future archive jobs get256MiB.
+NEXT artifact plan:expected<200MiB,256MiB/90s/work12000,unchangedpressureguard.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 256 --wall-seconds 90
+--work-items 12000 --receipt runs/handoff-plan-r1-job.json --
+.venv/Scripts/python.exe scripts/handoff_bundle.py plan
+Hiddenlogs runs/handoff-plan-r1.log/.stderr.log;receiptterminalsentinel. No ZIP
+build/push yet. Inspect totalbytes/filecount before final export.
+
+## Research continuation preserved
 
 Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
 GoalACTIVE/unfinished. Commit narrow verified task-owned milestones locally.

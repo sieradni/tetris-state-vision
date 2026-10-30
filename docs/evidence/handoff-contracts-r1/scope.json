@@ -1,0 +1,23 @@
+{
+  "memory_bytes": 134217728,
+  "cases": 6,
+  "wall_seconds": 60.0,
+  "elapsed_seconds": 8.231,
+  "verified_dead_pids": [
+    18224,
+    21972,
+    21124
+  ],
+  "forecast_exceeded": "120905728 B peak exceeded the100MiB forecast,within enforced128MiB;retain raw value.",
+  "scope": "Six bounded transport/integrity/latest-generation/non-destructive-restore checks on disposable local Git fixtures. Not yet the full real archive,remote push or relocated model validation.",
+  "status": "passed",
+  "artifact_sha256": {
+    "handoff_bundle.py": "74e4d1057c4d9c173284325c5c81d7dd8f037548cb22a104fa4d6780a8158c9e",
+    "observed-startup.json": "5d6d28da41550cc96fa210783e029ee625f854053a4031247eb3dbb349a1c019",
+    "native-job.json": "15a7b509f726e3415f1d0a17aa3070304f3cc22ccf18eb4beae801139302e4d7",
+    "native.log": "cd191f96638b1f5d319d3f0e8cc304edca7f1874ed0cdd510dddb2ea848d3c80",
+    "native.stderr.log": "ee7ee87751fd4b321d3e9b736ea154d4ccaa3de0adc04ce19428d245b4e0772c",
+    "test_handoff_bundle.py": "caa365aa4f261116721bb875b327cc9a31c02c59a1db294132ea8ce773695036"
+  },
+  "peak_job_commit_bytes": 120905728
+}

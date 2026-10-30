@@ -8,3 +8,4 @@ dist/
 runs/
 data/
 checkpoints/
+.handoff/

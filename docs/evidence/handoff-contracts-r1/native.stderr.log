@@ -1,0 +1,13 @@
+test_different_existing_run_data_refuses_before_any_other_write (test_handoff_bundle.HandoffBundleTests.test_different_existing_run_data_refuses_before_any_other_write) ... ok
+test_dirty_source_is_never_overwritten (test_handoff_bundle.HandoffBundleTests.test_dirty_source_is_never_overwritten) ... ok
+test_restore_writes_only_ignored_artifacts_and_is_idempotent (test_handoff_bundle.HandoffBundleTests.test_restore_writes_only_ignored_artifacts_and_is_idempotent) ... ok
+test_source_current_artifacts_and_only_latest_optimizer_are_included (test_handoff_bundle.HandoffBundleTests.test_source_current_artifacts_and_only_latest_optimizer_are_included) ... ok
+test_tampered_member_fails_integrity (test_handoff_bundle.HandoffBundleTests.test_tampered_member_fails_integrity) ... ok
+test_traversal_and_duplicate_members_refuse (test_handoff_bundle.HandoffBundleTests.test_traversal_and_duplicate_members_refuse) ... C:\Users\micha\miniconda3\Lib\zipfile\__init__.py:1730: UserWarning: Duplicate name: 'README.md'
+  return self._open_to_write(zinfo, force_zip64=force_zip64)
+ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 7.743s
+
+OK
