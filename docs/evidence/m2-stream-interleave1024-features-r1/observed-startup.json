@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 21524,
+    "ParentProcessId": 3724,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 41 --receipt runs/m2-stream-interleave1024-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1"
+  },
+  {
+    "ProcessId": 27568,
+    "ParentProcessId": 21524,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 41 --receipt runs/m2-stream-interleave1024-features-r1-job.json -- .venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1"
+  },
+  {
+    "ProcessId": 30044,
+    "ParentProcessId": 27568,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1"
+  },
+  {
+    "ProcessId": 18628,
+    "ParentProcessId": 30044,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/probe_layer_features.py --run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1"
+  }
+]

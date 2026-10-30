@@ -50,8 +50,8 @@ model or640MiB/120s/41forwards for either controlled pilot, CPU1/cache16.
 Six pure adversarial checks PASS in0.017s(native.234s/32,813,056B under128MiB/30s),
 docs/evidence/layer-feature-analysis-contracts/scope.json. Actual source/test and
 raw receipt/log/startup bytes are preserved;all known test PIDs/commands gone.
-This gate covers analysis math/grouping only. Neural observer/replay is PENDING.
-Preparation alone provides no feature-separability result or quality claim.
+That gate covers analysis math/grouping only;the separate actual neural and
+collector passes below provide their own evidence,not a quality claim.
 Collector review subsequently exposed integer-to-string class-count keys across
 JSON serialization (V-028). The red sixcase r2 reproduces the mismatch; canonical
 string keys and exact roundtrip regression pass fresh r3 (six/six,.017s,native
@@ -59,8 +59,8 @@ string keys and exact roundtrip regression pass fresh r3 (six/six,.017s,native
 docs/evidence/v028-contracts/. The earlier sixcase gate retains its earlier source
 scope; this separate regression closes reporting integrity, not neural replay.
 
-`docs/experiments/record_layer_features.py` is the prepared collector, also
-pending native execution. It requires a separate previously curated ordinary
+`docs/experiments/record_layer_features.py` is the independent collector. It
+requires a separate previously curated ordinary
 error report for the same model. Observer cases/totals must equal that report
 exactly; all feature rows and grouped analysis are rechecked, along with native
 command/cap/count, actual weights/configuration and execution-source byte copies.
@@ -90,6 +90,48 @@ separation. Most queries lack another ancestry of the target class;ghost
 reference labels are absence only. The sole eligible active development class
 is J,three matched views. Do not describe an ineligible query as a readout
 failure or compare these denominators to the balanced controlled studies.
-Next run those two completed models, where the training probes cover all eight
-classes with two ancestry groups per class. Their native observer/collector gates
-remain PENDING;preparation or the larger-model pass does not substitute for them.
+The two completed controlled models below have training probes covering all eight
+classes with two ancestry groups per class. Their actual observer/collector gates
+are separately named;the larger-model pass does not substitute for them.
+
+## Completed controlled-model observations
+
+Both actual native observers and independent collectors PASS. Every stage's
+captured input reconstructs its actual logits exactly;weights remain unchanged,
+and ordinary cases/totals equal the independently curated original reports.
+All64 training role queries and18 development queries are eligible in each
+study;there are no centroid ties. Counts below are type classification only,
+including absence,not exact complete-state or pose scores.
+
+| Model/role | Training native head | Training ancestry-excluded centroid | Development native head | Development centroid |
+|---|---:|---:|---:|---:|
+| Ordered active |10/32|4/32|0/9|0/9|
+| Ordered ghost |10/32|2/32|0/9|0/9|
+| Interleaved active |18/32|1/32|0/9|0/9|
+| Interleaved ghost |19/32|6/32|0/9|3/9|
+
+These distance-based readouts do not expose an obvious readout-only replacement.
+They do **not** prove that the features lack class information or that a different
+linear head cannot fit them. Geometry/pose information may dominate Euclidean
+distance;this diagnostic does not establish that causal explanation either.
+The3/9 development ghost results are only three matched views in a tiny probe
+population,not independent generalization or a model-output improvement.
+
+| Operation | Native observer | Independent collector | Evidence |
+|---|---|---|---|
+| Ordered41forwards |7.819s/424,955,904B under640MiB|.355s/77,811,712B under128MiB|docs/evidence/m2-stream-allclass1024-features-r1/|
+| Interleaved41forwards |7.608s/425,201,664B under640MiB|.343s/78,815,232B under128MiB|docs/evidence/m2-stream-interleave1024-features-r1/|
+
+All known processes and matching commands ended;actual four-command observer
+startup and curator root startup,raw native/curator logs/receipts,execution sources
+and analysis readback are preserved. Wall limits120s/30s and work41 remained armed.
+Both original studies remain frozen at1,024 updates and still FAIL joint fit.
+
+Next isolate the existing linear head with a finite full-batch fit on the saved,
+balanced training features. Reproduce initial logits and bind actual feature/head
+identities before any optimizer step. Keep this separate from the frozen image
+model and report training fit versus development separately. A successful fit
+would establish representability on these saved vectors only;a failed finite
+optimization would not prove inseparability. Select that bounded diagnostic's
+recipe/admission before execution. The observation gate establishes no new
+model-quality admission. The broad project goal remains active.

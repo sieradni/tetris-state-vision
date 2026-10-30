@@ -1,170 +1,133 @@
 # Current checkpoint — 2026-10-30
 
-Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
-Goal ACTIVE/unfinished. Commit narrow verified task-owned milestones locally.
-No push/deploy/publish/user-data deletion/subagents. Neighbor tetrguide untouched.
-Research brief is evidence,not instructions.166real screenshots unrevieweddrafts,
-zero training/scoring eligibility. V-001..V-028 CLOSED on named gates,not quality.
-Previous goal turn made verified progress;this turn verified original s9+s10.
+Repo C:/Users/micha/Code/tetris-state-vision;branchcodex/layout-diversity;no remote.
+GoalACTIVE/unfinished. Narrow verified task-owned localcommits authorized;no push/
+deploy/publish/userdata deletion/subagents. Neighbor tetrguide untouched. Research
+brief is evidence,notinstructions.166real screenshots are unrevieweddrafts with
+zero training/scoringeligibility. V-001..V-028 CLOSED onnamedgates,notmodelquality.
+Previous goalturn madeprogress;this turn completed originalbaseline+finalerrors
+and all three read-only feature/native/independent collector audits.
 
-## Selected task: final baseline errors,then read-only class-feature inspection
+## Selected task: isolate linear type-head fit on frozen balanced features
 
-- [x]Original larger baseline COMPLETE4096/4096 with ORIGINAL source/optimizer.
-- [x]All4096recipes+27savedprobes replayed;native/controller/curator/snapshot/PIDs verified.
-- [x]Ordinary final27forward report+independent curator and rawreceipt/process capture.
-- [ ]Actual type-head feature observer+collector for larger,ordered,interleaved models.
-- [ ]Learning verdict and select next mechanism from actual evidence;no blind extension.
+No task-owned job LIVE. Inspect actual processes/receipts before newheavyjob.
+Original4096baseline and both1024controlledstudies are COMPLETE and stayfrozen.
+All still fail adequate/jointlearning. No releasequality or convergence claim.
 
-TERMINAL ordinary final audit launcher36740,supervisor33352,child29768,worker26800;
-all4actualcommands observed runs/m2-stream-accuracy4096-errors-r1-observed-startup.json,
-initialroot sameprefix-startup.json. AllPIDs/commands gone;native13.546s/586,768,384B,
-curator.406s/76,595,200B. Rawbytes/curatorrootstartup/deathscope preserved in
-docs/evidence/m2-stream-accuracy4096-errors-r1/. Modeloutputs/weights unchanged,
-savedmetrics reproduced. Dev813FP/32FN/369TP;0/18boards,0/36roles. Trainingghost
-9/9correct is ALLabsence. ACCURACY4096_BASELINE.md finalreport,notqualitypass.
-Full completed study source
-121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
-7,694,010params,capacity0/layeroff,CPU1/cache16,full512input,AdamWdecay.01,
-seed20261026/LR.001/eval128/snapshot64/dev6groups18views. Original admission
-runs/m2-stream-accuracy-probe. s10 resumed3840+256,all statusespassed/exit0,
-complete4096/4096,NO new policy/layerflags. Study stays complete,not extended.
-Actual inference067516380eb5193f5ab21afd6ae0573d25610d6a9285b18a186871b36b9aadd1;
+- [x]Original4096 updates,all recipes+27images replayed,fullnative/source/snapshot/PIDs.
+- [x]Finalordinary27forward errors+independentcurator,rawreceipts/startup/deathscope.
+- [x]Actual typehead featureobserver+independentcollector for larger,ordered,interleaved.
+- [x]V028JSONroundtrip red/green regression;all28defects CLOSED with namedgates.
+- [ ]Choose/predeclare finite head-only fullbatch diagnostic recipe and acceptance.
+- [ ]Implement with actual feature/head/source/label binding and initial-logit replay.
+- [ ]Native bounded warm/resource/optimizercheck,then fixed study/audit for each
+  controlledmodel;report trainingfit vsdevelopment,unknownexclusions and limits.
+- [ ]Select next learningmechanism from actual evidence;preserve fullroadmap goal.
+
+Next diagnostic uses existing balancedfeaturebanks and copied8-class linearhead,
+not a resumed image-model study. No source/modelweights/optimizer from originals
+may be overwritten or relabeled. Bind curatedsource/config/weights/features and
+saved actualhead,public known labels,balanced64trainingrolelabels across32images/
+16ancestries. Reproduce initial percase logits before optimizerstep;declare
+separate optimizer reset,fullbatch recipe/updatecap/wall/cap/admission and immutable
+sources. Development never trains the readout. No parser/detector/realimageinput.
+A perfect trainingfit would prove representability on these savedvectors only;
+failed finite optimization is NOT proof of inseparability. Do not substitute
+this diagnostic for pixel-model learning or generalization. Do not blindly
+extend any finished image study or adopt centroid as runtime decoder.
+No head-only implementation/run/recipe-admission yet;current task starts there.
+
+## Completed original baseline / ordinary errors
+
+ACCURACY4096_BASELINE.md finalreport;docs/evidence/m2-stream-accuracy4096-s10/
+contains all4096recipes+27probes replay,complete4096/4096,original catalogue
+121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b.
+Accuracy7,694,010params,capacity0/layeroff,CPU1/cache16,full512input,AdamWdecay.01,
+seed20261026/LR.001/eval128/snapshot64/dev6groups18views;originaladmission
+runs/m2-stream-accuracy-probe. s10resumed3840+256 with original archive/optimizer,
+NOnewpolicy/layerflags. Fullstudy complete,notextended. Historicalpressure
+1172logged/1152banked and20exactrecomputedupdates retain originalscope.
+Inference067516380eb5193f5ab21afd6ae0573d25610d6a9285b18a186871b36b9aadd1;
 manifestbe66e117a8dd6c1b3a24c7522cf90cda629de78516fd21924b88cb6a6e00d7dd;
 payloada21c1c56dc7face7eabf49d4cac3f9ee9c1b4a1eaef233af77ef2a97663f1382.
-Parent362.676s/1,015,963,648B/1280MiB;child333.993s/979,279,872B/1024MiB;
-curator28.066s/127,033,344B/128MiB/work4123. Allactualstartup/native/progress and
-observedcuratorPIDs/commands gone,including22640/18088;rawstartup/curatortrees
-preserved. docs/evidence/m2-stream-accuracy4096-s10/ scope and controller receipts.
-Dev0/18exactboards,0/36roles,2.01543581cells,cellaccuracy.76528. TrainingPROBES
-0/9boards,9/18roles,3.19117926cells. These nine probes are not exhaustive training
-performance or a convergence proof. Ordinary raw error decomposition PENDING.
-Earlierpressure1172logged/1152banked and20exactrecomputedupdates retain history.
+Lastcontroller362.676s/1,015,963,648B/1280MiB;child333.993s/979,279,872B/1GiB;
+fullcurator28.066s/127,033,344B/128MiB. Allactualstartup/native/progress and
+observedcuratorPIDs/commands gone;rawtrees preserved,commit1eca188.
 
-NEXT ordinary audit,expected<950MiB,1GiB/120s/work27,CPU1/cache16,unchangedguard:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120
---work-items 27 --receipt runs/m2-stream-accuracy4096-errors-r1-job.json --
-.venv/Scripts/python.exe scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s10
---output runs/m2-stream-accuracy4096-errors-r1
-Hidden stdout/stderr runs/m2-stream-accuracy4096-errors-r1.log/.stderr.log;
-output progress.json/result.json is state/sentinel. Saveactualstartupcommands,
-verify allknownPIDs/exactcommands gone atterminal. No training beside it.
-Then independent collector,expected<100MiB,128MiB/30s/work27:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 30
---work-items 27 --receipt runs/m2-stream-accuracy4096-errors-r1-curation-job.json --
-.venv/Scripts/python.exe scripts/record_stream_errors.py --name m2-stream-accuracy4096-errors-r1
-Hiddenlogs sameprefix-curation.log/.stderr.log;rawcurator/startup/deathscope and
-ordinary nativefiles preserved byte-exact. Full ordinarymetrics/source/weights
-and row-levelcounts checked;report written. Commit checkpoint before feature work.
+Independentordinary m2-stream-accuracy4096-errors-r1 PASS27forwards13.546s/
+586,768,384B/1GiB120s;curator.406s/76,595,200B/128MiB30s. Exactsavedmetrics,
+unchangedweights,rawsource/artifact/native/curator/startup/deathscope curated;
+commitad434da. Dev0/18boards(0/14nonempty),0/36roles,369/401positivecells,
+32misses,813inventedcells(228on4emptyimages,585onnonempty),geometry2.01543581.
+Trainingprobes0/9boards,9/18roles,3.19117926cells;ALL9correctghostsareABSENCE,
+notvisibleghostreading. ActivepredictedL9vs targetsabsence/O/J3each. Devactive
+predictsJ6/L12vsT6/S3/J3/L6;ghostpredictsabsence18vsall18visible. Notrealaccuracy.
 
-TERMINAL largerfeatureobserver launcher28716,supervisor26192,child35472,worker22212.
-Actual4commands saved runs/m2-stream-accuracy4096-features-r1-observed-startup.json;
-initialroot sameprefix-startup.json. Expected<950MiB,1024MiB/120s/work27,CPU1/cache16,
-unchangedOSguard,oneheavyjob. Newoutput/receipt required:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 120
---work-items 27 --receipt runs/m2-stream-accuracy4096-features-r1-job.json --
-.venv/Scripts/python.exe docs/experiments/probe_layer_features.py
---run m2-stream-accuracy4096-s10 --output runs/m2-stream-accuracy4096-features-r1
-Hiddenlogs sameprefix.log/.stderr.log,state sameprefix/progress.json/result.json;
-features.json is finalfeatureproof. Saveactualstartup/death;freeze observer,
-analyzer and rootordinary helpers whilelive. Afteractualnativepassed verify
-allPIDs/commands gone,then record_layer_features.py --name
-m2-stream-accuracy4096-features-r1 under128MiB/30s/work27,expected<100MiB.
-Receipt runs/m2-stream-accuracy4096-features-r1-curation-job.json,hiddenlogs
-sameprefix-curation.log/.stderr.log;capture startup/death/rawbyte evidence.
-Nativeobserver PASS13.768s/590,053,376B;independentcollector PASS.355s/78,213,120B.
-Allordinarycases/totals equal separatelycurated ordinaryreport;actualstagehead
-inputs reconstructlogitsexactly,weights unchanged,JSONreadback analysisrecomputed.
-Rawsource/receipts/logs/startup/death docs/evidence/m2-stream-accuracy4096-features-r1/.
-AllknownPIDs/commands gone. Prototypeeligibility:activetrain0/9,activedev3/18
-(0/3correct,onlyJ);ghosttrain9/9(9correct,ALLabsence),ghostdev0/18. This sparse
-reference population cannot establish general classfeature separation.
+## Verified feature diagnostic (all jobs terminal)
 
-TERMINAL orderedmodel observer m2-stream-allclass1024-features-r1,model
-m2-stream-allclass1024-s3,41forwards,expected<600MiB,640MiB/120s/work41.
-Launcher5284,supervisor2828,child35676,worker17180;all4commands observed in
-runs/m2-stream-allclass1024-features-r1-observed-startup.json,initialroot sameprefix-startup.json.
-Command samefeatureobserver route with --memory-mib640,--work-items41,
---receipt runs/m2-stream-allclass1024-features-r1-job.json and model/output names.
-Hiddenlogs/startup/progress/result/features sameprefix;afterterminal independent
-record_layer_features.py --name m2-stream-allclass1024-features-r1 under128MiB/
-30s/work41,expected<100MiB,receipt sameprefix-curation-job.json/logs. Same guard,
-CPU1/cache16;serialize,actualstartup/death/rawcopies. Then interleavedmodel same
-caps/count and naming m2-stream-interleave1024-features-r1,modelinterleave1024-s3.
-No architecture change/adoption from unexecuted or ineligible diagnostics.
-Ordered observer PASS7.819s/424,955,904B;curator PASS.355s/77,811,712B,allPIDs/
-commands gone and rawsource/native/curator/startup bytes preserved in same-name
-docs/evidence/. Actualordinarycases/totals identical to independent report.
-Trainingtype nativeactive10/32,ghost10/32;ancestryexcludedcentroid4/32,2/32;
-devboth0/9. All32trainingqueries and9dev perrole eligible;no ties. Analysis-only,
-not a causal bottleneck. Interleaved observer/collector remain next actualtask.
-NEXT exact command,expected<600MiB,640MiB/120s/work41,unchangedguard:
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 640 --wall-seconds 120
---work-items 41 --receipt runs/m2-stream-interleave1024-features-r1-job.json --
-.venv/Scripts/python.exe docs/experiments/probe_layer_features.py
---run m2-stream-interleave1024-s3 --output runs/m2-stream-interleave1024-features-r1
-Hiddenlogs sameprefix.log/.stderr.log,progress/result/features inside sameprefix/.
-LIVE interleavedobserver launcher21524,supervisor27568,child30044,worker18628;
-actual4commands captured sameprefix-observed-startup.json,initialroot sameprefix-startup.json.
-Then128MiB/30s/work41 record_layer_features.py --name samefeatureoutputname,
-receipt sameprefix-curation-job.json/logs;actualstartup/death/rawbytes required.
+LAYER_FEATURE_DIAGNOSTIC.md is protocol/results/limits. Externalscripts in
+ docs/experiments/probe_layer_features.py,layer_feature_analysis.py,
+ record_layer_features.py. Actualobserver returnsNone,identifies exactfrozen
+layer_type module,input reconstructs every stagelogitexactly,fullweightsunchanged.
+Independentcollector requires ordinarycases/totals equal separatelycurated
+ordinaryreport;binds actualnativecommand/cap/count/source/config/weights/features,
+recomputes allrows and groupedanalysis afterJSONreadback. Execution sources,
+rawnative/curatorreceipts/logs,four-command observerstartup andcuratorrootstartup
+preserved byte-exact;all known PIDs and matchingcommands gone for allthree.
 
-## Prepared feature diagnostic / V028
+Evidence dirs docs/evidence/m2-stream-{accuracy4096,allclass1024,interleave1024}-features-r1/.
+Larger27:13.768s/590,053,376B/1GiB120s,curator.355s/78,213,120B/128MiB30s.
+Ordered41:7.819s/424,955,904B/640MiB120s,curator.355s/77,811,712B/128MiB30s.
+Interleaved41:7.608s/425,201,664B/640MiB120s,curator.343s/78,815,232B/128MiB30s.
+Work27or41,CPU1/cache16,pressureguard unchanged. No modelchanges or qualityadmission.
 
-Protocol docs/LAYER_FEATURE_DIAGNOSTIC.md. External scripts underdocs/experiments/:
-probe_layer_features.py observes existing actualtypehead inputs,returnsNone,
-reconstructs logitsexactly and reuses unchanged ordinary pixel/label/metric/
-weight replay. No training or modelinputs/outputs changed. record_layer_features.py
-requires cases/totals equal independent ordinary report,recomputes allrows/grouped
-analysis and binds nativecommand/budget/source/config/actualweights/rawbytes.
-Both neuralobserver and collector remain UNRUN/PENDING. Fixednames:
-m2-stream-accuracy4096-features-r1 (model s10,27forwards,1GiB/120s);
-m2-stream-allclass1024-features-r1 (model allclass1024-s3,41forwards,640MiB/120s);
-m2-stream-interleave1024-features-r1 (model interleave1024-s3,41forwards,640MiB/120s).
-Collectors128MiB/30s/work27or41. Run each separately with beforelaunchstatement,
-checkpoint/exactcommand/log/receipt and actual startup/death observations.
-Euclidean classcentroids use knowntraininglabels only,exclude everyqueryancestry
-view;unknowns excluded,missingclass ineligible,tiesabstain. Trainingviews were
-used to trainnetwork;not independentgeneralization or causalrepair evidence.
+Euclidean centroids use knowntraininglabels only,exclude ALLqueryancestryviews;
+unknownsexcluded,missingtargetclassineligible,exacttiesabstain. Largerreference
+coverage inadequate:activetrain0/9eligible,activedev3/18(onlyJ,0/3correct),ghosttrain
+9/9eligible+correct(ALLabsence),ghostdev0/18eligible. Not generalfeatureseparation.
+Controlled models all32training+9dev queries perrole eligible,no ties:
+ordered nativeactive10/32,ghost10/32;centroid4/32,2/32;devbothnative/centroid0/9.
+Interleaved nativeactive18/32,ghost19/32;centroid1/32,6/32;devnativeboth0/9,
+centroidactive0/9,ghost3/9. Counts are TYPEonly includingabsence,notexactposes/
+complete-state. Trainingfeatures were used in modeltraining;notindependenttest.
+Centroiddoesnotgiveobviousreplacement butdoesNOTproveinformationabsence or
+linearunseparability. Hence next finite head-onlydiagnostic,not architectureclaim.
 
-Pure6casegate r1historical docs/evidence/layer-feature-analysis-contracts/. Review
-found integer target_counts keys differ afterJSONserialization;V028redr2 reproduces
-1/6failure,.238s/32,243,712B. Fixedcanonicalstringkeys+exactJSONroundtrip pass
-r3six/six .017s(native.235s/32,563,200B),same128MiB/30s/work6/guard. Actualbefore/
-after sources,rawreceipts/logs/startup/deadPIDs docs/evidence/v028-contracts/.
-V028CLOSED,commitb05e463;not nativeobserver/collector or featurequality proof.
+## Finished controlled studies / provenance regression
 
-## Completed controlled studies / limits
+INTERLEAVED_FIT.md compares original fixed1024studies. All32completedcycles same
+32publicpixel/statepairs onceeach,differentorder;matchedstart/warmactualweights/
+losses/gradients/data,unchangedneural/loss/targetpackage. One seed/16ancestries,
+lockedonlyempty/fixed8cellrow. Orderedvsinterleaved:boards32/32vs28/32,
+observedroles12/56vs30/56,absence8/8vs7/8,semantic128/128both,geometry.21059vs.38618.
+Allobservedposes correct;typeerrors44vs27. BOTHFAIL32boards/64roles/128semantics/
+geometry<.25. Devboth2/9boards(thetwoempty),0/7nonempty,0/18roles,3ancestries,
+geom4.16893vs3.82091. Defaultstream-v1 unchanged,neitherstudyextended/adopted.
+Source6147a558 orderedweights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6;
+source68bb40e3 candidateweights93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273.
 
-INTERLEAVED_FIT.md finalcomparison;interleave1024-comparison-r1/scope.json binds
-matchedstart/warm actualweights/losses/gradients/data and all32completedcycles of
-same32pairs onceeach with differentorder,unchangedneural/loss/targetpackage.
-Ordered vsinterleaved:boards32/32 vs28/32;observedroles12/56 vs30/56;
-absence8/8 vs7/8;semantic128/128both;geometry.21059 vs.38618. Allobservedposes
-correct;typeerrors44 vs27. Candidate classexactout8:I8,O4,T2,S4,Z2,J6,L4.
-BothFAIL32boards/64roles/128semantics/geometry<.25. Devboth2/9boards(thetwoempty),
-0/7nonempty,0/18roles,3ancestries;geom4.16893 vs3.82091. One seed/16training
-ancestries,lockedonlyempty/fixed8cellbottomrow;not broadreading/generalization.
-Finalordinary41forwards+independentcurators bind actualweights/source/1024complete;
-allrelatedPIDs/commands gone. Candidate source68bb40e3,weights93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273;
-controlsource6147a558,weights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6.
-Both frozen;defaultstream-v1 unchanged;ALL_CLASS_FIT.md preserves control.
+V028: newanalyzer integerclasscountkeys differed afterJSONserialization;redr2
+1/6failure. Canonicalstringkeys+exactroundtrip PASSr3six/six .017s(native.235s/
+32,563,200B)128MiB/30s/work6. Actualbefore/after source/rawnative/deadPIDs
+v028-contracts/,commitb05e463. Earlier6casegate inlayer-feature-analysis-contracts/
+retains earlier source scope. V027closedby8recipechecks+r2profile/r3curator;
+interleavedrecoveryr6 exact2+6+3+3.88scopedintegrationchecks25251c8 keeporiginal
+scope;counterfixseparatenativegates,notfreshunifiedsuite.
 
-## Safety and unfinished full scope
+## Safety / unfinished whole goal
 
-RunnerSHA d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db;
+RunnerSHAd2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db;
 controllerSHA50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11.
-KernelJobreadback/kill-on-close,CPU1/cache16,GetPerformanceInfo/.2s stop
+KernelJobreadback/kill-on-close,CPU1/cache16,GetPerformanceInfo/.2sstop
 31,368,351,744B unchanged. ExpectedRAM/cap/guard beforelaunch;exactprocesses at
-startup/termination;oneheavyjob;>40GBdisk beforelongtraining. Lastcommit~18.8GB,
-availablephysical21.2GB,disk~65GB. No guard/app/power/userdata/neighbor changes.
-Actualnewhostcrash requires System41/1001+dumps. Oct28Explorer1074/6006restart
-had no41/1001/6008 inobservedwindow;pressureparkedauditbeforechild,notcodefailure.
-Rawpressure/restart evidence interleave-profile-pressure-r1. V027closedby8recipe
-checks+r2profile/r3curator;interleavedrecoveryr6 exact2+6+3+3.88scopedchecks on
-25251c8 keeporiginalscope;counterfixseparatenativegates,notfreshunifiedsuite.
-Optional layerevidence matched768 defaultOFF;192imagecomparison0/148nonempty
-boardsboth,active0/165 vs4/165(allI),ghost0/144both,morecandidateFP. Broadrenders/
-crops/occlusion/association,reviewedreal/independentsplits,adequateM2/M3learning,
-scratch/pretrained/directdecoder comparisons,calibration/export/CPU/adaptersand
->=95%readable-real exactcomplete-state gate OPEN. APIneeds_review. Roadmapkeeps
+startup/termination;oneheavyjob;>40GBdiskbeforelongtraining. Lastcommit18.7GB,
+availablephysical21.3GB,disk~64GB. Do not changeguards/closeapps/deleteuserdata/
+change power/touchneighbor. ActualnewhostcrashrequiresSystem41/1001+dumps.
+Oct28Explorer1074/6006restart hadno41/1001/6008 inobservedwindow;pressureparked
+previousauditbeforechild,notcodefailure. Raw interleave-profile-pressure-r1.
+Optional layerevidence matched768defaultOFF;192image0/148nonemptyboardsboth,
+active0/165vs4/165(allI),ghost0/144both,morecandidateFP. Broadrenders/crops/
+occlusion/association,reviewedreal/independentsplits,adequateM2/M3learning,
+scratch/pretrained/directdecoder comparisons,calibration/export/CPU/adapters and
+>=95%readable-realexactcomplete-state gateOPEN. APIneeds_review. Roadmapkeeps
 fullgoal;no completion/pause/blocked claim warranted.

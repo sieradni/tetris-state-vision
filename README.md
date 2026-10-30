@@ -104,9 +104,10 @@ recovery remain recorded separately. The original source and optimizer history
 are preserved; this study is not extended. Adequate learning remains open.
 The [final baseline report](docs/ACCURACY4096_BASELINE.md) decomposes the independently
 replayed errors, including813 invented development cells and32 misses.
-The [read-only type-feature diagnostic](docs/LAYER_FEATURE_DIAGNOSTIC.md) is
-prepared for inspection of the completed models; its analysis-only checks pass, while
-neural feature replay remains pending.
+The [read-only type-feature diagnostic](docs/LAYER_FEATURE_DIAGNOSTIC.md) now passes
+on all three completed models,with unchanged ordinary outputs and independent
+report checks. An ancestry-excluded centroid readout provides no obvious fix;
+this does not prove that the features lack class information.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;
 zero retains the board-only model. Shared role/index queries and masked losses

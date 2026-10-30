@@ -65,9 +65,15 @@ No complete screenshot parser or real-image accuracy is claimed.
    .211->.386. Both fit gates fail;INTERLEAVED_FIT.md records controls,raw evidence
    and limits. Do not extend either finished study or adopt this ordering as a
    release fix. The original larger4,096 baseline is now complete with its
-   original frozen source/optimizer and independently replayed final errors. Next inspect the
-   class-feature path before selecting another learning mechanism;
-   LAYER_FEATURE_DIAGNOSTIC.md has the read-only protocol and scoped pure checks.
+   original frozen source/optimizer and independently replayed final errors.
+   Read-only actual type-head feature observation and independent collectors
+   now pass on all three completed models,with ordinary outputs/weights unchanged.
+   The ancestry-excluded centroid readouts provide no obvious replacement;they
+   do not prove absence of class information. LAYER_FEATURE_DIAGNOSTIC.md records
+   actual class coverage/counts/receipts and limits. Next isolate a finite full-batch
+   fit of the existing linear type head on balanced saved features before selecting
+   another learning mechanism. No image model/source/optimizer is changed by that
+   diagnostic;predeclare its finite recipe and native admission separately.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,

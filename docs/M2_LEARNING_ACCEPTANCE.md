@@ -238,6 +238,9 @@ complete. Adequate learning remains OPEN: development0/18boards and0/36roles,
 813 invented cells,32 missed positives;all nine correct training-probe ghost
 labels are absence. See ACCURACY4096_BASELINE.md for artifact/source identities,
 raw errors,native receipts and scope. The study stays frozen at its declared
-budget. Next inspect the class-feature path with the read-only protocol in
-LAYER_FEATURE_DIAGNOSTIC.md before choosing another mechanism. These diagnostic
+budget. The read-only class-feature observations and independent collectors now
+pass on all three completed models,with unchanged ordinary outputs/weights.
+LAYER_FEATURE_DIAGNOSTIC.md records counts and limited class-reference coverage.
+Next isolate a finite linear-head fit on saved balanced features before choosing
+another mechanism. These diagnostic
 probes do not establish convergence,reviewed-real accuracy or architecture ranking.
