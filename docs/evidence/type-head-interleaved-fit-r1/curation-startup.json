@@ -1,0 +1,5 @@
+{
+  "ProcessId": 26004,
+  "ParentProcessId": 27916,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 128 --wall-seconds 30 --work-items 1106 --receipt runs/type-head-interleaved-fit-r1-curation-job.json -- .venv/Scripts/python.exe docs/experiments/record_type_head_fit.py --name type-head-interleaved-fit-r1"
+}

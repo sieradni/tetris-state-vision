@@ -59,8 +59,8 @@ resource identity/pressure/cache/persistence controls remain unchanged.
 Six pure input/label/ancestry/unknown/development/metric/JSON checks PASS in.023s
 (native.265s/35,033,088B under128MiB/30s/work6),with exact source and raw native/
 startup/death evidence in docs/evidence/type-head-contracts-r1/. This is not
-neural/optimizer admission. Implementation prepared;native warm admission and
-full fits remain pending.
+neural/optimizer admission. The separately verified warm admissions and complete
+fixed fits are recorded below.
 
 Ordered warm admission PASS: native2.896s/333,045,760B under640MiB/60s/work4;
 initial float32 per-image logits exact, conditioning discrepancy2.6645e-15,
@@ -80,10 +80,46 @@ ancestryall-class-04. The64/64 criterion FAILS;no extension is selected.
 Development remains0/18;cross entropy worsens3.27902->58.59039. Float64/rawfloat32
 class counts agree;raw affine conversion maximum discrepancy3.02e-14. This
 establishes substantial class information in these saved vectors,not an image
-model improvement or independent generalization. Interleaved fit remains pending.
+model improvement or independent generalization. The interleaved result follows.
 
 Interleaved warm admission also PASS: native2.877s/333,144,064B under640MiB/60s/
 work4;initial float32 logits exact,conditioning error5.3291e-15,continuous/reloaded
 next update and tensor/Adam state exact. Independentcollector PASS.349s/
 78,077,952B under128MiB/30s/work84. Raw source/payload/receipts/logs/startup/death
-evidence docs/evidence/type-head-interleaved-profile-r1/. Full fit pending.
+evidence docs/evidence/type-head-interleaved-profile-r1/.
+
+Interleaved fixed1,024-update fit COMPLETE: native3.254s/332,857,344B under640MiB/
+120s,first-two warm records exact,tensor/Adam reload exact. Independentcollector
+PASS.378s/79,425,536B under128MiB/30s/work1106. Raw sources,payload and native/
+collector/startup/death evidence:docs/evidence/type-head-interleaved-fit-r1/.
+Raw float32 types improve37/64->64/64,active32/32 andghost32/32. The declared
+vector-fit criterion PASSES. Development remains0/18;cross entropy worsens
+4.93344->25.48596. Raw affine conversion discrepancy2.84e-14;float64 and raw
+float32 class counts agree. All known PIDs and matching commands are gone.
+
+| Fixed feature diagnostic | Ordered | Interleaved |
+|---|---:|---:|
+| Initial training type labels |20/64|37/64|
+| Final raw float32 training type labels |62/64|64/64|
+| Final active / ghost types |active32/32;ghost30/32|active32/32;ghost32/32|
+| Training cross entropy |1.60518->.15517|.77506->.05770|
+| Development types |0/18->0/18|0/18->0/18|
+| Development cross entropy |3.27902->58.59039|4.93344->25.48596|
+| Declared64/64 vector-fit criterion |FAIL|PASS|
+
+The interleaved frozen features support all64 balanced training labels with the
+existing shared8x64+bias affine head in float32. The original type errors are
+therefore not evidence that these particular vectors cannot represent the labels.
+This does not identify why joint training left the original head underfit.
+Both readouts overfit the small training bank;neither improves development.
+They are separate conditioned full-batch optimizations,not an extension or
+controlled convergence comparison of the original image-training recipes.
+
+Next perform an explicit conditional pixel replay for each copied raw float32
+head. Reproduce the original ordinary outputs and saved feature inputs first,
+then change only the in-memory copy's type-head weights. Every non-type tensor
+at every stage,original artifact/source bytes,and output head restoration must
+remain exact. Report new type/pose/joint-fit metrics independently;do not apply
+vector-fit counts to an image-model gate without executing it. Neither original
+image artifact is changed or promoted. More optimization of these completed
+head diagnostics is not selected.

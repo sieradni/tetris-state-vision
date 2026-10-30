@@ -127,11 +127,11 @@ startup and curator root startup,raw native/curator logs/receipts,execution sour
 and analysis readback are preserved. Wall limits120s/30s and work41 remained armed.
 Both original studies remain frozen at1,024 updates and still FAIL joint fit.
 
-Next isolate the existing linear head with a finite full-batch fit on the saved,
-balanced training features. Reproduce initial logits and bind actual feature/head
-identities before any optimizer step. Keep this separate from the frozen image
-model and report training fit versus development separately. A successful fit
-would establish representability on these saved vectors only;a failed finite
-optimization would not prove inseparability. Select that bounded diagnostic's
-recipe/admission before execution. The observation gate establishes no new
-model-quality admission. The broad project goal remains active.
+The subsequent [fixed linear-head fits](TYPE_HEAD_FIT.md) are now complete and
+independently verified:ordered20/64->62/64,interleaved37/64->64/64 training types,
+both development0/18. Initial per-image float32 logits and warm/reloaded updates
+reproduce exactly;original artifacts stay unchanged. The interleaved vectors can
+represent all64 labels with a shared raw float32 affine head. This does not
+identify the cause of joint-training failure or improve generalization. Next
+verify conditional pixel replay before any image-model fit claim;the broad
+project goal and whole-state learning gates remain open.

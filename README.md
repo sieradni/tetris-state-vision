@@ -108,6 +108,9 @@ The [read-only type-feature diagnostic](docs/LAYER_FEATURE_DIAGNOSTIC.md) now pa
 on all three completed models,with unchanged ordinary outputs and independent
 report checks. An ancestry-excluded centroid readout provides no obvious fix;
 this does not prove that the features lack class information.
+The [isolated linear-head fits](docs/TYPE_HEAD_FIT.md) now reach62/64 and64/64
+training type labels on those saved features,while both remain0/18 on development.
+Original image models are preserved;conditional pixel replay is still pending.
 
 Optional joint queue/hold heads are available with `component_capacity=1..64`;
 zero retains the board-only model. Shared role/index queries and masked losses

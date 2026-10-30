@@ -70,10 +70,14 @@ No complete screenshot parser or real-image accuracy is claimed.
    now pass on all three completed models,with ordinary outputs/weights unchanged.
    The ancestry-excluded centroid readouts provide no obvious replacement;they
    do not prove absence of class information. LAYER_FEATURE_DIAGNOSTIC.md records
-   actual class coverage/counts/receipts and limits. Next isolate a finite full-batch
-   fit of the existing linear type head on balanced saved features before selecting
-   another learning mechanism. No image model/source/optimizer is changed by that
-   diagnostic;predeclare its finite recipe and native admission separately.
+   actual class coverage/counts/receipts and limits. The subsequent fixed1,024-update
+   conditioned full-batch linear-head fits now complete with separate native warm/
+   reload admission and independent audits. Ordered training types20/64->62/64,
+   interleaved37/64->64/64,development0/18both;TYPE_HEAD_FIT.md records criteria,
+   worsened development losses and scope. Original image models/source/optimizers
+   stay frozen. Next verify conditional pixel replay with each copied raw float32
+   head,including unchanged non-type tensors at every stage,before choosing a
+   joint-training lever. No whole-state/generalization gain follows from vector fit.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,

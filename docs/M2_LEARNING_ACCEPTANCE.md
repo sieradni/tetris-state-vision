@@ -241,6 +241,9 @@ raw errors,native receipts and scope. The study stays frozen at its declared
 budget. The read-only class-feature observations and independent collectors now
 pass on all three completed models,with unchanged ordinary outputs/weights.
 LAYER_FEATURE_DIAGNOSTIC.md records counts and limited class-reference coverage.
-Next isolate a finite linear-head fit on saved balanced features before choosing
-another mechanism. These diagnostic
+The finite copied linear-head fits now reach62/64(ordered) and64/64(interleaved)
+training types on saved features;development remains0/18both with worse losses.
+TYPE_HEAD_FIT.md binds native admission,first-two update replay,rawfloat32 heads
+and independent audits. Next conditional pixel replay must preserve every
+non-type output before any image-model fit claim. These diagnostic
 probes do not establish convergence,reviewed-real accuracy or architecture ranking.

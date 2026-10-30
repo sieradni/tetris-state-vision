@@ -1,0 +1,22 @@
+[
+  {
+    "ProcessId": 27704,
+    "ParentProcessId": 15760,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 1024 --receipt runs/type-head-interleaved-fit-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode fit --output runs/type-head-interleaved-fit-r1 --admission runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 25772,
+    "ParentProcessId": 27704,
+    "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 640 --wall-seconds 120 --work-items 1024 --receipt runs/type-head-interleaved-fit-r1-job.json -- .venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode fit --output runs/type-head-interleaved-fit-r1 --admission runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 35780,
+    "ParentProcessId": 25772,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode fit --output runs/type-head-interleaved-fit-r1 --admission runs/type-head-interleaved-profile-r1"
+  },
+  {
+    "ProcessId": 29968,
+    "ParentProcessId": 35780,
+    "CommandLine": ".venv/Scripts/python.exe docs/experiments/type_head_fit.py --study interleaved --mode fit --output runs/type-head-interleaved-fit-r1 --admission runs/type-head-interleaved-profile-r1"
+  }
+]
