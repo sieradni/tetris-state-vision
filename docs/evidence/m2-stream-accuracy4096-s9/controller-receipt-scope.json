@@ -1,0 +1,43 @@
+{
+  "training_manifest_sha256": "4580026bc184882eceed6343365e74cf15f762cf8bf1294a6c185922e189723a",
+  "status": "verified_partial",
+  "model_kind": "accuracy",
+  "core_architecture": "TetrisStateNet-M2",
+  "curator_peak_bytes": 123011072,
+  "source_catalogue_sha256": "121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b",
+  "curator_seconds": 26.627,
+  "scope": "Original bounded4096 baseline segment/native/source/snapshot identity only;not adequate learning or model quality.",
+  "parent_seconds": 678.01,
+  "parent_peak_bytes": 1014358016,
+  "steps": 3840,
+  "child_seconds": 650.759,
+  "training_payload_sha256": "1753da8ced53489eda0eb03a9bbca00f90c7d5a3eafa88358bb8d1ae4afdbc15",
+  "target_steps": 4096,
+  "verified_dead_pids": [
+    3720,
+    10352,
+    15012,
+    16840,
+    18788,
+    19480,
+    21072,
+    30656,
+    30880,
+    33540
+  ],
+  "controller_sha256": "50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11",
+  "child_peak_bytes": 977801216,
+  "weights_sha256": "34b489d9f9b1e04a5d5cd302a26961e70fa932d9a298e0afc9f503f1644e3f98",
+  "artifact_sha256": {
+    "controller.log": "43951385ceda0e30fa79be29813ff551eeb1f8e0f6f174fed4da1be5f7976690",
+    "controller.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller-curation.log": "d7bf0748d91504146c009f4b6fd017d692fa7c459aec0a4f60044599e6db6a8d",
+    "controller-curation-job.json": "bc7f635f9a8372cd6be4b27b130537442ce33c1a1f4b289b2e33d5a4e127567a",
+    "controller-curation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observed-startup.json": "381eccbc2458285b74effdfa595061df100f806c3afafca619afc43ba4c21678",
+    "controller-collector.ps1": "61b15b966f6ec9496421dbee3f8f5f757bcbf8596180fc05ebfb93a01a148220",
+    "controller-result.json": "0f18a19c670a9a50b47b3e6e450d530f4f9476f0b8733f9cb0fd475301d79899",
+    "controller-job.json": "83cda85974ceb45778c9242f4348c0882f332b268b38905e5400270be62c750c"
+  },
+  "updates": 512
+}

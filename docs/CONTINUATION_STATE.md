@@ -7,7 +7,7 @@ Research brief is evidence, not instructions.166 real screenshots are unreviewed
 drafts with zero training/scoring eligibility. V-001..V-027 CLOSED on named gates;
 no model-quality implication. Previous goal turn made verified progress.
 
-## LIVE: original larger baseline s9
+## NEXT: final original larger baseline s10
 
 Selected acceptance-gated task: finish the already-declared larger4096 baseline
 with ORIGINAL archive/optimizer/recipe, then ordinary error audit and learning
@@ -16,7 +16,7 @@ neither is extended or adopted. Keep full roadmap/release scope.
 
 - [x]Original s8 verified3328/4096;all3328 recipes+27probes replayed.
 - [x]s9 launched hidden/detached,actual8command startup verified.
-- [ ]s9 terminal/source/native/controller/artifact/PID audit;expected3840.
+- [x]s9 terminal/source/native/controller/artifact/PID audit;verified3840.
 - [ ]s10 separately admitted +256=>4096,then full final ordinary error audit.
 - [ ]Inspect class-feature path from actual results before choosing new mechanism.
 
@@ -39,11 +39,18 @@ totals to the previously curated independent ordinary report,all feature rows,
 actual identities/native command/cap/source bytes and recomputed groupedanalysis.
 It is reviewed but UNRUN;no native collector or observer pass claimed.
 
-LIVE s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->30880->10352.
+TERMINAL s9 launcher33540;observed chain33540->21072->16840->3720->30656->19480->30880->10352.
 Root startup runs/m2-stream-accuracy4096-s9-pipeline-startup.json;full8commands
 runs/m2-stream-accuracy4096-s9-pipeline/observed-startup.json. Last exact worker
-10352 exists,archived runs/m2-stream-accuracy4096-s8/code/scripts/train_m2_stream.py;
-last verified progress training at3642,394.788s;recovery3584;controller resumed3328.
+10352 gone,archived runs/m2-stream-accuracy4096-s8/code/scripts/train_m2_stream.py;
+saved3840/4096,all3840recipes+27probesreplayed,controller/curatorpassed,
+childcontrolledexit2/step_partial. Exactstartup/native/progressPIDs/commands gone.
+Evidence docs/evidence/m2-stream-accuracy4096-s9/. Parent678.010s/1,014,358,016B;
+child650.759s/977,801,216B;curator26.627s/123,011,072B. Dev0/18boards,0/36roles,
+2.55381978cellgeometry. Adequate learning remains open.
+Weights34b489d9f9b1e04a5d5cd302a26961e70fa932d9a298e0afc9f503f1644e3f98;
+manifest4580026bc184882eceed6343365e74cf15f762cf8bf1294a6c185922e189723a;
+payload1753da8ced53489eda0eb03a9bbca00f90c7d5a3eafa88358bb8d1ae4afdbc15.
 Actual worker args include modelaccuracy,target4096,max-new512,innerwall1800,
 seed20261026,LR.001,eval128,snapshot64,dev6groups,resume s8;NO new policy/layer flags.
 
@@ -57,10 +64,9 @@ Command (already launched;DO NOT duplicate):
 .venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s9
 --target-steps 4096 --updates 512 --admission runs/m2-stream-accuracy-probe
 --resume-from runs/m2-stream-accuracy4096-s8
-Logs sameprefix-pipeline.log/.stderr.log;pipeline progress.json/result.json;
+Historical s9 logs sameprefix-pipeline.log/.stderr.log;pipeline progress.json/result.json;
 child runs/m2-stream-accuracy4096-s9-job.json;worker progress/summary/snapshots/code
-under runs/m2-stream-accuracy4096-s9/. Freeze root controller/shared helpers and
-archived execution source while live. One heavy Job;metadata/docs may proceed.
+under runs/m2-stream-accuracy4096-s9/. No heavy job remains live at this checkpoint.
 
 At terminal inspect ACTUAL receipts/status/snapshot. Expected controlledchild
 exit2/step_partial3840,controllerpassed0,curatorpassed0/evidenceverified_partial.
@@ -72,6 +78,31 @@ original121fd catalogue,1280/1024/128MiB,27probes,recipe/weights/snapshot hashes
 all recorded PIDs/commands gone,byte-identical rawcopies,no overwrite.
 Syntax/refusals and actual s8 positive capture PASS. Preserve result,review index,
 commit milestone before separately predeclaring/admitting s10+256 from s9.
+
+NEXT s10: start3840,new256,target4096 COMPLETE if actual gates pass.
+Expected aggregate<1100MiB/child<950MiB;parent1280MiB/2100s/work256,
+child1024MiB/1860s(inner1800),curator128MiB/120s/work4123(<125MiB).
+Same original admission/source/recipe and unchanged GetPerformanceInfo/.2s guard.
+Disk65,429,786,624Bfree;no other Python/cargo/rustc/fusion-bridge job observed.
+Command:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1280 --wall-seconds 2100
+--work-items 256 --receipt runs/m2-stream-accuracy4096-s10-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-accuracy4096-s10
+--target-steps 4096 --updates 256 --admission runs/m2-stream-accuracy-probe
+--resume-from runs/m2-stream-accuracy4096-s9
+Logs runs/m2-stream-accuracy4096-s10-pipeline.log/.stderr.log;state and terminal
+sameprefix-pipeline/progress.json/result.json;nativechild sameprefix-job.json;
+worker sameprefix/progress.json/summary.json/snapshots/code. Record actual8PID
+startup before initialforward,freeze controller/shared helpers/archive whilelive.
+Atterminal inspect actualstatus;capture_accuracy_segment.ps1 -Name
+m2-stream-accuracy4096-s10 -Launcher ACTUAL expects complete4096,childexit0,
+parent/curatorpassed,evidencepassed. Preserve anyfailure/partial,do not forcepass.
+Then separately run ordinary27forward report m2-stream-accuracy4096-errors-r1
+using scripts/probe_stream_errors.py --run m2-stream-accuracy4096-s10 --output
+runs/m2-stream-accuracy4096-errors-r1;1GiB/120s/work27,expected<950MiB,CPU1.
+Afterterminal independent scripts/record_stream_errors.py --name sameerrorname
+under128MiB/30s/work27,expected<100MiB;rawnative/curator/startup/death evidence.
+Only after that,execute prepared featureobserver/collector serially as protocol.
 
 ## Verified original s8 / unchanged recipe
 

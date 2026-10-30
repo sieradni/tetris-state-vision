@@ -22,12 +22,12 @@ No complete screenshot parser or real-image accuracy is claimed.
    completed as93+resume35: dev4/18 exact boards are all zero-locked, nonempty
    boards0/14,layers0/36,geometry2.4785cells. The finite segment controller now
    passes an actual pressure-saved step1+resume1/curation gate. The fixed4096
-   baseline has reached3328 through bank2816+512 verified updates: dev3/18 boards,
-   0/36 layers,geometry2.17195cells. All3328 recipes and27 probes replayed;
-   docs/evidence/m2-stream-accuracy4096-s8/scope.json preserves step_partial3328/4096
+   baseline has reached3840 through bank3328+512 verified updates: dev0/18 boards,
+   0/36 layers,geometry2.55382cells. All3840 recipes and27 probes replayed;
+   docs/evidence/m2-stream-accuracy4096-s9/scope.json preserves step_partial3840/4096
    and native controller/child/curator receipts. The prior host-pressure stop
    logged1172/banked1152; all20 recomputed updates and1172-row prefixes match
-   exactly,excluding time. New inference weights467e5b96... retain original
+   exactly,excluding time. New inference weights34b489d9... retain original
    catalogue121fd05a; adequate learning remains open. Continue bounded resumable
    training and use saved error reports to track misses,false positives and independent active/
    ghost errors and repair the learning failure before choosing architecture or
@@ -61,7 +61,7 @@ No complete screenshot parser or real-image accuracy is claimed.
    .211->.386. Both fit gates fail;INTERLEAVED_FIT.md records controls,raw evidence
    and limits. Do not extend either finished study or adopt this ordering as a
    release fix. Next complete the original larger4,096 baseline's remaining
-   768 updates using its original frozen source/optimizer,then inspect the
+   256 updates using its original frozen source/optimizer,then inspect the
    class-feature path before selecting another learning mechanism.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
