@@ -4,6 +4,7 @@ import json
 import math
 from pathlib import Path
 import shutil
+import struct
 import subprocess
 
 from type_head_fit_contract import ROOT, RECIPE, digest, load_bank, metrics, read
@@ -75,6 +76,28 @@ def main():
     if result["logits"]["initial32"] != [row["logits"] for row in rows]:
         raise ValueError("initial predictions differ from actual feature report")
     head = result["head"]
+    if (len(head["mean"]) != 64 or len(head["scale"]) != 64 or
+            not all(math.isfinite(value) for value in head["mean"]+head["scale"]) or
+            not all(value >= RECIPE["scale_floor"] for value in head["scale"])):
+        raise ValueError("finite64-channel training-only conditioning required")
+    training = [row for row in rows if row["split"] == "training" and row["known"]]
+    for column in range(64):
+        values = [row["features"][column] for row in training]
+        mean = math.fsum(values)/64
+        scale = max(RECIPE["scale_floor"], math.sqrt(math.fsum((value-mean)**2 for value in values)/64))
+        if not math.isclose(mean, head["mean"][column], rel_tol=1e-10, abs_tol=1e-12) or not math.isclose(
+                scale, head["scale"][column], rel_tol=1e-10, abs_tol=1e-12):
+            raise ValueError("saved conditioning differs from training-only population")
+    for index in range(8):
+        converted = [value/scale for value, scale in zip(head["weight_normalized"][index], head["scale"])]
+        converted_bias = head["bias_normalized"][index]-math.fsum(value*mean for value, mean in zip(converted, head["mean"]))
+        if (any(not math.isclose(a, b, rel_tol=1e-10, abs_tol=1e-10) for a, b in zip(converted, head["weight_raw64"][index])) or
+                not math.isclose(converted_bias, head["bias_raw64"][index], rel_tol=1e-9, abs_tol=1e-9) or
+                [struct.unpack("f", struct.pack("f", value))[0] for value in head["weight_raw64"][index]] != head["weight_raw32"][index] or
+                struct.unpack("f", struct.pack("f", head["bias_raw64"][index]))[0] != head["bias_raw32"][index]):
+            raise ValueError("normalized/raw/float32 affine head conversion differs")
+    if curve[-1]["training_correct_after_update"] != result["metrics"]["normalized64"]["training"]["correct"]:
+        raise ValueError("banked head differs from final declared optimizer record")
     for name in ("normalized64", "raw64", "raw32"):
         weight = head["weight_normalized" if name == "normalized64" else "weight_"+name]
         bias = head["bias_normalized" if name == "normalized64" else "bias_"+name]
@@ -118,6 +141,7 @@ def main():
              "result_sha256": digest(run / "result.json"), "collector_sha256": own_sha,
              "recipe": RECIPE, "inputs_sha256": identities, "execution_sources": sources,
              "raw32_training_fit": result["raw32_training_fit"], "metrics_recomputed": True,
+             "training_only_conditioning_recomputed": True, "raw_head_conversion_verified": True,
              "native_seconds": job["elapsed_seconds"], "native_peak_bytes": job["peak_job_commit_bytes"],
              "artifact_sha256": artifact_hashes, "scope": result["scope"]}
     (output / "scope.json").write_text(json.dumps(scope, indent=2, allow_nan=False)+"\n", encoding="utf-8")

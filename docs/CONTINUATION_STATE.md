@@ -57,10 +57,16 @@ NEXT orderedwarmprofile expected<500MiB,640MiB/60s/work4,inner45s;CPU1/guardunch
 --output runs/type-head-ordered-profile-r1
 Hiddenlogs runs/type-head-ordered-profile-r1.log/.stderr.log;progress/result/head-state.pt
 inside sameprefix/;startup sameprefix-observed-startup.json. Verifyactualcommands,
+TERMINAL orderedprofile launcher29960,supervisor6728,child21872,worker22524;actual4commands
+captured sameprefix-observed-startup.json,initialroot sameprefix-startup.json.
 allknownPIDs gone atterminal;freeze worker/contract/roothelpers whilelive.
 Then record_type_head_fit.py --name type-head-ordered-profile-r1 under128MiB/30s/
 work84(82vectors+2curve),expected<100MiB,receipt sameprefix-curation-job.json/logs;
 independentcollector mustpass beforefit. No originalmodel/data/optimizerwrites.
+NativeprofilePASS2.896s/333,045,760B,initialfloat32exact,conditionedinitialmaxerror
+2.6645352591003757e-15,tensor/Adamreload and continuous/reloadednextupdateEXACT;
+headbank2,actualoptimizerwork4. Independentcollector pending;it also recomputes
+training-onlymean/std,normalized/raw/float32headconversion and bankedstepcount.
 
 ## Completed original baseline / ordinary errors
 
