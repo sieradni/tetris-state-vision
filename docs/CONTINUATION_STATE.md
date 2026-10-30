@@ -250,3 +250,34 @@ Logs same-prefix.log/.stderr.log;final same-prefix/result.json. After pass/death
 collector expected<110MiB,128MiB/30s/work41,receipt/logs
 runs/interleave640-error-curation-r1;record_stream_errors.py --name m2-stream-interleave640-errors-r1.
 No new training before audit;next segment fixed384->1024 afterpredeclaration.
+
+LIVE640 raw replay launcher25004,exactstartup runs/m2-stream-interleave640-errors-r1-startup.json.
+
+640 raw41-forward replay GREEN7.235s/424861696B/640MiB;all saved metrics reproduced,weights unchanged;all recorded PIDs/exactcommands gone. NEXT128MiB/30s/work41 collector as predeclared,expected<110MiB;no training Job.
+
+LIVE640 evidence curator launcher22192,exactstartup runs/interleave640-error-curation-r1-startup.json.
+
+640 ordinary evidence VERIFIED:41forwards7.235s/424,861,696B/640MiB;collector
+.378s/78,401,536B/128MiB. All savedmetrics match,weightsunchanged,all recorded
+PIDs/exactcommands gone;raw curator receipt/log bytes preserved. Type errors
+24active/23ghost;zero observedcolumn/row/equivalentrotation errors. FitFALSE.
+NEXT final s3,+384 ->1024,expected<700MiB,parent896MiB/900s/work384,
+child640MiB/1860s with ancestor900s effective deadline;curator128MiB/120s/work1065:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 896 --wall-seconds 900
+--work-items 384 --receipt runs/m2-stream-interleave1024-s3-pipeline-job.json --
+.venv/Scripts/python.exe scripts/run_stream_segment.py --name m2-stream-interleave1024-s3
+--target-steps 1024 --updates 384 --admission runs/m2-stream-recovery-gate-r6/profile
+--resume-from runs/m2-stream-interleave1024-s2
+Logs same-prefix-pipeline.log/.stderr.log;state same-prefix-pipeline/progress.json,
+terminal result.json;child same-prefix-job.json;run summary/progress/snapshots.
+Controller50d7fc6e/source68bb40e3/policy/seed/optimizer unchanged;freeze allshared
+helpers. OneheavyJob;recheck>40GBdisk;native/kernel/OSpressure/CPU1cache16 unchanged.
+At terminalverify capture_allclass_segment.ps1 -Name m2-stream-interleave1024-s3
+-Launcher LAUNCHER_BELOW. Then final41 ordinaryforwards640MiB/180s/work41,
+output/receipt/log prefix runs/m2-stream-interleave1024-errors-r1;independent
+collector128MiB/30s/work41,stem interleave1024-error-curation-r1. Exactlaunch/RAM
+statements required before those operations. After finalrawproof,execute prepared
+verify_interleaved_finish.py under128MiB/30s/work8192(expected<110MiB),receipt
+runs/interleave1024-comparison-r1-job.json,logs samebase,final
+ docs/evidence/interleave1024-comparison-r1/scope.json. Formalfit verdict mayfail;
+recorditwithouttargetextension. No broadgeneralization/realqualityclaim.
