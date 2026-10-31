@@ -1,0 +1,25 @@
+{
+  "verified_dead_pids": [
+    1996,
+    23400,
+    2796
+  ],
+  "status": "passed",
+  "native_seconds": 12.893,
+  "models": 3,
+  "scope": "Local pre-export verification-script smoke:three actual frozen model origins/original pixel logits exact;two fitted-head vector replays exact. Existing runtime reused;not fresh installation,relocated ZIP validation or conditional changed-head pixel research.",
+  "wall_seconds": 60.0,
+  "work_items": 167,
+  "ordinary_pixel_forwards": 3,
+  "memory_bytes": 1073741824,
+  "fitted_head_rows": 164,
+  "native_peak_bytes": 525479936,
+  "artifact_sha256": {
+    "verify_handoff_checkout.py": "483f6d043480765008ae1baec80384b882a55e5d2d0a6fbe3cb4292d26cbca0b",
+    "observed-startup.json": "37987a5931dcc762ab0d791149a7e5ed9b9cc6bc93ca72135ced974bd369e1db",
+    "native.log": "b8d00d859bdc0b4f0470dd26dac695baf997b611fe14a393a2960cef889c8e1c",
+    "native-job.json": "8a5af0ff223cecaaa3f28c6d363cb2f70391f938a6b5e82f5f9356f2f967436e",
+    "local_smoke.py": "03f082bcfc23af1fe0dad5dc32aac40ae303118d4b3a82e542e6ca413b8c993c",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -76,6 +76,13 @@ The current job runner deliberately requires Windows kernel Job enforcement.
 Another OS needs an equivalent enforced guard and admission before long compute.
 The ZIP itself is a standard archive and can be inspected on any OS.
 
+The delivery was checked by `scripts/verify_handoff_checkout.py`: it makes a fresh
+GitHub clone, verifies/restores the archive, checks latest optimizer payload hashes
+and runs one original pixel prediction per current model plus the saved copied-head
+vector replays. The adjacent delivery verification report states the exact scope
+and runtime. It reuses the owner's pinned runtime; it does not claim a fresh
+dependency install or completion of the planned conditional pixel intervention.
+
 Install Git, Python and uv. Run from the clone root. This example installs the
 locked training environment without launching model training:
 

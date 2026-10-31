@@ -1,0 +1,5 @@
+{
+  "ProcessId": 376,
+  "ParentProcessId": 23036,
+  "CommandLine": "\"C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe\" scripts/run_bounded.py --memory-mib 256 --wall-seconds 90 --work-items 12000 --receipt runs/handoff-plan-r1-job.json -- .venv/Scripts/python.exe scripts/handoff_bundle.py plan"
+}

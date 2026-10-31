@@ -1,180 +1,172 @@
-# Contributor handoff checkpoint — 2026-10-30
+# Contributor handoff — 2026-10-30
 
-## Current owner request: clean repository, GitHub push, ZIP and core goals
+## Owner request and delivery
 
-Owner explicitly authorized creating a repository under sieradni and pushing it.
-GitHub CLI account verified as sieradni; target sieradni/tetris-state-vision was
-absent at preflight. Create PRIVATE; do not invite an unknown contributor.
-No research jobs are running and no further model training is selected during
-handoff. Research's next task below belongs to the incoming contributor.
+The owner asked for a clean project, a repository under `sieradni`, a ZIP to send
+and a document of the core goals. This is the active delivery task. No further
+research training is selected during handoff. No research jobs are running.
 
-- [x]Commit the verified pending research results:64939f2.
-- [x]Write CONTRIBUTING.md and docs/CORE_GOALS.md with current evidence/limits.
-- [ ]Verify bounded ZIP build/restore, current artifact inventory and clean commit.
-- [ ]Create private GitHub repository, fast-forward local main, push and verify SHA.
-- [ ]Build ZIP outside repo, verify every file and test relocated current inputs.
-- [ ]Finish with clean local/remote source and explain clone plus artifact restore.
+- Repository: https://github.com/sieradni/tetris-state-vision (PRIVATE; owner/account verified).
+- Core brief: docs/CORE_GOALS.md. Contributor workflow/setup: CONTRIBUTING.md.
+- The incoming contributor's next research task is conditional pixel replay below.
+- GitHub holds source/history; the ZIP is a snapshot of the same source commit
+  plus current ignored model/run artifacts. ZIP extraction alone creates no remote.
+- No collaborator was invited because their GitHub username was not supplied.
+  The owner must grant access before that person can clone/push a branch.
+- Original screenshots, private contact sheets, `.venv`, `.git`, the neighboring
+  engine and unselected historical runs are excluded. Original local data remains.
+- Bundle contains current image runs, required warm admissions, fitted heads,
+  saved synthetic probes, exact frozen sources and one latest optimizer generation
+  per selected run. The archive manifest is the exact file/commit inventory.
 
-New packaging scripts/handoff_bundle.py includes only Git source and an explicit
-allowlist of current synthetic/model/run artifacts,latest optimizer generation
-per included run. It excludes .git,.venv,data/private screenshots,neighbor and
-unselected historical runs. Max12000files/2GiB,streamingI/O. Restore checks source
-commit/cleanliness and preflights ALL collisions before writing ignored runs;
-tracked source is never overwritten. Output ZIP+SHA256 go to Downloads.
-First gate:expected<100MiB,128MiB/60s/work6,unchanged pressureguard,CPU1.
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 128 --wall-seconds 60
---work-items 6 --receipt runs/handoff-contracts-r1-job.json --
-.venv/Scripts/python.exe -m unittest discover -s tests -p test_handoff_bundle.py -v
-Hiddenlogs runs/handoff-contracts-r1.log/.stderr.log;receiptterminal sentinel;
-capture actualstartup/death. No remote exists yet. No user data deletion.
-Handoff sixcase transportgate PASS7.743s(native8.231s/120,905,728B under128MiB),
-rawsource/receipt/startup/death docs/evidence/handoff-contracts-r1/. Peak exceeded
-the100MiB forecast but stayed inside128MiB;future archive jobs get256MiB.
-NEXT artifact plan:expected<200MiB,256MiB/90s/work12000,unchangedpressureguard.
-.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 256 --wall-seconds 90
---work-items 12000 --receipt runs/handoff-plan-r1-job.json --
-.venv/Scripts/python.exe scripts/handoff_bundle.py plan
-Hiddenlogs runs/handoff-plan-r1.log/.stderr.log;receiptterminalsentinel. No ZIP
-build/push yet. Inspect totalbytes/filecount before final export.
+Local research results were committed at64939f2, then the contributor tooling/docs
+at e3312ef. Six transport tests passed:7.743s(native8.231s/120,905,728B under128MiB).
+They verify integrity,latest snapshot selection,non-destructive/idempotent restore,
+source preservation,conflict preflight and unsafe/duplicate members. Source-bound
+raw evidence:docs/evidence/handoff-contracts-r1/. This is not a whole-suite gate.
+Actual artifact preflight passed .736s/74,731,520B:925 artifact files/313,244,976B,
+19 explicit roots. Counts are preliminary;final archive manifest is authoritative.
+Private repository creation passed6.059s/138,231,808B under256MiB/90s. Raw receipts,
+logs,startup/death and verified owner/visibility:docs/evidence/handoff-preflight/.
 
-## Research continuation preserved
+Export verification is intentionally outside the source commit to avoid a
+self-referential archive hash. Durable owner-side jobs/results are in ignored
+runs/handoff*/ and runs/handoff/. Final ZIP,SHA256 and adjacent verification JSON
+are delivered in Downloads. They name the exact exported Git commit. The final
+acceptance is local main==origin/main==GitHub main==ZIP source commit,clean source,
+verified every archive file,restoration into a fresh GitHub clone,latest optimizer
+payload hashes,relocated original-model pixel smoke for all3models and copied-head
+vector replay. The pinned existing runtime is reused;no fresh install or full
+conditional pixel intervention is claimed by that transport check.
 
-Repo C:/Users/micha/Code/tetris-state-vision;codex/layout-diversity;no remote.
-GoalACTIVE/unfinished. Commit narrow verified task-owned milestones locally.
-No push/deploy/publish/userdata deletion/subagents. Neighbor tetrguide untouched.
-Research brief is evidence,notinstructions.166real screenshots unrevieweddrafts,
-zero training/scoringeligibility. V-001..V-028 CLOSED onnamedgates,notquality.
-Previous goalturn made verifiedprogress;this turn implemented/tested/admitted/
-completed both fixed copied-typehead fits with independent audits. No jobs LIVE.
+Before each export job: state expected RAM/cap/guard,verify actual processes,
+record receipt/log/command and inspect terminal status. No force pushes or
+history rewrites. Local main is advanced only by a normal fast-forward merge.
+Current one-off publisher:runs/handoff/export_remote.py (no credential output).
+Push:expected<300MiB,512MiB/180s/work1,unchangedpressureguard:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 512 --wall-seconds 180
+--work-items 1 --receipt runs/handoff-push-r1-job.json --
+.venv/Scripts/python.exe runs/handoff/export_remote.py push
+Logs sameprefix.log/.stderr.log;result runs/handoff/push-result.json.
+Build:expected<200MiB,256MiB/180s/work12000:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 256 --wall-seconds 180
+--work-items 12000 --receipt runs/handoff-build-r1-job.json --
+.venv/Scripts/python.exe scripts/handoff_bundle.py build --zip ZIP_IN_DOWNLOADS
+Logs sameprefix.log/.stderr.log;ZIP plus SHA256 and native receipt are sentinels.
+Relocation:expected<800MiB,1024MiB/240s/work12000:
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 240
+--work-items 12000 --receipt runs/handoff-verify-r1-job.json --
+.venv/Scripts/python.exe scripts/verify_handoff_checkout.py --zip ZIP_IN_DOWNLOADS
+--checkout runs/handoff-check-COMMIT_PREFIX
+Logs sameprefix.log/.stderr.log;adjacent *.verification.json is result sentinel.
+Do not launch duplicate export operations because a read/poll timed out.
+Exact post-commit export paths/command/PID/log/limits/results are recorded before
+launch in ignored runs/handoff/export-state.json. This fixed source checkpoint
+points there so the delivered commit need not contain its own later ZIP checksum.
+Before final source commit:local verification-script check,expected<800MiB,
+1024MiB/60s/work167(3ordinarypixels+2x82headvectors),no training/sourcewrites.
+.venv/Scripts/python.exe scripts/run_bounded.py --memory-mib 1024 --wall-seconds 60
+--work-items 167 --receipt runs/handoff-local-smoke-r1-job.json --
+.venv/Scripts/python.exe runs/handoff/local_smoke.py
+Hiddenlogs sameprefix.log/.stderr.log;native receipt terminal sentinel.
+Local verifier smoke PASS12.893s/525,479,936B under1GiB/60s/work167:all3frozen
+model origins and original pixel logits exact,both82-row fitted-head replays
+exact. Actualsource/rawreceipt/log/startup/death in docs/evidence/handoff-local-smoke-r1/.
+This verifies the program locally;full fresh-clone ZIP verification is separate.
 
-## Selected task: conditional pixel replay with the copied fitted heads
+## Incoming contributor: selected next experiment
 
-- [x]Bothoriginal1024 image studies and original4096 baseline complete/frozen.
-- [x]Independentordinaryerrors and read-onlytypefeature observations audited.
-- [x]Pureheadfitcontracts6checks,per-banknativewarm/reload+independentadmission.
-- [x]Fixed1024fullbatchcopied-head fits and independentaudits COMPLETEbothbanks.
-- [ ]Implement conditionalpixelreplay,original and copiedraw32head perimage.
-- [ ]Run/audit both41image populations,82forwardspermodel,allnon-typeoutputs exact.
-- [ ]Report actual image type/pose/locked/geometry/jointfit metrics and limits.
-- [ ]Select next joint-traininglever from actualevidence;wholegoal unchanged.
+Read AGENTS.md,docs/CORE_GOALS.md,docs/ROADMAP.md,docs/TYPE_HEAD_FIT.md and BUG_LOG.md.
+There is no validated complete screenshot parser. The original4096baseline and
+both1024controlled image studies remain complete/frozen and fail adequate/joint
+learning. API remains needs_review/unsupported. The full release goal stays open.
 
-TYPE_HEAD_FIT.md is recipe/currentresult/limits. Vectorfit ordered20/64->62/64
-(active32,ghost30),interleaved37/64->64/64(active32,ghost32). Development0/18both,
-CE worsens3.27902->58.59039 and4.93344->25.48596. Both rawfloat64 and rawfloat32
-counts agree;representationonparticularsavedvectors,notgeneralization. Ordered
-64/64criterionFAILS,interleavedPASSES. Originalimagejoint-fitgates remainFAIL;
-no image forward has used these fitted heads yet. Do not copy vectorcounts
-into an image-model claim. No extension/adoption of either finished fit selected.
+Implement conditional pixel replay for the ordered and interleaved copied raw
+float32 heads. No additional image-model training or vector-fit extension is
+selected. Acceptance:
 
-Nextpixelreplay acceptance,BEFORE choosing more training or architecture changes:
-1. Recheck curatedheadfit result/scope/payload hashes,originalfeature/input/model
-   identities and actualrawfloat32head values. Load frozen originalarchive/model.
-2. Replay all41saved rasters/publictargets/recipes;original ordinarymetrics and
-   per-imageoriginaltypehead inputs/logits must match independentcurated reports.
-3. In a MEMORYCOPY only,replace the actualshared layer_type weights/bias with
-   fittedraw32head. Pixel/validity only to model.forward;labels/geometry neverinput.
-4. Exactly2forwardsperimage=>82. Allnon-type tensors at EVERYstage must remain
-   bitwiseequal. Finalheadinputfeatures must remain exact;record any expected
-   float32 GEMM roundoff versus vectorbatchlogits rather than claim falsebitparity.
-   Classpredictions/counts must match the actualheadfit. Head32 remains same8x64
-   affinearchitecture;no lookup/parser,unknown->empty or footprint stack deletion.
-5. Restoreoriginalhead in finally/percase and verifyfullmodelstate/file/source
-   identity. Never overwrite originalimage/checkpoint/optimizer/data. Newoutput
-   explicit conditionalintervention,not ordinaryunchangedoutputs or newtraining.
-6. Derive raw type/pose/absence/locked/geometry/wholefit from actualconditional
-   pixeloutputs;recompute with independentcollector,bind nativecommand/work/
-   cap/source/hash/startup/death/rawbytes. Originalwholefit tags remain historical.
+1. Verify curated model/feature/headfit source,config,weights,payload and hashes.
+2. Replay all41saved rasters/public targets per model;original ordinary metrics
+   and per-image type-head inputs/logits must match independent saved reports.
+3. Replace only layer_type weights/bias in a MEMORY COPY. Pixel/validity only
+   to model.forward. Exactly2forwards/image=82/model;no oracle geometry/labels.
+4. Require every non-type tensor at EVERY stage to remain bitwise equal and
+   final head features to remain exact. Record honest float32 matrix-product
+   roundoff versus vector-batch logits;actual class counts must match headfit.
+5. Restore original head in finally/percase,verify full model state/source/file
+   identity. Never overwrite original model/checkpoint/optimizer/data.
+6. Independently derive/audit type,pose,absence,locked,geometry and joint-fit
+   metrics from the actual changed pixel outputs. Keep the intervention separate
+   from original ordinary reports and historical study tags.
 
-No conditionalpixelimplementation/run yet. Expected<600MiB based on observed
-425MBpixelobservers+smallcopiedoutputs/heads;640MiB/120s/work82,CPU1/cache16,
-unchangedpressureguard,oneheavyjob. Separate128MiB/30s boundedcollector;
-predeclare its exactwork/command/log/receipt and acceptance beforelaunch. Fresh
-owned outputs e.g.runs/type-head-ordered-pixels-r1 and interleaved equivalent.
-Read BUG_LOG again before touching any architecture/scheduler/recovery. Pixel
-replay may stay external in docs/experiments;coretraining/controller/archive
-sources need not change. All originalmodels and all headfit sources are frozen.
+Expected inference<600MiB based on measured425MBobservers;enforce640MiB/120s/
+82forwards,CPU1/cache16,existing pressure guard. Declare/bound an independent
+collector separately. Implementation and those conditional runs are still pending.
+Transport smoke performs just1ORIGINAL pixel forward/model;it does not meet this gate.
 
-## Completed copied-head experiment / exact evidence
+## Latest verified findings and artifact map
 
-Scripts docs/experiments/type_head_fit.py,type_head_fit_contract.py,
-record_type_head_fit.py,test_type_head_fit.py. Recipe: copiedactualshared8class
-head,newseparateAdamW LR.01/decay0/betas(.9,.999)/eps1e-8,fullbatch64knowntraining
-vectors,training-onlymean/popstd floor1e-6,float64conditioning,thenrawfloat32
-head criterion64/64. Fixed1024updates,noearlystop/tuning/developmentgradients.
-Eachfit starts originalheadcopy,notwarmpayload,with freshdiagnosticoptimizer;
-first2records exactly reproduce correspondingwarmadmission. Originalimagemodel/
-optimizer/source/files unchanged before/after. Initialper-imagefloat32logits EXACT;
-conditionedfloat64functionerror2.66e-15ordered/5.33e-15interleaved. Snapshothead/
-Adamstate reload exact. Warmprofilebanks2updates pluscontinuousnext1/reloadednext1
-(work4);actualnextloss/gradients/head/Adam/predictionsexact. Fitsreloadfinalstate.
-Independentcollector recomputes train-onlystatistics,normalized/raw/headfloat32
-casts,allhead/logitnumericalreconstruction,curves/metrics/fitcounts,source/input/
-nativeidentities. No fixedbudget failure provesinseparability.
+TYPE_HEAD_FIT.md: both finite copied-head fits complete at1024updates with per-bank
+native warm/reload admission and independent collectors. Original image models,
+source and optimizer files unchanged. New diagnostic optimizer is explicitly reset;
+fullbatch64known vectors,AdamWLR.01/decay0,training-onlymean/popstd floor1e-6,
+float64 conditioning,converted shared8x64+bias rawfloat32 head. Initial per-image
+float32 logits exact;first2fit records match warm prefix;head/Adam reload exact.
 
-Evidence dirs docs/evidence/type-head-{ordered,interleaved}-{profile,fit}-r1/:
-orderedprofile native2.896s/333,045,760B640MiB60swork4;curator.381s/79,106,048B128MiB30swork84.
-orderedfit native3.209s/332,963,840B640MiB120swork1024;curator.392s/79,159,296B128MiB30swork1106.
-interleavedprofile native2.877s/333,144,064B640MiB60swork4;curator.349s/78,077,952B128MiB30swork84.
-interleavedfit native3.254s/332,857,344B640MiB120swork1024;curator.378s/79,425,536B128MiB30swork1106.
-Allrawsource/payload/native/curator/log/startup/death bytes preserved;allknownPIDs
-and matchingcommands gone. Actual4-commandworkerstartup observed,curatorrootonly
-observed;do not upgrade root-only observations into full trees. No runningjob.
-Headstatepayload SHA ordered6749fa5c64c5f6e5dce9fd820c9f1b94854ed2bc14abea931b10fb79545fc696;
+- Ordered types20/64->62/64(active32,ghost30):64/64 criterionFAILS. Remaining two
+  errors:T->S,both views of all-class-04(one ancestry). Dev0/18;CE3.279->58.590.
+- Interleaved types37/64->64/64(active32,ghost32):vector criterionPASSES.
+  Dev0/18;CE4.933->25.486. Rawfloat64/float32 counts agree.
+- This proves representation on these saved training vectors,not image reading
+  or generalization,and does not identify the cause of joint-training failure.
+
+Evidence/runtime names:type-head-{ordered,interleaved}-{profile,fit}-r1.
+Profiles:2warm+continuousnext1+reloadednext1(work4),640MiB/60s.
+Fits:1024updates,640MiB/120s. Peak333MBboth;native~3s;independent collectors
+~.35-.4s/78-80MB under128MiB. All known PIDs/commands gone;raw source/payload/log/
+receipt/startup/death scopes in docs/evidence/<name>/. Six pure contracts in
+handoff source:docs/evidence/type-head-contracts-r1/. No new defects;V001..V028
+closed on named receipts. Do not attach those green scopes to changed sources.
+
+Ordered model:runs/m2-stream-allclass1024-s3;interleaved:runs/m2-stream-interleave1024-s3.
+Fitted payloads:runs/type-head-{ordered,interleaved}-fit-r1/head-state.pt.
+Raw32values are in result.json/head.weight_raw32,bias_raw32;rederive from the
+normalized payload+mean/scale and verify. Curated inputs_sha256 carries model,
+feature and source identities;do not hand-rewrite hashes/absolute historical paths.
+Payload SHA ordered6749fa5c64c5f6e5dce9fd820c9f1b94854ed2bc14abea931b10fb79545fc696;
 interleaved58b417a8c50e434462c5d728c2828b564b33d74c3bdf98391cb7d178e66f86e9.
-ResultJSON contains head.weight_raw32,bias_raw32;actualtensorpayload stores normalized
-head+mean/scale+Adam. Re-derive and compare when implementing pixelreplay.
-Orderedremainingerrors ghostT->S onbothviewsall-class-04,oneancestry. TrainingCE
-1.60518->.15517 and.77506->.05770. No extra training selected afterfixedbudgets.
-Pure6contracts PASS.023s(native.265s/35,033,088B)128MiB30swork6,actualsource/raw
-receipt/startup/death docs/evidence/type-head-contracts-r1/,commit988d730.
-No new defects surfaced;no V029 entry. Existing28closures keep theirnamedscopes.
 
-## Original image studies / feature diagnostics retained
+INTERLEAVED_FIT.md original image studies:ordered32/32boards,12/56visible roles,
+8/8absences,geometry.21059;interleaved28/32boards,30/56visible roles,7/8absences,
+geometry.38618. BothFAIL joint32boards/64roles/128semantics/geometry<.25.
+Devboth2/9boards(the2empty),0/18roles,only3ancestries. One seed,16trainingancestries,
+lockedonlyempty/fixed8cellrow. Do not count views as independent accuracy samples.
 
-INTERLEAVED_FIT.md:fixed1024ordered/interleaved same32pairs/cycle,differentorder,
-matchedstart/warmactualweights/loss/grad/data,unchangedneural/loss/targetpackage.
-One seed/16ancestries,lockedonlyempty/fixed8cellrow. Orderedvsinterleaved original:
-boards32/32vs28/32,observedroles12/56vs30/56,absence8/8vs7/8,semantic128/128both,
-geometry.21059vs.38618. BOTHFAIL joint32boards/64roles/128semantics/geometry<.25.
-Devboth2/9boards(theempty2),0/7nonempty,0/18roles,3ancestries. No releaseadoption.
-Orderedmodel runs/m2-stream-allclass1024-s3 source6147a558,
-weights1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6;
-interleavedmodel runs/m2-stream-interleave1024-s3 source68bb40e3,
-weights93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273.
-Actualsource/manifest/weights/bank identities inheadfitinputs_sha256 and curated
-m2-stream-{allclass1024,interleave1024}-features-r1/. Need nothandcopyidentities.
+ACCURACY4096_BASELINE.md original larger7.69Mmodel complete and frozen. Final
+ordinary27-image replay/curator pass;dev0/18boards,0/36roles,369/401positivecells,
+32misses,813inventedcells,geometry2.01544. All9correct training-probe ghosts are
+absence. Run/source/optimizer integrity is not adequate learning. Current model
+runs/m2-stream-accuracy4096-s10,original source121fd05a... and weights06751638....
 
-Original4096larger COMPLETE,7,694,010params,source121fd05a2f75e30b0c738dac592c67c6d015aa6043a43e4032d91ac662de794b,
-weights067516380eb5193f5ab21afd6ae0573d25610d6a9285b18a186871b36b9aadd1.
-ACCURACY4096_BASELINE.md,scope m2-stream-accuracy4096-s10/,all4096recipes+27images
-replayed. Finalordinaryerrors0/18boards,0/36roles,369/401positives,32FN,813FP;
-geometry2.01544cells. Training9/18correctlayers allghostabsence. Frozenoriginal
-optimizer/source/seed20261026/LR.001/eval128/snapshot64/dev6;notextended.
-Pressure1172logged/1152banked and20exactrecomputedupdates retain originalhistory.
+LAYER_FEATURE_DIAGNOSTIC.md actual inputs/logits and unchanged ordinary outputs
+verified for all3models. Centroid failure did not prove absent class information;
+subsequent copied-head fits above are more informative. Original raw references,
+source catalogs,summary/probe files and current model files are in the handoff.
+Older unselected tensors/run folders remain local;Git preserves curated evidence.
 
-LAYER_FEATURE_DIAGNOSTIC.md binds read-only actualtypeheadinputs/allstagelogits,
-unchangedweights/ordinarycases/totals,all3native observers+independentcollectors.
-Largerbank classcoverage too thin:activetrain0/9eligible,activedev3/18(0correct),
-ghosttrain9/9(allabsence),ghostdev0/18eligible. Controlledcentroidsordered4/32
-active,2/32ghost;interleaved1/32,6/32;development0/9exceptinterleavedghost3/9.
-Not classinformationabsence;subsequentheadfits above are moreinformative.
-V028JSONstringkeyfix sixcase red/green in v028-contracts/;V027recipeancestryfix
-8checks+r2profile/r3curator;recoveryr6 exact2+6+3+3.88scopedchecks25251c8 retain
-originalsource scope;counterfix/nativegates separate,not freshunifiedsuite.
+## Safety and full scope
 
-## Safety / unfinished full goal
+Windows kernel Job/kill-on-close,CPU1/cache16,GetPerformanceInfo/.2spressure guard
+remain armed. Never disable/raise machine ceilings;before detached work record
+RAM/wall/work caps and expectedpeak,verify actual startup/termination and keep logs.
+Oneheavy job at a time;>40GBfree beforelongtraining. Reference machine31.2GBRAM,
+stopcommit31,368,351,744B. NewhostcrashrequiresSystem41/1001anddump audit first.
+Do not delete user run data,closeapps,change power or touch neighboring engine/stage.
+Historical pressure stops/restarts retain their evidence;no crash was observed
+in this handoff. Read RESOURCE_GUARD.md and TRAINING_RECOVERY.md.
 
-RunnerSHAd2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db;
-controllerSHA50d7fc6edb98ffda8c8f84932e706a66207178692bba3b2671ae1a78a7bf7e11.
-KernelJobreadback/kill-on-close,CPU1/cache16,GetPerformanceInfo/.2sstop
-31,368,351,744B unchanged. ExpectedRAM/cap/guard beforelaunch;exactprocesses at
-startup/termination;oneheavyjob;>40GBdiskbeforelongtraining. Lastcommit18.7GB,
-availablephysical21.3GB,disk~65GB. No guard/app/power/userdata/neighborchanges.
-ActualnewhostcrashrequiresSystem41/1001+dumps. Oct28Explorer1074/6006restart
-hadno41/1001/6008 inobservedwindow;previouspressureparkedauditbeforechild,
-notcodefailure. Raw interleave-profile-pressure-r1. Optionalbinarylayerevidence
-matched768 remainsOFF;192image0/148nonemptyboardsboth,active0/165vs4/165(allI),
-ghost0/144both,morecandidateFP. Broadrenders/crops/occlusion/association,
-reviewedreal/independentsplits,adequateM2/M3learning,scratch/pretrained/directdecoder
-comparisons,calibration/export/CPU/adapters and>=95%readable-realexactcomplete-state
-remainOPEN. APIneeds_review. Wholegoalkept;no completion/pause/blocked claim.
+The166real screenshots are unreviewed and excluded. Broad rendering/occlusion/
+association,reviewedreal/independentsplits,adequateM2/M3jointlearning,scratch/
+pretrained/directdecoder comparison,calibration/export/CPU/adapters and>=95%
+readable-real exactcomplete-state remainOPEN. See CORE_GOALS.md for acceptance.
+No claim that the research goal or release gate is complete.

@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "phase": "create",
+  "repository": "https://github.com/sieradni/tetris-state-vision",
+  "private": true,
+  "default_branch": "main",
+  "head": "e3312ef8ff0af7716b85303f060e0fb523e65ced"
+}

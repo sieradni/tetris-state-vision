@@ -1,0 +1,27 @@
+{
+  "artifact_files": 925,
+  "artifact_sha256": {
+    "create-job.json": "e1ec2120735fe78a4981f1af9f00a141de4332f23237aeead5407a08d1d23288",
+    "create-startup.json": "70dec1452a2b39250837ad1feb71e5ac6cd3ca720080a127513ee35d6e154808",
+    "plan-startup.json": "d3a27d8f5c8bd18c5c408b4316c251e0427efc60bed9e468717514612219e2f0",
+    "repository-created.json": "feb37bd9ce4f02e70c05a7af28432e7de397b83476cc5215aba3f322dddecc7e",
+    "create.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "create.log": "12b472e898c759acaae63cbcaba50d57246b8e01ad1375c4ea069363b72db1bd",
+    "plan.log": "3bf12cae522526982eaf1114837565ccc6a2a1b19211c8c99d3da572d060b2e0",
+    "plan-job.json": "c1b665048c93326e3aadd06c082ea7682e4f045ede98087a1cd90c5ec13db2d6",
+    "plan.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "artifact_bytes": 313244976,
+  "scope": "Bounded actual artifact preflight and owner-authorized private repository creation. Source/file counts belong to the named preflight commit;final ZIP manifest is authoritative. Push,full ZIP,and relocation checks follow separately.",
+  "status": "passed",
+  "private": true,
+  "verified_dead_pids": [
+    376,
+    23384,
+    24136,
+    23640,
+    18376,
+    7468
+  ],
+  "repository": "https://github.com/sieradni/tetris-state-vision"
+}

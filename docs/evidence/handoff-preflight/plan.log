@@ -1,0 +1,41 @@
+{"supervisor_pid": 23384, "command": [".venv/Scripts/python.exe", "scripts/handoff_bundle.py", "plan"], "memory_bytes": 268435456, "wall_seconds": 90.0, "work_items": 12000, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "job_name": "Local\\TetrisStateVision-fad9c329834d40b5a663b03b0dbc6782", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 20359544832, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 15645069312, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 31368351744, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 268435456}, "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{
+  "commit": "e3312ef8ff0af7716b85303f060e0fb523e65ced",
+  "repository": "https://github.com/sieradni/tetris-state-vision",
+  "source_files": 2673,
+  "artifact_files": 925,
+  "artifact_bytes": 313244976,
+  "artifact_roots": [
+    "runs/m2-stream-allclass1024-s3",
+    "runs/m2-stream-interleave1024-s3",
+    "runs/m2-stream-accuracy4096-s10",
+    "runs/m2-stream-allclass1024-s3-pipeline",
+    "runs/m2-stream-interleave1024-s3-pipeline",
+    "runs/m2-stream-accuracy4096-s10-pipeline",
+    "runs/m2-stream-accuracy-probe",
+    "runs/m2-stream-recovery-gate-r5/profile",
+    "runs/m2-stream-recovery-gate-r6/profile",
+    "runs/type-head-ordered-profile-r1",
+    "runs/type-head-ordered-fit-r1",
+    "runs/type-head-interleaved-profile-r1",
+    "runs/type-head-interleaved-fit-r1",
+    "runs/m2-stream-allclass1024-features-r1",
+    "runs/m2-stream-allclass1024-errors-r1",
+    "runs/m2-stream-interleave1024-features-r1",
+    "runs/m2-stream-interleave1024-errors-r1",
+    "runs/m2-stream-accuracy4096-features-r1",
+    "runs/m2-stream-accuracy4096-errors-r1"
+  ],
+  "latest_snapshots": {
+    "runs/m2-stream-allclass1024-s3": "step-001024-2112cd05468c4ed9bbb31149e03dfb05",
+    "runs/m2-stream-interleave1024-s3": "step-001024-f8c2b331b7be4a4ca1cea6039ccbda8d",
+    "runs/m2-stream-accuracy4096-s10": "step-004096-1c402652b6274e929439ddd0e5656415",
+    "runs/m2-stream-accuracy-probe": "step-000002-e6653f4e3dd244c9a9718577b525919f",
+    "runs/m2-stream-recovery-gate-r5/profile": "step-000002-f39fbfa278734e5f9ff19051ad9139c6",
+    "runs/m2-stream-recovery-gate-r6/profile": "step-000002-e8cf0f7dd33b4280b5bb5d193ae431d7"
+  },
+  "work_limit_files": 12000,
+  "byte_limit": 2147483648,
+  "elapsed_seconds": 0.5408946000000014
+}
+{"supervisor_pid": 23384, "command": [".venv/Scripts/python.exe", "scripts/handoff_bundle.py", "plan"], "memory_bytes": 268435456, "wall_seconds": 90.0, "work_items": 12000, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "job_name": "Local\\TetrisStateVision-fad9c329834d40b5a663b03b0dbc6782", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 20359544832, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 15645069312, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 31368351744, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 0}, "status": "passed", "exit_code": 0, "elapsed_seconds": 0.736, "child_pid": 24136, "last_system_memory": {"commit_bytes": 20367851520, "commit_limit_bytes": 51769446400, "physical_bytes": 33515835392, "available_physical_bytes": 15689875456, "counter_source": "GetPerformanceInfo"}, "peak_job_commit_bytes": 74731520}
