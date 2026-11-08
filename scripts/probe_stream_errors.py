@@ -135,8 +135,8 @@ def main():
     # Replay the exact endpoint objective too: a factorized endpoint term reproduces its
     # own saved loss only under the factorization it trained with (V-051 join).
     endpoint_term = summary.get("arguments", {}).get("component_endpoint_term", "joint")
-    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate"):
-        raise ValueError("recorded component endpoint term must be joint or separate")
+    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate", "length"):
+        raise ValueError("recorded component endpoint term must be joint, separate or length")
     if capacity:
         from tetris_vision.components import component_metrics
         require_frozen_callables(code, component_metrics)

@@ -47,6 +47,8 @@ class ComponentDecoder(nn.Module):
         # Declared endpoint lever: the endpoint is its own binary decision, not one class
         # inside the piece softmax.
         self.factorized_endpoint = False
+        # Declared length lever: the endpoint is one queue-length decision per case.
+        self.length_direction = None
         self.queue_presence = nn.Linear(dimension, 1)
         self.queue_slot_status = nn.Linear(dimension, 3)
         self.queue_status = nn.Linear(dimension, 4)
@@ -73,6 +75,7 @@ class ComponentDecoder(nn.Module):
             query = self.index_query+index[None]+board+roles[:, :1]
             parts.append(read(query))
         values = torch.cat(parts, dim=1)
+        positioned = None
         if self.shared_type is not None:
             # Declared lever: piece identity is the cell-type read-out plus one EOS logit.
             tokens = torch.cat((self.shared_type(values)[..., :7], self.queue_eos(values)), -1)
@@ -94,6 +97,22 @@ class ComponentDecoder(nn.Module):
             hold = (hold_set.mean(1)[:, None, :]@prototypes[:, :7].transpose(1, 2)).squeeze(1)/scale
         else:
             tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
+        length = None
+        if self.length_direction is not None:
+            # Declared lever: one distribution over queue lengths replaces the per-position
+            # binary endpoint question, so "endpoint at every position" is not a hypothesis.
+            # The per-position scalar is a hazard; the length is where it first fires.
+            check(positioned is not None, "length objective requires the positional read-out")
+            hazard = (positioned*self.length_direction).sum(-1)
+            log_hazard, log_survive = F.logsigmoid(hazard), F.logsigmoid(-hazard)
+            prior = torch.cat((torch.zeros_like(log_survive[:, :1]), torch.cumsum(log_survive, -1)[:, :-1]), -1)
+            length = torch.cat((log_hazard[:, :-1]+prior[:, :-1], prior[:, -1:]), -1)
+            probability = length.exp()
+            reached = (1.-torch.cat((torch.zeros_like(probability[:, :1]),
+                                     torch.cumsum(probability, -1)[:, :-1]), -1)).clamp_min(1e-6)
+            tokens = torch.cat((F.log_softmax(tokens[..., :7], -1)+
+                                torch.log((reached-probability).clamp_min(1e-12))[..., None]-reached.log()[..., None],
+                                (length-reached.log())[..., None]), -1)
         endpoint = None
         if self.factorized_endpoint:
             # Declared lever: p(class) is factorized into a binary endpoint decision and a
@@ -111,6 +130,8 @@ class ComponentDecoder(nn.Module):
                   "hold_status": self.hold_status(roles[:, 1]), "hold_piece": hold}
         if endpoint is not None:
             result["queue_endpoint"] = endpoint
+        if length is not None:
+            result["queue_length"] = length
         return result
 
     def share_type_readout(self, classifier):
@@ -140,6 +161,20 @@ class ComponentDecoder(nn.Module):
         self.position_queries = nn.Parameter(torch.randn(1, 65, self.dimension)*.02)
         return self
 
+    def use_length_distribution(self):
+        """Declared lever: the endpoint becomes one queue-length decision per case.
+
+        The endpoint is a property of queue length, not of a position, so the objective
+        asks it once per case: one distribution over lengths `0..capacity`, with the
+        emitted per-position classes derived from that distribution. "Endpoint at every
+        position" is then a single (wrong) length rather than an admissible answer at every
+        supervised position, which is the shortcut the previous lever inherited.
+        """
+        check(self.position_queries is not None, "length objective requires the positional read-out")
+        check(not self.factorized_endpoint, "length and factorized endpoint objectives are exclusive")
+        self.length_direction = nn.Parameter(torch.randn(1, 1, self.dimension)*.02)
+        return self
+
     def use_factorized_endpoint(self):
         """Declared lever: the observed endpoint becomes its own binary term.
 
@@ -150,6 +185,7 @@ class ComponentDecoder(nn.Module):
         comparable8-way log-probability so the ordinary metrics still apply.
         """
         check(self.piece_queries is not None, "factorized endpoint requires the declared identity read-out")
+        check(self.length_direction is None, "length and factorized endpoint objectives are exclusive")
         self.factorized_endpoint = True
         return self
 
@@ -231,8 +267,8 @@ def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
     """
     if type(identity_factor) is not int or identity_factor not in (1, 4):
         raise ValueError("component identity factor must be1 or4")
-    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate"):
-        raise ValueError("component endpoint term must be joint or separate")
+    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate", "length"):
+        raise ValueError("component endpoint term must be joint, separate or length")
     _validate_contract(output, target)
     def masked(value, mask):
         return (value*mask).sum()/mask.sum().clamp_min(1)
@@ -241,25 +277,44 @@ def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
         safe = torch.where(mask, target[key], torch.zeros_like(target[key]))
         logits = output[key].movedim(-1, 1)
         return masked(F.cross_entropy(logits, safe, reduction="none"), mask)
-    if endpoint_term == "separate":
-        # One binary endpoint decision over every known position plus a7-way piece
-        # softmax at piece positions, so a constant piece class is charged as a piece
-        # class and cannot be dodged by emitting the endpoint everywhere.
-        end = output.get("queue_endpoint")
-        if (not torch.is_tensor(end) or end.shape != output["queue_tokens"].shape[:2] or
-                not end.is_floating_point() or not bool(torch.isfinite(end).all())):
-            raise ValueError("separate endpoint term needs one finite binary logit per position")
+    endpoint_value = length_value = None
+    if endpoint_term in ("separate", "length"):
+        # Piece identity is a7-way decision at piece positions in both declared endpoint
+        # objectives, so a constant piece class is charged as a piece class.
         known = target["queue_token_known"]
         pieces = known & (target["queue_tokens"] != 7)
         safe = torch.where(pieces, target["queue_tokens"], torch.zeros_like(target["queue_tokens"]))
         tokens_term = masked(F.cross_entropy(output["queue_tokens"][..., :7].movedim(-1, 1), safe, reduction="none"),
                              pieces)
-        endpoint_value = masked(F.binary_cross_entropy_with_logits(
-            end, (target["queue_tokens"] == 7).to(end.dtype), reduction="none"), known)
-    elif "queue_endpoint" in output:
+        if endpoint_term == "separate":
+            if "queue_length" in output:
+                raise ValueError("separate endpoint term cannot consume a length distribution")
+            end = output.get("queue_endpoint")
+            if (not torch.is_tensor(end) or end.shape != output["queue_tokens"].shape[:2] or
+                    not end.is_floating_point() or not bool(torch.isfinite(end).all())):
+                raise ValueError("separate endpoint term needs one finite binary logit per position")
+            endpoint_value = masked(F.binary_cross_entropy_with_logits(
+                end, (target["queue_tokens"] == 7).to(end.dtype), reduction="none"), known)
+        else:
+            if "queue_endpoint" in output:
+                raise ValueError("length objective cannot consume per-position endpoint logits")
+            distribution = output.get("queue_length")
+            capacity = target["capacity"]
+            if (not torch.is_tensor(distribution) or distribution.shape != (output["queue_tokens"].shape[0], capacity+1) or
+                    not distribution.is_floating_point() or not bool(torch.isfinite(distribution).all()) or
+                    not bool(torch.allclose(distribution.exp().sum(-1),
+                                            torch.ones(distribution.shape[0], dtype=distribution.dtype), atol=1e-4))):
+                raise ValueError("length objective needs one finite length distribution per case")
+            # The queue length is the observed endpoint index when the end is seen, else
+            # the known piece count; one decision per case instead of 63 position questions.
+            eos = known & (target["queue_tokens"] == 7)
+            end_index = torch.where(eos.any(1), eos.float().argmax(1), pieces.sum(1).clamp_max(capacity))
+            length_value = masked(F.nll_loss(distribution, end_index, reduction="none"),
+                                  target["queue_end_observed"])
+    elif "queue_endpoint" in output or "queue_length" in output:
         raise ValueError("joint endpoint term cannot consume factorized endpoint logits")
     else:
-        tokens_term, endpoint_value = semantic("queue_tokens", target["queue_token_known"]), None
+        tokens_term = semantic("queue_tokens", target["queue_token_known"])
     terms = {"queue_tokens": tokens_term,
              "queue_slot_status": semantic("queue_slot_status", target["queue_slot_status_known"]),
              "queue_presence": masked(F.binary_cross_entropy_with_logits(output["queue_presence"], target["queue_presence"].float(), reduction="none"),
@@ -273,6 +328,9 @@ def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
     if endpoint_value is not None:
         terms["queue_endpoint"] = endpoint_value
         weights["queue_endpoint"] = 1.*identity_factor
+    if length_value is not None:
+        terms["queue_length"] = length_value
+        weights["queue_length"] = 1.*identity_factor
     return sum(weights[key]*value for key, value in terms.items()), terms
 
 

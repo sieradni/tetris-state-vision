@@ -43,10 +43,12 @@ class ModelConfig:
               (self.component_capacity or self.component_identity_readout == "separate"),
               "identity readout must be separate, shared with the cell-type head, per-piece image queries, "
               "or per-position image queries")
-        check(self.component_endpoint_term in ("joint", "separate") and
+        check(self.component_endpoint_term in ("joint", "separate", "length") and
               (self.component_endpoint_term == "joint" or
-               (self.component_capacity and self.component_identity_readout in ("prototype", "positional"))),
-              "separate endpoint term requires the joint heads and a declared identity read-out")
+               (self.component_capacity and self.component_identity_readout in ("prototype", "positional"))) and
+              (self.component_endpoint_term != "length" or self.component_identity_readout == "positional"),
+              "separate or length endpoint term requires the joint heads and a declared identity read-out, "
+              "and length requires the positional read-out")
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
 
     @classmethod
@@ -231,6 +233,10 @@ class TetrisStateNet(nn.Module):
                 # Declared lever: the endpoint is its own binary decision, outside the
                 # piece softmax, so a constant piece class cannot hide behind it.
                 self.components.use_factorized_endpoint()
+            elif config.component_endpoint_term == "length":
+                # Declared lever: one queue-length decision per case replaces the
+                # per-position endpoint question.
+                self.components.use_length_distribution()
         # Last initialization preserves common seeded tensors in paired studies.
         self.layer_evidence = None
         if config.layer_evidence:

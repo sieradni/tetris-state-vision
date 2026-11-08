@@ -32,9 +32,10 @@ def arguments(argv=None):
                         default="separate",
                         help="shared reads identity through the cell-type head;prototype reads per-piece image "
                              "queries;positional adds per-position image queries;separate is published")
-    parser.add_argument("--component-endpoint-term", choices=("joint", "separate"), default="joint",
+    parser.add_argument("--component-endpoint-term", choices=("joint", "separate", "length"), default="joint",
                         help="joint keeps the endpoint as one class of the piece softmax;joint is published;"
-                             "separate gives the endpoint its own binary decision")
+                             "separate gives the endpoint its own binary decision;length decides the queue length "
+                             "once per case")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -70,7 +71,9 @@ def arguments(argv=None):
         parser.error("a declared identity readout other than separate requires the joint heads")
     if args.component_endpoint_term != "joint" and (not args.component_capacity or
                                                     args.component_identity_readout not in ("prototype", "positional")):
-        parser.error("a separate endpoint term requires the joint heads and a declared identity readout")
+        parser.error("a declared endpoint term requires the joint heads and a declared identity readout")
+    if args.component_endpoint_term == "length" and args.component_identity_readout != "positional":
+        parser.error("a length objective requires the positional identity readout")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):

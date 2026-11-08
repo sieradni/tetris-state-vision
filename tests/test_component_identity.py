@@ -224,6 +224,73 @@ class ComponentIdentityFactorTests(unittest.TestCase):
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             arguments([*base, "--component-endpoint-term", "separate"])
 
+    def test_the_length_head_replaces_the_per_position_endpoint_question(self):
+        from dataclasses import replace
+        from tetris_vision.components import ComponentDecoder
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        decoder = ComponentDecoder(32, 4).use_positional_queries().use_length_distribution()
+        self.assertIsNotNone(decoder.length_direction)
+        valid = torch.ones(1, 5, dtype=torch.bool)
+        torch.manual_seed(17)
+        with torch.no_grad():
+            output = decoder(torch.randn(1, 5, 32), valid, torch.zeros(1, 1, 32), capacity=4)
+        self.assertNotIn("queue_endpoint", output)
+        self.assertEqual(tuple(output["queue_length"].shape), (1, 5))
+        # One distribution over lengths0..capacity, and every emitted position stays a
+        # proper class distribution so the ordinary metrics keep their meaning.
+        self.assertTrue(torch.allclose(output["queue_length"].exp().sum(-1), torch.ones(1), atol=1e-5))
+        self.assertTrue(torch.allclose(output["queue_tokens"].exp().sum(-1), torch.ones(1, 5), atol=1e-5))
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4,
+                                       component_identity_readout="positional",
+                                       component_endpoint_term="length")).eval()
+        self.assertIsNotNone(model.components.length_direction)
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_capacity=4, component_identity_readout="prototype",
+                    component_endpoint_term="length")
+
+    def test_the_length_objective_charges_one_decision_and_no_position_endpoint(self):
+        from tetris_vision.components import component_loss
+        target = {"capacity": 4,
+                  "queue_tokens": torch.tensor([[2, 3, 7, -1, -1]]),
+                  "queue_token_known": torch.tensor([[True, True, True, False, False]]),
+                  "queue_slot_status": torch.tensor([[0, 0, 0, -1]]),
+                  "queue_slot_status_known": torch.tensor([[True, True, True, False]]),
+                  "queue_presence": torch.tensor([[True, True, False, False]]),
+                  "queue_presence_known": torch.tensor([[True, True, True, True]]),
+                  "queue_status": torch.tensor([0]), "hold_status": torch.tensor([0]),
+                  "hold_piece": torch.tensor([0]), "hold_piece_known": torch.tensor([True]),
+                  "queue_start_observed": torch.tensor([True]), "queue_end_observed": torch.tensor([True])}
+        logits = torch.zeros(1, 5, 8)
+        logits[..., 2] = 8.
+        output = {"queue_length": torch.full((1, 5), float(-torch.log(torch.tensor(5.)))),
+                  "queue_tokens": logits, "queue_presence": torch.zeros(1, 4),
+                  "queue_slot_status": torch.zeros(1, 4, 3), "queue_status": torch.zeros(1, 4),
+                  "queue_anchors": torch.zeros(1, 2), "hold_status": torch.zeros(1, 5),
+                  "hold_piece": torch.zeros(1, 7)}
+        loss, terms = component_loss(output, target, identity_factor=4, endpoint_term="length")
+        self.assertIn("queue_length", terms)
+        self.assertNotIn("queue_endpoint", terms)
+        self.assertGreater(float(terms["queue_length"].detach()), 0)
+        self.assertGreater(float(terms["queue_tokens"].detach()), .5)
+        self.assertGreater(float(loss.detach()), 0)
+        with self.assertRaisesRegex(ValueError, "joint endpoint term"):
+            component_loss(output, target, endpoint_term="joint")
+        output["queue_endpoint"] = torch.zeros(1, 5)
+        with self.assertRaisesRegex(ValueError, "length objective cannot consume"):
+            component_loss(output, target, endpoint_term="length")
+        del output["queue_endpoint"], output["queue_length"]
+        with self.assertRaisesRegex(ValueError, "length objective needs"):
+            component_loss(output, target, endpoint_term="length")
+
+    def test_the_driver_declares_the_length_objective(self):
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                                    "positional", "--component-endpoint-term", "length"]).component_endpoint_term,
+                         "length")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-capacity", "64", "--component-identity-readout", "prototype",
+                       "--component-endpoint-term", "length"])
+
     def test_positional_readout_is_validated_and_declared_by_the_driver(self):
         from dataclasses import replace
         from tetris_vision.model import ModelConfig
