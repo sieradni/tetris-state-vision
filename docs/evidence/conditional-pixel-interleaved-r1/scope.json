@@ -1,0 +1,852 @@
+{
+  "status": "passed",
+  "study": "interleaved",
+  "inputs_sha256": {
+    "docs/evidence/m2-stream-interleave1024-features-r1/scope.json": "90ac0644e390759f0049c5971b9fe78077267b84e40a79d43d4f80d89a7a4e54",
+    "docs/evidence/m2-stream-interleave1024-features-r1/features.json": "1b9532af30694a695ff67f8fdf8ac0510bf4d96f80efe7a6e80d41b15e28dec4",
+    "docs/evidence/m2-stream-interleave1024-features-r1/curation-receipt-scope.json": "bc359bbd2a1e520f72bf0fa11570e6f7255659d1354337ae34128d544df8baa8",
+    "docs/evidence/m2-stream-interleave1024-features-r1/curation-job.json": "1c5d7471d86b9b1ff4a790259f73ec8b0b06e5a478b0b89271286b47b55ea17f",
+    "runs/m2-stream-interleave1024-s3/summary.json": "39713f044655eadbbbe84851525e8736453bf5ce17c9114087a1d55676d77882",
+    "runs/m2-stream-interleave1024-s3/checkpoint/manifest.json": "cd206ba73a6f2553953ee06e6eb3ec2c0c77e9b4c7636ecf321071e3d313bab8",
+    "runs/m2-stream-interleave1024-s3/checkpoint/weights.pt": "93e798208234eb7d54ace1b725949b0cab848c7d0a464520d8c23a6dd88a0273",
+    "runs/m2-stream-interleave1024-s3/code/source.json": "445cffb34e2cea06375f4f492c3cdddc77a2eae56256219597eb4b9faea92f81"
+  },
+  "intervention_sha256": "83d140c5bcef1cc2553cde59619dc65a885a69ef600888981f8c109db5a6a9ba",
+  "native_receipt_sha256": "84d7ace76ded873df9a0dc111f32e64ff254da76778a46d6d98f89a605cf0030",
+  "collector_sha256": "ffc1d0cd94213a5b81fc92eeee84f277bc19bd579b7ca246debb9914dda83f02",
+  "joint_fit": {
+    "boards_exact": 28,
+    "roles_known": 64,
+    "roles_exact": 64,
+    "visible_known": 56,
+    "visible_exact": 56,
+    "absent_known": 8,
+    "absent_exact": 8,
+    "semantic_known": 128,
+    "semantic_correct": 128,
+    "geometry_mean_cells": 0.3861765744225128,
+    "pass": false
+  },
+  "totals": {
+    "training": {
+      "images": 32,
+      "ancestry_groups": 16,
+      "locked_populations": {
+        "empty": {
+          "images": 16,
+          "exact_boards": 14,
+          "known_cells": 3200,
+          "true_positive": 0,
+          "true_negative": 3198,
+          "false_positive": 2,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 16,
+          "exact_boards": 14,
+          "known_cells": 3200,
+          "true_positive": 128,
+          "true_negative": 3070,
+          "false_positive": 2,
+          "false_negative": 0
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 32,
+          "exact": 32,
+          "unknown_predictions": 0,
+          "type_errors": 0,
+          "column_errors": 0,
+          "row_errors": 0,
+          "rotation_errors": 0
+        },
+        "ghost": {
+          "known": 32,
+          "exact": 32,
+          "unknown_predictions": 0,
+          "type_errors": 0,
+          "column_errors": 0,
+          "row_errors": 0,
+          "rotation_errors": 0
+        }
+      },
+      "geometry": {
+        "supported_images": 32,
+        "mean_cells": 0.3861765744225128,
+        "origin_error_cells": 0.11364286709395491,
+        "per_column_basis_error_cells": 0.018500465899705887,
+        "per_row_basis_error_cells": 0.029901914298534393,
+        "worst_point_cells": 0.9009864862968328
+      }
+    },
+    "development": {
+      "images": 9,
+      "ancestry_groups": 3,
+      "locked_populations": {
+        "empty": {
+          "images": 2,
+          "exact_boards": 2,
+          "known_cells": 400,
+          "true_positive": 0,
+          "true_negative": 400,
+          "false_positive": 0,
+          "false_negative": 0
+        },
+        "nonempty": {
+          "images": 7,
+          "exact_boards": 0,
+          "known_cells": 1400,
+          "true_positive": 18,
+          "true_negative": 1217,
+          "false_positive": 3,
+          "false_negative": 162
+        },
+        "partial": {
+          "images": 0,
+          "exact_boards": 0,
+          "known_cells": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0
+        }
+      },
+      "layers": {
+        "active": {
+          "known": 9,
+          "exact": 0,
+          "unknown_predictions": 0,
+          "type_errors": 9,
+          "column_errors": 9,
+          "row_errors": 6,
+          "rotation_errors": 3
+        },
+        "ghost": {
+          "known": 9,
+          "exact": 0,
+          "unknown_predictions": 0,
+          "type_errors": 9,
+          "column_errors": 9,
+          "row_errors": 9,
+          "rotation_errors": 3
+        }
+      },
+      "geometry": {
+        "supported_images": 9,
+        "mean_cells": 3.8209083590840884,
+        "origin_error_cells": 4.01497728861052,
+        "per_column_basis_error_cells": 0.23910441175976047,
+        "per_row_basis_error_cells": 0.1238365398234297,
+        "worst_point_cells": 7.629959117165509
+      }
+    }
+  },
+  "type_metrics": {
+    "training": {
+      "known": 64,
+      "unknown_excluded": 0,
+      "ancestries": 16,
+      "correct": 64,
+      "mean_cross_entropy": 0.057700764477781885,
+      "by_role": {
+        "active": {
+          "known": 32,
+          "correct": 32
+        },
+        "ghost": {
+          "known": 32,
+          "correct": 32
+        }
+      },
+      "cases": [
+        {
+          "sample_id": "all-class-00-v0",
+          "group_id": "all-class-00",
+          "role": "active",
+          "target": 1,
+          "predicted": 1,
+          "loss": 0.0023906942194571457
+        },
+        {
+          "sample_id": "all-class-00-v0",
+          "group_id": "all-class-00",
+          "role": "ghost",
+          "target": 1,
+          "predicted": 1,
+          "loss": 2.5281821081080125e-10
+        },
+        {
+          "sample_id": "all-class-00-v1",
+          "group_id": "all-class-00",
+          "role": "active",
+          "target": 1,
+          "predicted": 1,
+          "loss": 0.00562322530199566
+        },
+        {
+          "sample_id": "all-class-00-v1",
+          "group_id": "all-class-00",
+          "role": "ghost",
+          "target": 1,
+          "predicted": 1,
+          "loss": 4.2079051354448893e-10
+        },
+        {
+          "sample_id": "all-class-01-v0",
+          "group_id": "all-class-01",
+          "role": "active",
+          "target": 1,
+          "predicted": 1,
+          "loss": 4.3583980868788785e-10
+        },
+        {
+          "sample_id": "all-class-01-v0",
+          "group_id": "all-class-01",
+          "role": "ghost",
+          "target": 1,
+          "predicted": 1,
+          "loss": 2.913225216616411e-13
+        },
+        {
+          "sample_id": "all-class-01-v1",
+          "group_id": "all-class-01",
+          "role": "active",
+          "target": 1,
+          "predicted": 1,
+          "loss": 5.067946062808915e-10
+        },
+        {
+          "sample_id": "all-class-01-v1",
+          "group_id": "all-class-01",
+          "role": "ghost",
+          "target": 1,
+          "predicted": 1,
+          "loss": 2.6290081223123707e-13
+        },
+        {
+          "sample_id": "all-class-02-v0",
+          "group_id": "all-class-02",
+          "role": "active",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.013586994007088293
+        },
+        {
+          "sample_id": "all-class-02-v0",
+          "group_id": "all-class-02",
+          "role": "ghost",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.006363735102738133
+        },
+        {
+          "sample_id": "all-class-02-v1",
+          "group_id": "all-class-02",
+          "role": "active",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.01225807814019575
+        },
+        {
+          "sample_id": "all-class-02-v1",
+          "group_id": "all-class-02",
+          "role": "ghost",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.008619290134674884
+        },
+        {
+          "sample_id": "all-class-03-v0",
+          "group_id": "all-class-03",
+          "role": "active",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.007393386496961085
+        },
+        {
+          "sample_id": "all-class-03-v0",
+          "group_id": "all-class-03",
+          "role": "ghost",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.009881795725920739
+        },
+        {
+          "sample_id": "all-class-03-v1",
+          "group_id": "all-class-03",
+          "role": "active",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.008011881222650175
+        },
+        {
+          "sample_id": "all-class-03-v1",
+          "group_id": "all-class-03",
+          "role": "ghost",
+          "target": 2,
+          "predicted": 2,
+          "loss": 0.012334654115242927
+        },
+        {
+          "sample_id": "all-class-04-v0",
+          "group_id": "all-class-04",
+          "role": "active",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.16260893939845644
+        },
+        {
+          "sample_id": "all-class-04-v0",
+          "group_id": "all-class-04",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.19188451198616185
+        },
+        {
+          "sample_id": "all-class-04-v1",
+          "group_id": "all-class-04",
+          "role": "active",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.46276193622131245
+        },
+        {
+          "sample_id": "all-class-04-v1",
+          "group_id": "all-class-04",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.3387489727955817
+        },
+        {
+          "sample_id": "all-class-05-v0",
+          "group_id": "all-class-05",
+          "role": "active",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.15446926918614423
+        },
+        {
+          "sample_id": "all-class-05-v0",
+          "group_id": "all-class-05",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.07788231068479767
+        },
+        {
+          "sample_id": "all-class-05-v1",
+          "group_id": "all-class-05",
+          "role": "active",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.11729741684093042
+        },
+        {
+          "sample_id": "all-class-05-v1",
+          "group_id": "all-class-05",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 3,
+          "loss": 0.0787918039430675
+        },
+        {
+          "sample_id": "all-class-06-v0",
+          "group_id": "all-class-06",
+          "role": "active",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.003162988193022187
+        },
+        {
+          "sample_id": "all-class-06-v0",
+          "group_id": "all-class-06",
+          "role": "ghost",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.002321469885451677
+        },
+        {
+          "sample_id": "all-class-06-v1",
+          "group_id": "all-class-06",
+          "role": "active",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.021556842760162453
+        },
+        {
+          "sample_id": "all-class-06-v1",
+          "group_id": "all-class-06",
+          "role": "ghost",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.01635373766095327
+        },
+        {
+          "sample_id": "all-class-07-v0",
+          "group_id": "all-class-07",
+          "role": "active",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.00970622521841591
+        },
+        {
+          "sample_id": "all-class-07-v0",
+          "group_id": "all-class-07",
+          "role": "ghost",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.011235890169619012
+        },
+        {
+          "sample_id": "all-class-07-v1",
+          "group_id": "all-class-07",
+          "role": "active",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.009149324476084075
+        },
+        {
+          "sample_id": "all-class-07-v1",
+          "group_id": "all-class-07",
+          "role": "ghost",
+          "target": 4,
+          "predicted": 4,
+          "loss": 0.010122707179387902
+        },
+        {
+          "sample_id": "all-class-08-v0",
+          "group_id": "all-class-08",
+          "role": "active",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.007951138329437057
+        },
+        {
+          "sample_id": "all-class-08-v0",
+          "group_id": "all-class-08",
+          "role": "ghost",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.011830091692862865
+        },
+        {
+          "sample_id": "all-class-08-v1",
+          "group_id": "all-class-08",
+          "role": "active",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.009329442545805477
+        },
+        {
+          "sample_id": "all-class-08-v1",
+          "group_id": "all-class-08",
+          "role": "ghost",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.013397192157992066
+        },
+        {
+          "sample_id": "all-class-09-v0",
+          "group_id": "all-class-09",
+          "role": "active",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.157477193427491
+        },
+        {
+          "sample_id": "all-class-09-v0",
+          "group_id": "all-class-09",
+          "role": "ghost",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.03342280167058398
+        },
+        {
+          "sample_id": "all-class-09-v1",
+          "group_id": "all-class-09",
+          "role": "active",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.20338857383915787
+        },
+        {
+          "sample_id": "all-class-09-v1",
+          "group_id": "all-class-09",
+          "role": "ghost",
+          "target": 5,
+          "predicted": 5,
+          "loss": 0.038734906804155145
+        },
+        {
+          "sample_id": "all-class-10-v0",
+          "group_id": "all-class-10",
+          "role": "active",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.007180798491361884
+        },
+        {
+          "sample_id": "all-class-10-v0",
+          "group_id": "all-class-10",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 6,
+          "loss": 7.475533322320871e-05
+        },
+        {
+          "sample_id": "all-class-10-v1",
+          "group_id": "all-class-10",
+          "role": "active",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.004590435142691973
+        },
+        {
+          "sample_id": "all-class-10-v1",
+          "group_id": "all-class-10",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.00041031926582135725
+        },
+        {
+          "sample_id": "all-class-11-v0",
+          "group_id": "all-class-11",
+          "role": "active",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.00011973555852051732
+        },
+        {
+          "sample_id": "all-class-11-v0",
+          "group_id": "all-class-11",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 6,
+          "loss": 7.611092730641644e-05
+        },
+        {
+          "sample_id": "all-class-11-v1",
+          "group_id": "all-class-11",
+          "role": "active",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.0001279753778433701
+        },
+        {
+          "sample_id": "all-class-11-v1",
+          "group_id": "all-class-11",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 6,
+          "loss": 0.0010235196955044046
+        },
+        {
+          "sample_id": "all-class-12-v0",
+          "group_id": "all-class-12",
+          "role": "active",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.41248602303343596
+        },
+        {
+          "sample_id": "all-class-12-v0",
+          "group_id": "all-class-12",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.33441954716062483
+        },
+        {
+          "sample_id": "all-class-12-v1",
+          "group_id": "all-class-12",
+          "role": "active",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.20885250971053892
+        },
+        {
+          "sample_id": "all-class-12-v1",
+          "group_id": "all-class-12",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.26247393837209465
+        },
+        {
+          "sample_id": "all-class-13-v0",
+          "group_id": "all-class-13",
+          "role": "active",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.030979817207947846
+        },
+        {
+          "sample_id": "all-class-13-v0",
+          "group_id": "all-class-13",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.08762022490895127
+        },
+        {
+          "sample_id": "all-class-13-v1",
+          "group_id": "all-class-13",
+          "role": "active",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.02928264224691013
+        },
+        {
+          "sample_id": "all-class-13-v1",
+          "group_id": "all-class-13",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 7,
+          "loss": 0.07561997710359414
+        },
+        {
+          "sample_id": "all-class-14-v0",
+          "group_id": "all-class-14",
+          "role": "active",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.00010171388017710115
+        },
+        {
+          "sample_id": "all-class-14-v0",
+          "group_id": "all-class-14",
+          "role": "ghost",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.00039053654527521076
+        },
+        {
+          "sample_id": "all-class-14-v1",
+          "group_id": "all-class-14",
+          "role": "active",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.00010210516866493435
+        },
+        {
+          "sample_id": "all-class-14-v1",
+          "group_id": "all-class-14",
+          "role": "ghost",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.00030947038133177784
+        },
+        {
+          "sample_id": "all-class-15-v0",
+          "group_id": "all-class-15",
+          "role": "active",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.0002288384960174028
+        },
+        {
+          "sample_id": "all-class-15-v0",
+          "group_id": "all-class-15",
+          "role": "ghost",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.0005721866597347969
+        },
+        {
+          "sample_id": "all-class-15-v1",
+          "group_id": "all-class-15",
+          "role": "active",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.001763319046759193
+        },
+        {
+          "sample_id": "all-class-15-v1",
+          "group_id": "all-class-15",
+          "role": "ghost",
+          "target": 0,
+          "predicted": 0,
+          "loss": 0.003993003712952969
+        }
+      ]
+    },
+    "development": {
+      "known": 18,
+      "unknown_excluded": 0,
+      "ancestries": 3,
+      "correct": 0,
+      "mean_cross_entropy": 25.485958694819676,
+      "by_role": {
+        "active": {
+          "known": 9,
+          "correct": 0
+        },
+        "ghost": {
+          "known": 9,
+          "correct": 0
+        }
+      },
+      "cases": [
+        {
+          "sample_id": "development-30261026-v0",
+          "group_id": "ancestry-development-30261026",
+          "role": "active",
+          "target": 7,
+          "predicted": 0,
+          "loss": 23.047281444690384
+        },
+        {
+          "sample_id": "development-30261026-v0",
+          "group_id": "ancestry-development-30261026",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 0,
+          "loss": 14.363249420299319
+        },
+        {
+          "sample_id": "development-30261026-v1",
+          "group_id": "ancestry-development-30261026",
+          "role": "active",
+          "target": 7,
+          "predicted": 0,
+          "loss": 21.476185988685913
+        },
+        {
+          "sample_id": "development-30261026-v1",
+          "group_id": "ancestry-development-30261026",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 0,
+          "loss": 13.338150428173371
+        },
+        {
+          "sample_id": "development-30261026-v2",
+          "group_id": "ancestry-development-30261026",
+          "role": "active",
+          "target": 7,
+          "predicted": 0,
+          "loss": 23.16532933730619
+        },
+        {
+          "sample_id": "development-30261026-v2",
+          "group_id": "ancestry-development-30261026",
+          "role": "ghost",
+          "target": 7,
+          "predicted": 0,
+          "loss": 14.44474070993751
+        },
+        {
+          "sample_id": "development-30261027-v0",
+          "group_id": "ancestry-development-30261027",
+          "role": "active",
+          "target": 6,
+          "predicted": 0,
+          "loss": 29.718389395814405
+        },
+        {
+          "sample_id": "development-30261027-v0",
+          "group_id": "ancestry-development-30261027",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 0,
+          "loss": 25.25344312967944
+        },
+        {
+          "sample_id": "development-30261027-v1",
+          "group_id": "ancestry-development-30261027",
+          "role": "active",
+          "target": 6,
+          "predicted": 0,
+          "loss": 37.05234341980386
+        },
+        {
+          "sample_id": "development-30261027-v1",
+          "group_id": "ancestry-development-30261027",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 0,
+          "loss": 27.29874326705655
+        },
+        {
+          "sample_id": "development-30261027-v2",
+          "group_id": "ancestry-development-30261027",
+          "role": "active",
+          "target": 6,
+          "predicted": 0,
+          "loss": 37.32801250517559
+        },
+        {
+          "sample_id": "development-30261027-v2",
+          "group_id": "ancestry-development-30261027",
+          "role": "ghost",
+          "target": 6,
+          "predicted": 0,
+          "loss": 27.426137940864933
+        },
+        {
+          "sample_id": "development-30261028-v0",
+          "group_id": "ancestry-development-30261028",
+          "role": "active",
+          "target": 3,
+          "predicted": 0,
+          "loss": 31.849869716750558
+        },
+        {
+          "sample_id": "development-30261028-v0",
+          "group_id": "ancestry-development-30261028",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 1,
+          "loss": 24.71036801836642
+        },
+        {
+          "sample_id": "development-30261028-v1",
+          "group_id": "ancestry-development-30261028",
+          "role": "active",
+          "target": 3,
+          "predicted": 0,
+          "loss": 28.927616464794188
+        },
+        {
+          "sample_id": "development-30261028-v1",
+          "group_id": "ancestry-development-30261028",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 4,
+          "loss": 22.63118648745509
+        },
+        {
+          "sample_id": "development-30261028-v2",
+          "group_id": "ancestry-development-30261028",
+          "role": "active",
+          "target": 3,
+          "predicted": 0,
+          "loss": 31.928011450792212
+        },
+        {
+          "sample_id": "development-30261028-v2",
+          "group_id": "ancestry-development-30261028",
+          "role": "ghost",
+          "target": 3,
+          "predicted": 1,
+          "loss": 24.78819738110827
+        }
+      ]
+    }
+  },
+  "pixel_vector_max_abs_difference": 0.0,
+  "scope": "Conditional copied-head synthetic pixel replay; dependent views, no real-image or generalization claim."
+}

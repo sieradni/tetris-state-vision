@@ -2,15 +2,37 @@
 
 ## Pixel replay work in progress — 2026-11-07
 
-The conditional replay remains incomplete. `scripts/pixel_replay_contract.py`
+The conditional pixel replay and independent collectors are complete; see
+`docs/CONDITIONAL_PIXEL_REPLAY.md`. Both joint-fit gates fail and both development
+type scores remain 0/18. The next research action is to predeclare a controlled
+joint-optimization comparison, including resource and recovery admission; no
+new training is admitted yet. `scripts/pixel_replay_contract.py`
 adds a strict byte comparison of every non-type output at each stage and final
 output, with only the designated stage type logits exempted. Three focused
 checks pass under the bounded CPU runner; receipt and log are in
 `docs/evidence/pixel-replay-contract-r2/` (peak 246,312,960 bytes, 640 MiB cap,
 30 seconds, work 3). This is a comparison instrument, not a pixel replay or
-model-quality result. Next wire it into the two-forward-per-image intervention,
-verify head inputs and source/artifact identities and restore state, then build
-the independent collector described below. The original runs remain frozen.
+model-quality result on its own. The original runs remain frozen.
+
+Ordered replay attempt r1 planned: `docs/experiments/conditional_pixel_replay.py
+--study ordered --output runs/conditional-pixel-ordered-r1`, supervised by
+`scripts/run_bounded.py` at 640 MiB / 120 s / 82 forwards; expected under
+600 MiB, CPU1/cache16, Windows Job and existing pressure guard. Receipt
+`runs/conditional-pixel-ordered-r1-job.json`, stdout/stderr same prefix with
+`.log`/`.stderr.log`. This is an experimental attempt, not an audited result.
+Ordered r1 terminated passed at 12.606 s / 426,795,008 bytes; all 82 forwards,
+saved feature and original-report checks pass; independent audit remains open.
+All startup processes 8856/23544/8412/17196 are gone. Interleaved r1 planned
+with the same guard, 640 MiB / 120 s / 82 forwards, expected under 600 MiB:
+`docs/experiments/conditional_pixel_replay.py --study interleaved --output
+runs/conditional-pixel-interleaved-r1`, receipt and logs under that prefix.
+Interleaved r1 passed 11.734 s / 426,926,080 bytes; startup processes
+2808/22148/12384/4840 gone. Independent collectors planned sequentially:
+`docs/experiments/record_conditional_pixel_replay.py --study STUDY`, 41 cases,
+256 MiB / 30 s, expected under 150 MiB, CPU1 and unchanged pressure guard.
+Receipts and logs use `runs/conditional-pixel-STUDY-curation-r1` prefix.
+Both collectors passed, with raw evidence under `docs/evidence/conditional-pixel-
+{ordered,interleaved}-r1/`. All known replay and collector processes exited.
 
 ## Owner request and delivery
 

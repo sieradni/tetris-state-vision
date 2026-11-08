@@ -11,6 +11,12 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: conditional copied-head pixel replay and independent audits are complete
+for both controlled models. Ordered training roles reach 62/64; interleaved
+64/64, but both joint-fit criteria fail and development types remain 0/18.
+See [CONDITIONAL_PIXEL_REPLAY.md](CONDITIONAL_PIXEL_REPLAY.md). Next predeclare
+a controlled joint-optimization lever and its resource/recovery admission.
+
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,
    final recovery/inference parity and full recipe replay. V-013 CLOSED.
@@ -75,9 +81,9 @@ No complete screenshot parser or real-image accuracy is claimed.
    reload admission and independent audits. Ordered training types20/64->62/64,
    interleaved37/64->64/64,development0/18both;TYPE_HEAD_FIT.md records criteria,
    worsened development losses and scope. Original image models/source/optimizers
-   stay frozen. Next verify conditional pixel replay with each copied raw float32
-   head,including unchanged non-type tensors at every stage,before choosing a
-   joint-training lever. No whole-state/generalization gain follows from vector fit.
+   stay frozen. Conditional pixel replay now confirms the copied-head training
+   counts while leaving other outputs unchanged; both joint-fit gates fail.
+   No generalization gain follows from this intervention.
    More than40GB free is required before each long training window.
 3. Complete M3 linked queue/hold heads, masked losses and review-only output.
    Optional shared role/index heads and masked losses now pass15 scoped checks,
