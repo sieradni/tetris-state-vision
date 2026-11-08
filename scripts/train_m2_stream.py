@@ -108,7 +108,7 @@ def owned_initial_source(source, *, output):
     being written is the only reliable anchor for the owned runs directory.
     """
     source, output = Path(source).resolve(), Path(output).resolve()
-    if not source.is_relative_to(output.parent) or source == output:
+    if source.parent != output.parent or source == output:
         raise ValueError("initial weights must come from a different owned run")
     return source
 
