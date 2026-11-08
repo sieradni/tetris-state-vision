@@ -1,5 +1,55 @@
 # Contributor handoff — 2026-10-30
 
+## Staged frozen-backbone head refinement is a measured negative — 2026-11-08
+
+The roadmap's next joint-learning lever is done and closed as a measured negative.
+`docs/STAGED_HEAD_REFINEMENT.md` predeclares it at commit `e601182`, and every
+staged receipt is later. Stage 2 loads the ordered artifact
+`runs/m2-stream-headrate-control-s3` (`1f20007c...`), freezes everything but the
+shared type head and starts a fresh AdamW over the same 1,024 ordered pairs.
+
+The fresh native admission for supervisor `d9382fa2...` passed on the exact
+staged mode: `runs/staged-head-refine-profile-r3-job.json`, 442,085,376 B peak
+under the 671,088,640 B ceiling, 36.287 s, warm backward over exactly 2
+parameter tensors, source catalogue `7074e6a6...`. The study then ran as one
+interrupted first attempt (`runs/staged-head-refine-interrupted-s1`, outer command
+cap at step 716, retained), a 512-step segment stopped by the OS commit guard at
+430,661,632 B, a 404-step resume stopped the same way at 429,887,488 B (both
+external pressure, not training failure), and `runs/m2-stream-staged-head-r1-s3`,
+which restored the step-384 snapshot and finished 640 updates to step 1,024:
+`passed`, peak 433,860,608 B, 268.64 s, checkpoint `e02a02e7...`.
+
+Result: exact locked boards 32/32, semantic cells 128/128 and geometry
+.21058594 all stay identical to the digit, while exact training roles rise from
+20/64 to 36/64 (observed 12/56 to 28/56, absences 8/8). The predeclared 64/64 role
+gate fails, and the run stops 26 roles short of the 62/64 copied-head reference, so
+head-only refinement recovers about a quarter of that gap and then stalls. That
+retires the "copied head is reachable from pixels" hypothesis without proving the
+joint forward lacks class information. Development is 4/18 exact boards (all four
+empty), 0/36 roles, geometry 3.5305 and loss 11.8129 on 18 images; stage 1 recorded
+development only on 9 images, so the denominators differ and nothing is claimed.
+Independent evidence: `runs/m2-stream-staged-head-r1-s3-errors-r1/result.json`
+(50 forwards, weights unchanged, every saved per-case metric reproduced, 425,635,840 B
+/ 20.032 s) and the curator's
+`docs/evidence/m2-stream-staged-head-r1-s3-errors-r1/scope.json`.
+
+The chain exposed and the fix log now closes two defects. V-034: the ownership
+test for a staged start was written against `ROOT/runs`, but the driver re-executes
+from its verified archive at `runs/<name>/code`, so the stage refused its own
+source; ownership is now the written run's exact sibling and is still re-read from
+source bytes. V-035: the flat exclusion between initial weights and resume blocked
+the only valid resumed form, since a staged run must restate the frozen mode and
+start artifact that its recovery contract stores. Carried limit: a segment cannot
+be resumed after the repository source changes, because the recovery contract
+pins the source catalogue by design.
+
+Next: with accumulation, interleaved ordering, type-head rate and head-only
+refinement all closed as measured negatives, the next candidate is a
+representation/architecture or data-coverage lever predeclared from scratch, and
+every new mode needs its own fresh native admission. The real-image and complete
+state measurement chain remains the top open quality item, and the M2/M3 gates are
+unchanged.
+
 ## Accumulation arms replayed, V-030 closed — 2026-11-08
 
 The two completed accumulation arms now have independent ordinary replays and

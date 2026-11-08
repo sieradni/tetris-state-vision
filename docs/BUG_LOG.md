@@ -9,7 +9,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028 (10) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
@@ -18,6 +18,59 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033 (2) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement |
+
+## V-034 — CLOSED: the staged stage refused its own owned source artifact
+
+- Symptom: the predeclared staged profile aborted before its first step with
+  `ValueError: initial weights must come from a different owned run`, although the
+  source was `runs/m2-stream-headrate-control-s3` and the output was a different
+  run in the same `runs/` directory. The traceback came from the verified archive
+  copy at `runs/<name>/code/scripts/train_m2_stream.py`, not from the repository
+  file it was edited in.
+- Root cause: the ownership test was written against `ROOT/"runs"`, but the
+  trainer re-executes from its byte-verified source archive under
+  `runs/<name>/code`, so `ROOT` inside the executing driver is that archive copy
+  and the project's runs directory can never be named that way. The first form of
+  the comparison also mixed a resolved source path with the still-relative output
+  path.
+- Detection class: provenance.
+- Instrument: `owned_initial_source` must see the written run's exact sibling
+  (`source.parent == output.parent`) and never the written run itself, with both
+  sides resolved;
+  `tests/test_staged_refinement.py::test_initial_weight_source_is_anchored_on_the_written_run`
+  covers the archive layout, a valid sibling, the written run itself and a tree
+  outside the runs directory. The curator still re-reads the origin bytes from the
+  source run directory, so the recorded start stays evidence rather than a
+  printed digest.
+- Green run: `runs/staged-head-refine-profile-r3-job.json` (fresh native
+  admission, `passed`, 442,085,376 B) and
+  `runs/m2-stream-staged-head-r1-s3-job.json` (`passed`, 433,860,608 B), whose
+  origin and weight bytes are verified in
+  `docs/evidence/m2-stream-staged-head-r1-s3-errors-r1/scope.json`.
+
+## V-035 — CLOSED: an interrupted staged segment could not restate its origin
+
+- Symptom: resuming the interrupted staged segment was refused at parse time with
+  "initial weights define a fresh start; resume an existing run instead", even
+  though the run's recovery contract stores `freeze_backbone` and
+  `initial_weights_from` and a resumed segment has to restate both to match it.
+- Root cause: the flat exclusion between `--init-weights-from` and
+  `--resume-from` was written for the non-staged path, where an initial-weights
+  start and a resume really are alternatives. Staged refinement legitimately needs
+  both, because the frozen mode and the start artifact are part of the recovery
+  contract that resume compares.
+- Detection class: provenance.
+- Instrument: the exclusion now applies only when the stage is not frozen, and
+  `tests/test_staged_refinement.py::test_initial_weights_and_resume_are_mutually_exclusive`
+  asserts both the refused plain form and the accepted staged form. The contract
+  comparison itself is unchanged: a resume whose catalogue, freeze flag or origin
+  differs is still refused before any step.
+- Green run: `runs/m2-stream-staged-head-r1-s2-job.json` (admitted, restored the
+  step-384 snapshot and trained to step 404 before the OS commit guard stopped it
+  at 429,887,488 B) and `runs/m2-stream-staged-head-r1-s3-job.json` (same resume
+  path, 640 updates to step 1,024, `passed`). Carried limit: a segment cannot be
+  resumed after the repository source changes, because the recovery contract pins
+  the source catalogue; that is the intended freeze, not a defect.
 
 ## V-032 — CLOSED: published arm numbers were not re-derivable from their evidence
 

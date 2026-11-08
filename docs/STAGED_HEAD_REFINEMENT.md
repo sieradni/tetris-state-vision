@@ -1,8 +1,8 @@
 # Staged type-head refinement with a frozen backbone
 
-Status: **predeclared before any run** (see the commit that adds this file; the
-run receipts and their evidence folder are added afterwards, and their base
-commit is strictly later than this document's commit).
+Status: **predeclared before any run, then run to a measured negative** (the
+commit adding this document is `e601182`; every staged receipt and its evidence
+folder is strictly later, recorded under "Result" below).
 
 ## Question
 
@@ -77,6 +77,69 @@ such; the verdict rests on the role labels.
 Expected peak memory is the measured pilot envelope (below 600 MiB), capped at
 640 MiB by the kernel Job with the OS pressure guard armed; one heavy job at a
 time.
+
+## Result — measured negative on the role gate (2026-11-08)
+
+Predeclaration commit `e601182`; the staged admission and every training receipt
+are later commits. Two defects had to be repaired before the first step, and both
+are closed in `BUG_LOG.md` (V-034, V-035).
+
+Admission. Fresh native warm/reload admission on the exact staged mode passed for
+supervisor `d9382fa2...`: `runs/staged-head-refine-profile-r3-job.json`, status
+`passed`, peak 442,085,376 B under the 671,088,640 B ceiling, 36.287 s, work 2,
+source catalogue `7074e6a6...`, warm backward over exactly 2 parameter tensors (the
+shared type head).
+
+Segment history, retained in full rather than rewritten as one clean run:
+
+1. A first attempt was killed by the outer 295 s command cap at step 716 with the
+   last committed boundary at 640. It is kept as
+   `runs/staged-head-refine-interrupted-s1` with its own receipt and logs.
+2. A fresh 1,024-step segment then ran and the supervisor's OS commit guard
+   stopped it at step 512 (boundary 384) after processes outside this job drove
+   system commit to 31.37 GB; the job's own peak was 430,661,632 B
+   (`runs/m2-stream-staged-head-r1-job.json`, status `memory_pressure`).
+3. The first resume, `runs/m2-stream-staged-head-r1-s2`, was stopped the same way
+   at step 404 (429,887,488 B, 27.843 s).
+4. `runs/m2-stream-staged-head-r1-s3` restored the step-384 snapshot and ran the
+   remaining 640 updates to step 1,024: `passed`, peak 433,860,608 B, 268.64 s,
+   trainer 267.22 s, status `complete`, checkpoint `e02a02e7...`, initial state
+   `1f20007c...`, `freeze_backbone: true`, catalogue `7074e6a6...`.
+
+Training fit on the same 32 images and 16 ancestries:
+
+| Quantity | Stage 1 (`m2-stream-headrate-control-s3`) | Stage 2 (`m2-stream-staged-head-r1-s3`) | Gate |
+|---|---|---|---|
+| Exact locked boards | 32/32 | 32/32 | pass |
+| Supported semantic cells | 128/128 | 128/128 | pass |
+| Mean geometry error (cells) | .21058594 | .21058594 | pass (< .25) |
+| Exact supported roles | 20/64 | 36/64 | **fail (64/64)** |
+| Exact observed roles | 12/56 | 28/56 | fail (56/56) |
+| Exact absences | 8/8 | 8/8 | pass |
+| Copied-head reference | 62/64 | 62/64 | not a gate |
+
+Non-type outputs are identical to the digit, which is what the frozen backbone
+predicts. Roles move by +16 (observed +16) and the criterion still fails, so
+prediction 1 is only partially supported and prediction 2 is rejected: the
+residual is neither pure optimizer interference nor a representation that cannot
+present type information. Head-only refinement recovers about a quarter of the
+gap to the copied-head fit and then stalls 26 roles short of it. This lever is
+therefore closed as a measured negative; re-tuning its rate, optimizer or budget
+needs a new predeclared hypothesis, not an extension of this one.
+
+Development (6 groups, 18 images): 4/18 exact boards, all four empty, 0/36 roles,
+cell accuracy .9019, geometry 3.5305 cells, loss 11.8129. Stage 1 recorded its
+development row on a different denominator (9 images, 3 groups: 2/9 boards, 0/18
+roles), so the two are not directly comparable; stage 2 cannot create
+generalization and none is claimed.
+
+Independent evidence. `runs/m2-stream-staged-head-r1-s3-errors-r1/result.json`
+replays 50 forwards (32 training, 18 development) with unchanged weights
+`e02a02e7...`, reproduces every saved per-case metric and passes at 425,635,840 B /
+20.032 s; the independent curator then wrote
+`docs/evidence/m2-stream-staged-head-r1-s3-errors-r1/scope.json`, re-reading the
+stage-1 origin bytes and the source catalogue rather than trusting the printed
+origin.
 
 ## Interpretation limits fixed now
 
