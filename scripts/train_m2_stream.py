@@ -355,7 +355,7 @@ def main(argv=None, *, _archive=None, _started=None):
     initial_origin = None
     if args.init_weights_from is not None:
         source = args.init_weights_from.resolve()
-        if not source.is_relative_to(ROOT/"runs") or source == args.output:
+        if not source.is_relative_to(ROOT/"runs") or source == args.output.resolve():
             raise ValueError("initial weights must come from a different owned run")
         source_summary = json.loads((source/"summary.json").read_text())
         source_model, source_manifest = load_checkpoint(source/"checkpoint")

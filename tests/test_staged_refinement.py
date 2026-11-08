@@ -22,9 +22,10 @@ class StagedRefinementContractTests(unittest.TestCase):
                       "--layer-evidence"]):
             with self.assertRaises(SystemExit):
                 arguments(profile(argv))
-        parsed = arguments(profile(["--freeze-backbone", "--init-weights-from", "runs/source"]))
+        parsed = arguments(profile(["--freeze-backbone", "--init-weights-from", "runs/source",
+                                    "--curriculum", "all-class-fit-v1"]))
         self.assertTrue(parsed.freeze_backbone)
-        self.assertEqual(str(parsed.init_weights_from), "runs/source")
+        self.assertEqual(parsed.init_weights_from, Path("runs/source"))
         self.assertEqual(parsed.curriculum, "all-class-fit-v1")
 
     def test_initial_weights_and_resume_are_mutually_exclusive(self):
