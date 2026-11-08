@@ -38,6 +38,9 @@ class ComponentDecoder(nn.Module):
         self.queue_tokens = nn.Linear(dimension, 8)  # Seven pieces + observed EOS.
         self.shared_type = None  # Declared shared read-out; None keeps the separate heads.
         self.queue_eos = None
+        # Declared prototype read-out: per-class image queries, not one fixed vector map.
+        self.piece_queries = None
+        self.hold_queries = None
         self.queue_presence = nn.Linear(dimension, 1)
         self.queue_slot_status = nn.Linear(dimension, 3)
         self.queue_status = nn.Linear(dimension, 4)
@@ -68,6 +71,14 @@ class ComponentDecoder(nn.Module):
             # Declared lever: piece identity is the cell-type read-out plus one EOS logit.
             tokens = torch.cat((self.shared_type(values)[..., :7], self.queue_eos(values)), -1)
             hold = self.shared_type(roles[:, 1])[..., :7]
+        elif self.piece_queries is not None:
+            # Declared lever: every class is an image query, so the classifier's class
+            # vectors depend on the observed frame rather than being one fixed map.
+            scale = self.dimension**.5
+            prototypes = read(self.piece_queries.expand(memory.shape[0], -1, -1)+board)
+            tokens = values@prototypes.transpose(1, 2)/scale
+            hold_set = read(self.hold_queries.expand(memory.shape[0], -1, -1)+board+roles[:, 1:2])
+            hold = (hold_set.mean(1)[:, None, :]@prototypes[:, :7].transpose(1, 2)).squeeze(1)/scale
         else:
             tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
         return {"queue_tokens": tokens,
@@ -85,6 +96,23 @@ class ComponentDecoder(nn.Module):
         self.queue_eos = nn.Linear(self.dimension, 1)
         # The separate heads would be dead parameters with no resident Adam state, which
         # the resource profile refuses; remove them instead of carrying them unused.
+        self.queue_tokens = None
+        self.hold_piece = None
+        return self
+
+    def use_prototype_readout(self):
+        """Declared lever: class identity is a per-piece query over the observed frame.
+
+        Eight learned class queries attend the component memory and the board, so the
+        read-out for every class is image-conditioned and distinct by construction; a
+        position is classified against those image-derived class vectors. The hold
+        piece reads its own four-query bank over the same memory instead of one shared
+        role vector, so it is not forced through a single collapsed embedding.
+        """
+        check(self.shared_type is None and self.queue_tokens is not None and self.hold_piece is not None,
+              "prototype identity read-out is exclusive with the other read-outs")
+        self.piece_queries = nn.Parameter(torch.randn(1, 8, self.dimension)*.02)
+        self.hold_queries = nn.Parameter(torch.randn(1, 4, self.dimension)*.02)
         self.queue_tokens = None
         self.hold_piece = None
         return self

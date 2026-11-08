@@ -28,8 +28,9 @@ def arguments(argv=None):
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--component-identity-factor", type=int, choices=(1, 4), default=1,
                         help="declared queue-token/hold-piece loss scale;1 is the published objective")
-    parser.add_argument("--component-identity-readout", choices=("separate", "shared"), default="separate",
-                        help="shared reads piece identity through the cell-type head;separate is published")
+    parser.add_argument("--component-identity-readout", choices=("separate", "shared", "prototype"), default="separate",
+                        help="shared reads identity through the cell-type head;prototype reads per-piece image "
+                             "queries;separate is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -62,7 +63,7 @@ def arguments(argv=None):
     if args.component_identity_factor != 1 and not args.component_capacity:
         parser.error("component identity factor requires the joint heads")
     if args.component_identity_readout != "separate" and not args.component_capacity:
-        parser.error("shared identity readout requires the joint heads")
+        parser.error("a declared identity readout other than separate requires the joint heads")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):

@@ -120,6 +120,49 @@ class ComponentIdentityFactorTests(unittest.TestCase):
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             arguments([*base, "--component-identity-readout", "shared"])
 
+    def test_prototype_readout_conditions_every_class_on_the_image(self):
+        from tetris_vision.components import ComponentDecoder
+        decoder = ComponentDecoder(32, 4).use_prototype_readout()
+        self.assertEqual(tuple(decoder.piece_queries.shape), (1, 8, 32))
+        self.assertEqual(tuple(decoder.hold_queries.shape), (1, 4, 32))
+        self.assertIsNone(decoder.queue_tokens)
+        self.assertIsNone(decoder.hold_piece)
+        valid = torch.ones(1, 5, dtype=torch.bool)
+        board = torch.zeros(1, 1, 32)
+        torch.manual_seed(3)
+        with torch.no_grad():
+            first = decoder(torch.randn(1, 5, 32), valid, board, capacity=4)
+            second = decoder(torch.randn(1, 5, 32), valid, board, capacity=4)
+        self.assertEqual(tuple(first["queue_tokens"].shape), (1, 5, 8))
+        self.assertEqual(tuple(first["hold_piece"].shape), (1, 7))
+        # The class vectors are read from the frame, so the same queries see different classes.
+        self.assertFalse(torch.allclose(first["queue_tokens"], second["queue_tokens"]))
+        self.assertFalse(torch.allclose(first["hold_piece"], second["hold_piece"]))
+
+    def test_prototype_readout_is_exclusive_and_validated(self):
+        from dataclasses import replace
+        from tetris_vision.components import ComponentDecoder
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        with self.assertRaisesRegex(ValueError, "exclusive"):
+            ComponentDecoder(32, 4).use_prototype_readout().use_prototype_readout()
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_identity_readout="prototype")
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4,
+                                       component_identity_readout="prototype")).eval()
+        keys = set(model.state_dict())
+        self.assertIn("components.piece_queries", keys)
+        self.assertIn("components.hold_queries", keys)
+        self.assertFalse(any("queue_tokens" in key or "hold_piece" in key or "shared_type" in key
+                             for key in keys))
+
+    def test_the_driver_declares_the_prototype_readout(self):
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments([*base, "--component-capacity", "64",
+                                    "--component-identity-readout", "prototype"]).component_identity_readout,
+                         "prototype")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-identity-readout", "prototype"])
+
     def test_the_declared_lever_family_is_owned_by_the_replay_guard(self):
         from record_stream_run import require_owned_run
         for name in ("m3-identity-factor-r1", "m3-identity-factor-r1-errors-r2", "m3-stream-joint-fit-r1"):
