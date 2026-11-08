@@ -12,6 +12,62 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 
+GIB = 1024**3
+
+
+def memory_snapshot(**overrides):
+    snapshot = {"commit_bytes": 30*GIB, "commit_limit_bytes": 48*GIB,
+                "physical_bytes": 32*GIB, "available_physical_bytes": 8*GIB}
+    snapshot.update(overrides)
+    return snapshot
+
+
+class PressureDecisionTests(unittest.TestCase):
+    """Standing instrument for the resource-profile detection class.
+
+    V-013, V-039 and V-040 all landed in that class, so the admission decision is
+    pinned here as a matrix over OS counters rather than by whatever the host
+    happens to be doing. The suite job of V-040 peaked at 343 MiB; nothing in that
+    evidence is about the size of the job, only about the line it was judged against.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import run_bounded
+        cls.pressure_status = staticmethod(run_bounded.pressure_status)
+
+    def test_stop_line_tracks_the_commit_limit_not_physical_ram(self):
+        # V-040: min(physical-reserve, limit*9//10) resolved to physical-reserve,
+        # which a page-file machine exceeds by its normal steady state.
+        status = self.pressure_status(memory_snapshot())
+        self.assertEqual(status["stop_commit_bytes"], 48*GIB*9//10)
+
+    def test_commit_above_physical_ram_but_below_the_limit_admits_a_small_job(self):
+        # The exact host state that refused five suite runs: commit well above
+        # RAM-minus-headroom, gigabytes of physical memory still free.
+        status = self.pressure_status(memory_snapshot(commit_bytes=38*GIB), 640*1024**2)
+        self.assertIsNone(status["reason"])
+        self.assertEqual(status["reserved_job_bytes"], 640*1024**2)
+
+    def test_exhausted_commit_budget_still_refuses(self):
+        status = self.pressure_status(memory_snapshot(commit_bytes=48*GIB*9//10))
+        self.assertEqual(status["reason"], "os_commit_pressure")
+
+    def test_job_reservation_crossing_the_line_still_refuses(self):
+        status = self.pressure_status(memory_snapshot(commit_bytes=48*GIB*9//10-256*1024**2),
+                                      640*1024**2)
+        self.assertEqual(status["reason"], "os_commit_reservation")
+
+    def test_physical_residency_floor_still_refuses(self):
+        # Protective intent kept: low free physical memory refuses even when the
+        # commit budget looks comfortable.
+        status = self.pressure_status(memory_snapshot(commit_bytes=8*GIB,
+                                                      available_physical_bytes=GIB))
+        self.assertEqual(status["reason"], "physical_pressure")
+        self.assertEqual(status["minimum_available_physical_bytes"], min(2*GIB, 32*GIB//8))
+
+
 @unittest.skipUnless(os.name == "nt", "Windows Job Object probes")
 class ResourceGuardTests(unittest.TestCase):
     def run_child(self, root, source, *, memory=64, wall=5, environment=None):

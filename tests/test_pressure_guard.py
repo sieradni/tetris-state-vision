@@ -51,7 +51,9 @@ class PressureGuardTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             marker = root/"must-not-exist"
-            high = {**healthy(), "commit_bytes": 31*GiB}
+            # V-040: exhaustion is the commit limit's headroom, not physical RAM,
+            # so the synthetic refusal must exhaust the commit budget.
+            high = {**healthy(), "commit_bytes": 44*GiB}
             child, receipt = self.wrapper(root, f"from pathlib import Path; Path({str(marker)!r}).write_text('spawned')",
                                           f"def snapshot():\n    return {high!r}\n")
             self.assertEqual(child.returncode, 125, child.stderr)
@@ -72,7 +74,7 @@ class PressureGuardTests(unittest.TestCase):
                       f"Path({str(tree)!r}).write_text(json.dumps([os.getpid(),p.pid,int(grand_file.read_text())]))\ntime.sleep(30)\n")
             counter = ("from pathlib import Path\ndef snapshot():\n"+f"    if Path({str(tree)!r}).exists():\n"+
                        ("        raise OSError('synthetic counter failure')\n" if failure else
-                        f"        return {{**{healthy()!r}, 'commit_bytes': {31*GiB}}}\n")+
+                        f"        return {{**{healthy()!r}, 'commit_bytes': {44*GiB}}}\n")+
                        f"    return {healthy()!r}\n")
             child, receipt = self.wrapper(root, source, counter)
             self.assertEqual(child.returncode, 1 if failure else 125, child.stderr)
@@ -103,8 +105,13 @@ class PressureGuardTests(unittest.TestCase):
 
     def test_pressure_policy_boundaries_and_invalid_counters(self):
         self.assertIsNone(runner.pressure_status(healthy(), 2*GiB)["reason"])
-        self.assertEqual(runner.pressure_status({**healthy(), "commit_bytes": 30*GiB})["reason"], "os_commit_pressure")
-        self.assertEqual(runner.pressure_status({**healthy(), "commit_bytes": 29*GiB}, 2*GiB)["reason"], "os_commit_reservation")
+        # V-040: the line is the commit limit's 10% headroom (43.2 GiB here), not
+        # physical-minus-reserve (30 GiB), which a page-file host exceeds by its
+        # normal steady state.
+        self.assertEqual(runner.pressure_status(healthy(), 2*GiB)["stop_commit_bytes"], 48*GiB*9//10)
+        self.assertIsNone(runner.pressure_status({**healthy(), "commit_bytes": 30*GiB})["reason"])
+        self.assertEqual(runner.pressure_status({**healthy(), "commit_bytes": 44*GiB})["reason"], "os_commit_pressure")
+        self.assertEqual(runner.pressure_status({**healthy(), "commit_bytes": 43*GiB}, 2*GiB)["reason"], "os_commit_reservation")
         self.assertEqual(runner.pressure_status({**healthy(), "available_physical_bytes": GiB})["reason"], "physical_pressure")
         for field, value in (("physical_bytes", 0), ("commit_limit_bytes", 0), ("commit_bytes", -1),
                              ("available_physical_bytes", 33*GiB), ("physical_bytes", True)):

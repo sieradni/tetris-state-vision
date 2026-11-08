@@ -19,9 +19,13 @@ development and development hold0/12->3/12, but the predeclared structure-held
 condition fails (training presence63/63->54/63, development EOS15/15->13/15) and
 training roles fall12/18->0/18, so the fit gate stays FALSE(0/9 and0/18 boards,0/9 and0/18
 components,3.32 and2.55 cells). Independent27-forward replay(weights`55a35243...`
-unchanged) and curator: `docs/evidence/m3-stream-identity-shared-r1-errors-r1/`. The
-next lever is the input representation(pixels per icon) or the component targets; the
-coefficient and read-out questions are closed.
+unchanged) and curator: `docs/evidence/m3-stream-identity-shared-r1-errors-r1/`. Both identity-side levers(coefficient and read-out)are now measured and closed: the
+coefficient moved localization at a measured structural cost, and the read-out tying is
+a negative. The fit gate stays FALSE, and the open items narrow to the supervision
+signal, the input representation(pixels per icon)and the owner decision on admitting
+real screenshots. The whole contract suite is green on this tree(407 tests,
+`docs/evidence/m3-identity-readout-fullsuite-r11/`)after the supervisor's commit stop line
+was corrected from physical RAM to the commit limit(V-040).
 
 Latest: a declared4x identity-loss scale is a measured positive on the M3 identity
 localization ([M3_COMPONENT_IDENTITY.md](M3_COMPONENT_IDENTITY.md), predeclared at

@@ -25,18 +25,23 @@ and 2.55 development (worse than 2.03). Independent 27-forward replay (35.867 s,
 554,905,600 B, weights `55a35243...` unchanged, every saved per-case field reproduced)
 curates in `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json` (`passed`).
 
-Verification gap to close first next session: the full contract suite has not run
-since the shared read-out code landed. Its last green full run is
-`runs/m3-identity-factor-fullsuite-r1-job.json` (398 tests, exit 0, 62.325 s), which
-predates `e83d70e`/`b80d82d`; the new mode is covered only by the scoped
-identity/component/joint-stream tests (32 tests, `runs/identity-readout-tests-r1-job.json`
-and `-r2-job.json`, both passed). Re-running the suite after this commit was blocked by
-the bounded runner's OS-memory guard: `runs/m3-identity-readout-fullsuite-r1-job.json`
-stopped mid-run at 12.5 s and `-r2` through `-r5` were refused at admission, all with
-`memory_pressure` while the host carried 36–46 GB of commit charge against the 29.2 GB
-stop line (the suite job itself peaked at 343 MB). Re-run
-`scripts/run_bounded.py --memory-mib 640 --wall-seconds 300 --work-items 800` on
-`-m unittest discover -s tests -q` when the host is quiet.
+The verification gap is closed. The complete contract suite is green on this tree in
+`docs/evidence/m3-identity-readout-fullsuite-r11/` (407 tests collected, `Ran 407 tests
+in 72.290s`, `OK`, exit 0, receipt peak 545,845,248 B, admitted at 38,347,567,104 B
+commit against a 45,626,134,118 B stop line). Closing it needed no test change and no
+weakened receipt: the five earlier refusals (`-r1` mid-run, `-r2`–`-r5` at admission)
+were a supervisor defect, V-040, because the commit stop line was derived from physical
+RAM (`physical − 2 GiB` = 31.4 GB) while the exhaustible budget is the commit limit
+(50.7 GB with this page file). The line is now the commit limit's 10% headroom and the
+2 GiB available-physical floor still refuses genuine physical pressure (`-r4` was such a
+refusal and remains correct). All refusal receipts are preserved; nothing was re-scored.
+
+So both identity-side levers reachable from current data are measured and closed: the
+loss coefficient (positive on localization, structural cost) and the read-out
+tying (negative — identity moves, structure does not hold and the role head collapses).
+The fit gate stays FALSE. Open items narrow to the supervision signal (54 queue tokens
+and 9 hold cases against ~1,800 supervised cells per pass), the input representation
+(pixels per icon), and the owner decision on admitting real screenshots.
 
 So read-out sharing is not the identity lever either: tying supervision into the cell
 classifier moves the sparse identity targets but buys nothing readable and costs the

@@ -14,10 +14,38 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013, V-039 (2) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses |
+| resource-profile | V-013, V-039, V-040 (3) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033, V-036, V-038 (4) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity |
+
+## V-040 — CLOSED: the commit stop line was derived from physical RAM
+
+- Symptom: five bounded full-contract-suite runs were refused `memory_pressure` on a
+  host with 6–8 GiB of free physical memory, while the suite job itself peaked at
+  343 MiB (and later at 16 MiB). It looked as if the suite could not be run at all.
+- Root cause: `pressure_status` used
+  `stop_commit = min(physical - min(2 GiB, physical//8), commit_limit*9//10)`. With a
+  page file — commit limit 50,695,704,576 B against 33,515,835,392 B RAM — the first
+  term wins at 31,368,351,744 B, and total host commit charge sits above that in normal
+  steady state (30–46 GB observed). Unrelated processes' commit was therefore charged
+  against this job's admission, even though the job's own ceiling and physical
+  residency were both satisfied (`system_at_admission.commit_bytes` 38.6 GB with
+  `available_physical_bytes` 8.9 GB).
+- Detection class: resource-profile. The guard's own receipts carried the
+  contradiction; the deciding evidence is the pair of counters in each refusal, not
+  the job's size.
+- Instrument: the commit line is now the exhaustible budget's headroom,
+  `commit_limit*9//10`, while the unchanged 2 GiB available-physical floor keeps the
+  residency protection that refused genuinely pressured runs (full-suite `-r4` was
+  `physical_pressure` with 1.1 GB free and is still a correct refusal). This is the
+  class's third entry, so it now carries a standing instrument:
+  `tests/test_resources.PressureDecisionTests` pins the admissible/refused matrix over
+  OS counters, and `tests/test_pressure_guard.py` moves its synthetic refusals to real
+  commit exhaustion (44 GiB against a 48 GiB limit) instead of commit above RAM.
+- Green run: `docs/evidence/m3-identity-readout-fullsuite-r11/summary.json` — 407
+  tests, exit 0, 72.290 s, peak 545,845,248 B, admitted at 38,347,567,104 B commit
+  against a 45,626,134,118 B stop line.
 
 ## V-039 — CLOSED: the shared read-out carried dead identity heads
 

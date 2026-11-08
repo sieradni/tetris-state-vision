@@ -1,0 +1,39 @@
+{
+  "command": [
+    "C:/Users/micha/Code/tetris-state-vision/.venv/Scripts/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-q"
+  ],
+  "status": "passed",
+  "exit_code": 0,
+  "tests_run": 407,
+  "duration_seconds": 72.29,
+  "peak_job_commit_bytes": 545845248,
+  "wall_seconds": 300.0,
+  "work_items": 800,
+  "memory_bytes": 671088640,
+  "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+  "system_at_admission": {
+    "commit_bytes": 38347567104,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 8957698048,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "system_pressure": {
+    "reason": null,
+    "stop_commit_bytes": 45626134118,
+    "minimum_available_physical_bytes": 2147483648,
+    "reserved_job_bytes": 0
+  },
+  "result_line": "Ran 407 tests in 72.290s",
+  "log_tail": [
+    "{\"supervisor_pid\": 25068, \"command\": [\"C:\\\\Users\\\\micha\\\\Code\\\\tetris-state-vision\\\\.venv\\\\Scripts\\\\python.exe\", \"-c\", \"import json,sys;sys.path.insert(0,'scripts');from run_bounded import system_memory_snapshot;s=system_memory_snapshot();assert s['physical_bytes']>4*1024**3;assert s['commit_bytes']>96*1024**2;print(json.dumps(s))\"], \"memory_bytes\": 100663296, \"wall_seconds\": 5.0, \"work_items\": 1, \"cpu_library_threads\": {\"OMP_NUM_THREADS\": \"1\", \"MKL_NUM_THREADS\": \"1\", \"OPENBLAS_NUM_THREADS\": \"1\", \"OPENBLAS_DEFAULT_NUM_THREADS\": \"1\", \"GOTO_NUM_THREADS\": \"1\"}, \"child_executable\": \"C:\\\\Users\\\\micha\\\\Code\\\\tetris-state-vision\\\\.venv\\\\Scripts\\\\python.exe\", \"job_name\": \"Local\\\\TetrisStateVision-d6d10359a2574947917590f72e3114ff\", \"guard\": \"readback-verified Windows aggregate Job commit + kill-on-close\", \"supervisor_script_sha256\": \"f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642\", \"system_pressure_guard\": \"GetPerformanceInfo/0.2s\", \"system_at_admission\": {\"commit_bytes\": 39924133888, \"commit_limit_bytes\": 50695704576, \"physical_bytes\": 33515835392, \"available_physical_bytes\": 7962529792, \"counter_source\": \"GetPerformanceInfo\"}, \"system_pressure\": {\"reason\": null, \"stop_commit_bytes\": 45626134118, \"minimum_available_physical_bytes\": 2147483648, \"reserved_job_bytes\": 0}, \"status\": \"passed\", \"exit_code\": 0, \"elapsed_seconds\": 0.332, \"child_pid\": 14116, \"last_system_memory\": {\"commit_bytes\": 39922147328, \"commit_limit_bytes\": 50695704576, \"physical_bytes\": 33515835392, \"available_physical_bytes\": 7970275328, \"counter_source\": \"GetPerformanceInfo\"}, \"peak_job_commit_bytes\": 30801920}",
+    "{\"probe\": \"runtime_pressure\", \"receipt\": {\"supervisor_pid\": 3784, \"command\": [\"C:\\\\Users\\\\micha\\\\Code\\\\tetris-state-vision\\\\.venv\\\\Scripts\\\\python.exe\", \"-c\", \"import json,os,subprocess,sys,time\\nfrom pathlib import Path\\np=subprocess.Popen([sys.executable,'-c',\\\"import os,time;from pathlib import Path;Path('C:\\\\\\\\\\\\\\\\Users\\\\\\\\\\\\\\\\micha\\\\\\\\\\\\\\\\AppData\\\\\\\\\\\\\\\\Local\\\\\\\\\\\\\\\\Temp\\\\\\\\\\\\\\\\tmp7tt2gnt5\\\\\\\\\\\\\\\\grand.pid').write_text(str(os.getpid()));time.sleep(30)\\\"])\\ngrand_file=Path('C:\\\\\\\\Users\\\\\\\\micha\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tmp7tt2gnt5\\\\\\\\grand.pid')\\nfor _ in range(100):\\n    if grand_file.exists(): break\\n    time.sleep(.01)\\nPath('C:\\\\\\\\Users\\\\\\\\micha\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\tmp7tt2gnt5\\\\\\\\tree.json').write_text(json.dumps([os.getpid(),p.pid,int(grand_file.read_text())]))\\ntime.sleep(30)\\n\"], \"memory_bytes\": 100663296, \"wall_seconds\": 5.0, \"work_items\": 1, \"cpu_library_threads\": {\"OMP_NUM_THREADS\": \"1\", \"MKL_NUM_THREADS\": \"1\", \"OPENBLAS_NUM_THREADS\": \"1\", \"OPENBLAS_DEFAULT_NUM_THREADS\": \"1\", \"GOTO_NUM_THREADS\": \"1\"}, \"child_executable\": \"C:\\\\Users\\\\micha\\\\Code\\\\tetris-state-vision\\\\.venv\\\\Scripts\\\\python.exe\", \"job_name\": \"Local\\\\TetrisStateVision-8dee76dae7f24b5ebc03a4c68c7866a2\", \"guard\": \"readback-verified Windows aggregate Job commit + kill-on-close\", \"supervisor_script_sha256\": \"f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642\", \"system_pressure_guard\": \"GetPerformanceInfo/0.2s\", \"system_at_admission\": {\"commit_bytes\": 21474836480, \"commit_limit_bytes\": 51539607552, \"physical_bytes\": 34359738368, \"available_physical_bytes\": 8589934592, \"counter_source\": \"synthetic-test\"}, \"system_pressure\": {\"reason\": \"os_commit_pressure\", \"stop_commit_bytes\": 46385646796, \"minimum_available_physical_bytes\": 2147483648, \"reserved_job_bytes\": 0}, \"status\": \"memory_pressure\", \"exit_code\": 125, \"elapsed_seconds\": 0.425, \"child_pid\": 16460, \"last_system_memory\": {\"commit_bytes\": 47244640256, \"commit_limit_bytes\": 51539607552, \"physical_bytes\": 34359738368, \"available_physical_bytes\": 8589934592, \"counter_source\": \"synthetic-test\"}, \"peak_job_commit_bytes\": 38256640}, \"verified_dead\": [16460, 4412, 13440, 17704]}",
+    "{\"supervisor_pid\": 29692, \"command\": [\"C:/Users/micha/Code/tetris-state-vision/.venv/Scripts/python.exe\", \"-m\", \"unittest\", \"discover\", \"-s\", \"tests\", \"-q\"], \"memory_bytes\": 671088640, \"wall_seconds\": 300.0, \"work_items\": 800, \"cpu_library_threads\": {\"OMP_NUM_THREADS\": \"1\", \"MKL_NUM_THREADS\": \"1\", \"OPENBLAS_NUM_THREADS\": \"1\", \"OPENBLAS_DEFAULT_NUM_THREADS\": \"1\", \"GOTO_NUM_THREADS\": \"1\"}, \"child_executable\": \"C:\\\\Users\\\\micha\\\\Code\\\\tetris-state-vision\\\\.venv\\\\Scripts\\\\python.exe\", \"job_name\": \"Local\\\\TetrisStateVision-c16de8ff3f0341b59e4f3f8644872345\", \"guard\": \"readback-verified Windows aggregate Job commit + kill-on-close\", \"supervisor_script_sha256\": \"f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642\", \"system_pressure_guard\": \"GetPerformanceInfo/0.2s\", \"system_at_admission\": {\"commit_bytes\": 38347567104, \"commit_limit_bytes\": 50695704576, \"physical_bytes\": 33515835392, \"available_physical_bytes\": 8957698048, \"counter_source\": \"GetPerformanceInfo\"}, \"system_pressure\": {\"reason\": null, \"stop_commit_bytes\": 45626134118, \"minimum_available_physical_bytes\": 2147483648, \"reserved_job_bytes\": 0}, \"status\": \"passed\", \"exit_code\": 0, \"elapsed_seconds\": 76.504, \"child_pid\": 23788, \"last_system_memory\": {\"commit_bytes\": 39811104768, \"commit_limit_bytes\": 50695704576, \"physical_bytes\": 33515835392, \"available_physical_bytes\": 8067637248, \"counter_source\": \"GetPerformanceInfo\"}, \"peak_job_commit_bytes\": 545845248}"
+  ]
+}

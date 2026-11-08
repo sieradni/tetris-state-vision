@@ -206,3 +206,22 @@ Discipline: the frozen artifacts (`m3-stream-joint-fit-r1`, `m3-identity-factor-
 M2 run) are byte-identical, the default `separate` mode is pinned by tests to reproduce the
 published objective, and no receipt above was weakened or re-scored.
 
+## Verification — the whole suite is green on this tree (2026-11-08)
+
+`docs/evidence/m3-identity-readout-fullsuite-r11/` holds the preserved job receipt,
+log and summary of a complete bounded contract run on this tree: 407 tests collected,
+`Ran 407 tests in 72.290s`, `OK`, exit 0, peak 545,845,248 B, admitted at
+38,347,567,104 B commit against a 45,626,134,118 B stop line. That count includes the
+identity-read-out contract tests and the default-`separate` objective pin, so the
+published bit-for-bit objective is covered by the same green run.
+
+Getting there fixed the supervisor, not the tests (V-040): the admission guard derived
+its commit stop line from physical RAM (`physical − 2 GiB` = 31.4 GB) while the
+exhaustible budget is the commit limit (50.7 GB here), so a page-file host's ordinary
+steady state refused five runs of a job that peaked at 343 MiB. The line is now the commit
+limit's 10% headroom, the unchanged 2 GiB available-physical floor still refuses genuine
+physical pressure, and the decision matrix is pinned by
+`tests/test_resources.PressureDecisionTests` plus the synthetic-exhaustion cases in
+`tests/test_pressure_guard.py`. Every refusal receipt (`-r1`…`-r5`) and the intermediate
+failed suite run `-r10` are preserved; nothing was re-scored.
+

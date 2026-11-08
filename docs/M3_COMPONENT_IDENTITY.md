@@ -193,3 +193,18 @@ working tree with tests rather than reported as blockers:
   replayed at all (`owned finite run name required`). The family is now an exact
   alternative in the same anchored pattern, traversal is still refused, and
   `tests/test_component_identity.py` covers it.
+
+## Identity levers closed (2026-11-08)
+
+The loss coefficient (this file) and the read-out parameterization
+(`M3_IDENTITY_READOUT.md`) are both measured now. The coefficient is a positive on
+localization with a structural cost; the read-out tying is a negative — identity moves
+(0/54 -> 9/54 training, 0/90 -> 6/90 development, hold 0/12 -> 3/12) but the declared
+structure-held condition fails and training roles fall 12/18 -> 0/18. No identity-side
+lever reachable from this data remains untested at capacity 64.
+
+The fit gate stays FALSE. The open items narrow to the supervision signal (54 queue
+tokens and 9 hold cases per pass against ~1,800 supervised cells), the input
+representation (pixels per icon), and the owner's decision on admitting the real
+screenshots. The whole contract suite is green on this tree: 407 tests, exit 0,
+`docs/evidence/m3-identity-readout-fullsuite-r11/`.

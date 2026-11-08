@@ -93,7 +93,15 @@ def pressure_status(snapshot, reserved_bytes=0):
     if not physical or not snapshot["commit_limit_bytes"] or snapshot["available_physical_bytes"] > physical or type(reserved_bytes) is not int or reserved_bytes < 0:
         raise ValueError("invalid OS memory counter bounds/reservation")
     reserve = min(2*1024**3, physical//8)
-    stop_commit = min(physical-reserve, snapshot["commit_limit_bytes"]*9//10)
+    # Commit charge is bounded by the commit limit (RAM plus page file), not by
+    # physical RAM. A machine with a page file routinely carries more commit than
+    # physical memory while free physical memory stays in the gigabytes, so a
+    # physical-derived commit line refuses small jobs for no measured reason:
+    # V-040 records five refusals of a 343 MiB test suite at 36-46 GiB ambient
+    # commit with 6-8 GiB physical still available. Residency is guarded by the
+    # available-physical floor below; the exhaustible commit budget is guarded by
+    # this limit-derived line.
+    stop_commit = snapshot["commit_limit_bytes"]*9//10
     reason = None
     if snapshot["available_physical_bytes"] < reserve:
         reason = "physical_pressure"
