@@ -45,7 +45,7 @@ def probe_specs(split, groups, curriculum=STREAM):
                  for view in range(2 if split == "training" and curriculum in FIT_POLICIES else 3))
 
 
-def sample_for(group, view, split, seed, *, curriculum=STREAM, component_capacity=0, profile_square=False):
+def sample_for(group, view, split, seed, *, curriculum=STREAM, component_capacity=0, profile_square=False, max_side=512):
     validate_curriculum(curriculum, component_capacity)
     if split not in ("training", "development") or type(seed) is not int or not 0 <= seed <= 2**31 - 1 or type(profile_square) is not bool:
         raise ValueError("explicit split, finite seed and boolean profile flag required")
@@ -54,13 +54,13 @@ def sample_for(group, view, split, seed, *, curriculum=STREAM, component_capacit
             raise ValueError("fit resource profile must use its first full-square drawing")
         case = sample_control(group, view)
         return StreamCase(case.frame, {**case.record, "curriculum": curriculum, "profile_square": profile_square})
-    return sample_case(group, view, split, seed, profile_square=profile_square, final_capture=bool(component_capacity))
+    return sample_case(group, view, split, seed, profile_square=profile_square, final_capture=bool(component_capacity), max_side=max_side)
 
 
-def training_case(step, seed, *, curriculum=STREAM, component_capacity=0, profile_square=False):
+def training_case(step, seed, *, curriculum=STREAM, component_capacity=0, profile_square=False, max_side=512):
     group, view = training_spec(step, curriculum, profile_square=profile_square)
     return sample_for(group, view, "training", seed, curriculum=curriculum,
-                      component_capacity=component_capacity, profile_square=profile_square)
+                      component_capacity=component_capacity, profile_square=profile_square, max_side=max_side)
 
 
 def distinct_training_groups(completed, curriculum=STREAM, *, profile_square=False):
@@ -76,7 +76,7 @@ def distinct_training_groups(completed, curriculum=STREAM, *, profile_square=Fal
     return min(16, (completed + 1) // 2) if curriculum == ALL_CLASS else (completed + 2) // 3
 
 
-def replay_case(record, *, split, curriculum=STREAM, component_capacity=0):
+def replay_case(record, *, split, curriculum=STREAM, component_capacity=0, max_side=512):
     """Verify a complete serialized recipe; callers separately bind global order."""
     validate_curriculum(curriculum, component_capacity)
     if type(record) is not dict:
@@ -86,12 +86,12 @@ def replay_case(record, *, split, curriculum=STREAM, component_capacity=0):
             if record.get("curriculum") != curriculum or record.get("split") != "fit":
                 raise ValueError("fit recipe identity differs")
             case = sample_for(record["index"], record["view"], split, 0, curriculum=curriculum,
-                              component_capacity=component_capacity, profile_square=record["profile_square"])
+                              component_capacity=component_capacity, profile_square=record["profile_square"], max_side=max_side)
         else:
             if record.get("split") != split or "curriculum" in record:
                 raise ValueError("stream recipe identity differs")
             case = sample_for(record["group_index"], record["view"], split, record["base_seed"], curriculum=curriculum,
-                              component_capacity=component_capacity, profile_square=record["profile_square"])
+                              component_capacity=component_capacity, profile_square=record["profile_square"], max_side=max_side)
     except (KeyError, TypeError, IndexError) as error:
         raise ValueError("invalid serialized curriculum recipe") from error
     if json.loads(json.dumps(case.record)) != record:

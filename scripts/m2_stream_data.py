@@ -15,13 +15,15 @@ class StreamCase:
     record: dict
 
 
-def sample_case(group_index, view, split, seed, *, profile_square=False, final_capture=False):
+def sample_case(group_index, view, split, seed, *, profile_square=False, final_capture=False, max_side=512):
     if type(group_index) is not int or not 0 <= group_index < 4096 or type(view) is not int or view not in (0, 1, 2):
         raise ValueError("group 0..4095 and view 0/1/2 required")
     if split not in {"training", "development"} or type(seed) is not int or not 0 <= seed <= 2**31-1:
         raise ValueError("explicit curriculum split and finite seed required")
     if type(final_capture) is not bool:
         raise ValueError("explicit final-capture policy required")
+    if type(max_side) is not int or not 64 <= max_side <= 1536:
+        raise ValueError("model capture side must be64..1536")
     scene_seed = seed+group_index+(10_000_000 if split == "development" else 0)
     density = ("empty", "sparse", "dense")[group_index % 3]
     scene = sample_scene(scene_seed, density, varied=True)
@@ -48,7 +50,7 @@ def sample_case(group_index, view, split, seed, *, profile_square=False, final_c
         scene = replace(scene, locked=tuple(tuple(row) for row in locked))
         intervention = {"cell": [c, r], "before": before, "after": not before}
     if final_capture:
-        appearance = model_capture_style(appearance, layout, max_side=512)
+        appearance = model_capture_style(appearance, layout, max_side=max_side)
     frame = render(scene, appearance, layout)
     if frame.state.board is None or frame.state.board.lattice is None or any(cell.occupied is None for row in frame.state.board.rows for cell in row):
         raise ValueError("clean curriculum requires 200 supported source cells")
@@ -62,6 +64,6 @@ def sample_case(group_index, view, split, seed, *, profile_square=False, final_c
               "state_sha256": hashlib.sha256(frame.state.to_json().encode()).hexdigest(),
               "policy": "M2-stream-v1: full visible clean/no-grid/single-cell; existing observe.py; no latent target fields."}
     if final_capture:
-        record.update(final_capture=True, capture_max_side=512,
+        record.update(final_capture=True, capture_max_side=max_side,
                       policy="M3-stream-final-capture-v1: observe the actual bounded model frame; unknown components stay masked; no latent target fields.")
     return StreamCase(frame, record)

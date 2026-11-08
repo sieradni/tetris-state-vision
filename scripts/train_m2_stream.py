@@ -32,6 +32,8 @@ def arguments(argv=None):
                         help="shared reads piece identity through the cell-type head;separate is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
+    parser.add_argument("--capture-max-side", type=int, default=512,
+                        help="model capture side;512 reproduces the published representation")
     parser.add_argument("--accumulation-policy", choices=tuple(ACCUMULATION_POLICIES),
                         help="whole-group accumulation arm from the predeclared matched comparison")
     parser.add_argument("--steps", type=int, required=True)
@@ -55,6 +57,8 @@ def arguments(argv=None):
         parser.error("steps 1..4096 and finite nonnegative seed required")
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
+    if not 64 <= args.capture_max_side <= 1536:
+        parser.error("capture side64..1536 required")
     if args.component_identity_factor != 1 and not args.component_capacity:
         parser.error("component identity factor requires the joint heads")
     if args.component_identity_readout != "separate" and not args.component_capacity:
@@ -121,7 +125,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -155,7 +159,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             not warm.get("all_parameters_initialized") or not warm.get("backward_completed") or warm.get("state_bytes", 0) <= 0 or
             not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
             summary.get("native_cache_limits") != NATIVE_CACHE_LIMITS or
-            any(summary.get(key) != value for key, value in {"max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
+            any(summary.get(key) != value for key, value in {"max_side": max_side, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
             job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != profile_work_items):
         raise ValueError("complete two-step square warm-optimizer resource admission required")
     if (summary["catalogue_sha256"] != catalogue or summary["model_kind"] != model or summary["config"] != config or
@@ -376,6 +380,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
+                           max_side=args.capture_max_side,
                            profile_work_items=2*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
                                                  if args.accumulation_policy else 1))
     model = TetrisStateNet(config)
@@ -415,14 +420,15 @@ def main(argv=None, *, _archive=None, _started=None):
 
     def sample(group, view, split, *, profile_square=False):
         return sample_for(group, view, split, args.seed, profile_square=profile_square,
-                          curriculum=args.curriculum, component_capacity=args.component_capacity)
+                          curriculum=args.curriculum, component_capacity=args.component_capacity,
+                          max_side=args.capture_max_side)
 
     def prepare(case):
         nonlocal maximum_pixels
-        prepared = prepare_image(case.frame.image, max_side=512)
+        prepared = prepare_image(case.frame.image, max_side=args.capture_max_side)
         maximum_pixels = max(maximum_pixels, prepared.pixels.shape[-2]*prepared.pixels.shape[-1])
-        if maximum_pixels > 512**2:
-            raise ValueError("512-square input budget exceeded")
+        if maximum_pixels > args.capture_max_side**2:
+            raise ValueError(f"{args.capture_max_side}-square input budget exceeded")
         target = targets_for(case.frame.state, prepared, component_capacity=args.component_capacity,
                              layer_evidence=args.layer_evidence)
         if int(target["known"].sum()) != 200:
@@ -502,7 +508,7 @@ def main(argv=None, *, _archive=None, _started=None):
     completed = 0
     recovery_contract = {"catalogue_sha256": archive["catalogue_sha256"], "config": config_json,
                          "seed": args.seed, "learning_rate": args.learning_rate, "weight_decay": .01,
-                         "steps": args.steps, "max_side": 512, "development_groups": args.development_groups,
+                         "steps": args.steps, "max_side": args.capture_max_side, "development_groups": args.development_groups,
                          "evaluate_every": args.evaluate_every, "checkpoint_every": args.checkpoint_every,
                          "profile_square": args.profile_square, "threads": 1, "rng": "torch_cpu_only"}
     recovery_contract["native_cache_limits"] = NATIVE_CACHE_LIMITS
@@ -730,7 +736,7 @@ def main(argv=None, *, _archive=None, _started=None):
     summary = {"status": status, "steps": completed, "requested_steps": args.steps,
                "resource_profile_version": 3, "training_recovery_profile_exact": recovery_profile_exact,
                "warm_optimizer_backward": warm_optimizer_backward,
-               "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
+               "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": args.capture_max_side,
                "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
                "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0,
                "fresh_parent_groups": distinct_training_groups(

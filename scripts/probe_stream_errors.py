@@ -110,6 +110,9 @@ def main():
     import tetris_vision.model as model_module
     require_frozen_callables(code, sample_case, targets_for)
     curriculum = summary.get("curriculum", "stream-v1")
+    max_side = summary.get("max_side", 512)
+    if type(max_side) is not int or not 64 <= max_side <= 1536:
+        raise ValueError("recorded model capture side must be64..1536")
     if "curriculum" in summary:
         from m2_curriculum import replay_case, sample_for
         require_frozen_callables(code, replay_case, sample_for)
@@ -146,7 +149,7 @@ def main():
         extension_specs(summary["arguments"]["seed"], recorded_groups, evaluated_groups)
 
     def evaluate(recipe, case, target_kwargs, *, split, saved, expected_row=None):
-        prepared = prepare_image(case.frame.image, max_side=512)
+        prepared = prepare_image(case.frame.image, max_side=max_side)
         target = targets_for(case.frame.state, prepared, **target_kwargs)
         if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
             raise ValueError("saved streaming probe requires200 supported cells and registered grid")
@@ -196,8 +199,8 @@ def main():
                 sample_kwargs, target_kwargs = replay_keywords(recipe, capacity)
                 if manifest["config"].get("layer_evidence", False):
                     target_kwargs["layer_evidence"] = True
-                case = (replay_case(recipe, split=split, curriculum=curriculum, component_capacity=capacity) if "curriculum" in summary else
-                        sample_case(recipe["group_index"], recipe["view"], split, recipe["base_seed"], **sample_kwargs))
+                case = (replay_case(recipe, split=split, curriculum=curriculum, component_capacity=capacity, max_side=max_side) if "curriculum" in summary else
+                        sample_case(recipe["group_index"], recipe["view"], split, recipe["base_seed"], max_side=max_side, **sample_kwargs))
                 if json.loads(json.dumps(case.record)) != recipe:
                     raise ValueError("error probe recipe/pixel/label identity differs")
                 stem = run/(split+"-probe")/recipe["sample_id"]
@@ -211,9 +214,9 @@ def main():
             if split == "development":
                 for spec in extension_specs(recipes[0]["base_seed"], recorded_groups, evaluated_groups):
                     case = (sample_for(spec["group_index"], spec["view"], split, spec["base_seed"],
-                                       curriculum=curriculum, component_capacity=capacity) if "curriculum" in summary else
+                                       curriculum=curriculum, component_capacity=capacity, max_side=max_side) if "curriculum" in summary else
                             sample_case(spec["group_index"], spec["view"], split, spec["base_seed"],
-                                        final_capture=bool(capacity)))
+                                        final_capture=bool(capacity), max_side=max_side))
                     recipe = json.loads(json.dumps(case.record))
                     if recipe["sample_id"] != spec["sample_id"] or recipe["group_id"] != spec["group_id"]:
                         raise ValueError("development extension identity differs")
