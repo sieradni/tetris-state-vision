@@ -32,6 +32,9 @@ def arguments(argv=None):
                         default="separate",
                         help="shared reads identity through the cell-type head;prototype reads per-piece image "
                              "queries;positional adds per-position image queries;separate is published")
+    parser.add_argument("--component-endpoint-term", choices=("joint", "separate"), default="joint",
+                        help="joint keeps the endpoint as one class of the piece softmax;joint is published;"
+                             "separate gives the endpoint its own binary decision")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -65,6 +68,9 @@ def arguments(argv=None):
         parser.error("component identity factor requires the joint heads")
     if args.component_identity_readout != "separate" and not args.component_capacity:
         parser.error("a declared identity readout other than separate requires the joint heads")
+    if args.component_endpoint_term != "joint" and (not args.component_capacity or
+                                                    args.component_identity_readout not in ("prototype", "positional")):
+        parser.error("a separate endpoint term requires the joint heads and a declared identity readout")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
@@ -127,7 +133,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -144,6 +150,10 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("arguments", {}).get("component_identity_factor", 1) != identity_factor or
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
+    if (type(endpoint_term) is not str or endpoint_term not in ("joint", "separate") or
+            summary.get("arguments", {}).get("component_endpoint_term", "joint") != endpoint_term or
+            summary.get("recovery_contract", {}).get("component_endpoint_term", "joint") != endpoint_term):
+        raise ValueError("component endpoint term differs from resource admission")
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -369,7 +379,8 @@ def main(argv=None, *, _archive=None, _started=None):
     torch.manual_seed(args.seed)
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
     config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence,
-                     component_identity_readout=args.component_identity_readout)
+                     component_identity_readout=args.component_identity_readout,
+                     component_endpoint_term=args.component_endpoint_term)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -382,6 +393,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
                            type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
+                           endpoint_term=args.component_endpoint_term,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -447,7 +459,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -521,6 +533,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
     recovery_contract["component_identity_factor"] = args.component_identity_factor
     recovery_contract["component_identity_readout"] = args.component_identity_readout
+    recovery_contract["component_endpoint_term"] = args.component_endpoint_term
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
@@ -576,7 +589,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -659,7 +672,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()

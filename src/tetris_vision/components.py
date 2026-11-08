@@ -44,6 +44,9 @@ class ComponentDecoder(nn.Module):
         # Declared positional read-out: every queue position reads the frame through its
         # own query, so a position's own content can change its class.
         self.position_queries = None
+        # Declared endpoint lever: the endpoint is its own binary decision, not one class
+        # inside the piece softmax.
+        self.factorized_endpoint = False
         self.queue_presence = nn.Linear(dimension, 1)
         self.queue_slot_status = nn.Linear(dimension, 3)
         self.queue_status = nn.Linear(dimension, 4)
@@ -91,11 +94,24 @@ class ComponentDecoder(nn.Module):
             hold = (hold_set.mean(1)[:, None, :]@prototypes[:, :7].transpose(1, 2)).squeeze(1)/scale
         else:
             tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
-        return {"queue_tokens": tokens,
-                "queue_presence": self.queue_presence(values[:, :capacity]).squeeze(-1),
-                "queue_slot_status": self.queue_slot_status(values[:, :capacity]),
-                "queue_status": self.queue_status(roles[:, 0]), "queue_anchors": self.queue_anchors(roles[:, 0]),
-                "hold_status": self.hold_status(roles[:, 1]), "hold_piece": hold}
+        endpoint = None
+        if self.factorized_endpoint:
+            # Declared lever: p(class) is factorized into a binary endpoint decision and a
+            # 7-way piece class, so the always-predictable endpoint label can no longer
+            # stand in for a piece identity. The emitted8 columns are log-probabilities
+            # under that factorization, so argmax stays the maximum a-posteriori class.
+            check(self.piece_queries is not None, "factorized endpoint requires the declared identity read-out")
+            end = tokens[..., 7:]
+            tokens = torch.cat((F.log_softmax(tokens[..., :7], -1)+F.logsigmoid(-end), F.logsigmoid(end)), -1)
+            endpoint = end.squeeze(-1)
+        result = {"queue_tokens": tokens,
+                  "queue_presence": self.queue_presence(values[:, :capacity]).squeeze(-1),
+                  "queue_slot_status": self.queue_slot_status(values[:, :capacity]),
+                  "queue_status": self.queue_status(roles[:, 0]), "queue_anchors": self.queue_anchors(roles[:, 0]),
+                  "hold_status": self.hold_status(roles[:, 1]), "hold_piece": hold}
+        if endpoint is not None:
+            result["queue_endpoint"] = endpoint
+        return result
 
     def share_type_readout(self, classifier):
         """Declared lever: identity reads through the cell-type classifier."""
@@ -122,6 +138,19 @@ class ComponentDecoder(nn.Module):
         """
         self.use_prototype_readout()
         self.position_queries = nn.Parameter(torch.randn(1, 65, self.dimension)*.02)
+        return self
+
+    def use_factorized_endpoint(self):
+        """Declared lever: the observed endpoint becomes its own binary term.
+
+        The endpoint label is always present and always exactly predictable, so while it
+        is one class of the piece softmax the cheapest descent is to emit it at every
+        supervised position and pay only the spread piece term. Factorizing it out of
+        that softmax removes the shortcut the run can take; the decoder keeps emitting a
+        comparable8-way log-probability so the ordinary metrics still apply.
+        """
+        check(self.piece_queries is not None, "factorized endpoint requires the declared identity read-out")
+        self.factorized_endpoint = True
         return self
 
     def use_prototype_readout(self):
@@ -190,14 +219,20 @@ def _validate_contract(output, target):
     check(torch.equal(target["hold_piece_known"], target["hold_status"] == 0), "unobserved hold cannot train piece identity")
 
 
-def component_loss(output, target, identity_factor=1):
+def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
     """Masked semantic/observation losses; all coefficients are pilot hypotheses.
 
     `identity_factor` scales only the queue-token and hold-piece terms for the
-    predeclared component-identity lever;1 is the published objective.
+    predeclared component-identity lever;1 is the published objective. `endpoint_term`
+    selects the objective the declared endpoint lever trained with: `joint` keeps the
+    endpoint as one class of the piece softmax (published), and `separate` factorizes it
+    into a binary decision plus a7-way piece softmax fed by the decoder's
+    `queue_endpoint` logit.
     """
     if type(identity_factor) is not int or identity_factor not in (1, 4):
         raise ValueError("component identity factor must be1 or4")
+    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate"):
+        raise ValueError("component endpoint term must be joint or separate")
     _validate_contract(output, target)
     def masked(value, mask):
         return (value*mask).sum()/mask.sum().clamp_min(1)
@@ -206,7 +241,26 @@ def component_loss(output, target, identity_factor=1):
         safe = torch.where(mask, target[key], torch.zeros_like(target[key]))
         logits = output[key].movedim(-1, 1)
         return masked(F.cross_entropy(logits, safe, reduction="none"), mask)
-    terms = {"queue_tokens": semantic("queue_tokens", target["queue_token_known"]),
+    if endpoint_term == "separate":
+        # One binary endpoint decision over every known position plus a7-way piece
+        # softmax at piece positions, so a constant piece class is charged as a piece
+        # class and cannot be dodged by emitting the endpoint everywhere.
+        end = output.get("queue_endpoint")
+        if (not torch.is_tensor(end) or end.shape != output["queue_tokens"].shape[:2] or
+                not end.is_floating_point() or not bool(torch.isfinite(end).all())):
+            raise ValueError("separate endpoint term needs one finite binary logit per position")
+        known = target["queue_token_known"]
+        pieces = known & (target["queue_tokens"] != 7)
+        safe = torch.where(pieces, target["queue_tokens"], torch.zeros_like(target["queue_tokens"]))
+        tokens_term = masked(F.cross_entropy(output["queue_tokens"][..., :7].movedim(-1, 1), safe, reduction="none"),
+                             pieces)
+        endpoint_value = masked(F.binary_cross_entropy_with_logits(
+            end, (target["queue_tokens"] == 7).to(end.dtype), reduction="none"), known)
+    elif "queue_endpoint" in output:
+        raise ValueError("joint endpoint term cannot consume factorized endpoint logits")
+    else:
+        tokens_term, endpoint_value = semantic("queue_tokens", target["queue_token_known"]), None
+    terms = {"queue_tokens": tokens_term,
              "queue_slot_status": semantic("queue_slot_status", target["queue_slot_status_known"]),
              "queue_presence": masked(F.binary_cross_entropy_with_logits(output["queue_presence"], target["queue_presence"].float(), reduction="none"),
                                       target["queue_presence_known"]),
@@ -216,6 +270,9 @@ def component_loss(output, target, identity_factor=1):
              "hold_piece": semantic("hold_piece", target["hold_piece_known"])}
     weights = {"queue_tokens": 1.*identity_factor, "queue_slot_status": .25, "queue_presence": .25,
                "queue_status": .25, "queue_anchors": .25, "hold_status": .5, "hold_piece": 1.*identity_factor}
+    if endpoint_value is not None:
+        terms["queue_endpoint"] = endpoint_value
+        weights["queue_endpoint"] = 1.*identity_factor
     return sum(weights[key]*value for key, value in terms.items()), terms
 
 

@@ -27,6 +27,7 @@ class ModelConfig:
     max_pixels: int = 1_048_576
     component_capacity: int = 0
     component_identity_readout: str = "separate"
+    component_endpoint_term: str = "joint"
     layer_evidence: bool = False
 
     def __post_init__(self):
@@ -42,6 +43,10 @@ class ModelConfig:
               (self.component_capacity or self.component_identity_readout == "separate"),
               "identity readout must be separate, shared with the cell-type head, per-piece image queries, "
               "or per-position image queries")
+        check(self.component_endpoint_term in ("joint", "separate") and
+              (self.component_endpoint_term == "joint" or
+               (self.component_capacity and self.component_identity_readout in ("prototype", "positional"))),
+              "separate endpoint term requires the joint heads and a declared identity read-out")
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
 
     @classmethod
@@ -222,6 +227,10 @@ class TetrisStateNet(nn.Module):
                 # Declared lever: per-position image queries on top of the validated class
                 # and hold banks, so the position axis can carry information too.
                 self.components.use_positional_queries()
+            if config.component_endpoint_term == "separate":
+                # Declared lever: the endpoint is its own binary decision, outside the
+                # piece softmax, so a constant piece class cannot hide behind it.
+                self.components.use_factorized_endpoint()
         # Last initialization preserves common seeded tensors in paired studies.
         self.layer_evidence = None
         if config.layer_evidence:

@@ -164,6 +164,66 @@ class ComponentIdentityFactorTests(unittest.TestCase):
                                        component_identity_readout="positional")).eval()
         self.assertIn("components.position_queries", model.state_dict())
 
+    def test_separate_endpoint_term_takes_the_endpoint_out_of_the_piece_softmax(self):
+        from dataclasses import replace
+        from tetris_vision.components import ComponentDecoder
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        decoder = ComponentDecoder(32, 4).use_positional_queries().use_factorized_endpoint()
+        self.assertTrue(decoder.factorized_endpoint)
+        valid = torch.ones(1, 5, dtype=torch.bool)
+        torch.manual_seed(13)
+        with torch.no_grad():
+            output = decoder(torch.randn(1, 5, 32), valid, torch.zeros(1, 1, 32), capacity=4)
+        self.assertEqual(tuple(output["queue_endpoint"].shape), (1, 5))
+        # Emitted columns stay log-probabilities of the factorization, so the ordinary
+        # argmax metrics and the position-spread diagnostic keep their meaning.
+        self.assertTrue(torch.allclose(output["queue_tokens"].exp().sum(-1), torch.ones(1, 5), atol=1e-5))
+        self.assertTrue(torch.allclose(output["queue_tokens"][..., 7],
+                                       torch.nn.functional.logsigmoid(output["queue_endpoint"]), atol=1e-6))
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4,
+                                       component_identity_readout="positional",
+                                       component_endpoint_term="separate")).eval()
+        self.assertTrue(model.components.factorized_endpoint)
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_capacity=4, component_endpoint_term="separate")
+
+    def test_the_separate_endpoint_term_charges_a_constant_piece_class(self):
+        from tetris_vision.components import component_loss
+        target = {"capacity": 4,
+                  "queue_tokens": torch.tensor([[2, 3, 7, -1, -1]]),
+                  "queue_token_known": torch.tensor([[True, True, True, False, False]]),
+                  "queue_slot_status": torch.tensor([[0, 0, 0, -1]]),
+                  "queue_slot_status_known": torch.tensor([[True, True, True, False]]),
+                  "queue_presence": torch.tensor([[True, True, False, False]]),
+                  "queue_presence_known": torch.tensor([[True, True, True, True]]),
+                  "queue_status": torch.tensor([0]), "hold_status": torch.tensor([0]),
+                  "hold_piece": torch.tensor([0]), "hold_piece_known": torch.tensor([True]),
+                  "queue_start_observed": torch.tensor([True]), "queue_end_observed": torch.tensor([True])}
+        logits = torch.zeros(1, 5, 8)
+        logits[..., 2] = 8.
+        output = {"queue_endpoint": torch.zeros(1, 5), "queue_tokens": logits,
+                  "queue_presence": torch.zeros(1, 4), "queue_slot_status": torch.zeros(1, 4, 3),
+                  "queue_status": torch.zeros(1, 4), "queue_anchors": torch.zeros(1, 2),
+                  "hold_status": torch.zeros(1, 5), "hold_piece": torch.zeros(1, 7)}
+        loss, terms = component_loss(output, target, identity_factor=4, endpoint_term="separate")
+        self.assertIn("queue_endpoint", terms)
+        self.assertGreater(float(terms["queue_tokens"].detach()), .5)
+        self.assertGreater(float(loss.detach()), 0)
+        with self.assertRaisesRegex(ValueError, "joint endpoint term"):
+            component_loss(output, target, endpoint_term="joint")
+        del output["queue_endpoint"]
+        with self.assertRaisesRegex(ValueError, "separate endpoint term"):
+            component_loss(output, target, endpoint_term="separate")
+
+    def test_the_driver_declares_the_endpoint_term(self):
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments(base).component_endpoint_term, "joint")
+        self.assertEqual(arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                                    "positional", "--component-endpoint-term", "separate"]).component_endpoint_term,
+                         "separate")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-endpoint-term", "separate"])
+
     def test_positional_readout_is_validated_and_declared_by_the_driver(self):
         from dataclasses import replace
         from tetris_vision.model import ModelConfig
