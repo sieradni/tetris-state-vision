@@ -158,6 +158,52 @@ class ComponentErrorAnalysisTests(unittest.TestCase):
         self.assertEqual(target, {})
         self.assertEqual(replay_keywords({"final_capture": True}, 64), ({"final_capture": True}, {"component_capacity": 64}))
 
+    def test_constant_token_predictor_is_visible_even_when_structure_is_exact(self):
+        prediction, target = fixture()
+        prediction["queue_tokens"] = [4, 4, 4, 4, 4]  # One class everywhere: Z.
+        result = analyze_components(prediction, target)
+        identity = result["identity"]
+        self.assertEqual(identity["queue_predicted_classes"], {"Z": 2})
+        self.assertEqual(identity["queue_distinct_predicted_classes"], 1)
+        self.assertTrue(identity["queue_constant_predictor"])
+        self.assertEqual(result["queue"]["piece_tokens"]["correct"], 0)
+        self.assertTrue(result["queue_supported_exact"] is False)
+
+    def test_discriminating_prediction_is_not_a_constant_predictor(self):
+        result = analyze_components(*fixture())
+        identity = result["identity"]
+        self.assertEqual(identity["queue_predicted_classes"], {"I": 1, "T": 1})
+        self.assertEqual(identity["queue_distinct_predicted_classes"], 2)
+        self.assertFalse(identity["queue_constant_predictor"])
+        self.assertEqual(identity["hold_predicted_piece"], "O")
+
+    def test_unknown_positions_never_enter_the_predicted_class_tally(self):
+        prediction, target = fixture()
+        target.update(queue_tokens=[2, -1, 7, -1, -1], queue_token_known=[True, False, True, False, False])
+        prediction["queue_tokens"] = [2, 4, 7, 4, 4]
+        identity = analyze_components(prediction, target)["identity"]
+        self.assertEqual(identity["queue_predicted_classes"], {"T": 1})
+        self.assertEqual(identity["queue_supervised_positions"], 1)
+        self.assertFalse(identity["queue_constant_predictor"])
+
+    def test_summary_surfaces_a_constant_hold_head_as_one_class(self):
+        predictions_targets = []
+        for hold in ("S", "J", "L"):
+            prediction, target = fixture()
+            prediction["hold_piece"] = 2  # Always T.
+            target["hold_piece"] = tuple("IOTSZJL").index(hold)
+            predictions_targets.append((prediction, target))
+        cases = [{"split": "development", "sample_id": str(i), "group_id": "one",
+                  "diagnostics": {"components": analyze_components(*pair)}}
+                 for i, pair in enumerate(predictions_targets)]
+        summary = summarize_components(cases)["development"]
+        self.assertEqual(summary["hold"]["predicted_classes"], {"T": 3})
+        self.assertEqual(summary["hold"]["distinct_predicted_classes"], 1)
+        self.assertTrue(summary["hold"]["constant_predictor"])
+        self.assertEqual(summary["hold"]["correct_pieces"], 0)
+        self.assertEqual(summary["queue"]["predicted_classes"], {"I": 3, "T": 3})
+        self.assertEqual(summary["queue"]["distinct_predicted_classes"], 2)
+
     def test_changed_capture_policy_refuses(self):
         for recipe, capacity in (({}, 64), ({"final_capture": True}, 0), ({"final_capture": 1}, 64)):
             with self.assertRaisesRegex(ValueError, "capture policy"):

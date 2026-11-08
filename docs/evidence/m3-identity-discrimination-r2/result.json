@@ -1,0 +1,2253 @@
+{
+  "status": "passed",
+  "audit_format_version": 1,
+  "baseline": "m3-identity-factor-r1-errors-r3",
+  "exposure_audit": "runs/m3-identity-exposure-r4/result.json",
+  "exposure_result_sha256": "b31741480b30cac18bc12a43ce83f83a014e15d50eaf454187574a50eee921ff",
+  "baseline_result_sha256": "7c96d1d615cc4240634ee377789f7f8366f767e2389aaa801655b6cb4abc7aaa",
+  "runs": {
+    "m3-identity-factor-r1-errors-r3": {
+      "queue_constant_threshold": 4,
+      "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+      "splits": {
+        "training": {
+          "images": 9,
+          "ancestry_groups": 3,
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 3,
+            "consistent_cases_by_class": {
+              "I": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2"
+              ],
+              "J": [
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "L": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "S": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261027-v0",
+                "training-20261027-v1",
+                "training-20261027-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "Z": [
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [],
+            "joint_constant_classes": [
+              "S"
+            ],
+            "constant_predictor_proven": true
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 0,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "training-20261026-v0",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v1",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v2",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v0",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v1",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v2",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v0",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v1",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v2",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        },
+        "development": {
+          "images": 18,
+          "ancestry_groups": 6,
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 9,
+            "consistent_cases_by_class": {
+              "I": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "J": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261031-v0"
+              ],
+              "L": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "O": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2"
+              ],
+              "S": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "T": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261031-v0"
+              ],
+              "Z": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "not_constant": [
+                "development-30261026-v1",
+                "development-30261031-v1",
+                "development-30261031-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [
+              "development-30261026-v1",
+              "development-30261031-v1",
+              "development-30261031-v2"
+            ],
+            "joint_constant_classes": [],
+            "constant_predictor_proven": false
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 3,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261029-v0",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v1",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v2",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261030-v0",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v1",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v2",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261031-v0",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "J"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v1",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v2",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        }
+      }
+    },
+    "m3-identity-factor-representation-r1-errors-r1": {
+      "queue_constant_threshold": 4,
+      "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+      "splits": {
+        "training": {
+          "images": 9,
+          "ancestry_groups": 3,
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 3,
+            "consistent_cases_by_class": {
+              "I": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2"
+              ],
+              "J": [
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "L": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "S": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261027-v0",
+                "training-20261027-v1",
+                "training-20261027-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "Z": [
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [],
+            "joint_constant_classes": [
+              "S"
+            ],
+            "constant_predictor_proven": true
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 0,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "training-20261026-v0",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v1",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v2",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v0",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v1",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v2",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v0",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v1",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v2",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        },
+        "development": {
+          "images": 18,
+          "ancestry_groups": 6,
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 9,
+            "consistent_cases_by_class": {
+              "I": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "J": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261031-v0"
+              ],
+              "L": [
+                "development-30261026-v0",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "O": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2"
+              ],
+              "S": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "T": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261031-v0"
+              ],
+              "Z": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "not_constant": [
+                "development-30261026-v1",
+                "development-30261031-v1",
+                "development-30261031-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [
+              "development-30261026-v1",
+              "development-30261031-v1",
+              "development-30261031-v2"
+            ],
+            "joint_constant_classes": [],
+            "constant_predictor_proven": false
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 3,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "S"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261029-v0",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v1",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v2",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261030-v0",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v1",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v2",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261031-v0",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "J"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v1",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v2",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        }
+      }
+    },
+    "m3-identity-factor-budget-r1-errors-r1": {
+      "queue_constant_threshold": 4,
+      "weights_sha256": "9b79863b3edccb12abbb75e1fea3051019fc0ea6fb583cbe05287f3849cde815",
+      "splits": {
+        "training": {
+          "images": 9,
+          "ancestry_groups": 3,
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 12,
+            "consistent_cases_by_class": {
+              "I": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261027-v0",
+                "training-20261027-v1",
+                "training-20261027-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ],
+              "L": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2"
+              ],
+              "S": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [],
+            "joint_constant_classes": [
+              "I"
+            ],
+            "constant_predictor_proven": true
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "I": 7,
+              "Z": 2
+            },
+            "distinct_predicted_classes": 2,
+            "constant_predictor": false,
+            "targets_matching_predicted_class": 0,
+            "exact_equals_predicted_class_frequency": false
+          },
+          "cases": [
+            {
+              "sample_id": "training-20261026-v0",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v1",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v2",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v0",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v1",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v2",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v0",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v1",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v2",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "I",
+              "hold_correct": false
+            }
+          ]
+        },
+        "development": {
+          "images": 18,
+          "ancestry_groups": 6,
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 12,
+            "consistent_cases_by_class": {
+              "I": [
+                "development-30261026-v0",
+                "development-30261026-v1",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2",
+                "development-30261031-v0",
+                "development-30261031-v1",
+                "development-30261031-v2"
+              ],
+              "J": [
+                "development-30261026-v0",
+                "development-30261026-v1",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2"
+              ],
+              "L": [
+                "development-30261026-v0",
+                "development-30261026-v1",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "O": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2"
+              ],
+              "S": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ],
+              "T": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2"
+              ],
+              "Z": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [],
+            "joint_constant_classes": [],
+            "constant_predictor_proven": false
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "I": 8,
+              "Z": 4
+            },
+            "distinct_predicted_classes": 2,
+            "constant_predictor": false,
+            "targets_matching_predicted_class": 6,
+            "exact_equals_predicted_class_frequency": false
+          },
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "J",
+                "L"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261029-v0",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v1",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v2",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "I",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261030-v0",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v1",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v2",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "S",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261031-v0",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v1",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v2",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [
+                "I"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "Z",
+              "hold_correct": false
+            }
+          ]
+        }
+      }
+    },
+    "m3-stream-identity-shared-r1-errors-r1": {
+      "queue_constant_threshold": 1,
+      "weights_sha256": "55a352433de0966e0a2fc998d362e8bdffbe83462853f0335582acf9f13bb29c",
+      "splits": {
+        "training": {
+          "images": 9,
+          "ancestry_groups": 3,
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 9,
+            "consistent_cases_by_class": {
+              "O": [
+                "training-20261027-v0",
+                "training-20261027-v1",
+                "training-20261027-v2"
+              ],
+              "T": [
+                "training-20261027-v0",
+                "training-20261027-v1",
+                "training-20261027-v2"
+              ],
+              "not_constant": [
+                "training-20261026-v0",
+                "training-20261026-v1",
+                "training-20261026-v2",
+                "training-20261028-v0",
+                "training-20261028-v1",
+                "training-20261028-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [
+              "training-20261026-v0",
+              "training-20261026-v1",
+              "training-20261026-v2",
+              "training-20261028-v0",
+              "training-20261028-v1",
+              "training-20261028-v2"
+            ],
+            "joint_constant_classes": [],
+            "constant_predictor_proven": false
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 0,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "training-20261026-v0",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v1",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261026-v2",
+              "group_id": "ancestry-training-20261026",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 2,
+              "consistent_constant_classes": [],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v0",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "T"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v1",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "T"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261027-v2",
+              "group_id": "ancestry-training-20261027",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "T"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v0",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v1",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "training-20261028-v2",
+              "group_id": "ancestry-training-20261028",
+              "split": "training",
+              "supervised_tokens": 6,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        },
+        "development": {
+          "images": 18,
+          "ancestry_groups": 6,
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 6,
+            "consistent_cases_by_class": {
+              "I": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2"
+              ],
+              "J": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261031-v0",
+                "development-30261031-v1",
+                "development-30261031-v2"
+              ],
+              "L": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2"
+              ],
+              "O": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2"
+              ],
+              "S": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2"
+              ],
+              "T": [
+                "development-30261026-v0",
+                "development-30261026-v1",
+                "development-30261026-v2",
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2",
+                "development-30261030-v0",
+                "development-30261030-v1",
+                "development-30261030-v2",
+                "development-30261031-v0",
+                "development-30261031-v1",
+                "development-30261031-v2"
+              ],
+              "Z": [
+                "development-30261027-v0",
+                "development-30261027-v1",
+                "development-30261027-v2",
+                "development-30261028-v0",
+                "development-30261028-v1",
+                "development-30261028-v2",
+                "development-30261029-v0",
+                "development-30261029-v1",
+                "development-30261029-v2"
+              ]
+            },
+            "cases_with_no_consistent_constant": [],
+            "joint_constant_classes": [],
+            "constant_predictor_proven": false
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1,
+            "constant_predictor": true,
+            "targets_matching_predicted_class": 3,
+            "exact_equals_predicted_class_frequency": true
+          },
+          "cases": [
+            {
+              "sample_id": "development-30261026-v0",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v1",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261026-v2",
+              "group_id": "ancestry-development-30261026",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": "S",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261027-v0",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v1",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261027-v2",
+              "group_id": "ancestry-development-30261027",
+              "split": "development",
+              "supervised_tokens": 0,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "I",
+                "O",
+                "T",
+                "S",
+                "Z",
+                "J",
+                "L"
+              ],
+              "target_hold": "T",
+              "predicted_hold": "T",
+              "hold_correct": true
+            },
+            {
+              "sample_id": "development-30261028-v0",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v1",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261028-v2",
+              "group_id": "ancestry-development-30261028",
+              "split": "development",
+              "supervised_tokens": 7,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "O",
+                "Z",
+                "L"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261029-v0",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v1",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261029-v2",
+              "group_id": "ancestry-development-30261029",
+              "split": "development",
+              "supervised_tokens": 4,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "S",
+                "Z",
+                "J"
+              ],
+              "target_hold": "L",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261030-v0",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v1",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261030-v2",
+              "group_id": "ancestry-development-30261030",
+              "split": "development",
+              "supervised_tokens": 3,
+              "tokens_correct": 1,
+              "consistent_constant_classes": [
+                "T"
+              ],
+              "target_hold": null,
+              "predicted_hold": null,
+              "hold_correct": null
+            },
+            {
+              "sample_id": "development-30261031-v0",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "J"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v1",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "J"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            },
+            {
+              "sample_id": "development-30261031-v2",
+              "group_id": "ancestry-development-30261031",
+              "split": "development",
+              "supervised_tokens": 9,
+              "tokens_correct": 0,
+              "consistent_constant_classes": [
+                "T",
+                "J"
+              ],
+              "target_hold": "J",
+              "predicted_hold": "T",
+              "hold_correct": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "sources": {
+    "docs/evidence/m3-identity-factor-r1-errors-r3/result.json": "7c96d1d615cc4240634ee377789f7f8366f767e2389aaa801655b6cb4abc7aaa",
+    "docs/evidence/m3-identity-factor-representation-r1-errors-r1/result.json": "4183663cc3d500460c3ec8a434c6418732623e308e500f6b93efff9774e723f9",
+    "docs/evidence/m3-identity-factor-budget-r1-errors-r1/result.json": "3d12848938f72eef028167b2389c8576aaa1073878b136cd65e5eec0f0de65a9",
+    "docs/evidence/m3-stream-identity-shared-r1-errors-r1/result.json": "ab2bb91d08875c148085e6658b9a5ee8876f28957ee3462aef0f74132d079b27"
+  },
+  "job_ceiling_bytes": 134217728,
+  "elapsed_seconds": 0.01155500000459142,
+  "scope": "Identity discrimination of the queue-token and hold-piece heads on the four published frozen M3 error runs, read from saved per-case diagnostics and the frozen exposure audit's labels only. Constant-predictor consistency is computed from published error indices, so it reports what the saved bytes prove and no per-slot predicted token class. No inference, training, mask, target, order or loss change, and no complete-state, real-image or release claim.",
+  "audit_script_sha256": "77ca725e050acdd8f85f7fe92c389a1136b9eaa48c2cc2f21376cc14db5603f6"
+}

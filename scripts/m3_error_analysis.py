@@ -44,6 +44,21 @@ def _counts(predicted, truth, mask):
     return {"known": sum(mask), "correct": sum(mask)-len(errors), "error_indices": errors}
 
 
+def _predicted_classes(predicted, mask, names):
+    """Supervised positions only: which classes the head actually emits.
+
+    A single-class distribution means the head is a constant predictor, so any
+    exact/supervised ratio it earns is that class's frequency in the targets and
+    not class discrimination. Unknown positions never enter the tally.
+    """
+    counts = {}
+    for index, known in enumerate(mask):
+        if known:
+            name = names[predicted[index]]
+            counts[name] = counts.get(name, 0) + 1
+    return dict(sorted(counts.items())), len(counts), sum(counts.values())
+
+
 def analyze_components(prediction, target):
     capacity = target["capacity"]
     if type(capacity) is not int or not 1 <= capacity <= 64:
@@ -75,6 +90,8 @@ def analyze_components(prediction, target):
         raise ValueError("unobserved hold cannot label piece identity")
 
     piece_mask = [known and value != 7 for known, value in zip(target["queue_token_known"], target["queue_tokens"])]
+    queue_identity, queue_distinct, queue_supervised = _predicted_classes(prediction["queue_tokens"], piece_mask, PIECES)
+    hold_identity = PIECES[prediction["hold_piece"]] if target["hold_piece_known"] else None
     fields = {"piece_tokens": _counts(prediction["queue_tokens"], target["queue_tokens"], piece_mask),
               "eos_tokens": _counts(prediction["queue_tokens"], target["queue_tokens"], eos),
               "slot_status": _counts(prediction["queue_slot_status"], target["queue_slot_status"], target["queue_slot_status_known"]),
@@ -90,9 +107,14 @@ def analyze_components(prediction, target):
                                target["queue_presence"], target["queue_slot_status"], target["queue_token_known"]))
     queue_readable = target["queue_status"] == 1 or (target["queue_status"] == 0 and start and end and identities_known and any(eos))
     readable = queue_readable and target["hold_status"] <= 2
+    identity = {"queue_predicted_classes": queue_identity, "queue_supervised_positions": queue_supervised,
+                "queue_distinct_predicted_classes": queue_distinct,
+                "queue_constant_predictor": bool(queue_supervised > 1 and queue_distinct == 1),
+                "hold_predicted_piece": hold_identity}
     return {"capacity": capacity, "queue_supported_exact": queue_right, "hold_supported_exact": hold_right,
             "supported_components_exact": queue_right and hold_right, "component_state_readable": readable,
             "exact_readable_components": queue_right and hold_right if readable else None,
+            "identity": identity,
             "known_queue_tokens": sum(target["queue_token_known"]),
             "known_presence_positions": sum(target["queue_presence_known"]), "hold_identity_known": target["hold_piece_known"],
             "queue": {"target_status": QUEUE_STATUSES[target["queue_status"]],
@@ -133,5 +155,22 @@ def summarize_components(records):
         values["hold"] = {"status_errors": sum(not row["hold"]["status_correct"] for row in rows),
                           "known_piece_cases": hold_known, "correct_pieces": hold_correct,
                           "piece_accuracy": hold_correct/hold_known if hold_known else None}
+        # Identity discrimination: what the heads emit, not only how often they are right.
+        queue_predicted, hold_predicted = {}, {}
+        for row in rows:
+            identity = row.get("identity")
+            if identity is None:
+                continue
+            for name, count in identity["queue_predicted_classes"].items():
+                queue_predicted[name] = queue_predicted.get(name, 0) + count
+            if identity["hold_predicted_piece"]:
+                hold_predicted[identity["hold_predicted_piece"]] = \
+                    hold_predicted.get(identity["hold_predicted_piece"], 0) + 1
+        values["queue"]["predicted_classes"] = dict(sorted(queue_predicted.items()))
+        values["queue"]["distinct_predicted_classes"] = len(queue_predicted)
+        values["queue"]["constant_predictor"] = bool(sum(queue_predicted.values()) > 1 and len(queue_predicted) == 1)
+        values["hold"]["predicted_classes"] = dict(sorted(hold_predicted.items()))
+        values["hold"]["distinct_predicted_classes"] = len(hold_predicted)
+        values["hold"]["constant_predictor"] = bool(sum(hold_predicted.values()) > 1 and len(hold_predicted) == 1)
         result[split] = values
     return result

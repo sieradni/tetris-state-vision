@@ -1,5 +1,44 @@
 # Contributor handoff — 2026-10-30
 
+## M3 identity heads are constant predictors — 2026-11-08
+
+The identity totals every M3 lever was judged on are class frequencies, not reading.
+`docs/M3_IDENTITY_DISCRIMINATION.md` records the measurement: read from the four
+published `result.json` files plus the frozen exposure audit's labels, model-free, with no
+forward pass. The hold-piece head emits `T` for every supervised case in
+`m3-identity-factor-r1`, its capture-640 re-run and the tied read-out run, and its exact
+counts are exactly that class's target frequency — 0/9 training, 3/12 development. The
+training queue-token head is provably one constant on three of four runs (`S` at 3/54,
+`S` at 3/54, `I` at 12/54, each equal to that class's frequency in the 54 training
+tokens); only the tied read-out run escapes constancy on three of nine training images,
+and no development split is explainable by a single constant.
+
+So the coefficient lever's identity "positive", the budget's `3/54 -> 12/54` rise and
+the tied read-out's hold movement are the head switching which single class it emits.
+The verdicts themselves are unchanged — each was judged on its predeclared rule, and no
+frozen receipt was touched — but no M3 identity number so far is evidence of identity
+discrimination, and the "gradient-starved at the published scale" reading is replaced.
+The fit gate stays FALSE: 0/9 and 0/18 boards, 9/18 and 0/36 roles, 0/9 and 0/18 exact
+readable components.
+
+Receipts: audit `runs/m3-identity-discrimination-r2.json` (passed, 4 work items, 0.23 s,
+35.7 MB under 128 MiB), curation
+`runs/m3-identity-discrimination-r2-curation.json` (passed) into
+`docs/evidence/m3-identity-discrimination-r2/scope.json`, and instrument tests
+`runs/m3-identity-discrimination-tests-r1-job-r3.json` (19 tests, `OK`). The instrument
+is `scripts/m3_error_analysis.py`: per-case `identity.*` and per-split
+`predicted_classes`/`distinct_predicted_classes`/`constant_predictor` for both heads,
+close on V-048. Two attempts that captured no stdout/stderr logs are retained
+(`runs/identity-discrimination-r1`, `runs/m3-identity-discrimination-r1.json`); nothing
+was deleted or re-scored.
+
+Re-ranked, the open identity question is the read-out's conditioning: the separate hold
+head reads one role vector and has never left a constant, and a lever that only changes
+which constant is emitted is not a lever. Any next identity lever must be able to
+produce class discrimination by construction and must report the discrimination fields.
+The owner-decision real-image chain and the FALSE fit gate are otherwise unchanged; the
+identity levers already closed stay closed.
+
 ## M3 input representation (capture side 640): a declared negative — 2026-11-08
 
 `docs/M3_IDENTITY_REPRESENTATION.md` predeclared the lever at `b229972`, before any

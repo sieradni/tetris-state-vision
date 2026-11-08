@@ -17,7 +17,36 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047 (8) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-048 — CLOSED: identity exactness was recorded without a discrimination term
+
+- Symptom: every M3 identity report quoted exact counts only (queue tokens 0/54 ->
+  3/54 -> 9/54 -> 12/54, hold 0/12 -> 3/12) and every pass read them as learning
+  progress, while the fit gate never moved and no report asked which classes the heads
+  emit. On the frozen runs the hold-piece head emits one class for every supervised
+  case, and its exact count is exactly that class's frequency in the targets (0/9
+  training, 3/12 development for `T`); the training queue-token head is provably a
+  single constant on three of four runs (`S`, `S`, `I`, matching 3/54, 3/54, 12/54).
+- Root cause: the diagnostic schema saved `known`/`correct`/`error_indices` and a
+  single predicted hold class, but never a predicted-class distribution, so a
+  degenerate head and a reading head produced the same report. The reasoning in the
+  lever records then attributed a class-frequency change to identity learning.
+- Detection class: evidence-reporting; extends V-032/V-044 because the published
+  number was arithmetically right and still did not mean what the record said.
+- Instrument: `scripts/m3_error_analysis.py` reports
+  `queue_predicted_classes`, `queue_distinct_predicted_classes`,
+  `queue_constant_predictor`, `hold_predicted_piece` per case and the aggregated
+  `queue`/`hold` `predicted_classes`, `distinct_predicted_classes`,
+  `constant_predictor` per split, so a constant head is visible beside its exact
+  count; `docs/experiments/audit_identity_discrimination.py` proves the property on
+  the frozen runs from saved error indices and audited labels.
+- Green run: audit `runs/m3-identity-discrimination-r2.json` (passed, 4 work items,
+  0.23 s, 35.7 MB) and curation `runs/m3-identity-discrimination-r2-curation.json`
+  (passed) into `docs/evidence/m3-identity-discrimination-r2/scope.json`; instrument
+  tests `runs/m3-identity-discrimination-tests-r1-job-r3.json` (19 tests, `OK`).
+  The corrected reading is `docs/M3_IDENTITY_DISCRIMINATION.md`; no frozen receipt,
+  verdict or gate was rewritten, and the fit gate stays FALSE.
 
 ## V-047 — CLOSED: retry receipts were invisible to the canonical-receipt readers
 

@@ -11,6 +11,21 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the M3 identity heads are measured to be **constant predictors**, so no identity
+count on any closed run is evidence of identity reading
+([M3_IDENTITY_DISCRIMINATION.md](M3_IDENTITY_DISCRIMINATION.md),
+`docs/evidence/m3-identity-discrimination-r2/scope.json`): on the frozen runs the
+hold-piece head emits `T` for all 9 training and all 12 development cases and its exact
+count equals that class's frequency in the targets exactly (0/9 and 3/12), while the
+training queue-token head is provably a single constant on three of four runs (`S`, `S`,
+`I`, matching the 3/54, 3/54 and 12/54 totals). The coefficient lever's declared
+identity positive, the budget's rise and the tied read-out's hold movement are therefore
+class-frequency changes, not learning; every recorded verdict and receipt stands, and the
+fit gate stays FALSE (0/9 and 0/18 boards, 9/18 and 0/36 roles, 0/9 and 0/18 components).
+Discrimination is now reported beside correctness wherever identity is measured
+(V-048), and the open identity question is the read-out's conditioning rather than its
+budget, coefficient, resolution or tying.
+
 Latest: the input representation (model capture side 512 -> 640) is a declared negative
 ([M3_IDENTITY_REPRESENTATION.md](M3_IDENTITY_REPRESENTATION.md), predeclared at
 `b229972`, `docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json`):

@@ -1,0 +1,100 @@
+{"supervisor_pid": 26060, "command": ["C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe", "docs/experiments/audit_identity_discrimination.py", "--output", "runs/m3-identity-discrimination-r2"], "memory_bytes": 134217728, "wall_seconds": 300.0, "work_items": 4, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "child_executable": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe", "job_name": "Local\\TetrisStateVision-65dd0369d9cc4670a14b2e1a42e12cea", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 22337581056, "commit_limit_bytes": 50695704576, "physical_bytes": 33515835392, "available_physical_bytes": 17157140480, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 45626134118, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 134217728}, "status": "admitted", "exit_code": null, "elapsed_seconds": 0.001}
+{
+ "m3-identity-factor-r1-errors-r3": {
+  "training": {
+   "queue_correct": 3,
+   "queue_supervised": 54,
+   "queue_joint_constant": [
+    "S"
+   ],
+   "hold_predicted": {
+    "T": 9
+   },
+   "hold_correct": 0,
+   "hold_supervised": 9
+  },
+  "development": {
+   "queue_correct": 9,
+   "queue_supervised": 90,
+   "queue_joint_constant": [],
+   "hold_predicted": {
+    "T": 12
+   },
+   "hold_correct": 3,
+   "hold_supervised": 12
+  }
+ },
+ "m3-identity-factor-representation-r1-errors-r1": {
+  "training": {
+   "queue_correct": 3,
+   "queue_supervised": 54,
+   "queue_joint_constant": [
+    "S"
+   ],
+   "hold_predicted": {
+    "T": 9
+   },
+   "hold_correct": 0,
+   "hold_supervised": 9
+  },
+  "development": {
+   "queue_correct": 9,
+   "queue_supervised": 90,
+   "queue_joint_constant": [],
+   "hold_predicted": {
+    "T": 12
+   },
+   "hold_correct": 3,
+   "hold_supervised": 12
+  }
+ },
+ "m3-identity-factor-budget-r1-errors-r1": {
+  "training": {
+   "queue_correct": 12,
+   "queue_supervised": 54,
+   "queue_joint_constant": [
+    "I"
+   ],
+   "hold_predicted": {
+    "I": 7,
+    "Z": 2
+   },
+   "hold_correct": 0,
+   "hold_supervised": 9
+  },
+  "development": {
+   "queue_correct": 12,
+   "queue_supervised": 90,
+   "queue_joint_constant": [],
+   "hold_predicted": {
+    "I": 8,
+    "Z": 4
+   },
+   "hold_correct": 0,
+   "hold_supervised": 12
+  }
+ },
+ "m3-stream-identity-shared-r1-errors-r1": {
+  "training": {
+   "queue_correct": 9,
+   "queue_supervised": 54,
+   "queue_joint_constant": [],
+   "hold_predicted": {
+    "T": 9
+   },
+   "hold_correct": 0,
+   "hold_supervised": 9
+  },
+  "development": {
+   "queue_correct": 6,
+   "queue_supervised": 90,
+   "queue_joint_constant": [],
+   "hold_predicted": {
+    "T": 12
+   },
+   "hold_correct": 3,
+   "hold_supervised": 12
+  }
+ }
+}
+{"supervisor_pid": 26060, "command": ["C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe", "docs/experiments/audit_identity_discrimination.py", "--output", "runs/m3-identity-discrimination-r2"], "memory_bytes": 134217728, "wall_seconds": 300.0, "work_items": 4, "cpu_library_threads": {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "OPENBLAS_DEFAULT_NUM_THREADS": "1", "GOTO_NUM_THREADS": "1"}, "child_executable": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe", "job_name": "Local\\TetrisStateVision-65dd0369d9cc4670a14b2e1a42e12cea", "guard": "readback-verified Windows aggregate Job commit + kill-on-close", "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642", "system_pressure_guard": "GetPerformanceInfo/0.2s", "system_at_admission": {"commit_bytes": 22337581056, "commit_limit_bytes": 50695704576, "physical_bytes": 33515835392, "available_physical_bytes": 17157140480, "counter_source": "GetPerformanceInfo"}, "system_pressure": {"reason": null, "stop_commit_bytes": 45626134118, "minimum_available_physical_bytes": 2147483648, "reserved_job_bytes": 0}, "status": "passed", "exit_code": 0, "elapsed_seconds": 0.198, "child_pid": 3248, "last_system_memory": {"commit_bytes": 22338891776, "commit_limit_bytes": 50695704576, "physical_bytes": 33515835392, "available_physical_bytes": 17147957248, "counter_source": "GetPerformanceInfo"}, "peak_job_commit_bytes": 35364864}

@@ -1,0 +1,190 @@
+{
+  "status": "passed",
+  "audit_format_version": 1,
+  "baseline": "m3-identity-factor-r1-errors-r3",
+  "exposure_audit": "runs/m3-identity-exposure-r4/result.json",
+  "exposure_result_sha256": "b31741480b30cac18bc12a43ce83f83a014e15d50eaf454187574a50eee921ff",
+  "baseline_result_sha256": "7c96d1d615cc4240634ee377789f7f8366f767e2389aaa801655b6cb4abc7aaa",
+  "runs": {
+    "m3-identity-factor-r1-errors-r3": {
+      "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+      "splits": {
+        "training": {
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 3
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 9
+        },
+        "development": {
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 9
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 18
+        }
+      },
+      "queue_joint_constant_classes": [
+        "S"
+      ],
+      "hold_constant_predictor": true,
+      "hold_exact_equals_predicted_class_frequency": true
+    },
+    "m3-identity-factor-representation-r1-errors-r1": {
+      "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+      "splits": {
+        "training": {
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 3
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 9
+        },
+        "development": {
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 9
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 18
+        }
+      },
+      "queue_joint_constant_classes": [
+        "S"
+      ],
+      "hold_constant_predictor": true,
+      "hold_exact_equals_predicted_class_frequency": true
+    },
+    "m3-identity-factor-budget-r1-errors-r1": {
+      "weights_sha256": "9b79863b3edccb12abbb75e1fea3051019fc0ea6fb583cbe05287f3849cde815",
+      "splits": {
+        "training": {
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 12
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "I": 7,
+              "Z": 2
+            },
+            "distinct_predicted_classes": 2
+          },
+          "cases": 9
+        },
+        "development": {
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 12
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "I": 8,
+              "Z": 4
+            },
+            "distinct_predicted_classes": 2
+          },
+          "cases": 18
+        }
+      },
+      "queue_joint_constant_classes": [
+        "I"
+      ],
+      "hold_constant_predictor": false,
+      "hold_exact_equals_predicted_class_frequency": false
+    },
+    "m3-stream-identity-shared-r1-errors-r1": {
+      "weights_sha256": "55a352433de0966e0a2fc998d362e8bdffbe83462853f0335582acf9f13bb29c",
+      "splits": {
+        "training": {
+          "queue": {
+            "supervised_piece_tokens": 54,
+            "correct_tokens": 9
+          },
+          "hold": {
+            "supervised_pieces": 9,
+            "correct_pieces": 0,
+            "predicted_classes": {
+              "T": 9
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 9
+        },
+        "development": {
+          "queue": {
+            "supervised_piece_tokens": 90,
+            "correct_tokens": 6
+          },
+          "hold": {
+            "supervised_pieces": 12,
+            "correct_pieces": 3,
+            "predicted_classes": {
+              "T": 12
+            },
+            "distinct_predicted_classes": 1
+          },
+          "cases": 18
+        }
+      },
+      "queue_joint_constant_classes": [],
+      "hold_constant_predictor": true,
+      "hold_exact_equals_predicted_class_frequency": true
+    }
+  },
+  "result_sha256": "a89bdf7a4d96d954d77b2db2c903f3606f4c66d19d7533256108901dfeb563fa",
+  "audit_receipt": {
+    "stem": "m3-identity-discrimination-r2",
+    "status": "passed",
+    "work_items": 4,
+    "peak_job_commit_bytes": 35364864,
+    "declared_wall_seconds": 300.0,
+    "declared_memory_bytes": 134217728,
+    "elapsed_seconds": 0.198
+  },
+  "sources": {
+    "docs/experiments/audit_identity_discrimination.py": "77ca725e050acdd8f85f7fe92c389a1136b9eaa48c2cc2f21376cc14db5603f6",
+    "docs/experiments/record_identity_discrimination.py": "894ab1f717a20ad15a2c3a00f6d26988319c2c2902b726c0e0cc60eab5a87108",
+    "scripts/run_bounded.py": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/m3_error_analysis.py": "059f359db1a87c2c8bdfa32a515cc4ddb7409c9671926d2436444f94a8e7a51e"
+  },
+  "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+  "scope": "Identity discrimination of the queue-token and hold-piece heads on the four published frozen M3 error runs, read from saved per-case diagnostics and the frozen exposure audit's labels only. Constant-predictor consistency is computed from published error indices, so it reports what the saved bytes prove and no per-slot predicted token class. No inference, training, mask, target, order or loss change, and no complete-state, real-image or release claim.",
+  "curator_sha256": "894ab1f717a20ad15a2c3a00f6d26988319c2c2902b726c0e0cc60eab5a87108"
+}
