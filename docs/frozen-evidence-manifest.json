@@ -3452,6 +3452,7 @@
       }
     },
     "m3-identity-factor-positional-r1-errors-r1": {
+      "record_commit": "55147541322bda97350d28dbd81497e76006d838",
       "files": {
         "checkpoint-manifest.json": "73e41759cad7cc13c9d2b6534b1a1abcc70c5fe47ed3afc056209bce56434928",
         "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
