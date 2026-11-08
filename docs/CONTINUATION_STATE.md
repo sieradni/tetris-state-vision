@@ -1,5 +1,17 @@
 # Contributor handoff — 2026-10-30
 
+## Pixel replay work in progress — 2026-11-07
+
+The conditional replay remains incomplete. `scripts/pixel_replay_contract.py`
+adds a strict byte comparison of every non-type output at each stage and final
+output, with only the designated stage type logits exempted. Three focused
+checks pass under the bounded CPU runner; receipt and log are in
+`docs/evidence/pixel-replay-contract-r2/` (peak 246,312,960 bytes, 640 MiB cap,
+30 seconds, work 3). This is a comparison instrument, not a pixel replay or
+model-quality result. Next wire it into the two-forward-per-image intervention,
+verify head inputs and source/artifact identities and restore state, then build
+the independent collector described below. The original runs remain frozen.
+
 ## Owner request and delivery
 
 The owner asked for a clean project, a repository under `sieradni`, a ZIP to send
