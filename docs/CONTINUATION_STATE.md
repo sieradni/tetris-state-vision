@@ -30,8 +30,9 @@ The verification gap is closed. The complete contract suite is green on this tre
 in 72.290s`, `OK`, exit 0, receipt peak 545,845,248 B, admitted at 38,347,567,104 B
 commit against a 45,626,134,118 B stop line). That count is auditable rather than
 asserted: `git diff 5c6b41f HEAD -- tests/` adds exactly 9 test methods and removes
-none, so 407 = the previous green run's 398 + the 4 identity-read-out tests + the 5
-pressure-decision tests, and the 32 component-identity/component/joint-stream tests
+none, so 407 = the previous green run's 398 (preserved with its log, which records
+`Ran 398 tests in 59.453s` and `OK`) + the 4 identity-read-out tests + the 5
+pressure-decision tests; the 32 component-identity/component/joint-stream tests
 sit inside it (`test_component_identity` 10, `test_components` 15, `test_joint_stream`
 7). The collection is preserved as `collection-job.json`/`collection.log` beside the
 suite receipt. Closing it needed no test change and no

@@ -215,9 +215,9 @@ log and summary of a complete bounded contract run on this tree: 407 tests colle
 identity-read-out contract tests and the default-`separate` objective pin, so the
 published bit-for-bit objective is covered by the same green run. It is derived rather
 than assumed: `git diff 5c6b41f HEAD -- tests/` adds exactly 9 test methods and removes
-none, so 407 = the previous green run's 398 + 4 identity-read-out tests + 5
-pressure-decision tests, with the 32 component-identity/component/joint-stream tests
-inside that total.
+none, so 407 = the previous green run's 398 (its preserved log records `Ran 398 tests
+in 59.453s` and `OK`) + 4 identity-read-out tests + 5 pressure-decision tests, with the
+32 component-identity/component/joint-stream tests inside that total.
 
 Getting there fixed the supervisor, not the tests (V-040): the admission guard derived
 its commit stop line from physical RAM (`physical − 2 GiB` = 31.4 GB) while the
