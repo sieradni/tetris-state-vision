@@ -3452,6 +3452,7 @@
       }
     },
     "m3-identity-factor-prototype-r1-errors-r1": {
+      "record_commit": "8bd700b780d5a0bc2648394447fef0dedf1aada1",
       "files": {
         "checkpoint-manifest.json": "770e9914259fc1b54210dd462b36b17f618a10647a7c966df6fe1f1380fda465",
         "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
