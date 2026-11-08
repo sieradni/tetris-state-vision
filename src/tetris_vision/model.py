@@ -43,7 +43,8 @@ class ModelConfig:
               (self.component_capacity or self.component_identity_readout == "separate"),
               "identity readout must be separate, shared with the cell-type head, per-piece image queries, "
               "or per-position image queries")
-        check(self.component_endpoint_term in ("joint", "separate", "length") and
+        from .components import ENDPOINT_TERMS
+        check(self.component_endpoint_term in ENDPOINT_TERMS and
               (self.component_endpoint_term == "joint" or
                (self.component_capacity and self.component_identity_readout in ("prototype", "positional"))) and
               (self.component_endpoint_term != "length" or self.component_identity_readout == "positional"),

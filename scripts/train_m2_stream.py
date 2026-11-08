@@ -18,6 +18,9 @@ from atomic_write import replace_retry
 
 ROOT = Path(__file__).resolve().parents[1]
 NATIVE_CACHE_LIMITS = {"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"}
+# Mirrors tetris_vision.components.ENDPOINT_TERMS without importing torch at parser build
+# time; a test binds the two so the CLI and the admission gate cannot drift apart (V-052).
+ENDPOINT_TERMS = ("joint", "separate", "length")
 
 
 def arguments(argv=None):
@@ -32,7 +35,7 @@ def arguments(argv=None):
                         default="separate",
                         help="shared reads identity through the cell-type head;prototype reads per-piece image "
                              "queries;positional adds per-position image queries;separate is published")
-    parser.add_argument("--component-endpoint-term", choices=("joint", "separate", "length"), default="joint",
+    parser.add_argument("--component-endpoint-term", choices=ENDPOINT_TERMS, default="joint",
                         help="joint keeps the endpoint as one class of the piece softmax;joint is published;"
                              "separate gives the endpoint its own binary decision;length decides the queue length "
                              "once per case")
@@ -153,10 +156,8 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("arguments", {}).get("component_identity_factor", 1) != identity_factor or
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
-    if (type(endpoint_term) is not str or endpoint_term not in ("joint", "separate") or
-            summary.get("arguments", {}).get("component_endpoint_term", "joint") != endpoint_term or
-            summary.get("recovery_contract", {}).get("component_endpoint_term", "joint") != endpoint_term):
-        raise ValueError("component endpoint term differs from resource admission")
+    from tetris_vision.components import require_endpoint_term
+    require_endpoint_term(endpoint_term, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or

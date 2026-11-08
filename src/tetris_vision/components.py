@@ -13,6 +13,12 @@ from .component_targets import component_labels
 from .state import check
 
 
+# Declared endpoint objectives. The loss, the model configuration and the admission gate
+# all read this tuple, so a newly declared objective cannot be accepted by one and
+# refused by another (V-052).
+ENDPOINT_TERMS = ("joint", "separate", "length")
+
+
 class ComponentDecoder(nn.Module):
     """Board-conditioned role/index queries; same parameters at every index.
 
@@ -255,6 +261,14 @@ def _validate_contract(output, target):
     check(torch.equal(target["hold_piece_known"], target["hold_status"] == 0), "unobserved hold cannot train piece identity")
 
 
+def require_endpoint_term(endpoint_term, summary):
+    """One declaration of the admission join for the declared endpoint objectives."""
+    if (type(endpoint_term) is not str or endpoint_term not in ENDPOINT_TERMS or
+            summary.get("arguments", {}).get("component_endpoint_term", "joint") != endpoint_term or
+            summary.get("recovery_contract", {}).get("component_endpoint_term", "joint") != endpoint_term):
+        raise ValueError("component endpoint term differs from resource admission")
+
+
 def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
     """Masked semantic/observation losses; all coefficients are pilot hypotheses.
 
@@ -267,7 +281,7 @@ def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
     """
     if type(identity_factor) is not int or identity_factor not in (1, 4):
         raise ValueError("component identity factor must be1 or4")
-    if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate", "length"):
+    if type(endpoint_term) is not str or endpoint_term not in ENDPOINT_TERMS:
         raise ValueError("component endpoint term must be joint, separate or length")
     _validate_contract(output, target)
     def masked(value, mask):

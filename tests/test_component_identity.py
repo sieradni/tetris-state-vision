@@ -291,6 +291,24 @@ class ComponentIdentityFactorTests(unittest.TestCase):
             arguments([*base, "--component-capacity", "64", "--component-identity-readout", "prototype",
                        "--component-endpoint-term", "length"])
 
+    def test_every_declared_endpoint_objective_is_accepted_by_the_driver_and_the_gate(self):
+        from tetris_vision.components import ENDPOINT_TERMS, require_endpoint_term
+        from train_m2_stream import ENDPOINT_TERMS as DRIVER_TERMS
+        self.assertEqual(tuple(DRIVER_TERMS), tuple(ENDPOINT_TERMS))
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        for mode in ENDPOINT_TERMS:
+            require_endpoint_term(mode, {"arguments": {"component_endpoint_term": mode},
+                                         "recovery_contract": {"component_endpoint_term": mode}})
+            if mode != "joint":
+                self.assertEqual(arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                                            "positional", "--component-endpoint-term", mode]).component_endpoint_term,
+                                 mode)
+        with self.assertRaisesRegex(ValueError, "endpoint term differs"):
+            require_endpoint_term("length", {"arguments": {"component_endpoint_term": "separate"},
+                                            "recovery_contract": {"component_endpoint_term": "separate"}})
+        with self.assertRaisesRegex(ValueError, "endpoint term differs"):
+            require_endpoint_term("queue", {"arguments": {}, "recovery_contract": {}})
+
     def test_positional_readout_is_validated_and_declared_by_the_driver(self):
         from dataclasses import replace
         from tetris_vision.model import ModelConfig
