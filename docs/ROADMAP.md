@@ -23,8 +23,10 @@ joint fit; increasing the type-head rate reduces exact training roles 20/64 to
 The checkpoint diagnostic in [TYPE_FORGETTING_DIAGNOSTIC.md](TYPE_FORGETTING_DIAGNOSTIC.md)
 finds recurrent type-correctness turnover on the fixed fixtures and local
 class-gradient conflicts, with significant limits on causal interpretation.
-Next predeclare a matched test of balanced gradient accumulation before any
-new training; retain the original joint-fit and generalization gates.
+The matched design and focused grouping/gradient/recovery instrument are in
+[BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Integrate explicit image
+and optimizer cursors and obtain fresh native resource/recovery admission before
+training; retain the original joint-fit and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

@@ -1,5 +1,25 @@
 # Contributor handoff — 2026-10-30
 
+## Balanced accumulation preparation — 2026-11-07
+
+`docs/BALANCED_ACCUMULATION.md` predeclares online-interleaved, balanced-eight
+and ordered-eight arms at1,024 images each, explicitly distinguishing their
+1,024 versus128 optimizer updates. `scripts/accumulation_contract.py` contains
+finite group mapping, boundary validation and a streamed mean-gradient primitive;
+seven bounded checks pass, including actual public-label mapping, full-batch
+gradient parity, rejected partial groups and toy interruption/recovery parity.
+Evidence `docs/evidence/accumulation-contracts-r1/`: 5.806 s / 332,820,480 B,
+640 MiB / 30 s / work7. This is not integrated or native admission. Next
+integrate image/update accounting, group-boundary checkpoint/replay and
+controller/curator routing, including an optimizer-owns-all-parameters check,
+then obtain fresh full-square resource and actual
+in-group interruption/recovery gates before any study. No job remains active.
+An additional ownership-check test run was declined by the OS reservation guard
+(r4), then its 512 MiB retry was stopped by OS commit pressure after two tests
+(r5). Both raw receipts/logs are preserved in the named evidence. The unverified
+ownership edit was reverted byte-for-byte to the seven-test r3 source; do not
+claim the extra check passed or relaunch under unchanged pressure.
+
 ## Checkpoint forgetting diagnostic completed — 2026-11-07
 
 `docs/TYPE_FORGETTING_DIAGNOSTIC.md` and the source-bound scopes in

@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "base_commit": "c594b97acc55d064711c6a19b9c00e37a18c1877",
+  "tests": 7,
+  "artifact_sha256": {
+    "accumulation-contract-tests-r3-job.json": "271bf6c5d7b0d49e9dd642e1c51acf2fe91fe1519fb4c2658f1c079b59f5bf8f",
+    "accumulation-contract-tests-r3.log": "ecc3e472e5e0bf8ba0d007212c4ec695eba0bce53f2ae6fc81414a6e6547cca7",
+    "accumulation-contract-tests-r4-job.json": "108853adfd168a7458bcceaa971c1d8591a54476e28ef0319b7cef3c3be99bb3",
+    "accumulation-contract-tests-r4.log": "328a3ed2d2a235759a8e00be778dc854303a061834f66d047bbed9f45cad211f",
+    "accumulation-contract-tests-r5-job.json": "0de28cc0854eb920b0463a61c3a08bf1f358ed4e2ade36a9028b42894f69cfee",
+    "accumulation-contract-tests-r5.log": "e6568fdeec4577fdcd4bcb46f1468242400383d2480a3e8b9f727c3ed9e3f299",
+    "execution-source/scripts/accumulation_contract.py": "79a9595724c1ab9c7d043dd6aa0e825e698ec14509d776418dc07789de2b7074",
+    "execution-source/scripts/atomic_write.py": "4e45b920f7f7c4b96b2ec8bfd98f9433522337cab020289b60369464a42f6c12",
+    "execution-source/scripts/m2_interleaved_order.py": "22e0dad24535991b6c284f5b1b8ab23a5dae194fcb5a7febcf2b9e3b91900a6d",
+    "execution-source/scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+    "execution-source/scripts/training_snapshot.py": "3e1375459f19ede8d56447c1f06b17cabfaa79e6d2a32487b93080f9077e7ca7",
+    "execution-source/tests/test_accumulation_contract.py": "0ad04f2ddd99b38de3f05a10a45669caf02b31e40485a64207a066dc67a40b5b"
+  },
+  "fixture_scope_sha256": "0d2cb844f58e70371cf405565ad543cc0611df849d74111c5516d4fbc0429ebb",
+  "pressure_attempts": [
+    "r4 refused OS reservation",
+    "r5 stopped OS commit pressure; only two tests started"
+  ],
+  "scope": "Seven-test r3 finite grouping, public-label mapping, streamed-gradient, partial-group recovery and failure contracts only; no native training admission. Subsequent unverified ownership edit reverted."
+}
