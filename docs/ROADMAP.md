@@ -11,6 +11,26 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the **fit gate is measured for the first time and STANDS**, with a mechanism that is
+not the one it was ranked on ([M3_FIT_GATE.md](M3_FIT_GATE.md), rule predeclared at
+`5065811` before any receipt, `docs/evidence/m3-fit-occupancy-r1-errors-r1/scope.json`).
+The predeclared rule is >= 3 exact nonempty training boards; the independent replay reports
+**0 of 7** (development 0/14). The lever was `--occupancy-factor 4`, scaling only the
+locked-occupancy weight, to test the constant-empty read-out the length run recorded
+(`true_positive 0, false_negative 168`). It is not gradient-starved: at 4x the head recovers
+34 of 1,400 training occupied cells (230 of 2,800 development), so the term moves, and still
+reproduces no board - the errors are per-cell and bidirectional (59 false positives, 134
+misses) - while the scale is paid elsewhere: queue EOS 9/9 -> 0/9 and 15/15 -> 0/15,
+presence 63/63 -> 54/63 and 105/105 -> 90/105, position spread 0.0877/0.0838 ->
+0.0641/0.0379. Queue piece tokens rose to 15/54 and 9/90, slot status stayed exact (54/54,
+90/90), roles 0/9 and 0/18, ghost 0/9 and 0/18, geometry 3.3397 and 2.6864, exact readable
+components 0/9 and 3/18 (empty-queue cases). Ranked next is the **locked read-out's per-cell
+decision** (its class imbalance and cell-wise scoring), measured by the same rule; another
+occupancy weight scale, a budget extension of this lever, and any further identity/endpoint
+variant are not ranked. `scripts/fit_gate.py` with `tests/test_fit_gate.py` reproduce the
+rule and the verdict from the committed bytes. V-053 records the curator log-name defect
+this pass exposed.
+
 Latest: the queue-length lever is a measured **negative**, and it **closes** the
 class-side / position-side / loss-side disjunction at the fixed matched budget
 ([M3_IDENTITY_QUEUE_LENGTH.md](M3_IDENTITY_QUEUE_LENGTH.md), predeclared at `d2895de`,

@@ -1,7 +1,8 @@
 # M3 fit gate — locked-occupancy scale lever (predeclaration)
 
-Status: predeclared. Committed before any fit-gate admission profile, study or probe; every
-receipt named below is created afterwards.
+Status: measured (2026-11-08). The rule below was predeclared in its own commit `5065811`,
+before any fit-gate admission profile, study or probe existed; the measured result is
+the section that follows it.
 
 ## The question
 
@@ -81,3 +82,69 @@ absolute interpreter paths (V-030), canonical receipts (V-047), killed stages pr
 re-run to a passing canonical receipt (V-050), objective provenance bound by
 `arguments` (V-051) and declared once (V-052). Any defect this pass exposes is fixed at its
 root with a regression test and recorded in `docs/BUG_LOG.md`.
+
+## Measured result: the gate STANDS, and the occupancy term is not the starved term
+
+Receipts: admission `runs/m3-fit-occupancy-r1-profile-r1-job.json` (passed, 2 work items,
+`--occupancy-factor 4`), the matched study `runs/m3-fit-occupancy-r1-job.json` (passed,
+128/128 updates, 250.6 s, 990,515,200 B peak under the declared 1,152 MiB ceiling,
+`arguments.occupancy_factor: 4`), the independent replay
+`runs/m3-fit-occupancy-r1-errors-r1-job.json` (passed, 27 forwards, weights `d0bb45ce...`
+unchanged, every saved metric reproduced, `occupancy_factor: 4`,
+`component_endpoint_term: length`), its curation
+`runs/m3-fit-occupancy-r1-errors-r1-curation.json` (passed) into
+`docs/evidence/m3-fit-occupancy-r1-errors-r1/scope.json`, and the instrument tests
+`runs/m3-fit-occupancy-tests-r4.json` (7 modules, 101 tests, `OK`).
+
+**The gate STANDS on the predeclared rule.** The deciding field,
+`totals.training.locked_populations.nonempty.exact_boards`, is **0 of 7**, below the
+threshold of 3. Both training empty boards are wrong too (`0/2`), development is `0/14`
+nonempty and `0/4` empty, and no other field can upgrade the negative.
+
+| quantity (independent replay) | training | development |
+|---|---|---|
+| exact nonempty boards | 0/7 | 0/14 |
+| occupied cells recovered (TP / known, nonempty) | 34/1400 | 230/2800 |
+| nonempty false positives / false negatives | 59 / 134 | 130 / 171 |
+| exact empty boards | 0/2 | 0/4 |
+| exact roles (active, ghost) | 0/9, 0/9 | 0/18, 0/18 |
+| exact readable components | 0/9 | 3/18 (empty-queue cases) |
+| queue piece tokens | 15/54 | 9/90 |
+| queue EOS | 0/9 | 0/15 |
+| queue slot status | 54/54 | 90/90 |
+| queue presence | 54/63 | 90/105 |
+| hold identity | 0/9 (`T`x9) | 3/12 (`T`x12) |
+| geometry mean cells | 3.3397 | 2.6864 |
+| position logit spread (max) | 0.0641 | 0.0379 |
+
+**The mechanism is measured, and it is not the one this lever was ranked on.** The motive
+was the length run's constant-empty read-out (`true_positive 0, false_negative 168` on the
+nonempty training boards). At four times the weight that read-out is no longer constant:
+the replay records 34 of 1,400 training occupied cells recovered and 230 of 2,800 in
+development, so the occupancy term does receive gradient and does move. It still
+reproduces no board, because its errors are per-cell and bidirectional (59 false positives
+and 134 misses on 1,400 training cells; 2.4% of occupied cells recovered), and the scale is
+paid for elsewhere: queue EOS fell from 9/9 and 15/15 to 0/9 and 0/15, presence from 63/63
+and 105/105 to 54/63 and 90/105, and the position logit spread fell to 0.0641 and 0.0379,
+the smallest in the identity family. The fit gate is pinned by the locked read-out's
+per-cell decision, not by a gradient-starved scalar weight. Scaling the weight changed
+which errors the head makes, exactly as the class-frequency measurement (V-048) predicted
+for a scaled term; it did not buy fit.
+
+`scripts/fit_gate.py` holds the rule as code (`FIT_GATE_THRESHOLD`, `fit_gate_opens`,
+`occupancy_mechanism`) and `tests/test_fit_gate.py` reproduces both the rule (empty-board
+successes alone never open it; a missing population is refused rather than read as fit) and
+this verdict from the committed bytes: the recorded run reports `occupancy_factor: 4`,
+`0/7` exact nonempty training boards, `true_positive > 0`, and the mechanism label
+`per-cell-error` rather than `constant-empty`.
+
+Comparison to the identity family's instability: the ghost head was 9/9 exact in the
+prototype run, 3/9 in the endpoint run and 0/9 here; roles are 0/9 and 0/18 again; the
+three development exact-readable cases are the same empty-queue pattern as before. None of
+that instability is fit and none of it is a criterion here.
+
+What this does not license: no real-image, complete-state, calibration or quality claim, no
+re-opening of the closed identity disjunction, and no budget extension of this lever (the
+term already moves at this budget). The launcher must write the probe's captured stdout and
+stderr to `runs/<name>.log` and `runs/<name>.stderr.log` beside the `<name>-job.json`
+receipt, which is what the curator copies; V-053 records that trap and its fix.

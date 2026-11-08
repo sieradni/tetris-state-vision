@@ -18,7 +18,31 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051 (1) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053 (10) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-053 - CLOSED: the curator read a log name the launch never wrote
+
+- Symptom: the first curation of `m3-fit-occupancy-r1-errors-r1` died 0.6 s in with
+  `FileNotFoundError: runs/m3-fit-occupancy-r1-errors-r1.log`, after the replay itself had
+  passed (27 forwards, weights unchanged, every saved metric reproduced). No evidence
+  directory survived past the copy loop.
+- Root cause: the curator copies three native sidecars out of `runs/` -
+  `<name>-job.json`, `<name>.log`, `<name>.stderr.log` - but a bounded launch redirects the
+  child's stdout beside the receipt as `<name>-job.log`, the shape the study receipts use.
+  The three names were literals inside the copy loop, so nothing bound the reader's names to
+  the launch convention and the mismatch could only appear after a replay had already
+  passed.
+- Detection class: evidence-reporting (V-047's class: canonical receipt and log naming).
+- Instrument: `record_stream_errors.NATIVE_SIDECARS` declares the three suffix shapes once
+  and the copy loop iterates it;
+  `tests/test_component_identity.py::test_the_curator_reads_the_canonical_native_sidecars`
+  binds the tuple, and `docs/M3_FIT_GATE.md` now names the launch paths literally so a
+  predeclaration states which log names the curator will read.
+- Green run: replay `runs/m3-fit-occupancy-r1-errors-r1-job.json` (passed, 27 forwards),
+  curation `runs/m3-fit-occupancy-r1-errors-r1-curation.json` (passed) into
+  `docs/evidence/m3-fit-occupancy-r1-errors-r1/scope.json`, tests
+  `runs/m3-fit-occupancy-tests-r4.json` (101 tests, `OK`). Attempt 1 and its partial
+  evidence directory are preserved under `runs/attempts/`.
 
 ## V-052 — CLOSED: the admission gate refused a newly declared objective
 

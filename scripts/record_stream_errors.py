@@ -17,6 +17,11 @@ from source_snapshot import verify_source
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_SOURCES = tuple("scripts/"+name for name in
     ("probe_stream_errors.py", "m2_error_analysis.py", "m3_error_analysis.py", "record_stream_run.py", "source_snapshot.py", "probe_model.py"))
+# The sidecars this curator copies out of `runs/`. A probe receipt is `<name>-job.json`,
+# but its captured stdout/stderr are `<name>.log` and `<name>.stderr.log`: a launch that
+# names every sidecar `<name>-job.*` leaves the canonical log missing and the curation
+# dies after the replay has already passed (V-053).
+NATIVE_SIDECARS = ("-job.json", ".log", ".stderr.log")
 
 
 def read(path, maximum=2*1024**2):
@@ -202,7 +207,7 @@ def main():
                 (source/"checkpoint/manifest.json", "checkpoint-manifest.json"),
                 (ROOT/"runs"/(result["run"]+"-job.json"), "input-run-job.json")]
     selected += [(source/(split+"-probe.jsonl"), split+"-probe.jsonl") for split in ("training", "development")]
-    selected += [(ROOT/"runs"/(args.name+suffix), "native"+suffix) for suffix in ("-job.json", ".log", ".stderr.log")]
+    selected += [(ROOT/"runs"/(args.name+suffix), "native"+suffix) for suffix in NATIVE_SIDECARS]
     hashes = {}
     for path, name in selected:
         hashes[name] = digest(path)

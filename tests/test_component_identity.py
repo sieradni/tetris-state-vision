@@ -329,6 +329,12 @@ class ComponentIdentityFactorTests(unittest.TestCase):
             require_occupancy_factor(4, {"arguments": {"occupancy_factor": 1},
                                          "recovery_contract": {"occupancy_factor": 1}})
 
+    def test_the_curator_reads_the_canonical_native_sidecars(self):
+        # The replay receipt is `<name>-job.json` but its captured stdout/stderr are
+        # `<name>.log` and `<name>.stderr.log`; the copy loop must read exactly these.
+        from record_stream_errors import NATIVE_SIDECARS
+        self.assertEqual(NATIVE_SIDECARS, ("-job.json", ".log", ".stderr.log"))
+
     def test_the_fit_run_family_is_owned(self):
         from record_stream_run import require_owned_run
         self.assertEqual(require_owned_run("m3-fit-occupancy-r1"), "m3-fit-occupancy-r1")

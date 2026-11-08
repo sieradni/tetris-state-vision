@@ -3411,6 +3411,23 @@
         "test_controller_evidence.py": "f866886d493cb086684a7d0764806dae4c60287112f881b07dc079c7d516169f"
       }
     },
+    "m3-fit-occupancy-r1-errors-r1": {
+      "record_commit": "",
+      "files": {
+        "checkpoint-manifest.json": "408ed6bea6db3529057c1c197c7019bec2c2a715e5ad6438156edc752fad03b2",
+        "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
+        "input-run-job.json": "d93eec1fb63afcbf9a9b3e129abd17cc1d497484fbaacbbf98124a8d9ce84d58",
+        "input-summary.json": "e54f5f2134adc3126ae094d1e0ccc819bb0606b95d35a134ec5ede66b44346fd",
+        "native-job.json": "1461a7555eb82156c3bc922701246369a0b32cde3aee43eb19a58e280a3525a8",
+        "native.log": "93d954cef9c5fe08f348498ff525fcae5d638b4c7e0de639ef5efbebe5290154",
+        "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "a38aff510dad12ba77fb8c70c6ceb5f3b65bfc9f6d27c3be3c2a4daad6569154",
+        "scope.json": "79ef1c503df4346d49b8f9b1cc9b3bb92aee7ce5d36fbde845fd25f1d5ea4d4c",
+        "source-manifest.json": "b6f9aaf9870fa1e592f81aa2d854de59f73cb4effac7d2528f36872f255df2ba",
+        "training-probe.jsonl": "c59e10a67c67d3f053c7779fe8bb8703ed289f7749a36a28a26683770de8300f"
+      }
+    },
     "m3-identity-discrimination-r2": {
       "record_commit": "1a009f783e55e1020c3d7b5fd32345cf01d0764f",
       "files": {
@@ -4403,7 +4420,7 @@
     }
   },
   "totals": {
-    "directories": 186,
-    "files": 3461
+    "directories": 187,
+    "files": 3473
   }
 }

@@ -1,5 +1,51 @@
 # Contributor handoff — 2026-10-30
 
+## Fit gate measured: it stands, and the occupancy term is not starved - 2026-11-08
+
+`docs/M3_FIT_GATE.md` predeclared the rule at `5065811`, before any fit receipt: the gate
+opens iff `docs/evidence/m3-fit-occupancy-r1-errors-r1/result.json` reports >= 3 exact
+nonempty **training** boards of seven; empty boards, development, roles, geometry and
+component counts are costs that can never upgrade a negative. The lever was
+`--occupancy-factor 4`, scaling only the locked-occupancy weight from `1.` to `4.`, to test
+the length run's constant-empty read-out (`true_positive 0, false_negative 168`), with
+everything else matched: capacity 64, factor 4, capture 512, seed `20261026`, LR .001, 128
+updates, eval/checkpoint 64, six development groups, positional read-out, length endpoint.
+
+Measured: **the gate STANDS at 0/7** exact nonempty training boards (development 0/14, both
+training empty boards also wrong). The mechanism is not starvation. At 4x the head stops
+emitting constant-empty (34 of 1,400 training occupied cells recovered, 230 of 2,800
+development) and still reproduces no board, because the errors are per-cell and
+bidirectional (59 false positives, 134 misses on the training nonempty cells) and the scale
+is paid elsewhere: queue EOS fell 9/9 -> 0/9 and 15/15 -> 0/15, presence 63/63 -> 54/63 and
+105/105 -> 90/105, position spread 0.0877/0.0838 -> 0.0641/0.0379. Queue piece tokens did
+rise to 15/54 and 9/90 (from 0/54 and 0/90) and slot status stayed exact (54/54, 90/90);
+roles 0/9 and 0/18, ghost 0/9 and 0/18 (9/9 in the prototype run, 3/9 in the endpoint run,
+so the family's instability continues), exact readable components 0/9 and 3/18
+(empty-queue cases), geometry 3.3397 and 2.6864.
+
+Ranked next: the **locked read-out's per-cell decision** (its class imbalance and cell-wise
+scoring) - the recorded errors are recall (34 of 168 occupied cells) plus 59 false
+positives, measured by this same rule. Not ranked: another occupancy weight scale, a budget
+extension of this lever, or any further identity/endpoint variant (that disjunction is
+closed). The owner-decision real-image chain is unchanged.
+
+Receipts: admission `runs/m3-fit-occupancy-r1-profile-r1-job.json` (passed), study
+`runs/m3-fit-occupancy-r1-job.json` (passed, 128/128, 250.6 s, 990,515,200 B, weights
+`d0bb45ce...`), canonical replay `runs/m3-fit-occupancy-r1-errors-r1-job.json` (passed, 27
+forwards, weights unchanged, every saved metric reproduced, `occupancy_factor: 4`),
+curation `runs/m3-fit-occupancy-r1-errors-r1-curation.json` (passed) into
+`docs/evidence/m3-fit-occupancy-r1-errors-r1/scope.json`, tests
+`runs/m3-fit-occupancy-tests-r4.json` (7 modules, 101 tests, `OK`). The rule is code:
+`scripts/fit_gate.py` with `tests/test_fit_gate.py`, which also re-derives this verdict from
+the committed `result.json`.
+
+V-053: the first curation died on `runs/m3-fit-occupancy-r1-errors-r1.log` because the
+bounded launch writes the probe's stdout as `<name>-job.log` while the curator copies
+`<name>-job.json`, `<name>.log`, `<name>.stderr.log`. The sidecars are now declared once
+(`record_stream_errors.NATIVE_SIDECARS`) and bound by a test, the failed attempt and its
+partial evidence directory are preserved under `runs/attempts/`, and the re-run replay and
+curation occupy the canonical names.
+
 ## Queue length: the identity disjunction is closed — 2026-11-08
 
 `docs/M3_IDENTITY_QUEUE_LENGTH.md` predeclared at `d2895de`, before any receipt, the last
