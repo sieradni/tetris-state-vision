@@ -100,6 +100,19 @@ def staged_mode(summary, *, freeze_backbone, init_weights_from):
     return source is None or str(source) == str(init_weights_from)
 
 
+def owned_initial_source(source, *, output):
+    """A staged start must be a different saved run owned beside this one.
+
+    The driver re-executes from the verified archive under <runs>/<name>/code, so
+    its ROOT there is the archive copy and cannot name the project's runs. The run
+    being written is the only reliable anchor for the owned runs directory.
+    """
+    source, output = Path(source).resolve(), Path(output).resolve()
+    if not source.is_relative_to(output.parent) or source == output:
+        raise ValueError("initial weights must come from a different owned run")
+    return source
+
+
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
@@ -354,9 +367,7 @@ def main(argv=None, *, _archive=None, _started=None):
     model = TetrisStateNet(config)
     initial_origin = None
     if args.init_weights_from is not None:
-        source = args.init_weights_from.resolve()
-        if not source.is_relative_to(ROOT/"runs") or source == args.output.resolve():
-            raise ValueError("initial weights must come from a different owned run")
+        source = owned_initial_source(args.init_weights_from, output=args.output)
         source_summary = json.loads((source/"summary.json").read_text())
         source_model, source_manifest = load_checkpoint(source/"checkpoint")
         if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
