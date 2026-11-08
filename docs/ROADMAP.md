@@ -20,7 +20,11 @@ a controlled joint-optimization lever and its resource/recovery admission.
 the fixed candidate and records the completed matched comparison: both fail the
 joint fit; increasing the type-head rate reduces exact training roles 20/64 to
 8/64, despite improving geometry, and development roles remain 0/18 for both.
-Investigate per-class gradients and forgetting before selecting another lever.
+The checkpoint diagnostic in [TYPE_FORGETTING_DIAGNOSTIC.md](TYPE_FORGETTING_DIAGNOSTIC.md)
+finds recurrent type-correctness turnover on the fixed fixtures and local
+class-gradient conflicts, with significant limits on causal interpretation.
+Next predeclare a matched test of balanced gradient accumulation before any
+new training; retain the original joint-fit and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

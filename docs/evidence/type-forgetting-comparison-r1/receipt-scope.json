@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "artifacts": {
+    "compare_type_forgetting.py": "fc06d36d5fe480ec36a25caca04c3abb1e44f909987dc746ee8804e5715026a7",
+    "scope.json": "955a08d88c202369ab7b4fd7ed0ca0f1a3b62cc35da5dbeb8c8cd1fc77396cf2",
+    "type-forgetting-comparison-r1-job.json": "bf0b05a5befe6292dc73d5b20a9ae3d3abea79abaed8f4b4c7c6783678e24ad3",
+    "type-forgetting-comparison-r1.log": "41bb46cc163a50f488f3d37774b11b1e3a1111bb190ef5ae5a1493d2417886bb",
+    "type-forgetting-tests-r2-job.json": "3f3a2cd5b9c007e6a8226a4e8f1c3607f0a7f4df6916663bfc9b551264c825be",
+    "type-forgetting-tests-r2.log": "21557996e242e34c7980fdef1f37138c835bb3afb34d47488ee17dd607173f73"
+  },
+  "scope": "Bounded comparison and analyzer test receipts; model and raw-observation identities are in scope.json."
+}

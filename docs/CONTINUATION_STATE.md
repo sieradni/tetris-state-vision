@@ -1,5 +1,61 @@
 # Contributor handoff — 2026-10-30
 
+## Checkpoint forgetting diagnostic completed — 2026-11-07
+
+`docs/TYPE_FORGETTING_DIAGNOSTIC.md` and the source-bound scopes in
+`docs/evidence/type-forgetting-{control,candidate,comparison}-r1/` record 17
+checkpoints/544 ordinary pixel forwards per arm, independently recomputed.
+Control type correctness ranges8..20/64; fourfold candidate stays8/64 at
+every sampled checkpoint despite80 correct-to-wrong and80 wrong-to-correct
+role transitions across 16 intervals. The control records86/98 transitions.
+These are repeated dependent roles, not independent events, and intervals may
+hide intermediate reversals. Local final-head class-gradient cosines are not
+full joint/Adam gradient evidence. No new real-image or generalization claim.
+Both observers, curators and comparator passed; no diagnostic process remains.
+Next predeclare and safely admit a matched class-balanced gradient accumulation
+test with equivalent example exposure and explicit optimizer budgets; do not
+train or alter frozen studies until its design and admission gates pass.
+
+## Type forgetting diagnostic in progress — 2026-11-07
+
+The completed rate comparison remains frozen. A new read-only diagnostic
+replays all32 supported training images at initialization and each64-update
+checkpoint through1024 (17 checkpoints, 544 forwards per model). It captures
+actual final type-head features/logits and supported public targets, verifies
+each retained snapshot's tensor and ledger-prefix identity, replays exact
+fixture pixels, and checks final outputs against the independent ordinary
+report. The separate pure analyzer computes per-class mean final-head CE
+gradients, cosine and checkpoint-to-checkpoint type changes; this is not the
+complete joint gradient, Adam update, feature-gradient or real-image evidence.
+Two mathematical/unknown/refusal tests passed under128 MiB / 30 s / work2.
+
+Control observer planned: `docs/experiments/probe_type_forgetting.py --arm
+control --output runs/type-forgetting-control-r1`, 640 MiB / 600 s / 544
+forwards, expected below600 MiB, CPU1/cache16 and existing pressure guard.
+Receipt/log prefix `runs/type-forgetting-control-r1`; preflight output, log,
+receipt names and capture process identity. One heavy job at a time. Candidate
+follows under the same bounds only after control terminates. An independent
+bounded collector is required before interpreting the outputs.
+Control observer passed 166.366 s / 427,859,968 B, 544 forwards and final
+independent-report agreement. After verifying process death, candidate observer
+uses `docs/experiments/probe_type_forgetting.py --arm candidate --output
+runs/type-forgetting-candidate-r1`, same 640 MiB / 600 s / 544 forwards,
+expected below600 MiB, CPU1/cache16 and pressure guard. Receipt/log prefix
+`runs/type-forgetting-candidate-r1`; preflight all paths.
+Candidate passed 170.071 s / 423,342,080 B, 544 forwards and final independent
+report agreement; all observer processes gone. Stronger analyzer tests r2
+passed. Sequential independent curators planned: `docs/experiments/
+record_type_forgetting.py --arm {control,candidate}`, 128 MiB / 30 s /
+544 role-image forward records per arm, expected below100 MiB, CPU1 and
+pressure guard. Receipt/log prefixes `runs/type-forgetting-{arm}-curation-r1`,
+new evidence directories `docs/evidence/type-forgetting-{arm}-r1/`.
+Both curators passed; control 42,598,400 B, candidate 42,672,128 B under
+128 MiB, with actual checkpoint/logit reconstruction and public-target checks.
+Matched class-distribution comparator planned `docs/experiments/
+compare_type_forgetting.py`, 128 MiB / 30 s / 1088 image-checkpoint cases,
+expected below100 MiB, CPU1/pressure guard, receipt/log prefix
+`runs/type-forgetting-comparison-r1`; preflight new evidence path.
+
 ## Joint type-head fit completed — 2026-11-07
 
 Both fresh same-source fixed1024 studies and independent ordinary41-image
