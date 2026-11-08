@@ -111,8 +111,8 @@ def main():
     require_frozen_callables(code, sample_case, targets_for)
     curriculum = summary.get("curriculum", "stream-v1")
     if "curriculum" in summary:
-        from m2_curriculum import replay_case
-        require_frozen_callables(code, replay_case)
+        from m2_curriculum import replay_case, sample_for
+        require_frozen_callables(code, replay_case, sample_for)
         if curriculum == "all-class-interleaved-v1":
             from m2_interleaved_order import distinct_groups, interleaved_spec
             require_frozen_callables(code, distinct_groups, interleaved_spec)
