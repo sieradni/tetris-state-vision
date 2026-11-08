@@ -1,5 +1,50 @@
 # Contributor handoff — 2026-10-30
 
+## M3 input representation (capture side 640): a declared negative — 2026-11-08
+
+`docs/M3_IDENTITY_REPRESENTATION.md` predeclared the lever at `b229972`, before any
+receipt: one value, the model capture side, 512 -> 640, threaded through
+`model_capture_style` and the trainer's input budget, with every target, mask, order,
+loss, architecture and curriculum term unchanged. The control is
+`m3-identity-factor-r1` (128 updates, capacity 64, factor 4, separate read-out, seed
+`20261026`, LR .001, `stream-v1`, eval/checkpoint 64, six development groups).
+
+The rule is total over the rise x structure square and the observed state lands in its
+**NEGATIVE** cell: the primary did not rise (exact queue piece tokens 3/54 training and
+9/90 development, equal to control on both) while structure held on all eight declared
+terms (training EOS 9/9, slot 54/54, presence 54/63, hold 0/9; development EOS 3/15,
+slot 90/90, presence 90/105, hold 3/12). The replay also measures the control's exact
+54 and 90 queue tokens and 9/12 hold cases, so the finer capture did not change the
+supervised component population on these probes. The fit gate stays FALSE (0/9 and
+0/18 boards, 9/18 and 0/36 roles, 0/9 and 0/18 exact readable components, geometry 3.82
+and 2.28 cells).
+
+Receipts: admission `runs/m3-identity-representation-profile-r3-job.json` (passed,
+87.4 s, 944,017,408 B under 2,048 MiB), study
+`runs/m3-identity-factor-representation-r1-job.json` (passed, 128/128 steps, 542.6 s,
+986,275,840 B, checkpoint `acb6a8a9...`, catalogue `2d3623a1...`), independent replay
+`runs/m3-identity-factor-representation-r1-errors-r1-job.json` (passed, 27 forwards,
+39.0 s, 631,767,040 B, every saved metric reproduced, weights unchanged) curated in
+`docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json` (`passed`),
+and the capture-side contract tests inside the whole suite (410 tests, 63.5 s,
+550,457,344 B, `docs/evidence/m3-capture-side-tests-r1/`).
+
+Three instrument defects surfaced and are recorded: V-045 (a predeclared ceiling above
+the engine's 2 GiB bounded-job cap; lowered to 2,048 MiB, never the capture side),
+V-046 (the profile admission compared its observed maximum to the literal 512^2,
+refusing every other side; now `512**2 <= observed <= max_side**2`, green on the r3
+profile), V-047 (retry receipts with suffixed names are invisible to readers that hard
+require `runs/<name>-job.json`; the passing receipt now occupies the canonical name and
+every refused attempt is preserved beside it).
+
+Re-ranked, the executable identity levers are exhausted: the coefficient moves identity
+at a structural cost, the read-out tying is a negative, the budget is a miss, and the
+representation is a negative with structure held. What remains is the owner-decision
+real-image chain (admitted, permissioned, reviewed labels) and the unchanged FALSE fit
+gate, which no identity lever has moved. The next pass should close the fit gate on its
+own terms or take the owner decision on real screenshots; another identity lever is not
+ranked.
+
 ## M3 identity budget lever: identity rises, structure regresses — 2026-11-08
 
 The budget lever is executed and judged against its own predeclaration (`9970e5a`).

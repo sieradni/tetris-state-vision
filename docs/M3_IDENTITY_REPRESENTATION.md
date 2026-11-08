@@ -142,3 +142,62 @@ is never reduced to fit a ceiling, because that would shrink the lever.
   replay of an untouched run verify.
 - Any harness, admission or gate defect this pass surfaces is fixed at its root and
   recorded in `docs/BUG_LOG.md` on a named receipt.
+
+## Result: a declared negative — 2026-11-08
+
+Receipts, all later than the predeclaration at `b229972`:
+
+- Code path (`a892dfb`): one capture-side value is threaded through the sampler, the
+  curriculum, the trainer's `prepare_image`/input budget, the admission identity and
+  the replay. Default 512 still reproduces every previous recipe byte-for-byte (two
+  frozen factor-4 recipes replay identically; the capture-side contract tests assert
+  record identity, pixel identity at the declared side and refusal of another side).
+- Admission: the predeclared 2,304 MiB ceiling was refused by the engine rather than by
+  pressure — `probe_model.bounded_job_snapshot` caps a bounded job at 2 GiB
+  (`RuntimeError: use run_bounded.py with <=2 GiB aggregate commit and a wall cap`), so
+  the ceiling was lowered to the engine's maximum 2,048 MiB (V-045); the capture side
+  was not reduced. The first 640 profile then refused at the trainer's own admission
+  because the observed-pixel identity compared the profile maximum to the literal
+  `512**2` while this side's second profile case is a real 544x640 canvas (348,160 px);
+  fixed at the root to `512**2 <= observed <= max_side**2` (V-046, commit `73f0452`).
+  The admission catalogue hashes the frozen source, so the profile was retaken after
+  that fix: `runs/m3-identity-representation-profile-r3-job.json` passed (2 steps,
+  87.4 s, 944,017,408 B peak under 2,048 MiB, checkpoint `e1ba82fc...`, identical to
+  the pre-fix profile, so the fix changed only the guard).
+- Study: `runs/m3-identity-factor-representation-r1-job.json` passed, 128/128 steps,
+  542.6 s, peak 986,275,840 B, checkpoint `acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67`,
+  catalogue `2d3623a14a84dadd7c4f2fa71db02ce4a1c3b5bc890de1037f36551b78a3b15c`,
+  `max_side` 640, observed maximum 348,160 px.
+- Independent replay: `runs/m3-identity-factor-representation-r1-errors-r1-job.json`
+  passed, 27 forwards, 39.0 s, 631,767,040 B, `automatic_metrics_reproduced` true and
+  the weights unchanged; curated in
+  `docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json` (`passed`).
+
+Measured against the rule exactly as predeclared:
+
+| Term | Declared | Measured | Condition |
+|---|---|---|---|
+| training queue tokens | > 3/54 | 3/54 | not risen |
+| development queue tokens | > 9/90 | 9/90 | not risen |
+| training queue EOS | >= 8/9 | 9/9 | held |
+| training slot status | 54/54 | 54/54 | held |
+| training presence | >= 54/63 | 54/63 | held |
+| training hold identity | >= 0/9 | 0/9 | held |
+| development queue EOS | >= 3/15 | 3/15 | held |
+| development slot status | 90/90 | 90/90 | held |
+| development presence | >= 90/105 | 90/105 | held |
+| development hold identity | >= 3/12 | 3/12 | held |
+
+Primary did not rise and structure held, so the verdict is **NEGATIVE** by the
+predeclared table: the representation is not the limiter. Reported but not the
+criterion, the fit gate is unchanged and FALSE — 0/9 and 0/18 exact boards, 9/18 and
+0/36 exact roles, 0/9 and 0/18 exact readable components, mean geometry 3.82 and 2.28
+cells — and the replay measures exactly the control's 54 training and 90 development
+queue tokens and 9/12 hold cases, so the finer capture did not turn any previously weak
+icon into a known component on this probe population.
+
+Deviations from the predeclaration, all declared before their receipts were read: the
+2,304 MiB ceiling became 2,048 MiB (engine cap, V-045); the profile is r3 rather than r1
+(retaken after V-046, same checkpoint); receipts of refused attempts are preserved with
+suffixes while the passing receipt occupies the canonical `<name>-job.json` (V-047). No
+other capture side was tried, nothing was retuned, and the budget was not extended.

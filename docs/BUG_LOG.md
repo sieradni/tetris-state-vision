@@ -14,10 +14,70 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013, V-039, V-040, V-043 (4) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
+| resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044 (7) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047 (8) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-047 — CLOSED: retry receipts were invisible to the canonical-receipt readers
+
+- Symptom: the first independent replay of the representation study exited 1 with
+  `complete native run required` although that run's summary was `complete` with
+  128/128 steps and its supervisor receipt said `passed`; the following curation then
+  failed on a missing `result.json`.
+- Root cause: `probe_stream_errors.py` and `record_stream_errors.py` read the job
+  receipt from the fixed path `runs/<name>-job.json`, but a refused attempt had already
+  written that canonical name while the passing attempt was written to a suffixed
+  receipt (`-job-r3`). The readers validated the failed attempt and no message named the
+  file they had chosen.
+- Detection class: evidence-reporting; extends V-032/V-033/V-042 because the artifact a
+  reader resolves by convention disagreed with the receipt that describes the run.
+- Instrument: the convention is now explicit — the passing receipt of a run or replay
+  occupies the canonical `<name>-job.json`, and every refused attempt is preserved
+  beside it as `-attempt<k>` or `-r<k>` with its own log. No automatic check resolves
+  receipts yet, so a reader that is pointed at a non-canonical receipt still gets the
+  old error rather than a diagnostic naming the alternatives.
+- Green run: the passing replay receipt `runs/m3-identity-factor-representation-r1-errors-r1-job-r2.json`
+  is copied byte-for-byte to the canonical name, and curation
+  `runs/m3-identity-factor-representation-r1-errors-r1-curation-r3.json` (passed) plus
+  `docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json` postdate it.
+
+## V-046 — CLOSED: the profile admission identity was hard-coded to 512 pixels
+
+- Symptom: fresh 640 admissions were refused in 3.6 s with `complete two-step square
+  warm-optimizer resource admission required` although the profile itself completed both
+  steps and reloaded exactly.
+- Root cause: `validate_admission` compared the profile's observed maximum input pixels
+  to the literal `512**2`. That literal is only right for the square probe canvas: the
+  probe is a fixed 512x512 layout, so the warm backward's 262,144-pixel input is correct
+  at any capture side, but the second profile case is a real 544x640 canvas that arrives
+  at 348,160 pixels when the side is 640, so no correct profile could satisfy the check
+  at another side.
+- Detection class: resource-profile; the guard, not the representation, refused.
+- Instrument: the identity is now `512**2 <= observed <= max_side**2`, which is exactly
+  the old check when the side is 512, still requires the square probe to have been
+  exercised, and still refuses any profile that exceeded the declared budget.
+- Green run: `runs/m3-identity-representation-profile-r3-job.json` (passed, 2 steps,
+  87.4 s, 944,017,408 B, checkpoint `e1ba82fc...` identical to the pre-fix profile) and
+  the admitted study `runs/m3-identity-factor-representation-r1-job.json` (passed,
+  128/128 steps) both postdate commit `73f0452`.
+
+## V-045 — CLOSED: the predeclaration declared a ceiling above the engine's cap
+
+- Symptom: the 640 admission was refused in 0.22 s with `use run_bounded.py with <=2 GiB
+  aggregate commit and a wall cap` although the predeclaration had declared 2,304 MiB
+  for both the admission and the study.
+- Root cause: the declared ceiling was derived from expected model growth without
+  checking `probe_model.bounded_job_snapshot`'s bound. A bounded job ceiling above 2 GiB
+  is refused by the engine whatever the host's commit headroom is, so the predeclared
+  number was unadmittable on any host.
+- Detection class: resource-profile.
+- Instrument: both receipts use 2,048 MiB (the engine maximum, still under
+  min(physical/3, 8 GiB)), stated before the admitted profile ran. The capture side was
+  not reduced: the fix was to the declaration, not the lever.
+- Green run: `runs/m3-identity-representation-profile-r3-job.json` (passed under
+  2,048 MiB, peak 944,017,408 B) and the study under the same ceiling (passed, peak
+  986,275,840 B).
 
 ## V-044 — CLOSED: the predeclared decision rule was not total
 

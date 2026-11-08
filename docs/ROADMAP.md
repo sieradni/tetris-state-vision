@@ -11,6 +11,18 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the input representation (model capture side 512 -> 640) is a declared negative
+([M3_IDENTITY_REPRESENTATION.md](M3_IDENTITY_REPRESENTATION.md), predeclared at
+`b229972`, `docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json`):
+the primary does not rise (exact queue piece tokens 3/54 training and 9/90 development,
+equal to `m3-identity-factor-r1`) while every structure term holds, and the independent
+replay measures the same 54/90 tokens and 9/12 hold cases, so the finer capture did not
+change the supervised population. The fit gate is unchanged and FALSE (0/9 and 0/18
+boards, 9/18 and 0/36 roles, 0/9 and 0/18 components, 3.82 and 2.28 cells). With the
+coefficient, read-out, budget and representation all measured, no executable identity
+lever remains: what is left is the owner-decision real-image chain and the FALSE fit
+gate.
+
 Latest: the 512-update identity budget is a miss on its own criterion
 ([M3_IDENTITY_BUDGET.md](M3_IDENTITY_BUDGET.md),
 `docs/evidence/m3-identity-factor-budget-r1-errors-r1/scope.json`): exact queue piece

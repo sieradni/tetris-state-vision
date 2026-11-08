@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\probe_stream_errors.py", line 256, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\probe_stream_errors.py", line 96, in main
+    validate_completion(summary, job, allow_partial=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\record_stream_run.py", line 39, in validate_completion
+    raise ValueError("complete native run required")
+ValueError: complete native run required
