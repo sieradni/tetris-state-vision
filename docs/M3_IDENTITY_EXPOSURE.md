@@ -85,11 +85,15 @@ positional prior does not explain the successes.
 - **Not a coverage gap.** Every piece class appears in both splits, and every
   observed queue slot in the training probes is supervised. Nothing is missing
   from the target vocabulary or left systematically masked.
-- **Label-scarce per class.** A pass carries 3–18 unique labels per class and 9–12
-  hold labels; each of the nine training probes is drawn 14 or 15 times in the 128
-  updates, so a class with three unique labels is re-presented about 42 times while
-  a class with fifteen gets about 210. The imbalance between T (15) and S or L (3)
-  is fivefold, and hold identity sees only four of seven classes.
+- **Thin per probe, not thin in the stream.** The scored probes carry 3-18 unique
+  labels per class and 9-12 hold labels, with a fivefold imbalance between T (15)
+  and S or L (3), and hold identity sees four of seven classes. The training stream
+  is not those probes: `training_spec` draws a new ancestry every three steps, so the
+  factor-4 run's 128 updates saw 128 distinct images from 43 ancestries
+  (`runs/m3-identity-factor-r1/training.jsonl`: 128 distinct `sample_id`, 43 distinct
+  `group_id`, 128 distinct `image_pixels_sha256`). Training-wide identity supervision
+  is therefore several hundred distinct labels, so per-class label diversity is not
+  obviously the binding limit; the probe counts above are what the criterion scores.
 - **Identity is class-selective, not uniformly unlearnable.** The only identities
   ever predicted correctly are queue `S` (3/3 training, 9/18 development) and hold
   `T` (0/3 training, 3/3 development). Six queue classes and three of four hold
@@ -104,9 +108,10 @@ positional prior does not explain the successes.
 
 It rules out two explanations and therefore two candidate levers: another loss
 scale (already measured, structural cost) and more class coverage (already
-complete). It does not decide between the two that remain — label diversity per
-pass versus the input representation (pixels per icon) — and this pass deliberately
-opens neither: no lever is declared, admitted or trained here.
+complete). It does not decide between the two that remain by itself — optimization budget over
+more distinct draws, versus the input representation (pixels per icon). The budget
+lever is predeclared in `docs/M3_IDENTITY_BUDGET.md` and is the next thing this
+project runs; the representation lever stays closed until that verdict.
 
 The next identity step should therefore add supervision diversity or change the
 representation, not another coefficient, and should be predeclared with its own
@@ -115,8 +120,8 @@ fresh native admission like every prior lever.
 ## Limits
 
 Nine synthetic training views and eighteen development views drawn from three and
-six ancestries; the labels are repeated dependent draws, not independent samples,
-so the per-class counts are budget counts rather than statistical estimates. No
+six ancestries; the development views share six ancestries, so the per-class counts are budget
+counts rather than statistical estimates. No
 real image, no decoded complete state, no release claim, and no calibrated
 confidence follows. Masked identity stays unknown and is never counted as a class
 or as an empty slot.

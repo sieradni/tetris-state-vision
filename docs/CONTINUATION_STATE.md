@@ -22,9 +22,11 @@ classes. Correctness is class-selective, not positional: the only identities eve
 are queue `S` (3/3 training, 9/18 development) and hold `T` (0/3 training, 3/3
 development), while six queue classes and three hold classes are at zero; development's
 nine successes sit at slots 1, 3, 5 and 7, and all 15 development slot-0 labels are
-wrong. With the coefficient lever having already moved the totals, the remaining ceiling
-is label diversity or the input representation — not global starvation and not class
-coverage. No lever is opened in this pass.
+wrong. With the coefficient lever having already moved the totals and the stream drawing a
+new ancestry every three steps (128 distinct images from 43 ancestries in the
+factor-4 run), what remains is optimization budget versus the input representation —
+not global starvation and not class coverage. The budget lever is predeclared in
+`docs/M3_IDENTITY_BUDGET.md`.
 
 Also fixed: `docs/RESOURCE_GUARD.md` still described V-040's retired physical stop line
 as binding (V-043, green on this audit receipt's `stop_commit_bytes`), so the policy record

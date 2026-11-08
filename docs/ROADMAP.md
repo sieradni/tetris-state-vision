@@ -17,8 +17,10 @@ Latest: identity supervision is class-complete but label-scarce
 supervised in both splits (54 training and 90 development queue tokens), yet the only
 identities ever exact are queue `S` (3/3 and 9/18) and hold `T` (0/3 and 3/3), with six
 queue classes and three hold classes at zero and the development successes spread over
-slots 1, 3, 5 and 7. The ceiling is therefore label diversity or the input
-representation, not another loss scale and not class coverage; no new lever is opened.
+slots 1, 3, 5 and 7. The scored probes are not the training stream, though: the factor-4 run's 128
+updates drew 128 distinct images from 43 ancestries, so what remains is optimization
+budget versus the input representation. The budget lever is predeclared in
+[M3_IDENTITY_BUDGET.md](M3_IDENTITY_BUDGET.md) and is running next.
 
 Latest: tying the identity read-out into the cell-type classifier is a measured
 negative ([M3_IDENTITY_READOUT.md](M3_IDENTITY_READOUT.md), predeclared at `e83d70e`,
