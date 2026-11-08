@@ -17,7 +17,26 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013, V-039, V-040 (3) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041 (5) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042 (6) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-042 — CLOSED: the frozen-evidence rule was prose only
+
+- Symptom: V-041 repaired the planted-file instance by relocating the log, but nothing in the
+  tree prevented a repeat: the rule that an evidence directory's file set belongs to the
+  record existed only in documentation, so the next planted file would pass review and no
+  gate would notice.
+- Root cause: no machine-readable record of any evidence directory's file set or digests;
+  detection depended on an ad-hoc audit command run by hand exactly once.
+- Detection class: evidence-reporting.
+- Instrument: `docs/frozen-evidence-manifest.json` (176 directories, 3368 files; every directory
+  keyed to the commit that recorded it, plus the evidence-root loose files) and
+  `tools/check_frozen_evidence.py`, which names the directory and file for an added, removed
+  or modified file, a missing directory, an unregistered directory and an unregistered root
+  file. Digests are content with CRLF normalized to LF so checkout line endings are not
+  drift. Pure `hashlib`; no network, no suite, no receipt scoring, no manifest writing.
+- Green run: clean tree exits 0; then an added file, one appended byte in a frozen receipt,
+  a moved-away directory and a re-created `m3-identity-factor-fullsuite-r1/` each exit 1
+  naming the offending path; every injection reverted and `git status` clean.
 
 ## V-041 — CLOSED: the audit filed evidence under a frozen run's receipt name
 

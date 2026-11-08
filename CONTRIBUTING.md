@@ -131,7 +131,9 @@ the appropriate limits, keep raw run data out of commits unless it is deliberate
 curated evidence, and update the roadmap/checkpoint. Never broadly stage ignored
 runs, screenshots or your virtual environment. Record a new defect with a named
 green closure gate. Preserve existing hashes, frozen execution sources and partial
-statuses. Do not raise ceilings, disable guards, rewrite shared history, publish
+statuses. Record every new evidence directory in
+`docs/frozen-evidence-manifest.json`; `tools/check_frozen_evidence.py` fails on
+drift or an unregistered entry (V-041/V-042). Do not raise ceilings, disable guards, rewrite shared history, publish
 assets or delete another owner's data.
 
 Push your branch and open a PR describing the problem, final behavior, evidence

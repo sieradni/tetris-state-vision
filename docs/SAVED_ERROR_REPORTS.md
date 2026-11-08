@@ -48,6 +48,18 @@ then copies receipts, source/weight manifests, input summary, probe ledgers and
 result with hashes into docs/evidence/<name>/. scope.json is written last.
 Raw images/tensors remain in their original local run; no evidence is deleted.
 
+`docs/frozen-evidence-manifest.json` records every committed evidence directory under
+`docs/evidence/` as its full file listing with a sha256 per file (content, CRLF normalized
+to LF), keyed to the commit that recorded it, plus the loose files at the evidence root —
+176 directories and 3368 files at this writing. `tools/check_frozen_evidence.py` verifies the
+live tree against it and exits nonzero naming the directory and the file for an added,
+removed or byte-modified file, a missing directory, or an unregistered entry, so planting a
+file under a frozen run's name is a failing check rather than a review question
+(V-041/V-042). Run it from the checkout root with
+`.venv/Scripts/python.exe tools/check_frozen_evidence.py`. A new receipt gets its manifest
+entry in the same commit; the checker never rewrites the manifest, so re-baselining is
+always a reviewed change.
+
 Eight metadata fixtures use preserved704-report data, adapted in memory to the
 format2 schema. They do no inference and do not upgrade historical reports.
 With the27 existing decomposition/compatibility cases,35 tests pass in1.906s,
