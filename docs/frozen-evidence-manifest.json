@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "326e50d7c39c282f772e94b1239913e9a1ba63a2",
+    "generated_at_commit": "6aaccfdb5f44f3577a6d203917a1138382d6c977",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -3394,7 +3394,7 @@
       }
     },
     "m3-identity-exposure-r4": {
-      "record_commit": "",
+      "record_commit": "6aaccfdb5f44f3577a6d203917a1138382d6c977",
       "files": {
         "attempt-m3-identity-exposure-r1.json": "c722476d9661e57e655fe13c56ceb7e386c85a6cda76e0e01862b1c0d28235d2",
         "attempt-m3-identity-exposure-r2.json": "b35eade7eeabfcd417d94339158069138882e2c47e18aa249dfd5a09da5a2e18",
