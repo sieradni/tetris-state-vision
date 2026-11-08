@@ -31,8 +31,10 @@ every ledger and summary. Measured two-update native profiles now exist for both
 predeclared group sizes under the unchanged 640 MiB ceiling and supervisor
 (size1: 519,929,856 B peak,33.3 s; size8: 561,786,880 B peak,29.35 s, both with
 exact boundary reload), and each arm is admitted only through those measured
-numbers. The 1,024-image arms, controller/curator cursor routing and accumulated
-resume remain open. The pure journal and ownership boundary pass their own scoped
+numbers. Both 1,024-image arms now complete across two bounded segments each with exact
+journal-prefix resume, byte-identical Adam/RNG continuation and measured peaks
+under640MiB (`docs/evidence/accumulation-arm-r1/`); automated controller/curator
+routing and an independent final pixel replay remain open. The pure journal and ownership boundary pass their own scoped
 tests, and the whole-group arm also passes scoped driver checks including a forced
 in-group interruption replayed to identical bytes (toy network; V-030 records that
 bounded children need an absolute interpreter path). Retain the original joint-fit

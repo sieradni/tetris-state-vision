@@ -10,7 +10,7 @@ from pathlib import Path
 import sys
 import time
 
-from accumulation_checkpoint import create_journal, make_contract
+from accumulation_checkpoint import create_journal, make_contract, restore_boundary
 from accumulation_contract import POLICIES as ACCUMULATION_POLICIES, group_specs, update_count
 from probe_model import bounded_job_snapshot, require_bounded_job
 from source_snapshot import capture_source, verify_source
@@ -69,8 +69,8 @@ def arguments(argv=None):
             parser.error("accumulated fit requires pilot M2, no optional heads, seed 20261026 and learning rate .001")
         if args.curriculum != expected:
             parser.error("accumulation policy requires its predeclared "+expected+" curriculum")
-        if args.resume_from is not None or args.max_new_steps is not None:
-            parser.error("accumulated resume needs the durable boundary restore, which is not integrated yet")
+        if args.resume_from is not None and args.resume_from.resolve() == args.output.resolve():
+            parser.error("an accumulated segment needs its own output directory")
         if not args.profile_square and args.steps != update_count(args.accumulation_policy):
             parser.error("an accumulated arm consumes exactly "+str(update_count(args.accumulation_policy))+" optimizer updates")
         if args.checkpoint_every % size or args.evaluate_every % size:
@@ -436,7 +436,19 @@ def main(argv=None, *, _archive=None, _started=None):
         recovery_contract["images_per_update"] = ACCUMULATION_POLICIES[args.accumulation_policy][0]
     ledger_names = ("curve.jsonl", "training.jsonl", "evaluations.jsonl")
     resume_record = None
-    if args.resume_from is not None:
+    if args.resume_from is not None and args.accumulation_policy is not None:
+        # The committed journal prefix and Adam/RNG state are restored into this
+        # segment's own directory; any uncommitted suffix in the source is excluded.
+        restored = restore_boundary(args.resume_from, args.output, model, optimizer, accumulation)
+        completed = restored["optimizer_updates"]
+        if (completed >= args.steps or restored["images_seen"] !=
+                completed*ACCUMULATION_POLICIES[args.accumulation_policy][0]):
+            raise ValueError("accumulated resume requires an unfinished compatible arm")
+        prefix = (args.output/"groups.jsonl").read_bytes()
+        resume_record = {"source_run": str(args.resume_from.resolve()), "step": completed,
+                         "pointer": restored["source_pointer"], "images_seen": restored["images_seen"],
+                         "journal_prefix_sha256": hashlib.sha256(prefix).hexdigest()}
+    elif args.resume_from is not None:
         recovery = load_training_snapshot(args.resume_from, model, optimizer, contract=recovery_contract)
         completed = recovery["step"]
         if completed >= args.steps or recovery["ledger_prefixes"].keys() != set(ledger_names):
@@ -499,10 +511,11 @@ def main(argv=None, *, _archive=None, _started=None):
                                 elapsed_seconds=time.monotonic()-started)
                 atomic_json(args.output/"progress.json", progress)
 
-            create_journal(args.output)
+            if args.resume_from is None:
+                create_journal(args.output)
             accumulation_result = run_accumulation_loop(
                 run=args.output, policy=args.accumulation_policy, contract=accumulation,
-                model=model, optimizer=optimizer, updates_total=args.steps,
+                model=model, optimizer=optimizer, updates_total=final_step, start_update=started_step+1,
                 recipe_for=recipe_for, loss_for=loss_for, checkpoint_every=args.checkpoint_every,
                 evaluate_every=args.evaluate_every, wall_seconds=args.wall_seconds, started=started,
                 on_group=on_group, on_evaluation=on_evaluation, on_progress=on_progress)
@@ -608,7 +621,8 @@ def main(argv=None, *, _archive=None, _started=None):
             "policy": args.accumulation_policy, "images_per_update": size,
             "images_seen": completed*size, "optimizer_updates": completed,
             "contract": accumulation, "journal_sha256": file_digest(args.output/"groups.jsonl"),
-            "latest_boundary": latest_snapshot}
+            "latest_boundary": latest_snapshot, "resumed_from_update": started_step,
+            "images_this_segment": (completed-started_step)*size}
     metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
                 "initial_weights_sha256": initial_sha256,
                 "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
@@ -649,7 +663,8 @@ def main(argv=None, *, _archive=None, _started=None):
                    "images_per_update": accumulation_metadata["images_per_update"],
                    "images_seen": accumulation_metadata["images_seen"], "optimizer_updates": completed,
                    "accumulation_journal_sha256": accumulation_metadata["journal_sha256"],
-                   "optimizer_updates_per_second": completed/max(time.monotonic()-started, 1e-9)}
+                   "optimizer_updates_per_second": completed/max(time.monotonic()-started, 1e-9),
+                   "resumed_from_update": started_step, "resume": resume_record}
                   if accumulation_metadata is not None else {}),
                "claim": "Finite synthetic curriculum or resource characterization, not complete-state or real-image acceptance.", **metadata}
     atomic_json(args.output/"summary.json", summary)

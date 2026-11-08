@@ -97,7 +97,7 @@ needs its own explicit profile handling. Neither the trainer nor checkpoint
 publisher uses this boundary yet. Fresh neural integration, pressure-safe
 testing, full-square admission and real interruption recovery remain required.
 
-## Durable boundary bridge and integrated arm (native profiles measured)
+## Durable boundary bridge and integrated arms (measured)
 
 [`scripts/accumulation_checkpoint.py`](../scripts/accumulation_checkpoint.py)
 binds the journal to the existing snapshot tooling: it creates a journal only in a
@@ -152,8 +152,30 @@ arm is accepted by `validate_admission` only when its profile names the same
 policy and group size, counts `2*group_size` microsteps in the native work
 budget, and carries a positive measured update rate.
 
-Still open: the 1,024-image arms themselves, controller and independent-curator
-routing for these cursors, and accumulated resume, which is refused until the
-boundary restore is wired into the driver. So no arm of the comparison is
-admitted. Bounded children must use an absolute or backslash interpreter path;
-see V-030 in [BUG_LOG.md](BUG_LOG.md).
+Both predeclared arms then ran natively to their full 1,024-image budgets across
+two bounded segments each, every segment admitted from its own measured two-update
+profile at the same 640 MiB ceiling
+([segmented arms](evidence/accumulation-arm-r1/scope.json)):
+
+| Arm | Segment | Updates | Images | Wall | Updates/s | Peak commit | Resume delta |
+|---|---|---|---|---|---|---|---|
+| balanced-eight | 1 | 64 | 512 | 175.3 s | 0.365 | 565,817,344 B | - |
+| balanced-eight | 2 | 64 | 512 | 179.8 s | 0.356 | 567,971,840 B | +2,154,496 B |
+| online interleaved | 1 | 512 | 512 | 216.1 s | 2.369 | 565,100,544 B | - |
+| online interleaved | 2 | 512 | 512 | 289.6 s | 1.768 | 569,487,360 B | +4,386,816 B |
+
+Segment 2 restores the committed boundary with `restore_boundary`: the first
+segment's journal is an exact byte prefix of the resumed one (512 images each),
+the resume pointer equals the first segment's published boundary, and the resumed
+cursors agree (64 and 512 updates). An independent bounded restore of that
+boundary costs 0.219 s (eight-image arm) and 0.200 s (online arm). Both final
+segments report `complete` at 128/128 and 1,024/1,024 updates. A bounded partial
+segment reports `status: step_partial` and exits 2 by the trainer's existing
+convention, so its supervisor receipt reads `failed` while the summary carries
+the partial status.
+
+Still open: automated controller and independent-curator routing for these
+cursors (segments were launched explicitly with `--resume-from`), an independent
+ordinary pixel replay of the final artifacts, and an interruption *inside* a
+group at arm scale. Bounded children must use an absolute or backslash interpreter
+path; see V-030 in [BUG_LOG.md](BUG_LOG.md).

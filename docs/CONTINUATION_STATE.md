@@ -20,9 +20,18 @@ group sizes at640MiB: size1 519,929,856B /33.30s /0.060 updates/s, size8
 (0.212s and0.086s) and a zero reload delta because the warm peak was already
 higher; evidence in `docs/evidence/accumulation-profile-r1/`. Admission now
 requires the matching policy, group size, `2*group_size` microsteps and a
-positive measured update rate. Still open: the1,024-image arms, controller/
-curator cursor routing, and accumulated resume (refused until the boundary
-restore is wired in).
+positive measured update rate. Both arms then ran natively to their full1,024-image budgets across two bounded
+segments each, every segment admitted from the measured two-update profile:
+balanced-eight 64+64 updates (175.3s/179.8s, peaks565,817,344B and567,971,840B,
+resume delta+2,154,496B), online-interleaved512+512 updates
+(216.1s/289.6s, peaks565,100,544B and569,487,360B, resume delta+4,386,816B). The
+first journal is an exact byte prefix of the resumed one and the resume pointer
+matches the published boundary; measured reload cost0.219s/0.200s
+(`docs/evidence/accumulation-arm-r1/`). Resume now goes through
+`restore_boundary`. A bounded partial segment exits2 with `status: step_partial`,
+so its supervisor receipt says `failed` while the summary carries the partial
+status. Still open: automated controller/curator routing, an independent final
+pixel replay, and an interruption inside a group at arm scale.
 
 ## State recovery — 2026-11-08
 
@@ -44,9 +53,9 @@ forward-slash child interpreter fails in `CreateProcess`, so bounded children
 must use an absolute or backslash path form; the supervisor is unchanged.
 The bridge is used by the trainer's accumulation arm only (see the new
 checkpoint above): the controller and independent curator still do not route
-these cursors, ordinary fixed-fit recipes only; two-update full-square group profiles now exist
-for group sizes1 and8, but no native in-group interruption/recovery gate at arm
-scale exists. No training is
+these cursors, ordinary fixed-fit recipes only; two-update full-square group profiles and native
+segment-boundary resume now exist for group sizes1 and8, but an interruption
+inside a group at arm scale remains unexercised. No training is
 admitted and no research job is running.
 Next: route the image/update cursors through the controller and independent
 curator, wire accumulated resume to the boundary restore, then obtain fresh

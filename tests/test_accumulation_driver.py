@@ -173,6 +173,60 @@ class AccumulationDriverTest(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     arguments(wrong)
 
+    def test_two_segments_resume_at_a_real_boundary_to_the_same_bytes(self):
+        policy = "balanced-eight-v1"
+        contract = make_contract(policy, source_catalogue_sha256="c"*64, config=CONFIG)
+        model, optimizer = network_and_optimizer(109)
+        with tempfile.TemporaryDirectory() as directory:
+            whole = Path(directory)/"whole"
+            whole.mkdir()
+            create_journal(whole)
+            run_accumulation_loop(
+                run=whole, policy=policy, contract=contract, model=model, optimizer=optimizer,
+                updates_total=4, recipe_for=recipe_for(policy), loss_for=loss_for(model),
+                checkpoint_every=8, evaluate_every=8, wall_seconds=600, started=time.monotonic(),
+                on_group=lambda update, state, entry: None)
+            expected = (copy.deepcopy(model.state_dict()), copy.deepcopy(optimizer.state_dict()),
+                        torch.get_rng_state().clone())
+            expected_journal = (whole/"groups.jsonl").read_bytes()
+
+            first, second = Path(directory)/"seg1", Path(directory)/"seg2"
+            first.mkdir()
+            second.mkdir()
+            create_journal(first)
+            segment_model, segment_optimizer = network_and_optimizer(109)
+            run_accumulation_loop(
+                run=first, policy=policy, contract=contract, model=segment_model,
+                optimizer=segment_optimizer, updates_total=2, recipe_for=recipe_for(policy),
+                loss_for=loss_for(segment_model), checkpoint_every=8, evaluate_every=8,
+                wall_seconds=600, started=time.monotonic(),
+                on_group=lambda update, state, entry: None)
+            self.assertEqual(len((first/"groups.jsonl").read_text().splitlines()), 2)
+            state = restore_boundary(first, second, segment_model, segment_optimizer, contract)
+            self.assertEqual((state["images_seen"], state["optimizer_updates"]), (16, 2))
+            self.assertEqual(expected_journal.splitlines()[:2], (second/"groups.jsonl").read_bytes().splitlines())
+            result = run_accumulation_loop(
+                run=second, policy=policy, contract=contract, model=segment_model,
+                optimizer=segment_optimizer, updates_total=4, start_update=3,
+                recipe_for=recipe_for(policy), loss_for=loss_for(segment_model),
+                checkpoint_every=8, evaluate_every=8, wall_seconds=600, started=time.monotonic(),
+                on_group=lambda update, state, entry: None)
+            self.assertEqual(result["state"]["optimizer_updates"], 4)
+            self.assertEqual(len((second/"groups.jsonl").read_text().splitlines()), 4)
+            self.assertTrue(equal_tree(expected[0], segment_model.state_dict()))
+            self.assertTrue(equal_tree(expected[1], segment_optimizer.state_dict()))
+            self.assertTrue(torch.equal(expected[2], torch.get_rng_state()))
+            self.assertEqual(expected_journal, (second/"groups.jsonl").read_bytes())
+
+    def test_resume_cli_requires_its_own_output_directory(self):
+        base = ["--output", "fresh", "--model", "pilot", "--steps", "128", "--curriculum",
+                "all-class-interleaved-v1", "--accumulation-policy", "balanced-eight-v1",
+                "--admission", "admission"]
+        args = arguments(base+["--resume-from", "source", "--max-new-steps", "64"])
+        self.assertEqual((args.resume_from, args.max_new_steps), (Path("source"), 64))
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments(base+["--resume-from", "fresh"])
+
     def test_interrupted_group_is_discarded_and_replayed_to_identical_bytes(self):
         policy = "balanced-eight-v1"
         contract = make_contract(policy, source_catalogue_sha256="c"*64, config=CONFIG)

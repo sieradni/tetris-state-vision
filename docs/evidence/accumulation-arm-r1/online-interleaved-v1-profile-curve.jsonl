@@ -1,0 +1,2 @@
+{"update": 1, "images_seen": 1, "optimizer_updates": 1, "mean_loss": 8.704788208007812, "gradient_norm": 120.07521057128906, "elapsed_seconds": 8.572282499997527}
+{"update": 2, "images_seen": 2, "optimizer_updates": 2, "mean_loss": 7.124760627746582, "gradient_norm": 29.40024757385254, "elapsed_seconds": 8.888062199999695}

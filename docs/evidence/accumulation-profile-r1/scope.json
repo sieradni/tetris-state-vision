@@ -173,5 +173,7 @@
       "peak_job_commit_bytes": 33824768,
       "memory_bytes": 201326592
     }
-  }
+  },
+  "superseded_by": "accumulation-arm-r1",
+  "superseded_note": "These measurements were produced on the pre-resume trainer revision (catalogue 5b9f2d71); resume integration changed the source catalogue, and the current two-update profiles are inside accumulation-arm-r1."
 }
