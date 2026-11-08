@@ -26,6 +26,7 @@ class ModelConfig:
     max_batch: int = 4
     max_pixels: int = 1_048_576
     component_capacity: int = 0
+    component_identity_readout: str = "separate"
     layer_evidence: bool = False
 
     def __post_init__(self):
@@ -37,6 +38,9 @@ class ModelConfig:
         check(1 <= self.max_batch <= 4 and 4096 <= self.max_pixels <= 1536**2, "invalid work capacity")
         check(type(self.component_capacity) is int and 0 <= self.component_capacity <= 64,
               "component capacity must be0 (M2) or1..64 (M3)")
+        check(self.component_identity_readout in ("separate", "shared") and
+              (self.component_capacity or self.component_identity_readout == "separate"),
+              "identity readout must be separate, or shared with the joint heads")
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
 
     @classmethod
@@ -206,6 +210,9 @@ class TetrisStateNet(nn.Module):
         if config.component_capacity:
             from .components import ComponentDecoder
             self.components = ComponentDecoder(dimension, config.heads)
+            if config.component_identity_readout == "shared":
+                # Declared lever: piece identity reads through the cell-type head.
+                self.components.share_type_readout(self.semantic)
         # Last initialization preserves common seeded tensors in paired studies.
         self.layer_evidence = None
         if config.layer_evidence:

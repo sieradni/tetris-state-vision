@@ -28,6 +28,8 @@ def arguments(argv=None):
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--component-identity-factor", type=int, choices=(1, 4), default=1,
                         help="declared queue-token/hold-piece loss scale;1 is the published objective")
+    parser.add_argument("--component-identity-readout", choices=("separate", "shared"), default="separate",
+                        help="shared reads piece identity through the cell-type head;separate is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--accumulation-policy", choices=tuple(ACCUMULATION_POLICIES),
@@ -55,6 +57,8 @@ def arguments(argv=None):
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
     if args.component_identity_factor != 1 and not args.component_capacity:
         parser.error("component identity factor requires the joint heads")
+    if args.component_identity_readout != "separate" and not args.component_capacity:
+        parser.error("shared identity readout requires the joint heads")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
@@ -356,7 +360,8 @@ def main(argv=None, *, _archive=None, _started=None):
     torch.use_deterministic_algorithms(True)
     torch.manual_seed(args.seed)
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
-    config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence)
+    config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence,
+                     component_identity_readout=args.component_identity_readout)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -505,6 +510,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["curriculum"] = args.curriculum
     recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
     recovery_contract["component_identity_factor"] = args.component_identity_factor
+    recovery_contract["component_identity_readout"] = args.component_identity_readout
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:

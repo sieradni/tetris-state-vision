@@ -79,6 +79,43 @@ class ComponentIdentityFactorTests(unittest.TestCase):
                 arguments([*base, *extra])
 
 
+    def test_shared_identity_readout_reuses_the_cell_type_head(self):
+        from dataclasses import replace
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4,
+                                       component_identity_readout="shared")).eval()
+        self.assertIs(model.components.shared_type, model.semantic)
+        self.assertIsNotNone(model.components.queue_eos)
+        with torch.no_grad():
+            final = model(torch.rand(1, 3, 96, 112), torch.ones(1, 1, 96, 112, dtype=torch.bool))["final"]["components"]
+        self.assertEqual(final["queue_tokens"].shape, (1, 5, 8))
+        self.assertEqual(final["hold_piece"].shape, (1, 7))
+
+    def test_separate_readout_keeps_the_published_identity_heads(self):
+        from dataclasses import replace
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4)).eval()
+        self.assertIsNone(model.components.shared_type)
+        self.assertIn("components.queue_tokens.weight", model.state_dict())
+        self.assertFalse(any("shared_type" in key for key in model.state_dict()))
+        self.assertEqual(ModelConfig.pilot().component_identity_readout, "separate")
+
+    def test_identity_readout_mode_is_validated(self):
+        from dataclasses import replace
+        from tetris_vision.model import ModelConfig
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_identity_readout="shared")
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_capacity=4, component_identity_readout="tied")
+
+    def test_the_driver_declares_the_readout_mode(self):
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments(base).component_identity_readout, "separate")
+        self.assertEqual(arguments([*base, "--component-capacity", "64", "--component-identity-readout", "shared"]
+                                   ).component_identity_readout, "shared")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-identity-readout", "shared"])
+
     def test_the_declared_lever_family_is_owned_by_the_replay_guard(self):
         from record_stream_run import require_owned_run
         for name in ("m3-identity-factor-r1", "m3-identity-factor-r1-errors-r2", "m3-stream-joint-fit-r1"):

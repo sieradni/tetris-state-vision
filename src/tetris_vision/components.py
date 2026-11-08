@@ -36,6 +36,8 @@ class ComponentDecoder(nn.Module):
         encoded = torch.stack(((positions*frequency).sin(), (positions*frequency).cos()), -1).flatten(1)
         self.register_buffer("index_encoding", encoded)
         self.queue_tokens = nn.Linear(dimension, 8)  # Seven pieces + observed EOS.
+        self.shared_type = None  # Declared shared read-out; None keeps the separate heads.
+        self.queue_eos = None
         self.queue_presence = nn.Linear(dimension, 1)
         self.queue_slot_status = nn.Linear(dimension, 3)
         self.queue_status = nn.Linear(dimension, 4)
@@ -62,11 +64,25 @@ class ComponentDecoder(nn.Module):
             query = self.index_query+index[None]+board+roles[:, :1]
             parts.append(read(query))
         values = torch.cat(parts, dim=1)
-        return {"queue_tokens": self.queue_tokens(values),
+        tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
+        if self.shared_type is not None:
+            # Declared lever: piece identity is the cell-type read-out plus one EOS logit.
+            tokens = torch.cat((self.shared_type(values)[..., :7], self.queue_eos(values)), -1)
+            hold = self.shared_type(roles[:, 1])[..., :7]
+        return {"queue_tokens": tokens,
                 "queue_presence": self.queue_presence(values[:, :capacity]).squeeze(-1),
                 "queue_slot_status": self.queue_slot_status(values[:, :capacity]),
                 "queue_status": self.queue_status(roles[:, 0]), "queue_anchors": self.queue_anchors(roles[:, 0]),
-                "hold_status": self.hold_status(roles[:, 1]), "hold_piece": self.hold_piece(roles[:, 1])}
+                "hold_status": self.hold_status(roles[:, 1]), "hold_piece": hold}
+
+    def share_type_readout(self, classifier):
+        """Declared lever: identity reads through the cell-type classifier."""
+        check(type(classifier) is nn.Linear and classifier.weight.shape == (8, self.dimension) and
+              classifier.bias is not None and classifier.bias.shape == (8,),
+              "shared identity read-out needs the8-class cell-type head")
+        self.shared_type = classifier
+        self.queue_eos = nn.Linear(self.dimension, 1)
+        return self
 
 
 def component_tensors(states, *, capacity):
