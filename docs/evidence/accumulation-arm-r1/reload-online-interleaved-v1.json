@@ -1,0 +1,17 @@
+{
+  "source_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\accumulation-arm-online-s1",
+  "seconds": 0.20035689999349415,
+  "images_seen": 512,
+  "optimizer_updates": 512,
+  "journal_bytes": 595337,
+  "journal_sha256": "4e0511b888a820334b22b5c8457c3d2cb616b6dd9160415841307fa027428a75",
+  "source_pointer": {
+    "format": "tetris-vision-training-snapshot",
+    "generation": "step-000512-ba5bcbc51ac44abfb7276f66dca2faf9",
+    "manifest_sha256": "da7888ba6bbbc1f5e837c0e9352b534e7abb14cf2f7af44b67f954269c83a304",
+    "version": 1
+  },
+  "ceiling_bytes": 671088640,
+  "device": "cpu",
+  "device_memory_bytes": 0
+}

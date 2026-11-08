@@ -65,8 +65,9 @@ windows. Only then run finite, separately bounded segments and independent
 final ordinary pixel replays. Existing completed studies and their frozen
 artifacts are never extended or relabeled.
 
-The pure grouping and accumulation instrument is preparation only; integration,
-fresh native admissions and the studies remain open.
+The pure grouping and accumulation instrument was preparation only at that
+milestone; integration, fresh native admissions and the studies were still open
+then, and the sections below record them landing.
 The integrated driver must also verify that its optimizer owns every model
 parameter exactly once before the group executes.
 
@@ -93,9 +94,10 @@ recipes, missing/duplicate optimizer parameters and mocked execution failures;
 the native receipt records 1.565 seconds and 41,299,968 bytes under 128 MiB /
 30 s / work8. These tests do not execute the real update through this wrapper.
 The journal accepts ordinary fixed-fit recipes only; full-square characterization
-needs its own explicit profile handling. Neither the trainer nor checkpoint
-publisher uses this boundary yet. Fresh neural integration, pressure-safe
-testing, full-square admission and real interruption recovery remain required.
+needed its own explicit profile handling. At that milestone neither the trainer
+nor the checkpoint publisher used this boundary. Fresh neural integration,
+pressure-safe testing, full-square admission and real interruption recovery were
+still required there; each has since landed in the sections below.
 
 ## Durable boundary bridge and integrated arms (measured)
 
@@ -155,24 +157,66 @@ budget, and carries a positive measured update rate.
 Both predeclared arms then ran natively to their full 1,024-image budgets across
 two bounded segments each, every segment admitted from its own measured two-update
 profile at the same 640 MiB ceiling
-([segmented arms](evidence/accumulation-arm-r1/scope.json)):
+([segmented arms](evidence/accumulation-arm-r1/scope.json)). Every figure below is
+re-derived from the committed summaries, supervisor receipts, journals and
+boundary manifests by the folder's
+[audit instrument](evidence/accumulation-arm-r1/audit/audit_arm_evidence.py), whose
+[result](evidence/accumulation-arm-r1/audit/audit.json) fails if any published
+number, table cell or scope field disagrees with those bytes:
 
-| Arm | Segment | Updates | Images | Wall | Updates/s | Peak commit | Resume delta |
+| Arm | Segment | Updates | Images | Wall | Updates/s | Peak commit | Peak Δ vs seg 1 |
 |---|---|---|---|---|---|---|---|
 | balanced-eight | 1 | 64 | 512 | 175.3 s | 0.365 | 565,817,344 B | - |
 | balanced-eight | 2 | 64 | 512 | 179.8 s | 0.356 | 567,971,840 B | +2,154,496 B |
 | online interleaved | 1 | 512 | 512 | 216.1 s | 2.369 | 565,100,544 B | - |
 | online interleaved | 2 | 512 | 512 | 289.6 s | 1.768 | 569,487,360 B | +4,386,816 B |
 
+`Wall` is the trainer's own `elapsed_seconds`; the supervisor receipts for the same
+jobs measure 175.944, 180.456, 216.863 and 290.393 s, each 0.649-0.832 s longer for
+process start and teardown, which is why an earlier poll quoting the receipts
+printed 175.9 s and 290.4 s where this table prints 175.3 s and 289.6 s. `Updates/s`
+is the segment's own updates over its own wall time and its `Images` are the 512
+fresh images it consumed, not the arm total; the trainer summary field of the same
+name is cumulative over the arm (0.711981 and 3.536386 for the second segments).
+`Peak Δ vs seg 1` is the arithmetic difference between the two supervised peaks
+(567,971,840 - 565,817,344 and 569,487,360 - 565,100,544), not the cost of
+restoring a boundary, which is measured separately below.
+
+Each peak sits below the 671,088,640 B Job commit limit that
+`scripts/run_bounded.py` sets, and that limit terminates the tree on reaching it,
+so the guard requires strict inequality and no further fractional margin: the
+tightest is 101,601,280 B (15.14 %) under the ceiling on online segment 2, the
+widest 105,988,096 B (15.79 %) on online segment 1, and the two admission profiles
+also ran under it at 563,216,384 B and 527,622,144 B.
+
 Segment 2 restores the committed boundary with `restore_boundary`: the first
 segment's journal is an exact byte prefix of the resumed one (512 images each),
 the resume pointer equals the first segment's published boundary, and the resumed
-cursors agree (64 and 512 updates). An independent bounded restore of that
-boundary costs 0.219 s (eight-image arm) and 0.200 s (online arm). Both final
-segments report `complete` at 128/128 and 1,024/1,024 updates. A bounded partial
-segment reports `status: step_partial` and exits 2 by the trainer's existing
-convention, so its supervisor receipt reads `failed` while the summary carries
-the partial status.
+cursors agree (64 and 512 updates). The prefix check compares bytes: the first
+539,646 B of the 1,079,495 B resumed journal hash to
+c9bd56f0e4d6ce0969315462e9d2c68c38153d248f1faa37dad988962d5e099a, equal to the
+whole 539,646 B first journal, and the first 595,337 B of the 1,191,099 B resumed
+journal hash to
+4e0511b888a820334b22b5c8457c3d2cb616b6dd9160415841307fa027428a75, equal to the
+whole 595,337 B online prefix. An independent bounded restore of that boundary
+costs 0.219 s (eight-image arm) and 0.200 s (online arm). Both final segments
+report `complete` at 128/128 and 1,024/1,024 updates. A bounded partial segment
+reports `status: step_partial` and exits 2 by the trainer's existing convention,
+so its supervisor receipt reads `failed` while the summary carries the partial
+status.
+
+The earlier 0.068-updates/s figure is superseded rather than contradicted: two
+updates over 29.35 s is a warm square profile dominated by fixed model, data and
+optimizer startup, and dividing the budget by the printed rate gives 15,059 s
+(17,067 s for the printed 0.060), which these runs falsify at 355.1 s
+(175.3 + 179.8) and 505.7 s (216.1 + 289.6) of measured, startup-inclusive wall
+across two bounded segments each, about 42x and 34x below the estimate. The
+marginal rates above account for the difference: 2/0.365 = 5.48 s and
+2/2.369 = 0.84 s of training per two updates, so startup is 29.35 - 5.48 = 23.87 s
+and 33.30 - 0.84 = 32.46 s of those profile windows. No predeclared arm remains
+impossible to run; the two segments exist because the study requires separately
+bounded windows with a resume contract verified at arm scale, not because a
+1,024-image budget is unreachable.
 
 Still open: automated controller and independent-curator routing for these
 cursors (segments were launched explicitly with `--resume-from`), an independent

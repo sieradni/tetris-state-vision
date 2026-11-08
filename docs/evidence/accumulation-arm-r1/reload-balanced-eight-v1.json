@@ -1,0 +1,17 @@
+{
+  "source_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\accumulation-arm-balanced-s1",
+  "seconds": 0.21913990000030026,
+  "images_seen": 512,
+  "optimizer_updates": 64,
+  "journal_bytes": 539646,
+  "journal_sha256": "c9bd56f0e4d6ce0969315462e9d2c68c38153d248f1faa37dad988962d5e099a",
+  "source_pointer": {
+    "format": "tetris-vision-training-snapshot",
+    "generation": "step-000064-894431b1c39f4333a9e1fc3ee26bd157",
+    "manifest_sha256": "9c4efaf17eaa18ee3b3926ba19b99f19ab1ad818e205c0d786b2fb5840799763",
+    "version": 1
+  },
+  "ceiling_bytes": 671088640,
+  "device": "cpu",
+  "device_memory_bytes": 0
+}

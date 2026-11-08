@@ -22,11 +22,16 @@ higher; evidence in `docs/evidence/accumulation-profile-r1/`. Admission now
 requires the matching policy, group size, `2*group_size` microsteps and a
 positive measured update rate. Both arms then ran natively to their full1,024-image budgets across two bounded
 segments each, every segment admitted from the measured two-update profile:
-balanced-eight 64+64 updates (175.3s/179.8s, peaks565,817,344B and567,971,840B,
-resume delta+2,154,496B), online-interleaved512+512 updates
-(216.1s/289.6s, peaks565,100,544B and569,487,360B, resume delta+4,386,816B). The
-first journal is an exact byte prefix of the resumed one and the resume pointer
-matches the published boundary; measured reload cost0.219s/0.200s
+balanced-eight 64+64 updates (175.3s/179.8s in-child, receipts175.944s/180.456s,
+peaks565,817,344B and567,971,840B, peak difference+2,154,496B), online-interleaved
+512+512 updates (216.1s/289.6s, receipts216.863s/290.393s, peaks565,100,544B and
+569,487,360B, peak difference+4,386,816B). The first journal is an exact byte
+prefix of the resumed one and the resume pointer matches the published boundary;
+measured reload cost0.219s/0.200s. Every published number is re-derived from those
+bytes by `docs/evidence/accumulation-arm-r1/audit/audit_arm_evidence.py` (no
+mismatch, result in that folder's `audit/audit.json`), which also
+records the wall-clock and rate-denominator definitions and the
+receipt-admitted headroom (tightest101,601,280B under the671,088,640B ceiling)
 (`docs/evidence/accumulation-arm-r1/`). Resume now goes through
 `restore_boundary`. A bounded partial segment exits2 with `status: step_partial`,
 so its supervisor receipt says `failed` while the summary carries the partial
@@ -54,9 +59,9 @@ must use an absolute or backslash path form; the supervisor is unchanged.
 The bridge is used by the trainer's accumulation arm only (see the new
 checkpoint above): the controller and independent curator still do not route
 these cursors, ordinary fixed-fit recipes only; two-update full-square group profiles and native
-segment-boundary resume now exist for group sizes1 and8, but an interruption
-inside a group at arm scale remains unexercised. No training is
-admitted and no research job is running.
+segment-boundary resume now exist for group sizes1 and8; both1,024-image arms are
+complete, and no interruption has been forced inside a group at arm scale. At
+that recovery point no training had been admitted and no research job was running.
 Next: route the image/update cursors through the controller and independent
 curator, wire accumulated resume to the boundary restore, then obtain fresh
 native full-square warm/reload profiles per group size and an actual in-group

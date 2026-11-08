@@ -17,6 +17,34 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
+| evidence-reporting | V-032 (1) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement |
+
+## V-032 — CLOSED: published arm numbers were not re-derivable from their evidence
+
+- Symptom: `docs/evidence/accumulation-arm-r1` published a `resume delta` that is
+  a between-run peak difference, a `Wall` column that disagreed with the
+  supervisor receipt quoted in an earlier poll (175.3 s vs 175.9 s, 289.6 s vs
+  290.4 s), and reload costs whose bounding receipts were never copied into the
+  folder, so none of them could be checked against the committed bytes.
+- Root cause: the evidence builder copied summary fields without recording which
+  clock and denominator each field used. The trainer's `elapsed_seconds` excludes
+  process start and teardown that the receipt includes, and its
+  `optimizer_updates_per_second` is cumulative over the arm while the published
+  rate was the segment's marginal rate; only the reload result JSON was copied,
+  not the receipt that bounded the measurement.
+- Detection class: evidence-reporting.
+- Instrument: `docs/evidence/accumulation-arm-r1/audit/audit_arm_evidence.py`
+  re-derives every per-segment and per-arm number from the summaries, supervisor
+  receipts, journals, boundary manifests, profile artifacts and reload receipts
+  with plain arithmetic, and fails if any scope field, table cell or prose figure
+  disagrees. The scope now records the wall-clock, rate-denominator and peak-delta
+  definitions, and the reload receipts are copied in beside their results.
+- Green run: plain audit exit 0 with no mismatch
+  (`docs/evidence/accumulation-arm-r1/audit/audit.json`, `result: reproduced`,
+  empty `checks_failed`), after sealing the corrected numbers; the six bounded
+  gates for this revision also passed (`runs/gates-reaudit.out`, 384 MiB and
+  192 MiB ceilings). The prose cites no check count, because a count here drifts
+  from the instrument every time a check is added.
 
 ## V-031 — CLOSED: frozen archive kept repository modules from the parent
 
