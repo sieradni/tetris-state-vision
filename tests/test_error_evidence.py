@@ -8,6 +8,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"scripts"))
 from record_stream_errors import validate_report
+from record_stream_run import require_owned_run
 
 
 NAME = "m2-stream-accuracy704-errors-r2"
@@ -32,6 +33,15 @@ def fixture():
 
 
 class ErrorEvidenceTests(unittest.TestCase):
+    def test_owned_run_name_policy_covers_finite_stream_and_accumulation_runs(self):
+        for name in ("m2-stream-accuracy4096-s10", "accumulation-arm-balanced-s2",
+                     "accumulation-arm-online-s1", "accumulation-arm-ordered-s1"):
+            self.assertEqual(require_owned_run(name), name)
+        for name in ("accumulation-arm-", "accumulation", "m2-stream-"+"a"*41,
+                     "m2-stream-x/../y", "Accumulation-arm-balanced-s2", "accumulation_arm_balanced_s2"):
+            with self.assertRaises(ValueError):
+                require_owned_run(name)
+
     def test_report_cannot_relabel_a_legacy_artifact_as_fit_policy(self):
         for policy in ("all-class-fit-v1", "all-class-interleaved-v1"):
             values = fixture()

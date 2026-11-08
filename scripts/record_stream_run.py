@@ -13,6 +13,17 @@ from source_snapshot import verify_source
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Owned, source-frozen finite runs. Acceleration arms keep their own family
+# because they are named for the predeclared policy, not for a stream study.
+OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-arm-[a-z0-9]+(?:-[a-z0-9]+)*)")
+
+
+def require_owned_run(name):
+    """Refuse anything outside the owned finite run families."""
+    if type(name) is not str or not OWNED_RUN_PATTERN.fullmatch(name):
+        raise ValueError("owned finite run name required")
+    return name
+
 
 def validate_completion(summary, job, *, allow_partial=False):
     partial = summary.get("status") in {"wall_partial", "step_partial"}
@@ -69,8 +80,7 @@ def main():
     parser.add_argument("--name", required=True)
     parser.add_argument("--allow-partial", action="store_true", help="preserve controlled wall/step partial status; never a completion claim")
     args = parser.parse_args()
-    if not re.fullmatch(r"m[23]-stream-[a-z0-9-]{1,40}", args.name):
-        raise ValueError("owned stream run name required")
+    require_owned_run(args.name)
     run = ROOT/"runs"/args.name
     summary = json.loads((run/"summary.json").read_text())
     job = json.loads((ROOT/"runs"/(args.name+"-job.json")).read_text())

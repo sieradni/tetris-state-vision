@@ -10,14 +10,13 @@ import json
 import math
 import os
 from pathlib import Path
-import re
 import sys
 import time
 
 from m2_error_analysis import analyze_case, fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import analyze_components, pack_components, replay_keywords, summarize_components
 from probe_model import require_bounded_job
-from record_stream_run import checkpoint_architecture, validate_completion
+from record_stream_run import checkpoint_architecture, require_owned_run, validate_completion
 from source_snapshot import verify_source
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -64,8 +63,7 @@ def main():
     parser.add_argument("--run", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if not re.fullmatch(r"m[23]-stream-[a-z0-9-]{1,40}", args.run):
-        raise ValueError("owned source-frozen stream run required")
+    require_owned_run(args.run)
     run = ROOT/"runs"/args.run
     summary = read(run/"summary.json")
     job = read(ROOT/"runs"/(args.run+"-job.json"))

@@ -15,6 +15,7 @@ import json
 import math
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import time
@@ -104,6 +105,35 @@ def pressure_status(snapshot, reserved_bytes=0):
             "minimum_available_physical_bytes": reserve, "reserved_job_bytes": reserved_bytes}
 
 
+def resolve_child_executable(command):
+    """Resolve the child executable before the Job is armed (V-030).
+
+    CreateProcess receives the child argv verbatim, so a relative path spelled
+    with forward slashes is not resolved there even when the calling shell
+executed the supervisor with the same spelling. Refusing that form before the
+    launch keeps a bad spelling an instrumentation failure instead of a receipt
+    that reads like a failed gate.
+    """
+    executable = command[0] if command else ""
+    if not executable:
+        raise ValueError("empty child executable")
+    if "/" in executable or "\\" in executable:
+        if os.path.isabs(executable):
+            resolved = Path(executable)
+        elif "/" in executable:
+            raise ValueError(f"relative child executable {executable!r} uses forward slashes; "
+                             "use an absolute path or backslash separators (V-030)")
+        else:
+            resolved = Path(executable).resolve()
+        if not resolved.is_file():
+            raise ValueError(f"child executable {executable!r} does not exist")
+        return str(resolved)
+    found = shutil.which(executable)
+    if found is None:
+        raise ValueError(f"child executable {executable!r} was not found on PATH")
+    return found
+
+
 def arm_job(memory_bytes: int, name: str | None = None):
     if os.name != "nt":
         raise RuntimeError("Windows Job Object enforcement required; refusing launch")
@@ -181,6 +211,11 @@ def main() -> int:
         replace_retry(temporary, args.receipt)
 
     try:
+        try:
+            state["child_executable"] = resolve_child_executable(command)
+        except ValueError:
+            state["launch_refused"] = True
+            raise
         job_name = "Local\\TetrisStateVision-"+uuid.uuid4().hex
         kernel, job, peak = arm_job(state["memory_bytes"], job_name)
         state["job_name"] = job_name

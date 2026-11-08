@@ -4,14 +4,13 @@ import hashlib
 import json
 import math
 from pathlib import Path
-import re
 import shutil
 import subprocess
 
 from m2_error_analysis import fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import summarize_components
 from probe_model import require_bounded_job
-from record_stream_run import checkpoint_architecture, validate_completion
+from record_stream_run import checkpoint_architecture, require_owned_run, validate_completion
 from source_snapshot import verify_source
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -108,12 +107,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", required=True)
     args = parser.parse_args()
-    if not re.fullmatch(r"m[23]-stream-[a-z0-9-]{1,40}", args.name):
-        raise ValueError("owned error-report name required")
+    require_owned_run(args.name)
     run = ROOT/"runs"/args.name
     result = read(run/"result.json")
-    if not re.fullmatch(r"m[23]-stream-[a-z0-9-]{1,40}", result["run"]):
-        raise ValueError("owned input artifact required")
+    require_owned_run(result["run"])
     source = ROOT/"runs"/result["run"]
     summary, manifest = read(source/"summary.json"), read(source/"checkpoint/manifest.json")
     source_job = read(ROOT/"runs"/(result["run"]+"-job.json"))

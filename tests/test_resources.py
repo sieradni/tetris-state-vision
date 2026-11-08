@@ -9,6 +9,8 @@ import sys
 import tempfile
 import unittest
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 @unittest.skipUnless(os.name == "nt", "Windows Job Object probes")
 class ResourceGuardTests(unittest.TestCase):
@@ -19,6 +21,35 @@ class ResourceGuardTests(unittest.TestCase):
                    "--", sys.executable, "-c", source]
         result = subprocess.run(command, capture_output=True, text=True, timeout=12, env=environment)
         return result, json.loads(receipt.read_text())
+
+    def run_command(self, root, executable, source):
+        receipt = root / "receipt.json"
+        command = [sys.executable, "scripts/run_bounded.py", "--memory-mib", "64",
+                   "--wall-seconds", "5", "--work-items", "1", "--receipt", str(receipt),
+                   "--", executable, "-c", source]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=12, cwd=ROOT)
+        return result, json.loads(receipt.read_text())
+
+    def test_relative_forward_slash_child_executable_is_refused_before_launch(self):
+        # V-030: this spelling was executed by the shell for the supervisor but
+        # not resolved by CreateProcess for the child. It must refuse first.
+        with tempfile.TemporaryDirectory() as scratch:
+            result, receipt = self.run_command(Path(scratch), ".venv/Scripts/python.exe", "print('SHOULD_NOT_RUN')")
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(receipt["status"], "failed")
+            self.assertTrue(receipt["launch_refused"])
+            self.assertIn("V-030", receipt["error"])
+            self.assertNotIn("child_pid", receipt)
+            self.assertNotIn("SHOULD_NOT_RUN", result.stdout)
+
+    def test_backslash_relative_and_absolute_child_executables_launch(self):
+        for executable in (os.path.join(".venv", "Scripts", "python.exe"), sys.executable):
+            with tempfile.TemporaryDirectory() as scratch:
+                result, receipt = self.run_command(Path(scratch), executable, "print('CHILD_RAN')")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn("CHILD_RAN", result.stdout)
+                self.assertEqual(receipt["status"], "passed")
+                self.assertEqual(receipt["child_executable"], str((ROOT/executable).resolve()))
 
     def test_cpu_library_limits_override_host_before_child_imports(self):
         variables = ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS",
