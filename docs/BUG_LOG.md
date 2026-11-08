@@ -23,7 +23,10 @@ a named green run. An unrun gate leaves the entry OPEN.
 
 - Symptom: five bounded full-contract-suite runs were refused `memory_pressure` on a
   host with 6–8 GiB of free physical memory, while the suite job itself peaked at
-  343 MiB (and later at 16 MiB). It looked as if the suite could not be run at all.
+  343 MiB (and later at 16 MiB). Four of them (`-r1`, `-r2`, `-r3`, `-r5`) were
+  refused by the commit line; `-r4` was a genuine `physical_pressure` refusal with
+  1.1 GB free and remains a correct refusal. It looked as if the suite could not be
+  run at all.
 - Root cause: `pressure_status` used
   `stop_commit = min(physical - min(2 GiB, physical//8), commit_limit*9//10)`. With a
   page file — commit limit 50,695,704,576 B against 33,515,835,392 B RAM — the first

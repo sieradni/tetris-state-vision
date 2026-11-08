@@ -28,7 +28,13 @@ curates in `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json` (`p
 The verification gap is closed. The complete contract suite is green on this tree in
 `docs/evidence/m3-identity-readout-fullsuite-r11/` (407 tests collected, `Ran 407 tests
 in 72.290s`, `OK`, exit 0, receipt peak 545,845,248 B, admitted at 38,347,567,104 B
-commit against a 45,626,134,118 B stop line). Closing it needed no test change and no
+commit against a 45,626,134,118 B stop line). That count is auditable rather than
+asserted: `git diff 5c6b41f HEAD -- tests/` adds exactly 9 test methods and removes
+none, so 407 = the previous green run's 398 + the 4 identity-read-out tests + the 5
+pressure-decision tests, and the 32 component-identity/component/joint-stream tests
+sit inside it (`test_component_identity` 10, `test_components` 15, `test_joint_stream`
+7). The collection is preserved as `collection-job.json`/`collection.log` beside the
+suite receipt. Closing it needed no test change and no
 weakened receipt: the five earlier refusals (`-r1` mid-run, `-r2`–`-r5` at admission)
 were a supervisor defect, V-040, because the commit stop line was derived from physical
 RAM (`physical − 2 GiB` = 31.4 GB) while the exhaustible budget is the commit limit
