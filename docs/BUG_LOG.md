@@ -16,7 +16,30 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
-| launch-ownership | V-029 (1) | Preflight output, receipt and both log paths before detached launch |
+| launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
+
+## V-030 — OPEN: relative forward-slash child interpreter did not resolve
+
+- Symptom: an admitted bounded launch with every output name preflighted exited
+  1 after 0.01 s with `FileNotFoundError(2, ...)`; no test body ran, yet the
+  receipt recorded `status: failed`, which reads like a test failure.
+- Root cause: `scripts/run_bounded.py` passes the child argv unchanged to
+  `subprocess.Popen`, so `CreateProcess` receives the relative forward-slash
+  interpreter `.venv/Scripts/python.exe` and cannot resolve it. The supervisor's
+  own interpreter is resolved by the calling shell, so the trap appears only in
+  the child, and only for that spelling.
+- Detection class: launch-ownership.
+- Instrument: require a child executable that resolves (absolute, or backslash
+  relative) before arming the Job, and treat a receipt with an `error` field and
+  no `child_pid` as an instrumentation failure rather than a failed gate.
+- Failed gate: `runs/accumulation-checkpoint-pure-r5-job.json`, preserved with its
+  logs in `docs/evidence/launch-path-diagnostic-r1/`, alongside three
+  one-command controls (relative forward slash fails; relative backslash and
+  absolute both pass).
+- Green workaround run: `runs/accumulation-checkpoint-pure-r6-job.json` with the
+  absolute interpreter — 8 tests, 0.522 s, 37,761,024 B under 128 MiB.
+- Open because only the invocation form is fixed: the supervisor is unchanged at
+  `d2fb1478...`, so a supervisor-side preflight needs its own hash re-admission.
 
 ## V-029 — CLOSED: reused launcher logs on an existing run name
 

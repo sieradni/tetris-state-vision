@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "base_commit": "86f736251b2a2b0c0cbd06f54a6b45f77f9d05cd",
+  "artifact_sha256": {
+    "accumulation-checkpoint-pure-r5-job.json": "cb3d40124a4995eaf3e08e32ddb4df26b9c501280e03c7e2ca3c486b24761aa5",
+    "accumulation-checkpoint-pure-r5.log": "95036128a10b50f94eab1542906aa0e0d1023664c58d84fd2043d62a60f8e673",
+    "accumulation-checkpoint-pure-r5.stderr.log": "988b4fcc23d836b9d2eb16e2ce048ff6d01d1b4dfbfe44747882a6892ab75e89",
+    "accumulation-launchdiag-a-job.json": "6b16a21930f3c3c925a39011938c66c31e4dbc7c49f1e1f9df3b77a87d9ad784",
+    "accumulation-launchdiag-a.log": "6444d601362f722f00f963225551ed2e3b7e6df0b327b70f6d92200d11659944",
+    "accumulation-launchdiag-a.stderr.log": "988b4fcc23d836b9d2eb16e2ce048ff6d01d1b4dfbfe44747882a6892ab75e89",
+    "accumulation-launchdiag-b-job.json": "9fd11bcab3058b85c90e26d01da276bdca31339b14fe16e38e49bcea6e81587b",
+    "accumulation-launchdiag-b.log": "b1d9d12d26444666895b3f81ce46cb73a4bd908b1876d069ae758ab913cf0ab1",
+    "accumulation-launchdiag-b.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "accumulation-launchdiag-c-job.json": "7e0bbebdd89b0176a6373d426330282d0886a492169b1c3bd13e716977512111",
+    "accumulation-launchdiag-c.log": "b79da61203314f4e34c841195c47dfececf1c610b7619d48fd7737f0987c612d",
+    "accumulation-launchdiag-c.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "execution-source/scripts/run_bounded.py": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db"
+  },
+  "observation": {
+    "a_relative_forward_slash": "failed FileNotFoundError(2), no child_pid",
+    "b_relative_backslash": "passed, 0.094 s, 24,924,160 B",
+    "c_absolute": "passed, 0.093 s, 24,629,248 B"
+  },
+  "scope": "Child-executable resolution diagnostic for the unchanged supervisor d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db. Only the invocation form differs between runs; no test body executed in the failed launch."
+}

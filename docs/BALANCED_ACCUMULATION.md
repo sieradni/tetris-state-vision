@@ -96,3 +96,28 @@ The journal accepts ordinary fixed-fit recipes only; full-square characterizatio
 needs its own explicit profile handling. Neither the trainer nor checkpoint
 publisher uses this boundary yet. Fresh neural integration, pressure-safe
 testing, full-square admission and real interruption recovery remain required.
+
+## Durable boundary bridge (unintegrated)
+
+[`scripts/accumulation_checkpoint.py`](../scripts/accumulation_checkpoint.py)
+binds the journal to the existing snapshot tooling: it creates a journal only in a
+fresh owned directory, appends only a validated whole group after its successful
+optimizer step, refuses to publish a snapshot with pending gradients or with an
+optimizer whose AdamW step or hyperparameters disagree with the committed cursor,
+and restores into a new directory that copies only the snapshot's committed
+journal prefix and excludes every uncommitted suffix record. Restore verifies the
+pointer, manifest digest, contract, journal set and prefix bytes before any model
+state is loaded, so a corrupt or drifted artifact refuses before mutation.
+
+Eight no-Torch contract checks pass in 0.522 s / 37,761,024 B under 128 MiB /30 s /
+work8 (`runs/accumulation-checkpoint-pure-r6-job.json`, evidence
+[accumulation checkpoint contracts](evidence/accumulation-checkpoint-contracts-r1/scope.json)).
+They cover exclusive journal creation, non-contiguous group refusal that leaves
+the journal unchanged, uncommitted-suffix exclusion, contract/prefix corruption,
+optimizer ownership, wrong Adam step and hyperparameters, and pending gradients.
+The Toy Torch test in `tests/test_accumulation_checkpoint_torch.py` — real AdamW,
+dropout and a forced in-group interruption — is **unrun**: its 640 MiB admission
+was refused by the OS commit guard before launch. Nothing here is a native
+interruption gate, and the bridge is not called by the trainer, controller or
+curator, so no arm of the comparison is admitted. Bounded children must use an
+absolute or backslash interpreter path; see V-030 in [BUG_LOG.md](BUG_LOG.md).
