@@ -109,6 +109,12 @@ class ErrorEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "aggregate"):
             validate_report(*values, name=NAME)
 
+    def test_recorded_identity_factor_must_match_the_run(self):
+        values = fixture()
+        values[0]["component_identity_factor"] = 4
+        with self.assertRaisesRegex(ValueError, "checkpoint/partial-status identity differs"):
+            validate_report(*values, name=NAME)
+
     def test_legacy_format_and_foreign_component_dialect_refuse(self):
         values = fixture()
         del values[0]["diagnostic_format_version"]
