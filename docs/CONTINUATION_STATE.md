@@ -10,8 +10,9 @@ first admission refusal at its root (V-039: the shared mode kept dead identity h
 which the resident-Adam guard rejects); admission r2 passed on the exact mode
 (`runs/m3-stream-identity-shared-profile-r2-job.json`, 80.218 s, 945,143,808 B,
 checkpoint `c9e8f3f8...`, 262 tensors with warm Adam state), and the study completed
-(`runs/m3-stream-identity-shared-r1-job.json`, 128 steps, 573.629 s, checkpoint
-`55a35243...`, catalogue `2f69689a...`, under the declared 1,152 MiB ceiling).
+(`runs/m3-stream-identity-shared-r1-job.json`, 128 steps, 573.629 s of recorded
+updates inside 574.770 s outer, checkpoint `55a35243...`, catalogue `2f69689a...`,
+peak 949,555,200 B under the declared 1,152 MiB ceiling).
 
 By the predeclared rule this is a negative. Identity does move: exact queue piece
 tokens 0/54 -> 9/54 training and 0/90 -> 6/90 development, hold 0/12 -> 3/12
@@ -23,6 +24,19 @@ and slot status 54/54 and 90/90 still exact, geometry 3.32 training (better than
 and 2.55 development (worse than 2.03). Independent 27-forward replay (35.867 s,
 554,905,600 B, weights `55a35243...` unchanged, every saved per-case field reproduced)
 curates in `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json` (`passed`).
+
+Verification gap to close first next session: the full contract suite has not run
+since the shared read-out code landed. Its last green full run is
+`runs/m3-identity-factor-fullsuite-r1-job.json` (398 tests, exit 0, 62.325 s), which
+predates `e83d70e`/`b80d82d`; the new mode is covered only by the scoped
+identity/component/joint-stream tests (32 tests, `runs/identity-readout-tests-r1-job.json`
+and `-r2-job.json`, both passed). Re-running the suite after this commit was blocked by
+the bounded runner's OS-memory guard: `runs/m3-identity-readout-fullsuite-r1-job.json`
+stopped mid-run at 12.5 s and `-r2` through `-r5` were refused at admission, all with
+`memory_pressure` while the host carried 36–46 GB of commit charge against the 29.2 GB
+stop line (the suite job itself peaked at 343 MB). Re-run
+`scripts/run_bounded.py --memory-mib 640 --wall-seconds 300 --work-items 800` on
+`-m unittest discover -s tests -q` when the host is quiet.
 
 So read-out sharing is not the identity lever either: tying supervision into the cell
 classifier moves the sparse identity targets but buys nothing readable and costs the
