@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "6aaccfdb5f44f3577a6d203917a1138382d6c977",
+    "generated_at_commit": "9970e5a826284b14967e595d7aaf59ce09c3babf",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -3406,6 +3406,23 @@
         "scope.json": "4b57ba056f744a3a24a897e1a0b46db76b98a60b06cecd3c96c879db14e83cef"
       }
     },
+    "m3-identity-factor-budget-r1-errors-r1": {
+      "record_commit": "",
+      "files": {
+        "checkpoint-manifest.json": "cf5cec840c9c515f5893e324f9244468a9a2d68a645b81bcf5ef8518fa23b8e7",
+        "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
+        "input-run-job.json": "2ba7310f82aa3626ce0e7718f38bb6a17fb1fca81d553bc1f7a1ae273ed563a0",
+        "input-summary.json": "0edea8ad9ab83145507eb99dbd76c5d0efd7e82346f208e89a9e3ed3f782e748",
+        "native-job.json": "65ba7b14f7e7e3599669ed791aec1689c64c9e39fef4828a68a649c44c616f8d",
+        "native.log": "7a508e584a8d8450f765747b44df4e18c7c7ee0b551ca466ee4d2424baa1d927",
+        "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "51d7228a1d1aa5bc26b6544edfad8d6414fa88d492d9846692db10c64a7f7e61",
+        "scope.json": "77d2d931028576147f897d37127efc16a8f1bdd7517aa12ed5197f2361aa9d62",
+        "source-manifest.json": "bcaf34fb95114c9a7fccdcfc9889c8412980ddc300e4ed795722b59aeed6f09c",
+        "training-probe.jsonl": "c59e10a67c67d3f053c7779fe8bb8703ed289f7749a36a28a26683770de8300f"
+      }
+    },
     "m3-identity-factor-r1-errors-r3": {
       "record_commit": "5c6b41f9b03dbd83c9ab6bf0c6435766aea3c2a9",
       "files": {
@@ -4273,7 +4290,7 @@
     }
   },
   "totals": {
-    "directories": 177,
-    "files": 3376
+    "directories": 178,
+    "files": 3388
   }
 }

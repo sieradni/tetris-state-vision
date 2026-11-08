@@ -1,5 +1,36 @@
 # Contributor handoff — 2026-10-30
 
+## M3 identity budget lever: identity rises, structure regresses — 2026-11-08
+
+The budget lever is executed and judged against its own predeclaration (`9970e5a`).
+Fresh admission `runs/m3-identity-budget-profile-r1-job.json` (passed, 943,157,248 B),
+the 512-update study `runs/m3-identity-factor-budget-r1-job.json` (passed, 512/512 steps,
+1729.7 s, 985366528 B under 1,152 MiB, checkpoint
+`9b79863b`), its independent 27-forward replay
+(34.9 s, 563867648 B, every saved metric
+reproduced) and curation curate in
+`docs/evidence/m3-identity-factor-budget-r1-errors-r1/scope.json` (`passed`).
+
+By the predeclared rule this is a miss. Identity does rise with budget: exact queue
+piece tokens 3/54 -> 12/54 training and
+9/90 -> 12/90 development. But the
+structure-held condition fails on two declared terms — training queue EOS
+8/9 -> 5/9 (declared >= 8/9) and development
+hold identity 3/12 -> 0/12 (declared
+>= 3/12) — while slot status and presence hold and the fit gate stays FALSE
+(0/9 and 0/18 boards,
+9/18 and 0/36 roles,
+0/9 and 0/18 exact readable
+components, geometry 3.03 and 2.07).
+Training roles also fall 12/18 -> 9/18. The observed state matched none of the three
+declared branches, which is its own defect, V-044, now fixed by making the rule total
+over the primary-rise/structure-held square.
+
+Ranked next is therefore the input representation (pixels per icon, the model capture
+side): budget moves identity but multiplies a structural trade-off, so extending the
+budget again is not the next lever and is not ranked. That lever needs its own
+predeclaration, admission and criteria; nothing about it is admitted here.
+
 ## M3 identity supervision measured, and the guard policy text corrected — 2026-11-08
 
 The ranked open item after both identity levers closed was "the supervision signal",

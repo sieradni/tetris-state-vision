@@ -11,6 +11,19 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the 512-update identity budget is a miss on its own criterion
+([M3_IDENTITY_BUDGET.md](M3_IDENTITY_BUDGET.md),
+`docs/evidence/m3-identity-factor-budget-r1-errors-r1/scope.json`): exact queue piece
+tokens rise 3/54 -> 12/54 training and
+9/90 -> 12/90 development at the same
+capacity, factor, data and order, but training queue EOS falls
+8/9 -> 5/9 and development hold identity
+3/12 -> 0/12, training roles fall to
+9/18, and the fit gate stays FALSE. Identity is budget-sensitive but
+the budget multiplies a structural trade-off, so the next ranked lever is the input
+representation (pixels per icon), not another budget extension. V-044 fixes the
+predeclaration rule that had no branch for this state.
+
 Latest: identity supervision is class-complete but label-scarce
 ([M3_IDENTITY_EXPOSURE.md](M3_IDENTITY_EXPOSURE.md),
 `docs/evidence/m3-identity-exposure-r4/scope.json`): all seven piece classes are

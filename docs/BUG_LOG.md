@@ -17,7 +17,29 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013, V-039, V-040, V-043 (4) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042 (6) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044 (7) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-044 — CLOSED: the predeclared decision rule was not total
+
+- Symptom: `docs/M3_IDENTITY_BUDGET.md` declared three branches (positive if both
+  primary counts rise with structure held, negative if neither rises, partial if one
+  rises with structure held). The study produced both counts rising while two declared
+  structure terms regressed (training queue EOS 8/9 -> 5/9, development hold 3/12 ->
+  0/12), a state no branch covered, so the record had no declared mapping from the
+  observed outcome to a verdict or a next lever.
+- Root cause: the rule was written as three illustrative cases rather than as a map
+  over the two independent conditions it actually depends on (primary counts rising,
+  structure held).
+- Detection class: evidence-reporting.
+- Instrument: the rule is now total over that square. A rise with a structural
+  regression is declared a miss on the criterion with its own finding, and it does not
+  pick the next lever from the trend alone; the budget study is recorded under that
+  rule, and the same totality requirement now applies to every new predeclaration.
+- Green run: `docs/evidence/m3-identity-factor-budget-r1-errors-r1/scope.json`;
+  replay `runs/m3-identity-factor-budget-r1-errors-r1-job.json` (passed, 27 forwards,
+  every saved metric reproduced) and curation
+  `runs/m3-identity-factor-budget-r1-curation-r1-job.json` (passed) both postdate the
+  predeclaration and record the state this rule now maps.
 
 ## V-043 — CLOSED: the guard policy document described a retired stop line
 
