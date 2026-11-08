@@ -64,11 +64,12 @@ class ComponentDecoder(nn.Module):
             query = self.index_query+index[None]+board+roles[:, :1]
             parts.append(read(query))
         values = torch.cat(parts, dim=1)
-        tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
         if self.shared_type is not None:
             # Declared lever: piece identity is the cell-type read-out plus one EOS logit.
             tokens = torch.cat((self.shared_type(values)[..., :7], self.queue_eos(values)), -1)
             hold = self.shared_type(roles[:, 1])[..., :7]
+        else:
+            tokens, hold = self.queue_tokens(values), self.hold_piece(roles[:, 1])
         return {"queue_tokens": tokens,
                 "queue_presence": self.queue_presence(values[:, :capacity]).squeeze(-1),
                 "queue_slot_status": self.queue_slot_status(values[:, :capacity]),
@@ -82,6 +83,10 @@ class ComponentDecoder(nn.Module):
               "shared identity read-out needs the8-class cell-type head")
         self.shared_type = classifier
         self.queue_eos = nn.Linear(self.dimension, 1)
+        # The separate heads would be dead parameters with no resident Adam state, which
+        # the resource profile refuses; remove them instead of carrying them unused.
+        self.queue_tokens = None
+        self.hold_piece = None
         return self
 
 

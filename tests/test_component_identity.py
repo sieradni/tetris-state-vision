@@ -86,6 +86,10 @@ class ComponentIdentityFactorTests(unittest.TestCase):
                                        component_identity_readout="shared")).eval()
         self.assertIs(model.components.shared_type, model.semantic)
         self.assertIsNotNone(model.components.queue_eos)
+        self.assertIsNone(model.components.queue_tokens)
+        self.assertIsNone(model.components.hold_piece)
+        keys = set(model.state_dict())
+        self.assertFalse(any("queue_tokens" in key or "hold_piece" in key for key in keys))
         with torch.no_grad():
             final = model(torch.rand(1, 3, 96, 112), torch.ones(1, 1, 96, 112, dtype=torch.bool))["final"]["components"]
         self.assertEqual(final["queue_tokens"].shape, (1, 5, 8))
