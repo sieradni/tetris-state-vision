@@ -77,8 +77,9 @@ hard memory ceiling, wall cap, work-item cap and receipt):
      --wall-seconds 600 --development-groups 6
    ```
 
-   bounded at 1,152 MiB / 700 s / 256 work items, receipt
-   `runs/m3-stream-joint-fit-profile-r1-job.json`.
+   bounded at 1,152 MiB / 700 s / 2 work items (the admission guard requires the
+   profile receipt's declared work-item bound to be exactly 2), receipt
+   `runs/m3-stream-joint-fit-profile-r2-job.json`.
 
 2. The study itself, admitted only by that profile:
 
