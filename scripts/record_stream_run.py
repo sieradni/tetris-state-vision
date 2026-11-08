@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Owned, source-frozen finite runs. Acceleration arms keep their own family
 # because they are named for the predeclared policy, not for a stream study.
-OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-arm-[a-z0-9]+(?:-[a-z0-9]+)*)")
+OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-arm-[a-z0-9]+(?:-[a-z0-9]+)*"
+                               r"|m3-identity-factor-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):

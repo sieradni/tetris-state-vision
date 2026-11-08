@@ -79,5 +79,14 @@ class ComponentIdentityFactorTests(unittest.TestCase):
                 arguments([*base, *extra])
 
 
+    def test_the_declared_lever_family_is_owned_by_the_replay_guard(self):
+        from record_stream_run import require_owned_run
+        for name in ("m3-identity-factor-r1", "m3-identity-factor-r1-errors-r2", "m3-stream-joint-fit-r1"):
+            self.assertEqual(require_owned_run(name), name)
+        for name in ("../m3-identity-factor-r1", "m3-identity-factor-r1/../x", "identity-factor-r1", "m3-identity-factor-r1 "):
+            with self.assertRaises(ValueError):
+                require_owned_run(name)
+
+
 if __name__ == "__main__":
     unittest.main()
