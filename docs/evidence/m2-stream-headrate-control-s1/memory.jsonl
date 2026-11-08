@@ -1,0 +1,9 @@
+{"step": 1, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 519012352}
+{"step": 16, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 563306496}
+{"step": 32, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 563527680}
+{"step": 48, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 563527680}
+{"step": 64, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 563527680}
+{"step": 80, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 564236288}
+{"step": 96, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 564338688}
+{"step": 112, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 564416512}
+{"step": 128, "input_shape": [3, 512, 512], "phase": "post_update", "memory_bytes": 671088640, "peak_job_commit_bytes": 564416512}

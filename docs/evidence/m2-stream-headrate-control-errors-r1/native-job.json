@@ -1,0 +1,50 @@
+{
+  "supervisor_pid": 25208,
+  "command": [
+    ".venv/Scripts/python.exe",
+    "scripts/probe_stream_errors.py",
+    "--run",
+    "m2-stream-headrate-control-s3",
+    "--output",
+    "runs/m2-stream-headrate-control-errors-r1"
+  ],
+  "memory_bytes": 671088640,
+  "wall_seconds": 120.0,
+  "work_items": 41,
+  "cpu_library_threads": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OPENBLAS_DEFAULT_NUM_THREADS": "1",
+    "GOTO_NUM_THREADS": "1"
+  },
+  "job_name": "Local\\TetrisStateVision-f7852ac793a44f2eb88f1d5823d13899",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "system_pressure_guard": "GetPerformanceInfo/0.2s",
+  "system_at_admission": {
+    "commit_bytes": 29390282752,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 11083472896,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "system_pressure": {
+    "reason": null,
+    "stop_commit_bytes": 31368351744,
+    "minimum_available_physical_bytes": 2147483648,
+    "reserved_job_bytes": 0
+  },
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 15.742,
+  "child_pid": 21868,
+  "last_system_memory": {
+    "commit_bytes": 29650046976,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 10785361920,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "peak_job_commit_bytes": 425357312
+}

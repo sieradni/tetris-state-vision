@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "artifacts": {
+    "scope.json": "400810853e423c056788e3e087460f67d65c2df204218f8e7de631a4b48a8e7b",
+    "type-head-joint-comparison-r1-job.json": "13765aa5e1de35b10e438d62f0bf2623a589740405ded0b9b0ef1198c84e7d73",
+    "type-head-joint-comparison-r1.log": "abd1aa863bd5cafb3237e7715dfbc6145f60462a5e908320c116877b853a8061",
+    "verify_type_head_finish.py": "bcd67a22e7304b0686fbff407d76f9276deb063d9bb9bdfe63d75fa33075887b"
+  },
+  "scope": "Comparison receipt and frozen comparator source; raw report and model identities are bound by scope.json."
+}

@@ -1,5 +1,20 @@
 # Contributor handoff — 2026-10-30
 
+## Joint type-head fit completed — 2026-11-07
+
+Both fresh same-source fixed1024 studies and independent ordinary41-image
+replays/collectors are complete. `docs/TYPE_HEAD_JOINT_OPTIMIZATION.md` and
+`docs/evidence/type-head-joint-comparison-r1/scope.json` supersede the earlier
+in-progress entries below. Both joint-fit gates FAIL: control32/32 boards,
+20/64 roles,128/128 semantics, geometry.211; candidate32/32 boards,8/64 roles,
+128/128 semantics, geometry.108. Development both2/9 boards (both empty),
+0/18 roles. Source18ce798e..., actual initial tensors and full1024-row data
+ledgers match; control weights1f20007c..., candidate8ec2cfab.... The fourfold
+head rate is not selected. One seed, 16 training/3 dev ancestries; no real or
+generalization claim. Do not extend either finished study. Next investigate
+per-class gradient direction and forgetting on supported fixtures and declare
+any new intervention before training. No research job remains active.
+
 ## Initial tensor admission — 2026-11-07
 
 The trainer now saves and reads back actual pre-evaluation initial state tensors;
@@ -28,6 +43,108 @@ probe metrics, first loss/gradient norm, six data recipes and optimizer groups;
 evidence `docs/evidence/type-head-initial-admission-r2/` and gate r9/r10 scopes.
 The finite recovery and start-comparison admissions pass; full-study initial
 artifacts still need comparison to these starts before final claims.
+
+Control study first segment planned: `scripts/run_stream_segment.py --name
+m2-stream-headrate-control-s1 --target-steps 1024 --updates 128 --admission
+runs/m2-stream-recovery-gate-r10/profile`. Plan-only receipt/log
+`runs/type-head-control-plan-r1*` passes and binds catalogue18ce798e.... Parent
+cap 1280 MiB / 2100 s / work297 (128 training updates plus 169 curation
+items), child 640 MiB / 1860 s / 128 updates, serialized curator 128 MiB /
+120 s / 169 items; expected parent under 800 MiB, CPU1/cache16 and existing
+pressure guard. Parent receipt/log prefix `runs/type-head-control-s1-controller`;
+child receipt/logs use the run name, and controller progress is in its pipeline
+directory. Verify all output/receipt/log paths absent, >40 GB free and exact
+startup/death process command lines. This segment is partial128/1024, not a
+fit verdict. Afterward compare its actual initial tensors to the admitted
+control, and conduct the matched candidate segment with its own profile.
+Control s1 completed128/1024, explicit `verified_partial`, 140.772 s /
+600,555,520 bytes, exact saved initial file SHA256
+51c58ee18ca9df6de3f03ba5430251ed831b662da360e0446b2eeced7e1e2aa8 matches
+the admitted control. No matching processes remain. Candidate s1 plan-only
+receipt/log `runs/type-head-candidate-plan-r1*` confirms factor4 and same
+source/config/seed/recipe. Planned command `scripts/run_stream_segment.py
+--name m2-stream-headrate-candidate-s1 --target-steps 1024 --updates 128
+--admission runs/m2-stream-recovery-gate-r9/profile`, parent 1280 MiB /
+2100 s / work297, child 640 MiB / 1860 s / 128 updates, curator 128 MiB /
+120 s / 169 items. Expected parent under 800 MiB; CPU1/cache16, kernel and
+pressure guards unchanged. Preflight every run/receipt/log/evidence path and
+>40 GB free. Parent receipt/log prefix `runs/type-head-candidate-s1-controller`.
+Candidate s1 verified partial128/1024, parent 136.545 s / 602,480,640 B;
+no matching processes remain. Both actual initial files have SHA256 51c58ee1...
+and their complete 128-row data ledgers have SHA256 9e4d4248...; independent
+segment scopes are `docs/evidence/m2-stream-headrate-{control,candidate}-s1/`.
+No accuracy verdict follows. Next control s2 plan-only passes: resume s1 at
+128, cap448 new updates, target1024, factor1 and identical source identity.
+Command `scripts/run_stream_segment.py --name m2-stream-headrate-control-s2
+--target-steps 1024 --updates 448 --admission runs/m2-stream-recovery-gate-r10/profile
+--resume-from runs/m2-stream-headrate-control-s1`. Parent 1280 MiB / 2100 s /
+work1065 (448 updates plus 617 curation items); training child 640 MiB / 1860 s /
+448 updates; curator 128 MiB / 120 s / 617 items. Expected parent under 800 MiB,
+CPU1/cache16 and pressure guard unchanged. Preflight all paths and >40 GB free;
+parent receipt/log prefix `runs/type-head-control-s2-controller`. One heavy job.
+Control s2 verified partial576/1024, 414.573 s / 601,214,976 bytes; process
+tree gone and checkpoint at576. Candidate s2 plan-only passed; resume its s1
+at128 for448 updates to576 with factor4 and same frozen source/target. Planned
+`scripts/run_stream_segment.py --name m2-stream-headrate-candidate-s2
+--target-steps 1024 --updates 448 --admission runs/m2-stream-recovery-gate-r9/profile
+--resume-from runs/m2-stream-headrate-candidate-s1`. Parent 1280 MiB / 2100 s /
+work1065; child 640 MiB / 1860 s / 448 updates; curator 128 MiB / 120 s /
+617 items; expected parent under800 MiB, CPU1/cache16 and pressure guard.
+Preflight all paths and >40 GB free. Parent receipt/log prefix
+`runs/type-head-candidate-s2-controller`. No fit verdict at576.
+Candidate s2 verified partial576/1024, 394.045 s / 601,661,440 bytes;
+process tree gone. Control/candidate training ledgers at576 and initial state
+files hash identically. Control s3 plan-only passes: resume576, 448 updates
+to fixed1024. Planned `scripts/run_stream_segment.py --name
+m2-stream-headrate-control-s3 --target-steps 1024 --updates 448 --admission
+runs/m2-stream-recovery-gate-r10/profile --resume-from
+runs/m2-stream-headrate-control-s2`. Parent 1280 MiB / 2100 s / work1513
+(448 updates + 1065 replay items); child 640 MiB / 1860 s / 448 updates,
+curator 128 MiB / 120 s / 1065 items. Expected parent under800 MiB, CPU1/
+cache16, unchanged pressure guard. Preflight all paths and >40 GB free;
+parent receipt/log prefix `runs/type-head-control-s3-controller`. Final
+ordinary pixel replay remains separate and mandatory.
+Control s3 completed1024/1024 and native curator passed, 401.226 s /
+605,925,376 bytes. Final weights 1f20007c... match the historical ordered
+baseline, but new source/evidence scope remains distinct. All matching
+processes gone; independent ordinary pixel replay remains pending.
+Candidate s3 plan-only passes: resume576, 448 updates to fixed1024. Planned
+`scripts/run_stream_segment.py --name m2-stream-headrate-candidate-s3
+--target-steps 1024 --updates 448 --admission runs/m2-stream-recovery-gate-r9/profile
+--resume-from runs/m2-stream-headrate-candidate-s2`. Parent 1280 MiB / 2100 s /
+work1513; child 640 MiB / 1860 s / 448 updates; curator 128 MiB / 120 s /
+1065 items; expected parent under800 MiB, CPU1/cache16 and pressure guard.
+Preflight all paths and >40 GB free; parent receipt/log prefix
+`runs/type-head-candidate-s3-controller`. Independent final pixel replay and
+matched comparison remain required for both studies.
+Candidate s3 completed1024/1024, curator passed, 398.877 s / 606,023,680 B;
+all matching processes gone. Both complete training ledgers SHA256
+91c5bb06c1b209477c2c0342ba4c27fd69cbb93ef49a62b9bf8bdda01509ae5c.
+Independent control pixel replay planned: `scripts/probe_stream_errors.py
+--run m2-stream-headrate-control-s3 --output runs/m2-stream-headrate-control-errors-r1`,
+640 MiB / 120 s / 41 forwards, expected below600 MiB, CPU1/cache16 and
+pressure guard. Receipt/logs prefix `runs/m2-stream-headrate-control-errors-r1`;
+check output, receipts and logs absent first. Candidate follows only after
+control process death, with its own analogous output. Separate 128 MiB /
+30 s / 41-case collectors and final matched comparison remain mandatory.
+Control replay passed 15.742 s / 425,357,312 B under640 MiB. After confirming
+its process tree gone, candidate replay uses `scripts/probe_stream_errors.py
+--run m2-stream-headrate-candidate-s3 --output
+runs/m2-stream-headrate-candidate-errors-r1`, same640 MiB / 120 s / 41 forwards,
+expected under600 MiB, CPU1/cache16 and pressure guard; receipt/log prefix
+`runs/m2-stream-headrate-candidate-errors-r1`. Preflight all paths.
+Candidate pixel replay passed 15.071 s / 424,677,376 B; both process trees
+gone. Curators run sequentially `scripts/record_stream_errors.py --name
+m2-stream-headrate-{control,candidate}-errors-r1`, 128 MiB / 30 s / 41 cases,
+expected under100 MiB, CPU1/pressure guard; receipt/log prefixes
+`runs/type-head-{control,candidate}-errors-curation-r1`. Preflight names.
+The final comparison remains pending their independent scopes.
+Both ordinary replay curators passed (control 78,360,576 B; candidate
+77,758,464 B under128 MiB). Final matched comparator planned:
+`docs/experiments/verify_type_head_finish.py`, 128 MiB / 30 s / 2130 items
+(two1024-row ledgers + 82 pixel cases), expected below100 MiB, CPU1/pressure
+guard. Receipt/log prefix `runs/type-head-joint-comparison-r1`; output
+`docs/evidence/type-head-joint-comparison-r1/`, preflight all paths.
 
 ## Joint type-head optimization preparation — 2026-11-07
 

@@ -1,0 +1,2479 @@
+{
+  "status": "step_partial",
+  "steps": 576,
+  "requested_steps": 1024,
+  "resource_profile_version": 3,
+  "training_recovery_profile_exact": false,
+  "warm_optimizer_backward": null,
+  "profile_square": false,
+  "max_input_pixels_seen": 262144,
+  "max_side": 512,
+  "job_ceiling_bytes": 671088640,
+  "development_groups": 3,
+  "config": {
+    "widths": [
+      16,
+      32,
+      64,
+      96
+    ],
+    "dimension": 64,
+    "heads": 4,
+    "blocks": 2,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 0,
+    "layer_evidence": false
+  },
+  "threads": 1,
+  "workers": 0,
+  "prefetch": 0,
+  "tensor_cache_bytes": 0,
+  "fresh_parent_groups": 16,
+  "curriculum": "all-class-fit-v1",
+  "initial_training_probe": {
+    "images": 32,
+    "ancestry_groups": 16,
+    "loss": 7.829039201140404,
+    "exact_locked_boards": 0,
+    "cell_accuracy": 0.7385937534272671,
+    "mean_geometry_error_cells": 6.618892043828964,
+    "exact_known_layers": 0,
+    "known_layers": 64,
+    "cases": [
+      {
+        "sample_id": "all-class-00-v0",
+        "loss": 8.35966682434082,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7900000214576721,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.288843631744385,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-00",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-00-v1",
+        "loss": 8.704788208007812,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.910286903381348,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-00",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-01-v0",
+        "loss": 7.436341285705566,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.675000011920929,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.20510196685791,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-01",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-01-v1",
+        "loss": 7.8241868019104,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7200000286102295,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.14705228805542,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-01",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-02-v0",
+        "loss": 8.209436416625977,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7400000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.481903553009033,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-02",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-02-v1",
+        "loss": 8.506803512573242,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.89501953125,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-02",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-03-v0",
+        "loss": 7.29813814163208,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7450000047683716,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.449687480926514,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-03",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-03-v1",
+        "loss": 7.727875709533691,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7250000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.105301856994629,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-03",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-04-v0",
+        "loss": 8.453319549560547,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7350000143051147,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.170631408691406,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-04",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-04-v1",
+        "loss": 8.8484525680542,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7649999856948853,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.726317882537842,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-04",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-05-v0",
+        "loss": 7.566952705383301,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.6850000023841858,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.13915491104126,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-05",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-05-v1",
+        "loss": 7.883560657501221,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7200000286102295,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.825768947601318,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-05",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-06-v0",
+        "loss": 8.163700103759766,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7850000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.275506496429443,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-06",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-06-v1",
+        "loss": 8.588241577148438,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7649999856948853,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.905971050262451,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-06",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-07-v0",
+        "loss": 7.2167863845825195,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7250000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.17376708984375,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-07",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-07-v1",
+        "loss": 7.696289539337158,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.12522029876709,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-07",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-08-v0",
+        "loss": 8.170392990112305,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7400000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.500906467437744,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-08",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-08-v1",
+        "loss": 8.46799373626709,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.912484645843506,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-08",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-09-v0",
+        "loss": 7.159469127655029,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7649999856948853,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.370244026184082,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-09",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-09-v1",
+        "loss": 7.583648204803467,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7300000190734863,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.035773277282715,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-09",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-10-v0",
+        "loss": 8.373069763183594,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.75,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.213428974151611,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-10",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-10-v1",
+        "loss": 8.789144515991211,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.815194606781006,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-10",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-11-v0",
+        "loss": 7.466522693634033,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.675000011920929,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.171122074127197,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-11",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-11-v1",
+        "loss": 7.858702659606934,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7099999785423279,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.013329029083252,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-11",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-12-v0",
+        "loss": 8.519979476928711,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7400000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.465764045715332,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-12",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-12-v1",
+        "loss": 8.838865280151367,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.914121150970459,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-12",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-13-v0",
+        "loss": 7.5299882888793945,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7749999761581421,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.378368377685547,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-13",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-13-v1",
+        "loss": 7.9607672691345215,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7350000143051147,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 7.05591344833374,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-13",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-14-v0",
+        "loss": 6.607745170593262,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.75,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.21046257019043,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-14",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-14-v1",
+        "loss": 6.978265285491943,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.794905185699463,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-14",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 1,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-15-v0",
+        "loss": 5.6846842765808105,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.6949999928474426,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.145723819732666,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-15",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-15-v1",
+        "loss": 6.05547571182251,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7049999833106995,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 6.981268405914307,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-15",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      }
+    ],
+    "fit": {
+      "passed": false,
+      "images": 32,
+      "ancestry_groups": 16,
+      "exact_locked_boards": 0,
+      "known_layers": 64,
+      "exact_known_layers": 0,
+      "observed_layers": 56,
+      "exact_observed_layers": 0,
+      "absent_layers": 8,
+      "exact_absent_layers": 0,
+      "known_semantic_cells": 128,
+      "correct_semantic_cells": 15,
+      "mean_geometry_error_cells": 6.618892043828964,
+      "roles_by_target_class": {
+        "active": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 0
+          }
+        },
+        "ghost": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 0
+          }
+        }
+      },
+      "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+      "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+    }
+  },
+  "initial_development": {
+    "images": 9,
+    "ancestry_groups": 3,
+    "loss": 6.983102003733317,
+    "exact_locked_boards": 0,
+    "cell_accuracy": 0.7111111283302307,
+    "mean_geometry_error_cells": 4.315251151720683,
+    "exact_known_layers": 0,
+    "known_layers": 18,
+    "cases": [
+      {
+        "sample_id": "development-30261026-v0",
+        "loss": 4.92265510559082,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7400000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.06386137008667,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261026-v1",
+        "loss": 5.1982831954956055,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.800000011920929,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.5127861499786377,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261026-v2",
+        "loss": 6.189512252807617,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7350000143051147,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.0643014907836914,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v0",
+        "loss": 9.571925163269043,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.6000000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 8.282241821289062,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v1",
+        "loss": 9.799842834472656,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.6600000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 8.883417129516602,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v2",
+        "loss": 9.746122360229492,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.6600000262260437,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 8.862896919250488,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v0",
+        "loss": 5.757784843444824,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7200000286102295,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.9709773063659668,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v1",
+        "loss": 5.910489082336426,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7599999904632568,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 2.232602119445801,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v2",
+        "loss": 5.751303195953369,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7250000238418579,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 1.964176058769226,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      }
+    ]
+  },
+  "final_training_probe": {
+    "images": 32,
+    "ancestry_groups": 16,
+    "loss": 1.196884848177433,
+    "exact_locked_boards": 32,
+    "cell_accuracy": 1.0,
+    "mean_geometry_error_cells": 0.18226307863369584,
+    "exact_known_layers": 10,
+    "known_layers": 64,
+    "cases": [
+      {
+        "sample_id": "all-class-00-v0",
+        "loss": 1.2527862787246704,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.19463607668876648,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-00",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-00-v1",
+        "loss": 1.2529898881912231,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.19533103704452515,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-00",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-01-v0",
+        "loss": 1.1221224069595337,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.16373310983181,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-01",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-01-v1",
+        "loss": 1.1223061084747314,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1630014181137085,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-01",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "I"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "I"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-02-v0",
+        "loss": 1.4901930093765259,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18648293614387512,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-02",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-02-v1",
+        "loss": 1.4872111082077026,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18653571605682373,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-02",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-03-v0",
+        "loss": 1.186210036277771,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.20204053819179535,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-03",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-03-v1",
+        "loss": 1.186842679977417,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.20213796198368073,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-03",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "O"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-04-v0",
+        "loss": 1.6692777872085571,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18943990767002106,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-04",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-04-v1",
+        "loss": 1.66679847240448,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18992936611175537,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-04",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-05-v0",
+        "loss": 1.3145607709884644,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18398058414459229,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-05",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-05-v1",
+        "loss": 1.3092118501663208,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1843107044696808,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-05",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "T"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-06-v0",
+        "loss": 1.283759593963623,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18954329192638397,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-06",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-06-v1",
+        "loss": 1.2848846912384033,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1902099847793579,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-06",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-07-v0",
+        "loss": 1.1108880043029785,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.17856340110301971,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-07",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-07-v1",
+        "loss": 1.111699104309082,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.17854484915733337,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-07",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "S"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-08-v0",
+        "loss": 1.2280114889144897,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1892075091600418,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-08",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-08-v1",
+        "loss": 1.225268840789795,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1895013153553009,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-08",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-09-v0",
+        "loss": 1.211028814315796,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.19107481837272644,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-09",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-09-v1",
+        "loss": 1.2067123651504517,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1916680783033371,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-09",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "Z"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-10-v0",
+        "loss": 0.9186431169509888,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.19205190241336823,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-10",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-10-v1",
+        "loss": 0.9166767597198486,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1925726681947708,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-10",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-11-v0",
+        "loss": 1.3629441261291504,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18172049522399902,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-11",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-11-v1",
+        "loss": 1.356073021888733,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18097488582134247,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-11",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "J"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-12-v0",
+        "loss": 1.2730250358581543,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1918715089559555,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-12",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-12-v1",
+        "loss": 1.273916244506836,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.19216302037239075,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-12",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-13-v0",
+        "loss": 1.156531810760498,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18311721086502075,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-13",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-13-v1",
+        "loss": 1.1565978527069092,
+        "exact_known_layers": 1,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.18395446240901947,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-13",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": true,
+              "exact": false,
+              "class": "L"
+            },
+            "ghost": {
+              "known": true,
+              "observed": true,
+              "exact": true,
+              "class": "L"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-14-v0",
+        "loss": 0.9006437659263611,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1913158893585205,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-14",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-14-v1",
+        "loss": 0.9050508141517639,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.1918010115623474,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-14",
+        "fit_case": {
+          "semantic_known": 8,
+          "semantic_correct": 8,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": false,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-15-v0",
+        "loss": 0.678928554058075,
+        "exact_known_layers": 2,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.10537334531545639,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-15",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": true,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": true,
+              "class": "absent"
+            }
+          }
+        }
+      },
+      {
+        "sample_id": "all-class-15-v1",
+        "loss": 0.6785207390785217,
+        "exact_known_layers": 2,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 0.10562951117753983,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy.",
+        "group_id": "all-class-15",
+        "fit_case": {
+          "semantic_known": 0,
+          "semantic_correct": 0,
+          "roles": {
+            "active": {
+              "known": true,
+              "observed": false,
+              "exact": true,
+              "class": "absent"
+            },
+            "ghost": {
+              "known": true,
+              "observed": false,
+              "exact": true,
+              "class": "absent"
+            }
+          }
+        }
+      }
+    ],
+    "fit": {
+      "passed": false,
+      "images": 32,
+      "ancestry_groups": 16,
+      "exact_locked_boards": 32,
+      "known_layers": 64,
+      "exact_known_layers": 10,
+      "observed_layers": 56,
+      "exact_observed_layers": 6,
+      "absent_layers": 8,
+      "exact_absent_layers": 4,
+      "known_semantic_cells": 128,
+      "correct_semantic_cells": 128,
+      "mean_geometry_error_cells": 0.18226307863369584,
+      "roles_by_target_class": {
+        "active": {
+          "I": {
+            "known": 4,
+            "exact": 0
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 2
+          },
+          "L": {
+            "known": 4,
+            "exact": 0
+          },
+          "absent": {
+            "known": 4,
+            "exact": 2
+          }
+        },
+        "ghost": {
+          "I": {
+            "known": 4,
+            "exact": 2
+          },
+          "O": {
+            "known": 4,
+            "exact": 0
+          },
+          "T": {
+            "known": 4,
+            "exact": 0
+          },
+          "S": {
+            "known": 4,
+            "exact": 0
+          },
+          "Z": {
+            "known": 4,
+            "exact": 0
+          },
+          "J": {
+            "known": 4,
+            "exact": 0
+          },
+          "L": {
+            "known": 4,
+            "exact": 2
+          },
+          "absent": {
+            "known": 4,
+            "exact": 2
+          }
+        }
+      },
+      "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+      "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+    }
+  },
+  "development": {
+    "images": 9,
+    "ancestry_groups": 3,
+    "loss": 10.924773269229465,
+    "exact_locked_boards": 2,
+    "cell_accuracy": 0.9083333412806193,
+    "mean_geometry_error_cells": 4.1299426555633545,
+    "exact_known_layers": 0,
+    "known_layers": 18,
+    "cases": [
+      {
+        "sample_id": "development-30261026-v0",
+        "loss": 5.118168830871582,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 3.379984140396118,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261026-v1",
+        "loss": 5.119147777557373,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 1.0,
+        "exact_locked_board": true,
+        "mean_geometry_error_cells": 3.380197763442993,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261026-v2",
+        "loss": 12.11365032196045,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.9950000047683716,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 3.3807642459869385,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v0",
+        "loss": 15.078858375549316,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.9850000143051147,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 5.27657413482666,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v1",
+        "loss": 15.376872062683105,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.9850000143051147,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 5.277272701263428,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261027-v2",
+        "loss": 15.339832305908203,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.9800000190734863,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 5.299437046051025,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v0",
+        "loss": 10.016925811767578,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7450000047683716,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 3.7259535789489746,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v1",
+        "loss": 10.094474792480469,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7450000047683716,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 3.7234325408935547,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      },
+      {
+        "sample_id": "development-30261028-v2",
+        "loss": 10.06502914428711,
+        "exact_known_layers": 0,
+        "known_layers": 2,
+        "known_cells": 200,
+        "cell_accuracy": 0.7400000095367432,
+        "exact_locked_board": false,
+        "mean_geometry_error_cells": 3.725867748260498,
+        "note": "Synthetic M2 diagnostics; not complete-state or real-image accuracy."
+      }
+    ]
+  },
+  "checkpoint_round_trip_exact": true,
+  "checkpoint_sha256": "3cb158c6a2e6f0d4e2bd0ed4e1d469611061dbac369ab270f779bc91020bde21",
+  "elapsed_seconds": 403.69676209999307,
+  "claim": "Finite synthetic curriculum or resource characterization, not complete-state or real-image acceptance.",
+  "trained_steps": 576,
+  "catalogue_sha256": "18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125",
+  "initial_weights_sha256": "51c58ee18ca9df6de3f03ba5430251ed831b662da360e0446b2eeced7e1e2aa8",
+  "supervisor_script_sha256": "d2fb1478940b7b606073dbd75aa3746098fe7ede15f306082ec1f762d09c20db",
+  "system_pressure_guard": "GetPerformanceInfo/0.2s",
+  "runtime_source_sha256": "24462b0b712328bae37cc890296b0ec34542b50c7ad698575419377e66e216f8",
+  "model_kind": "pilot",
+  "component_capacity": 0,
+  "input_policy": "M2-prepared-resize-v1",
+  "arguments": {
+    "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-headrate-control-s2",
+    "model": "pilot",
+    "component_capacity": 0,
+    "layer_evidence": false,
+    "curriculum": "all-class-fit-v1",
+    "steps": 1024,
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "type_head_rate_factor": 1,
+    "wall_seconds": 1800.0,
+    "evaluate_every": 128,
+    "development_groups": 3,
+    "profile_square": false,
+    "admission": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-recovery-gate-r10\\profile",
+    "checkpoint_every": 64,
+    "resume_from": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-headrate-control-s1",
+    "max_new_steps": 448
+  },
+  "stream_ledger_sha256": "96586f265f7237cd46be50c2980bd20423c765d701dd77f9aa32f6ffaaa00157",
+  "cpu_only": true,
+  "resume": {
+    "source_run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-headrate-control-s1",
+    "step": 128,
+    "pointer": {
+      "format": "tetris-vision-training-snapshot",
+      "generation": "step-000128-a2fd7c2cf50445cba118ee7d4a273acc",
+      "manifest_sha256": "70050ef17187218ac41011291839270711d95952bcb53a422c16c884c32c7ce0",
+      "version": 1
+    },
+    "ledger_prefix_sha256": {
+      "curve.jsonl": "24776fdb410e67bc2b336e6debae126c066bfdbd45f059eef5d0936001e278d3",
+      "evaluations.jsonl": "852b984d68e754fb268c988f57cda8627f5503b495f42a7aab8cfd6c1469ec50",
+      "training.jsonl": "9e4d4248c516f4e7bdceadc2c2449906f37c121fbec1e052f04c9d607bf912be"
+    }
+  },
+  "latest_training_snapshot": {
+    "format": "tetris-vision-training-snapshot",
+    "version": 1,
+    "generation": "step-000576-6b004379e0e340b19f0498e85509ae54",
+    "manifest_sha256": "b135e05aad393ca09de3e6ac9c510a7353af43caaca8b35dd74d2184aee83d3c"
+  },
+  "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m2-stream-headrate-control-s2\\code\\scripts\\train_m2_stream.py",
+  "native_cache_limits": {
+    "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+    "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+  },
+  "recovery_contract": {
+    "catalogue_sha256": "18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125",
+    "config": {
+      "widths": [
+        16,
+        32,
+        64,
+        96
+      ],
+      "dimension": 64,
+      "heads": 4,
+      "blocks": 2,
+      "refinements": 2,
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "max_batch": 4,
+      "max_pixels": 1048576,
+      "component_capacity": 0,
+      "layer_evidence": false
+    },
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "steps": 1024,
+    "max_side": 512,
+    "development_groups": 3,
+    "evaluate_every": 128,
+    "checkpoint_every": 64,
+    "profile_square": false,
+    "threads": 1,
+    "rng": "torch_cpu_only",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "input_policy": "M2-prepared-resize-v1",
+    "curriculum": "all-class-fit-v1",
+    "type_head_rate_factor": 1
+  },
+  "updates_this_run": 448
+}

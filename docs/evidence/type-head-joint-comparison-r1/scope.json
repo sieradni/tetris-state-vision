@@ -1,0 +1,472 @@
+{
+  "status": "passed",
+  "runs": [
+    "m2-stream-headrate-control-s3",
+    "m2-stream-headrate-candidate-s3"
+  ],
+  "updates_each": 1024,
+  "job_ceiling_bytes": 134217728,
+  "source_catalogue_sha256": "18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125",
+  "identical_training_ledger": true,
+  "identical_initial_tensors": true,
+  "rates": [
+    1,
+    4
+  ],
+  "outcomes": {
+    "m2-stream-headrate-control-s3": {
+      "training_fit": {
+        "passed": false,
+        "images": 32,
+        "ancestry_groups": 16,
+        "exact_locked_boards": 32,
+        "known_layers": 64,
+        "exact_known_layers": 20,
+        "observed_layers": 56,
+        "exact_observed_layers": 12,
+        "absent_layers": 8,
+        "exact_absent_layers": 8,
+        "known_semantic_cells": 128,
+        "correct_semantic_cells": 128,
+        "mean_geometry_error_cells": 0.21058594435453415,
+        "roles_by_target_class": {
+          "active": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 0
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 2
+            },
+            "J": {
+              "known": 4,
+              "exact": 2
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 4
+            }
+          },
+          "ghost": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 0
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 2
+            },
+            "J": {
+              "known": 4,
+              "exact": 2
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 4
+            }
+          }
+        },
+        "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+        "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+      },
+      "training_errors": {
+        "images": 32,
+        "ancestry_groups": 16,
+        "locked_populations": {
+          "empty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 0,
+            "true_negative": 3200,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 128,
+            "true_negative": 3072,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 32,
+            "exact": 10,
+            "unknown_predictions": 0,
+            "type_errors": 22,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "ghost": {
+            "known": 32,
+            "exact": 10,
+            "unknown_predictions": 0,
+            "type_errors": 22,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          }
+        },
+        "geometry": {
+          "supported_images": 32,
+          "mean_cells": 0.21058597152422973,
+          "origin_error_cells": 0.26559971929549614,
+          "per_column_basis_error_cells": 0.05554616451263428,
+          "per_row_basis_error_cells": 0.017962604761123657,
+          "worst_point_cells": 0.7233509670183458
+        }
+      },
+      "development": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "locked_populations": {
+          "empty": {
+            "images": 2,
+            "exact_boards": 2,
+            "known_cells": 400,
+            "true_positive": 0,
+            "true_negative": 400,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 7,
+            "exact_boards": 0,
+            "known_cells": 1400,
+            "true_positive": 18,
+            "true_negative": 1217,
+            "false_positive": 3,
+            "false_negative": 162
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 6,
+            "rotation_errors": 3
+          },
+          "ghost": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 9,
+            "rotation_errors": 3
+          }
+        },
+        "geometry": {
+          "supported_images": 9,
+          "mean_cells": 4.168932326409487,
+          "origin_error_cells": 3.946945741367227,
+          "per_column_basis_error_cells": 0.2521416214476693,
+          "per_row_basis_error_cells": 0.13343939827482104,
+          "worst_point_cells": 7.549032390773832
+        }
+      },
+      "weights_sha256": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6"
+    },
+    "m2-stream-headrate-candidate-s3": {
+      "training_fit": {
+        "passed": false,
+        "images": 32,
+        "ancestry_groups": 16,
+        "exact_locked_boards": 32,
+        "known_layers": 64,
+        "exact_known_layers": 8,
+        "observed_layers": 56,
+        "exact_observed_layers": 6,
+        "absent_layers": 8,
+        "exact_absent_layers": 2,
+        "known_semantic_cells": 128,
+        "correct_semantic_cells": 128,
+        "mean_geometry_error_cells": 0.10820206650532782,
+        "roles_by_target_class": {
+          "active": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 2
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 0
+            },
+            "J": {
+              "known": 4,
+              "exact": 0
+            },
+            "L": {
+              "known": 4,
+              "exact": 2
+            },
+            "absent": {
+              "known": 4,
+              "exact": 0
+            }
+          },
+          "ghost": {
+            "I": {
+              "known": 4,
+              "exact": 0
+            },
+            "O": {
+              "known": 4,
+              "exact": 2
+            },
+            "T": {
+              "known": 4,
+              "exact": 0
+            },
+            "S": {
+              "known": 4,
+              "exact": 0
+            },
+            "Z": {
+              "known": 4,
+              "exact": 0
+            },
+            "J": {
+              "known": 4,
+              "exact": 0
+            },
+            "L": {
+              "known": 4,
+              "exact": 0
+            },
+            "absent": {
+              "known": 4,
+              "exact": 2
+            }
+          }
+        },
+        "criterion": "32 exact boards;64 exact supported roles including56 observed;128 correct supported semantic cells;mean geometry<.25 cells.",
+        "scope": "Memorization diagnostic only; not independent generalization or real complete-state acceptance."
+      },
+      "training_errors": {
+        "images": 32,
+        "ancestry_groups": 16,
+        "locked_populations": {
+          "empty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 0,
+            "true_negative": 3200,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 16,
+            "exact_boards": 16,
+            "known_cells": 3200,
+            "true_positive": 128,
+            "true_negative": 3072,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 32,
+            "exact": 4,
+            "unknown_predictions": 0,
+            "type_errors": 28,
+            "column_errors": 0,
+            "row_errors": 0,
+            "rotation_errors": 0
+          },
+          "ghost": {
+            "known": 32,
+            "exact": 4,
+            "unknown_predictions": 0,
+            "type_errors": 28,
+            "column_errors": 0,
+            "row_errors": 14,
+            "rotation_errors": 0
+          }
+        },
+        "geometry": {
+          "supported_images": 32,
+          "mean_cells": 0.1082020885247788,
+          "origin_error_cells": 0.1525458580274708,
+          "per_column_basis_error_cells": 0.00769941508769989,
+          "per_row_basis_error_cells": 0.017907768487930298,
+          "worst_point_cells": 0.2809655880274657
+        }
+      },
+      "development": {
+        "images": 9,
+        "ancestry_groups": 3,
+        "locked_populations": {
+          "empty": {
+            "images": 2,
+            "exact_boards": 2,
+            "known_cells": 400,
+            "true_positive": 0,
+            "true_negative": 400,
+            "false_positive": 0,
+            "false_negative": 0
+          },
+          "nonempty": {
+            "images": 7,
+            "exact_boards": 0,
+            "known_cells": 1400,
+            "true_positive": 49,
+            "true_negative": 1208,
+            "false_positive": 12,
+            "false_negative": 131
+          },
+          "partial": {
+            "images": 0,
+            "exact_boards": 0,
+            "known_cells": 0,
+            "true_positive": 0,
+            "true_negative": 0,
+            "false_positive": 0,
+            "false_negative": 0
+          }
+        },
+        "layers": {
+          "active": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 6,
+            "rotation_errors": 3
+          },
+          "ghost": {
+            "known": 9,
+            "exact": 0,
+            "unknown_predictions": 0,
+            "type_errors": 9,
+            "column_errors": 9,
+            "row_errors": 9,
+            "rotation_errors": 3
+          }
+        },
+        "geometry": {
+          "supported_images": 9,
+          "mean_cells": 4.136577301844729,
+          "origin_error_cells": 4.096263083485202,
+          "per_column_basis_error_cells": 0.24058513999838096,
+          "per_row_basis_error_cells": 0.13168210518962387,
+          "worst_point_cells": 7.5900402902656205
+        }
+      },
+      "weights_sha256": "8ec2cfab886129e8104bf76af940a4758dbae41863c56349c5933c963114a1da"
+    }
+  },
+  "input_sha256": {
+    "m2-stream-headrate-control-s3": {
+      "summary.json": "bb361de7d347dcadf7ecb22c8c57dcaf6d84676d3b48745dc644a2454479f46f",
+      "training.jsonl": "91c5bb06c1b209477c2c0342ba4c27fd69cbb93ef49a62b9bf8bdda01509ae5c",
+      "curve.jsonl": "c34eb391eaacea4b3ed10c96d329ae7be11b7495cf44516d84c8591ca11f5dec",
+      "initial-weights.pt": "51c58ee18ca9df6de3f03ba5430251ed831b662da360e0446b2eeced7e1e2aa8",
+      "checkpoint/manifest.json": "676c23699049d045067cfc11f03fc937130f108a5e08dc0339699ba3a7b05c01",
+      "checkpoint/weights.pt": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6",
+      "code/source.json": "aeea302350535908e16b788359b23cc4cde6ed5775bb6d0459829c4e40939027",
+      "pixel_scope_sha256": "d0bbf6184869733479c278e6ef0bde56dc859c37ec51c91cc4de5efce69f8b80",
+      "pixel_report_sha256": "f7d3c09d9f9302d67ae76a2d9bd40eddf287b905332cfefc0615c04f7081f0b5"
+    },
+    "m2-stream-headrate-candidate-s3": {
+      "summary.json": "19b93cc82345cd94377e6fb98d12570703edebedda54b5e9c35130147edfb662",
+      "training.jsonl": "91c5bb06c1b209477c2c0342ba4c27fd69cbb93ef49a62b9bf8bdda01509ae5c",
+      "curve.jsonl": "bc32d6be6a754872da89f018db544897c361836eae1453a9b9fce5cc3bc04003",
+      "initial-weights.pt": "51c58ee18ca9df6de3f03ba5430251ed831b662da360e0446b2eeced7e1e2aa8",
+      "checkpoint/manifest.json": "54c60554898e0e9b30cb1164d91caad8cc660366bde8dfe4a4f8e7a55e009736",
+      "checkpoint/weights.pt": "8ec2cfab886129e8104bf76af940a4758dbae41863c56349c5933c963114a1da",
+      "code/source.json": "aeea302350535908e16b788359b23cc4cde6ed5775bb6d0459829c4e40939027",
+      "pixel_scope_sha256": "4af55da21dc4bf616775dda46a13a5a46e6cd7d1d5182669f6d85ac2c972f154",
+      "pixel_report_sha256": "9ed4316fd0fd2efc2a4cf8da00a124a48158a0b5b1d86802a6a32da48b747d27"
+    }
+  },
+  "comparison_sources": {
+    "docs/experiments/verify_type_head_finish.py": "bcd67a22e7304b0686fbff407d76f9276deb063d9bb9bdfe63d75fa33075887b",
+    "scripts/m2_fit_contract.py": "444a0667a5039a92f0cde6b093d981dd17995419908172cc6e330371596f32a2",
+    "scripts/record_stream_run.py": "41a9da15f56703f98d17f17e34f327f3eda81cb633cfd51ec7d32c0dd10bc990"
+  },
+  "scope": "One seed and 32 related synthetic drawings; not independent generalization or real-image quality."
+}

@@ -1,5 +1,44 @@
 # Controlled joint optimization of the type head
 
+## Completed result
+
+Both predeclared 1,024-update studies are complete and independently replayed
+on their 41 saved synthetic images. The candidate **fails** the unchanged joint
+fit criterion and worsens role reading relative to the matched control:
+
+| Training diagnostic | Control (1×) | Candidate (4×) | Required |
+|---|---:|---:|---:|
+| Exact locked boards | 32/32 | 32/32 | 32/32 |
+| Exact visible active/ghost labels | 12/56 | 6/56 | 56/56 |
+| Exact absence labels | 8/8 | 2/8 | 8/8 |
+| Correct supported semantic cells | 128/128 | 128/128 | 128/128 |
+| Mean geometry error, cells | 0.211 | 0.108 | <0.25 |
+| Joint fit | FAIL | FAIL | PASS |
+
+Both models score 2/9 exact development boards, both of which are empty,
+and 0/18 exact development roles. Development geometry is 4.169 cells for
+the control and 4.137 for the candidate. These nine images represent only
+three development ancestries; the 32 training images represent 16 ancestries.
+Do not treat the views as independent observations or as real-image accuracy.
+
+The [independent comparison](evidence/type-head-joint-comparison-r1/scope.json)
+verifies matching actual initial tensors, complete ordered 1,024-row training
+ledgers, source, configuration and all recovery recipe fields other than the
+declared factor; final joint metrics are reconstructed from separately audited
+ordinary pixel reports. Control weights are `1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6`
+and candidate weights are `8ec2cfab886129e8104bf76af940a4758dbae41863c56349c5933c963114a1da`;
+both use source catalogue `18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125`.
+See the [control pixel audit](evidence/m2-stream-headrate-control-errors-r1/scope.json)
+and [candidate pixel audit](evidence/m2-stream-headrate-candidate-errors-r1/scope.json).
+
+At this one seed and fixed budget, increasing the head rate alone did not
+repair class collapse and substantially reduced correct role labels. Better
+geometry does not make the result a joint success. Do not promote the candidate
+or extend these finished studies. Next diagnose per-class gradient direction,
+relative head/feature updates and forgetting on the existing supported fixtures
+before predeclaring a new matched learning intervention; no new training is
+admitted by this result.
+
 ## Question and fixed comparison
 
 Can a higher learning rate for the existing shared type head reduce the
