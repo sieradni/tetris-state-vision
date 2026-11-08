@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "50dde254082bbe51659cc2315bf963c0d0ccc647",
+    "generated_at_commit": "326e50d7c39c282f772e94b1239913e9a1ba63a2",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -3393,6 +3393,19 @@
         "test_controller_evidence.py": "f866886d493cb086684a7d0764806dae4c60287112f881b07dc079c7d516169f"
       }
     },
+    "m3-identity-exposure-r4": {
+      "record_commit": "",
+      "files": {
+        "attempt-m3-identity-exposure-r1.json": "c722476d9661e57e655fe13c56ceb7e386c85a6cda76e0e01862b1c0d28235d2",
+        "attempt-m3-identity-exposure-r2.json": "b35eade7eeabfcd417d94339158069138882e2c47e18aa249dfd5a09da5a2e18",
+        "attempt-m3-identity-exposure-r3.json": "992801364ecdf2a4eec1e9436c0d07b24067c52351220d9c9c6e1b17cb58681b",
+        "m3-identity-exposure-r4.json": "9813cb347f0bc0a3757aa5412b313b46e41ca25d10cddc6b3d95413098dfc5e1",
+        "m3-identity-exposure-r4.log": "fa0db41828fea9f6225ff86889fb58aa7f871a2cdca0c45fe2b27925b6c96cae",
+        "m3-identity-exposure-r4.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result.json": "3144c5d3ad055ca819a4fc3d3bbf25f74f560743e853ef11bab8611611576d0f",
+        "scope.json": "4b57ba056f744a3a24a897e1a0b46db76b98a60b06cecd3c96c879db14e83cef"
+      }
+    },
     "m3-identity-factor-r1-errors-r3": {
       "record_commit": "5c6b41f9b03dbd83c9ab6bf0c6435766aea3c2a9",
       "files": {
@@ -4260,7 +4273,7 @@
     }
   },
   "totals": {
-    "directories": 176,
-    "files": 3368
+    "directories": 177,
+    "files": 3376
   }
 }

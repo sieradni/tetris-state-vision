@@ -1,5 +1,35 @@
 # Contributor handoff — 2026-10-30
 
+## M3 identity supervision measured, and the guard policy text corrected — 2026-11-08
+
+The ranked open item after both identity levers closed was "the supervision signal",
+so this pass measured it instead of declaring another lever. `docs/M3_IDENTITY_EXPOSURE.md`
+records it: `docs/experiments/audit_identity_exposure.py` replays the 27 recorded probes
+of `m3-identity-factor-r1` from the run's archived code with no model forward, refuses
+unless recipe, raster and annotation bytes match, rebuilds the capacity-64 queue/hold
+targets, tallies masked identity by class and slot, and joins the published per-case
+diagnostics; `docs/experiments/record_identity_exposure.py` re-derives every count from
+the per-case rows. Audit `runs/m3-identity-exposure-r4.json` (passed, 27 cases, 3.248 s,
+266,608,640 B under 640 MiB) and curation `runs/m3-identity-exposure-r4-curation.json`
+(passed, 128 MiB) curate in `docs/evidence/m3-identity-exposure-r4/scope.json`; the first
+three attempts are retained beside it as receipts, each refused by the audit tooling or
+its log capture rather than by a measured disagreement.
+
+The counts: all seven piece classes are supervised in both splits (54 training tokens
+across slots 0-5, 90 development across slots 0-8, 9 and 15 EOS labels), so coverage is
+complete; per-class exposure is 3-18 unique labels, and hold identity sees four of seven
+classes. Correctness is class-selective, not positional: the only identities ever exact
+are queue `S` (3/3 training, 9/18 development) and hold `T` (0/3 training, 3/3
+development), while six queue classes and three hold classes are at zero; development's
+nine successes sit at slots 1, 3, 5 and 7, and all 15 development slot-0 labels are
+wrong. With the coefficient lever having already moved the totals, the remaining ceiling
+is label diversity or the input representation — not global starvation and not class
+coverage. No lever is opened in this pass.
+
+Also fixed: `docs/RESOURCE_GUARD.md` still described V-040's retired physical stop line
+as binding (V-043, green on this audit receipt's `stop_commit_bytes`), so the policy record
+now quotes the expressions the supervisor evaluates.
+
 ## M3 identity read-out tying: a measured negative, with the role head paying — 2026-11-08
 
 `docs/M3_IDENTITY_READOUT.md` predeclared the lever at commit `e83d70e`, before any

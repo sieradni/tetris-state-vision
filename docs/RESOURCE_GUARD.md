@@ -12,12 +12,20 @@ converted to bytes. These describe system commit and physical memory, rather
 than an incidental nested Job's counters. Current system commit is distinct from
 the historical peak Job accounting discussed in V-004.
 
-The current conservative policy stops at the lower of:
+The current conservative policy stops when system commit reaches 90% of the current
+OS commit limit, or when admitting the full configured Job ceiling would reach it:
 
-- Physical memory minus min(2 GiB, physical / 8).
-- 90% of the current OS commit limit.
+- `commit_bytes >= commit_limit * 9 // 10`.
+- `commit_bytes + reserved_job_bytes >= commit_limit * 9 // 10`.
 
-It also requires at least min(2 GiB, physical / 8) available physical memory.
+It also requires at least min(2 GiB, physical / 8) available physical memory, and the
+Job ceiling itself may not exceed min(physical RAM / 3, 8 GiB). Before V-040 the stop
+line was the lower of that commit line and physical memory minus
+min(2 GiB, physical / 8); on this page-file host that resolved to 31.4 GB and parked
+runs the exhaustible commit budget would have admitted. The physical term now gates
+availability only, so a page-file host's steady-state commit charge is not treated as
+this job's risk. Historical stop points quoted in the receipts and evidence below keep
+their original values.
 Admission checks headroom for the full configured Job ceiling. While the child
 runs, system counters are polled every .2 seconds, independent of snapshot/log
 cadence. A pressure stop writes `memory_pressure` / exit125 before terminating

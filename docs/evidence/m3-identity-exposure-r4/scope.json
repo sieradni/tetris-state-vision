@@ -1,0 +1,179 @@
+{
+  "status": "passed",
+  "audit_format_version": 1,
+  "run": "m3-identity-factor-r1",
+  "run_status": "complete",
+  "curriculum": "stream-v1",
+  "component_capacity": 64,
+  "images": 27,
+  "source_catalogue_sha256": "b3caba9792c2d210d43f84cf8d50a0d4289e0c106ca281f609d18c2f32f5eae6",
+  "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+  "published_diagnostics": "docs/evidence/m3-identity-factor-r1-errors-r3/result.json",
+  "published_result_sha256": "7c96d1d615cc4240634ee377789f7f8366f767e2389aaa801655b6cb4abc7aaa",
+  "published_counts_reproduced": {
+    "training_piece_tokens": {
+      "actual": 54,
+      "published": 54
+    },
+    "development_piece_tokens": {
+      "actual": 90,
+      "published": 90
+    },
+    "training_hold_known": {
+      "actual": 9,
+      "published": 9
+    },
+    "development_hold_known": {
+      "actual": 12,
+      "published": 12
+    },
+    "training_correct_tokens": {
+      "actual": 3,
+      "published": 3
+    },
+    "development_correct_tokens": {
+      "actual": 9,
+      "published": 9
+    },
+    "training_correct_holds": {
+      "actual": 0,
+      "published": 0
+    },
+    "development_correct_holds": {
+      "actual": 3,
+      "published": 3
+    }
+  },
+  "splits": {
+    "training": {
+      "queue": {
+        "supervised_piece_tokens": 54,
+        "classes": {
+          "I": 12,
+          "J": 6,
+          "L": 3,
+          "O": 9,
+          "S": 3,
+          "T": 15,
+          "Z": 6
+        },
+        "positions": {
+          "0": 9,
+          "1": 9,
+          "2": 9,
+          "3": 9,
+          "4": 9,
+          "5": 9
+        },
+        "errors_by_class": {
+          "I": 12,
+          "J": 6,
+          "L": 3,
+          "O": 9,
+          "T": 15,
+          "Z": 6
+        },
+        "errors_by_position": {
+          "0": 6,
+          "1": 9,
+          "2": 9,
+          "3": 9,
+          "4": 9,
+          "5": 9
+        },
+        "correct_tokens": 3
+      },
+      "hold": {
+        "supervised_pieces": 9,
+        "classes": {
+          "J": 3,
+          "L": 3,
+          "S": 3
+        },
+        "correct_pieces": 0
+      }
+    },
+    "development": {
+      "queue": {
+        "supervised_piece_tokens": 90,
+        "classes": {
+          "I": 15,
+          "J": 9,
+          "L": 9,
+          "O": 12,
+          "S": 18,
+          "T": 9,
+          "Z": 18
+        },
+        "positions": {
+          "0": 15,
+          "1": 15,
+          "2": 15,
+          "3": 12,
+          "4": 9,
+          "5": 9,
+          "6": 9,
+          "7": 3,
+          "8": 3
+        },
+        "errors_by_class": {
+          "I": 15,
+          "J": 9,
+          "L": 9,
+          "O": 12,
+          "S": 9,
+          "T": 9,
+          "Z": 18
+        },
+        "errors_by_position": {
+          "0": 15,
+          "1": 12,
+          "2": 15,
+          "3": 9,
+          "4": 9,
+          "5": 8,
+          "6": 9,
+          "7": 1,
+          "8": 3
+        },
+        "correct_tokens": 9
+      },
+      "hold": {
+        "supervised_pieces": 12,
+        "classes": {
+          "J": 3,
+          "L": 3,
+          "S": 3,
+          "T": 3
+        },
+        "correct_pieces": 3
+      }
+    }
+  },
+  "result_sha256": "b31741480b30cac18bc12a43ce83f83a014e15d50eaf454187574a50eee921ff",
+  "audit_receipt": {
+    "stem": "m3-identity-exposure-r4",
+    "status": "passed",
+    "work_items": 27,
+    "peak_job_commit_bytes": 266608640,
+    "declared_wall_seconds": 300.0,
+    "declared_memory_bytes": 671088640,
+    "elapsed_seconds": 3.248
+  },
+  "sources": {
+    "docs/experiments/audit_identity_exposure.py": "7a42d16805ce591d68242a435bc4b4087b002a1b33a1b76d7c642d761b459580",
+    "docs/experiments/record_identity_exposure.py": "5c15a421b27fecea0c1a8b1f6831efd9bcdb7803976c91d2a3ab756e3cd71ff0",
+    "scripts/run_bounded.py": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/record_stream_run.py": "1a22c96d25bc0a03a6569eb05d8421492a2a207f1140978ef2ab6cd0b5775d85",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d"
+  },
+  "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+  "retained_attempts": {
+    "m3-identity-exposure-r1": "b50dc87db18855d40fc3d8c6a56ee176b1a55c1ebe582990b44721021bf9c1ac",
+    "m3-identity-exposure-r2": "247b2fd7cfce2293404f1f5794c0b4677c489ba538ddcd8b6640664c1b3c6e27",
+    "m3-identity-exposure-r3": "424cd2863d72ef21b2178c2171e877ba09e88b4cef0906f163ccac6281902443"
+  },
+  "scope": "Identity supervision exposure on the completed identity-factor run's recorded probes only. Counts of masked labels, classes and positions; no inference, capacity, mask, target, order or loss change, no training, and no complete-state, real-image or release claim.",
+  "curator_sha256": "5c15a421b27fecea0c1a8b1f6831efd9bcdb7803976c91d2a3ab756e3cd71ff0"
+}

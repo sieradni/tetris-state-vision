@@ -14,10 +14,30 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013, V-039, V-040 (3) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
+| resource-profile | V-013, V-039, V-040, V-043 (4) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042 (6) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-043 — CLOSED: the guard policy document described a retired stop line
+
+- Symptom: `docs/RESOURCE_GUARD.md` still presented "physical memory minus
+  min(2 GiB, physical / 8)" as one of the two binding stop points after V-040 removed it
+  from admission. Read literally it says a 31.4 GB physical line still parks jobs on this
+  page-file host, while the enforced line is 90% of the commit limit (45626134118 B of 50695704576 B).
+- Root cause: V-040 changed `pressure_status` and recorded the change in this ledger and
+  the continuation state, but the policy document stating the rule was not updated, so
+  the record and the enforced policy diverged.
+- Detection class: resource-profile.
+- Instrument: the document now quotes the expressions the supervisor evaluates
+  (`commit_bytes >= commit_limit * 9 // 10` and
+  `commit_bytes + reserved_job_bytes >= commit_limit * 9 // 10`, plus the availability
+  floor and the min(physical / 3, 8 GiB) ceiling bound), names V-040 as their origin and
+  keeps earlier stop points as history. Every receipt records `stop_commit_bytes`, so a
+  document that drifts from the code is visible against the numbers it quotes.
+- Green run: `docs/evidence/m3-identity-exposure-r4/scope.json`; audit receipt
+  `runs/m3-identity-exposure-r4.json` (passed) was admitted at `commit_bytes` 27165560832 against
+  `stop_commit_bytes` 45626134118 with `commit_limit_bytes` 50695704576, which is the corrected policy.
 
 ## V-042 — CLOSED: the frozen-evidence rule was prose only
 

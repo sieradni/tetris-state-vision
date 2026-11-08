@@ -11,6 +11,15 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: identity supervision is class-complete but label-scarce
+([M3_IDENTITY_EXPOSURE.md](M3_IDENTITY_EXPOSURE.md),
+`docs/evidence/m3-identity-exposure-r4/scope.json`): all seven piece classes are
+supervised in both splits (54 training and 90 development queue tokens), yet the only
+identities ever exact are queue `S` (3/3 and 9/18) and hold `T` (0/3 and 3/3), with six
+queue classes and three hold classes at zero and the development successes spread over
+slots 1, 3, 5 and 7. The ceiling is therefore label diversity or the input
+representation, not another loss scale and not class coverage; no new lever is opened.
+
 Latest: tying the identity read-out into the cell-type classifier is a measured
 negative ([M3_IDENTITY_READOUT.md](M3_IDENTITY_READOUT.md), predeclared at `e83d70e`,
 shared mode admitted at`runs/m3-stream-identity-shared-profile-r2-job.json`):matched128
