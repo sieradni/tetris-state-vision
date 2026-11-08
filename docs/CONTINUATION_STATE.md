@@ -1,5 +1,40 @@
 # Contributor handoff — 2026-10-30
 
+## M3 component-identity lever: the identity scale is a measured positive — 2026-11-08
+
+`docs/M3_COMPONENT_IDENTITY.md` predeclares the lever at commit `65ee2f1`, before any
+receipt: 128 matched updates at capacity 64 with the queue-token and hold-piece terms
+scaled by a declared factor 4, everything else identical to `m3-stream-joint-fit-r1`.
+Fresh admission `runs/m3-identity-factor-profile-r1-job.json` (passed, 62.276 s,
+952,553,472 B under 1,152 MiB, checkpoint `e1ba82fc...`, catalogue `b3caba97...`), then
+`runs/m3-identity-factor-r1-job.json` (passed, 494.121 s outer, 436.42 s of updates,
+982,077,440 B peak, 128 steps, checkpoint `acb6a8a9...`).
+
+By the predeclared rule the lever is a measured positive on its localization: exact
+queue piece tokens rise 0/54 -> 3/54 on the training probes and 0/90 -> 9/90 on
+development, and development hold identity 0/12 -> 3/12, with slot status still exact
+(54/54 and 90/90). The fit gate stays FALSE (0/9 and 0/18 boards, 12/18 and 0/36 roles,
+0/9 and 0/18 exact readable components, 3.83 and 2.21 cells). The declared structural
+regression also shows: development EOS falls 15/15 -> 3/15 and training presence
+63/63 -> 54/63, so the scale buys identity at a measurable structural cost. Losses are
+not comparable across factors because the scaled terms enter them.
+
+Independent replay `runs/m3-identity-factor-r1-errors-r3-job.json` (27 forwards,
+36.492 s, 551,710,720 B, weights `acb6a8a9...` unchanged) reproduces every saved
+per-case field and curates in
+`docs/evidence/m3-identity-factor-r1-errors-r3/scope.json` (`passed`).
+
+The chain exposed two instrument defects, both fixed at their root (V-038): the replay
+scored the published factor-1 objective and so could not reproduce a factor-4 run's
+saved losses, and the owned-run-name guard did not list the predeclared
+`m3-identity-factor-*` family. Real-image items 4–5 remain unreachable without
+reviewed, permissioned labels.
+
+Next: identity targets or representation at this scale (the coefficient question is
+closed). The staged head refinement stays a measured negative, and development stays
+comparable across stages on the canonical 18 images at 4/18 boards, 0/36 roles,
+.901944 cells and 3.530471 geometry with loss 11.0885 versus 11.8129.
+
 ## First M3 joint learning is a measured negative — 2026-11-08
 
 Roadmap item 3's open half is measured for the first time. Items 4–5 were checked

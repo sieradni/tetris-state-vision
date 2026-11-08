@@ -1,0 +1,71 @@
+{
+  "supervisor_pid": 12556,
+  "command": [
+    "C:/Users/micha/Code/tetris-state-vision/.venv/Scripts/python.exe",
+    "scripts/train_m2_stream.py",
+    "--output",
+    "runs/m3-identity-factor-r1",
+    "--model",
+    "accuracy",
+    "--component-capacity",
+    "64",
+    "--component-identity-factor",
+    "4",
+    "--steps",
+    "128",
+    "--admission",
+    "runs/m3-identity-factor-profile-r1",
+    "--seed",
+    "20261026",
+    "--learning-rate",
+    "0.001",
+    "--evaluate-every",
+    "64",
+    "--checkpoint-every",
+    "64",
+    "--development-groups",
+    "6",
+    "--wall-seconds",
+    "1800"
+  ],
+  "memory_bytes": 1207959552,
+  "wall_seconds": 1900.0,
+  "work_items": 4096,
+  "cpu_library_threads": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OPENBLAS_DEFAULT_NUM_THREADS": "1",
+    "GOTO_NUM_THREADS": "1"
+  },
+  "child_executable": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe",
+  "job_name": "Local\\TetrisStateVision-68b6aa3216004e889c9cbf382267b2ec",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "supervisor_script_sha256": "d9382fa2c1a54329d6da8ebe947e953ae7ed0acfd4e66970fc8628b5e6d08fb9",
+  "system_pressure_guard": "GetPerformanceInfo/0.2s",
+  "system_at_admission": {
+    "commit_bytes": 21019422720,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 17471553536,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "system_pressure": {
+    "reason": null,
+    "stop_commit_bytes": 31368351744,
+    "minimum_available_physical_bytes": 2147483648,
+    "reserved_job_bytes": 0
+  },
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 494.121,
+  "child_pid": 21532,
+  "last_system_memory": {
+    "commit_bytes": 20593516544,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 17587900416,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "peak_job_commit_bytes": 982077440
+}

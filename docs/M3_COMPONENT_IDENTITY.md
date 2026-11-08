@@ -121,3 +121,75 @@ cap, work-item cap and receipt.
   comparable across stages on the canonical 18 images: 4/18 exact boards, 0/36
   exact roles, .901944 cell accuracy and 3.530471-cell geometry for both stages,
   with development loss 11.0885 versus 11.8129. This lever changes neither.
+
+## Result: measured positive on the identity localization, negative on the fit gate (2026-11-08)
+
+Predeclaration `65ee2f1` (23:54:29 -08:00) precedes every receipt below (study job
+00:04:36, replay job 00:08:11); the run directory was created afterwards.
+
+| Receipt | Status | Numbers |
+|---|---|---|
+| `runs/m3-identity-factor-profile-r1-job.json` | passed | 62.276 s, 952,553,472 B under 1,152 MiB, work-item bound 2 |
+| `runs/m3-identity-factor-r1-job.json` | passed | 494.121 s outer / 436.42 s of updates, 982,077,440 B peak, 128 steps |
+| `runs/m3-identity-factor-r1-errors-r3-job.json` | passed | 27 forwards, 36.492 s, 551,710,720 B, weights unchanged |
+| `runs/m3-identity-factor-r1-curation-r3-job.json` | passed | curator `docs/evidence/m3-identity-factor-r1-errors-r3/scope.json` |
+
+Checkpoint `acb6a8a9...`, catalogue `b3caba97...` (the lever changes the source),
+capacity 64, factor 4, curriculum `stream-v1`, seed `20261026`, canonical 6
+development groups. Every saved per-case field reproduces field by field (loss, cell
+accuracy, geometry, board/role counts) with weights identical.
+
+| Component term | Training factor 1 | Training factor 4 | Development factor 1 | Development factor 4 |
+|---|---:|---:|---:|---:|
+| Queue piece tokens | 0/54 | **3/54** | 0/90 | **9/90** |
+| Hold identity | 0/9 | 0/9 | 0/12 | **3/12** |
+| Queue EOS | 9/9 | 8/9 | 15/15 | 3/15 |
+| Queue slot status | 54/54 | 54/54 | 90/90 | 90/90 |
+| Queue presence | 63/63 | 54/63 | 90/105 | 90/105 |
+| Exact readable components | 0/9 | 0/9 | 0/18 | 0/18 |
+
+| Ordinary population, 128 updates | Exact boards | Exact roles | Cells | Geometry | Loss |
+|---|---:|---:|---:|---:|---:|
+| Training, factor 1 | 0/9 | 12/18 | .8494 | 4.0417 | 7.739 |
+| Training, factor 4 | 0/9 | 12/18 | .8144 | 3.8317 | 14.131 |
+| Development, factor 1 | 0/18 | 0/36 | .8481 | 2.0294 | 7.332 |
+| Development, factor 4 | 0/18 | 0/36 | .8442 | 2.2148 | 12.190 |
+
+Verdict by the predeclared rule: identity leaves collapse — training piece tokens
+3/54 against 0/54, development 9/90 against 0/90, development hold identity 3/12
+against 0/12 — so the loss-scale localization is a **measured positive**. The fit
+criterion stays FALSE: 0/9 boards, 12/18 roles, 0/9 exact readable components and
+3.83-cell geometry.
+
+The declared structural regression is its own finding: scaling the identity terms
+costs EOS on development (15/15 -> 3/15) and presence on the training probes
+(63/63 -> 54/63) while slot status stays exact everywhere. Losses are not comparable
+across factors, because the two scaled terms enter them at four times the weight; the
+per-head counts are.
+
+Interpretation the data supports, and what it does not: identity at the published
+scale is gradient-starved, and a 4x scale produces partial identity learning in both
+populations with no architecture, data, target, order or capacity change. It does not
+produce a readable component (0/9, 0/18), does not fit the boards, and buys identity
+at a measurable structural cost. The next lever is identity targets or representation
+at this scale — the coefficient question is closed, since exactly one value was
+declared and tried.
+
+## Chain defects surfaced and fixed at their root
+
+Two instrument defects appeared while producing this evidence, both fixed in the
+working tree with tests rather than reported as blockers:
+
+- **V-038 — the replay did not use the run's recorded identity scale.** The probe
+  always scored the published factor-1 objective, so a factor-4 run's saved per-case
+  losses could not reproduce and the replay refused with
+  `ordinary predictions fail to reproduce saved metrics`
+  (`runs/m3-identity-factor-r1-errors-r2-job.json`, retained). The probe now reads
+  `arguments.component_identity_factor` (default 1), replays that objective, records
+  it in the result, and the curator refuses a report whose factor differs from the
+  run's. Green run: `runs/m3-identity-factor-r1-errors-r3-job.json`.
+- **Owned-family gap.** The replay/curator name guard listed only `m3-stream-*` and
+  `accumulation-arm-*`, so the predeclared `m3-identity-factor-*` study could not be
+  replayed at all (`owned finite run name required`). The family is now an exact
+  alternative in the same anchored pattern, traversal is still refused, and
+  `tests/test_component_identity.py` covers it.

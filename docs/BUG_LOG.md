@@ -17,7 +17,26 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036 (3) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension |
+| evidence-reporting | V-032, V-033, V-036, V-038 (4) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity |
+
+## V-038 — CLOSED: the replay scored the published objective, not the run's
+
+- Symptom: replaying the factor-4 study failed with
+  `ValueError: ordinary predictions fail to reproduce saved metrics`, so a completed
+  admitted run could not produce evidence at all.
+- Root cause: `probe_stream_errors.py` always called `joint_loss` at the component
+  layer's default identity factor 1, while the run saved per-case losses under the
+  recorded factor 4. The probe never derived the training objective from the run it
+  was replaying, so any lever that changes a loss scale was unreplayable by design.
+- Detection class: evidence-reporting; the audit instrument, not the model, was wrong.
+- Instrument: the probe reads `arguments.component_identity_factor` (default 1),
+  replays that objective, records the factor in its result, and the curator refuses a
+  report whose factor differs from the run's. The owned-run-name guard also lists the
+  predeclared `m3-identity-factor-*` family while still refusing traversal, so a
+  declared lever family can be replayed and curated.
+- Green run: `runs/m3-identity-factor-r1-errors-r3-job.json` and
+  `docs/evidence/m3-identity-factor-r1-errors-r3/scope.json` — passed, weights
+  unchanged, every saved per-case field reproduced.
 
 ## V-037 — CLOSED: the segment fixture pinned a stale archived supervisor hash
 

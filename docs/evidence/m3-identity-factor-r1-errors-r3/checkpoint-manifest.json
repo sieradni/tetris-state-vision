@@ -1,0 +1,122 @@
+{
+  "format_version": 1,
+  "architecture": "TetrisStateNet-M3",
+  "kind": "uncalibrated-synthetic-prototype",
+  "config": {
+    "widths": [
+      48,
+      96,
+      192,
+      256
+    ],
+    "dimension": 192,
+    "heads": 6,
+    "blocks": 6,
+    "refinements": 2,
+    "visible_rows": 20,
+    "spawn_rows": 6,
+    "columns": 10,
+    "max_batch": 4,
+    "max_pixels": 1048576,
+    "component_capacity": 64,
+    "layer_evidence": false
+  },
+  "weights_sha256": "acb6a8a9c2fcdbd922dbf5985499c946beb62da9c806fcec4ddc24ec35737a67",
+  "torch_version": "2.14.1+cpu",
+  "parameters": 7997016,
+  "metadata": {
+    "trained_steps": 128,
+    "catalogue_sha256": "b3caba9792c2d210d43f84cf8d50a0d4289e0c106ca281f609d18c2f32f5eae6",
+    "initial_weights_sha256": "8a7bf2f788d51da6b2440bd3ff33dce9ca34e2a27fa11036cb2e91e3d428893a",
+    "supervisor_script_sha256": "d9382fa2c1a54329d6da8ebe947e953ae7ed0acfd4e66970fc8628b5e6d08fb9",
+    "system_pressure_guard": "GetPerformanceInfo/0.2s",
+    "runtime_source_sha256": "9ab7e67729febb3c2e47cf6444112f42bc93a8c74c199aa75659ffddf7d8d7ad",
+    "model_kind": "accuracy",
+    "component_capacity": 64,
+    "input_policy": "M3-final-capture-v1",
+    "freeze_backbone": false,
+    "initial_weights_from": null,
+    "arguments": {
+      "output": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-identity-factor-r1",
+      "model": "accuracy",
+      "component_capacity": 64,
+      "component_identity_factor": 4,
+      "layer_evidence": false,
+      "curriculum": "stream-v1",
+      "accumulation_policy": null,
+      "steps": 128,
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "type_head_rate_factor": 1,
+      "wall_seconds": 1800.0,
+      "evaluate_every": 64,
+      "development_groups": 6,
+      "profile_square": false,
+      "admission": "runs\\m3-identity-factor-profile-r1",
+      "checkpoint_every": 64,
+      "resume_from": null,
+      "max_new_steps": null,
+      "init_weights_from": null,
+      "freeze_backbone": false
+    },
+    "stream_ledger_sha256": "c4188df9fe6ecba7d74056786a8d39048de98dc8eed87b547de6b4e495541989",
+    "cpu_only": true,
+    "resume": null,
+    "latest_training_snapshot": {
+      "format": "tetris-vision-training-snapshot",
+      "version": 1,
+      "generation": "step-000128-0fb2cfd8f88f4927a807239593d0cfc2",
+      "manifest_sha256": "e8d627e6e8795382f95867ce0eb821d5800408b98dae608fdadde114ff0c600a"
+    },
+    "driver_source_path": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-identity-factor-r1\\code\\scripts\\train_m2_stream.py",
+    "native_cache_limits": {
+      "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+      "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+    },
+    "recovery_contract": {
+      "catalogue_sha256": "b3caba9792c2d210d43f84cf8d50a0d4289e0c106ca281f609d18c2f32f5eae6",
+      "config": {
+        "widths": [
+          48,
+          96,
+          192,
+          256
+        ],
+        "dimension": 192,
+        "heads": 6,
+        "blocks": 6,
+        "refinements": 2,
+        "visible_rows": 20,
+        "spawn_rows": 6,
+        "columns": 10,
+        "max_batch": 4,
+        "max_pixels": 1048576,
+        "component_capacity": 64,
+        "layer_evidence": false
+      },
+      "seed": 20261026,
+      "learning_rate": 0.001,
+      "weight_decay": 0.01,
+      "steps": 128,
+      "max_side": 512,
+      "development_groups": 6,
+      "evaluate_every": 64,
+      "checkpoint_every": 64,
+      "profile_square": false,
+      "threads": 1,
+      "rng": "torch_cpu_only",
+      "native_cache_limits": {
+        "ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16",
+        "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"
+      },
+      "input_policy": "M3-final-capture-v1",
+      "curriculum": "stream-v1",
+      "type_head_rate_factor": 1,
+      "component_identity_factor": 4,
+      "freeze_backbone": false,
+      "initial_weights_from": null
+    },
+    "updates_this_run": 128,
+    "accumulation": null
+  }
+}

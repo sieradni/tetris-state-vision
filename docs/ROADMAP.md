@@ -11,6 +11,14 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: a declared4x identity-loss scale is a measured positive on the M3 identity
+localization ([M3_COMPONENT_IDENTITY.md](M3_COMPONENT_IDENTITY.md), predeclared at
+`65ee2f1`): matched128 updates atcapacity64 raise exact queue piece tokens0/54->3/54
+training and0/90->9/90 development, hold0/12->3/12, slot status still exact, while the
+fit gate stays FALSE(0/9 boards,12/18 roles,0/9 components,3.83 cells) and development
+EOS falls15/15->3/15. Independent27-forward replay and curator:
+`docs/evidence/m3-identity-factor-r1-errors-r3/`.
+
 Latest: the first joint M3 fit (capacity64,128 updates) is a measured negative
 ([M3_JOINT_FIT.md](M3_JOINT_FIT.md), predeclared at `90218b3`): training probes
 0/9 exact boards,12/18 roles (ghost9/9, active3/9) and0/9 readable components with
@@ -151,8 +159,11 @@ and generalization gates.
    while development stays0/18 boards and0/36 roles. Geometry19.82->4.04 and loss
    29.97->7.74 show the optimizer trains; component identity does not.
    docs/M3_JOINT_FIT.md; curator docs/evidence/m3-stream-joint-fit-r1-errors-r2/.
-   Component-identity learning and varied-shape long memory remain pending; no
-   quality admission follows.
+   A declared4x identity-loss scale (matched, predeclared `65ee2f1`) moves exact queue
+   piece tokens0/54->3/54 and development0/90->9/90 with hold0/12->3/12 while the fit
+   gate stays FALSE and development EOS falls15/15->3/15: identity is gradient-starved,
+   not unreachable. Identity targets or representation at that scale and varied-shape
+   long memory remain pending; no quality admission follows.
    Synthetic final-model-size
    captures now reobserve labels at that exact transform (9 checks). Arbitrary
    post-labeled resize/invalid alpha still refuses; the API keeps queue/
