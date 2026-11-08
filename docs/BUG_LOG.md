@@ -16,8 +16,33 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
-| launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
+| launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-050 — CLOSED: a killed supervisor leaves a `running` receipt that blocks its retry
+
+- Symptom: the replay of `m3-identity-factor-positional-r1` was launched in the same
+  shell command as its study; the caller's 295 s cap killed the process tree while the
+  replay was running. The receipt stayed at `status: running` with no `exit_code`, the
+  partial `runs/m3-identity-factor-positional-r1-errors-r1` directory existed with no
+  `result.json`, and the natural retry could not use either canonical path.
+- Root cause: `run_bounded.py` writes `admitting` then `running` and only finalises the
+  receipt on its own exit, and the probe creates its output directory exclusively. A
+  kill from outside the supervisor (here the shell cap, not the Job) therefore leaves an
+  unresolvable receipt and an unusable output path, with no message saying so.
+- Detection class: launch-ownership; the supervisor did not fail a gate, its caller did,
+  and the record showed a run that never terminated.
+- Instrument: the retry procedure is now explicit and was used here — preserve the
+  `running` receipt beside the canonical name (`-job-killed.json` / `-job-attempt1`),
+  move the partial output directory under `runs/attempts/`, then re-run under the
+  canonical names. As with V-047, no automatic check resolves a non-terminal receipt
+  yet; the guard is the documented procedure, not a code gate.
+- Green run: canonical replay receipt
+  `runs/m3-identity-factor-positional-r1-errors-r1-job.json` (passed, 27 forwards,
+  15.8 s, weights unchanged, saved metrics reproduced) and curation
+  `runs/m3-identity-factor-positional-r1-errors-r1-curation.json` (passed) into
+  `docs/evidence/m3-identity-factor-positional-r1-errors-r1/scope.json`. The killed
+  receipt and partial directory are retained, not deleted or re-scored.
 
 ## V-049 — CLOSED: the discrimination tally rejected an endpoint prediction
 

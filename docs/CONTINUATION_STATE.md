@@ -1,5 +1,59 @@
 # Contributor handoff — 2026-10-30
 
+## Per-position queries: position information reaches the decision, which ignores it — 2026-11-08
+
+`docs/M3_IDENTITY_POSITIONAL.md` predeclared the lever at `aa5bcc0` before any receipt:
+the validated prototype read-out (eight image-derived class queries plus the four-query
+hold bank) with one learned query per queue position attending the same memory, so a
+position's own content can move its class logits. Everything else matched the prototype
+run — capacity 64, factor 4, capture 512, seed `20261026`, 128 updates, six development
+groups. The rule is discrimination-only: queue needs >= 3 distinct training predicted
+classes with `constant_predictor` false, hold needs >= 3, 2x2 total, structure recorded as
+a cost that cannot upgrade a negative.
+
+Measured by the independent 27-forward replay: training queue `predicted_classes` is
+`EOS` x54 (distinct **1**, constant true) and development `EOS` x90; training hold is
+`T` x9 (distinct **1**) and development `T` x12. Verdict **NEGATIVE** on both conditions,
+with the position demonstration recorded in the same evidence: per-position logits differ
+within a frame (max spread 0.3627 training, 0.5758 development; means 0.3594, 0.3347;
+`position_axis_reaches_logits` true) while every argmax is one class. Two tests hold the
+halves — every position reading the frame through its own query, and the diagnostic
+carrying a positive spread with a constant decision.
+
+The three candidate constraints are separated by the artifacts. The **read-out** is ruled
+out: two independent conditioning axes are wired in and the position axis demonstrably
+reaches the logits. The **data's position independence** is ruled out: 54 supervised
+positions carry seven classes across six slots. What remains is the **loss**: the
+endpoint is a class inside the same 8-way identity softmax and masked mean as the pieces,
+and it is the one always-present, always-exactly-predictable label (9/9 and 15/15 here,
+and in every previous run), so emitting `EOS` everywhere keeps endpoint, slot and
+presence terms at or above control (presence 54/63 and 90/105) and pays only the piece
+term. Also recorded: the prototype run's two-class hold split did not reproduce here
+(same structure, different RNG draws, constant `T`, 0/9) — it was init-dependent. The
+three development exact-readable cases are empty-queue frames whose hold target equals the
+emitted constant, not reading.
+
+Fit gate still FALSE: 2/9 and 0/18 boards (both training successes empty), 0/18 and 0/36
+roles, 0/9 and 0/18 exact readable components; geometry 3.5398 and 2.4024.
+
+Receipts: admission `runs/m3-identity-factor-positional-r1-profile-r1-job.json` (passed,
+37.5 s, 980,447,232 B under 1,152 MiB), study
+`runs/m3-identity-factor-positional-r1-job.json` (passed, 238.5 s, 978,120,704 B,
+checkpoint `060ee296...`), canonical replay
+`runs/m3-identity-factor-positional-r1-errors-r1-job.json` (passed, 27 forwards, 15.8 s,
+566,697,984 B, weights unchanged), curation
+`runs/m3-identity-factor-positional-r1-errors-r1-curation.json` (passed) into
+`docs/evidence/m3-identity-factor-positional-r1-errors-r1/scope.json`, and tests
+`runs/m3-identity-positional-tests-r1.json` (5 modules, `OK`, 461,545,472 B). V-050
+records the killed-supervisor receipt the shell cap left behind; the killed receipt and
+partial output directory are retained under `runs/attempts/`.
+
+Ranked next: the **loss formulation** under the same rule — give the endpoint its own
+binary term or drop it from the piece softmax so the always-predictable label stops being
+the cheapest constant, reporting the position-axis spread unchanged. Not ranked: more
+read-out conditioning (class and position sides both closed here) or another budget
+extension. The owner-decision real-image chain and the FALSE fit gate are unchanged.
+
 ## Per-piece image queries: a measured negative, with the position side named — 2026-11-08
 
 `docs/M3_IDENTITY_PROTOTYPES.md` predeclared the lever at `bdae6e1` before any receipt:

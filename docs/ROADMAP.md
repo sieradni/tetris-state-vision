@@ -11,6 +11,24 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the per-position identity read-out is a measured **negative** that pins the
+remaining constraint to the loss
+([M3_IDENTITY_POSITIONAL.md](M3_IDENTITY_POSITIONAL.md), predeclared at `aa5bcc0`,
+`docs/evidence/m3-identity-factor-positional-r1-errors-r1/scope.json`): the queue head
+still emits `EOS` at all 54 supervised training positions (distinct 1, constant true; 90/90
+development) and the hold head emits `T` at all 9 and 12 cases, so both conditions of the
+predeclared rule fail. The lever's own diagnostic shows the position axis reaches the
+decision: per-position logits differ from each other with max spread 0.3627 training and
+0.5758 development and `position_axis_reaches_logits` true, while the argmax stays one
+class. With the read-out ruled out (two independent conditioning axes now wired in) and
+the data ruled out (54 supervised positions carry seven classes across six slots), the
+remaining constraint is the loss: the endpoint is a class in the same 8-way identity
+softmax and masked mean as the pieces and is exactly predictable (9/9 and 15/15), so
+one class everywhere is the cheapest descent. Structure is at or above control (presence
+54/63 and 90/105), and the fit gate stays FALSE (2/9 and 0/18 boards, 0/18 and 0/36
+roles, 0/9 and 0/18 components). Ranked next is the loss formulation under the same
+discrimination rule; more read-out conditioning or budget is not ranked.
+
 Latest: the per-piece image-query identity read-out is a measured **negative** by its
 predeclared discrimination rule ([M3_IDENTITY_PROTOTYPES.md](M3_IDENTITY_PROTOTYPES.md),
 predeclared at `bdae6e1`, `docs/evidence/m3-identity-factor-prototype-r1-errors-r1/scope.json`):

@@ -135,3 +135,115 @@ need and the change is recorded; the lever is never shrunk to fit.
   (V-047), and every declared bound is the bound the guard enforces.
 - Any defect this pass exposes is fixed at its root with a regression test and recorded
   in `docs/BUG_LOG.md` on a named receipt.
+
+## Result: NEGATIVE — position information reaches the decision and still does not separate it
+
+Predeclared at `aa5bcc0`; every receipt below postdates that commit and the run directory
+was created afterwards.
+
+| Receipt | Status | Numbers |
+|---|---|---|
+| `runs/m3-identity-factor-positional-r1-profile-r1-job.json` | passed | 2 steps, 37.522 s, 980,447,232 B under 1,152 MiB |
+| `runs/m3-identity-factor-positional-r1-job.json` | passed | 128/128 steps, 238.495 s, 978,120,704 B, checkpoint `060ee296...` |
+| `runs/m3-identity-factor-positional-r1-errors-r1-job.json` | passed | 27 forwards, 15.844 s, 566,697,984 B, weights unchanged, saved metrics reproduced |
+| `runs/m3-identity-factor-positional-r1-errors-r1-curation.json` | passed | curator into `docs/evidence/m3-identity-factor-positional-r1-errors-r1/scope.json` |
+| `runs/m3-identity-positional-tests-r1.json` | passed | 5 modules, `OK`, 5.993 s, 461,545,472 B under 512 MiB |
+
+Measured over the run's own nine training probes and eighteen development images, with
+the prototype run as the matched control:
+
+| Term | Training | Development | Prototype control |
+|---|---:|---:|---:|
+| Queue `predicted_classes` | `EOS` x54 | `EOS` x90 | `EOS` x54 / x90 |
+| Queue `distinct_predicted_classes` | **1** | **1** | 1 |
+| `queue_constant_predictor` | **true** | **true** | true |
+| Queue piece tokens exact | 0/54 | 0/90 | 0/54, 0/90 |
+| `position_logit_spread_max` | **0.3627** | **0.5758** | not measured |
+| `position_logit_spread_mean` | **0.3594** | **0.3347** | not measured |
+| `position_axis_reaches_logits` | **true** | **true** | not measured |
+| Hold `predicted_classes` | `T` x9 | `T` x12 | `L`x3/`O`x6, `L`x2/`O`x9/`S`x1 |
+| Hold `distinct_predicted_classes` | **1** | **1** | 2, 3 |
+| Hold exact | 0/9 | 3/12 | 3/9, 0/12 |
+| Queue EOS exact | 9/9 | 15/15 | 9/9, 15/15 |
+| Slot status exact | 54/54 | 90/90 | 54/54, 90/90 |
+| Presence exact | 54/63 | 90/105 | 39/63, 48/105 |
+| Exact roles (active + ghost) | 0/18 | 0/36 | 0/18, 0/36 |
+| Mean geometry, cells | 3.5398 | 2.4024 | 3.5626, 2.3223 |
+| Exact boards | 2/9 (both empty) | 0/18 | 2/9, 0/18 |
+
+The predeclared rule gives **NEGATIVE**: queue discrimination needs >= 3 distinct
+training classes and measures **1**, hold discrimination needs >= 3 and measures **1**.
+
+### The position axis reaches the decision and the decision ignores it
+
+This is the demonstration the lever was built to make possible, and it is recorded in the
+run's own evidence rather than asserted: every supervised position receives different
+logits from the same frame (max spread 0.3627 training, 0.5758 development, mean 0.3594
+and 0.3347, `position_axis_reaches_logits` true in both splits) while the emitted class is
+the same `EOS` at all 54 and all 90 supervised positions. Two regression tests hold the
+two halves: `test_positional_readout_gives_every_position_its_own_image_query` shows two
+positions of one frame differing and one position reading different frames differently,
+and `test_position_varying_logits_are_recorded_without_forcing_separation` shows the
+diagnostic carrying a positive spread while `distinct_predicted_classes` stays 1 and
+`constant_predictor` stays true.
+
+### Which constraint remains
+
+The pass was designed to discriminate between three candidates, and the artifacts choose
+one:
+
+- **Read-out: ruled out.** Two independent conditioning axes are now wired in — image
+  queries for the class side and per-position queries for the position side — and the
+  position axis demonstrably reaches the logits. A read-out that cannot carry the
+  information would show zero spread.
+- **The data's independence of position: ruled out.** The targets are position-dependent
+  by construction: 54 supervised training positions carry seven classes across six
+  slots, and every position's target is the icon drawn at that slot.
+- **The loss formulation: what remains.** The endpoint label is a class in the same
+  8-way identity softmax and the same masked mean as the piece classes, and it is the
+  only label that is always present and always at one known position: EOS is exact 9/9
+  training and 15/15 development in this run, in the prototype run and in the control,
+  while piece identity is never separated. Emitting `EOS` everywhere therefore keeps the
+  endpoint, slot-status and (here) presence terms at or above control level
+  (54/63 and 90/105, control 54/63 and 90/105) and pays only the piece term, which is
+  spread over positions and cannot pull the shared class vectors apart on its own. The
+  single-class solution is the cheapest descent that satisfies the terms that are already
+  exactly predictable.
+
+A second measured fact belongs in the record: the hold bank's two-class split in the
+prototype run did **not** reproduce here. The bank is structurally identical, but this
+run's RNG draws differ (the position queries are drawn after the class and hold banks),
+and the head returned to the constant `T` with 0/9 exact training pieces. The earlier
+separation was initialization-dependent rather than a robust mechanism.
+
+The three development `exact_readable_components` are empty-queue frames (zero supervised
+piece tokens) whose hold target equals the emitted constant `T`; they are the
+class-frequency artifact V-048 describes, not component reading.
+
+Structural cost: presence improves over the prototype run to control level, roles remain
+0/18 and 0/36 (active and ghost all type errors), geometry is 3.5398 and 2.4024 against
+the prototype's 3.5626 and 2.3223, and boards are 2/9 (both empty) and 0/18. The fit gate
+stays **FALSE**: 2/9 and 0/18 exact boards, 0/18 and 0/36 exact roles, 0/9 and 0/18 exact
+readable components.
+
+### Defect exposed
+
+V-050: the caller's shell cap killed the supervisor during the first replay, leaving a
+`running` receipt, no `exit_code`, and an unusable partial output directory. The attempt
+is preserved (`runs/attempts/...-job-killed.json` and the partial directory) and the
+canonical receipt now holds the passing replay. Nothing was deleted or re-scored.
+
+### Limits and next
+
+Nine synthetic training probes, six development ancestries, one seed, 128 updates at
+capacity 64, factor 4, capture 512: a fit/discrimination diagnostic on synthetic views,
+with no real-image, complete-state, calibration or release claim. The earlier identity
+verdicts stand unchanged.
+
+Ranked next is the **loss formulation**, judged on this same discrimination rule:
+separate the endpoint decision from piece identity (its own binary endpoint term, or a
+piece softmax without the endpoint class) so that the always-predictable label stops
+being the cheapest constant, and report the position-axis spread unchanged. Not ranked:
+more class-side or position-side read-out conditioning (both closed here), or another
+budget extension (the economics of the cheapest constant do not change with budget). The
+owner-decision real-image chain and the FALSE fit gate are unchanged.
