@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "9970e5a826284b14967e595d7aaf59ce09c3babf",
+    "generated_at_commit": "023cc864a599082c57ed0fbc1daf3c5b9bbb33ca",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -3407,7 +3407,7 @@
       }
     },
     "m3-identity-factor-budget-r1-errors-r1": {
-      "record_commit": "",
+      "record_commit": "023cc864a599082c57ed0fbc1daf3c5b9bbb33ca",
       "files": {
         "checkpoint-manifest.json": "cf5cec840c9c515f5893e324f9244468a9a2d68a645b81bcf5ef8518fa23b8e7",
         "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
