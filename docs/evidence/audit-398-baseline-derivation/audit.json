@@ -1,0 +1,1288 @@
+{
+  "purpose": "Audit evidence for the 398-test baseline and the 407 = 398 + 9 derivation, plus the frozen-evidence rule finding (V-041).",
+  "source_paths": [
+    "runs/m3-identity-factor-fullsuite-r1-job.json",
+    "runs/m3-identity-factor-fullsuite-r1.log",
+    "runs/m3-identity-factor-fullsuite-r1.stderr.log"
+  ],
+  "files": [
+    {
+      "path": "docs/evidence/audit-398-baseline-derivation/identity-factor-fullsuite-r1-job.json",
+      "sha256": "adcd6b904f5993bb92f13bc8a68cba88afa4efdb55a96bdbaf8f2a63e9253859",
+      "bytes": 1660
+    },
+    {
+      "path": "docs/evidence/audit-398-baseline-derivation/identity-factor-fullsuite-r1.log",
+      "sha256": "b5b6b20c5104742dd894ad00a8d7134bcf81c52dd7cdf2e26126cc7c6a8a0bc9",
+      "bytes": 11539
+    },
+    {
+      "path": "docs/evidence/audit-398-baseline-derivation/identity-factor-fullsuite-r1.stderr.log",
+      "sha256": "e95a665aef6a7d6ba498ad29fe08af78311afedfc69a2e4e77852aaadbb45334",
+      "bytes": 5688
+    }
+  ],
+  "prior_green_suite": {
+    "tests_run": 398,
+    "duration_seconds": 59.453,
+    "verdict": "OK",
+    "receipt_status": "passed",
+    "wall_seconds": 300.0,
+    "work_items": 800,
+    "memory_bytes": 671088640,
+    "recorded_in": "docs/evidence/audit-398-baseline-derivation/identity-factor-fullsuite-r1.stderr.log"
+  },
+  "current_suite": {
+    "tests_run": 407,
+    "evidence": "docs/evidence/m3-identity-readout-fullsuite-r11/",
+    "collection": "docs/evidence/m3-identity-readout-fullsuite-r11/collection.log"
+  },
+  "derivation": {
+    "added_test_methods": [
+      "def test_shared_identity_readout_reuses_the_cell_type_head(self):",
+      "def test_separate_readout_keeps_the_published_identity_heads(self):",
+      "def test_identity_readout_mode_is_validated(self):",
+      "def test_the_driver_declares_the_readout_mode(self):",
+      "def test_stop_line_tracks_the_commit_limit_not_physical_ram(self):",
+      "def test_commit_above_physical_ram_but_below_the_limit_admits_a_small_job(self):",
+      "def test_exhausted_commit_budget_still_refuses(self):",
+      "def test_job_reservation_crossing_the_line_still_refuses(self):",
+      "def test_physical_residency_floor_still_refuses(self):"
+    ],
+    "removed_test_methods": [],
+    "arithmetic": "407 = 398 + 9 added, 0 removed",
+    "command": "git diff 5c6b41f HEAD -- tests/"
+  },
+  "frozen_rule": {
+    "reading": "file set",
+    "evidence": [
+      "scripts/record_stream_run.py:215 refuses an existing enclosing evidence directory",
+      "scripts/record_stream_run.py:224 refuses an existing evidence summary.json"
+    ],
+    "consequence": "An evidence directory is an atomic immutable record keyed by its name; a frozen run's directory cannot gain files."
+  },
+  "frozen_verification": {
+    "checked": 173,
+    "all_file_sets_equal": true,
+    "all_sha256_equal": true,
+    "directories": [
+      {
+        "dir": "docs/evidence/accumulation-arm-balanced-errors-r1",
+        "record_commit": "18b1697953cc",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-arm-online-errors-r1",
+        "record_commit": "18b1697953cc",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-arm-r1",
+        "record_commit": "c43cdd5394a7",
+        "files": 70,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-checkpoint-contracts-r1",
+        "record_commit": "bf84a7c10448",
+        "files": 17,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-contracts-r1",
+        "record_commit": "5465a1623398",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-driver-integration-r1",
+        "record_commit": "a79ea307a986",
+        "files": 34,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-journal-contracts-r1",
+        "record_commit": "86f7362a7dab",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accumulation-profile-r1",
+        "record_commit": "e4256b073195",
+        "files": 46,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/accuracy-s8-plan-r1",
+        "record_commit": "3e0ac8228a6a",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/allclass-error-contracts",
+        "record_commit": "834390cbf10b",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/allclass-fit-protocol-contracts",
+        "record_commit": "0e78eb7d1255",
+        "files": 22,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/allclass-recovery-standby-r1",
+        "record_commit": "acd128b059e9",
+        "files": 37,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/conditional-pixel-interleaved-r1",
+        "record_commit": "a89dde653bae",
+        "files": 11,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/conditional-pixel-ordered-r1",
+        "record_commit": "a89dde653bae",
+        "files": 11,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/corpus-integrity",
+        "record_commit": "2486cb790a6d",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/corpus-integrity-final",
+        "record_commit": "2486cb790a6d",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/curriculum-adapter-contracts",
+        "record_commit": "dd7433c27620",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/default-curriculum-numerics-r1",
+        "record_commit": "4dc47e1c5db4",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/error-evidence-contracts",
+        "record_commit": "27854c538ba8",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/geometry-evidence-contracts",
+        "record_commit": "0fc557a03a69",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/handoff-contracts-r1",
+        "record_commit": "e3312ef8ff0a",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/handoff-local-smoke-r1",
+        "record_commit": "4bfbda590286",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/handoff-preflight",
+        "record_commit": "4bfbda590286",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave-adapter-contracts",
+        "record_commit": "f91412fa957d",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave-driver-contracts",
+        "record_commit": "f91412fa957d",
+        "files": 22,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave-error-contracts",
+        "record_commit": "f91412fa957d",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave-profile-numerics-r1",
+        "record_commit": "f6a97ebe4e64",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave-profile-pressure-r1",
+        "record_commit": "2f32bc01aeb5",
+        "files": 6,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave1024-comparison-r1",
+        "record_commit": "25cf3e4abe3c",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleave128-matched-start-r1",
+        "record_commit": "09a1a4d54caa",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/interleaved-order-contracts",
+        "record_commit": "978a47af176e",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/joint-error-diagnostics",
+        "record_commit": "7c19440d3e6c",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/joint-error-diagnostics-full",
+        "record_commit": "7c19440d3e6c",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/joint-native-gate-contracts",
+        "record_commit": "68bd760a6f2d",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/joint-recovery-contracts",
+        "record_commit": "8696f121f5d2",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/joint-stream-contracts",
+        "record_commit": "8696f121f5d2",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/launch-path-diagnostic-r1",
+        "record_commit": "ad901dced4a2",
+        "files": 14,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-controller-contracts",
+        "record_commit": "2a6535685111",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-diagnostic-contracts",
+        "record_commit": "2a6535685111",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-error-contracts",
+        "record_commit": "2a6535685111",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-evidence-core-contracts",
+        "record_commit": "ae116490849d",
+        "files": 22,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-feature-analysis-contracts",
+        "record_commit": "088ee5334821",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-generalization768-r1",
+        "record_commit": "fe8f04b75476",
+        "files": 14,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-learning-pressure-stop-r1",
+        "record_commit": "972fb197fc45",
+        "files": 14,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-learning128-comparison-r1",
+        "record_commit": "bf32fed0234a",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-learning541-recomputed-r1",
+        "record_commit": "5829468009cc",
+        "files": 9,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/layer-learning768-comparison-r1",
+        "record_commit": "860f20d894df",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m1",
+        "record_commit": "3cd063b674b3",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-environment",
+        "record_commit": "28a78b4db074",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-error-analysis-contracts",
+        "record_commit": "56bd96482bbc",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-learn128",
+        "record_commit": "421de028491d",
+        "files": 17,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-learn16",
+        "record_commit": "e6adce882ae3",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-learn512",
+        "record_commit": "331ac582e029",
+        "files": 20,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-local-reading",
+        "record_commit": "72cde65d4ac2",
+        "files": 6,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-numerics",
+        "record_commit": "8d9d0f205a67",
+        "files": 20,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-runtime",
+        "record_commit": "4b1e51ee9fb2",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-s4-preflight-r1",
+        "record_commit": "2503cf466b78",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy-probe",
+        "record_commit": "6645e912e1cb",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy-segment-probe-r2",
+        "record_commit": "145b76adc1af",
+        "files": 29,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy1152-recovery-r1",
+        "record_commit": "02b2b5f665c4",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy1172-recomputed-r1",
+        "record_commit": "2ff7fe0d80bc",
+        "files": 9,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy128",
+        "record_commit": "f62aa372184e",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy128-errors",
+        "record_commit": "9e7f6e656848",
+        "files": 8,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy128-r2",
+        "record_commit": "f62aa372184e",
+        "files": 23,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy1664-errors-r1",
+        "record_commit": "56f276dec667",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy1664-exposure-r1",
+        "record_commit": "6f715fa1df82",
+        "files": 17,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy1664-geometry-r1",
+        "record_commit": "b4ebb5341cb5",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-errors-r1",
+        "record_commit": "ad434da6f3a3",
+        "files": 18,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-features-r1",
+        "record_commit": "aef9628d3cc2",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-pressure-replay",
+        "record_commit": "5cca5c25c738",
+        "files": 6,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s1-stop",
+        "record_commit": "099b02e8f893",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s10",
+        "record_commit": "1eca1880d480",
+        "files": 37,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s2",
+        "record_commit": "e2a2681f54e6",
+        "files": 29,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s3-stop",
+        "record_commit": "99b7d72f9066",
+        "files": 18,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s4",
+        "record_commit": "bb68d6467a49",
+        "files": 32,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s5",
+        "record_commit": "e45944710126",
+        "files": 33,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s6",
+        "record_commit": "62d070e4b3b2",
+        "files": 33,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s7",
+        "record_commit": "869bc4fc864c",
+        "files": 34,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s8",
+        "record_commit": "ca6a80829c6e",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy4096-s9",
+        "record_commit": "cf87999b5000",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy704-errors-r2",
+        "record_commit": "371bfd8d2dea",
+        "files": 8,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-accuracy704-errors-r3",
+        "record_commit": "16eab5e135d2",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass1024-errors-r1",
+        "record_commit": "73af1c3e51d5",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass1024-features-r1",
+        "record_commit": "d31116fac265",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass1024-s1",
+        "record_commit": "5d466c715823",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass1024-s2",
+        "record_commit": "f4f060a9a506",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass1024-s3",
+        "record_commit": "6c266c706d54",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass128-errors-r1",
+        "record_commit": "1511dcb05211",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-allclass640-errors-r1",
+        "record_commit": "cfc85fb82b41",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-default-policy-profile-r1",
+        "record_commit": "b8ed7bf18d5e",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-candidate-errors-r1",
+        "record_commit": "6c06248cb77d",
+        "files": 14,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-candidate-s1",
+        "record_commit": "6c06248cb77d",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-candidate-s2",
+        "record_commit": "6c06248cb77d",
+        "files": 31,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-candidate-s3",
+        "record_commit": "6c06248cb77d",
+        "files": 31,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-control-errors-r1",
+        "record_commit": "6c06248cb77d",
+        "files": 14,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-control-s1",
+        "record_commit": "6c06248cb77d",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-control-s2",
+        "record_commit": "6c06248cb77d",
+        "files": 31,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-control-s3",
+        "record_commit": "6c06248cb77d",
+        "files": 31,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-headrate-control-s3-dev6-errors-r1",
+        "record_commit": "e4f2b7d3ba80",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave-profile-r2",
+        "record_commit": "f6a97ebe4e64",
+        "files": 22,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave1024-errors-r1",
+        "record_commit": "3e0ac8228a6a",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave1024-features-r1",
+        "record_commit": "29c6660b6038",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave1024-s1",
+        "record_commit": "f03df7d9ebd0",
+        "files": 27,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave1024-s2",
+        "record_commit": "119ebf761398",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave1024-s3",
+        "record_commit": "f0c9eca1a3b8",
+        "files": 35,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave128-errors-r1",
+        "record_commit": "09a1a4d54caa",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-interleave640-errors-r1",
+        "record_commit": "496e8088ddfe",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-control-profile-r1",
+        "record_commit": "4f91ca75a1fa",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-control768-s1",
+        "record_commit": "80d3bd71028b",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-control768-s2",
+        "record_commit": "73a57b2ce647",
+        "files": 34,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-control768-s3",
+        "record_commit": "8819f09c9bce",
+        "files": 34,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-evidence768-s1",
+        "record_commit": "e342ef45d983",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-evidence768-s3",
+        "record_commit": "ed576fb6147b",
+        "files": 33,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-layer-pilot-profile-r1",
+        "record_commit": "60aaea08f8e4",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-learn768-r3",
+        "record_commit": "229efdeea5ac",
+        "files": 17,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-pilot-geometry",
+        "record_commit": "f62aa372184e",
+        "files": 8,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-probe",
+        "record_commit": "6970ca86744f",
+        "files": 22,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r10",
+        "record_commit": "93313c6a9259",
+        "files": 67,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r2",
+        "record_commit": "6c93394fc282",
+        "files": 65,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r3",
+        "record_commit": "df17379e7a5f",
+        "files": 68,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r5",
+        "record_commit": "f8c42f34a20d",
+        "files": 68,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r6",
+        "record_commit": "a59e00c0bb67",
+        "files": 70,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r7",
+        "record_commit": "fbe19fd03cac",
+        "files": 67,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r8",
+        "record_commit": "fbe19fd03cac",
+        "files": 67,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-recovery-gate-r9",
+        "record_commit": "93313c6a9259",
+        "files": 67,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-resume-probe",
+        "record_commit": "e558792e89a7",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-staged-head-r1-s3-errors-r1",
+        "record_commit": "3e46bc44d0d6",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-thread-probe",
+        "record_commit": "abfe32af8fab",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m2-stream-warm-probe",
+        "record_commit": "eb115726f7e3",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-component-targets",
+        "record_commit": "8b1b8c1a4400",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-controller-recovery-r1",
+        "record_commit": "329e4a0c0dbc",
+        "files": 37,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-identity-factor-r1-errors-r3",
+        "record_commit": "5c6b41f9b03d",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-joint-contracts",
+        "record_commit": "099b02e8f893",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-controller-recovery-full",
+        "record_commit": "329e4a0c0dbc",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-controller-recovery-p1",
+        "record_commit": "329e4a0c0dbc",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-controller-recovery-p2",
+        "record_commit": "329e4a0c0dbc",
+        "files": 25,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-identity-shared-r1-errors-r1",
+        "record_commit": "c4b3e43dd6e1",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-joint-fit-r1-errors-r2",
+        "record_commit": "ac8b202e7df1",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-large-profile-errors-r1",
+        "record_commit": "44923e85e1a6",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-large-profile-r1",
+        "record_commit": "a036e0264b1a",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-pilot-profile-r1",
+        "record_commit": "ccf6c093596b",
+        "files": 16,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/m3-stream-recovery-gate-r1",
+        "record_commit": "68bd760a6f2d",
+        "files": 65,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/pixel-replay-contract-r2",
+        "record_commit": "4c0f6b38b0e6",
+        "files": 2,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/positive-control-fixture-contracts",
+        "record_commit": "3b34de4181ea",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/positive-control-fixtures-r1",
+        "record_commit": "11ba1492aeff",
+        "files": 76,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/real-drafts",
+        "record_commit": "c2572bd01bed",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/segment-controller-contracts",
+        "record_commit": "2503cf466b78",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/segment-pressure-recovery",
+        "record_commit": "8f6c1e8c3744",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/stream-evidence-contracts",
+        "record_commit": "8f6c1e8c3744",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/target-exposure-contracts",
+        "record_commit": "d5768a3a9bed",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-forgetting-candidate-r1",
+        "record_commit": "c594b97acc55",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-forgetting-comparison-r1",
+        "record_commit": "c594b97acc55",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-forgetting-control-r1",
+        "record_commit": "c594b97acc55",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-admission-contracts-r1",
+        "record_commit": "fbe19fd03cac",
+        "files": 12,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-contracts-r1",
+        "record_commit": "988d7303d50c",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-initial-admission-r2",
+        "record_commit": "93313c6a9259",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-interleaved-fit-r1",
+        "record_commit": "64939f24e70b",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-interleaved-profile-r1",
+        "record_commit": "b0890101e93d",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-joint-comparison-r1",
+        "record_commit": "6c06248cb77d",
+        "files": 5,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-ordered-fit-r1",
+        "record_commit": "60f249512ac5",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/type-head-ordered-profile-r1",
+        "record_commit": "82af1bad011e",
+        "files": 24,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v006",
+        "record_commit": "b06cdda4208c",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v010",
+        "record_commit": "53abb774cdfb",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v010-admission-only",
+        "record_commit": "f9ab4a67500e",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v011-protocol",
+        "record_commit": "40127ca63844",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v012",
+        "record_commit": "a510a2bb497e",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v013-failure",
+        "record_commit": "5aa22498dfc7",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v015-contracts",
+        "record_commit": "7025cb7885b9",
+        "files": 19,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v018-architecture",
+        "record_commit": "3ae6fd1486ca",
+        "files": 4,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v027-adapter-contracts",
+        "record_commit": "8203ccbf7ca3",
+        "files": 7,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v027-profile-ancestry-r1",
+        "record_commit": "158a5345acf9",
+        "files": 13,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v028-contracts",
+        "record_commit": "b05e463dce4e",
+        "files": 15,
+        "file_set_equal": true,
+        "sha256_equal": true
+      },
+      {
+        "dir": "docs/evidence/v030-launch-preflight-r1",
+        "record_commit": "18b1697953cc",
+        "files": 10,
+        "file_set_equal": true,
+        "sha256_equal": true
+      }
+    ]
+  },
+  "violation_fixed": {
+    "directory_removed": "docs/evidence/m3-identity-factor-fullsuite-r1/",
+    "was_present_before_audit": false,
+    "introduced_by": "59b3f01",
+    "effect": "Its file set now equals the pre-audit state (the directory did not exist)."
+  }
+}

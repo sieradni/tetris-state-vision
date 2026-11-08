@@ -17,7 +17,31 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013, V-039, V-040 (3) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033, V-036, V-038 (4) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity |
+| evidence-reporting | V-032, V-033, V-036, V-038 (5) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-041 — CLOSED: the audit filed evidence under a frozen run's receipt name
+
+- Symptom: commit `59b3f01` asserted "no frozen baseline receipt was rewritten" while
+  creating `docs/evidence/m3-identity-factor-fullsuite-r1/` — a directory named for the
+  frozen `m3-identity-factor-r1` full-suite run — and adding three files to it.
+- Root cause: the audit read the freeze rule as "no existing file byte changed". The
+  repository keys records by evidence directory name: `record_stream_run.py` refuses an
+  existing enclosing evidence directory (line 215) and an existing evidence
+  `summary.json` (line 224). An evidence directory is therefore an atomic immutable
+  record, its file set is part of that record, and a new directory under a frozen run's
+  name reads as a second receipt for that run rather than an extension of the frozen one.
+- Detection class: evidence-reporting. The audit's own claim contradicted its own commit;
+  the check is `git diff --stat` path scope plus `git ls-tree`/sha256 comparison against
+  the commit that recorded each directory.
+- Instrument: the preserved log now lives in `docs/evidence/audit-398-baseline-derivation/`
+  — a named audit directory, not a frozen receipt — with `audit.json` recording the source
+  paths, per-file sha256 digests, the 407 = 398 + 9 derivation and the frozen-directory
+  comparison against `5c6b41f`. The frozen-named directory is removed, so its file set
+  equals the pre-audit state (it did not exist before `59b3f01`).
+- Green run: this turn's comparison of every committed evidence directory against the
+  commit that recorded it, recorded in that `audit.json` (all file sets and sha256 digests
+  equal), with the suite receipt `docs/evidence/m3-identity-readout-fullsuite-r11/`
+  untouched and still HEAD-derived through `supervisor_script_sha256`.
 
 ## V-040 — CLOSED: the commit stop line was derived from physical RAM
 
