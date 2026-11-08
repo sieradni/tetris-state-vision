@@ -157,7 +157,9 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("resource_profile_version") != 3 or not summary.get("training_recovery_profile_exact") or
             warm.get("step") != 2 or warm.get("input_pixels") != 512**2 or
             not warm.get("all_parameters_initialized") or not warm.get("backward_completed") or warm.get("state_bytes", 0) <= 0 or
-            not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
+            not summary.get("checkpoint_round_trip_exact") or
+            type(summary.get("max_input_pixels_seen")) is not int or
+            not 512**2 <= summary["max_input_pixels_seen"] <= max_side**2 or
             summary.get("native_cache_limits") != NATIVE_CACHE_LIMITS or
             any(summary.get(key) != value for key, value in {"max_side": max_side, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
             job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != profile_work_items):
