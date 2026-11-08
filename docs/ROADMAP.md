@@ -24,13 +24,15 @@ The checkpoint diagnostic in [TYPE_FORGETTING_DIAGNOSTIC.md](TYPE_FORGETTING_DIA
 finds recurrent type-correctness turnover on the fixed fixtures and local
 class-gradient conflicts, with significant limits on causal interpretation.
 The matched design and focused grouping/gradient/recovery instrument are in
-[BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Integrate explicit image
-and optimizer cursors into the actual trainer and obtain fresh native resource/
-recovery admission before training; the pure journal and ownership boundary now
-pass their own scoped tests, and the durable group-boundary bridge now passes eight
-no-Torch checkpoint contracts (its Toy Torch in-group interruption test passes
-at640MiB after an earlier pressure refusal; V-030 records that bounded children need
-an absolute interpreter path). Retain the original joint-fit and generalization gates.
+[BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Explicit image and
+optimizer cursors are now integrated into the actual trainer behind an explicit
+accumulation policy, with image-cadence evaluation/snapshots and separate counts in
+every ledger and summary; fresh native resource/recovery admission per group size
+is still required before training. The pure journal and ownership boundary pass
+their own scoped tests, and the whole-group arm now passes scoped driver checks
+including a forced in-group interruption replayed to identical bytes (toy network,
+no native run; V-030 records that bounded children need an absolute interpreter
+path). Retain the original joint-fit and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

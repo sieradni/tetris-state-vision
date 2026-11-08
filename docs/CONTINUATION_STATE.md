@@ -1,5 +1,22 @@
 # Contributor handoff — 2026-10-30
 
+## Accumulation integration — 2026-11-08
+
+`scripts/train_m2_stream.py` now executes the predeclared whole-group arms when
+`--accumulation-policy` is given: each group is validated and journaled only
+after its optimizer step, the stepped gradients are cleared before any boundary,
+evaluation fires only at the declared image cadence, and a boundary snapshot is
+published only at a complete-group boundary. Image and optimizer cursors stay
+separate in `curve.jsonl`, `training.jsonl`, progress and summary, and the
+default streaming path is unchanged. Two scoped checks pass under640MiB
+(332,709,888B peak, `docs/evidence/accumulation-driver-integration-r1/`): the
+accounting/cadence check, and a forced in-group interruption that is discarded
+and replayed to byte-identical model/Adam/RNG/journal bytes. 26 accumulation,43
+stream and5 type-head regression tests also pass. Limits: toy network only, no
+native accumulation arm, no per-group-size resource admission, no
+controller/curator routing for these cursors, and accumulated resume is refused
+until the boundary restore is wired into the driver.
+
 ## State recovery — 2026-11-08
 
 Recovered an unrecorded change set on local `main` 86f7362 (8 unpushed commits;
@@ -18,14 +35,15 @@ child) and is retained as an admission refusal, not a test result; r2 passed onc
 pressure cleared. A launch trap is recorded as V-030: a relative
 forward-slash child interpreter fails in `CreateProcess`, so bounded children
 must use an absolute or backslash path form; the supervisor is unchanged.
-The bridge is NOT integrated: the actual trainer, controller and independent
-curator do not use it, ordinary fixed-fit recipes only, no full-square group
-profile and no native in-group interruption/recovery gate exist. No training is
+The bridge is used by the trainer's accumulation arm only (see the new
+checkpoint above): the controller and independent curator still do not route
+these cursors, ordinary fixed-fit recipes only, no full-square group profile and
+no native in-group interruption/recovery gate exist. No training is
 admitted and no research job is running.
-Next: integrate image/update
-accounting plus controller/curator routing, then obtain fresh native full-square
-warm/reload profiles and actual in-group interruption recovery before any arm of
-the predeclared comparison. Commit pressure was31.2GB against the31.368GB stop
+Next: route the image/update cursors through the controller and independent
+curator, wire accumulated resume to the boundary restore, then obtain fresh
+native full-square warm/reload profiles per group size and an actual in-group
+interruption recovery before any arm of the predeclared comparison. Commit pressure was31.2GB against the31.368GB stop
 at review and briefly cleared to1.12GB of headroom, so long training windows stay
 blocked. Local commits remain unpushed;
 no push without explicit authorization.

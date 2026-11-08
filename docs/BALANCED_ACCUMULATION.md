@@ -97,7 +97,7 @@ needs its own explicit profile handling. Neither the trainer nor checkpoint
 publisher uses this boundary yet. Fresh neural integration, pressure-safe
 testing, full-square admission and real interruption recovery remain required.
 
-## Durable boundary bridge (unintegrated)
+## Durable boundary bridge and integrated arm (no native run)
 
 [`scripts/accumulation_checkpoint.py`](../scripts/accumulation_checkpoint.py)
 binds the journal to the existing snapshot tooling: it creates a journal only in a
@@ -119,7 +119,22 @@ The Toy Torch test in `tests/test_accumulation_checkpoint_torch.py` also passes
 at 640 MiB / 60 s / work1 after an earlier admission refusal: real AdamW with
 dropout, a forced interruption inside group2, restore into a fresh directory and
 replay to byte-identical model, Adam, RNG and journal bytes (1.422 s test,
-332,423,168 B peak). Nothing here is a native
-interruption gate, and the bridge is not called by the trainer, controller or
-curator, so no arm of the comparison is admitted. Bounded children must use an
-absolute or backslash interpreter path; see V-030 in [BUG_LOG.md](BUG_LOG.md).
+332,423,168 B peak).
+
+The trainer now calls this boundary for every whole group: `--accumulation-policy`
+in `scripts/train_m2_stream.py` runs the predeclared arm through
+`run_accumulation_loop`, which validates and journals each group, clears the
+stepped gradients, evaluates only at image boundaries, and snapshots only at a
+complete-group boundary. Image and optimizer cursors stay separate in
+`curve.jsonl`, `training.jsonl`, progress and summary. Two scoped checks cover the
+image/update accounting, the evaluation and snapshot cadence, and a forced
+in-group interruption that is discarded and replayed to byte-identical
+model/Adam/RNG/journal bytes; they pass with 26 accumulation and 43 stream
+regression tests under 640 MiB
+([accumulation driver](evidence/accumulation-driver-integration-r1/scope.json)).
+Those checks use a toy network, not the pilot model. No accumulation arm has run
+natively: there is no per-group-size resource admission, no controller or
+independent-curator routing for these cursors, and accumulated resume is refused
+until the boundary restore is wired into the driver. So no arm of the comparison
+is admitted. Bounded children must use an absolute or backslash interpreter path;
+see V-030 in [BUG_LOG.md](BUG_LOG.md).

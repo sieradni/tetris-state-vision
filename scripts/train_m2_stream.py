@@ -10,6 +10,8 @@ from pathlib import Path
 import sys
 import time
 
+from accumulation_checkpoint import make_contract
+from accumulation_contract import POLICIES as ACCUMULATION_POLICIES, group_specs, update_count
 from probe_model import bounded_job_snapshot, require_bounded_job
 from source_snapshot import capture_source, verify_source
 from atomic_write import replace_retry
@@ -26,6 +28,8 @@ def arguments(argv=None):
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
+    parser.add_argument("--accumulation-policy", choices=tuple(ACCUMULATION_POLICIES),
+                        help="whole-group accumulation arm from the predeclared matched comparison")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
@@ -57,10 +61,24 @@ def arguments(argv=None):
         parser.error("square resource profile requires two optimizer steps without prior admission")
     if not args.profile_square and args.admission is None:
         parser.error("a matching warm-optimizer square resource admission is required")
+    if args.accumulation_policy is not None:
+        size = ACCUMULATION_POLICIES[args.accumulation_policy][0]
+        expected = "all-class-fit-v1" if args.accumulation_policy == "ordered-eight-v1" else "all-class-interleaved-v1"
+        if (args.model != "pilot" or args.component_capacity or args.layer_evidence or
+                args.learning_rate != .001 or args.seed != 20261026):
+            parser.error("accumulated fit requires pilot M2, no optional heads, seed 20261026 and learning rate .001")
+        if args.curriculum != expected:
+            parser.error("accumulation policy requires its predeclared "+expected+" curriculum")
+        if args.resume_from is not None or args.max_new_steps is not None:
+            parser.error("accumulated resume needs the durable boundary restore, which is not integrated yet")
+        if not args.profile_square and args.steps != update_count(args.accumulation_policy):
+            parser.error("an accumulated arm consumes exactly "+str(update_count(args.accumulation_policy))+" optimizer updates")
+        if args.checkpoint_every % size or args.evaluate_every % size:
+            parser.error("checkpoint and evaluation intervals must be complete-group boundaries")
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -71,6 +89,11 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("arguments", {}).get("type_head_rate_factor", 1) != type_head_rate_factor or
             summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != type_head_rate_factor):
         raise ValueError("type-head rate factor differs from resource admission")
+    if accumulation_policy is not None and (
+            summary.get("accumulation_policy") != accumulation_policy or
+            summary.get("images_per_update") != ACCUMULATION_POLICIES[accumulation_policy][0] or
+            summary.get("arguments", {}).get("accumulation_policy") != accumulation_policy):
+        raise ValueError("accumulation policy differs from resource admission")
     warm = summary.get("warm_optimizer_backward", {})
     if (summary.get("status") != "complete" or summary.get("steps") != 2 or not summary.get("profile_square") or
             summary.get("resource_profile_version") != 3 or not summary.get("training_recovery_profile_exact") or
@@ -141,6 +164,48 @@ def capture_initial_tensors(model, path):
         raise ValueError("initial state serialization changed tensor bytes")
 
 
+def run_accumulation_loop(*, run, policy, contract, model, optimizer, updates_total, recipe_for, loss_for,
+                          checkpoint_every, evaluate_every, wall_seconds, started, on_group,
+                          on_evaluation=None, on_progress=None, start_update=1, clock=time.monotonic):
+    """Execute whole groups through the durable journal; stop only at a committed boundary.
+
+    A caller supplies the actual recipe and loss for each image cursor. Every
+    group is validated, optimized, journaled and only then snapshotted, so a wall
+    or process stop can never publish a partial group.
+    """
+    from accumulation_checkpoint import append_group, save_boundary
+    from accumulation_journal import execute_group
+    size = ACCUMULATION_POLICIES[policy][0]
+    if (type(updates_total) is not int or not 1 <= updates_total <= update_count(policy) or
+            type(start_update) is not int or not 1 <= start_update <= updates_total or
+            type(checkpoint_every) is not int or not 1 <= checkpoint_every or checkpoint_every % size or
+            type(evaluate_every) is not int or not 1 <= evaluate_every or evaluate_every % size):
+        raise ValueError("bounded complete-group accumulation cadence required")
+    state = pointer = None
+    snapshotted = 0
+    for update in range(start_update, updates_total+1):
+        if clock()-started >= wall_seconds:
+            break
+        recipes = [recipe_for(image, index, view) for image, index, view in group_specs(policy, update)]
+        entry = execute_group(model, optimizer, policy, update, recipes, loss_for)
+        state = append_group(run, policy, entry)
+        # A boundary snapshot must never see stepped gradients as pending work.
+        optimizer.zero_grad(set_to_none=True)
+        on_group(update, state, entry)
+        images = state["images_seen"]
+        if images % evaluate_every == 0 and on_evaluation is not None:
+            on_evaluation(update, state)
+        if images % checkpoint_every == 0 or update == updates_total or state["status"] == "complete":
+            pointer = save_boundary(run, model, optimizer, contract)
+            snapshotted = images
+        if on_progress is not None:
+            on_progress(update, state, entry["mean_loss"])
+    if state is not None and snapshotted != state["images_seen"]:
+        pointer = save_boundary(run, model, optimizer, contract)
+        snapshotted = state["images_seen"]
+    return {"state": state, "pointer": pointer, "snapshotted_images": snapshotted}
+
+
 def main(argv=None, *, _archive=None, _started=None):
     args = arguments(argv)
     ceiling = require_bounded_job()
@@ -178,7 +243,7 @@ def main(argv=None, *, _archive=None, _started=None):
     os.environ.update(NATIVE_CACHE_LIMITS)
     import torch
     from dataclasses import asdict, replace
-    from m2_curriculum import FIT_POLICIES, distinct_training_groups, probe_specs, sample_for, training_case
+    from m2_curriculum import FIT_POLICIES, distinct_training_groups, probe_specs, replay_case, sample_for, training_case
     from m2_fit_contract import summarize_fit
     from training_snapshot import load_training_snapshot, save_training_snapshot
     from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
@@ -202,13 +267,17 @@ def main(argv=None, *, _archive=None, _started=None):
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
     config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence)
     config_json = json.loads(json.dumps(asdict(config)))
+    accumulation = None
+    if args.accumulation_policy is not None:
+        accumulation = make_contract(args.accumulation_policy,
+                                     source_catalogue_sha256=archive["catalogue_sha256"], config=config_json)
     if args.admission is not None:
         admit = args.admission.resolve()
         validate_admission(json.loads((admit/"summary.json").read_text()),
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
-                           type_head_rate_factor=args.type_head_rate_factor)
+                           type_head_rate_factor=args.type_head_rate_factor, accumulation_policy=args.accumulation_policy)
     model = TetrisStateNet(config)
     initial_path = args.output / "initial-weights.pt"
     capture_initial_tensors(model, initial_path)
@@ -314,6 +383,9 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
     recovery_contract["curriculum"] = args.curriculum
     recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
+    if args.accumulation_policy is not None:
+        recovery_contract["accumulation_policy"] = args.accumulation_policy
+        recovery_contract["images_per_update"] = ACCUMULATION_POLICIES[args.accumulation_policy][0]
     ledger_names = ("curve.jsonl", "training.jsonl", "evaluations.jsonl")
     resume_record = None
     if args.resume_from is not None:
@@ -335,10 +407,85 @@ def main(argv=None, *, _archive=None, _started=None):
     final_step = min(args.steps, started_step+(args.max_new_steps or args.steps))
     latest_snapshot = None
     mode = "a" if resume_record else "x"
+    steps_to_run = () if args.accumulation_policy is not None else range(started_step+1, final_step+1)
     with (args.output/"curve.jsonl").open(mode, encoding="utf-8", newline="\n") as curve, (args.output/"training.jsonl").open(mode, encoding="utf-8", newline="\n") as ledger, (args.output/"evaluations.jsonl").open(mode, encoding="utf-8", newline="\n") as evaluations, (args.output/"memory.jsonl").open("x", encoding="utf-8") as memory_log:
         if not resume_record:
             evaluations.write(json.dumps({"step": 0, "training": initial_train, "development": initial_dev})+"\n")
         evaluations.flush()
+
+        if args.accumulation_policy is not None:
+            def recipe_for(image, index, view):
+                return training_case(image, args.seed, curriculum=args.curriculum,
+                                     component_capacity=args.component_capacity).record
+
+            def loss_for(recipe):
+                case = replay_case(recipe, split="training", curriculum=args.curriculum,
+                                   component_capacity=args.component_capacity)
+                prepared, target = prepare(case)
+                model.train()
+                output = model(prepared.pixels[None], prepared.valid[None])
+                loss, _ = joint_loss(output, target)
+                if not bool(torch.isfinite(loss)):
+                    raise RuntimeError("nonfinite accumulated loss")
+                return loss
+
+            def on_group(update, state, entry):
+                curve.write(json.dumps({"update": update, "images_seen": state["images_seen"],
+                                        "optimizer_updates": state["optimizer_updates"],
+                                        "mean_loss": entry["mean_loss"], "gradient_norm": entry["gradient_norm"],
+                                        "elapsed_seconds": time.monotonic()-started}, allow_nan=False)+"\n")
+                for row in entry["images"]:
+                    ledger.write(json.dumps({"update": update, "image": row["image"], **row["recipe"]},
+                                            allow_nan=False)+"\n")
+                curve.flush()
+                ledger.flush()
+
+            def on_evaluation(update, state):
+                evaluations.write(json.dumps({"update": update, "images_seen": state["images_seen"],
+                                              "development": evaluate("development", args.development_groups)})+"\n")
+                evaluations.flush()
+
+            def on_progress(update, state, mean_loss):
+                progress.update(status="training", update=update, images_seen=state["images_seen"],
+                                optimizer_updates=state["optimizer_updates"], loss=mean_loss,
+                                elapsed_seconds=time.monotonic()-started)
+                atomic_json(args.output/"progress.json", progress)
+
+            accumulation_result = run_accumulation_loop(
+                run=args.output, policy=args.accumulation_policy, contract=accumulation,
+                model=model, optimizer=optimizer, updates_total=args.steps,
+                recipe_for=recipe_for, loss_for=loss_for, checkpoint_every=args.checkpoint_every,
+                evaluate_every=args.evaluate_every, wall_seconds=args.wall_seconds, started=started,
+                on_group=on_group, on_evaluation=on_evaluation, on_progress=on_progress)
+            latest_snapshot = accumulation_result["pointer"]
+            if accumulation_result["state"] is not None:
+                completed = accumulation_result["state"]["optimizer_updates"]
+                committed = accumulation_result["snapshotted_images"] == accumulation_result["state"]["images_seen"]
+                progress.update(status="training", update=completed,
+                                images_seen=accumulation_result["state"]["images_seen"],
+                                optimizer_updates=completed, recovery_step=completed if committed else 0,
+                                elapsed_seconds=time.monotonic()-started)
+                atomic_json(args.output/"progress.json", progress)
+            if args.profile_square and accumulation_result["state"] is not None:
+                parameters = [p for p in model.parameters() if p.requires_grad]
+                initialized = all(
+                    p in optimizer.state and all(
+                        key in optimizer.state[p] and optimizer.state[p][key].shape == p.shape
+                        for key in ("exp_avg", "exp_avg_sq"))
+                    and float(optimizer.state[p]["step"]) == completed for p in parameters)
+                warm_optimizer_backward = {
+                    "step": completed, "input_pixels": maximum_pixels, "parameter_tensors": len(parameters),
+                    "all_parameters_initialized": initialized,
+                    "state_bytes": sum(value.numel()*value.element_size() for state in optimizer.state.values()
+                                       for value in state.values() if torch.is_tensor(value)),
+                    "backward_completed": True}
+                expected_state = copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
+                recovery = load_training_snapshot(args.output, model, optimizer, contract=accumulation)
+                recovery_profile_exact = recovery["step"] == completed and equal_tree(
+                    expected_state, (model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
+                del expected_state, recovery
+                if not recovery_profile_exact:
+                    raise RuntimeError("accumulation boundary snapshot changed model/optimizer/RNG")
 
         def snapshot():
             for writer in (curve, ledger, evaluations):
@@ -346,7 +493,7 @@ def main(argv=None, *, _archive=None, _started=None):
             return save_training_snapshot(args.output, model, optimizer, step=completed,
                                           contract=recovery_contract, ledgers=ledger_names)
 
-        for step in range(started_step+1, final_step+1):
+        for step in steps_to_run:
             if time.monotonic()-started >= args.wall_seconds:
                 break
             # Both characterization steps must use the maximum shape. Step two
@@ -411,13 +558,21 @@ def main(argv=None, *, _archive=None, _started=None):
                 del expected_state, recovery
                 if not recovery_profile_exact:
                     raise RuntimeError("training snapshot changed model/optimizer/RNG")
-        if completed > started_step and (latest_snapshot is None or progress.get("recovery_step") != completed):
+        if args.accumulation_policy is None and completed > started_step and (latest_snapshot is None or progress.get("recovery_step") != completed):
             latest_snapshot = snapshot()
             progress["recovery_step"] = completed
     final_train, final_dev = evaluate("training", 3), evaluate("development", args.development_groups)
     verify_source(code, archive["catalogue_sha256"])
     if file_digest(initial_path) != initial_sha256:
         raise ValueError("saved initial tensors changed during execution")
+    accumulation_metadata = None
+    if args.accumulation_policy is not None:
+        size = ACCUMULATION_POLICIES[args.accumulation_policy][0]
+        accumulation_metadata = {
+            "policy": args.accumulation_policy, "images_per_update": size,
+            "images_seen": completed*size, "optimizer_updates": completed,
+            "contract": accumulation, "journal_sha256": file_digest(args.output/"groups.jsonl"),
+            "latest_boundary": latest_snapshot}
     metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
                 "initial_weights_sha256": initial_sha256,
                 "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
@@ -428,7 +583,8 @@ def main(argv=None, *, _archive=None, _started=None):
                 "resume": resume_record, "latest_training_snapshot": latest_snapshot,
                 "driver_source_path": str(Path(__file__).resolve()),
                 "native_cache_limits": NATIVE_CACHE_LIMITS,
-                "recovery_contract": recovery_contract, "updates_this_run": completed-started_step}
+                "recovery_contract": recovery_contract, "updates_this_run": completed-started_step,
+                "accumulation": accumulation_metadata}
     checkpoint = save_checkpoint(args.output/"checkpoint", model.eval(), metadata)
     restored, _ = load_checkpoint(args.output/"checkpoint")
     example, _ = prepare(sample(0, 0, "development"))
@@ -444,11 +600,18 @@ def main(argv=None, *, _archive=None, _started=None):
                "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
                "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
                "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0,
-               "fresh_parent_groups": distinct_training_groups(completed, args.curriculum, profile_square=args.profile_square),
+               "fresh_parent_groups": distinct_training_groups(completed*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
+                                                                             if args.accumulation_policy else 1),
+                                                                args.curriculum, profile_square=args.profile_square),
                "curriculum": args.curriculum,
                "initial_training_probe": initial_train, "initial_development": initial_dev,
                "final_training_probe": final_train, "development": final_dev, "checkpoint_round_trip_exact": True,
                "checkpoint_sha256": checkpoint["weights_sha256"], "elapsed_seconds": time.monotonic()-started,
+               **({"accumulation_policy": args.accumulation_policy,
+                   "images_per_update": accumulation_metadata["images_per_update"],
+                   "images_seen": accumulation_metadata["images_seen"], "optimizer_updates": completed,
+                   "accumulation_journal_sha256": accumulation_metadata["journal_sha256"]}
+                  if accumulation_metadata is not None else {}),
                "claim": "Finite synthetic curriculum or resource characterization, not complete-state or real-image acceptance.", **metadata}
     atomic_json(args.output/"summary.json", summary)
     progress.update(status=summary["status"], step=completed, summary="summary.json", checkpoint="checkpoint/manifest.json")
