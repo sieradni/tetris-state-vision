@@ -309,6 +309,33 @@ class ComponentIdentityFactorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "endpoint term differs"):
             require_endpoint_term("queue", {"arguments": {}, "recovery_contract": {}})
 
+    def test_the_occupancy_factor_is_declared_once_and_gated_consistently(self):
+        from tetris_vision.losses import OCCUPANCY_FACTORS, require_occupancy_factor
+        from train_m2_stream import OCCUPANCY_FACTORS as DRIVER_FACTORS
+        self.assertEqual(tuple(DRIVER_FACTORS), tuple(OCCUPANCY_FACTORS))
+        self.assertEqual(tuple(OCCUPANCY_FACTORS), (1, 4))
+        for factor in OCCUPANCY_FACTORS:
+            require_occupancy_factor(factor, {"arguments": {"occupancy_factor": factor},
+                                              "recovery_contract": {"occupancy_factor": factor}})
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                                    "positional", "--occupancy-factor", "4"]).occupancy_factor, 4)
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                       "positional", "--occupancy-factor", "2"])
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--occupancy-factor", "4"])
+        with self.assertRaisesRegex(ValueError, "occupancy factor differs"):
+            require_occupancy_factor(4, {"arguments": {"occupancy_factor": 1},
+                                         "recovery_contract": {"occupancy_factor": 1}})
+
+    def test_the_fit_run_family_is_owned(self):
+        from record_stream_run import require_owned_run
+        self.assertEqual(require_owned_run("m3-fit-occupancy-r1"), "m3-fit-occupancy-r1")
+        for name in ("fit-occupancy-r1", "m3-fit_occupancy-r1", "m3-fit"):
+            with self.assertRaises(ValueError):
+                require_owned_run(name)
+
     def test_positional_readout_is_validated_and_declared_by_the_driver(self):
         from dataclasses import replace
         from tetris_vision.model import ModelConfig

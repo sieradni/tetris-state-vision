@@ -137,6 +137,10 @@ def main():
     endpoint_term = summary.get("arguments", {}).get("component_endpoint_term", "joint")
     if type(endpoint_term) is not str or endpoint_term not in ("joint", "separate", "length"):
         raise ValueError("recorded component endpoint term must be joint, separate or length")
+    # Replay the recorded structural scale too, or the saved per-case loss cannot reproduce.
+    occupancy_factor = summary.get("arguments", {}).get("occupancy_factor", 1)
+    if type(occupancy_factor) is not int or occupancy_factor not in (1, 4):
+        raise ValueError("recorded occupancy factor must be1 or4")
     if capacity:
         from tetris_vision.components import component_metrics
         require_frozen_callables(code, component_metrics)
@@ -159,7 +163,8 @@ def main():
         if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
             raise ValueError("saved streaming probe requires200 supported cells and registered grid")
         output = model(prepared.pixels[None], prepared.valid[None])
-        loss, _ = joint_loss(output, target, identity_factor=identity_factor, endpoint_term=endpoint_term)
+        loss, _ = joint_loss(output, target, identity_factor=identity_factor, endpoint_term=endpoint_term,
+                             occupancy_factor=occupancy_factor)
         baseline = diagnostic_metrics(output, target)
         diagnostics = analyze_case(*pack(output["final"], target))
         known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
@@ -247,7 +252,7 @@ def main():
               "source_catalogue_sha256": summary["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
               "automatic_metrics_reproduced": True, "weights_unchanged": True, "label_inputs_to_model": False,
               "core_architecture": architecture, "config": manifest["config"], "component_capacity": capacity,
-              "component_identity_factor": identity_factor, "component_endpoint_term": endpoint_term,
+              "component_identity_factor": identity_factor,              "component_endpoint_term": endpoint_term, "occupancy_factor": occupancy_factor,
               "curriculum": curriculum, "development_extension": extension,
               "totals": totals, "cases": records, "sources": sources,
               "elapsed_seconds": time.monotonic()-started,

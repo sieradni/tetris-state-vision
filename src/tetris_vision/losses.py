@@ -124,7 +124,20 @@ def geometry_error(predicted, target):
     return (points(predicted)-points(target))/spacing[:, None]
 
 
-def stage_loss(output, target, identity_factor=1, endpoint_term="joint"):
+# Declared structural scale for the fit-gate lever, and its admission join. One tuple so
+# the driver, the loss and the admission gate cannot disagree (V-052).
+OCCUPANCY_FACTORS = (1, 4)
+
+
+def require_occupancy_factor(factor, summary):
+    """One declaration of the admission join for the occupancy scale."""
+    if (type(factor) is not int or factor not in OCCUPANCY_FACTORS or
+            summary.get("arguments", {}).get("occupancy_factor", 1) != factor or
+            summary.get("recovery_contract", {}).get("occupancy_factor", 1) != factor):
+        raise ValueError("occupancy factor differs from resource admission")
+
+
+def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(output["occupancy"][:, :20], target["occupied"], target["known"])
@@ -151,6 +164,8 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint"):
         label = target["layer_cells"]
         result["layer_cells"] = balanced_occupancy(output["layer_cells"].flatten(0, 1),
             label["occupied"].flatten(0, 1), label["known"].flatten(0, 1))
+    check(type(occupancy_factor) is int and occupancy_factor in OCCUPANCY_FACTORS,
+          "occupancy factor must be1 or4")
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -159,11 +174,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint"):
     return result
 
 
-def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint"):
-    per_stage = [stage_loss(stage, target, identity_factor, endpoint_term) for stage in outputs["stages"]]
+def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1):
+    per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor)
+                 for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     # Pilot hypotheses, not tuned or established research hyperparameters.
-    weights = {"geometry": 1., "occupancy": 1., "semantic": .25, "visibility": .25,
+    weights = {"geometry": 1., "occupancy": 1.*occupancy_factor, "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
                "components": .5, "layer_cells": .5}
     total = sum(weights[key]*value for key, value in terms.items())

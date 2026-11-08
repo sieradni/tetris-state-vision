@@ -152,6 +152,22 @@ def analyze_components(prediction, target):
                      "piece_correct": hold_piece_right}}
 
 
+def constant_empty_readout(locked_populations):
+    """True when not one occupied locked cell was ever predicted.
+
+    The fit question asks whether the locked read-out discriminates occupied from empty
+    cells. A board count alone cannot answer it (a constant-empty predictor collects the
+    empty boards for free); this names the degenerate case from the recorded population so
+    a claim about the mechanism is reproducible from the evidence instead of asserted.
+    """
+    if type(locked_populations) is not dict or "nonempty" not in locked_populations:
+        raise ValueError("nonempty locked population required")
+    nonempty = locked_populations["nonempty"]
+    if type(nonempty) is not dict or type(nonempty.get("true_positive")) is not int or type(nonempty.get("false_negative")) is not int:
+        raise ValueError("nonempty true-positive/false-negative counts required")
+    return bool(nonempty["true_positive"] == 0 and nonempty["false_negative"] > 0)
+
+
 def summarize_components(records):
     if (type(records) is not list or not 1 <= len(records) <= 45 or
             any(row["split"] not in {"training", "development"} or not isinstance(row["sample_id"], str) or

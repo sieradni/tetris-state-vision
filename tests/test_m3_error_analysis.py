@@ -6,7 +6,8 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
-from m3_error_analysis import analyze_components, pack_components, replay_keywords, summarize_components
+from m3_error_analysis import (analyze_components, constant_empty_readout, pack_components, replay_keywords,
+                               summarize_components)
 
 HAS_TORCH = importlib.util.find_spec("torch") is not None
 
@@ -193,6 +194,16 @@ class ComponentErrorAnalysisTests(unittest.TestCase):
         self.assertEqual(identity["queue_predicted_classes"], {"T": 1})
         self.assertEqual(identity["queue_supervised_positions"], 1)
         self.assertFalse(identity["queue_constant_predictor"])
+
+    def test_a_constant_empty_readout_is_named_from_the_population(self):
+        empty_everywhere = {"empty": {"images": 2, "exact_boards": 2, "true_positive": 0, "false_negative": 0},
+                            "nonempty": {"images": 7, "exact_boards": 0, "true_positive": 0, "false_negative": 168}}
+        self.assertTrue(constant_empty_readout(empty_everywhere))
+        # A single occupied cell recovered is no longer the degenerate read-out.
+        empty_everywhere["nonempty"]["true_positive"] = 1
+        self.assertFalse(constant_empty_readout(empty_everywhere))
+        with self.assertRaisesRegex(ValueError, "nonempty locked population"):
+            constant_empty_readout({"empty": {}})
 
     def test_position_axis_spread_is_carried_into_the_identity_fields(self):
         prediction, target = fixture()

@@ -21,6 +21,9 @@ NATIVE_CACHE_LIMITS = {"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_
 # Mirrors tetris_vision.components.ENDPOINT_TERMS without importing torch at parser build
 # time; a test binds the two so the CLI and the admission gate cannot drift apart (V-052).
 ENDPOINT_TERMS = ("joint", "separate", "length")
+# Mirrors tetris_vision.losses.OCCUPANCY_FACTORS without importing torch at parser build
+# time; a test binds the two (V-052 pattern).
+OCCUPANCY_FACTORS = (1, 4)
 
 
 def arguments(argv=None):
@@ -39,6 +42,8 @@ def arguments(argv=None):
                         help="joint keeps the endpoint as one class of the piece softmax;joint is published;"
                              "separate gives the endpoint its own binary decision;length decides the queue length "
                              "once per case")
+    parser.add_argument("--occupancy-factor", type=int, choices=OCCUPANCY_FACTORS, default=1,
+                        help="declared locked-occupancy loss scale for the fit-gate lever;1 is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -77,6 +82,8 @@ def arguments(argv=None):
         parser.error("a declared endpoint term requires the joint heads and a declared identity readout")
     if args.component_endpoint_term == "length" and args.component_identity_readout != "positional":
         parser.error("a length objective requires the positional identity readout")
+    if args.occupancy_factor != 1 and not args.component_capacity:
+        parser.error("the occupancy fit lever requires the joint heads")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
@@ -139,7 +146,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -157,7 +164,9 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
+    from tetris_vision.losses import require_occupancy_factor
     require_endpoint_term(endpoint_term, summary)
+    require_occupancy_factor(occupancy_factor, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -397,7 +406,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
                            type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
-                           endpoint_term=args.component_endpoint_term,
+                           endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -463,7 +472,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -538,6 +547,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["component_identity_factor"] = args.component_identity_factor
     recovery_contract["component_identity_readout"] = args.component_identity_readout
     recovery_contract["component_endpoint_term"] = args.component_endpoint_term
+    recovery_contract["occupancy_factor"] = args.occupancy_factor
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
@@ -593,7 +603,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -676,7 +686,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()
