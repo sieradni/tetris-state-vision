@@ -25,8 +25,9 @@ finds recurrent type-correctness turnover on the fixed fixtures and local
 class-gradient conflicts, with significant limits on causal interpretation.
 The matched design and focused grouping/gradient/recovery instrument are in
 [BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Integrate explicit image
-and optimizer cursors and obtain fresh native resource/recovery admission before
-training; retain the original joint-fit and generalization gates.
+and optimizer cursors into the actual trainer and obtain fresh native resource/
+recovery admission before training; the pure journal and ownership boundary now
+pass their own scoped tests. Retain the original joint-fit and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

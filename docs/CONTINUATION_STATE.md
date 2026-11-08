@@ -1,5 +1,21 @@
 # Contributor handoff — 2026-10-30
 
+## Accumulation journal contracts — 2026-11-07
+
+System commit was 30,986,448,896 B against 31,368,351,744 B stop when a
+512 MiB reservation was checked, so no heavy work was relaunched. Added
+`scripts/accumulation_journal.py`: validates whole public-recipe groups,
+separate image/update cursors, complete-group snapshot positions and exact
+optimizer ownership; its execution boundary preflights before calling the
+existing group primitive and only returns complete records. Eight no-Torch
+checks pass in1.565 s / 41,299,968 B under128 MiB / 30 s / work8; raw scope
+`docs/evidence/accumulation-journal-contracts-r1/`. Execution is mocked in
+these tests and ordinary fit recipes only are supported; full-square profiles
+need explicit handling. The actual trainer, durable journal publisher,
+controller and independent curator remain unintegrated; no neural workload or
+training admission follows. Continue those changes and fresh native gates when
+resource pressure safely permits; never disable the existing guard.
+
 ## Balanced accumulation preparation — 2026-11-07
 
 `docs/BALANCED_ACCUMULATION.md` predeclares online-interleaved, balanced-eight

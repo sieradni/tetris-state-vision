@@ -82,3 +82,17 @@ This is not an integrated trainer, native interruption gate or training admissio
 An additional ownership-check run was refused or stopped by the system pressure
 guard (r4/r5 receipts retained); that unverified edit was reverted and the
 ownership check remains an integration requirement, not a passed test.
+
+The subsequent [journal contracts](evidence/accumulation-journal-contracts-r1/scope.json)
+add a pure boundary for exact public recipe/image cursors, separate image and
+optimizer counts, finite complete-group prefixes and snapshot resume cursor
+refusal. They check optimizer ownership before invoking the grouped update
+primitive, and return a journal entry only after a complete outcome. Eight
+small, no-Torch checks pass, including malformed/partial records, mutated
+recipes, missing/duplicate optimizer parameters and mocked execution failures;
+the native receipt records 1.565 seconds and 41,299,968 bytes under 128 MiB /
+30 s / work8. These tests do not execute the real update through this wrapper.
+The journal accepts ordinary fixed-fit recipes only; full-square characterization
+needs its own explicit profile handling. Neither the trainer nor checkpoint
+publisher uses this boundary yet. Fresh neural integration, pressure-safe
+testing, full-square admission and real interruption recovery remain required.
