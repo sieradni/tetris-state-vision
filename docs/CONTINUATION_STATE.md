@@ -1,5 +1,36 @@
 # Contributor handoff — 2026-10-30
 
+## M3 identity read-out tying: a measured negative, with the role head paying — 2026-11-08
+
+`docs/M3_IDENTITY_READOUT.md` predeclared the lever at commit `e83d70e`, before any
+receipt: replace the two sparse identity heads with the cell-type classifier plus one
+learned EOS logit (`--component-identity-readout shared`), matched on capacity 64, 128
+updates, seed `20261026`, learning rate .001, identity factor 1. `b80d82d` fixed the
+first admission refusal at its root (V-039: the shared mode kept dead identity heads,
+which the resident-Adam guard rejects); admission r2 passed on the exact mode
+(`runs/m3-stream-identity-shared-profile-r2-job.json`, 80.218 s, 945,143,808 B,
+checkpoint `c9e8f3f8...`, 262 tensors with warm Adam state), and the study completed
+(`runs/m3-stream-identity-shared-r1-job.json`, 128 steps, 573.629 s, checkpoint
+`55a35243...`, catalogue `2f69689a...`, under the declared 1,152 MiB ceiling).
+
+By the predeclared rule this is a negative. Identity does move: exact queue piece
+tokens 0/54 -> 9/54 training and 0/90 -> 6/90 development, hold 0/12 -> 3/12
+development. But the rule required structure held, and it is not: training presence
+63/63 -> 54/63, development EOS 15/15 -> 13/15, and — the new cost — training roles
+collapse 12/18 -> 0/18 where the coefficient lever had held them. Fit gate stays
+FALSE (0/9 and 0/18 boards, 0/9 and 0/18 exact readable components), queue EOS 9/9
+and slot status 54/54 and 90/90 still exact, geometry 3.32 training (better than 4.04)
+and 2.55 development (worse than 2.03). Independent 27-forward replay (35.867 s,
+554,905,600 B, weights `55a35243...` unchanged, every saved per-case field reproduced)
+curates in `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json` (`passed`).
+
+So read-out sharing is not the identity lever either: tying supervision into the cell
+classifier moves the sparse identity targets but buys nothing readable and costs the
+role head. Per the predeclaration the next lever is the input representation (pixels
+per icon) or the component targets themselves; the coefficient and read-out questions
+are closed. Real-image items 4–5 remain an owner decision (reviewed, permissioned
+labels).
+
 ## M3 component-identity lever: the identity scale is a measured positive — 2026-11-08
 
 `docs/M3_COMPONENT_IDENTITY.md` predeclares the lever at commit `65ee2f1`, before any

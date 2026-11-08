@@ -14,10 +14,27 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
+| resource-profile | V-013, V-039 (2) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033, V-036, V-038 (4) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity |
+
+## V-039 — CLOSED: the shared read-out carried dead identity heads
+
+- Symptom: the first capacity-64 admission in the declared shared read-out mode
+  refused with `RuntimeError: resource profile requires resident Adam state for every
+  trainable parameter`, so the lever had no admission.
+- Root cause: the shared mode wired piece identity through the cell-type head but left
+  `components.queue_tokens` and `components.hold_piece` registered. They receive no
+  gradient, so Adam never creates state for them while they remain in the trainable
+  parameter list.
+- Detection class: resource-profile; the profile guard, not the model output, caught it.
+- Instrument: `share_type_readout` removes the unused heads instead of carrying them,
+  and `tests/test_component_identity.py` pins that no unused identity parameter survives
+  the switch (no `queue_tokens`/`hold_piece` key in the shared state dict).
+- Green run: `runs/m3-stream-identity-shared-profile-r2-job.json` (passed, 262
+  trainable tensors with resident warm Adam state) and
+  `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json`.
 
 ## V-038 — CLOSED: the replay scored the published objective, not the run's
 

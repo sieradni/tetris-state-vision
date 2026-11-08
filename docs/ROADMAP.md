@@ -11,6 +11,18 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: tying the identity read-out into the cell-type classifier is a measured
+negative ([M3_IDENTITY_READOUT.md](M3_IDENTITY_READOUT.md), predeclared at `e83d70e`,
+shared mode admitted at`runs/m3-stream-identity-shared-profile-r2-job.json`):matched128
+updates atcapacity64 move exact queue pieces0/54->9/54 training and0/90->6/90
+development and development hold0/12->3/12, but the predeclared structure-held
+condition fails (training presence63/63->54/63, development EOS15/15->13/15) and
+training roles fall12/18->0/18, so the fit gate stays FALSE(0/9 and0/18 boards,0/9 and0/18
+components,3.32 and2.55 cells). Independent27-forward replay(weights`55a35243...`
+unchanged) and curator: `docs/evidence/m3-stream-identity-shared-r1-errors-r1/`. The
+next lever is the input representation(pixels per icon) or the component targets; the
+coefficient and read-out questions are closed.
+
 Latest: a declared4x identity-loss scale is a measured positive on the M3 identity
 localization ([M3_COMPONENT_IDENTITY.md](M3_COMPONENT_IDENTITY.md), predeclared at
 `65ee2f1`): matched128 updates atcapacity64 raise exact queue piece tokens0/54->3/54
@@ -162,8 +174,8 @@ and generalization gates.
    A declared4x identity-loss scale (matched, predeclared `65ee2f1`) moves exact queue
    piece tokens0/54->3/54 and development0/90->9/90 with hold0/12->3/12 while the fit
    gate stays FALSE and development EOS falls15/15->3/15: identity is gradient-starved,
-   not unreachable. Identity targets or representation at that scale and varied-shape
-   long memory remain pending; no quality admission follows.
+   not unreachable.Identity representation at that scale (pixels per icon, or the component targets
+themselves) and varied-shape long memory remain pending; no quality admission follows.
    Synthetic final-model-size
    captures now reobserve labels at that exact transform (9 checks). Arbitrary
    post-labeled resize/invalid alpha still refuses; the API keeps queue/

@@ -1,8 +1,8 @@
 # M3 identity read-out tying — predeclaration
 
-Status: predeclared; no receipt for this lever exists yet. This file is committed
-before the admission profile, before the study and before any replay, so commit
-ordering proves the criterion was not chosen from the result.
+Status: predeclared and measured (result appended below, 2026-11-08). This file was
+committed before the admission profile, before the study and before any replay, so
+commit ordering proves the criterion was not chosen from the result.
 
 ## Where this sits
 
@@ -131,3 +131,78 @@ work-item cap and receipt.
   comparable across stages on the canonical 18 images: 4/18 exact boards, 0/36 exact
   roles, .901944 cell accuracy and 3.530471-cell geometry for both stages, with
   development loss 11.0885 versus 11.8129. This lever changes neither.
+
+## Result — read-out sharing moves identity, costs the role head: a measured negative (2026-11-08)
+
+Status: measured negative on the predeclared criterion. The predeclaration above was
+committed at `e83d70e` and nothing in it was revised after the run.
+
+Receipts, in order:
+
+- Admission r1 was refused by the resident-Adam guard because the shared mode still
+  carried the two identity heads it never uses (`b80d82d`, V-039; refusal preserved as
+  `runs/m3-stream-identity-shared-profile-r1-adam-refused-s1*`).
+- Admission r2 on the exact shared mode: `runs/m3-stream-identity-shared-profile-r2-job.json`
+  (passed, 80.218 s, 945,143,808 B under 1,152 MiB, checkpoint `c9e8f3f8...`, catalogue `2f69689a...`).
+- Matched study against `m3-stream-joint-fit-r1`: `runs/m3-stream-identity-shared-r1-job.json`
+  (passed, 128 steps, 574.770 s outer, peak 949,555,200 B, checkpoint
+  `55a352433de0966e0a2fc998d362e8bdffbe83462853f0335582acf9f13bb29c`, catalogue
+  `2f69689a...`, read-out `shared`, identity factor 1).
+- Independent replay and curator: `runs/m3-stream-identity-shared-r1-errors-r1-job.json`
+  (27 forwards, 35.867 s, 554,905,600 B) and `docs/evidence/m3-stream-identity-shared-r1-errors-r1/scope.json`
+  (`passed`, weights `55a35243...` unchanged, automatic metrics reproduced).
+
+Per-component identity decomposition (baseline = published `m3-stream-joint-fit-r1`,
+separate heads, identical capacity/steps/seed/rate/factor):
+
+| Population | Term | Baseline (separate) | Shared read-out |
+|---|---|---|---|
+| Training | Exact locked boards | 0/9 | **0/9** |
+| Training | Exact roles | 12/18 | **0/18** |
+| Training | Exact readable components | 0/9 | **0/9** |
+| Training | Queue piece tokens | 0/54 | **9/54** |
+| Training | Hold identity | 0/9 | **0/9** |
+| Training | Queue EOS | 9/9 | **9/9** |
+| Training | Slot status | 54/54 | **54/54** |
+| Training | Presence | 63/63 | **54/63** |
+| Training | Geometry (cells) | 4.0417 | **3.3222** |
+| Training | Cells / loss | .8494 / 7.739 | **0.8228 / 7.6864** |
+| Development | Exact locked boards | 0/18 | **0/18** |
+| Development | Exact roles | 0/36 | **0/36** |
+| Development | Exact readable components | 0/18 | **0/18** |
+| Development | Queue piece tokens | 0/90 | **6/90** |
+| Development | Hold identity | 0/12 | **3/12** |
+| Development | Queue EOS | 15/15 | **13/15** |
+| Development | Slot status | 90/90 | **90/90** |
+| Development | Presence | 90/105 | **90/105** |
+| Development | Geometry (cells) | 2.0294 | **2.5458** |
+| Development | Cells / loss | .8481 / 7.332 | **0.8389 / 8.1584** |
+
+Hold-status errors: 0 training, 6 development (presence held at 90/105 development).
+
+Reading:
+
+- **Identity moves.** Tying the read-out is not inert: training exact queue piece tokens
+  go 0/54 -> 9/54 and development 0/90 -> 6/90, with development hold identity 0/12 -> 3/12.
+  Any account of identity collapse as purely a scale problem is now incomplete.
+- **Structure does not hold.** The predeclared condition required EOS 9/9, slot 54/54 and
+  presence 63/63 training; slot stays exact (54/54 and 90/90) and training EOS stays 9/9,
+  but training presence falls to 54/63 and development EOS to 13/15.
+- **New cost.** Training exact roles collapse 12/18 -> 0/18, which the 4x coefficient lever
+  did not cost (it held 12/18). Geometry improves on training (4.0417 -> 3.3222) and worsens
+  on development (2.0294 -> 2.5458). No readable component appears in either population.
+- **Fit gate FALSE**, unchanged: 0/9 and 0/18 exact boards, 0/9 and 0/18 exact readable components.
+
+Decision by the predeclared rule: negative. Sharing the cell classifier with the identity
+targets raises identity counts but neither holds the declared structure nor makes a
+component readable, so read-out parameterization is not the identity lever. Combined with
+`M3_COMPONENT_IDENTITY.md`, both identity-side levers reachable from the current data are
+now measured: the coefficient and the read-out. What remains is the supervision signal
+itself — 54 queue tokens and 9 hold cases against ~1,800 supervised cells per pass — so the
+predeclared next lever is the input representation (pixels per icon) or the component
+targets, not another re-weighting. Real-image items 4–5 stay an owner decision.
+
+Discipline: the frozen artifacts (`m3-stream-joint-fit-r1`, `m3-identity-factor-r1`, every
+M2 run) are byte-identical, the default `separate` mode is pinned by tests to reproduce the
+published objective, and no receipt above was weakened or re-scored.
+
