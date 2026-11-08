@@ -16,8 +16,37 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+| objective-provenance | V-051 (1) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-051 — OPEN INSTRUMENT: the run ledger cannot show which component objective a run trained under
+
+- Symptom: the endpoint-loss lever needed to show that the run actually trained under the
+  factorized objective, and no artifact in the run says so directly. `curve.jsonl` records
+  only the `joint_loss` term keys — geometry, occupancy, semantic, visibility,
+  registration, layers, layer_visibility, pose, components, layer_cells — so the
+  queue-token, endpoint and hold-piece terms are folded into one `components` number and
+  the evidence cannot distinguish a joint objective from a factorized one by its shape.
+- Root cause: `joint_loss` keeps only `component_loss(...)[0]`, discarding the per-term
+  dict it already computes, and the training loop logs the outer terms only. Nothing is
+  wrong with the numbers; the record simply has no slot for the inner terms.
+- Detection class: objective-provenance. It was detected only because a predeclared lever
+  promised a loss-side demonstration and the natural place for it (the run's own ledger)
+  was empty.
+- Instrument now in place: the probe and curator read `arguments.component_endpoint_term`
+  and replay/report the objective the run trained with, the probe reproduces every saved
+  per-case loss exactly (joint and factorized objectives give different scalars, so a
+  mismatched join fails loudly), and
+  `tests/test_component_identity.py::test_the_separate_endpoint_term_charges_a_constant_piece_class`
+  asserts the separate branch is charged and refuses both mismatched joins. The ledger
+  format itself is deliberately unchanged: `docs/experiments/compare_layer_studies.py`
+  iterates the keys of the last curve row, so nesting the component terms would change
+  that analysis. The gap is therefore closed by provenance, not by a new ledger field.
+- Green run: replay `runs/m3-identity-factor-endpoint-r1-errors-r1-job.json` (passed, 27
+  forwards, saved metrics reproduced, `component_endpoint_term: separate`) and curation
+  `runs/m3-identity-factor-endpoint-r1-errors-r1-curation.json` (passed) into
+  `docs/evidence/m3-identity-factor-endpoint-r1-errors-r1/scope.json`.
 
 ## V-050 — CLOSED: a killed supervisor leaves a `running` receipt that blocks its retry
 

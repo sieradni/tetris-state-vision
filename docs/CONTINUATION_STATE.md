@@ -1,5 +1,57 @@
 # Contributor handoff — 2026-10-30
 
+## Endpoint loss: the constant moves, the disjunction does not close — 2026-11-08
+
+`docs/M3_IDENTITY_ENDPOINT_LOSS.md` predeclared at `008be3d`, before any receipt, the
+third lever: `--component-endpoint-term separate`, which takes the endpoint out of the 7-way
+piece softmax and gives it its own binary `queue_endpoint` logit, emitting 8 columns that
+are log-probabilities of the factorization so the ordinary argmax metrics still apply.
+Everything else matched the positional run (capacity 64, factor 4, capture 512, seed
+`20261026`, LR .001, 128 updates, six development groups, positional read-out and
+four-query hold bank).
+
+Measured: queue `predicted_classes` `EOS`x54 training (distinct **1**, constant true) and
+`EOS`x90 development; hold `S`x7/`T`x2 (distinct **2**, constant false, 1/9 exact) and
+`S`x11/`T`x1 (4/12). Position spread rose to 1.2338 training / 1.2304 development while
+every argmax stayed one class. Verdict **NEGATIVE** on the predeclared rule.
+
+Mechanism: the endpoint term is charged at every known position (63 training, 105
+development; 9 and 15 positives — exactly 1/7), so a constant "endpoint here" answer costs
+0.410 nats in both splits and preserves EOS 9/9, slot 54/54, presence 54/63; the product
+factorization then suppresses every piece class, so the argmax is `EOS` while piece tokens
+are 0/54 and 0/90. The shortcut migrated; it did not disappear. Held: read-out ruled out
+(spread larger than under either prior lever), data ruled out (54 positions, 7 classes, 6
+slots), so the remaining constraint is the loss's per-position scoring of a
+per-sequence count. The class-side/position-side/loss-side disjunction is **not closed**;
+what is closed is where the constant lives.
+
+Hold: four identity runs have now produced 2, 1, 1 and 2 distinct classes with three
+different identities (`L`/`O`, `T`, `S`/`T`) — initialization-dependent two-class splits,
+never the three-class bar, so no robust hold mechanism exists yet.
+
+Structure cost/gain: ghost 9/9 and active 3/9 training exact, roles 0/18 development,
+boards 0/9 and 0/18 (the control's two empty-board successes are lost), geometry 4.0672
+and 2.3110, exact readable 0/9 and 0/18. Fit gate **FALSE**.
+
+Receipts: admission `runs/m3-identity-factor-endpoint-r1-profile-r1-job.json` (passed,
+35.1 s, 981,151,744 B under 1,152 MiB), study `runs/m3-identity-factor-endpoint-r1-job.json`
+(passed, 128/128, 256.6 s, 1,024,016,384 B, checkpoint `84faf263...`), canonical replay
+`runs/m3-identity-factor-endpoint-r1-errors-r1-job.json` (passed, 27 forwards, 16.2 s,
+565,972,992 B, `component_endpoint_term: separate`, weights unchanged, saved metrics
+reproduced), curation `...-curation.json` (passed) into
+`docs/evidence/m3-identity-factor-endpoint-r1-errors-r1/scope.json`, tests
+`runs/m3-identity-endpoint-tests-r2.json` (6 modules, `OK`, 88 tests). V-051 records that
+the run ledger cannot itself show which component objective a run trained under, now
+covered by probe/curator provenance and the mismatched-join tests rather than a new
+ledger field (`compare_layer_studies.py` iterates the last curve row's keys).
+
+Ranked next: **queue length as one global decision** — a single distribution over
+`0..capacity` (or one position classification) instead of a per-position binary endpoint
+question, so "endpoint everywhere" is not in the hypothesis space; same discrimination
+rule, same read-outs, position spread reported. Not ranked: further read-out conditioning,
+budget, or re-weighting the per-position endpoint term. Fit gate and the owner-decision
+real-image chain unchanged.
+
 ## Per-position queries: position information reaches the decision, which ignores it — 2026-11-08
 
 `docs/M3_IDENTITY_POSITIONAL.md` predeclared the lever at `aa5bcc0` before any receipt:

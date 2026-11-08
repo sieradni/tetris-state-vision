@@ -11,6 +11,28 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the endpoint-loss lever is a measured **negative** that moves the constant rather
+than removing it
+([M3_IDENTITY_ENDPOINT_LOSS.md](M3_IDENTITY_ENDPOINT_LOSS.md), predeclared at `008be3d`,
+`docs/evidence/m3-identity-factor-endpoint-r1-errors-r1/scope.json`): with the endpoint as
+its own binary decision the queue head still emits `EOS` at all 54 supervised training
+positions (distinct 1, constant true; 90/90 development) and the hold head emits `S`x7 and
+`T`x2 (distinct 2, still below the predeclared three-class bar; 4/12 exact). Position
+information reaches the decision more strongly than ever — per-position logit spread rose
+to 1.2338 training and 1.2304 development, `position_axis_reaches_logits` true — and is
+still collapsed. The mechanism is measured: the endpoint term is charged at every known
+position, 63 training and 105 development of which only 9 and 15 are endpoints (a 1/7
+rate), so a constant "endpoint here" answer costs 0.410 nats and preserves EOS 9/9, slot
+54/54 and presence 54/63 while the multiplicative factorization suppresses every piece
+class. Structure: ghost 9/9 and active 3/9 training exact, boards 0/9 and 0/18, geometry
+4.0672 and 2.3110, fit gate **FALSE**. The class-side / position-side / loss-side
+disjunction is **not closed**: what this lever closes is where the constant lives — not in
+the class read-out, the position read-out, or the endpoint's membership of the piece
+softmax, but in the endpoint being scored per position while it is a per-sequence count.
+Ranked next is queue length as one global decision (a single distribution over
+`0..capacity` instead of a per-position binary question); more read-out conditioning,
+budget and re-weighting of the same term are not ranked.
+
 Latest: the per-position identity read-out is a measured **negative** that pins the
 remaining constraint to the loss
 ([M3_IDENTITY_POSITIONAL.md](M3_IDENTITY_POSITIONAL.md), predeclared at `aa5bcc0`,
