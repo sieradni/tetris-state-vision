@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032 (1) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement |
+| evidence-reporting | V-032, V-033 (2) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement |
 
 ## V-032 — CLOSED: published arm numbers were not re-derivable from their evidence
 
@@ -46,6 +46,26 @@ a named green run. An unrun gate leaves the entry OPEN.
   192 MiB ceilings). The prose cites no check count, because a count here drifts
   from the instrument every time a check is added.
 
+## V-033 — CLOSED: accumulation arms had no independent replay path
+
+- Symptom: the two completed accumulation arms published only trainer-side probe
+  metrics. The independent ordinary replay refused both names before any forward:
+  the probe and curator matched `m[23]-stream-[a-z0-9-]{1,40}` only, so
+  `accumulation-arm-*-s2` was outside the owned-run policy and no curator could
+  accept the artifacts.
+- Root cause: the run-name allowlist was written for stream studies and was never
+  extended when the accumulation arms were named after their policy.
+- Detection class: evidence-reporting; extends the V-032 pattern that a number no
+  instrument can re-derive is not evidence.
+- Instrument: one shared `require_owned_run` policy in `scripts/record_stream_run.py`
+  used by the probe, the curator and the run collector, with a name-policy
+  regression covering accepted and refused forms (leading/trailing separators,
+  path traversal, uppercase and underscore spellings, over-long names).
+- Green run: `docs/evidence/accumulation-arm-balanced-errors-r1/scope.json` and
+  `docs/evidence/accumulation-arm-online-errors-r1/scope.json` — 50 ordinary
+  forwards per arm reproducing every saved per-case metric exactly with weights
+  unchanged.
+
 ## V-031 — CLOSED: frozen archive kept repository modules from the parent
 
 - Symptom: the first native accumulation profile launch (640 MiB, work 2) exited
@@ -69,7 +89,7 @@ a named green run. An unrun gate leaves the entry OPEN.
   `runs/accumulation-profile-balanced-r1-job.json` (29.35 s, 561,786,880 B,
   exit 0), both admitted only through their measured profile numbers.
 
-## V-030 — OPEN: relative forward-slash child interpreter did not resolve
+## V-030 — CLOSED: relative forward-slash child interpreter did not resolve
 
 - Symptom: an admitted bounded launch with every output name preflighted exited
   1 after 0.01 s with `FileNotFoundError(2, ...)`; no test body ran, yet the
@@ -80,17 +100,29 @@ a named green run. An unrun gate leaves the entry OPEN.
   own interpreter is resolved by the calling shell, so the trap appears only in
   the child, and only for that spelling.
 - Detection class: launch-ownership.
-- Instrument: require a child executable that resolves (absolute, or backslash
-  relative) before arming the Job, and treat a receipt with an `error` field and
-  no `child_pid` as an instrumentation failure rather than a failed gate.
+- Instrument: `resolve_child_executable` in `scripts/run_bounded.py` resolves the
+  child executable before the Job is armed and refuses a relative path spelled
+  with forward slashes, a missing path and an unresolvable bare name; the receipt
+  records `child_executable`, and a refusal is marked `launch_refused` with no
+  `child_pid` so it reads as an instrumentation failure rather than a failed gate.
+  Absolute paths (including forward-slash absolute) and backslash-relative paths
+  still launch.
 - Failed gate: `runs/accumulation-checkpoint-pure-r5-job.json`, preserved with its
   logs in `docs/evidence/launch-path-diagnostic-r1/`, alongside three
   one-command controls (relative forward slash fails; relative backslash and
   absolute both pass).
 - Green workaround run: `runs/accumulation-checkpoint-pure-r6-job.json` with the
   absolute interpreter — 8 tests, 0.522 s, 37,761,024 B under 128 MiB.
-- Open because only the invocation form is fixed: the supervisor is unchanged at
-  `d2fb1478...`, so a supervisor-side preflight needs its own hash re-admission.
+- Green gate: `docs/evidence/v030-launch-preflight-r1/scope.json` pins 68 scoped
+  cases (resources, pressure, error evidence, accumulation contract/journal/
+  checkpoint/driver, stream driver, type-head optimizer, atomic write) under the
+  new supervisor `d9382fa2...` — 15.992 s, 355,688,448 B under 640 MiB, exit 0.
+  The one-command controls live in `tests/test_resources.py`: relative forward
+  slash refused before any child, backslash-relative and absolute both launch and
+  record their resolved `child_executable`. Historical receipts keep
+  `d2fb1478...`; the new hash needs its own fresh native admission before further
+  long training, and documented copy-paste commands must use an absolute or
+  backslash interpreter path.
 - Confirmation that the form was the only blocker: the 640 MiB Torch gate that
   r5 was meant to run passed once pressure cleared
   (`runs/accumulation-checkpoint-torch-r2-job.json`, 332,423,168 B, exit 0).

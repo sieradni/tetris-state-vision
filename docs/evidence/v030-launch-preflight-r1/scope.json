@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "defect": "V-030",
+  "detection_class": "launch-ownership",
+  "instrument": "scripts/run_bounded.py resolve_child_executable refuses a non-resolving child executable before the Job is armed; receipt records launch_refused and child_executable",
+  "gate": "68 unittest cases (resources, pressure, error evidence, accumulation contract/journal/checkpoint/driver, stream driver, type-head optimizer, atomic write) under scripts/run_bounded.py",
+  "native_job_status": "passed",
+  "native_exit_code": 0,
+  "native_peak_job_commit_bytes": 355688448,
+  "native_elapsed_seconds": 19.654,
+  "ceiling_bytes": 671088640,
+  "supervisor_sha256": "d9382fa2c1a54329d6da8ebe947e953ae7ed0acfd4e66970fc8628b5e6d08fb9",
+  "supervisor_sha256_recomputed": "d9382fa2c1a54329d6da8ebe947e953ae7ed0acfd4e66970fc8628b5e6d08fb9",
+  "child_executable": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe",
+  "artifact_sha256": {
+    "v030-preflight-tests-r2-job.json": "e24e754e3f6f4b41d1dc82c60f0e6e51f564ea576921a29881571d7bc029eae6",
+    "v030-preflight-tests-r2.log": "89b97b6899cfad54a39a7f417fa98ae0e8dbaf92fa34344470a10a2cf248c3b2",
+    "v030-preflight-tests-r2.stderr.log": "2c96a2667089d64cdbca5c88f0c3309acf16f6daf39e3e86da00cb53f44335b4",
+    "run_bounded.py": "d9382fa2c1a54329d6da8ebe947e953ae7ed0acfd4e66970fc8628b5e6d08fb9",
+    "test_resources.py": "126bb64d8606d8c1185188bc8294be710bb0f63e963e2ee866914fafef6a4fd8",
+    "test_error_evidence.py": "b3e4311b7ed6ae14e14387e122a5ec06bad4691167370e847daeaed2f06eb23f",
+    "record_stream_run.py": "bed3f72f18422bb4dee2546dc2146d1c8c6a1d32401f9aab3d788a57f10049a0",
+    "probe_stream_errors.py": "4290af0e6974f07f28ef1c10e3e51601b5240c46f27b0f44c1956cb8920fccfe",
+    "record_stream_errors.py": "efcfcc6be21d1da18e54613ea2fbe88de4cb625a83aa691c506d10be62bed892"
+  },
+  "scope": "Runner launch-preflight and name-policy contracts only; the new supervisor hash requires fresh native admission before any further long training window. Not a model-accuracy gate."
+}

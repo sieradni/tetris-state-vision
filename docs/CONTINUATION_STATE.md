@@ -1,5 +1,40 @@
 # Contributor handoff — 2026-10-30
 
+## Accumulation arms replayed, V-030 closed — 2026-11-08
+
+The two completed accumulation arms now have independent ordinary replays and
+curators, so their learning outcome is citable rather than trainer self-report:
+`docs/evidence/accumulation-arm-balanced-errors-r1/scope.json` (50 forwards,
+424,710,144 B, 19.523 s under the unchanged 640 MiB ceiling, weights
+`a5e6bc56...`) and `docs/evidence/accumulation-arm-online-errors-r1/scope.json`
+(424,316,928 B, 19.202 s, `93e79820...`), both from base commit `64516ad`. Each
+reproduces every saved per-case metric exactly and leaves the model tensors
+unchanged. Balanced-eight reaches 16/32 exact training boards, 34/64 roles and
+.7507 cells geometry; online interleaved reaches 28/32, 37/64 and .3862. Both
+fail the predeclared fit, and development stays 4/18 boards (all four empty) and
+0/36 roles for both, with development loss rising from 6.6425 to 11.7978 and
+13.3888. Batching eight images per update is therefore a measured negative
+result; the ordered-eight arm was never run, so no mechanism claim follows.
+`BALANCED_ACCUMULATION.md` holds the full tables and limits.
+
+`scripts/run_bounded.py` now resolves the child executable before the Job is
+armed and refuses a relative forward-slash path, closing V-030; receipts record
+`child_executable`, and a refusal is marked `launch_refused` with no `child_pid`
+so it reads as an instrumentation failure rather than a failed gate. The
+supervisor hash is now `d9382fa2...` (was `d2fb1478...`), so fresh native
+admission is required before any further long training window, and copy-paste
+commands must name the interpreter with an absolute or backslash path. The
+shared `require_owned_run` policy also admits the accumulation arms to the error
+probes and curators (V-033). One 68-case gate passes at 355,688,448 B under
+640 MiB: `docs/evidence/v030-launch-preflight-r1/scope.json`.
+
+Next: with the accumulation direction closed as a negative result, predeclare the
+next joint-learning lever and its resource/recovery admission. Controller/curator
+routing for the accumulation cursors and an in-group interruption at arm scale
+stay open but are no longer on the critical path. Every V-entry in the ledger is
+now closed on a named receipt; the M2/M3 quality and real-image chain remains
+fully open.
+
 ## Accumulation integration — 2026-11-08
 
 `scripts/train_m2_stream.py` now executes the predeclared whole-group arms when

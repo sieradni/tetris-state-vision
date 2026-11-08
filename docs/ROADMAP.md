@@ -24,7 +24,15 @@ The checkpoint diagnostic in [TYPE_FORGETTING_DIAGNOSTIC.md](TYPE_FORGETTING_DIA
 finds recurrent type-correctness turnover on the fixed fixtures and local
 class-gradient conflicts, with significant limits on causal interpretation.
 The matched design and focused grouping/gradient/recovery instrument are in
-[BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Explicit image and
+[BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Both1,024-image arms now
+have independent ordinary replays and curators
+(`docs/evidence/accumulation-arm-{balanced,online}-errors-r1/scope.json`):
+balanced-eight reaches16/32 exact training boards,34/64 roles and.7507 geometry,
+while online interleaved reaches28/32,37/64 and.3862; both fail the predeclared
+fit and both stay at4/18 development boards(all four empty)with0/36 roles and
+rising development loss. Batching eight images per update is a measured negative
+result,not a mechanism claim:the ordered-eight arm was never run and grouping is
+still confounded with update count and clipping frequency. Explicit image and
 optimizer cursors are now integrated into the actual trainer behind an explicit
 accumulation policy, with image-cadence evaluation/snapshots and separate counts in
 every ledger and summary. Measured two-update native profiles now exist for both
@@ -34,7 +42,7 @@ exact boundary reload), and each arm is admitted only through those measured
 numbers. Both 1,024-image arms now complete across two bounded segments each with exact
 journal-prefix resume, byte-identical Adam/RNG continuation and measured peaks
 under640MiB (`docs/evidence/accumulation-arm-r1/`); automated controller/curator
-routing and an independent final pixel replay remain open. The pure journal and ownership boundary pass their own scoped
+routing remains open; that independent pixel replay and both curators are now complete for both arms (see the accumulation paragraph above). The pure journal and ownership boundary pass their own scoped
 tests, and the whole-group arm also passes scoped driver checks including a forced
 in-group interruption replayed to identical bytes (toy network; V-030 records that
 bounded children need an absolute interpreter path). Retain the original joint-fit

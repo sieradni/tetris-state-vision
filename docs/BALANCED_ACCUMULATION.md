@@ -218,8 +218,54 @@ impossible to run; the two segments exist because the study requires separately
 bounded windows with a resume contract verified at arm scale, not because a
 1,024-image budget is unreachable.
 
+## Learning outcome, independently replayed
+
+Both arm artifacts now have an independent ordinary replay and curator, so the
+outcome below is reproducible from committed bytes rather than trainer
+self-report: [balanced-eight](evidence/accumulation-arm-balanced-errors-r1/scope.json)
+and [online interleaved](evidence/accumulation-arm-online-errors-r1/scope.json).
+Each replays the 32 training and 18 development saved probes as ordinary pixels
+(50 forwards, 424,710,144 B and 424,316,928 B under the unchanged 640 MiB
+ceiling, 19.523 s and 19.202 s, weights `a5e6bc56...` and `93e79820...`),
+reproduces every saved per-case metric exactly and leaves the model tensors
+unchanged.
+
+| 32-image training probe | start | balanced-eight (128 updates) | online interleaved (1,024 updates) |
+|---|---|---|---|
+| exact locked boards | 0/32 | 16/32 | 28/32 |
+| - of which empty | 0/16 | 16/16 | 14/16 |
+| - of which nonempty | 0/16 | 0/16 | 14/16 |
+| exact role labels | 0/64 | 34/64 (active 14, ghost 20) | 37/64 (18, 19) |
+| exact absences | 0/8 | 8/8 | 7/8 |
+| correct supported cells | 15/128 | 128/128 | 128/128 |
+| false-positive cells | 0 | 16 | 2 |
+| mean geometry error | 6.6189 cells | .7507 | .3862 |
+| row/column pose errors | - | 26 row, 0 column | 0 row, 0 column |
+
+| 18-image development probe | start | balanced-eight | online interleaved |
+|---|---|---|---|
+| exact boards | 0/18 | 4/18 | 4/18 |
+| - nonempty | 0/14 | 0/14 | 0/14 |
+| exact role labels | 0/36 | 0/36 | 0/36 |
+| true-positive/false-positive cells | - | 15 / 6 of 2,800 | 89 / 44 of 2,800 |
+| mean geometry error | 3.8252 cells | 3.6797 | 3.1748 |
+| development loss | 6.6425 | 11.7978 | 13.3888 |
+
+Both predeclared fit gates still FAIL. Averaging eight images per update does not
+buy the joint fit: it protects absence (8/8) and every supported semantic cell,
+but halves exact nonempty boards against the exposure-matched reference, doubles
+geometry error, and introduces 26 row errors where the reference makes none. That
+is one seed, 16 training ancestries and six development ancestries, and the four
+exact development boards are all empty, so nothing here is generalization or
+real-image evidence.
+
+The third predeclared arm (ordered-eight) was never run. Without it, grouping
+cannot be separated from update count and clipping frequency, so no mechanism
+claim follows from these tables; the comparison is retained as a measured
+negative result and is not extended.
+
 Still open: automated controller and independent-curator routing for these
-cursors (segments were launched explicitly with `--resume-from`), an independent
-ordinary pixel replay of the final artifacts, and an interruption *inside* a
-group at arm scale. Bounded children must use an absolute or backslash interpreter
-path; see V-030 in [BUG_LOG.md](BUG_LOG.md).
+cursors (segments were launched explicitly with `--resume-from`) and an
+interruption *inside* a group at arm scale. Bounded children must now pass the
+supervisor's launch preflight with an absolute or backslash interpreter path; see
+V-030 and V-033 in [BUG_LOG.md](BUG_LOG.md).

@@ -47,6 +47,7 @@ Current results deliberately remain visible:
 | Ordered 32-image controlled fit, 1,024 updates | 32/32 boards, 12/56 visible role labels, 8/8 absences; geometry .21059 cells | Joint fit fails because types collapse. |
 | Interleaved version, same 1,024-update budget | 28/32 boards, 30/56 visible role labels, 7/8 absences; geometry .38618 cells | More classes are read, but joint fit still fails. |
 | Copied linear type-head fits on frozen vectors | Ordered **62/64**, interleaved **64/64** training type labels; both **0/18** development | The saved features contain useful class information. These are vector fits, not an improved image artifact or real-image result. |
+| Balanced accumulation arms, 1,024 images each | 16/32 and 28/32 exact training boards, 34/64 and 37/64 roles; development 4/18 boards (all empty), 0/36 roles | Averaging eight images per update does not fix the joint fit; both gates fail and no mechanism claim follows. |
 
 The controlled fit criterion is 32/32 exact boards, 64/64 known role labels,
 128/128 supported semantic cells and mean geometry error below .25 cells.
