@@ -35,6 +35,13 @@ def fixture(joint=False):
         root = Path(temporary).resolve()
         (root/"scripts").mkdir()
         shutil.copyfile(ROOT/"scripts/run_bounded.py", root/"scripts/run_bounded.py")
+        # The archive, admission profile and its receipt are one source identity; a
+        # saved literal made this fixture pass only until the supervisor changed.
+        supervisor = hashlib.sha256((root/"scripts/run_bounded.py").read_bytes()).hexdigest()
+        archive["files"]["scripts/run_bounded.py"] = supervisor
+        for record in (profile, job):
+            if "supervisor_script_sha256" in record:
+                record["supervisor_script_sha256"] = supervisor
         admission = root/"runs"/name
         write(admission/"summary.json", profile)
         write(admission.parent/(name+"-job.json"), job)
@@ -98,6 +105,17 @@ def outcome(case, plan, updates=2, complete=False):
 
 
 class StreamSegmentTests(unittest.TestCase):
+    def test_archived_supervisor_identity_comes_from_the_archived_bytes(self):
+        with fixture() as case:
+            live = hashlib.sha256((case.root/"scripts/run_bounded.py").read_bytes()).hexdigest()
+            self.assertEqual(case.archive["files"]["scripts/run_bounded.py"], live)
+            self.assertEqual(case.profile["supervisor_script_sha256"], live)
+            self.assertEqual(case.job["supervisor_script_sha256"], live)
+            case.archive["files"]["scripts/run_bounded.py"] = "0"*64
+            with self.assertRaises(ValueError) as raised:
+                segment.segment_plan(case.args)
+            self.assertIn("archived supervisor", str(raised.exception))
+
     def test_type_head_factor_routes_and_refuses_changed_resume(self):
         with fixture() as case:
             case.profile["curriculum"] = "all-class-fit-v1"

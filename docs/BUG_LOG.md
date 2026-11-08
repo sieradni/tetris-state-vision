@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025 (7) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037 (8) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -18,6 +18,25 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033, V-036 (3) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension |
+
+## V-037 — CLOSED: the segment fixture pinned a stale archived supervisor hash
+
+- Symptom: `tests/test_stream_segment.py` produced 11 errors with
+  `ValueError: archived supervisor differs from live guard`, so the whole segment
+  contract suite was silently red while narrower test selections stayed green.
+- Root cause: the fixture fabricates a source archive by copying the live
+  `scripts/run_bounded.py`, but took `files["scripts/run_bounded.py"]` from a saved
+  evidence manifest that still recorded the pre-V-030 supervisor (`d2fb1478...`).
+  `run_stream_segment.segment_plan` compares that archived entry against the live
+  guard bytes, so the fixture could only pass while the supervisor never changed.
+- Detection class: test-instrument; the V-004/V-011/V-012 pattern of an instrument,
+  not the code under test, being wrong.
+- Instrument: the fixture derives the archived supervisor entry and the admission
+  profile/receipt supervisor identity from the bytes it actually copies, and a
+  regression asserts all three equal those bytes and that a substituted archive
+  entry is refused with the guard error.
+- Green run: `runs/dev-extension-fullsuite-r3-job.json` — the full
+  `unittest discover` suite under the bounded runner, all tests passing.
 
 ## V-036 — CLOSED: staged development evidence sat on two different denominators
 
