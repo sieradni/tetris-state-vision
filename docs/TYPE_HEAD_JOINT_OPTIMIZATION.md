@@ -77,3 +77,22 @@ remains open and the full fit is not yet admitted. Capture and verify initial
 tensors in a fresh source-bound comparison, then repeat affected profiles and
 recovery gates. No model-quality claim follows. Receipts and comparison:
 [admission evidence](evidence/type-head-admission-contracts-r1/).
+
+## Initial tensor admission completed
+
+On source catalogue `18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125`,
+the trainer saves its actual initial tensors before evaluation and checks their
+readback. Candidate [r9](evidence/m2-stream-recovery-gate-r9/scope.json) and
+control [r10](evidence/m2-stream-recovery-gate-r10/scope.json) each passed fresh
+two-step warm profiles and exact continuous6 versus partial3+resume3 recovery;
+independent collectors replayed 17 training records and 164 saved probes each.
+The [matched comparison](evidence/type-head-initial-admission-r2/type-head-matched-admission-r2.json)
+verifies actual initial tensors byte-for-byte, initial probe metrics, the first
+loss and gradient norm, six training recipes, first-update non-head tensors,
+and actual saved optimizer groups/rates. It observes the expected difference
+in first-update head weights. Candidate and control parent peaks were
+599,404,544 and 600,817,664 bytes under 1 GiB. These are finite admissions,
+not evidence of learning or generalization. Verify the actual full-study initial
+tensor artifacts against these admitted starts and each other before judging
+the completed comparison; keep explicit partial status until all 1,024 updates
+and independent final pixel audits complete.

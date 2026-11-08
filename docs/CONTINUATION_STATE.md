@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## Initial tensor admission — 2026-11-07
+
+The trainer now saves and reads back actual pre-evaluation initial state tensors;
+their file identity is checked before completion and by independent curators.
+Focused tests passed. Candidate gate r9 is planned with explicit output/receipt/
+log preflight and free-disk check: parent 1024 MiB / 600 s / 14 updates,
+child 640 MiB / 90 s, CPU1/cache16 and existing pressure guards, expected
+under 800 MiB. Command `scripts/probe_stream_recovery.py --output
+runs/m2-stream-recovery-gate-r9 --curriculum all-class-fit-v1
+--type-head-rate-factor 4`; receipt/log prefix `runs/m2-stream-recovery-gate-r9`.
+It performs profile2 then admitted continuous6 and partial3+resume3, not the
+1,024-update study. Control r10 requires a separate same-source gate.
+r9 passed 147.947 s / 599,404,544 bytes; terminal receipt and all matching
+processes must be checked before control. Control r10 uses the same limits,
+ordered curriculum, factor1 and namespace/disk preflight, expected under
+800 MiB. Receipt, output and logs use `runs/m2-stream-recovery-gate-r10`.
+r10 passed 142.762 s / 600,817,664 bytes, pending process-death checks.
+Curate r9 and r10 sequentially at 128 MiB / 30 s / 181 items, expected under
+100 MiB with CPU1 and existing guards; use new `-curation` receipt/log prefixes
+and preflight them. Then compare actual initial tensors with a separate 640 MiB /
+30 s / two-snapshot collector, expected under 400 MiB. No full fit yet.
+r9/r10 curators passed, each replaying 17 records and 164 saved probes. The
+matched r2 collector verified actual initial tensor bytes identical, initial
+probe metrics, first loss/gradient norm, six data recipes and optimizer groups;
+2.259 s / 257,298,432 bytes under 640 MiB. Source catalogue 18ce798e...;
+evidence `docs/evidence/type-head-initial-admission-r2/` and gate r9/r10 scopes.
+The finite recovery and start-comparison admissions pass; full-study initial
+artifacts still need comparison to these starts before final claims.
+
 ## Joint type-head optimization preparation — 2026-11-07
 
 The predeclared comparison is `docs/TYPE_HEAD_JOINT_OPTIMIZATION.md`. An opt-in

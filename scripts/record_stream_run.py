@@ -116,6 +116,10 @@ def main():
         raise ValueError("sampler did not import from archived source")
     manifest = json.loads((run/"checkpoint/manifest.json").read_text())
     architecture = checkpoint_architecture(summary, manifest)
+    if "initial_weights_sha256" in summary and (
+            manifest["metadata"].get("initial_weights_sha256") != summary["initial_weights_sha256"] or
+            digest(run/"initial-weights.pt", 256*1024**2) != summary["initial_weights_sha256"]):
+        raise ValueError("actual initial tensor artifact differs")
     if digest(run/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("weight checksum mismatch")
     recovery_manifest = None

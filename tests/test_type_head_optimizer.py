@@ -12,7 +12,7 @@ if any(os.environ.get(name) != "1" for name in ("OMP_NUM_THREADS", "MKL_NUM_THRE
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from train_m2_stream import arguments, make_optimizer
+from train_m2_stream import arguments, capture_initial_tensors, make_optimizer
 from training_snapshot import save_training_snapshot, load_training_snapshot
 
 
@@ -27,6 +27,20 @@ class TinyModel(torch.nn.Module):
 
 
 class TypeHeadOptimizerTest(unittest.TestCase):
+    def test_initial_capture_is_exclusive_and_preserves_actual_state(self):
+        model = TinyModel()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "initial.pt"
+            capture_initial_tensors(model, path)
+            captured = torch.load(path, map_location="cpu", weights_only=True)
+            for name, tensor in model.state_dict().items():
+                self.assertTrue(torch.equal(captured[name], tensor))
+            with self.assertRaises(FileExistsError):
+                capture_initial_tensors(model, path)
+            with torch.no_grad():
+                model.layer_type.bias.add_(1)
+            self.assertFalse(torch.equal(captured["layer_type.bias"], model.layer_type.bias))
+
     def test_default_matches_original_optimizer_update(self):
         torch.manual_seed(9)
         a = TinyModel()

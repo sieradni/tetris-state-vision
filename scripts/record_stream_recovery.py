@@ -90,6 +90,10 @@ def main():
             raise ValueError("child status/resource/archive contract differs")
         inference = read(child/"checkpoint/manifest.json")
         architecture = checkpoint_architecture(summary, inference)
+        if "initial_weights_sha256" in summary and (
+                inference["metadata"].get("initial_weights_sha256") != summary["initial_weights_sha256"] or
+                digest(child/"initial-weights.pt", 256*1024**2) != summary["initial_weights_sha256"]):
+            raise ValueError("initial model artifact differs")
         if (proof.get("architecture", architecture) != architecture or
                 proof.get("component_capacity", summary.get("component_capacity", 0)) != summary.get("component_capacity", 0) or
                 proof.get("config", summary["config"]) != summary["config"]):

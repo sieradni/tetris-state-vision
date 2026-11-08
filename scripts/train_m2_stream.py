@@ -124,6 +124,23 @@ def make_optimizer(model, learning_rate, factor):
                              lr=learning_rate, weight_decay=.01)
 
 
+def capture_initial_tensors(model, path):
+    """Save the actual initialized CPU state before evaluation or optimization."""
+    import torch
+    with path.open("xb") as output:
+        torch.save(model.state_dict(), output)
+        output.flush()
+        os.fsync(output.fileno())
+    saved = torch.load(path, map_location="cpu", weights_only=True)
+    current = model.state_dict()
+    if saved.keys() != current.keys() or any(
+            saved[name].dtype != value.dtype or saved[name].shape != value.shape or
+            not torch.equal(saved[name].contiguous().reshape(-1).view(torch.uint8),
+                            value.contiguous().reshape(-1).view(torch.uint8))
+            for name, value in current.items()):
+        raise ValueError("initial state serialization changed tensor bytes")
+
+
 def main(argv=None, *, _archive=None, _started=None):
     args = arguments(argv)
     ceiling = require_bounded_job()
@@ -193,6 +210,9 @@ def main(argv=None, *, _archive=None, _started=None):
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
                            type_head_rate_factor=args.type_head_rate_factor)
     model = TetrisStateNet(config)
+    initial_path = args.output / "initial-weights.pt"
+    capture_initial_tensors(model, initial_path)
+    initial_sha256 = file_digest(initial_path)
     optimizer = make_optimizer(model, args.learning_rate, args.type_head_rate_factor)
     maximum_pixels, evaluation_identities = 0, {}
     warm_optimizer_backward = None
@@ -396,7 +416,10 @@ def main(argv=None, *, _archive=None, _started=None):
             progress["recovery_step"] = completed
     final_train, final_dev = evaluate("training", 3), evaluate("development", args.development_groups)
     verify_source(code, archive["catalogue_sha256"])
+    if file_digest(initial_path) != initial_sha256:
+        raise ValueError("saved initial tensors changed during execution")
     metadata = {"trained_steps": completed, "catalogue_sha256": archive["catalogue_sha256"],
+                "initial_weights_sha256": initial_sha256,
                 "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
                 "runtime_source_sha256": source_digest(), "model_kind": args.model,
                 "component_capacity": args.component_capacity, "input_policy": recovery_contract["input_policy"],
