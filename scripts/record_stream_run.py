@@ -130,6 +130,26 @@ def main():
             manifest["metadata"].get("initial_weights_sha256") != summary["initial_weights_sha256"] or
             digest(run/"initial-weights.pt", 256*1024**2) != summary["initial_weights_sha256"]):
         raise ValueError("actual initial tensor artifact differs")
+    origin = summary.get("initial_weights_from")
+    if origin is not None:
+        # A staged run's start is another saved artifact, so its bytes must be
+        # re-read from that run rather than trusted as a printed digest.
+        source = Path(origin["run"]).resolve()
+        if not source.is_relative_to(ROOT/"runs") or source == run.resolve():
+            raise ValueError("initial-weight source escaped owned runs")
+        source_summary = json.loads((source/"summary.json").read_text())
+        source_manifest = json.loads((source/"checkpoint/manifest.json").read_text())
+        if (source_manifest["weights_sha256"] != origin["weights_sha256"] or
+                source_summary["checkpoint_sha256"] != origin["weights_sha256"] or
+                digest(source/"checkpoint/weights.pt") != origin["weights_sha256"] or
+                source_summary["catalogue_sha256"] != origin["catalogue_sha256"] or
+                summary["initial_weights_sha256"] != origin["weights_sha256"] or
+                source_summary.get("curriculum") != summary.get("curriculum") or
+                summary.get("recovery_contract", {}).get("initial_weights_from") != origin["run"] or
+                manifest["metadata"].get("initial_weights_from") != origin):
+            raise ValueError("initial-weight origin differs from its saved artifact")
+    if summary.get("freeze_backbone", False) is not summary.get("recovery_contract", {}).get("freeze_backbone", False):
+        raise ValueError("staged freeze identity differs between summary and contract")
     if digest(run/"checkpoint/weights.pt") != summary["checkpoint_sha256"] or manifest["weights_sha256"] != summary["checkpoint_sha256"]:
         raise ValueError("weight checksum mismatch")
     recovery_manifest = None
@@ -299,6 +319,8 @@ def main():
              "comparison_status": comparison_status,
              "updates_this_run": summary.get("updates_this_run", summary["steps"]), "resume_parent": resume_parent,
              "curator_sha256": digest(Path(__file__)), "core_architecture": architecture,
+             "freeze_backbone": summary.get("freeze_backbone", False),
+             "initial_weights_from": summary.get("initial_weights_from"),
              "component_capacity": summary["config"].get("component_capacity", 0),
              "layer_evidence": summary["config"].get("layer_evidence", False), "curriculum": curriculum,
              "type_head_rate_factor": factor,

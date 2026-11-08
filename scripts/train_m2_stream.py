@@ -42,6 +42,10 @@ def arguments(argv=None):
     parser.add_argument("--checkpoint-every", type=int, default=64)
     parser.add_argument("--resume-from", type=Path)
     parser.add_argument("--max-new-steps", type=int)
+    parser.add_argument("--init-weights-from", type=Path,
+                        help="owned run whose saved inference weights are this run's recorded initial state")
+    parser.add_argument("--freeze-backbone", action="store_true",
+                        help="staged refinement: train only the shared type head")
     args = parser.parse_args(argv)
     if not 1 <= args.steps <= 4096 or not 0 <= args.seed <= 2**31-1:
         parser.error("steps 1..4096 and finite nonnegative seed required")
@@ -51,6 +55,12 @@ def arguments(argv=None):
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
         parser.error("type-head rate intervention requires the plain ordered M2 fit")
+    if args.freeze_backbone and (args.init_weights_from is None or args.curriculum != "all-class-fit-v1"):
+        parser.error("frozen-backbone refinement needs --init-weights-from and the ordered fit")
+    if args.freeze_backbone and (args.component_capacity or args.layer_evidence or args.accumulation_policy is not None):
+        parser.error("frozen-backbone refinement is plain ordered M2 only")
+    if args.init_weights_from is not None and args.resume_from is not None:
+        parser.error("initial weights define a fresh start; resume an existing run instead")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
@@ -78,10 +88,24 @@ def arguments(argv=None):
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None, profile_work_items=2):
+def staged_mode(summary, *, freeze_backbone, init_weights_from):
+    """Resource admission must pin the staged mode, never inherit it by default."""
+    arguments = summary.get("arguments", {})
+    declared = arguments.get("freeze_backbone", False)
+    source = arguments.get("init_weights_from")
+    if type(declared) is not bool or declared is not freeze_backbone:
+        return False
+    if (source is None) is not (init_weights_from is None):
+        return False
+    return source is None or str(source) == str(init_weights_from)
+
+
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
+    if not staged_mode(summary, freeze_backbone=freeze_backbone, init_weights_from=init_weights_from):
+        raise ValueError("staged refinement mode differs from resource admission")
     if "curriculum" in summary and (summary.get("arguments", {}).get("curriculum") != curriculum or
                                     summary.get("recovery_contract", {}).get("curriculum") != curriculum):
         raise ValueError("resource arguments/recovery curriculum identity differs")
@@ -324,9 +348,38 @@ def main(argv=None, *, _archive=None, _started=None):
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
                            type_head_rate_factor=args.type_head_rate_factor, accumulation_policy=args.accumulation_policy,
+                           freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            profile_work_items=2*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
                                                  if args.accumulation_policy else 1))
     model = TetrisStateNet(config)
+    initial_origin = None
+    if args.init_weights_from is not None:
+        source = args.init_weights_from.resolve()
+        if not source.is_relative_to(ROOT/"runs") or source == args.output:
+            raise ValueError("initial weights must come from a different owned run")
+        source_summary = json.loads((source/"summary.json").read_text())
+        source_model, source_manifest = load_checkpoint(source/"checkpoint")
+        if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
+                source_manifest["config"] != config_json or
+                source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
+                source_summary.get("curriculum") != args.curriculum or
+                source_summary["arguments"].get("seed") != args.seed or
+                float(source_summary["arguments"].get("learning_rate", 0)) != args.learning_rate):
+            raise ValueError("initial-weight source architecture/config/curriculum/seed differs")
+        model.load_state_dict(source_model.state_dict(), strict=True)
+        initial_origin = {"run": str(source), "catalogue_sha256": source_summary["catalogue_sha256"],
+                          "weights_sha256": source_summary["checkpoint_sha256"],
+                          "steps": source_summary["steps"], "curriculum": source_summary["curriculum"],
+                          "seed": source_summary["arguments"]["seed"]}
+    if args.freeze_backbone:
+        head_names = {"layer_type.weight", "layer_type.bias"}
+        named = dict(model.named_parameters())
+        if not head_names <= named.keys():
+            raise ValueError("expected shared type head missing")
+        for name, parameter in named.items():
+            parameter.requires_grad = name in head_names
+        if any(parameter.requires_grad for name, parameter in model.named_parameters() if name not in head_names):
+            raise RuntimeError("frozen-backbone stage left another parameter trainable")
     initial_path = args.output / "initial-weights.pt"
     capture_initial_tensors(model, initial_path)
     initial_sha256 = file_digest(initial_path)
@@ -431,6 +484,8 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
     recovery_contract["curriculum"] = args.curriculum
     recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
+    recovery_contract["freeze_backbone"] = args.freeze_backbone
+    recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
         recovery_contract["accumulation_policy"] = args.accumulation_policy
         recovery_contract["images_per_update"] = ACCUMULATION_POLICIES[args.accumulation_policy][0]
@@ -628,6 +683,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 "supervisor_script_sha256": supervisor_sha, "system_pressure_guard": "GetPerformanceInfo/0.2s",
                 "runtime_source_sha256": source_digest(), "model_kind": args.model,
                 "component_capacity": args.component_capacity, "input_policy": recovery_contract["input_policy"],
+                "freeze_backbone": args.freeze_backbone, "initial_weights_from": initial_origin,
                 "arguments": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
                 "stream_ledger_sha256": file_digest(args.output/"training.jsonl"), "cpu_only": torch.version.cuda is None,
                 "resume": resume_record, "latest_training_snapshot": latest_snapshot,
