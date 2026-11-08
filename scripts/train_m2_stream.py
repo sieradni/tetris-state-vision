@@ -59,7 +59,7 @@ def arguments(argv=None):
         parser.error("frozen-backbone refinement needs --init-weights-from and the ordered fit")
     if args.freeze_backbone and (args.component_capacity or args.layer_evidence or args.accumulation_policy is not None):
         parser.error("frozen-backbone refinement is plain ordered M2 only")
-    if args.init_weights_from is not None and args.resume_from is not None:
+    if args.init_weights_from is not None and args.resume_from is not None and not args.freeze_backbone:
         parser.error("initial weights define a fresh start; resume an existing run instead")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")

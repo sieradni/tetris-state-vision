@@ -34,6 +34,14 @@ class StagedRefinementContractTests(unittest.TestCase):
             arguments(["--output", "runs/x", "--model", "pilot", "--steps", "4",
                        "--admission", "runs/profile", "--init-weights-from", "runs/source",
                        "--resume-from", "runs/other"])
+        # A staged run restates its origin on resume: the frozen mode and the start
+        # artifact are part of its recovery contract, so neither is inferred.
+        staged = arguments(["--output", "runs/x", "--model", "pilot", "--steps", "4",
+                            "--admission", "runs/profile", "--init-weights-from", "runs/source",
+                            "--resume-from", "runs/other", "--freeze-backbone",
+                            "--curriculum", "all-class-fit-v1", "--max-new-steps", "3"])
+        self.assertTrue(staged.freeze_backbone)
+        self.assertEqual(staged.max_new_steps, 3)
 
     def test_initial_weight_source_is_anchored_on_the_written_run(self):
         # The driver runs from <runs>/<name>/code, so its own ROOT is an archive
