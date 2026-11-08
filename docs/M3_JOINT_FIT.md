@@ -40,7 +40,9 @@ off, evaluation every 64 updates, checkpoint every 64 updates,
 `--development-groups 6` (the canonical development set),
 `--curriculum stream-v1`, `--component-capacity 64`, `--model accuracy`.
 
-Budget: 128 updates, trainer wall cap 2,700 s. This is the first finite
+Budget: 128 updates, trainer wall cap 1,800 s (the trainer accepts only
+(0, 1800]). A wall-partial segment is resumed with the admitted recovery
+mechanism and never reported as complete. This is the first finite
 joint-learning point, deliberately comparable to the M2 `learn16`/`learn128`
 first-step practice. It is not a release-model selection and does not extend
 the completed M2 1,024-update studies.
@@ -75,7 +77,7 @@ hard memory ceiling, wall cap, work-item cap and receipt):
      --wall-seconds 600 --development-groups 6
    ```
 
-   bounded at 1,152 MiB / 700 s / 64 work items, receipt
+   bounded at 1,152 MiB / 700 s / 256 work items, receipt
    `runs/m3-stream-joint-fit-profile-r1-job.json`.
 
 2. The study itself, admitted only by that profile:
@@ -85,10 +87,10 @@ hard memory ceiling, wall cap, work-item cap and receipt):
      --model accuracy --component-capacity 64 --steps 128 \
      --admission runs/m3-stream-joint-fit-profile-r1 --seed 20261026 \
      --learning-rate 0.001 --evaluate-every 64 --checkpoint-every 64 \
-     --development-groups 6 --wall-seconds 2700
+     --development-groups 6 --wall-seconds 1800
    ```
 
-   bounded at 1,152 MiB / 2,800 s / 4,096 work items, receipt
+   bounded at 1,152 MiB / 1,900 s / 4,096 work items, receipt
    `runs/m3-stream-joint-fit-r1-job.json`.
 
 3. Independent ordinary replay of the resulting checkpoint (no training, weights
@@ -118,6 +120,13 @@ identical; the curator must pass into
 - A wall-partial run never reports complete; if the cap is reached the partial
   prefix is retained and reported as such, and the fit criterion is evaluated
   only on a complete checkpoint.
+- Bookkeeping correction before any step executed: the first study launch was
+  refused by the trainer's `(0, 1800]` wall-budget bound, since the draft above
+  had declared 2,700 s. It ran zero steps and wrote no run directory. The refused
+  receipt is retained as `runs/m3-stream-joint-fit-r1-launch-refused-job.json`
+  with its stderr log; only the wall budget and the admission work-item cap were
+  corrected, and nothing in the configuration, data, criterion or replay plan
+  changed.
 
 ## Comparison stated up front
 
