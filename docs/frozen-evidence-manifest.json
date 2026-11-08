@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "73f04525cbacc2c31cf1b3f9468ca8c2a7926455",
+    "generated_at_commit": "91e6ad6c68352758ee9fa6a3c78b3934e24ae3db",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -3343,12 +3343,21 @@
       }
     },
     "m3-capture-side-tests-r1": {
-      "record_commit": "",
+      "record_commit": "91e6ad6c68352758ee9fa6a3c78b3934e24ae3db",
       "files": {
         "m3-capture-side-suite-r2.json": "1ba52751b812b739dfe9aa4aef0e2f4655fd0f5fd602045e79cdfb5be383b687",
         "m3-capture-side-suite-r2.log": "a069c33f1e6620072d266092f323eb4f41f0f74525bea7d8e6829fe98ea10429",
         "m3-capture-side-suite-r2.stderr.log": "fd4daf4451ccb74aad36f37144bba9a5f81cecddb0c6b7bb299c3e2607f3ed7d",
         "scope.json": "6134c224688667da778958e2876af8f549bc3af2ee34b31030d86155bae5f7bb"
+      }
+    },
+    "m3-capture-side-tests-r2": {
+      "record_commit": "",
+      "files": {
+        "m3-capture-side-suite-r3.json": "404ca3820d771634b5409eff85f0043dfa342197fd0eeefcc4a744b0e6030238",
+        "m3-capture-side-suite-r3.log": "fdaec9ed145eb54bc25794867dd8135de71a43e6ceb4733c0fd67323594a52dc",
+        "m3-capture-side-suite-r3.stderr.log": "309f8af127b29894525ffea43fe22a4630f05e032549d94ce4826f59ec426afe",
+        "scope.json": "b369daa9240d6060036e52c57d28a130910daa9f0be72a23886622a40c6a5aab"
       }
     },
     "m3-component-targets": {
@@ -3450,7 +3459,7 @@
       }
     },
     "m3-identity-factor-representation-r1-errors-r1": {
-      "record_commit": "",
+      "record_commit": "91e6ad6c68352758ee9fa6a3c78b3934e24ae3db",
       "files": {
         "checkpoint-manifest.json": "e7720497842f5cb7d1702523bf833e449de704d5a3051ae94a531a5dfd35201c",
         "development-probe.jsonl": "733d9333d8dc8a781b845ee2962ec1052016cb0117835c012b6a2fd943dfa397",
@@ -4316,7 +4325,7 @@
     }
   },
   "totals": {
-    "directories": 180,
-    "files": 3404
+    "directories": 181,
+    "files": 3408
   }
 }

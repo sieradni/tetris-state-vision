@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "source_base_commit": "73f04525cbacc2c31cf1b3f9468ca8c2a7926455",
+  "sources": {
+    "scripts/m2_stream_data.py": "b53f73838a1e835fea2f369443578de31147f2e91cc893362b78555e260a611f",
+    "scripts/m2_curriculum.py": "77eac0e67b7b5e3a4c2cdbc4cff9214c9b52cf77eb40b78d534cbe9390c0ae1f",
+    "scripts/train_m2_stream.py": "953626e19009362e9dcf4baa439d7d0184a72d8f6b405a35a2116121ed72afc2",
+    "scripts/probe_stream_errors.py": "cb7888d927e0da9d61533c5142d4eb6cf45e0eb32bb35af32840b2ea193887e6",
+    "tests/test_capture_side.py": "d746a8edaebedceceabe40775a09d1afcd4cee98b3382556f6cb7e74adab1de1"
+  },
+  "gates": [
+    {
+      "stem": "m3-capture-side-suite-r3",
+      "tests": 410,
+      "raw_peak_job_commit_bytes": 540966912
+    }
+  ],
+  "tests_across_scoped_runs": 410,
+  "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+  "scope": "Only the named selected test cases on the hashed sources; not a whole-suite or model-accuracy claim.",
+  "curator_sha256": "9564c8377d2f97fefc2e4f9a078ddb842990923279c0d5779df4594289e58506"
+}

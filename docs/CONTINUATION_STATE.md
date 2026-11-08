@@ -26,8 +26,10 @@ Receipts: admission `runs/m3-identity-representation-profile-r3-job.json` (passe
 `runs/m3-identity-factor-representation-r1-errors-r1-job.json` (passed, 27 forwards,
 39.0 s, 631,767,040 B, every saved metric reproduced, weights unchanged) curated in
 `docs/evidence/m3-identity-factor-representation-r1-errors-r1/scope.json` (`passed`),
-and the capture-side contract tests inside the whole suite (410 tests, 63.5 s,
-550,457,344 B, `docs/evidence/m3-capture-side-tests-r1/`).
+and the capture-side contract tests inside the whole suite (410 tests, 31.2 s,
+540,966,912 B, `docs/evidence/m3-capture-side-tests-r2/`, base `73f0452`), which is
+the suite re-run on the final code after the admission-guard repair; the earlier
+run at `a892dfb` is preserved as `m3-capture-side-tests-r1`.
 
 Three instrument defects surfaced and are recorded: V-045 (a predeclared ceiling above
 the engine's 2 GiB bounded-job cap; lowered to 2,048 MiB, never the capture side),
