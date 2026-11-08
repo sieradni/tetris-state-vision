@@ -3,8 +3,10 @@
 This exercises the trainer's own loop against the durable journal/snapshot
 bridge with a toy network. It is not training admission or real-image evidence.
 """
+import contextlib
 import copy
 import hashlib
+import io
 import json
 import os
 import sys
@@ -19,7 +21,8 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from accumulation_checkpoint import create_journal, make_contract, restore_boundary
-from train_m2_stream import equal_tree, run_accumulation_loop
+from train_m2_stream import (NATIVE_CACHE_LIMITS, accumulation_profile, arguments, equal_tree,
+                             run_accumulation_loop, validate_admission)
 
 CONFIG = {"dimension": 3, "component_capacity": 0}
 
@@ -81,6 +84,94 @@ class AccumulationDriverTest(unittest.TestCase):
             self.assertEqual(set(manifest["ledgers"]), {"groups.jsonl"})
             # Snapshots only at the declared image cadence plus the final group.
             self.assertEqual(len(list((run/"training-snapshots").iterdir())), 2)
+
+    def test_profile_characterization_measures_warm_state_and_actual_reload(self):
+        policy = "balanced-eight-v1"
+        model, optimizer = network_and_optimizer(101)
+        contract = make_contract(policy, source_catalogue_sha256="c"*64, config=CONFIG)
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory)/"run"
+            run.mkdir()
+            create_journal(run)
+            run_accumulation_loop(
+                run=run, policy=policy, contract=contract, model=model, optimizer=optimizer,
+                updates_total=2, recipe_for=recipe_for(policy), loss_for=loss_for(model),
+                checkpoint_every=8, evaluate_every=8, wall_seconds=600, started=time.monotonic(),
+                on_group=lambda update, state, entry: None)
+            profile = accumulation_profile(run=run, model=model, optimizer=optimizer, contract=contract,
+                                           policy=policy, completed=2, maximum_pixels=512**2)
+            self.assertEqual((profile["step"], profile["group_size"], profile["images"]), (2, 8, 16))
+            self.assertEqual(profile["microsteps"], 16)
+            self.assertEqual(profile["input_pixels"], 512**2)
+            self.assertEqual(profile["policy"], policy)
+            self.assertGreater(profile["state_bytes"], 0)
+            self.assertGreater(profile["parameter_tensors"], 0)
+            self.assertTrue(profile["all_parameters_initialized"])
+            self.assertTrue(profile["backward_completed"])
+            self.assertTrue(profile["recovery_exact"])
+            self.assertGreater(profile["warm_peak_commit_bytes"], 0)
+            self.assertGreaterEqual(profile["reload_peak_commit_bytes"], profile["warm_peak_commit_bytes"])
+            self.assertGreaterEqual(profile["reload_commit_delta_bytes"], 0)
+            self.assertGreaterEqual(profile["reload_seconds"], 0)
+            self.assertGreater(profile["reload_seconds"], 0)
+            self.assertEqual((profile["device"], profile["device_memory_bytes"]), ("cpu", 0))
+
+    def test_accumulation_admission_requires_the_matching_group_size_profile(self):
+        policy = "balanced-eight-v1"
+        recovery_contract = {"curriculum": "all-class-interleaved-v1", "type_head_rate_factor": 1}
+        warm = {"step": 2, "input_pixels": 512**2, "all_parameters_initialized": True,
+                "backward_completed": True, "state_bytes": 1, "policy": policy,
+                "group_size": 8, "microsteps": 16, "recovery_exact": True,
+                "optimizer_updates_per_second": .1}
+        summary = {"status": "complete", "steps": 2, "profile_square": True, "resource_profile_version": 3,
+                   "training_recovery_profile_exact": True, "checkpoint_round_trip_exact": True,
+                   "max_input_pixels_seen": 512**2, "native_cache_limits": NATIVE_CACHE_LIMITS,
+                   "max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0,
+                   "catalogue_sha256": "a"*64, "model_kind": "pilot", "config": {},
+                   "job_ceiling_bytes": 640*1024**2, "development_groups": 6, "cpu_only": True,
+                   "system_pressure_guard": "GetPerformanceInfo/0.2s",
+                   "supervisor_script_sha256": "b"*64, "curriculum": "all-class-interleaved-v1",
+                   "type_head_rate_factor": 1, "accumulation_policy": policy, "images_per_update": 8,
+                   "optimizer_updates_per_second": .1,
+                   "arguments": {"curriculum": "all-class-interleaved-v1", "type_head_rate_factor": 1,
+                                 "accumulation_policy": policy},
+                   "recovery_contract": recovery_contract, "warm_optimizer_backward": warm}
+        job = {"status": "passed", "exit_code": 0, "work_items": 16, "memory_bytes": 640*1024**2,
+               "system_pressure_guard": "GetPerformanceInfo/0.2s",
+               "supervisor_script_sha256": "b"*64}
+        expected = dict(catalogue="a"*64, model="pilot", config={}, ceiling=640*1024**2,
+                        development_groups=6, supervisor_sha="b"*64,
+                        curriculum="all-class-interleaved-v1", accumulation_policy=policy,
+                        profile_work_items=16)
+        validate_admission(summary, job, **expected)
+        for mutate in ({"group_size": 1}, {"microsteps": 2}, {"recovery_exact": False},
+                       {"policy": "online-interleaved-v1"}):
+            with self.subTest(mutate=mutate), self.assertRaises(ValueError):
+                validate_admission({**summary, "warm_optimizer_backward": {**warm, **mutate}},
+                                   job, **expected)
+        for mutate, broken in (("work_items", 2), ("exit_code", 1)):
+            with self.subTest(job_field=mutate), self.assertRaises(ValueError):
+                validate_admission(summary, {**job, mutate: broken}, **expected)
+        for mutate in ({"accumulation_policy": "online-interleaved-v1"},
+                       {"images_per_update": 1},
+                       {"optimizer_updates_per_second": 0}):
+            with self.subTest(summary_field=tuple(mutate)), self.assertRaises(ValueError):
+                validate_admission({**summary, **mutate}, job, **expected)
+
+    def test_profile_cli_accepts_only_the_matching_accumulation_arm(self):
+        base = ["--output", "unused", "--model", "pilot", "--steps", "2", "--profile-square"]
+        args = arguments(base+["--curriculum", "all-class-interleaved-v1",
+                               "--accumulation-policy", "balanced-eight-v1"])
+        self.assertEqual(args.accumulation_policy, "balanced-eight-v1")
+        self.assertIsNone(arguments(base+["--curriculum", "stream-v1"]).accumulation_policy)
+        for wrong in (base+["--curriculum", "all-class-interleaved-v1",
+                             "--accumulation-policy", "ordered-eight-v1"],
+                      ["--output", "unused", "--model", "pilot", "--steps", "128", "--profile-square",
+                       "--curriculum", "all-class-interleaved-v1",
+                       "--accumulation-policy", "balanced-eight-v1"]):
+            with self.subTest(arguments=wrong), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    arguments(wrong)
 
     def test_interrupted_group_is_discarded_and_replayed_to_identical_bytes(self):
         policy = "balanced-eight-v1"

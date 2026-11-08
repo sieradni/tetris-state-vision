@@ -10,7 +10,7 @@ from pathlib import Path
 import sys
 import time
 
-from accumulation_checkpoint import make_contract
+from accumulation_checkpoint import create_journal, make_contract
 from accumulation_contract import POLICIES as ACCUMULATION_POLICIES, group_specs, update_count
 from probe_model import bounded_job_snapshot, require_bounded_job
 from source_snapshot import capture_source, verify_source
@@ -78,7 +78,7 @@ def arguments(argv=None):
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None, profile_work_items=2):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -89,12 +89,17 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("arguments", {}).get("type_head_rate_factor", 1) != type_head_rate_factor or
             summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != type_head_rate_factor):
         raise ValueError("type-head rate factor differs from resource admission")
+    warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
             summary.get("images_per_update") != ACCUMULATION_POLICIES[accumulation_policy][0] or
-            summary.get("arguments", {}).get("accumulation_policy") != accumulation_policy):
-        raise ValueError("accumulation policy differs from resource admission")
-    warm = summary.get("warm_optimizer_backward", {})
+            summary.get("arguments", {}).get("accumulation_policy") != accumulation_policy or
+            warm.get("policy") != accumulation_policy or
+            warm.get("group_size") != ACCUMULATION_POLICIES[accumulation_policy][0] or
+            warm.get("microsteps") != 2*ACCUMULATION_POLICIES[accumulation_policy][0] or
+            warm.get("recovery_exact") is not True or
+            not summary.get("optimizer_updates_per_second", 0) > 0):
+        raise ValueError("accumulation policy/group-size profile differs from resource admission")
     if (summary.get("status") != "complete" or summary.get("steps") != 2 or not summary.get("profile_square") or
             summary.get("resource_profile_version") != 3 or not summary.get("training_recovery_profile_exact") or
             warm.get("step") != 2 or warm.get("input_pixels") != 512**2 or
@@ -102,7 +107,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             not summary.get("checkpoint_round_trip_exact") or summary.get("max_input_pixels_seen") != 512**2 or
             summary.get("native_cache_limits") != NATIVE_CACHE_LIMITS or
             any(summary.get(key) != value for key, value in {"max_side": 512, "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0}.items()) or
-            job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != 2):
+            job.get("status") != "passed" or job.get("exit_code") != 0 or job.get("work_items") != profile_work_items):
         raise ValueError("complete two-step square warm-optimizer resource admission required")
     if (summary["catalogue_sha256"] != catalogue or summary["model_kind"] != model or summary["config"] != config or
             summary["job_ceiling_bytes"] != ceiling or job["memory_bytes"] != ceiling or
@@ -164,6 +169,45 @@ def capture_initial_tensors(model, path):
         raise ValueError("initial state serialization changed tensor bytes")
 
 
+def accumulation_profile(*, run, model, optimizer, contract, policy, completed, maximum_pixels,
+                         clock=time.monotonic):
+    """Measure warm Adam state and an actual boundary reload for one group size."""
+    import copy
+    import torch
+    from probe_model import bounded_job_snapshot
+    from training_snapshot import load_training_snapshot
+    if type(completed) is not int or completed < 1:
+        raise ValueError("a completed accumulation boundary is required")
+    parameters = [p for p in model.parameters() if p.requires_grad]
+    initialized = all(
+        p in optimizer.state and all(key in optimizer.state[p] and optimizer.state[p][key].shape == p.shape
+                                     for key in ("exp_avg", "exp_avg_sq"))
+        and float(optimizer.state[p]["step"]) == completed for p in parameters)
+    if not parameters or not initialized:
+        raise RuntimeError("warm accumulation profile requires resident Adam state")
+    state_bytes = sum(value.numel()*value.element_size() for state in optimizer.state.values()
+                      for value in state.values() if torch.is_tensor(value))
+    warm = bounded_job_snapshot()
+    reload_started = clock()
+    expected = copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
+    recovery = load_training_snapshot(run, model, optimizer, contract=contract)
+    exact = recovery["step"] == completed and equal_tree(
+        expected, (model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
+    reload_seconds = clock()-reload_started
+    del expected, recovery
+    reload = bounded_job_snapshot()
+    size = ACCUMULATION_POLICIES[policy][0]
+    return {"step": completed, "policy": policy, "group_size": size,
+            "images": completed*size, "microsteps": completed*size,
+            "input_pixels": maximum_pixels, "parameter_tensors": len(parameters),
+            "all_parameters_initialized": True, "state_bytes": state_bytes,
+            "backward_completed": True, "warm_peak_commit_bytes": warm["peak_job_commit_bytes"],
+            "reload_peak_commit_bytes": reload["peak_job_commit_bytes"],
+            "reload_commit_delta_bytes": reload["peak_job_commit_bytes"]-warm["peak_job_commit_bytes"],
+            "reload_seconds": reload_seconds, "recovery_exact": exact,
+            "device": "cpu", "device_memory_bytes": 0}
+
+
 def run_accumulation_loop(*, run, policy, contract, model, optimizer, updates_total, recipe_for, loss_for,
                           checkpoint_every, evaluate_every, wall_seconds, started, on_group,
                           on_evaluation=None, on_progress=None, start_update=1, clock=time.monotonic):
@@ -220,7 +264,9 @@ def main(argv=None, *, _archive=None, _started=None):
         # cannot read later parent edits. This stays in the same native Job/PID.
         sys.path[:0] = [str(code/"scripts"), str(code)]
         sys.dont_write_bytecode = True
-        for name in ("probe_model", "source_snapshot", "atomic_write", "run_bounded"):
+        for name in ("probe_model", "source_snapshot", "atomic_write", "run_bounded",
+                     "accumulation_contract", "accumulation_journal", "accumulation_checkpoint",
+                     "training_snapshot", "m2_interleaved_order"):
             sys.modules.pop(name, None)
         spec = importlib.util.spec_from_file_location("frozen_training_driver", code/"scripts/train_m2_stream.py")
         driver = importlib.util.module_from_spec(spec)
@@ -277,7 +323,9 @@ def main(argv=None, *, _archive=None, _started=None):
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
-                           type_head_rate_factor=args.type_head_rate_factor, accumulation_policy=args.accumulation_policy)
+                           type_head_rate_factor=args.type_head_rate_factor, accumulation_policy=args.accumulation_policy,
+                           profile_work_items=2*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
+                                                 if args.accumulation_policy else 1))
     model = TetrisStateNet(config)
     initial_path = args.output / "initial-weights.pt"
     capture_initial_tensors(model, initial_path)
@@ -451,6 +499,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                 elapsed_seconds=time.monotonic()-started)
                 atomic_json(args.output/"progress.json", progress)
 
+            create_journal(args.output)
             accumulation_result = run_accumulation_loop(
                 run=args.output, policy=args.accumulation_policy, contract=accumulation,
                 model=model, optimizer=optimizer, updates_total=args.steps,
@@ -467,23 +516,10 @@ def main(argv=None, *, _archive=None, _started=None):
                                 elapsed_seconds=time.monotonic()-started)
                 atomic_json(args.output/"progress.json", progress)
             if args.profile_square and accumulation_result["state"] is not None:
-                parameters = [p for p in model.parameters() if p.requires_grad]
-                initialized = all(
-                    p in optimizer.state and all(
-                        key in optimizer.state[p] and optimizer.state[p][key].shape == p.shape
-                        for key in ("exp_avg", "exp_avg_sq"))
-                    and float(optimizer.state[p]["step"]) == completed for p in parameters)
-                warm_optimizer_backward = {
-                    "step": completed, "input_pixels": maximum_pixels, "parameter_tensors": len(parameters),
-                    "all_parameters_initialized": initialized,
-                    "state_bytes": sum(value.numel()*value.element_size() for state in optimizer.state.values()
-                                       for value in state.values() if torch.is_tensor(value)),
-                    "backward_completed": True}
-                expected_state = copy.deepcopy((model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
-                recovery = load_training_snapshot(args.output, model, optimizer, contract=accumulation)
-                recovery_profile_exact = recovery["step"] == completed and equal_tree(
-                    expected_state, (model.state_dict(), optimizer.state_dict(), torch.get_rng_state()))
-                del expected_state, recovery
+                warm_optimizer_backward = accumulation_profile(
+                    run=args.output, model=model, optimizer=optimizer, contract=accumulation,
+                    policy=args.accumulation_policy, completed=completed, maximum_pixels=maximum_pixels)
+                recovery_profile_exact = warm_optimizer_backward["recovery_exact"]
                 if not recovery_profile_exact:
                     raise RuntimeError("accumulation boundary snapshot changed model/optimizer/RNG")
 
@@ -600,9 +636,11 @@ def main(argv=None, *, _archive=None, _started=None):
                "profile_square": args.profile_square, "max_input_pixels_seen": maximum_pixels, "max_side": 512,
                "job_ceiling_bytes": ceiling, "development_groups": args.development_groups, "config": config_json,
                "threads": 1, "workers": 0, "prefetch": 0, "tensor_cache_bytes": 0,
-               "fresh_parent_groups": distinct_training_groups(completed*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
-                                                                             if args.accumulation_policy else 1),
-                                                                args.curriculum, profile_square=args.profile_square),
+               "fresh_parent_groups": distinct_training_groups(
+                   completed*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
+                              if args.accumulation_policy and not args.profile_square
+                              else 1),
+                   args.curriculum, profile_square=args.profile_square),
                "curriculum": args.curriculum,
                "initial_training_probe": initial_train, "initial_development": initial_dev,
                "final_training_probe": final_train, "development": final_dev, "checkpoint_round_trip_exact": True,
@@ -610,7 +648,8 @@ def main(argv=None, *, _archive=None, _started=None):
                **({"accumulation_policy": args.accumulation_policy,
                    "images_per_update": accumulation_metadata["images_per_update"],
                    "images_seen": accumulation_metadata["images_seen"], "optimizer_updates": completed,
-                   "accumulation_journal_sha256": accumulation_metadata["journal_sha256"]}
+                   "accumulation_journal_sha256": accumulation_metadata["journal_sha256"],
+                   "optimizer_updates_per_second": completed/max(time.monotonic()-started, 1e-9)}
                   if accumulation_metadata is not None else {}),
                "claim": "Finite synthetic curriculum or resource characterization, not complete-state or real-image acceptance.", **metadata}
     atomic_json(args.output/"summary.json", summary)

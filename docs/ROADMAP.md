@@ -27,12 +27,16 @@ The matched design and focused grouping/gradient/recovery instrument are in
 [BALANCED_ACCUMULATION.md](BALANCED_ACCUMULATION.md). Explicit image and
 optimizer cursors are now integrated into the actual trainer behind an explicit
 accumulation policy, with image-cadence evaluation/snapshots and separate counts in
-every ledger and summary; fresh native resource/recovery admission per group size
-is still required before training. The pure journal and ownership boundary pass
-their own scoped tests, and the whole-group arm now passes scoped driver checks
-including a forced in-group interruption replayed to identical bytes (toy network,
-no native run; V-030 records that bounded children need an absolute interpreter
-path). Retain the original joint-fit and generalization gates.
+every ledger and summary. Measured two-update native profiles now exist for both
+predeclared group sizes under the unchanged 640 MiB ceiling and supervisor
+(size1: 519,929,856 B peak,33.3 s; size8: 561,786,880 B peak,29.35 s, both with
+exact boundary reload), and each arm is admitted only through those measured
+numbers. The 1,024-image arms, controller/curator cursor routing and accumulated
+resume remain open. The pure journal and ownership boundary pass their own scoped
+tests, and the whole-group arm also passes scoped driver checks including a forced
+in-group interruption replayed to identical bytes (toy network; V-030 records that
+bounded children need an absolute interpreter path). Retain the original joint-fit
+and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

@@ -97,7 +97,7 @@ needs its own explicit profile handling. Neither the trainer nor checkpoint
 publisher uses this boundary yet. Fresh neural integration, pressure-safe
 testing, full-square admission and real interruption recovery remain required.
 
-## Durable boundary bridge and integrated arm (no native run)
+## Durable boundary bridge and integrated arm (native profiles measured)
 
 [`scripts/accumulation_checkpoint.py`](../scripts/accumulation_checkpoint.py)
 binds the journal to the existing snapshot tooling: it creates a journal only in a
@@ -126,15 +126,34 @@ in `scripts/train_m2_stream.py` runs the predeclared arm through
 `run_accumulation_loop`, which validates and journals each group, clears the
 stepped gradients, evaluates only at image boundaries, and snapshots only at a
 complete-group boundary. Image and optimizer cursors stay separate in
-`curve.jsonl`, `training.jsonl`, progress and summary. Two scoped checks cover the
-image/update accounting, the evaluation and snapshot cadence, and a forced
-in-group interruption that is discarded and replayed to byte-identical
-model/Adam/RNG/journal bytes; they pass with 26 accumulation and 43 stream
-regression tests under 640 MiB
+`curve.jsonl`, `training.jsonl`, progress and summary. Five scoped driver checks
+cover the image/update accounting, the evaluation and snapshot cadence, the
+per-group-size admission rules, the profile CLI coupling, and a forced in-group
+interruption that is discarded and replayed to byte-identical
+model/Adam/RNG/journal bytes; they pass with 29 accumulation, 43 stream and 5
+type-head regression tests under 448 MiB and below
 ([accumulation driver](evidence/accumulation-driver-integration-r1/scope.json)).
-Those checks use a toy network, not the pilot model. No accumulation arm has run
-natively: there is no per-group-size resource admission, no controller or
-independent-curator routing for these cursors, and accumulated resume is refused
-until the boundary restore is wired into the driver. So no arm of the comparison
-is admitted. Bounded children must use an absolute or backslash interpreter path;
+Those checks use a toy network, not the pilot model. The pilot model's
+`--profile-square --accumulation-policy` path then ran natively for both
+predeclared group sizes under the unchanged supervisor at 640 MiB, measuring warm
+Adam state and an actual boundary reload with byte-exact model/Adam/RNG parity
+([accumulation profiles](evidence/accumulation-profile-r1/scope.json)):
+
+| Group | Wall | Updates/s | Peak commit | Reload | Reload delta |
+|---|---|---|---|---|---|
+| 1 (online interleaved) | 33.30 s | 0.060 | 519,929,856 B | 0.212 s | 0 B |
+| 8 (balanced eight) | 29.35 s | 0.068 | 561,786,880 B | 0.086 s | 0 B |
+
+Both are 142 parameter tensors with 5,177,352 B of resident Adam state at
+262,144 input pixels; the second run's journal holds two groups of eight images
+and 16 image rows, matching `images_per_update`. The zero reload delta means the
+warm peak already exceeded the reload allocation, not that reload is free. Each
+arm is accepted by `validate_admission` only when its profile names the same
+policy and group size, counts `2*group_size` microsteps in the native work
+budget, and carries a positive measured update rate.
+
+Still open: the 1,024-image arms themselves, controller and independent-curator
+routing for these cursors, and accumulated resume, which is refused until the
+boundary restore is wired into the driver. So no arm of the comparison is
+admitted. Bounded children must use an absolute or backslash interpreter path;
 see V-030 in [BUG_LOG.md](BUG_LOG.md).

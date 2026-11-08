@@ -18,6 +18,29 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 
+## V-031 — CLOSED: frozen archive kept repository modules from the parent
+
+- Symptom: the first native accumulation profile launch (640 MiB, work 2) exited
+  1 after 2.4 s with `RuntimeError: interleaved order implementation is not
+  frozen`; the receipt recorded `failed` and no training step ran.
+- Root cause: the trainer's new module-level imports of `accumulation_checkpoint`
+  and `accumulation_contract` imported `m2_interleaved_order` from the repository
+  in the parent process. `main()` re-executes the driver from the verified archive
+  but reset only four modules, so `sys.modules` kept the repository-path functions
+  and the frozen-source identity check refused them.
+- Detection class: frozen-source identity.
+- Instrument: reset every module the driver imports from the archive
+  (`accumulation_contract`, `accumulation_journal`, `accumulation_checkpoint`,
+  `training_snapshot`, `m2_interleaved_order`) before re-execution, and archive the
+  three accumulation modules in `source_snapshot.SCRIPTS` so the frozen driver can
+  import them at all. The archive previously omitted them entirely.
+- Failed launch: `docs/evidence/accumulation-profile-r1/online-r1-failed-job.json`
+  and its stderr, preserved with the green runs.
+- Green run: `runs/accumulation-profile-online-r2-job.json` (33.3 s,
+  519,929,856 B under 640 MiB, exit 0) and
+  `runs/accumulation-profile-balanced-r1-job.json` (29.35 s, 561,786,880 B,
+  exit 0), both admitted only through their measured profile numbers.
+
 ## V-030 — OPEN: relative forward-slash child interpreter did not resolve
 
 - Symptom: an admitted bounded launch with every output name preflighted exited

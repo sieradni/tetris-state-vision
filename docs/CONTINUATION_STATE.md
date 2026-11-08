@@ -8,14 +8,21 @@ after its optimizer step, the stepped gradients are cleared before any boundary,
 evaluation fires only at the declared image cadence, and a boundary snapshot is
 published only at a complete-group boundary. Image and optimizer cursors stay
 separate in `curve.jsonl`, `training.jsonl`, progress and summary, and the
-default streaming path is unchanged. Two scoped checks pass under640MiB
-(332,709,888B peak, `docs/evidence/accumulation-driver-integration-r1/`): the
-accounting/cadence check, and a forced in-group interruption that is discarded
-and replayed to byte-identical model/Adam/RNG/journal bytes. 26 accumulation,43
-stream and5 type-head regression tests also pass. Limits: toy network only, no
-native accumulation arm, no per-group-size resource admission, no
-controller/curator routing for these cursors, and accumulated resume is refused
-until the boundary restore is wired into the driver.
+default streaming path is unchanged. Five scoped driver checks pass under448MiB
+(`docs/evidence/accumulation-driver-integration-r1/`): accounting/cadence,
+per-group-size admission, the profile CLI coupling, a forced in-group
+interruption replayed to byte-identical model/Adam/RNG/journal bytes, and the
+native profile characterization. 29 accumulation,43 stream and5 type-head
+regression tests also pass. The pilot model's
+`--profile-square --accumulation-policy` path ran natively for both predeclared
+group sizes at640MiB: size1 519,929,856B /33.30s /0.060 updates/s, size8
+561,786,880B /29.35s /0.068 updates/s, each with a byte-exact boundary reload
+(0.212s and0.086s) and a zero reload delta because the warm peak was already
+higher; evidence in `docs/evidence/accumulation-profile-r1/`. Admission now
+requires the matching policy, group size, `2*group_size` microsteps and a
+positive measured update rate. Still open: the1,024-image arms, controller/
+curator cursor routing, and accumulated resume (refused until the boundary
+restore is wired in).
 
 ## State recovery — 2026-11-08
 
@@ -37,8 +44,9 @@ forward-slash child interpreter fails in `CreateProcess`, so bounded children
 must use an absolute or backslash path form; the supervisor is unchanged.
 The bridge is used by the trainer's accumulation arm only (see the new
 checkpoint above): the controller and independent curator still do not route
-these cursors, ordinary fixed-fit recipes only, no full-square group profile and
-no native in-group interruption/recovery gate exist. No training is
+these cursors, ordinary fixed-fit recipes only; two-update full-square group profiles now exist
+for group sizes1 and8, but no native in-group interruption/recovery gate at arm
+scale exists. No training is
 admitted and no research job is running.
 Next: route the image/update cursors through the controller and independent
 curator, wire accumulated resume to the boundary restore, then obtain fresh

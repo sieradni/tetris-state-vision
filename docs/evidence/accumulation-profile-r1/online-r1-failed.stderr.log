@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\train_m2_stream.py", line 662, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\micha\Code\tetris-state-vision\scripts\train_m2_stream.py", line 272, in main
+    return driver.main(argv, _archive=archive, _started=started)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\micha\Code\tetris-state-vision\runs\accumulation-profile-online-r1\code\scripts\train_m2_stream.py", line 306, in main
+    raise RuntimeError("interleaved order implementation is not frozen")
+RuntimeError: interleaved order implementation is not frozen
