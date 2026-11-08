@@ -11,6 +11,25 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the per-piece image-query identity read-out is a measured **negative** by its
+predeclared discrimination rule ([M3_IDENTITY_PROTOTYPES.md](M3_IDENTITY_PROTOTYPES.md),
+predeclared at `bdae6e1`, `docs/evidence/m3-identity-factor-prototype-r1-errors-r1/scope.json`):
+on the run's nine training probes the queue-token head still emits **one** class
+(`EOS` at all 54 positions, distinct 1, constant true; development 90/90 the same) and
+the hold head emits **two** (`L`x3, `O`x6), short of the declared >= 3 on both, so the
+verdict is NEGATIVE. The mechanism is measured, not inferred: class vectors are now
+image-derived, yet the emitted class is invariant, and it is `EOS` — the one class whose
+own term was already exact (9/9 training, 15/15 development, better than the control's
+8/9 and 3/15) — so the head takes the constant whose structural terms are free and pays
+only the masked piece term. The position read-out (index encoding plus one shared role
+vector) is the only position-varying signal left and never separated. The four-query
+hold bank is the one part that moved off a constant (2 training and 3 development
+classes, 3/9 exact against 0/9), so the ranked next lever is the **position side** of the
+read-out, not another class-side or budget change. Structure is recorded as a cost
+(presence 54/63 -> 39/63 and 90/105 -> 48/105, roles 12/18 -> 0/18, EOS improved), and
+the fit gate stays FALSE (2/9 and 0/18 boards, the two training boards both empty,
+0/18 and 0/36 roles, 0/9 and 0/18 components).
+
 Latest: the M3 identity heads are measured to be **constant predictors**, so no identity
 count on any closed run is evidence of identity reading
 ([M3_IDENTITY_DISCRIMINATION.md](M3_IDENTITY_DISCRIMINATION.md),

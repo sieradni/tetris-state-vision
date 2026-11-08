@@ -1,5 +1,58 @@
 # Contributor handoff — 2026-10-30
 
+## Per-piece image queries: a measured negative, with the position side named — 2026-11-08
+
+`docs/M3_IDENTITY_PROTOTYPES.md` predeclared the lever at `bdae6e1` before any receipt:
+a third identity read-out (`--component-identity-readout prototype`) in which eight
+learned class queries attend the observed memory and board, positions are classified
+against those image-derived class vectors, and the hold piece reads a four-query bank
+instead of one role vector. Capacity 64, factor 4, capture 512, seed `20261026`, 128
+updates, six development groups — everything else matched to `m3-identity-factor-r1`.
+
+The predeclared rule is about class-level discrimination only: queue needs >= 3 distinct
+training predicted classes and hold needs >= 3, because V-048 showed exact counts are
+class frequencies when a head is constant. Measured by the independent 27-forward
+replay: training queue `predicted_classes` is `EOS` x54 (distinct **1**, constant
+true) and development is `EOS` x90; training hold is `L`x3/`O`x6 (distinct **2**),
+development `L`x2/`O`x9/`S`x1. The verdict is **NEGATIVE** on both conditions.
+
+The mechanism is measured. The class side did what it was designed to do — identical
+queries produce different class vectors on different frames — but the emitted class is
+invariant across 54 supervised positions from nine frames, and it is `EOS`, whose own
+term was already satisfied (9/9 training and 15/15 development exact, against the
+control's 8/9 and 3/15). Predicting it everywhere keeps endpoint and slot status perfect
+and pays only the masked piece term, so the head takes the constant with free structural
+terms. The only position-varying input left is the index encoding plus the single shared
+role vector, and it never separated. The four-query hold bank is the only mechanism that
+moved off a constant (2 training and 3 development classes, 3/9 exact vs 0/9).
+
+Structure is recorded, not used as a verdict branch: presence 54/63 -> 39/63 training and
+90/105 -> 48/105 development, roles 12/18 -> 0/18, EOS improved, geometry 3.83 -> 3.56
+training and 2.03 -> 2.32 development. Fit gate still FALSE: 2/9 and 0/18 boards (both
+training successes empty), 0/18 and 0/36 roles, 0/9 and 0/18 exact readable components.
+
+Receipts: admission `runs/m3-identity-factor-prototype-profile-r1-job.json` (passed,
+39.1 s, 967,761,920 B under 1,152 MiB), study
+`runs/m3-identity-factor-prototype-r1-job.json` (passed, 223.8 s, 1,013,481,472 B,
+checkpoint `f818567d...`), canonical replay
+`runs/m3-identity-factor-prototype-r1-errors-r1-job.json` (passed, 27 forwards, 15.9 s,
+561,905,664 B, weights unchanged), curation
+`runs/m3-identity-factor-prototype-r1-errors-r1-curation-r2.json` (passed) into
+`docs/evidence/m3-identity-factor-prototype-r1-errors-r1/scope.json`, and instrument
+tests `runs/m3-identity-prototype-tests-r3.json` (19 tests, `OK`). V-049 records the
+tally crash the replay exposed (an `EOS` prediction at a piece position) and its fix.
+Retained, not re-scored: the crashed first replay output
+(`runs/attempts/...-errors-r1-attempt1`, receipt `-job-attempt1`), the first curation
+attempt's partial evidence directory (`runs/attempts/evidence-...-attempt1`), and the
+pre-commit test receipts r1/r2.
+
+Ranked next: the **position side** of the identity read-out — a per-position
+image-conditioned query, or a spatial anchor for the panel icon, so the read-out can
+differ between positions — keeping the four-query hold bank, which is the one mechanism
+that separated classes. Re-running this class-side lever at a larger budget is not
+ranked: the emitted class is the cheapest constant and budget does not change that
+economics. The owner-decision real-image chain and the FALSE fit gate are unchanged.
+
 ## M3 identity heads are constant predictors — 2026-11-08
 
 The identity totals every M3 lever was judged on are class frequencies, not reading.

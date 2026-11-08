@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037 (8) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049 (9) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -18,6 +18,28 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-049 — CLOSED: the discrimination tally rejected an endpoint prediction
+
+- Symptom: the independent replay of `m3-identity-factor-prototype-r1` exited 1 with
+  `IndexError: tuple index out of range` inside `_predicted_classes`, after the study
+  itself had completed 128/128 steps and its receipt had passed.
+- Root cause: V-048's tally was written with `PIECES` (seven names) as the whole
+  vocabulary, but the queue-token head has eight classes — the seven pieces plus the
+  observed `EOS` token. A supervised piece position predicted as `EOS` therefore
+  indexed past the tuple. None of the four frozen runs ever emitted `EOS` at a piece
+  position, so the instrument was never exercised on that path; the prototype run
+  emits `EOS` at every piece position and hit it immediately.
+- Detection class: test-instrument; the diagnostic crashed on a legal head output and
+  would have been reported as a broken run rather than as the measurement it is.
+- Instrument: `QUEUE_CLASSES = PIECES + ("EOS",)` is the declared queue identity
+  vocabulary, the tally refuses any class outside it explicitly, and
+  `test_a_piece_position_predicted_as_eos_is_tallied_not_rejected` covers the case.
+- Green run: `runs/m3-identity-prototype-tests-r3.json` (19 tests, `OK`, 512 MiB) and
+  the canonical replay receipt
+  `runs/m3-identity-factor-prototype-r1-errors-r1-job.json` (passed, 27 forwards,
+  weights unchanged, saved metrics reproduced). The corrected reading is the NEGATIVE
+  result in `docs/M3_IDENTITY_PROTOTYPES.md`; no frozen receipt or gate changed.
 
 ## V-048 — CLOSED: identity exactness was recorded without a discrimination term
 
