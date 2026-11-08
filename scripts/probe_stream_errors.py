@@ -35,6 +35,30 @@ def require_frozen_callables(code, *functions):
         raise ValueError("error probe implementation is not frozen")
 
 
+CANONICAL_DEVELOPMENT_GROUPS = 6
+
+
+def extension_specs(base_seed, recorded_groups, evaluated_groups):
+    """Canonical development evidence is a prefix extension of the recorded set.
+
+    The development drawings are deterministic in (seed, group, view), so a run
+    that recorded fewer groups can be completed on the contract's canonical set
+    without retraining and without touching the recorded population.
+    """
+    if any(type(value) is not int for value in (base_seed, recorded_groups, evaluated_groups)):
+        raise ValueError("integer development extension parameters required")
+    if not 0 <= base_seed <= 2**31-1 or not 1 <= recorded_groups <= 12 or not 1 <= evaluated_groups <= 12:
+        raise ValueError("development group bounds1..12 required")
+    if recorded_groups > CANONICAL_DEVELOPMENT_GROUPS:
+        raise ValueError("recorded development set already exceeds the canonical set")
+    if evaluated_groups < recorded_groups or evaluated_groups not in (recorded_groups, CANONICAL_DEVELOPMENT_GROUPS):
+        raise ValueError("development extension must reach exactly the canonical group set")
+    return tuple({"sample_id": f"development-{base_seed+group+10_000_000}-v{view}",
+                  "group_id": f"ancestry-development-{base_seed+group+10_000_000}",
+                  "group_index": group, "view": view, "base_seed": base_seed}
+                 for group in range(recorded_groups, evaluated_groups) for view in range(3))
+
+
 def pack(final, target):
     prediction = {"occupancy_logits": final["occupancy"][0, :20].tolist(),
                   "observability_logits": final["observability"][0, :20].tolist(),
@@ -62,6 +86,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--development-groups", type=int, default=None,
+                        help="complete development evidence on the canonical group set")
     args = parser.parse_args()
     require_owned_run(args.run)
     run = ROOT/"runs"/args.run
@@ -106,6 +132,50 @@ def main():
             manifest["torch_version"] != str(torch.__version__)):
         raise ValueError("error probe weight/config/runtime identity differs")
     weights = {name: value.clone() for name, value in model.state_dict().items()}
+    extension_recipes = []
+    recorded_groups = summary["development_groups"]
+    evaluated_groups = recorded_groups if args.development_groups is None else args.development_groups
+    if type(recorded_groups) is not int or type(evaluated_groups) is not int:
+        raise ValueError("explicit development group counts required")
+    if evaluated_groups != recorded_groups:
+        extension_specs(summary["arguments"]["seed"], recorded_groups, evaluated_groups)
+
+    def evaluate(recipe, case, target_kwargs, *, split, saved, expected_row=None):
+        prepared = prepare_image(case.frame.image, max_side=512)
+        target = targets_for(case.frame.state, prepared, **target_kwargs)
+        if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
+            raise ValueError("saved streaming probe requires200 supported cells and registered grid")
+        output = model(prepared.pixels[None], prepared.valid[None])
+        loss, _ = joint_loss(output, target)
+        baseline = diagnostic_metrics(output, target)
+        diagnostics = analyze_case(*pack(output["final"], target))
+        known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
+        baseline.update(loss=float(loss), known_layers=len(known_layers),
+                        exact_known_layers=sum(layer["exact"] for layer in known_layers))
+        if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and split == "training":
+            baseline.update(group_id=recipe["group_id"], fit_case=fit_metrics_from_diagnostics(diagnostics))
+        if capacity:
+            baseline["components"] = component_metrics(output["final"]["components"], target["components"])[0]
+            components = analyze_components(*pack_components(output["final"]["components"], target["components"]))
+            if any(components[key] != value for key, value in baseline["components"].items()):
+                raise ValueError("component decomposition disagrees with frozen metrics")
+            diagnostics["components"] = components
+        if saved:
+            if expected_row is None or any(value != expected_row[key] for key, value in baseline.items()):
+                raise ValueError("ordinary predictions fail to reproduce saved metrics")
+            if (baseline["exact_locked_board"] != diagnostics["locked"]["exact_board"] or
+                    not math.isclose(baseline["cell_accuracy"], diagnostics["locked"]["cell_accuracy"], abs_tol=1e-6) or
+                    not math.isclose(baseline["mean_geometry_error_cells"], diagnostics["geometry"]["mean_cells"], rel_tol=1e-5, abs_tol=1e-5)):
+                raise ValueError("independent decomposition disagrees with frozen metrics")
+        density, skin = recipe_strata(recipe)
+        record = {"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
+                  "density_recipe": density, "skin": skin, "view": recipe["view"],
+                  "ordinary_metrics": baseline, "diagnostics": diagnostics}
+        if not saved:
+            record["saved"] = False
+        records.append(record)
+        (args.output/"progress.json").write_text(json.dumps({"forwards": len(records), "sample_id": recipe["sample_id"]})+"\n")
+
     records = []
     with torch.no_grad():
         for split, field in (("training", "final_training_probe"), ("development", "development")):
@@ -130,41 +200,28 @@ def main():
                     if (image.mode != case.frame.image.mode or image.size != case.frame.image.size or
                             image.tobytes() != case.frame.image.tobytes()):
                         raise ValueError("saved probe raster differs")
-                    prepared = prepare_image(image, max_side=512)
                 if file_digest(stem.with_suffix(".json")) != recipe["state_sha256"]:
                     raise ValueError("saved probe annotation differs")
-                target = targets_for(case.frame.state, prepared, **target_kwargs)
-                if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
-                    raise ValueError("saved streaming probe requires200 supported cells and registered grid")
-                output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target)
-                baseline = diagnostic_metrics(output, target)
-                diagnostics = analyze_case(*pack(output["final"], target))
-                known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
-                baseline.update(loss=float(loss), known_layers=len(known_layers),
-                                exact_known_layers=sum(layer["exact"] for layer in known_layers))
-                if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and split == "training":
-                    baseline.update(group_id=recipe["group_id"], fit_case=fit_metrics_from_diagnostics(diagnostics))
-                if capacity:
-                    baseline["components"] = component_metrics(output["final"]["components"], target["components"])[0]
-                    components = analyze_components(*pack_components(output["final"]["components"], target["components"]))
-                    if any(components[key] != value for key, value in baseline["components"].items()):
-                        raise ValueError("component decomposition disagrees with frozen metrics")
-                    diagnostics["components"] = components
-                saved = expected[recipe["sample_id"]]
-                if any(value != saved[key] for key, value in baseline.items()):
-                    raise ValueError("ordinary predictions fail to reproduce saved metrics")
-                if (baseline["exact_locked_board"] != diagnostics["locked"]["exact_board"] or
-                        not math.isclose(baseline["cell_accuracy"], diagnostics["locked"]["cell_accuracy"], abs_tol=1e-6) or
-                        not math.isclose(baseline["mean_geometry_error_cells"], diagnostics["geometry"]["mean_cells"], rel_tol=1e-5, abs_tol=1e-5)):
-                    raise ValueError("independent decomposition disagrees with frozen metrics")
-                density, skin = recipe_strata(recipe)
-                records.append({"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
-                                "density_recipe": density, "skin": skin, "view": recipe["view"],
-                                "ordinary_metrics": baseline, "diagnostics": diagnostics})
-                (args.output/"progress.json").write_text(json.dumps({"forwards": len(records), "sample_id": recipe["sample_id"]})+"\n")
+                evaluate(recipe, case, target_kwargs, split=split, saved=True, expected_row=expected[recipe["sample_id"]])
+            if split == "development":
+                for spec in extension_specs(recipes[0]["base_seed"], recorded_groups, evaluated_groups):
+                    case = (sample_for(spec["group_index"], spec["view"], split, spec["base_seed"],
+                                       curriculum=curriculum, component_capacity=capacity) if "curriculum" in summary else
+                            sample_case(spec["group_index"], spec["view"], split, spec["base_seed"],
+                                        final_capture=bool(capacity)))
+                    recipe = json.loads(json.dumps(case.record))
+                    if recipe["sample_id"] != spec["sample_id"] or recipe["group_id"] != spec["group_id"]:
+                        raise ValueError("development extension identity differs")
+                    target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                    evaluate(recipe, case, target_kwargs, split=split, saved=False)
+                    extension_recipes.append(recipe)
     if not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()):
         raise ValueError("read-only error probe changed model tensors")
+    extension = None if evaluated_groups == recorded_groups else {
+        "saved_groups": recorded_groups, "evaluated_groups": evaluated_groups,
+        "canonical_groups": CANONICAL_DEVELOPMENT_GROUPS, "base_seed": extension_recipes[0]["base_seed"],
+        "saved_cases": sum(1 for row in records if row["split"] == "development" and row.get("saved", True)),
+        "extension_cases": len(extension_recipes), "recipes": extension_recipes}
     if sources != {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in source_paths}:
         raise ValueError("diagnostic source changed during execution")
     totals = summarize(records, max_cases=68 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 45)
@@ -177,7 +234,7 @@ def main():
               "source_catalogue_sha256": summary["catalogue_sha256"], "weights_sha256": summary["checkpoint_sha256"],
               "automatic_metrics_reproduced": True, "weights_unchanged": True, "label_inputs_to_model": False,
               "core_architecture": architecture, "config": manifest["config"], "component_capacity": capacity,
-              "curriculum": curriculum,
+              "curriculum": curriculum, "development_extension": extension,
               "totals": totals, "cases": records, "sources": sources,
               "elapsed_seconds": time.monotonic()-started,
               "scope": "Saved synthetic raw-head error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, decoded complete-state or real accuracy claim. Unknown component targets are excluded. No training/label/production-output changes."}

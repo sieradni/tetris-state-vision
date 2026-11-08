@@ -10,6 +10,7 @@ import subprocess
 from m2_error_analysis import fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import summarize_components
 from probe_model import require_bounded_job
+from probe_stream_errors import CANONICAL_DEVELOPMENT_GROUPS, extension_specs
 from record_stream_run import checkpoint_architecture, require_owned_run, validate_completion
 from source_snapshot import verify_source
 
@@ -35,6 +36,32 @@ def digest(path):
     return value.hexdigest()
 
 
+def verify_extension(extension, *, recorded_groups, saved_recipes):
+    """An extension is the canonical set, prefix-completed from saved cases."""
+    if extension is None:
+        return {}
+    if type(extension) is not dict or type(recorded_groups) is not int or not saved_recipes:
+        raise ValueError("development extension metadata required")
+    base_seed = saved_recipes[0]["base_seed"]
+    specs = extension_specs(base_seed, recorded_groups, CANONICAL_DEVELOPMENT_GROUPS)
+    if (set(extension) != {"saved_groups", "evaluated_groups", "canonical_groups", "base_seed",
+                           "saved_cases", "extension_cases", "recipes"} or
+            extension["saved_groups"] != recorded_groups or
+            extension["evaluated_groups"] != CANONICAL_DEVELOPMENT_GROUPS or
+            extension["canonical_groups"] != CANONICAL_DEVELOPMENT_GROUPS or
+            extension["base_seed"] != base_seed or extension["saved_cases"] != len(saved_recipes) or
+            type(extension["recipes"]) is not list or len(extension["recipes"]) != len(specs) or
+            extension["extension_cases"] != len(specs)):
+        raise ValueError("development extension metadata differs")
+    for spec, recipe in zip(specs, extension["recipes"]):
+        if (type(recipe) is not dict or recipe.get("sample_id") != spec["sample_id"] or
+                recipe.get("group_id") != spec["group_id"] or recipe.get("view") != spec["view"] or
+                recipe.get("group_index") != spec["group_index"] or recipe.get("base_seed") != spec["base_seed"] or
+                recipe.get("split") != "development"):
+            raise ValueError("development extension recipe identity differs")
+    return {recipe["sample_id"]: recipe for recipe in extension["recipes"]}
+
+
 def validate_report(result, job, summary, manifest, recipes, *, name):
     """Pure metadata gate; neural/pixel replay belongs to the recorded worker."""
     curriculum = summary.get("curriculum", "stream-v1")
@@ -47,9 +74,11 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
             result["label_inputs_to_model"] is not False):
         raise ValueError("complete finite ordinary diagnostic gate required")
     command = job["command"]
-    if (len(command) != 6 or Path(command[1]).resolve() != ROOT/"scripts/probe_stream_errors.py" or
+    declared = result.get("development_extension")
+    expected_tail = [] if declared is None else ["--development-groups", str(declared.get("evaluated_groups"))]
+    if (len(command) != 6+len(expected_tail) or Path(command[1]).resolve() != ROOT/"scripts/probe_stream_errors.py" or
             command[2] != "--run" or command[3] != result["run"] or command[4] != "--output" or
-            Path(command[5]).resolve() != ROOT/"runs"/name):
+            Path(command[5]).resolve() != ROOT/"runs"/name or command[6:] != expected_tail):
         raise ValueError("native report command/output identity differs")
     architecture = checkpoint_architecture(summary, manifest)
     if (result["run_status"] != summary["status"] or result["global_steps"] != summary["steps"] or
@@ -61,17 +90,28 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
             result["job_ceiling_bytes"] != job["memory_bytes"] or result.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("report checkpoint/partial-status identity differs")
     capacity = result["component_capacity"]
+    extension_recipes = verify_extension(result.get("development_extension"),
+                                         recorded_groups=summary["development_groups"],
+                                         saved_recipes=recipes["development"])
     totals = summarize(result["cases"], max_cases=max_cases)
     for split, field in (("training", "final_training_probe"), ("development", "development")):
         expected = {row["sample_id"]: row for row in summary[field]["cases"]}
         labels = {row["sample_id"]: row for row in recipes[split]}
         cases = [row for row in result["cases"] if row["split"] == split]
-        training_limit = 32 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 9
-        if (not 1 <= len(cases) <= (training_limit if split == "training" else 36) or len(expected) != len(summary[field]["cases"]) or
-                len(labels) != len(recipes[split]) or len(cases) != len(expected) or
-                {row["sample_id"] for row in cases} != set(expected) or set(labels) != set(expected)):
+        saved_rows = [row for row in cases if row.get("saved", True)]
+        extension_rows = [row for row in cases if row.get("saved") is False]
+        split_limit = (32 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 9) if split == "training" else 36
+        if (not 1 <= len(saved_rows) <= split_limit or len(cases) > split_limit or
+                len(expected) != len(summary[field]["cases"]) or len(labels) != len(recipes[split]) or
+                len(saved_rows) != len(expected) or {row["sample_id"] for row in saved_rows} != set(expected) or
+                set(labels) != set(expected)):
             raise ValueError("saved diagnostic population differs")
-        for row in cases:
+        if extension_recipes and split == "development":
+            if len(extension_rows) != len(extension_recipes) or {row["sample_id"] for row in extension_rows} != set(extension_recipes):
+                raise ValueError("development extension population differs")
+        elif extension_rows:
+            raise ValueError("unsaved diagnostic cases outside the development extension")
+        for row in saved_rows:
             recipe = labels[row["sample_id"]]
             density, skin = recipe_strata(recipe)
             if row["group_id"] != recipe["group_id"] or row["view"] != recipe["view"] or row["skin"] != skin or row["density_recipe"] != density:
@@ -94,6 +134,24 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
                 raise ValueError("component diagnostics differ from checkpoint capacity")
             if capacity and any(diagnostic["components"][key] != value for key, value in ordinary["components"].items()):
                 raise ValueError("component decomposition disagrees with ordinary metrics")
+        for row in extension_rows:
+            recipe = extension_recipes[row["sample_id"]]
+            density, skin = recipe_strata(recipe)
+            ordinary, diagnostic = row["ordinary_metrics"], row["diagnostics"]
+            if (row["group_id"] != recipe["group_id"] or row["view"] != recipe["view"] or
+                    row["skin"] != skin or row["density_recipe"] != density):
+                raise ValueError("extension sample ancestry/recipe differs")
+            layers = [value for value in diagnostic["layers"].values() if value["target_known"]]
+            if (ordinary["known_cells"] != diagnostic["locked"]["known_cells"] or
+                    ordinary["exact_locked_board"] != diagnostic["locked"]["exact_board"] or
+                    not math.isclose(ordinary["cell_accuracy"], diagnostic["locked"]["cell_accuracy"], abs_tol=1e-6) or
+                    not math.isclose(ordinary["mean_geometry_error_cells"], diagnostic["geometry"]["mean_cells"], rel_tol=1e-5, abs_tol=1e-5) or
+                    ordinary["known_layers"] != len(layers) or ordinary["exact_known_layers"] != sum(layer["exact"] for layer in layers)):
+                raise ValueError("extension decomposition disagrees with ordinary metrics")
+            if bool(capacity) != ("components" in diagnostic):
+                raise ValueError("extension component diagnostics differ from checkpoint capacity")
+            if capacity and any(diagnostic["components"][key] != value for key, value in ordinary["components"].items()):
+                raise ValueError("extension component decomposition disagrees with ordinary metrics")
     if capacity:
         for split, values in summarize_components(result["cases"]).items():
             totals[split]["components"] = values
