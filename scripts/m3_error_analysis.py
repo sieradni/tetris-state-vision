@@ -1,6 +1,9 @@
 """Pure masked queue/hold diagnostics; no decoded state or inferred hidden length."""
 
 PIECES = tuple("IOTSZJL")
+# A supervised piece position may be predicted as the endpoint token; that is an
+# emitted class, not an unknown, so it must be tallied rather than rejected.
+QUEUE_CLASSES = PIECES+("EOS",)
 QUEUE_STATUSES = ("visible", "absent", "cropped", "unknown")
 HOLD_STATUSES = ("observed", "empty", "absent", "cropped", "unknown")
 
@@ -54,6 +57,8 @@ def _predicted_classes(predicted, mask, names):
     counts = {}
     for index, known in enumerate(mask):
         if known:
+            if not _index(predicted[index], len(names)):
+                raise ValueError("predicted identity class outside the declared vocabulary")
             name = names[predicted[index]]
             counts[name] = counts.get(name, 0) + 1
     return dict(sorted(counts.items())), len(counts), sum(counts.values())
@@ -90,7 +95,7 @@ def analyze_components(prediction, target):
         raise ValueError("unobserved hold cannot label piece identity")
 
     piece_mask = [known and value != 7 for known, value in zip(target["queue_token_known"], target["queue_tokens"])]
-    queue_identity, queue_distinct, queue_supervised = _predicted_classes(prediction["queue_tokens"], piece_mask, PIECES)
+    queue_identity, queue_distinct, queue_supervised = _predicted_classes(prediction["queue_tokens"], piece_mask, QUEUE_CLASSES)
     hold_identity = PIECES[prediction["hold_piece"]] if target["hold_piece_known"] else None
     fields = {"piece_tokens": _counts(prediction["queue_tokens"], target["queue_tokens"], piece_mask),
               "eos_tokens": _counts(prediction["queue_tokens"], target["queue_tokens"], eos),

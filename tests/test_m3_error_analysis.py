@@ -169,6 +169,14 @@ class ComponentErrorAnalysisTests(unittest.TestCase):
         self.assertEqual(result["queue"]["piece_tokens"]["correct"], 0)
         self.assertTrue(result["queue_supported_exact"] is False)
 
+    def test_a_piece_position_predicted_as_eos_is_tallied_not_rejected(self):
+        prediction, target = fixture()
+        prediction["queue_tokens"] = [7, 0, 7, 7, 7]
+        identity = analyze_components(prediction, target)["identity"]
+        self.assertEqual(identity["queue_predicted_classes"], {"EOS": 1, "I": 1})
+        self.assertEqual(identity["queue_distinct_predicted_classes"], 2)
+        self.assertFalse(identity["queue_constant_predictor"])
+
     def test_discriminating_prediction_is_not_a_constant_predictor(self):
         result = analyze_components(*fixture())
         identity = result["identity"]
