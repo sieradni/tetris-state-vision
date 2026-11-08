@@ -17,8 +17,9 @@ head-only training on the ordered artifact raises exact training roles 20/64 to
 36/64 with boards32/32, cells128/128 and geometry.21059 bit-identical, still short
 of the64/64 gate and26 short of the62/64 copied-head reference, and an independent
 50-forward replay (unchanged weights`e02a02e7...`) plus curator reproduce every
-saved metric; development is4/18 boards on18 images with0/36 roles and no
-generalization claim; do not re-tune this stage. Conditional copied-head pixel
+saved metric; development on the canonical18 images is the same4/18 boards and0/36
+roles for both stages, with stage2 loss higher (11.8129 vs11.0885, replay
+`m2-stream-headrate-control-s3-dev6-errors-r1`); do not re-tune this stage. Conditional copied-head pixel
 replay and independent audits are complete for both controlled models. Ordered training roles reach 62/64; interleaved
 64/64, but both joint-fit criteria fail and development types remain 0/18.
 See [CONDITIONAL_PIXEL_REPLAY.md](CONDITIONAL_PIXEL_REPLAY.md). Next predeclare

@@ -127,11 +127,26 @@ gap to the copied-head fit and then stalls 26 roles short of it. This lever is
 therefore closed as a measured negative; re-tuning its rate, optimizer or budget
 needs a new predeclared hypothesis, not an extension of this one.
 
-Development (6 groups, 18 images): 4/18 exact boards, all four empty, 0/36 roles,
-cell accuracy .9019, geometry 3.5305 cells, loss 11.8129. Stage 1 recorded its
-development row on a different denominator (9 images, 3 groups: 2/9 boards, 0/18
-roles), so the two are not directly comparable; stage 2 cannot create
-generalization and none is claimed.
+Development, on the contract's canonical six-group (18-image) set:
+
+| Quantity | Stage 1 (canonical replay) | Stage 2 |
+|---|---|---|
+| Exact boards | 4/18 | 4/18 |
+| Exact supported roles | 0/36 | 0/36 |
+| Cell accuracy | .901944 | .901944 |
+| Mean geometry error (cells) | 3.530471 | 3.530471 |
+| Loss | 11.0885 | 11.8129 |
+
+Occupancy and lattice outputs are bit-identical between the stages, as the frozen
+backbone requires, so the same four boards are exact. Stage 1's recorded 9-image
+row (2/9 boards, 0/18 roles, .908333, 4.168932, loss 11.3678) is retained as the
+saved historical subset its summary published; the canonical numbers come from the
+ordinary replay `runs/m2-stream-headrate-control-s3-dev6-errors-r1/result.json`
+(50 forwards, weights `1f20007c...` unchanged, every saved per-case metric
+reproduced) and its curator's
+`docs/evidence/m2-stream-headrate-control-s3-dev6-errors-r1/scope.json`, with the
+denominator discrepancy closed as V-036. Stage 2 cannot create generalization, and
+its development loss is .7244 higher than stage 1's on the same population.
 
 Independent evidence. `runs/m2-stream-staged-head-r1-s3-errors-r1/result.json`
 replays 50 forwards (32 training, 18 development) with unchanged weights

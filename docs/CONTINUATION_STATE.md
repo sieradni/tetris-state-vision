@@ -25,9 +25,15 @@ Result: exact locked boards 32/32, semantic cells 128/128 and geometry
 gate fails, and the run stops 26 roles short of the 62/64 copied-head reference, so
 head-only refinement recovers about a quarter of that gap and then stalls. That
 retires the "copied head is reachable from pixels" hypothesis without proving the
-joint forward lacks class information. Development is 4/18 exact boards (all four
-empty), 0/36 roles, geometry 3.5305 and loss 11.8129 on 18 images; stage 1 recorded
-development only on 9 images, so the denominators differ and nothing is claimed.
+joint forward lacks class information. Development is now comparable on the contract's canonical six-group set: an ordinary
+replay of the stage-1 artifact over the same 18 images
+(`m2-stream-headrate-control-s3-dev6-errors-r1`, 50 forwards, weights `1f20007c...`
+unchanged, every saved metric reproduced, curator in
+`docs/evidence/m2-stream-headrate-control-s3-dev6-errors-r1/`) reaches the same
+4/18 exact boards, 0/36 roles, .901944 cells and 3.530471 geometry, with stage 2's
+loss higher (11.8129 vs 11.0885). V-036 closes the denominator discrepancy; stage
+1's published 9-image row (2/9 boards, 0/18 roles) is a saved subset, not a
+different result.
 Independent evidence: `runs/m2-stream-staged-head-r1-s3-errors-r1/result.json`
 (50 forwards, weights unchanged, every saved per-case metric reproduced, 425,635,840 B
 / 20.032 s) and the curator's

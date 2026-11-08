@@ -17,7 +17,39 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | launch-ownership | V-029, V-030 (2) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job |
-| evidence-reporting | V-032, V-033 (2) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement |
+| evidence-reporting | V-032, V-033, V-036 (3) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension |
+
+## V-036 — CLOSED: staged development evidence sat on two different denominators
+
+- Symptom: `STAGED_HEAD_REFINEMENT.md` could only publish "no comparison claimed"
+  for development, because stage 1 recorded 3 ancestries and 9 images while stage 2
+  used the canonical 6 and 18, and no evidence path could put stage 1 on the same
+  population.
+- Root cause: the development group count is a run argument and the ordinary error
+  probe replays exactly the saved population, so an older run could never be
+  measured on the contract's canonical set without retraining; nothing required a
+  recorded development population to match the canonical one.
+- Detection class: evidence-reporting; extends V-032/V-033, because two runs on
+  different denominators do not form a comparison.
+- Instrument: `probe_stream_errors.py --development-groups` completes the
+  deterministic development drawings to the canonical 6 groups as a prefix
+  extension, keeps the saved cases as the unchanged-weight reproduction anchor,
+  marks extension cases `saved: false` and records their identities;
+  `record_stream_errors.verify_extension` re-derives that prefix from the saved base
+  seed and refuses truncation, a non-canonical target, a substituted or short
+  extension and a saved-set mismatch, and the curator re-derives every extension
+  row's decomposition and totals. Regression:
+  `tests/test_development_extension.py`.
+- Green run: `runs/m2-stream-headrate-control-s3-dev6-errors-r1/result.json` — 50
+  forwards, weights `1f20007c...` unchanged, every saved per-case metric
+  reproduced, 420,257,792 B / 18.941 s — curated into
+  `docs/evidence/m2-stream-headrate-control-s3-dev6-errors-r1/scope.json` (passed,
+  base `87488bc`).
+- Outcome: on the canonical 18 images both stages reach 4/18 exact boards, 0/36
+  exact roles, .901944 cell accuracy and 3.530471-cell geometry, and stage 2's
+  development loss is higher (11.8129 vs 11.0885). Stage 1's published 9-image row
+  (2/9 boards, 0/18 roles, .908333, 4.168932, 11.3678) is a saved subset of that
+  same population, not a competing result.
 
 ## V-034 — CLOSED: the staged stage refused its own owned source artifact
 

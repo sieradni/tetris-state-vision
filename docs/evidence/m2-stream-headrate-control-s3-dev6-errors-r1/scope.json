@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "source_base_commit": "87488bc5521b522dc283a0248efdc7a4d1082293",
+  "core_architecture": "TetrisStateNet-M2",
+  "source_catalogue_sha256": "18ce798eefe37b6d3ae778993fa3c94045312632b12715df5cab80749d258125",
+  "weights_sha256": "1f20007ced9c16da12756a817c327cfbf520dc4c451dd386674c969b7ddff1b6",
+  "global_steps": 1024,
+  "target_steps": 1024,
+  "run_status": "complete",
+  "forwards": 50,
+  "component_capacity": 0,
+  "automatic_metrics_reproduced": true,
+  "weights_unchanged": true,
+  "native_peak_job_commit_bytes": 420257792,
+  "native_elapsed_seconds": 18.941,
+  "diagnostic_sources": {
+    "scripts/probe_stream_errors.py": "47ad596522e9bf661bfdce00d9c517104aa0933384eea6519f6b1c556051d241",
+    "scripts/m2_error_analysis.py": "72f997892f12295f0106931aa82bc9e089b69c3641dc7d89862e42c6984fbf6f",
+    "scripts/m3_error_analysis.py": "9e90a836b6e2d8abf16e595cf7de7f46c256707f133fcb0a20fa5263502f901f",
+    "scripts/record_stream_run.py": "c45f09ed3d5870316b01b54d950a21138b14755a1ee762b0ac9b5ccb38da6df5",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "artifact_sha256": {
+    "result.json": "7c0c4d7349d77b54a9cc0858e7954f94b3733944f4397c1904c3c6a6ce92e25b",
+    "progress.json": "ff6c53b19374da6341176f39d9fa8635640e121ae9c821c6ffa233cf1ef7a834",
+    "input-summary.json": "bb361de7d347dcadf7ecb22c8c57dcaf6d84676d3b48745dc644a2454479f46f",
+    "source-manifest.json": "aeea302350535908e16b788359b23cc4cde6ed5775bb6d0459829c4e40939027",
+    "checkpoint-manifest.json": "676c23699049d045067cfc11f03fc937130f108a5e08dc0339699ba3a7b05c01",
+    "input-run-job.json": "847eeeccc9a0a9c279d27a7fd19259b43ef5e41a670be5636a4979c0d749f452",
+    "training-probe.jsonl": "cc04eeec9d2319fb03b2bb536ea07059a71e4e8965b406b6ce71386d11ac6532",
+    "development-probe.jsonl": "40d12222eef6490e9c40f4e5cf66dfc567e7e369af39cbcd3dd5d99ba7033e0f",
+    "native-job.json": "121fa952e5c51b8019e8d3f44446b0797636b44e449f9f9db69e75ce506a1fec",
+    "native.log": "87b8d1e99bdd923b3033665d968bcd5e8553bad0c385d9920ddb2edb5a1723bb",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "curator_sha256": "0059c1da38066feea76377f464b2c04a52be3606a8f450df13fe94c5c917994a",
+  "scope": "Saved synthetic raw-head error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, decoded complete-state or real accuracy claim. Unknown component targets are excluded. No training/label/production-output changes."
+}
