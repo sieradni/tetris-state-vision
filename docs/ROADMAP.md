@@ -11,7 +11,17 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
-Latest: the staged frozen-backbone type-head refinement is a measured negative
+Latest: the first joint M3 fit (capacity64,128 updates) is a measured negative
+([M3_JOINT_FIT.md](M3_JOINT_FIT.md), predeclared at `90218b3`): training probes
+0/9 exact boards,12/18 roles (ghost9/9, active3/9) and0/9 readable components with
+queue tokens0/54 andhold0/9, while EOS9/9, slot status54/54 andpresence63/63 are
+exact; geometry19.82->4.04 cells and loss29.97->7.74 show the optimizer trains,
+but development stays0/18 boards and0/36 roles. Independent27-forward replay
+(weights`b2e44c9c...` unchanged) and its curator are in
+`docs/evidence/m3-stream-joint-fit-r1-errors-r2/scope.json`. Items4-5 need
+reviewed, permissioned real labels and stay unreachable from repo data.
+
+The staged frozen-backbone type-head refinement is also a measured negative
 ([STAGED_HEAD_REFINEMENT.md](STAGED_HEAD_REFINEMENT.md), predeclared at `e601182`):
 head-only training on the ordered artifact raises exact training roles 20/64 to
 36/64 with boards32/32, cells128/128 and geometry.21059 bit-identical, still short
@@ -134,8 +144,15 @@ and generalization gates.
    controller now also passes actual continuous3==partial1+resume2 routing,
    curation and byte-identical model/Adam/RNG recovery on the admitted pilot;
    docs/evidence/m3-controller-recovery-r1/scope.json. The larger
-   has7,997,016 parameters and942,903,296B peak under1GiB. Joint learning and
-   varied-shape long memory remain pending; no quality admission follows.
+   has7,997,016 parameters and942,903,296B peak under1GiB. Joint learning now has its first measured datum: a128-update joint fit atcapacity64
+   on the run's nine training probes is complete and fails its predeclared criterion
+   (0/9 boards,12/18 roles withghost9/9 andactive3/9,0/9 readable components with
+   queue tokens0/54 andhold0/9 against exact EOS9/9, slot status54/54, presence63/63)
+   while development stays0/18 boards and0/36 roles. Geometry19.82->4.04 and loss
+   29.97->7.74 show the optimizer trains; component identity does not.
+   docs/M3_JOINT_FIT.md; curator docs/evidence/m3-stream-joint-fit-r1-errors-r2/.
+   Component-identity learning and varied-shape long memory remain pending; no
+   quality admission follows.
    Synthetic final-model-size
    captures now reobserve labels at that exact transform (9 checks). Arbitrary
    post-labeled resize/invalid alpha still refuses; the API keeps queue/
@@ -146,6 +163,8 @@ and generalization gates.
    association. Admit reviewed real labels and compare scratch/pretrained/direct
    decoders on independent session/ancestry/family splits. The166 user images
    are drafts, not a labeled benchmark. Broad render and real coverage are open.
+   This chain is not executable from repo data: it needs reviewed, permissioned
+   labels, so it is skipped on purpose rather than treated as a blocker.
 5. Release only after the full gate: >=95% exact complete state on the readable
    real population, abstentions counted as failures, confidence intervals,
    calibration/risk-coverage, exported-artifact parity, CPU latency/memory gates

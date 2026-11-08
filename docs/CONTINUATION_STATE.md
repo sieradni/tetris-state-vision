@@ -1,5 +1,59 @@
 # Contributor handoff — 2026-10-30
 
+## First M3 joint learning is a measured negative — 2026-11-08
+
+Roadmap item 3's open half is measured for the first time. Items 4–5 were checked
+first and skipped on purpose: they need admitted, permissioned, independently
+reviewed real labels, and the tree holds only 166 real drafts with zero
+training/scoring eligibility. Nothing in the repo converts those pixels into
+admitted labels, so the preferred real-image chain is an owner decision (review
+plus permission), not an executable pass. `docs/M3_JOINT_FIT.md` records it.
+
+The next ranked item repo data supports is the joint queue/hold heads, which had
+never been trained. `docs/M3_JOINT_FIT.md` predeclares the study at commit
+`90218b3`, before any receipt existed: 128 updates of the accuracy model with
+`--component-capacity 64` on `stream-v1`, seed `20261026`, evaluation and
+checkpoint every 64, canonical 6 development groups, criterion = 9/9 exact boards,
+18/18 exact roles, 9/9 exact readable components and <= 0.25-cell geometry on the
+run's own nine training probes.
+
+Fresh capacity-64 admission `runs/m3-stream-joint-fit-profile-r2-job.json`
+(passed, 82.759 s, 943,411,200 B under 1,152 MiB, checkpoint `ad14d69a...`,
+catalogue `7074e6a6...`, work-item bound 2), then
+`runs/m3-stream-joint-fit-r1-job.json` (passed, 417.353 s outer, 360.29 s of
+updates, 984,649,728 B peak, 128 steps, checkpoint `b2e44c9c...`).
+
+Result: the criterion is FALSE. Training probes 0/9 exact boards, 12/18 exact
+roles (ghost 9/9, active 3/9), .8494 cell accuracy, 4.0417-cell geometry, loss
+7.739; development 0/18 boards, 0/36 roles, .8481 cells, 2.0294 geometry, loss
+7.332. Against the two-update profile (roles 3/18, geometry 19.82, loss 29.97
+training; geometry 16.18, loss 30.56 development) the optimizer clearly trains:
+geometry and loss collapse, ghost identity fits. Components do not: queue EOS
+9/9, slot status 54/54 and presence 63/63 are exact while piece tokens are 0/54
+and hold identity 0/9, so every readable component fails on identity alone. That
+is the M2 class-collapse signature localized to the queue-token and hold-type
+heads.
+
+Independent replay `runs/m3-stream-joint-fit-r1-errors-r2-job.json` (27 forwards,
+35.184 s, 546,545,664 B, weights `b2e44c9c...` unchanged,
+`automatic_metrics_reproduced`) is curated in
+`docs/evidence/m3-stream-joint-fit-r1-errors-r2/scope.json` (`passed`). Three
+launches were refused for authored rather than derived bounds (wall 2,700 s vs the
+trainer's (0, 1800]; admission work items 256 vs the required 2; probe work items
+64 vs the required 27 forwards) and all receipts are retained; no code, fixture or
+gate defect was found.
+
+The staged head refinement remains a measured negative, and development stays
+comparable across stages on the canonical 18 images: stage 1 (ordinary replay of
+its artifact) and stage 2 both reach 4/18 exact boards, 0/36 exact roles, .901944
+cell accuracy and 3.530471-cell geometry, with development loss 11.0885 versus
+11.8129. The M3 study does not change those numbers.
+
+Next: component-identity learning is now the narrowest open M3 lever (targets,
+loss weighting or a longer fit at the same criterion), each needing its own
+predeclaration and admission; varied-shape long memory and review-only runtime
+decoding stay open, and the real-image chain still needs admitted labels.
+
 ## Staged frozen-backbone head refinement is a measured negative — 2026-11-08
 
 The roadmap's next joint-learning lever is done and closed as a measured negative.
