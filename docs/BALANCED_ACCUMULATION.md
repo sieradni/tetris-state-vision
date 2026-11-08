@@ -115,9 +115,11 @@ work8 (`runs/accumulation-checkpoint-pure-r6-job.json`, evidence
 They cover exclusive journal creation, non-contiguous group refusal that leaves
 the journal unchanged, uncommitted-suffix exclusion, contract/prefix corruption,
 optimizer ownership, wrong Adam step and hyperparameters, and pending gradients.
-The Toy Torch test in `tests/test_accumulation_checkpoint_torch.py` — real AdamW,
-dropout and a forced in-group interruption — is **unrun**: its 640 MiB admission
-was refused by the OS commit guard before launch. Nothing here is a native
+The Toy Torch test in `tests/test_accumulation_checkpoint_torch.py` also passes
+at 640 MiB / 60 s / work1 after an earlier admission refusal: real AdamW with
+dropout, a forced interruption inside group2, restore into a fresh directory and
+replay to byte-identical model, Adam, RNG and journal bytes (1.422 s test,
+332,423,168 B peak). Nothing here is a native
 interruption gate, and the bridge is not called by the trainer, controller or
 curator, so no arm of the comparison is admitted. Bounded children must use an
 absolute or backslash interpreter path; see V-030 in [BUG_LOG.md](BUG_LOG.md).

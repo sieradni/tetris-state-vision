@@ -1,10 +1,12 @@
 {
-  "status": "passed_partial",
-  "base_commit": "86f736251b2a2b0c0cbd06f54a6b45f77f9d05cd",
-  "tests_passed": 8,
-  "tests_unrun": [
-    "tests/test_accumulation_checkpoint_torch.py (1 test)"
-  ],
+  "status": "passed",
+  "base_commit": "ad901dced4a2aea513c457cc3d63ca74540d9791",
+  "tests_passed": 9,
+  "gates": {
+    "pure_contract": "8 tests, 0.522 s job, 37,761,024 B peak under 128 MiB / 30 s / work8, exit 0 (accumulation-checkpoint-pure-r6-job.json)",
+    "torch_integration": "1 test, 1.422 s test / 4.386 s job, 332,423,168 B peak under 640 MiB / 60 s / work1, exit 0 (accumulation-checkpoint-torch-r2-job.json)"
+  },
+  "refusals": "accumulation-checkpoint-torch-r1-job.json: status memory_pressure, exit 125, no child_pid, reason os_commit_reservation. Retained, not a test result.",
   "artifact_sha256": {
     "execution-source/scripts/accumulation_checkpoint.py": "27ebc644f0e33071f932f29e8b81d03ea6a23c52785868654ff5d930cb049246",
     "execution-source/scripts/accumulation_contract.py": "79a9595724c1ab9c7d043dd6aa0e825e698ec14509d776418dc07789de2b7074",
@@ -15,8 +17,13 @@
     "execution-source/tests/test_accumulation_checkpoint_torch.py": "4fa7d505c099c0b50c2a3224f453ba670f4fd68f5a38a962d071e6bdbd748b3d",
     "accumulation-checkpoint-pure-r6-job.json": "bb2d200ccb92c59267a1b1e545579a5fda9573b3318fb08c3551edf9f1b9b01b",
     "accumulation-checkpoint-pure-r6.log": "0e10dadae0a94664bd1df7a209d3cc765c5bb40b6ff25b54eff5e93db82422e2",
-    "accumulation-checkpoint-pure-r6.stderr.log": "710c58ab9dd517d859719f2793b1b65f4419f655a430b716e10eedbd9d170f49"
+    "accumulation-checkpoint-pure-r6.stderr.log": "710c58ab9dd517d859719f2793b1b65f4419f655a430b716e10eedbd9d170f49",
+    "accumulation-checkpoint-torch-r1-job.json": "93d992b398f21f4d664a37547901c40614ae292078f3fe415186c69190b00ca0",
+    "accumulation-checkpoint-torch-r1.log": "c9a1424a81660987846ccfd3e5d70de81e76234a701428309465c42a6b224301",
+    "accumulation-checkpoint-torch-r1.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "accumulation-checkpoint-torch-r2-job.json": "9b0f19390c1860e27152505a51a9fc6435d63a2d57ee5793dce80406177f1978",
+    "accumulation-checkpoint-torch-r2.log": "3f81978542108c1d6212d05e3e73a727785acdfd1479f0153c9af15a198a4443",
+    "accumulation-checkpoint-torch-r2.stderr.log": "ca72615b66bfd9054463b93a51f7adf592a7f6251ed1204f43713c98d3d466fe"
   },
-  "unverified": "Torch Adam/dropout group-interruption integration test: bounded 640 MiB / 60 s / work1 admission refused with os_commit_reservation before any child launch (runs/accumulation-checkpoint-torch-r1-job.json, status memory_pressure, exit_code 125, no child_pid). Expected peak about 400 MB; retry only under fresh system pressure. No training, native interruption or full-square group profile is claimed.",
-  "scope": "No-Torch durable journal, complete-group append, boundary snapshot, optimizer ownership/step/hyperparameter refusal, committed-prefix preflight and uncommitted-suffix exclusion into a fresh destination. The bridge is not integrated into the actual trainer, controller or independent curator."
+  "scope": "No-Torch durable journal, complete-group append, boundary snapshot, optimizer ownership/step/hyperparameter refusal, committed-prefix preflight and uncommitted-suffix exclusion into a fresh destination; plus one toy Torch check with real AdamW, dropout, a forced interruption inside a group and byte-identical model/Adam/RNG/journal replay. The bridge is not integrated into the actual trainer, controller or independent curator, accepts ordinary fixed-fit recipes only, and provides no native in-group interruption gate at real model or group size and no full-square profile. No training is admitted."
 }

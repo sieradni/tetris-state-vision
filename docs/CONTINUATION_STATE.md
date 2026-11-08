@@ -9,24 +9,25 @@ of validated whole groups after a successful optimizer step, boundary-only
 model/Adam/RNG publication with no pending gradients, refusal of a mismatched or
 wrongly advanced optimizer, and restore into a new directory that excludes every
 uncommitted suffix record. Eight no-Torch contract checks pass under128MiB:
-`runs/accumulation-checkpoint-pure-r6-job.json`,0.522s/37,761,024B, receipt and
-logs in `docs/evidence/accumulation-checkpoint-contracts-r1/`.
-The Torch Adam/dropout group-interruption integration test is UNVERIFIED: its
-bounded640MiB/60s/work1 admission was refused with `os_commit_reservation`
-before any child launch; `runs/accumulation-checkpoint-torch-r1-job.json`
-(memory_pressure,125,no child) is preserved. Expect roughly400MB and retry only
-under fresh pressure. A launch trap is recorded as V-030: a relative
+`runs/accumulation-checkpoint-pure-r6-job.json`,0.522s/37,761,024B, and one Toy
+Torch group-interruption check passes at640MiB/332,423,168B; receipts and logs
+are in `docs/evidence/accumulation-checkpoint-contracts-r1/`.
+The first Torch attempt was refused with `os_commit_reservation` before any child
+launch (`runs/accumulation-checkpoint-torch-r1-job.json`, memory_pressure,125,no
+child) and is retained as an admission refusal, not a test result; r2 passed once
+pressure cleared. A launch trap is recorded as V-030: a relative
 forward-slash child interpreter fails in `CreateProcess`, so bounded children
 must use an absolute or backslash path form; the supervisor is unchanged.
 The bridge is NOT integrated: the actual trainer, controller and independent
 curator do not use it, ordinary fixed-fit recipes only, no full-square group
 profile and no native in-group interruption/recovery gate exist. No training is
 admitted and no research job is running.
-Next: rerun the Torch gate under fresh pressure, integrate image/update
+Next: integrate image/update
 accounting plus controller/curator routing, then obtain fresh native full-square
 warm/reload profiles and actual in-group interruption recovery before any arm of
 the predeclared comparison. Commit pressure was31.2GB against the31.368GB stop
-at review, so long training windows stay blocked. Local commits remain unpushed;
+at review and briefly cleared to1.12GB of headroom, so long training windows stay
+blocked. Local commits remain unpushed;
 no push without explicit authorization.
 
 ## Accumulation journal contracts — 2026-11-07

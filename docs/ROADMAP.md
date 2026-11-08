@@ -28,8 +28,8 @@ The matched design and focused grouping/gradient/recovery instrument are in
 and optimizer cursors into the actual trainer and obtain fresh native resource/
 recovery admission before training; the pure journal and ownership boundary now
 pass their own scoped tests, and the durable group-boundary bridge now passes eight
-no-Torch checkpoint contracts (its Toy Torch in-group interruption test is still
-unrun after an OS commit-pressure refusal; V-030 records that bounded children need
+no-Torch checkpoint contracts (its Toy Torch in-group interruption test passes
+at640MiB after an earlier pressure refusal; V-030 records that bounded children need
 an absolute interpreter path). Retain the original joint-fit and generalization gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak

@@ -40,6 +40,9 @@ a named green run. An unrun gate leaves the entry OPEN.
   absolute interpreter — 8 tests, 0.522 s, 37,761,024 B under 128 MiB.
 - Open because only the invocation form is fixed: the supervisor is unchanged at
   `d2fb1478...`, so a supervisor-side preflight needs its own hash re-admission.
+- Confirmation that the form was the only blocker: the 640 MiB Torch gate that
+  r5 was meant to run passed once pressure cleared
+  (`runs/accumulation-checkpoint-torch-r2-job.json`, 332,423,168 B, exit 0).
 
 ## V-029 — CLOSED: reused launcher logs on an existing run name
 
