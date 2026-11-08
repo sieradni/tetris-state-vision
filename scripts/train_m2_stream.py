@@ -28,9 +28,10 @@ def arguments(argv=None):
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
     parser.add_argument("--component-identity-factor", type=int, choices=(1, 4), default=1,
                         help="declared queue-token/hold-piece loss scale;1 is the published objective")
-    parser.add_argument("--component-identity-readout", choices=("separate", "shared", "prototype"), default="separate",
+    parser.add_argument("--component-identity-readout", choices=("separate", "shared", "prototype", "positional"),
+                        default="separate",
                         help="shared reads identity through the cell-type head;prototype reads per-piece image "
-                             "queries;separate is published")
+                             "queries;positional adds per-position image queries;separate is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,

@@ -194,6 +194,36 @@ class ComponentErrorAnalysisTests(unittest.TestCase):
         self.assertEqual(identity["queue_supervised_positions"], 1)
         self.assertFalse(identity["queue_constant_predictor"])
 
+    def test_position_axis_spread_is_carried_into_the_identity_fields(self):
+        prediction, target = fixture()
+        prediction["queue_tokens"] = [4, 4, 7, 4, 4]
+        prediction["queue_position_spread"] = 2.5
+        identity = analyze_components(prediction, target)["identity"]
+        self.assertEqual(identity["queue_position_logit_spread"], 2.5)
+        self.assertEqual(identity["queue_distinct_predicted_classes"], 1)
+        self.assertTrue(identity["queue_constant_predictor"])
+
+    def test_position_axis_spread_refuses_an_invalid_value(self):
+        for spread in (-1.0, "wide", float("nan")):
+            prediction, target = fixture()
+            prediction["queue_position_spread"] = spread
+            with self.assertRaisesRegex(ValueError, "position-axis spread"):
+                analyze_components(prediction, target)
+
+    def test_summary_reports_the_position_axis_reaching_the_logits(self):
+        cases = []
+        for index in range(2):
+            prediction, target = fixture()
+            prediction["queue_tokens"] = [4, 4, 7, 4, 4]
+            prediction["queue_position_spread"] = 1.5+index
+            cases.append({"split": "training", "sample_id": str(index), "group_id": "one",
+                          "diagnostics": {"components": analyze_components(prediction, target)}})
+        summary = summarize_components(cases)["training"]["queue"]
+        self.assertAlmostEqual(summary["position_logit_spread_max"], 2.5)
+        self.assertAlmostEqual(summary["position_logit_spread_mean"], 2.0)
+        self.assertTrue(summary["position_axis_reaches_logits"])
+        self.assertTrue(summary["constant_predictor"])
+
     def test_summary_surfaces_a_constant_hold_head_as_one_class(self):
         predictions_targets = []
         for hold in ("S", "J", "L"):

@@ -139,6 +139,43 @@ class ComponentIdentityFactorTests(unittest.TestCase):
         self.assertFalse(torch.allclose(first["queue_tokens"], second["queue_tokens"]))
         self.assertFalse(torch.allclose(first["hold_piece"], second["hold_piece"]))
 
+    def test_positional_readout_gives_every_position_its_own_image_query(self):
+        from dataclasses import replace
+        from tetris_vision.components import ComponentDecoder
+        from tetris_vision.model import ModelConfig, TetrisStateNet
+        decoder = ComponentDecoder(32, 4).use_positional_queries()
+        self.assertEqual(tuple(decoder.position_queries.shape), (1, 65, 32))
+        self.assertEqual(tuple(decoder.piece_queries.shape), (1, 8, 32))
+        self.assertEqual(tuple(decoder.hold_queries.shape), (1, 4, 32))
+        self.assertIsNone(decoder.queue_tokens)
+        self.assertIsNone(decoder.hold_piece)
+        valid = torch.ones(1, 5, dtype=torch.bool)
+        board = torch.zeros(1, 1, 32)
+        torch.manual_seed(5)
+        with torch.no_grad():
+            first = decoder(torch.randn(1, 5, 32), valid, board, capacity=4)["queue_tokens"]
+            second = decoder(torch.randn(1, 5, 32), valid, board, capacity=4)["queue_tokens"]
+        self.assertEqual(tuple(first.shape), (1, 5, 8))
+        # The position axis reaches the logits: two positions of one frame differ, and the
+        # same position reads a different frame differently.
+        self.assertFalse(torch.allclose(first[0, 0], first[0, 1]))
+        self.assertFalse(torch.allclose(first, second))
+        model = TetrisStateNet(replace(ModelConfig.pilot(), component_capacity=4,
+                                       component_identity_readout="positional")).eval()
+        self.assertIn("components.position_queries", model.state_dict())
+
+    def test_positional_readout_is_validated_and_declared_by_the_driver(self):
+        from dataclasses import replace
+        from tetris_vision.model import ModelConfig
+        with self.assertRaises(ValueError):
+            replace(ModelConfig.pilot(), component_identity_readout="positional")
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        self.assertEqual(arguments([*base, "--component-capacity", "64",
+                                    "--component-identity-readout", "positional"]).component_identity_readout,
+                         "positional")
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-identity-readout", "positional"])
+
     def test_prototype_readout_is_exclusive_and_validated(self):
         from dataclasses import replace
         from tetris_vision.components import ComponentDecoder

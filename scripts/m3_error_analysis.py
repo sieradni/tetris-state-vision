@@ -28,12 +28,28 @@ def replay_keywords(recipe, capacity):
     return ({"final_capture": True}, {"component_capacity": capacity}) if capacity else ({}, {})
 
 
+def _position_spread(tokens, mask):
+    """Largest distance of one supervised position's logits from their mean.
+
+    Zero means every supervised position received identical logits, so the position
+    axis carried no information into the decision. A positive value proves the
+    position axis reaches the logits even when every argmax is still one class.
+    """
+    rows = [row for row, known in zip(tokens, mask) if known]
+    if len(rows) < 2 or not rows[0]:
+        return 0.0
+    mean = [sum(row[index] for row in rows)/len(rows) for index in range(len(rows[0]))]
+    return max(sum((row[index]-mean[index])**2 for index in range(len(mean)))**.5 for row in rows)
+
+
 def pack_components(output, target):
     """One-image tensor outputs/targets to bounded plain diagnostic values."""
     prediction = {key: output[key][0].argmax(-1).tolist() for key in
                   ("queue_tokens", "queue_slot_status", "queue_status", "hold_status", "hold_piece")}
     prediction["queue_presence"] = (output["queue_presence"][0] > 0).tolist()
     prediction["queue_anchors"] = (output["queue_anchors"][0] > 0).tolist()
+    prediction["queue_position_spread"] = _position_spread(output["queue_tokens"][0].tolist(),
+                                                           target["queue_token_known"][0].tolist())
     truth = {key: target[key][0].tolist() for key in
              ("queue_tokens", "queue_token_known", "queue_slot_status", "queue_slot_status_known",
               "queue_presence", "queue_presence_known", "queue_status", "queue_start_observed",
@@ -95,6 +111,9 @@ def analyze_components(prediction, target):
         raise ValueError("unobserved hold cannot label piece identity")
 
     piece_mask = [known and value != 7 for known, value in zip(target["queue_token_known"], target["queue_tokens"])]
+    spread = prediction.get("queue_position_spread")
+    if spread is not None and (type(spread) not in (int, float) or spread != spread or not 0 <= spread < 1e12):
+        raise ValueError("position-axis spread must be a finite nonnegative number")
     queue_identity, queue_distinct, queue_supervised = _predicted_classes(prediction["queue_tokens"], piece_mask, QUEUE_CLASSES)
     hold_identity = PIECES[prediction["hold_piece"]] if target["hold_piece_known"] else None
     fields = {"piece_tokens": _counts(prediction["queue_tokens"], target["queue_tokens"], piece_mask),
@@ -115,6 +134,7 @@ def analyze_components(prediction, target):
     identity = {"queue_predicted_classes": queue_identity, "queue_supervised_positions": queue_supervised,
                 "queue_distinct_predicted_classes": queue_distinct,
                 "queue_constant_predictor": bool(queue_supervised > 1 and queue_distinct == 1),
+                "queue_position_logit_spread": spread,
                 "hold_predicted_piece": hold_identity}
     return {"capacity": capacity, "queue_supported_exact": queue_right, "hold_supported_exact": hold_right,
             "supported_components_exact": queue_right and hold_right, "component_state_readable": readable,
@@ -177,5 +197,10 @@ def summarize_components(records):
         values["hold"]["predicted_classes"] = dict(sorted(hold_predicted.items()))
         values["hold"]["distinct_predicted_classes"] = len(hold_predicted)
         values["hold"]["constant_predictor"] = bool(sum(hold_predicted.values()) > 1 and len(hold_predicted) == 1)
+        spreads = [row["identity"]["queue_position_logit_spread"] for row in rows
+                   if (row.get("identity") or {}).get("queue_position_logit_spread") is not None]
+        values["queue"]["position_logit_spread_max"] = max(spreads) if spreads else None
+        values["queue"]["position_logit_spread_mean"] = sum(spreads)/len(spreads) if spreads else None
+        values["queue"]["position_axis_reaches_logits"] = bool(spreads and max(spreads) > 0)
         result[split] = values
     return result

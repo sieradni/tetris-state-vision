@@ -38,9 +38,10 @@ class ModelConfig:
         check(1 <= self.max_batch <= 4 and 4096 <= self.max_pixels <= 1536**2, "invalid work capacity")
         check(type(self.component_capacity) is int and 0 <= self.component_capacity <= 64,
               "component capacity must be0 (M2) or1..64 (M3)")
-        check(self.component_identity_readout in ("separate", "shared", "prototype") and
+        check(self.component_identity_readout in ("separate", "shared", "prototype", "positional") and
               (self.component_capacity or self.component_identity_readout == "separate"),
-              "identity readout must be separate, shared with the cell-type head, or per-piece image queries")
+              "identity readout must be separate, shared with the cell-type head, per-piece image queries, "
+              "or per-position image queries")
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
 
     @classmethod
@@ -217,6 +218,10 @@ class TetrisStateNet(nn.Module):
                 # Declared lever: per-class image queries, so discrimination is possible
                 # by construction rather than through one collapsed role vector.
                 self.components.use_prototype_readout()
+            elif config.component_identity_readout == "positional":
+                # Declared lever: per-position image queries on top of the validated class
+                # and hold banks, so the position axis can carry information too.
+                self.components.use_positional_queries()
         # Last initialization preserves common seeded tensors in paired studies.
         self.layer_evidence = None
         if config.layer_evidence:

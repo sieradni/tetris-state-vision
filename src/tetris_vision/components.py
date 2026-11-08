@@ -41,6 +41,9 @@ class ComponentDecoder(nn.Module):
         # Declared prototype read-out: per-class image queries, not one fixed vector map.
         self.piece_queries = None
         self.hold_queries = None
+        # Declared positional read-out: every queue position reads the frame through its
+        # own query, so a position's own content can change its class.
+        self.position_queries = None
         self.queue_presence = nn.Linear(dimension, 1)
         self.queue_slot_status = nn.Linear(dimension, 3)
         self.queue_status = nn.Linear(dimension, 4)
@@ -76,7 +79,14 @@ class ComponentDecoder(nn.Module):
             # vectors depend on the observed frame rather than being one fixed map.
             scale = self.dimension**.5
             prototypes = read(self.piece_queries.expand(memory.shape[0], -1, -1)+board)
-            tokens = values@prototypes.transpose(1, 2)/scale
+            if self.position_queries is not None:
+                # Declared lever: the position side is image-conditioned too, so two
+                # positions can read different panel content instead of sharing one code.
+                positioned = read(self.position_queries[:, :capacity+1].expand(memory.shape[0], -1, -1)
+                                  +board+roles[:, :1])
+                tokens = positioned@prototypes.transpose(1, 2)/scale
+            else:
+                tokens = values@prototypes.transpose(1, 2)/scale
             hold_set = read(self.hold_queries.expand(memory.shape[0], -1, -1)+board+roles[:, 1:2])
             hold = (hold_set.mean(1)[:, None, :]@prototypes[:, :7].transpose(1, 2)).squeeze(1)/scale
         else:
@@ -98,6 +108,20 @@ class ComponentDecoder(nn.Module):
         # the resource profile refuses; remove them instead of carrying them unused.
         self.queue_tokens = None
         self.hold_piece = None
+        return self
+
+    def use_positional_queries(self):
+        """Declared lever: per-position image queries on top of the validated banks.
+
+        The class bank and the four-query hold bank are unchanged; only the queue
+        position side changes. Each of the `capacity+1` positions carries its own
+        learned query that attends the observed component memory and the board, so a
+        position's own content can move its class logits. That is the analogue, one
+        level down, of the per-class image queries: it makes position discrimination
+        possible by construction rather than through one shared index code.
+        """
+        self.use_prototype_readout()
+        self.position_queries = nn.Parameter(torch.randn(1, 65, self.dimension)*.02)
         return self
 
     def use_prototype_readout(self):
