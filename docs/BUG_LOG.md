@@ -20,6 +20,40 @@ a named green run. An unrun gate leaves the entry OPEN.
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048 (9) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 
+## V-052 — CLOSED: the admission gate refused a newly declared objective
+
+- Symptom: the first study of `m3-identity-factor-length-r1` was refused 3.1 s in with
+  `ValueError: component endpoint term differs from resource admission`, although its
+  admission profile `runs/m3-identity-factor-length-r1-profile-r1/summary.json` records
+  `component_endpoint_term: length` in `arguments`, `recovery_contract` and `config`, and
+  the CLI accepted `--component-endpoint-term length`. The run was gone before the first
+  optimizer step; the failed receipt and the partial output directory are retained under
+  `runs/attempts/`.
+- Root cause: the declared objective existed in four hand-copied places and one of them
+  was missed. `validate_admission` compared against the literal `("joint", "separate")`,
+  so the newly declared `length` mode could never be admitted by the gate even though the
+  driver, the model configuration and the loss all accepted it. A lever cannot be measured
+  if its own gate refuses it, and the refusal looked like a mismatch of the run's records
+  rather than of the gate.
+- Detection class: objective-provenance (V-051 was the first entry): a declared objective
+  was not consistently known to the components that accept or replay it.
+- Instrument: the endpoint objectives are now declared once, as
+  `tetris_vision.components.ENDPOINT_TERMS`, and the admission join is one function,
+  `require_endpoint_term(endpoint_term, summary)`. The driver mirrors the tuple without
+  importing torch at parser build time (its own archived-import rule), and a test binds the
+  two (`test_every_declared_endpoint_objective_is_accepted_by_the_driver_and_the_gate`)
+  and exercises every declared mode through both the CLI and the gate, plus a mismatched
+  summary and an undeclared mode. This is the third defect in the objective-provenance
+  class (V-051, V-052 plus the loss join), so the standing instrument is the shared
+  declaration rather than per-site literals.
+- Green run: the preserved retry `runs/m3-identity-factor-length-r1-job.json` (passed,
+  128/128, 228.0 s, 1,011,888,128 B) and its canonical replay
+  `runs/m3-identity-factor-length-r1-errors-r1-job.json` (passed, saved metrics reproduced
+  under `component_endpoint_term: length`). The second refusal on the same lever was the
+  gate working as declared, not a defect: after the fix the study's source catalogue no
+  longer matched the superseded profile, so the profile was re-run against the fixed tree
+  and both attempts are preserved under `runs/attempts/`.
+
 ## V-051 — OPEN INSTRUMENT: the run ledger cannot show which component objective a run trained under
 
 - Symptom: the endpoint-loss lever needed to show that the run actually trained under the

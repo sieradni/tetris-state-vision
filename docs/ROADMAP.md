@@ -11,6 +11,26 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the queue-length lever is a measured **negative**, and it **closes** the
+class-side / position-side / loss-side disjunction at the fixed matched budget
+([M3_IDENTITY_QUEUE_LENGTH.md](M3_IDENTITY_QUEUE_LENGTH.md), predeclared at `d2895de`,
+`docs/evidence/m3-identity-factor-length-r1-errors-r1/scope.json`): one length decision per
+case still leaves the queue head emitting `EOS` at all 54 supervised training positions
+(distinct 1, constant true; 90/90 development) and the hold head on one class (`J`x9 and
+x12, 3/9 and 3/12 exact). The measured mechanism is a representation collapse: with no
+per-position question left, the per-position logit spread fell from 1.2338 and 1.2304 to
+0.0877 and 0.0838, and presence — a per-position term sharing the same read-out — fell from
+54/63 and 90/105 to 9/63 and 15/105, while endpoint and slot stayed exact (9/9, 15/15,
+54/54, 90/90). Read-out is ruled out (three variants, and the spread follows the objective,
+not the architecture), data is ruled out (54 positions, 7 classes, 6 slots, and presence was
+54/63 when asked per position), and the loss masking remains: every objective tried admits
+a single class everywhere as a minimiser. Structure: geometry 3.6709 and 3.1173, roles 0/9
+and 0/18, boards 0/9 and 1/14 nonempty development, exact readable 0/9 and 0/18; the fit
+gate is **FALSE**. Disjunction closed on evidence, so the ranked next lever is the **fit
+gate itself** (locked occupancy and role read-out), with no further identity or endpoint
+variant ranked. V-052 records the admission gate that refused the newly declared objective
+and the single declaration that now binds driver, model and gate.
+
 Latest: the endpoint-loss lever is a measured **negative** that moves the constant rather
 than removing it
 ([M3_IDENTITY_ENDPOINT_LOSS.md](M3_IDENTITY_ENDPOINT_LOSS.md), predeclared at `008be3d`,

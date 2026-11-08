@@ -1,5 +1,49 @@
 # Contributor handoff — 2026-10-30
 
+## Queue length: the identity disjunction is closed — 2026-11-08
+
+`docs/M3_IDENTITY_QUEUE_LENGTH.md` predeclared at `d2895de`, before any receipt, the last
+lever of the disjunction: `--component-endpoint-term length`, one distribution over queue
+lengths `0..capacity` derived from a per-position hazard, with the 7-way piece softmax, the
+positional read-out and the four-query hold bank unchanged and everything else matched
+(capacity 64, factor 4, capture 512, seed `20261026`, LR .001, 128 updates, six groups).
+
+Measured: queue `EOS`x54 training (distinct **1**, constant true) and `EOS`x90 development;
+hold `J`x9 (distinct **1**, 3/9 exact) and `J`x12 (3/12). Position spread collapsed to
+0.0877 training and 0.0838 development (from 1.2338 and 1.2304), and presence — a
+per-position term sharing the read-out — fell from 54/63 and 90/105 to 9/63 and 15/105
+while EOS and slot stayed exact. Verdict **NEGATIVE** under the predeclared rule.
+
+Mechanism: with one global length answer, the objective stops asking any position to
+differ, and the shared read-out collapses — the emitted class is `EOS` everywhere, and the
+only terms that stay exact are the two that do not need position. Read-out ruled out (three
+variants; the spread tracks the objective, not the architecture), data ruled out (presence
+was 54/63 when asked per position), loss masking remains: every objective tried admits a
+single class everywhere as a minimiser. **Disjunction CLOSED on evidence** — all three
+sides measured at the fixed budget, each predeclared and receipted, each negative.
+
+Ranked next: the **fit gate** (locked occupancy and role read-out), FALSE at 0/9 and 0/18
+boards and 0/18 roles, and unstable across runs (ghost 9/9 one run, 0/9 here). No further
+identity/endpoint variant and no budget extension of the same objective is ranked. This is
+ranking, not a measured claim; the fit gate has to be measured before anything is asserted
+about it.
+
+Receipts: admission `runs/m3-identity-factor-length-r1-profile-r1-job.json` (passed, 34.2 s,
+981,618,688 B), study `runs/m3-identity-factor-length-r1-job.json` (passed, 128/128,
+228.0 s, 1,011,888,128 B, checkpoint `8042c288...`), canonical replay
+`...-errors-r1-job.json` (passed, 27 forwards, 16.2 s, 602,841,088 B,
+`component_endpoint_term: length`, weights unchanged, saved metrics reproduced), curation
+`...-curation.json` (passed) into
+`docs/evidence/m3-identity-factor-length-r1-errors-r1/scope.json`, tests
+`runs/m3-identity-length-tests-r3.json` (6 modules, `OK`, 92 tests).
+
+V-052: the first study was refused because the admission gate's allowed set was a
+hand-copied tuple that never learned the new mode. The endpoint objectives are now declared
+once (`components.ENDPOINT_TERMS`) with one admission join (`require_endpoint_term`), bound
+to the driver by a test; the second refusal (superseded profile catalogue after the fix)
+was the gate working as declared. Both attempts and the superseded profile are preserved
+under `runs/attempts/`.
+
 ## Endpoint loss: the constant moves, the disjunction does not close — 2026-11-08
 
 `docs/M3_IDENTITY_ENDPOINT_LOSS.md` predeclared at `008be3d`, before any receipt, the
