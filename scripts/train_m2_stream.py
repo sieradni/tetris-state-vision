@@ -26,6 +26,8 @@ def arguments(argv=None):
     parser.add_argument("--model", choices=("pilot", "accuracy"), required=True)
     parser.add_argument("--component-capacity", type=int, default=0,
                         help="0 keeps M2;10..64 enables joint heads and final-capture data")
+    parser.add_argument("--component-identity-factor", type=int, choices=(1, 4), default=1,
+                        help="declared queue-token/hold-piece loss scale;1 is the published objective")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--accumulation-policy", choices=tuple(ACCUMULATION_POLICIES),
@@ -51,6 +53,8 @@ def arguments(argv=None):
         parser.error("steps 1..4096 and finite nonnegative seed required")
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
+    if args.component_identity_factor != 1 and not args.component_capacity:
+        parser.error("component identity factor requires the joint heads")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
     if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
@@ -113,7 +117,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -126,6 +130,10 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("arguments", {}).get("type_head_rate_factor", 1) != type_head_rate_factor or
             summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != type_head_rate_factor):
         raise ValueError("type-head rate factor differs from resource admission")
+    if (type(identity_factor) is not int or identity_factor not in (1, 4) or
+            summary.get("arguments", {}).get("component_identity_factor", 1) != identity_factor or
+            summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
+        raise ValueError("component identity factor differs from resource admission")
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -360,7 +368,8 @@ def main(argv=None, *, _archive=None, _started=None):
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
                            ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
-                           type_head_rate_factor=args.type_head_rate_factor, accumulation_policy=args.accumulation_policy,
+                           type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
+                           accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            profile_work_items=2*(ACCUMULATION_POLICIES[args.accumulation_policy][0]
                                                  if args.accumulation_policy else 1))
@@ -423,7 +432,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -495,6 +504,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
     recovery_contract["curriculum"] = args.curriculum
     recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
+    recovery_contract["component_identity_factor"] = args.component_identity_factor
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
@@ -550,7 +560,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -633,7 +643,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()

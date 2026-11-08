@@ -124,7 +124,7 @@ def geometry_error(predicted, target):
     return (points(predicted)-points(target))/spacing[:, None]
 
 
-def stage_loss(output, target):
+def stage_loss(output, target, identity_factor=1):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(output["occupancy"][:, :20], target["occupied"], target["known"])
@@ -154,12 +154,13 @@ def stage_loss(output, target):
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
-        result["components"] = component_loss(output["components"], target["components"])[0]
+        result["components"] = component_loss(output["components"], target["components"],
+                                              identity_factor=identity_factor)[0]
     return result
 
 
-def joint_loss(outputs, target):
-    per_stage = [stage_loss(stage, target) for stage in outputs["stages"]]
+def joint_loss(outputs, target, identity_factor=1):
+    per_stage = [stage_loss(stage, target, identity_factor) for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1., "semantic": .25, "visibility": .25,

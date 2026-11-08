@@ -117,8 +117,14 @@ def _validate_contract(output, target):
     check(torch.equal(target["hold_piece_known"], target["hold_status"] == 0), "unobserved hold cannot train piece identity")
 
 
-def component_loss(output, target):
-    """Masked semantic/observation losses; all coefficients are pilot hypotheses."""
+def component_loss(output, target, identity_factor=1):
+    """Masked semantic/observation losses; all coefficients are pilot hypotheses.
+
+    `identity_factor` scales only the queue-token and hold-piece terms for the
+    predeclared component-identity lever;1 is the published objective.
+    """
+    if type(identity_factor) is not int or identity_factor not in (1, 4):
+        raise ValueError("component identity factor must be1 or4")
     _validate_contract(output, target)
     def masked(value, mask):
         return (value*mask).sum()/mask.sum().clamp_min(1)
@@ -135,8 +141,8 @@ def component_loss(output, target):
              "queue_anchors": F.binary_cross_entropy_with_logits(output["queue_anchors"], torch.stack((target["queue_start_observed"], target["queue_end_observed"]), -1).float()),
              "hold_status": F.cross_entropy(output["hold_status"], target["hold_status"]),
              "hold_piece": semantic("hold_piece", target["hold_piece_known"])}
-    weights = {"queue_tokens": 1., "queue_slot_status": .25, "queue_presence": .25,
-               "queue_status": .25, "queue_anchors": .25, "hold_status": .5, "hold_piece": 1.}
+    weights = {"queue_tokens": 1.*identity_factor, "queue_slot_status": .25, "queue_presence": .25,
+               "queue_status": .25, "queue_anchors": .25, "hold_status": .5, "hold_piece": 1.*identity_factor}
     return sum(weights[key]*value for key, value in terms.items()), terms
 
 
