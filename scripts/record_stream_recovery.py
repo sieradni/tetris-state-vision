@@ -53,6 +53,9 @@ def main():
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     curriculum = proof.get("curriculum", "stream-v1")
+    factor = proof.get("type_head_rate_factor", 1)
+    if type(factor) is not int or factor not in (1, 4):
+        raise ValueError("recovery type-head optimizer identity differs")
     new_curriculum_contract = "curriculum" in proof
     if new_curriculum_contract:
         from m2_curriculum import probe_specs, sample_for, training_case
@@ -80,6 +83,8 @@ def main():
                 job["supervisor_script_sha256"] != archive["files"]["scripts/run_bounded.py"] or
                 summary["updates_this_run"] != updates or summary["status"] != ("step_partial" if partial else "complete") or
                 summary["catalogue_sha256"] != catalogue or summary.get("curriculum", "stream-v1") != curriculum or
+                summary.get("arguments", {}).get("type_head_rate_factor", 1) != factor or
+                summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != factor or
                 not summary["checkpoint_round_trip_exact"] or
                 not Path(summary["driver_source_path"]).resolve().is_relative_to(child/"code")):
             raise ValueError("child status/resource/archive contract differs")
@@ -178,7 +183,7 @@ def main():
         shutil.copyfile(source, target)
     scope = {"status": "passed", "source_base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
              "architecture": architecture, "component_capacity": summary_rows["continuous"].get("component_capacity", 0),
-             "source_catalogue_sha256": catalogue, "curriculum": curriculum, "replayed_training_records_including_resumed_prefix": training_count,
+             "source_catalogue_sha256": catalogue, "curriculum": curriculum, "type_head_rate_factor": factor, "replayed_training_records_including_resumed_prefix": training_count,
              "verified_saved_probe_images": probe_count, "artifact_sha256": hashes,
              "native_peak_job_commit_bytes": root_job["peak_job_commit_bytes"],
              "curator_sha256": digest(Path(__file__)),

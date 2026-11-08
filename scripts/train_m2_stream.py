@@ -29,6 +29,7 @@ def arguments(argv=None):
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
+    parser.add_argument("--type-head-rate-factor", type=int, choices=(1, 4), default=1)
     parser.add_argument("--wall-seconds", type=float, default=300)
     parser.add_argument("--evaluate-every", type=int, default=128)
     parser.add_argument("--development-groups", type=int, default=6)
@@ -44,6 +45,8 @@ def arguments(argv=None):
         parser.error("joint stream component capacity must be10..64 to cover the renderer's10 slots;0 keeps M2")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is a capacity0 diagnostic")
+    if args.type_head_rate_factor != 1 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence or args.learning_rate != .001):
+        parser.error("type-head rate intervention requires the plain ordered M2 fit")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
@@ -57,13 +60,17 @@ def arguments(argv=None):
     return args
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1"):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
     if "curriculum" in summary and (summary.get("arguments", {}).get("curriculum") != curriculum or
                                     summary.get("recovery_contract", {}).get("curriculum") != curriculum):
         raise ValueError("resource arguments/recovery curriculum identity differs")
+    if (type(type_head_rate_factor) is not int or type_head_rate_factor not in (1, 4) or
+            summary.get("arguments", {}).get("type_head_rate_factor", 1) != type_head_rate_factor or
+            summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != type_head_rate_factor):
+        raise ValueError("type-head rate factor differs from resource admission")
     warm = summary.get("warm_optimizer_backward", {})
     if (summary.get("status") != "complete" or summary.get("steps") != 2 or not summary.get("profile_square") or
             summary.get("resource_profile_version") != 3 or not summary.get("training_recovery_profile_exact") or
@@ -98,6 +105,23 @@ def equal_tree(left, right):
     if isinstance(left, (list, tuple)):
         return type(left) is type(right) and len(left) == len(right) and all(equal_tree(a, b) for a, b in zip(left, right))
     return type(left) is type(right) and left == right
+
+
+def make_optimizer(model, learning_rate, factor):
+    """Keep the original single group by default; isolate exactly the type head otherwise."""
+    import torch
+    if factor == 1:
+        return torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=.01)
+    if factor != 4:
+        raise ValueError("unsupported type-head rate factor")
+    named = dict(model.named_parameters())
+    head_names = {"layer_type.weight", "layer_type.bias"}
+    if not head_names <= named.keys():
+        raise ValueError("expected shared type head missing")
+    rest = [parameter for name, parameter in named.items() if name not in head_names]
+    head = [named["layer_type.weight"], named["layer_type.bias"]]
+    return torch.optim.AdamW([{"params": rest}, {"params": head, "lr": learning_rate * factor}],
+                             lr=learning_rate, weight_decay=.01)
 
 
 def main(argv=None, *, _archive=None, _started=None):
@@ -166,9 +190,10 @@ def main(argv=None, *, _archive=None, _started=None):
         validate_admission(json.loads((admit/"summary.json").read_text()),
                            json.loads((admit.parent/(admit.name+"-job.json")).read_text()),
                            catalogue=archive["catalogue_sha256"], model=args.model, config=config_json,
-                           ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum)
+                           ceiling=ceiling, development_groups=args.development_groups, supervisor_sha=supervisor_sha, curriculum=args.curriculum,
+                           type_head_rate_factor=args.type_head_rate_factor)
     model = TetrisStateNet(config)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=.01)
+    optimizer = make_optimizer(model, args.learning_rate, args.type_head_rate_factor)
     maximum_pixels, evaluation_identities = 0, {}
     warm_optimizer_backward = None
     recovery_profile_exact = False
@@ -268,6 +293,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["native_cache_limits"] = NATIVE_CACHE_LIMITS
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
     recovery_contract["curriculum"] = args.curriculum
+    recovery_contract["type_head_rate_factor"] = args.type_head_rate_factor
     ledger_names = ("curve.jsonl", "training.jsonl", "evaluations.jsonl")
     resume_record = None
     if args.resume_from is not None:

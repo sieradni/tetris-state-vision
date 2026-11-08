@@ -47,11 +47,14 @@ def arguments(argv=None):
     parser.add_argument("--component-capacity", type=int, default=0)
     parser.add_argument("--layer-evidence", action="store_true")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
+    parser.add_argument("--type-head-rate-factor", type=int, choices=(1, 4), default=1)
     args = parser.parse_args(argv)
     if args.component_capacity != 0 and not 10 <= args.component_capacity <= 64:
         parser.error("joint gate capacity must cover renderer10 slots and stay<=64;0 keeps M2")
     if args.curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and args.component_capacity:
         parser.error("all-class fit is capacity0 only")
+    if args.type_head_rate_factor == 4 and (args.curriculum != "all-class-fit-v1" or args.component_capacity or args.layer_evidence):
+        parser.error("candidate requires plain ordered fit")
     return args
 
 
@@ -73,6 +76,8 @@ def main():
             worker += ["--layer-evidence"]
         if args.curriculum != "stream-v1":
             worker += ["--curriculum", args.curriculum]
+        if args.type_head_rate_factor != 1:
+            worker += ["--type-head-rate-factor", str(args.type_head_rate_factor)]
         if profile:
             worker += ["--profile-square"]
         else:
@@ -100,6 +105,8 @@ def main():
                 summary["config"].get("layer_evidence", False) is not args.layer_evidence or
                 summary.get("curriculum", "stream-v1") != args.curriculum):
             raise ValueError("gate completion/partial/parity contract differs")
+        if summary["recovery_contract"].get("type_head_rate_factor", 1) != args.type_head_rate_factor:
+            raise ValueError("gate optimizer factor differs")
         if not Path(summary["driver_source_path"]).resolve().is_relative_to(run/"code"):
             raise ValueError("trainer main source path is not archived")
         runs[name], receipts[name] = summary, job
@@ -146,7 +153,7 @@ def main():
     from tetris_vision.checkpoint import load_checkpoint
     from tetris_vision.model import ModelConfig, TetrisStateNet
     from training_snapshot import load_training_snapshot
-    from train_m2_stream import equal_tree
+    from train_m2_stream import equal_tree, make_optimizer
     if (not Path(load_training_snapshot.__code__.co_filename).resolve().is_relative_to(code) or
             not Path(equal_tree.__code__.co_filename).resolve().is_relative_to(code)):
         raise ValueError("gate recovery import is not frozen")
@@ -159,7 +166,7 @@ def main():
     config["widths"] = tuple(config["widths"])
     for run in (full, resumed):
         model = TetrisStateNet(ModelConfig(**config))
-        optimizer = torch.optim.AdamW(model.parameters(), lr=.001)
+        optimizer = make_optimizer(model, .001, args.type_head_rate_factor)
         recovery = load_training_snapshot(run, model, optimizer, contract=runs["continuous"]["recovery_contract"])
         if recovery["step"] != 6 or not equal_tree(expected_model.state_dict(), model.state_dict()):
             raise ValueError("recovery artifact does not match final inference model")
@@ -171,6 +178,7 @@ def main():
              "architecture": inference_record["architecture"], "component_capacity": args.component_capacity,
              "config": runs["continuous"]["config"],
              "curriculum": args.curriculum,
+             "type_head_rate_factor": args.type_head_rate_factor,
              "updates": {name: summary["updates_this_run"] for name, summary in runs.items()},
              "partial_status": runs["partial"]["status"], "global_steps": 6,
              "exact_data_ledger": True, "exact_loss_terms_gradient_curve": True,

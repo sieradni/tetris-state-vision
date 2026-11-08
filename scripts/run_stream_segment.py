@@ -81,6 +81,9 @@ def segment_plan(args):
     capacity = profile["config"].get("component_capacity", 0)
     layer_evidence = profile["config"].get("layer_evidence", False)
     curriculum = profile.get("curriculum", "stream-v1")
+    type_head_rate_factor = profile.get("arguments", {}).get("type_head_rate_factor", 1)
+    if type(type_head_rate_factor) is not int or type_head_rate_factor not in (1, 4):
+        raise ValueError("invalid admitted type-head rate factor")
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") and capacity):
         raise ValueError("supported curriculum/capacity identity required")
@@ -118,6 +121,7 @@ def segment_plan(args):
                 contract["weight_decay"] != .01 or contract["max_side"] != 512 or contract["threads"] != 1 or
                 contract["rng"] != "torch_cpu_only" or contract["native_cache_limits"] != NATIVE_CACHE_LIMITS or
                 contract.get("curriculum", "stream-v1") != curriculum or
+                contract.get("type_head_rate_factor", 1) != type_head_rate_factor or
                 capacity and contract.get("input_policy") != "M3-final-capture-v1" or
                 not capacity and contract.get("input_policy", "M2-prepared-resize-v1") != "M2-prepared-resize-v1"):
             raise ValueError("resume target/source differs; finished diagnostics cannot silently extend")
@@ -127,12 +131,14 @@ def segment_plan(args):
     if type(start) is not int or not 0 <= start < args.target_steps:
         raise ValueError("target already complete or resume cursor invalid")
     validate_recipe(recipe)
+    if type_head_rate_factor == 4 and (curriculum != "all-class-fit-v1" or capacity or layer_evidence or recipe["learning_rate"] != .001):
+        raise ValueError("candidate type-head rate requires the plain ordered fit recipe")
     supervisor_sha = hashlib.sha256((ROOT/"scripts/run_bounded.py").read_bytes()).hexdigest()
     if archive["files"]["scripts/run_bounded.py"] != supervisor_sha:
         raise ValueError("archived supervisor differs from live guard")
     validate_admission(profile, profile_job, catalogue=archive["catalogue_sha256"], model=profile["model_kind"],
                        config=profile["config"], ceiling=ceiling, development_groups=recipe["development_groups"],
-                       supervisor_sha=supervisor_sha, curriculum=curriculum)
+                       supervisor_sha=supervisor_sha, curriculum=curriculum, type_head_rate_factor=type_head_rate_factor)
     budget = min(args.updates, args.target_steps-start)
     trainer = code/"scripts/train_m2_stream.py"
     if not trainer.is_file():
@@ -148,11 +154,13 @@ def segment_plan(args):
         worker += ["--layer-evidence"]
     if curriculum != "stream-v1":
         worker += ["--curriculum", curriculum]
+    if type_head_rate_factor != 1:
+        worker += ["--type-head-rate-factor", str(type_head_rate_factor)]
     if args.resume_from is not None:
         worker += ["--resume-from", str(args.resume_from.resolve())]
     return {"run": run, "pipeline": pipeline, "start": start, "budget": budget, "worker": worker,
             "memory_mib": ceiling//1024**2, "component_capacity": capacity, "config": profile["config"], "curriculum": curriculum,
-            "model_kind": profile["model_kind"], "layer_evidence": layer_evidence, "catalogue_sha256": archive["catalogue_sha256"],
+            "model_kind": profile["model_kind"], "layer_evidence": layer_evidence, "type_head_rate_factor": type_head_rate_factor, "catalogue_sha256": archive["catalogue_sha256"],
             "architecture": architecture, "development_groups": recipe["development_groups"], "target_steps": args.target_steps}
 
 
@@ -164,7 +172,8 @@ def validate_segment(summary, job, manifest, plan):
             job["memory_bytes"] != plan["memory_mib"]*1024**2 or summary["config"] != plan["config"] or
             summary["catalogue_sha256"] != plan["catalogue_sha256"] or summary["model_kind"] != plan["model_kind"] or
             architecture != plan["architecture"] or summary.get("component_capacity", 0) != plan["component_capacity"] or
-            summary.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1")):
+            summary.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1") or
+            summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != plan.get("type_head_rate_factor", 1)):
         raise ValueError("saved segment cursor/configuration/resource identity differs")
     probes = 0
     training_images = 32 if plan.get("curriculum", "stream-v1") in ("all-class-fit-v1", "all-class-interleaved-v1") else 9
@@ -220,6 +229,7 @@ def main(argv=None):
             evidence["source_catalogue_sha256"] != plan["catalogue_sha256"] or evidence["weights_sha256"] != summary["checkpoint_sha256"] or
             evidence["core_architecture"] != manifest["architecture"] or evidence["component_capacity"] != plan["component_capacity"] or
             evidence.get("layer_evidence", False) != plan["layer_evidence"] or
+            evidence.get("type_head_rate_factor", 1) != plan["type_head_rate_factor"] or
             evidence.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1")):
         raise ValueError("curated status/step differs")
     require_controller_source(controller_sha)
@@ -230,6 +240,7 @@ def main(argv=None):
               "core_architecture": manifest["architecture"], "component_capacity": plan["component_capacity"],
               "model_kind": summary["model_kind"], "verified_probe_images": probes,
               "layer_evidence": plan["layer_evidence"],
+              "type_head_rate_factor": plan["type_head_rate_factor"],
               "curriculum": plan.get("curriculum", "stream-v1"),
               "next_resume_from": str(run) if summary["steps"] < args.target_steps else None,
               "controller_sha256": controller_sha,

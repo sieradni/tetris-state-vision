@@ -16,6 +16,10 @@ for both controlled models. Ordered training roles reach 62/64; interleaved
 64/64, but both joint-fit criteria fail and development types remain 0/18.
 See [CONDITIONAL_PIXEL_REPLAY.md](CONDITIONAL_PIXEL_REPLAY.md). Next predeclare
 a controlled joint-optimization lever and its resource/recovery admission.
+[TYPE_HEAD_JOINT_OPTIMIZATION.md](TYPE_HEAD_JOINT_OPTIMIZATION.md) now defines
+the fixed candidate and records both finite recovery gates. Exact initial weight
+bytes remain unverified; capture them and repeat affected admissions before the
+full comparison. No new learning result follows from those gates.
 
 1. The finite768-step diverse memory gate is GREEN at unchanged640MiB: peak
    519,782,400B,2.6MiB second-half growth, exact565 prior record/data prefix,

@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "source_catalogue": "c69372af51acb182ca5a883894afe75081d152be39e691694b8fd8e623b3b70b",
+  "source_hashes": {
+    "docs/experiments/compare_type_head_admission.py": "52400bc2f4254a19524068cf64378eb99462764310679de72218b33d30b2aea8",
+    "scripts/train_m2_stream.py": "381b0f38c53efbbfbbda69a20f1fa8dc772633ae2e2612240f232c2690390c27",
+    "scripts/run_stream_segment.py": "275519c1284d80509a0bc5205c5c6c759ee935a4129d476c9293cb620e388be5",
+    "scripts/record_stream_run.py": "4ae47d2e156ca9d8798c9f9d92077cee701b2c65848c70bcfff1e0d7c8de588e",
+    "scripts/probe_stream_recovery.py": "3e57e69bacb5f844a57970760198bdde9432636d9ad4c1cc8894d0e44f4cf1b4",
+    "scripts/record_stream_recovery.py": "bea14a7d4676b1654e00f2064bad62ef2421ef90cf649ae1a9c459408991be15",
+    "tests/test_type_head_optimizer.py": "228bb6741d9cd40ff81f28d2eb564126aff7347e123791e6835fef0278d2b068",
+    "tests/test_stream_driver.py": "2d84610f2966ca0e5bf22309f97d064bbd0df9e0a7e6a8c298dfdab975805a7b",
+    "tests/test_stream_segment.py": "00ca124501c4821b9e9693ce8b2433cd489379443ed113fea896827bcc5d0993"
+  },
+  "scope": "Focused optimizer, admission and routing tests; finite matched first-step comparison. Initial weight bytes not verified; no fit admission or accuracy claim."
+}

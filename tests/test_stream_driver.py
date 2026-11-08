@@ -89,6 +89,18 @@ class StreamAdmissionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_admission(summary, {**job, "status": "wall_timeout", "exit_code": 124}, **expected)
 
+    def test_head_rate_factor_is_bound_to_both_profile_identities(self):
+        summary, job, expected = self.admission()
+        summary.update(curriculum="all-class-fit-v1",
+                       arguments={"curriculum": "all-class-fit-v1", "type_head_rate_factor": 4},
+                       recovery_contract={"curriculum": "all-class-fit-v1", "type_head_rate_factor": 4})
+        validate_admission(summary, job, **expected, curriculum="all-class-fit-v1", type_head_rate_factor=4)
+        with self.assertRaisesRegex(ValueError, "factor"):
+            validate_admission(summary, job, **expected, curriculum="all-class-fit-v1", type_head_rate_factor=1)
+        summary["recovery_contract"]["type_head_rate_factor"] = 1
+        with self.assertRaisesRegex(ValueError, "factor"):
+            validate_admission(summary, job, **expected, curriculum="all-class-fit-v1", type_head_rate_factor=4)
+
     def test_cold_or_incomplete_optimizer_profiles_cannot_admit_a_study(self):
         summary, job, expected = self.admission()
         for field, value in (("steps", 1), ("resource_profile_version", 2), ("training_recovery_profile_exact", False), ("warm_optimizer_backward", {})):

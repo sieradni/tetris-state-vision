@@ -1,5 +1,52 @@
 # Contributor handoff — 2026-10-30
 
+## Joint type-head optimization preparation — 2026-11-07
+
+The predeclared comparison is `docs/TYPE_HEAD_JOINT_OPTIMIZATION.md`. An opt-in
+fourfold type-head optimizer factor is implemented with default single-group
+behavior preserved, profile/recovery identity bound, and segment routing guarded.
+Focused optimizer/admission/routing checks passed; these do not admit training.
+
+Candidate recovery admission r6 planned: `scripts/probe_stream_recovery.py
+--output runs/m2-stream-recovery-gate-r6 --curriculum all-class-fit-v1
+--type-head-rate-factor 4`, parent Windows Job 1024 MiB / 600 s / 14 updates,
+serialized children each 640 MiB / 90 s, CPU1/cache16 and unchanged OS
+pressure guard. Expected aggregate under 800 MiB from prior pilot gate; first
+two updates are the full-square warm profile, followed only if admitted by
+continuous6 and partial3+resume3. Receipt `runs/m2-stream-recovery-gate-r6-job.json`,
+logs same prefix `.log`/`.stderr.log`, progress in the output directory. More
+than 40 GB free was checked. This gate does not start the 1,024-update study.
+Correction: r6 already existed. The runner refused its existing receipt before
+work; redirect opened historical local log names. Failed-attempt copies are
+`runs/type-head-recovery-name-collision{,.stderr}.log`; historical local logs
+were restored byte-for-byte from `docs/evidence/m2-stream-recovery-gate-r6/`.
+See V-029. Use r7 only after checking all output, receipt and log names absent;
+same command, limits, output/log/receipt prefix, and work cap as above.
+r7 passed 57.769 s / 602,124,288 bytes, exact continuous6 == partial3+resume3,
+profile child peak 558,534,656 bytes under 640 MiB; all matching processes
+gone. Independent curator planned under 128 MiB / 30 s / 181 replay items,
+expected under 100 MiB, same CPU/pressure guards. Receipt/log prefix
+`runs/m2-stream-recovery-gate-r7-curation`.
+r7 curator passed 2.059 s / 87,764,992 bytes; replayed 17 records and 164
+saved probes, evidence `docs/evidence/m2-stream-recovery-gate-r7/`. Control r8
+planned using the same gate, ordered curriculum and factor1, parent 1024 MiB /
+600 s / 14 updates, serialized child 640 MiB / 90 s, expected under 800 MiB,
+CPU1/cache16 and unchanged pressure guard. Preflight output, receipt and both
+log paths; more than 40 GB free must remain. This is not the 1,024-update fit.
+r8 passed 118.063 s / 600,768,512 bytes; matching processes terminated.
+Control curator planned under 128 MiB / 30 s / 181 items, expected under
+100 MiB with the same guard, receipt/log prefix
+`runs/m2-stream-recovery-gate-r8-curation`. Match comparator planned at
+640 MiB / 30 s / two snapshots, expected under 400 MiB, after curation.
+r8 curator passed 2.414 s / 88,158,208 bytes; 17 records/164 images replayed.
+Matched first-step comparator passed 2.219 s / 256,782,336 bytes; initial
+probe metrics and first loss/gradient norm match, non-head first-step weights
+match and group rates are .001 versus .004 for the candidate head. Exact
+initial tensor bytes were not recorded. The predeclared identical-initial-
+weights criterion remains open; add source-bound capture/verification and
+repeat affected admissions before launching any 1,024-update study. Receipts:
+`docs/evidence/type-head-admission-contracts-r1/`. No learning claim follows.
+
 ## Pixel replay work in progress — 2026-11-07
 
 The conditional pixel replay and independent collectors are complete; see

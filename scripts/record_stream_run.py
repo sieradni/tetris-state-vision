@@ -83,6 +83,12 @@ def main():
     if type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"):
         raise ValueError("unsupported recorded curriculum")
     new_curriculum_contract = "curriculum" in summary
+    factor = summary.get("arguments", {}).get("type_head_rate_factor", 1)
+    if (type(factor) is not int or factor not in (1, 4) or
+            summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != factor or
+            factor == 4 and (curriculum != "all-class-fit-v1" or summary["config"].get("component_capacity", 0) or
+                             summary["config"].get("layer_evidence", False) or summary["arguments"]["learning_rate"] != .001)):
+        raise ValueError("recorded type-head optimizer identity differs")
     if new_curriculum_contract:
         from m2_curriculum import probe_specs, sample_for, training_case
         from m2_fit_contract import summarize_fit
@@ -102,7 +108,8 @@ def main():
                            model=summary["model_kind"], config=summary["config"],
                            ceiling=summary["job_ceiling_bytes"], development_groups=summary["development_groups"],
                            supervisor_sha=archive["files"]["scripts/run_bounded.py"],
-                           **({"curriculum": curriculum} if new_curriculum_contract else {}))
+                           **({"curriculum": curriculum} if new_curriculum_contract else {}),
+                           **({"type_head_rate_factor": factor} if "type_head_rate_factor" in summary.get("arguments", {}) else {}))
     from PIL import Image
     from m2_stream_data import sample_case
     if not Path(sample_case.__code__.co_filename).resolve().is_relative_to(code):
@@ -280,6 +287,7 @@ def main():
              "curator_sha256": digest(Path(__file__)), "core_architecture": architecture,
              "component_capacity": summary["config"].get("component_capacity", 0),
              "layer_evidence": summary["config"].get("layer_evidence", False), "curriculum": curriculum,
+             "type_head_rate_factor": factor,
              "distinct_training_ancestries": len({row["group_id"] for row in rows})}
     (evidence/"scope.json").write_text(json.dumps(scope, indent=2)+"\n", encoding="utf-8")
     print(json.dumps({"status": scope["status"], "run_status": summary["status"], "steps": summary["steps"],

@@ -16,6 +16,24 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013 (1) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
+| launch-ownership | V-029 (1) | Preflight output, receipt and both log paths before detached launch |
+
+## V-029 — CLOSED: reused launcher logs on an existing run name
+
+- Symptom: an r6 recovery launch failed on its existing exclusive receipt before
+  the job ran, but shell redirection had already truncated the old local logs.
+- Root cause: the output/receipt/log namespace was not checked before starting
+  the hidden launcher; exclusive receipt protection did not cover redirection.
+- Detection class: launch-ownership.
+- Instrument: require all output, receipt, stdout and stderr paths to be absent
+  before launch. Preserve failed-attempt logs and compare restored old logs to
+  curated evidence byte-for-byte; never overwrite prior evidence.
+- Failed attempt: `docs/evidence/type-head-admission-contracts-r1/type-head-recovery-name-collision.stderr.log`. Historical
+  r6 logs restored from `docs/evidence/m2-stream-recovery-gate-r6/`, whose receipt,
+  logs and scope were not modified. No candidate process was launched.
+- Green run: `runs/m2-stream-recovery-gate-r7-job.json`, preflight of all four
+  names, distinct launch and terminal passed receipt, 57.769 seconds, peak
+  602,124,288 bytes under 1 GiB. Old logs match curated copies by SHA-256.
 
 ## V-028 — CLOSED: feature class counts changed key type during JSON serialization
 

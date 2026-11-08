@@ -98,6 +98,28 @@ def outcome(case, plan, updates=2, complete=False):
 
 
 class StreamSegmentTests(unittest.TestCase):
+    def test_type_head_factor_routes_and_refuses_changed_resume(self):
+        with fixture() as case:
+            case.profile["curriculum"] = "all-class-fit-v1"
+            case.profile["arguments"].update(curriculum="all-class-fit-v1", type_head_rate_factor=4)
+            case.profile["recovery_contract"].update(curriculum="all-class-fit-v1", type_head_rate_factor=4)
+            case.manifest["metadata"]["recovery_contract"]["curriculum"] = "all-class-fit-v1"
+            write(case.admission/"summary.json", case.profile)
+            write(case.admission/"checkpoint/manifest.json", case.manifest)
+            plan = segment.segment_plan(case.args)
+            self.assertEqual(plan["type_head_rate_factor"], 4)
+            self.assertEqual(plan["worker"][plan["worker"].index("--type-head-rate-factor")+1], "4")
+            manifest, path = resume(case)
+            manifest["contract"].update(curriculum="all-class-fit-v1", type_head_rate_factor=1, learning_rate=.001)
+            write(path, manifest)
+            publish(case, case.args.resume_from, path)
+            with self.assertRaisesRegex(ValueError, "resume"):
+                segment.segment_plan(case.args)
+            manifest["contract"]["type_head_rate_factor"] = 4
+            write(path, manifest)
+            publish(case, case.args.resume_from, path)
+            self.assertEqual(segment.segment_plan(case.args)["type_head_rate_factor"], 4)
+
     def test_fit_policy_routes_and_resumes_only_its_matching_recipe_and32_probes(self):
         for policy in ("all-class-fit-v1", "all-class-interleaved-v1"):
             with fixture() as case:
