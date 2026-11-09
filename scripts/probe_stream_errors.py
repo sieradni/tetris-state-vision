@@ -141,6 +141,11 @@ def main():
     occupancy_factor = summary.get("arguments", {}).get("occupancy_factor", 1)
     if type(occupancy_factor) is not int or occupancy_factor not in (1, 4):
         raise ValueError("recorded occupancy factor must be1 or4")
+    # Replay the recorded class budget on occupied cells too, or the saved per-case loss
+    # cannot reproduce under the balanced per-cell term.
+    positive_weight = summary.get("arguments", {}).get("occupancy_positive_weight", 1)
+    if type(positive_weight) is not int or positive_weight not in (1, 4):
+        raise ValueError("recorded occupancy positive weight must be1 or4")
     if capacity:
         from tetris_vision.components import component_metrics
         require_frozen_callables(code, component_metrics)
@@ -164,7 +169,7 @@ def main():
             raise ValueError("saved streaming probe requires200 supported cells and registered grid")
         output = model(prepared.pixels[None], prepared.valid[None])
         loss, _ = joint_loss(output, target, identity_factor=identity_factor, endpoint_term=endpoint_term,
-                             occupancy_factor=occupancy_factor)
+                             occupancy_factor=occupancy_factor, positive_weight=positive_weight)
         baseline = diagnostic_metrics(output, target)
         diagnostics = analyze_case(*pack(output["final"], target))
         known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
@@ -253,6 +258,7 @@ def main():
               "automatic_metrics_reproduced": True, "weights_unchanged": True, "label_inputs_to_model": False,
               "core_architecture": architecture, "config": manifest["config"], "component_capacity": capacity,
               "component_identity_factor": identity_factor,              "component_endpoint_term": endpoint_term, "occupancy_factor": occupancy_factor,
+              "occupancy_positive_weight": positive_weight,
               "curriculum": curriculum, "development_extension": extension,
               "totals": totals, "cases": records, "sources": sources,
               "elapsed_seconds": time.monotonic()-started,

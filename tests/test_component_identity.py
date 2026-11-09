@@ -329,6 +329,34 @@ class ComponentIdentityFactorTests(unittest.TestCase):
             require_occupancy_factor(4, {"arguments": {"occupancy_factor": 1},
                                          "recovery_contract": {"occupancy_factor": 1}})
 
+    def test_the_positive_cell_weight_is_a_declared_class_budget_not_a_scale(self):
+        from tetris_vision.losses import POSITIVE_CELL_WEIGHTS, require_positive_weight
+        from train_m2_stream import POSITIVE_CELL_WEIGHTS as DRIVER_WEIGHTS
+        self.assertEqual(tuple(DRIVER_WEIGHTS), tuple(POSITIVE_CELL_WEIGHTS))
+        self.assertEqual(tuple(POSITIVE_CELL_WEIGHTS), (1, 4))
+        for weight in POSITIVE_CELL_WEIGHTS:
+            require_positive_weight(weight, {"arguments": {"occupancy_positive_weight": weight},
+                                             "recovery_contract": {"occupancy_positive_weight": weight}})
+        base = ["--output", "unused", "--model", "accuracy", "--steps", "2", "--profile-square"]
+        declared = arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                              "positional", "--occupancy-factor", "4", "--occupancy-positive-weight", "4"])
+        self.assertEqual((declared.occupancy_factor, declared.occupancy_positive_weight), (4, 4))
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--component-capacity", "64", "--component-identity-readout",
+                       "positional", "--occupancy-positive-weight", "2"])
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            arguments([*base, "--occupancy-positive-weight", "4"])
+        with self.assertRaisesRegex(ValueError, "occupancy positive weight differs"):
+            require_positive_weight(4, {"arguments": {"occupancy_positive_weight": 1},
+                                        "recovery_contract": {"occupancy_positive_weight": 1}})
+
+    def test_the_percell_run_family_is_owned(self):
+        from record_stream_run import require_owned_run
+        self.assertEqual(require_owned_run("m3-percell-balance-r1"), "m3-percell-balance-r1")
+        for name in ("percell-balance-r1", "m3-percell_balance", "m3-percell"):
+            with self.assertRaises(ValueError):
+                require_owned_run(name)
+
     def test_the_curator_reads_the_canonical_native_sidecars(self):
         # The replay receipt is `<name>-job.json` but its captured stdout/stderr are
         # `<name>.log` and `<name>.stderr.log`; the copy loop must read exactly these.

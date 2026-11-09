@@ -101,13 +101,20 @@ def masked_mean(value, mask):
     return (value*mask).sum()/mask.sum().clamp_min(1)
 
 
-def balanced_occupancy(logits, target, mask):
+def balanced_occupancy(logits, target, mask, positive_weight=1):
+    """Per-image class-balanced cell error; ``positive_weight`` is the class budget.
+
+    The weight multiplies only the occupied-cell mean and the divisor grows with it, so
+    the term's total magnitude is unchanged. This moves the per-cell decision; it is not
+    another scale on the whole term (that lever is closed).
+    """
     errors = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
     positive, negative = mask & (target == 1), mask & (target == 0)
     positive_count, negative_count = positive.sum((1, 2)), negative.sum((1, 2))
-    per_image = ((errors*positive).sum((1, 2))/positive_count.clamp_min(1)+
+    per_image = ((positive_weight*(errors*positive).sum((1, 2))/positive_count.clamp_min(1))+
                  (errors*negative).sum((1, 2))/negative_count.clamp_min(1))
-    per_image = per_image/((positive_count > 0).float()+(negative_count > 0).float()).clamp_min(1)
+    per_image = per_image/(positive_weight*(positive_count > 0).float()+
+                           (negative_count > 0).float()).clamp_min(1)
     return masked_mean(per_image, mask.any((1, 2)))
 
 
@@ -137,10 +144,26 @@ def require_occupancy_factor(factor, summary):
         raise ValueError("occupancy factor differs from resource admission")
 
 
-def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1):
+# Declared class budget on occupied cells inside the balanced per-cell term, and its
+# admission join. Unlike OCCUPANCY_FACTORS this changes the split between classes, not
+# the term's total weight: the closed scale lever is never re-run through this name.
+POSITIVE_CELL_WEIGHTS = (1, 4)
+
+
+def require_positive_weight(weight, summary):
+    """One declaration of the admission join for the occupancy class budget."""
+    if (type(weight) is not int or weight not in POSITIVE_CELL_WEIGHTS or
+            summary.get("arguments", {}).get("occupancy_positive_weight", 1) != weight or
+            summary.get("recovery_contract", {}).get("occupancy_positive_weight", 1) != weight):
+        raise ValueError("occupancy positive weight differs from resource admission")
+
+
+def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
+               positive_weight=1):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
-    occupancy = balanced_occupancy(output["occupancy"][:, :20], target["occupied"], target["known"])
+    occupancy = balanced_occupancy(output["occupancy"][:, :20], target["occupied"], target["known"],
+                                   positive_weight)
     type_error = F.cross_entropy(output["semantic"][:, :20].permute(0, 3, 1, 2), target["semantic"], reduction="none")
     semantic = masked_mean(type_error, target["typed"])
     visibility = F.binary_cross_entropy_with_logits(output["observability"][:, :20], target["known"].float())
@@ -166,6 +189,8 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
             label["occupied"].flatten(0, 1), label["known"].flatten(0, 1))
     check(type(occupancy_factor) is int and occupancy_factor in OCCUPANCY_FACTORS,
           "occupancy factor must be1 or4")
+    check(type(positive_weight) is int and positive_weight in POSITIVE_CELL_WEIGHTS,
+          "occupancy positive weight must be1 or4")
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -174,8 +199,10 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
     return result
 
 
-def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1):
-    per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor)
+def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
+               positive_weight=1):
+    per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
+                            positive_weight)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     # Pilot hypotheses, not tuned or established research hyperparameters.

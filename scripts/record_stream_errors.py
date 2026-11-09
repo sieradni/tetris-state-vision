@@ -95,6 +95,7 @@ def validate_report(result, job, summary, manifest, recipes, *, name):
             result.get("component_identity_factor", 1) != summary.get("arguments", {}).get("component_identity_factor", 1) or
             result.get("component_endpoint_term", "joint") != summary.get("arguments", {}).get("component_endpoint_term", "joint") or
             result.get("occupancy_factor", 1) != summary.get("arguments", {}).get("occupancy_factor", 1) or
+            result.get("occupancy_positive_weight", 1) != summary.get("arguments", {}).get("occupancy_positive_weight", 1) or
             result["job_ceiling_bytes"] != job["memory_bytes"] or result.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("report checkpoint/partial-status identity differs")
     capacity = result["component_capacity"]
