@@ -137,3 +137,56 @@ and is re-recorded under a fresh number; no ceiling, gate, population or floor m
 - **Not cleared with attribution below the floor** — the taps are redundant at this budget; no further
   combination of them is ranked, and the next step leaves the read-out.
 - **Not admissible** — the constraint itself is the measured result, recorded with its peak.
+
+## Outcome — NOT CLEARED, and stacking is a measured negative
+
+**Receipt note.** The first launch of each arm was refused by the trainer's own admission gate for a
+missing `--admission` receipt and is preserved at `runs/attempts/m3-occstack-lever-r1-launch-refused/`;
+the canonical continuations are therefore the `r2` runs named in
+`docs/evidence/m3-occupancy-stacking-r1/scope.json`. No ceiling, gate, population or floor moved and
+no run was repeated to pass.
+
+| quantity | lever (detail + context) | control (detail only) |
+|---|---|---|
+| pooled AUC (Hanley-McNeil) | **0.7960** (0.7751-0.8168) | **0.8226** (0.8027-0.8426) |
+| cell F1 at `0.0` (gap to 0.70) | 0.4019 (0.298 short) | 0.3816 (0.318 short) |
+| precision at `0.0` (Wilson) | 0.2521 (0.2358-0.2691) | 0.2363 (0.2209-0.2524) |
+| recall at `0.0` (Wilson) | 0.9910 (0.9805-0.9959) | 0.9910 (0.9805-0.9959) |
+| best swept F1 (threshold) | 0.4097 (0.30) | 0.4120 (0.90) |
+| exact nonempty boards | 0/28 | 0/28 |
+| peak commit / wall | 1,033,072,640 B / 190.9 s | 1,039,544,320 B / 182.1 s |
+| sweep peak / forwards | 565,248,000 B / 54 | 566,616,064 B / 54 |
+
+Deltas, whole-cluster (400 draws, twelve clusters): AUC **-0.0267** (-0.0463 to -0.0189), cell F1 at
+`0.0` **+0.0203** (0.0068 to 0.0250), precision **+0.0158** (0.0038 to 0.0228), recall **0.0**, best
+swept F1 **-0.0024**.
+
+**Verdict: NOT CLEARED** - all three conditions fail: per-cell F1 0.4019 against 0.70, ranking
+`uninformative` (AUC 0.104 short of 0.90; best swept F1 0.290 short of 0.70), and attribution
+-0.0024 against the +0.05 floor. **Mechanism: `precision_improved = false`** - precision did rise
+0.2363 -> 0.2521 with an interval excluding zero, but by 0.0158, below the declared 0.05 floor.
+
+**The stack is worse than either half.** It scores **-0.0844 AUC** and **-0.0816** best swept F1
+against the 2x2 stencil arm (0.8804 / 0.4913), and **-0.0284 AUC** and **-0.0103** best swept F1
+against the context arm alone (0.8244 / 0.4200); both references are unmatched cross-pass records
+under other catalogues and neither enters the verdict. Two zero-initialized residuals summed at this
+budget do not add information: the context residual, which reads neighbouring cell latents, and the
+detail tap, which reads the encoder feature at the cell, compete for the same occupancy projection,
+and the sum orders worse than the detail tap alone.
+
+**Reproducibility anchor.** The control is the stencil pass's control configuration and reproduced it
+bit-for-bit under a different catalogue: AUC `0.8226433610683003`, counts 661/2136/6, best swept F1
+`0.41203400915631133` at `0.90`. The negative is therefore not drift.
+
+## What this licenses
+
+Stacking the read-out taps is closed: no further combination of them is ranked, and a scaled budget
+spent on a lever that orders worse than its own control would be declared against this evidence.
+Every lever that changed *what the read-out sees* has now moved ordering (AUC 0.7427 -> 0.8244 ->
+0.8226 -> 0.8804) while the swept-F1 deficit stayed 0.21-0.29, and the standing-point operating point
+is degenerate (precision 0.25 at recall 0.99, 0/28 exact boards at every threshold): that is a
+label-overlap signature rather than a capacity signature. **The ranked next step therefore leaves the
+read-out and targets the labels** - an explicit indeterminate/occluded cell target that distinguishes
+cells the pixels cannot decide from cells that are empty, scored on determinate cells - because
+"unknown is not empty" is the one hypothesis the 0/28 boards and the 0.209-0.290 F1 deficit have not
+yet tested.

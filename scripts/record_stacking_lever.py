@@ -37,7 +37,9 @@ def ancestry_of(sample_id):
 
 def require_arm(name):
     context = ARMS[name]
-    study = f"{FAMILY}-{name}-r1"
+    # The first launch of each arm was refused for a missing --admission receipt (preserved under
+    # runs/attempts/m3-occstack-lever-r1-launch-refused); the canonical studies are the r2 runs.
+    study = f"{FAMILY}-{name}-r2"
     summary = read(ROOT/"runs"/study/"summary.json")
     job = read(ROOT/"runs"/(study+"-job.json"))
     if job.get("status") != "passed" or job.get("exit_code") != 0:
@@ -62,7 +64,7 @@ def require_arm(name):
 
 
 def require_sweep(name):
-    study = f"{FAMILY}-{name}-r1"
+    study = f"{FAMILY}-{name}-r2"
     sweep = f"{study}-sweep-r1"
     result = read(ROOT/"runs"/sweep/"result.json")
     job = read(ROOT/"runs"/(sweep+"-job.json"))
@@ -93,13 +95,13 @@ def require_sweep(name):
 
 def require_reference(name, path):
     record = read(path)
-    if record.get("status") != "passed" or record.get("instrument") != path.parent.name.replace(
-            "m3-occupancy-", "m3-occupancy-"):
-        raise ValueError(f"the {name} record is not the committed reference")
-    arm = record["arms"]["lever"]
+    arm = (record.get("arms") or {}).get("lever") or {}
+    if record.get("status") != "passed" or not record.get("instrument") or not arm:
+        raise ValueError(f"the {name} record is not a committed reference")
     return {"instrument": record["instrument"], "predeclaration": record["predeclaration"],
-            "matched_to_this_pass": False, "catalogue_sha256": record["matched"]["catalogue_sha256"],
-            "arm": {key: arm[key] for key in ("auc", "per_cell_f1", "best", "verdict")}}
+            "matched_to_this_pass": False,
+            "catalogue_sha256": (record.get("matched") or {}).get("catalogue_sha256") or arm.get("catalogue_sha256"),
+            "arm": {key: arm.get(key) for key in ("auc", "per_cell_f1", "best", "verdict")}}
 
 
 def main():

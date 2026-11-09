@@ -1,5 +1,44 @@
 # Contributor handoff — 2026-10-30
 
+## Context+detail stacking measured: not cleared, and the stack orders worse than either half (2026-11-09)
+
+The lever the resolution pass ranked now has its own verdict ([M3_OCCUPANCY_STACKING.md](M3_OCCUPANCY_STACKING.md),
+predeclared at `4135a2b`, `docs/evidence/m3-occupancy-stacking-r1/scope.json`, curation
+`runs/m3-occstack-curation-r2-job.json`). The declared change was the composition: the context residual
+used to overwrite the detail tap, so the two-flag model silently ignored one of them. The pass sums the
+two existing zero-initialized residuals - no new parameter, no new knob - and runs that against the
+detail tap alone, 64 matched steps from `m3-percell-balance-r1` under one catalogue (`c8fba7ab`), both
+inside 1,152 MiB (lever 1,033,072,640 B / 190.9 s, control 1,039,544,320 B / 182.1 s), scored on the
+same population (36 images, 28 nonempty boards, 667/4,933 cells, 81 points, 54 forwards per sweep
+under 640 MiB, twelve clusters).
+
+**Verdict: NOT CLEARED**, and all three conditions fail: per-cell F1 0.4019 against 0.70; ranking
+`uninformative` (AUC **0.7960**, CI 0.7751-0.8168, **0.104 short** of 0.90; best swept F1 0.4097,
+**0.290 short** of 0.70); 0/28 exact boards; attribution **-0.0024** against the +0.05 floor.
+**Mechanism: `precision_improved = false`** - precision at `0.0` rose 0.2363 -> 0.2521 (+0.0158,
+cluster 0.0038-0.0228) but below the declared 0.05 floor.
+
+**The substantive result is that stacking is worse than either half.** The stack is **-0.0844 AUC**
+and **-0.0816** best F1 below the stencil arm (0.8804 / 0.4913) and **-0.0284 / -0.0103** below the
+context arm alone (0.8244 / 0.4200); those are unmatched cross-pass references and do not enter the
+verdict. Two residuals summed into one occupancy projection compete rather than complement. The
+control reproduced the stencil pass's control bit-for-bit under a different catalogue (AUC
+`0.8226433610683003`, counts 661/2136/6, best F1 `0.41203400915631133` at `0.90`), so the negative is
+not drift.
+
+**Ranked next: leave the read-out and target the labels** - an explicit indeterminate/occluded cell
+target that distinguishes cells the pixels cannot decide from cells that are empty, scored on
+determinate cells. Justification: every read-out lever moved ordering (0.7427 -> 0.8244 -> 0.8226 ->
+0.8804) while the swept-F1 deficit stayed 0.21-0.29, the standing-point operating point is degenerate
+(precision 0.25 at recall 0.99) and 0/28 boards are exact at any threshold, which is a label-overlap
+signature rather than a capacity one. Stacking is closed; the refused resolution lever reopens only
+as a separately declared cheaper configuration; the real-image chain remains parked pending
+authorization.
+
+The pass also found and closed one lever-level defect (V-063: the context residual overwrote the
+detail tap) before any measurement, and two harness defects in my own launch and curation plumbing
+(V-064, V-065), each preserved under `runs/attempts/`. No ceiling, gate, population or floor moved.
+
 ## Encoder resolution refused at the declared envelope: the stride-1 source costs 188 MiB, not 48 (2026-11-09)
 
 The step the stencil pass ranked was predeclared at `eee9362`

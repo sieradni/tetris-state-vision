@@ -13,6 +13,22 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **context+detail tap stack is measured: not cleared, and it orders worse than either
+half** ([M3_OCCUPANCY_STACKING.md](M3_OCCUPANCY_STACKING.md), predeclared at `4135a2b`,
+`docs/evidence/m3-occupancy-stacking-r1/scope.json`). The declared change was the composition itself -
+the context residual used to overwrite the detail tap, so the two-flag model ignored one tap; the pass
+summed the two existing zero-initialized residuals and added no parameter. Against the detail tap
+alone at the identical 64-step budget, gates, 1,152 MiB ceiling, population and catalogue, the stack
+scores pooled AUC **0.7960** against **0.8226** (cluster delta **-0.0463 to -0.0189**), best swept F1
+**0.4097** against **0.4120**, 0/28 exact boards, and precision 0.2521 against 0.2363 (+0.0158, below
+its 0.05 floor, so `precision_improved = false`). It is **-0.0844 AUC** and **-0.0816** best F1 short
+of the stencil arm and **-0.0284 / -0.0103** short of the context arm, so stacking is closed. The
+control reproduced the stencil pass's control bit-for-bit, so the negative is not drift. Next-ranked:
+**leave the read-out and target the labels** - an explicit indeterminate/occluded cell target scored
+on determinate cells - because every read-out lever moved ordering (0.7427 -> 0.8244 -> 0.8226 ->
+0.8804) while the swept-F1 deficit stayed 0.21-0.29 and no board is exact at any threshold. The
+real-image chain stays parked pending authorization.
+
 Latest: the **encoder-resolution lever is refused at the declared envelope, not scored**
 ([M3_OCCUPANCY_RESOLUTION.md](M3_OCCUPANCY_RESOLUTION.md), predeclared at `eee9362`,
 `docs/evidence/m3-occupancy-resolution-r1/refusal.json`). Its single declared change - a stride-1

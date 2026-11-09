@@ -1,0 +1,358 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-stacking-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_STACKING.md",
+  "scope": "Matched 64-step continuation of one published checkpoint, both arms carrying the declared zero-initialized detail tap and differing only in whether the declared context residual is summed with it - lever = sum of the two declared residuals, control = the detail tap alone. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population, ceiling or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "docs/M3_OCCUPANCY_STACKING.md (declared 2026-11-09, commit 4135a2b)",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 4
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_context"
+    ],
+    "stack": [
+      "occupancy_context",
+      "occupancy_detail"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_resolution": 0
+    },
+    "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occstack-lever-r2",
+      "sweep": "m3-occstack-lever-r2-sweep-r1",
+      "occupancy_context": 1,
+      "occupancy_detail": 1,
+      "weights_sha256": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+      "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+      "study_elapsed_seconds": 190.8745517999996,
+      "study_peak_commit_bytes": 1033072640,
+      "sweep_peak_commit_bytes": 565248000,
+      "auc": 0.7959612328439469,
+      "auc_interval": {
+        "auc": 0.795961,
+        "standard_error": 0.010654,
+        "low": 0.775079,
+        "high": 0.816843,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.401946,
+      "per_cell_gap": 0.298054,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 1961,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2622,
+          "estimate": 0.252098,
+          "low": 0.235848,
+          "high": 0.269072
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.3,
+        "true_positive": 661,
+        "false_positive": 1899,
+        "false_negative": 6,
+        "precision": 0.258203125,
+        "recall": 0.9910044977511244,
+        "f1": 0.40966842268360704,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.290332,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.252098
+    },
+    "control": {
+      "study": "m3-occstack-control-r2",
+      "sweep": "m3-occstack-control-r2-sweep-r1",
+      "occupancy_context": 0,
+      "occupancy_detail": 1,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+      "study_elapsed_seconds": 182.0592109000063,
+      "study_peak_commit_bytes": 1039544320,
+      "sweep_peak_commit_bytes": 566616064,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "best_f1_delta": -0.002366,
+    "auc_delta": -0.026682,
+    "per_cell_f1_delta": 0.020306,
+    "precision_delta": 0.015773,
+    "recall_delta": 0.0,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.753723,
+        "high": 0.815467,
+        "median": 0.783249,
+        "standard_error": 0.017066
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.110035,
+        "high": 0.526998,
+        "median": 0.32568,
+        "standard_error": 0.111127
+      },
+      "precision_lever": {
+        "valid_draws": 400,
+        "low": 0.058325,
+        "high": 0.358938,
+        "median": 0.194832,
+        "standard_error": 0.080288
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.791568,
+        "high": 0.837309,
+        "median": 0.818417,
+        "standard_error": 0.01359
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.103117,
+        "high": 0.500633,
+        "median": 0.30809,
+        "standard_error": 0.106455
+      },
+      "precision_control": {
+        "valid_draws": 400,
+        "low": 0.054452,
+        "high": 0.334912,
+        "median": 0.182374,
+        "standard_error": 0.075355
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": 0.006848,
+        "high": 0.024977,
+        "median": 0.017417,
+        "standard_error": 0.004747
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": -0.046333,
+        "high": -0.018874,
+        "median": -0.033825,
+        "standard_error": 0.007331
+      },
+      "precision_delta": {
+        "valid_draws": 400,
+        "low": 0.003833,
+        "high": 0.022831,
+        "median": 0.012372,
+        "standard_error": 0.004958
+      }
+    }
+  },
+  "mechanism": {
+    "precision_improved": false,
+    "precision_delta": 0.015773,
+    "floor": 0.05,
+    "precision_delta_interval": {
+      "valid_draws": 400,
+      "low": 0.003833,
+      "high": 0.022831,
+      "median": 0.012372,
+      "standard_error": 0.004958
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "references": {
+    "stencil": {
+      "instrument": "m3-occupancy-stencil-r1",
+      "predeclaration": "docs/M3_OCCUPANCY_STENCIL.md",
+      "matched_to_this_pass": false,
+      "catalogue_sha256": "6ff287a1609dea632cc4758ef95bcb68c7e0ce15fe11ce7d230890e53b293b96",
+      "arm": {
+        "auc": 0.8803953486463741,
+        "per_cell_f1": 0.395166,
+        "best": {
+          "threshold": 1.8,
+          "true_positive": 437,
+          "false_positive": 675,
+          "false_negative": 230,
+          "precision": 0.39298561151079137,
+          "recall": 0.6551724137931034,
+          "f1": 0.4912872400224845,
+          "exact_nonempty_boards": 0
+        },
+        "verdict": "uninformative"
+      }
+    },
+    "context": {
+      "instrument": "m3-occupancy-representation-r1",
+      "predeclaration": "docs/M3_OCCUPANCY_REPRESENTATION.md",
+      "matched_to_this_pass": false,
+      "catalogue_sha256": null,
+      "arm": {
+        "auc": 0.824386205437723,
+        "per_cell_f1": 0.360033,
+        "best": {
+          "threshold": 2.7,
+          "true_positive": 596,
+          "false_positive": 1575,
+          "false_negative": 71,
+          "precision": 0.2745278673422386,
+          "recall": 0.8935532233883059,
+          "f1": 0.42001409443269905,
+          "exact_nonempty_boards": 0
+        },
+        "verdict": "uninformative"
+      }
+    }
+  },
+  "reference_comparison": {
+    "note": "Unmatched cross-pass comparisons under other catalogues; nothing here enters the verdict. The stencil is the best-ordering arm, the context arm the other half of the stack.",
+    "auc_vs_stencil": -0.084434,
+    "best_f1_vs_stencil": -0.081619,
+    "auc_vs_context": -0.028425,
+    "best_f1_vs_context": -0.010346
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "open": [
+    "a separator that is not a read-out tap remains unnamed"
+  ],
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

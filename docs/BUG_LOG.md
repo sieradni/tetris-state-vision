@@ -18,9 +18,88 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065 (12) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
-| tooling-harness | V-060 (1) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed |
+| tooling-harness | V-060, V-064 (2) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval` |
+
+## V-065 — CLOSED: the new curator read a reference record's catalogue from the wrong block
+
+**Symptom.** `scripts/record_stacking_lever.py` exited 1 after 2.6 s with
+`KeyError: 'catalogue_sha256'` and wrote no evidence.
+
+**Root cause.** The reference reader assumed every committed scope record carries the catalogue inside
+`matched`; the stencil record carries it on the arm, not in that block. A recorder that reads another
+instrument's evidence must tolerate that record's shape instead of assuming its own.
+
+**Change.** The reader takes the catalogue from `matched` when present and otherwise from the arm, and
+it validates status, instrument and an arm rather than comparing a path to itself.
+
+**Detection class.** evidence-reporting.
+
+**Instrument.** The failure is loud and early: the recorder raises before `mkdir`, so no evidence
+directory is half-written, and the refused receipt is preserved at
+`runs/attempts/m3-occstack-curation-r1-failed/`.
+
+**Named green run.** `runs/m3-occstack-curation-r2-job.json` (passed, 4 work items) writing
+`docs/evidence/m3-occupancy-stacking-r1/scope.json`.
+
+## V-064 — CLOSED: reconstructed launch argv dropped the script and the interpreter path
+
+**Symptom.** Three launch shells died before any work: a study refused with "a matching
+warm-optimizer square resource admission is required", then two sweep shells with `Unknown option:
+--run` and `child executable ... was not found on PATH`. No step and no forward ran.
+
+**Root cause.** The commands were rebuilt by slicing a prior receipt's `command` list at `[2:]` and by
+`eval`-ing the interpreter path: the first dropped the script path, the second ate its backslashes.
+Both are string surgery on a receipt instead of using the recorded argv as data.
+
+**Change.** Launch argv is built as a bash array from the receipt with the script path preserved, and
+the interpreter is passed as a quoted argument rather than inside the eval'd string.
+
+**Detection class.** tooling-harness.
+
+**Instrument.** The trainer's own admission gate and `run_bounded.resolve_child_executable` both refuse
+before any allocation or forward, so a bad argv costs seconds and produces no evidence; each refusal is
+kept with a written note under `runs/attempts/`.
+
+**Named green run.** `runs/m3-occstack-lever-r2-job.json` and `runs/m3-occstack-control-r2-job.json`
+(passed, 64 work items each) with both 54-forward widened sweeps.
+
+## V-063 — CLOSED: the context residual overwrote the detail tap instead of summing with it
+
+**Symptom.** With `occupancy_context=1` and `occupancy_detail=1` the detail tap had no effect at all:
+the context branch assigned `occupancy_features = cells + block(...)`, discarding the tap's term, so the
+two-flag model was bit-identical to the context-only model and the declared stack could not be
+measured.
+
+**Root cause.** The detail tap was added in one pass and the context residual in a later one, each
+written as an assignment over `cells`; nothing exercised both together because every pass declared one
+lever and held the other at `0`, so the overwrite was never on any tested path.
+
+**Change.** The context residual is now added to the running `occupancy_features`, so the declared
+composition is the sum of the two zero-initialized residuals; with either tap alone the function is
+unchanged, which is asserted rather than assumed.
+
+**Detection class.** tap-composition.
+
+**Instrument.** `tests/test_occupancy_stack.py` binds the composition: both arms are exactly the
+published function at step zero, the stack differs from each tap alone once trained, zeroing one
+projection reproduces that tap's arm exactly, and the single-tap arms keep the published composition.
+
+**Named green run.** `runs/m3-occstack-predeclaration-suite-r2-job.json` (609 tests, OK).
+
+**Scope.** No prior receipt is affected: every earlier arm held the other tap at `0`, where the
+overwrite does not exist, and this pass's control reproduced the stencil pass's control bit-for-bit
+(AUC `0.8226433610683003`, counts 661/2136/6, best F1 `0.41203400915631133` at `0.90`).
+
+## Scope note — the stacking pass found one lever-level defect, and it was closed before measurement
+
+V-063 is a genuine lever-level defect, and it is the reason the stack could not have been measured as
+declared: the two-flag model silently ignored the detail tap. It was found while writing the
+predeclaration, fixed and bound by tests **before any profile, study or sweep ran**, so no measured
+number in this pass or any earlier pass rests on the broken composition. V-064 and V-065 are harness
+defects in my own launch and curation plumbing, both loud and preserved with notes. No run died inside
+an envelope, no ceiling, gate, population or floor moved, and no run was repeated to pass.
 
 ## V-062 — CLOSED: the resolution lever's memory estimate counted one map and understated 3.9x
 

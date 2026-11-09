@@ -200,3 +200,18 @@ envelope, so **the ranked next step is stacking `occupancy_context` with `occupa
 only remaining lever that changes what the read-out sees rather than how finely it samples it, at
 about 0.02 MiB of retained activation - with scale after it and resolution reopenable only as a
 separately declared smaller configuration.
+
+**The stacking step this pass ranked has since been measured, and it is a negative.** The declared
+change was the composition rule itself: the context residual used to overwrite the detail tap, so the
+two-flag model ignored one tap; the pass summed the two existing zero-initialized residuals (no new
+parameter or knob) and ran it against the detail tap alone at the identical 64-step budget, gates,
+ceiling, population and catalogue identity ([M3_OCCUPANCY_STACKING.md](M3_OCCUPANCY_STACKING.md),
+predeclared at `4135a2b`). The stack is **not cleared** (per-cell F1 0.4019 against 0.70, AUC 0.7960,
+0.104 short, best swept F1 0.4097, 0.290 short, 0/28 exact) and it orders **worse than the detail tap
+alone** by 0.0267 AUC (cluster -0.0463 to -0.0189), worse than the stencil by 0.0844 and worse than
+the context arm by 0.0284; precision rose only 0.0158, below its 0.05 floor, so `precision_improved =
+false` ([scope.json](evidence/m3-occupancy-stacking-r1/scope.json)). Stacking is closed. With every
+read-out lever now moving ordering while the swept-F1 deficit stays at 0.21-0.29 and 0/28 boards are
+exact at any threshold, **the ranked next step leaves the read-out and targets the labels** - an
+explicit indeterminate/occluded cell target that separates cells the pixels cannot decide from cells
+that are empty, scored on determinate cells, since "unknown is not empty" is the untested hypothesis.
