@@ -141,3 +141,83 @@ Any launch that dies to a harness limit or leaves its declared arithmetic is pre
   not every budget.
 - The registration instrument, if run, is an attribution diagnostic under oracle pairing, not a
   model, an accuracy estimate or a fix.
+
+## Measured: scaling is refused, and registration is the binding constraint
+
+The declaration above is unchanged from commit `1ce41e6`; it was committed before any profile,
+study, sweep or evidence directory for this instrument existed. Everything below is re-derived by
+the curator from the probe's own cells (`scripts/record_scaled_lever.py`,
+`scripts/record_registration_attribution.py`) and published in
+`docs/evidence/m3-occupancy-scaled-r1/scope.json` and
+`docs/evidence/m3-occupancy-registration-r1/scope.json`.
+
+### The 4x budget did not carry the stencil's advantage
+
+Both arms ran 256 steps from `runs/m3-percell-balance-r1` (`9ae1fef9f649...`) under one captured
+catalogue (`c8fba7ab`), 1,152 MiB and 1,800 s, and both finished well inside the envelope:
+
+| arm | best swept F1 (threshold) | F1 @ 0.0 | AUC | peak commit | wall |
+|---|---|---|---|---|---|
+| lever (2x2 stencil) | 0.3925 (0.60) | 0.3791 | 0.8006 | 1,065,533,440 B | 396.1 s |
+| control (center sample) | 0.4237 (-0.30) | 0.4146 | 0.8255 | 1,067,073,536 B | 395.1 s |
+
+At 0.0 the lever's counts are 320 true / 701 false positive / 347 false negative; the control's are
+333 / 656 / 334, i.e. 0.4146. **Attribution against the matched 256-step control is -0.0312**
+(AUC -0.0249, per-cell F1 -0.0355, precision -0.0287, recall -0.0465; whole-ancestry-cluster
+interval on the best-F1 delta -0.1082 to +0.0411, 400 draws). The lever fails all three standing
+conditions at this budget - per-cell F1 0.3791 < 0.70, ranking `uninformative` (AUC 0.8006 < 0.90),
+attribution -0.0312 < +0.05 - so the declared verdict is **`not-cleared`: scaling is refused at the
+declared envelope**, and the refusal is not close on any condition.
+
+The shape of the two arms is the more informative result. Between 64 and 256 steps the stencil arm
+*lost* ordering quality (AUC 0.8804 to 0.8006, best F1 0.4913 to 0.3925) while the center-sample
+control held or improved (AUC 0.8226 to 0.8255, best F1 0.4120 to 0.4237): the extra budget did not
+trade a little accuracy for robustness, it inverted the ordering that made the stencil the best arm
+at 64 steps. Against the unmatched 64-step stencil record the scaled lever is -0.0988 best F1; that
+cross-pass number is reported beside the verdict and is never read by it.
+
+### Registration accounts for the deficit
+
+The declared fallback ran on the scaled lever's frozen archive: 36 forwards, one at a time, 640 MiB,
+300 s, peak 565,141,504 B, 20.5 s (`runs/m3-occscale-registration-r2-job.json`, curation
+`...-curation-r5-job.json`). The probe's as-is reading over the 28 nonempty boards is F1 0.379147
+with counts 320 / 701 / 347 - an exact join with the scaled sweep's published per-cell F1, which is
+what makes the two instruments comparable at all.
+
+Correcting placement - pairing each model cell's logit with the label of the target cell that its
+centre physically covers - gives, on the 2,986 cells both pairings can score (53.3% of the 5,600):
+
+| pairing | F1 | AUC | counts (TP / FP / FN) |
+|---|---|---|---|
+| as-is (own index) | 0.4390 | 0.9331 | 207 / 522 / 7 |
+| oracle registration | 0.5742 | 0.9702 | 298 / 431 / 11 |
+
+**The registration delta is +0.1352 F1** (whole-ancestry-cluster interval +0.0460 to +0.2833,
+median 0.1324, 400 draws, twelve clusters), so the declared rule returns
+**`registration_implicated`**: alignment alone is worth more than the entire five-point attribution
+floor, and more than twice the deficit the read-out family was chasing. The geometry is not marginal:
+the mean absolute cell-centre offset is **2.57 cells**, and 48.3% of model cells map to a different
+target cell than their own index (53.3% still land inside the board at all).
+
+### What this pair of receipts does and does not show
+
+- It shows the label family, the read-out family and now the budget lever are all closed on this
+  population: the pixels are separable (prior pass, F1 0.978), the read-out form neither clears nor
+  scales, and the residual is dominated by where the model puts its cells.
+- It does **not** say the occupancy head would read F1 0.574 if the lattice were fixed. The oracle
+  pairing excludes the 46.7% of model cells that fall off the board, so it is an alignment-only
+  comparison on identical cells, not a full-board counterfactual; the excluded cells are precisely
+  the ones a corrected lattice would have to place.
+- The registration verdict is a diagnostic of the named alternative suspect, not a model, a repair,
+  a new label policy or a calibration, and nothing here is a real-screenshot or generalization claim.
+
+### Re-ranked next step
+
+**Attack predicted-lattice placement itself.** The occupancy read-out already samples its features at
+*the model's own predicted lattice* (`model.py`), so its cell indices inherit the 2.57-cell placement
+error directly; the ceiling pass showed the pixels support F1 0.978 at the target lattice, and this
+pass shows the residual is placement, not form or budget. The next pass should predeclare a
+geometry-side lever on the registration/lattice objective (the existing `registration` term is the
+natural place) and read it with the same three gates *plus* a declared placement-error measurement,
+so the attribution target this pass measured becomes the quantity the next pass has to move. Budget
+scaling on this form is closed at 4x; the read-out and label families stay closed.

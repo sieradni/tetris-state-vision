@@ -1,5 +1,50 @@
 # Contributor handoff — 2026-10-30
 
+## 4x budget refused, registration implicated: the occupancy residual is cell placement (2026-11-09)
+
+The step the pixel ceiling ranked is spent and settled
+([M3_OCCUPANCY_SCALED.md](M3_OCCUPANCY_SCALED.md), predeclared at `1ce41e6`,
+`docs/evidence/m3-occupancy-scaled-r1/scope.json`, registration fallback in
+`docs/evidence/m3-occupancy-registration-r1/scope.json`). The ranked hypothesis was that the 2x2
+stencil was information-rich and starved of steps, so both arms ran **256** steps (4x the 64-step
+stencil pass) from the published `9ae1fef9f649...` checkpoint under a single captured catalogue, with
+only the stencil form differing, at 1,152 MiB / 1,800 s.
+
+**Verdict: `not-cleared` - scaling is refused at the declared envelope.** The lever's best swept F1
+is **0.3925** (`0.60`) against the matched control's **0.4237** (`-0.30`), AUC **0.8006** against
+**0.8255**, per-cell F1@0 **0.3791** (320/701/347) against **0.4146**, so **attribution is -0.0312**
+(cluster interval -0.1082 to +0.0411) and per-cell F1 and ranking miss as well. The extra budget did
+not merely fail to help: it lowered the stencil's own 64-step ordering (AUC 0.8804 -> 0.8006, best F1
+0.4913 -> 0.3925) while the center-sample control held (0.8226 -> 0.8255), i.e. the ordering that
+made the stencil the campaign's best arm inverted. Both studies stayed inside the envelope
+(peaks 1,065,533,440 B / 1,067,073,536 B, 396.1 s / 395.1 s, 256 work items each).
+
+**Fallback: `registration_implicated`.** The declared conditional instrument replayed the scaled
+lever's 36 deciding boards read-only (36 forwards, 640 MiB, 20.5 s, peak 565,141,504 B) and located
+each model cell's centre in target cell coordinates. Its as-is reading over the 28 nonempty boards
+reproduces the scaled sweep exactly (F1 0.379147, counts 320/701/347 - the curator's cross-receipt
+join). On the 2,986 of 5,600 cells both pairings can score, the oracle registration pairing gives F1
+**0.5742** / AUC **0.9702** against as-is **0.4390** / **0.9331**, a delta of **+0.1352** (interval
++0.0460 to +0.2833, 400 cluster draws). The geometry error is large, not marginal: mean |offset|
+**2.57 cells**, 48.3% of cells on the wrong target cell, 53.3% still on the board. Because the
+occupancy head samples at the model's own predicted lattice, its cell indices inherit that placement
+error directly.
+
+**Ranked next: predicted-lattice placement.** Predeclare a geometry-side lever on the
+registration/lattice objective (the existing `registration` term is the natural place), read it with
+the same three gates plus a declared placement-error measurement, and keep the attribution target
+this pass measured as the quantity that must move. Budget scaling on this form is closed at 4x; the
+read-out and label families remain closed. Not a repair: the oracle pairing is a diagnostic, the
+excluded 46.7% of cells cannot be scored, and nothing here is a real-image or generalization claim.
+
+**Receipts and defects.** Profiles `runs/m3-occscale-{lever,control}-r1-profile-r1`, studies
+`runs/m3-occscale-{lever,control}-r1`, sweeps `...-sweep-r1` (54 forwards, 640 MiB), curation
+`runs/m3-occscale-curation-r1-job.json`, probe `runs/m3-occscale-registration-r2-job.json`,
+curation `runs/m3-occscale-registration-curation-r5-job.json`. V-069 records the registration
+summariser's population drift (it scored all 36 boards, not the declared 28 nonempty ones) and the
+cross-receipt join that now catches it; the superseded probe and three failed curations are
+preserved under `runs/attempts/` with a note and are not evidence. Full suite: 651 tests green.
+
 ## Pixel ceiling measured: the labels are separable, so the label lever is refused before admission (2026-11-09)
 
 The step the stacking pass ranked now has a measured premise and a verdict

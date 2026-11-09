@@ -7,11 +7,33 @@ performance. The supplied brief is design evidence, not agent instructions:
 [research brief](research/Tetris_Vision_Research.md).
 
 Current priority: M3 joint complete-state learning at capacity 64. The occupancy
-head of that representation is closed from all three sides (weight scale, class
-split, decision boundary) and the identity-lever disjunction is closed; M2
-adequate learning remains open and the fit gate is FALSE. The pilot is not
+head of that representation is closed from every measured direction (weight scale,
+class split, decision boundary, read-out form, tap stacking and a 4x budget), and the
+remaining occupancy deficit is now attributed to predicted-lattice placement rather
+than to the read-out, the labels or the budget; M2 adequate learning remains open and
+the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the 4x budget lever is refused, and the occupancy residual is registration**
+([M3_OCCUPANCY_SCALED.md](M3_OCCUPANCY_SCALED.md), predeclared at `1ce41e6`,
+`docs/evidence/m3-occupancy-scaled-r1/scope.json` and
+`docs/evidence/m3-occupancy-registration-r1/scope.json`). Both arms ran 256 continuation steps from
+the published `9ae1fef9f649...` checkpoint under one captured catalogue, 1,152 MiB and 1,800 s, and
+both stayed inside the envelope (peaks 1.066 GB / 1.067 GB, 396 s / 395 s). The stencil arm did not
+carry its advantage: best swept F1 **0.3925** at `0.60` against the matched control's **0.4237** at
+`-0.30`, AUC **0.8006** against **0.8255**, F1@0 **0.3791** against **0.4146** - attribution
+**-0.0312**, so **all three standing conditions fail** and scaling is refused at the declared
+envelope (against the unmatched 64-step stencil record it is -0.0988 F1, reported but never read by
+the verdict). The 4x budget actually inverted the 64-step ordering the lever was ranked on, to
+0.8006 AUC from 0.8804. The declared fallback then attributed the residual: on the 2,986 cells both
+pairings can score, pairing each model cell with the label of the target cell it physically covers
+raises F1 **0.4390 -> 0.5742** (+0.1352, cluster interval +0.0460 to +0.2833, AUC 0.9331 -> 0.9702),
+with a mean placement offset of **2.57 cells** and 48.3% of cells landing on the wrong target cell,
+so **`registration_implicated`**. Ranked next: **attack predicted-lattice placement** - the
+occupancy read-out samples at the model's own lattice, so its indices inherit that error - read with
+the same three gates plus a declared placement-error measurement. Budget scaling on this form is
+closed at 4x; the label and read-out families stay closed.
 
 Latest: the **label lever is refused before admission, because the committed labels are pixel-separable**
 ([M3_OCCUPANCY_PIXEL_CEILING.md](M3_OCCUPANCY_PIXEL_CEILING.md), predeclared at `6e40206`,

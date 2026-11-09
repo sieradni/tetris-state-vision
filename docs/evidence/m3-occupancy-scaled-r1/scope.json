@@ -1,0 +1,337 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-scaled-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_SCALED.md",
+  "scope": "Matched 256-step (4x) continuation of one published checkpoint, both arms carrying the declared zero-initialized detail tap and differing only in its form: lever = the 2x2 in-cell stencil, control = the single center sample. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population, ceiling, gate, label or prior evidence change, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occscale-curation-r1-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 256,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 256,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 4
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_detail_stencil"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_context": 0,
+      "occupancy_factor": 4,
+      "occupancy_positive_weight": 4
+    },
+    "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occscale-lever-r1",
+      "sweep": "m3-occscale-lever-r1-sweep-r1",
+      "occupancy_detail_stencil": 1,
+      "weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+      "study_elapsed_seconds": 396.1113030999986,
+      "study_peak_commit_bytes": 1065533440,
+      "sweep_peak_commit_bytes": 590663680,
+      "auc": 0.8006042589894998,
+      "auc_interval": {
+        "auc": 0.800604,
+        "standard_error": 0.010574,
+        "low": 0.779879,
+        "high": 0.821329,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.379147,
+      "per_cell_gap": 0.320853,
+      "operating_counts": {
+        "true_positive": 320,
+        "false_positive": 701,
+        "false_negative": 347
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 320,
+          "trials": 1021,
+          "estimate": 0.313418,
+          "low": 0.285708,
+          "high": 0.342527
+        },
+        "recall": {
+          "successes": 320,
+          "trials": 667,
+          "estimate": 0.47976,
+          "low": 0.442071,
+          "high": 0.517681
+        }
+      },
+      "best": {
+        "threshold": 0.6,
+        "true_positive": 272,
+        "false_positive": 447,
+        "false_negative": 395,
+        "precision": 0.37830319888734354,
+        "recall": 0.4077961019490255,
+        "f1": 0.39249639249639245,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.307504,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.313418
+    },
+    "control": {
+      "study": "m3-occscale-control-r1",
+      "sweep": "m3-occscale-control-r1-sweep-r1",
+      "occupancy_detail_stencil": 0,
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719",
+      "study_elapsed_seconds": 395.0933073999986,
+      "study_peak_commit_bytes": 1067073536,
+      "sweep_peak_commit_bytes": 569634816,
+      "auc": 0.8255386800822172,
+      "auc_interval": {
+        "auc": 0.825539,
+        "standard_error": 0.0101,
+        "low": 0.805744,
+        "high": 0.845333,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.414649,
+      "per_cell_gap": 0.285351,
+      "operating_counts": {
+        "true_positive": 351,
+        "false_positive": 675,
+        "false_negative": 316
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 351,
+          "trials": 1026,
+          "estimate": 0.342105,
+          "low": 0.313713,
+          "high": 0.371675
+        },
+        "recall": {
+          "successes": 351,
+          "trials": 667,
+          "estimate": 0.526237,
+          "low": 0.488302,
+          "high": 0.563871
+        }
+      },
+      "best": {
+        "threshold": -0.3,
+        "true_positive": 393,
+        "false_positive": 795,
+        "false_negative": 274,
+        "precision": 0.33080808080808083,
+        "recall": 0.5892053973013494,
+        "f1": 0.4237196765498652,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.27628,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.342105
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "best_f1_delta": -0.031223,
+    "auc_delta": -0.024934,
+    "per_cell_f1_delta": -0.035502,
+    "precision_delta": -0.028687,
+    "recall_delta": -0.046477,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.700042,
+        "high": 0.899312,
+        "median": 0.811477,
+        "standard_error": 0.04945
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.100188,
+        "high": 0.538657,
+        "median": 0.352811,
+        "standard_error": 0.112894
+      },
+      "precision_lever": {
+        "valid_draws": 400,
+        "low": 0.064219,
+        "high": 0.454507,
+        "median": 0.287503,
+        "standard_error": 0.101259
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.739872,
+        "high": 0.912391,
+        "median": 0.839195,
+        "standard_error": 0.042195
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.143678,
+        "high": 0.535401,
+        "median": 0.385537,
+        "standard_error": 0.098651
+      },
+      "precision_control": {
+        "valid_draws": 400,
+        "low": 0.09059,
+        "high": 0.466174,
+        "median": 0.309042,
+        "standard_error": 0.096707
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": -0.10817,
+        "high": 0.041132,
+        "median": -0.027932,
+        "standard_error": 0.036846
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": -0.047176,
+        "high": -0.0027,
+        "median": -0.028736,
+        "standard_error": 0.011276
+      },
+      "precision_delta": {
+        "valid_draws": 400,
+        "low": -0.101335,
+        "high": 0.039963,
+        "median": -0.01962,
+        "standard_error": 0.036357
+      }
+    }
+  },
+  "mechanism": {
+    "precision_improved": false,
+    "precision_delta": -0.028687,
+    "floor": 0.05,
+    "precision_delta_interval": {
+      "valid_draws": 400,
+      "low": -0.101335,
+      "high": 0.039963,
+      "median": -0.01962,
+      "standard_error": 0.036357
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "scaling": {
+    "licensed": false,
+    "budget_steps": 256,
+    "baseline_steps": 64,
+    "attribution_delta_vs_matched_budget_control": -0.031223,
+    "attribution_floor": 0.05,
+    "unmatched_reference_best_f1": 0.4912872400224845,
+    "statement": "scaling refused at the declared envelope; failing conditions: per_cell_f1, ranking, attribution",
+    "delta_vs_unmatched_reference": -0.098791,
+    "reference_auc": 0.8803953486463741,
+    "reference_best_f1": 0.4912872400224845,
+    "reference_note": "Unmatched cross-pass record under another catalogue; reported beside the verdict, never read by it."
+  },
+  "reference": {
+    "instrument": "m3-occupancy-stencil-r1",
+    "predeclaration": "docs/M3_OCCUPANCY_STENCIL.md",
+    "matched_to_this_pass": false,
+    "steps": 64,
+    "arm": {
+      "auc": 0.8803953486463741,
+      "precision": 0.247446,
+      "per_cell_f1": 0.395166,
+      "best": {
+        "threshold": 1.8,
+        "true_positive": 437,
+        "false_positive": 675,
+        "false_negative": 230,
+        "precision": 0.39298561151079137,
+        "recall": 0.6551724137931034,
+        "f1": 0.4912872400224845,
+        "exact_nonempty_boards": 0
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "open": [
+    "registration attribution is the declared fallback and has not been run"
+  ],
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

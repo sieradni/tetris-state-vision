@@ -1,0 +1,170 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-registration-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_SCALED.md",
+  "scope": "Read-only attribution of the scaled stencil arm's occupancy error to cell placement: each model cell's centre is located in target cell coordinates using the target lattice, and its logit is scored against the label of the cell it physically covers (oracle registration) as well as against its own index, on the same cells. No training, no weight, threshold, gate, label or prior-evidence change, and no real-image, complete-state or calibrated claim.",
+  "declared_receipt": "runs/m3-occscale-registration-curation-r5-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "ceiling_bytes": 671088640,
+    "wall_seconds": 300,
+    "forwards": 36,
+    "work_items": {
+      "probe": 36,
+      "curation": 4
+    }
+  },
+  "precondition": {
+    "instrument": "m3-occupancy-scaled-r1",
+    "predeclaration": "docs/M3_OCCUPANCY_SCALED.md",
+    "scaling_verdict": "not-cleared",
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "as_is_per_cell_f1": 0.379147,
+    "as_is_operating_counts": {
+      "true_positive": 320,
+      "false_positive": 701,
+      "false_negative": 347
+    },
+    "attribution_delta_vs_matched_budget_control": -0.031223,
+    "reference_best_f1": 0.4912872400224845
+  },
+  "source": {
+    "run": "m3-occscale-lever-r1",
+    "weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+    "steps": 256,
+    "catalogue_sha256": "c8fba7ab00b0f7d06dad3c15649d2be94d0adfdd6083a829c03e057e9b6ce719"
+  },
+  "probe": {
+    "job_status": "passed",
+    "work_items": 36,
+    "peak_commit_bytes": 565141504,
+    "elapsed_seconds": 20.466,
+    "forwards": 36,
+    "threshold": 0.0
+  },
+  "population": {
+    "split": "training",
+    "deciding_images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "clusters": 12
+  },
+  "measured": {
+    "as_is": {
+      "counts": {
+        "true_positive": 207,
+        "false_positive": 522,
+        "false_negative": 7,
+        "true_negative": 2250
+      },
+      "f1": 0.43902439024390244,
+      "precision": 0.2839506172839506,
+      "recall": 0.9672897196261683,
+      "auc": 0.9331381235586843
+    },
+    "oracle": {
+      "counts": {
+        "true_positive": 298,
+        "false_positive": 431,
+        "false_negative": 11,
+        "true_negative": 2246
+      },
+      "f1": 0.5741811175337187,
+      "precision": 0.40877914951989025,
+      "recall": 0.9644012944983819,
+      "auc": 0.9702330653184927
+    },
+    "as_is_full": {
+      "counts": {
+        "true_positive": 320,
+        "false_positive": 701,
+        "false_negative": 347,
+        "true_negative": 4232
+      },
+      "f1": 0.3791469194312796,
+      "precision": 0.31341821743388837,
+      "recall": 0.47976011994003,
+      "auc": 0.8006042589894998
+    },
+    "images": 28,
+    "empty_images": 8,
+    "cells": 5600,
+    "matched_cells": 2986,
+    "mapped_share": 0.5332142857142858,
+    "shifted_share": 0.4825,
+    "mean_abs_offset_cells": 2.574969582142857,
+    "f1_delta": 0.13515672728981626,
+    "attribution": {
+      "delta": 0.13515672728981626,
+      "bootstrap": {
+        "draws": 400,
+        "seed": 20261026,
+        "clusters": 12,
+        "f1_as_is": {
+          "valid_draws": 400,
+          "low": 0.114268,
+          "high": 0.618937,
+          "median": 0.4222,
+          "standard_error": 0.126617
+        },
+        "f1_oracle": {
+          "valid_draws": 400,
+          "low": 0.301104,
+          "high": 0.711562,
+          "median": 0.570217,
+          "standard_error": 0.10674
+        },
+        "auc_as_is": {
+          "valid_draws": 400,
+          "low": 0.871502,
+          "high": 0.96376,
+          "median": 0.927973,
+          "standard_error": 0.023284
+        },
+        "auc_oracle": {
+          "valid_draws": 400,
+          "low": 0.949164,
+          "high": 0.987523,
+          "median": 0.96922,
+          "standard_error": 0.009709
+        },
+        "f1_delta": {
+          "valid_draws": 400,
+          "low": 0.046025,
+          "high": 0.28331,
+          "median": 0.132431,
+          "standard_error": 0.058734
+        }
+      }
+    }
+  },
+  "verdict": {
+    "verdict": "registration_implicated",
+    "registration_implicated": true,
+    "registered": true,
+    "f1_delta": 0.13515672728981626,
+    "floor": 0.05,
+    "f1_delta_interval": {
+      "valid_draws": 400,
+      "low": 0.046025,
+      "high": 0.28331,
+      "median": 0.132431,
+      "standard_error": 0.058734
+    },
+    "statement": "integer-scale misregistration alone accounts for at least the declared five F1 points"
+  },
+  "limits": "An attribution diagnostic under oracle pairing, not a model, a correction, an accuracy estimate or a new label policy. Cells whose mapped target cell lies outside the board are excluded from both pairings, and the excluded share is published as mapped_share.",
+  "unchanged": {
+    "thresholds": {
+      "decision": 0.0
+    },
+    "population": "widened deciding population",
+    "source_checkpoint": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}
