@@ -190,6 +190,19 @@ def require_positive_weight(weight, summary):
         raise ValueError("occupancy positive weight differs from resource admission")
 
 
+# Declared geometry-stage policy: 0 averages every stage's lattice error (published objective),
+# 1 spends the geometry term on the final lattice only - the one the occupancy head reads.
+GEOMETRY_STAGE_POLICIES = (0, 1)
+
+
+def require_geometry_final_only(value, summary):
+    """One declaration of the admission join for the geometry stage policy."""
+    if (type(value) is not int or value not in GEOMETRY_STAGE_POLICIES or
+            summary.get("arguments", {}).get("geometry_final_only", 0) != value or
+            summary.get("recovery_contract", {}).get("geometry_final_only", 0) != value):
+        raise ValueError("geometry stage policy differs from resource admission")
+
+
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1):
     error = geometry_error(output["lattice"], target["lattice"])
@@ -232,11 +245,17 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 
 
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1):
+               positive_weight=1, geometry_final_only=0):
+    check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
+          "geometry stage policy must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
+    if geometry_final_only:
+        # Declared geometry lever: the occupancy read-out reads the final lattice only, so
+        # every other stage's geometry mean is replaced by that one rather than diluting it.
+        terms["geometry"] = per_stage[-1]["geometry"]
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1.*occupancy_factor, "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
