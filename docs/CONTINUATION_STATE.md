@@ -25,7 +25,7 @@ follows.
 Receipts: admission `runs/m3-sweep-occupancy-r1-profile-r1-job.json` (passed), sweep
 `runs/m3-sweep-occupancy-r1-ranking-r1-job.json` (passed, 27 forwards, 25.6 s, under the
 640 MiB ceiling), curation `runs/m3-sweep-occupancy-r1-ranking-r1-curation-job.json`
-(passed), tests `runs/m3-sweep-occupancy-tests-r4.json`. The rule is code in
+(passed), tests `runs/m3-sweep-occupancy-tests-r4-job.json`. The rule is code in
 `scripts/occupancy_sweep.py` (`threshold_grid`, `pooled_auc`, `evaluate`, `sweep_verdict`),
 curated by `scripts/record_stream_sweep.py`, and re-derived by `tests/test_sweep_rule.py`.
 V-054 records the counting defect the predeclared zero-row join caught in the first attempt.

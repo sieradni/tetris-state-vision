@@ -98,7 +98,7 @@ the sweep `runs/m3-sweep-occupancy-r1-ranking-r1-job.json` (passed, 27 forwards,
 under the declared 640 MiB ceiling), its curation
 `runs/m3-sweep-occupancy-r1-ranking-r1-curation-job.json` (passed) into
 `docs/evidence/m3-sweep-occupancy-r1-ranking-r1/scope.json`, and the instrument tests
-`runs/m3-sweep-occupancy-tests-r4.json`. The sweep reloads the committed
+`runs/m3-sweep-occupancy-tests-r4-job.json`. The sweep reloads the committed
 `m3-percell-balance-r1` checkpoint (weights `9ae1fef9f649...`), changes no weight, and its
 curator re-derives every number below from the receipt's own per-cell logits.
 
