@@ -1,0 +1,85 @@
+{
+  "instrument": "m3-occupancy-stacking-r1",
+  "status": "passed",
+  "commit": "525ddd5",
+  "suite": {
+    "receipt": "runs/m3-occstack-closing-suite-r2-job.json",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 609,
+    "result": "OK",
+    "peak_commit_bytes": 528306176,
+    "elapsed_seconds": 39.4
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "mechanism": {
+    "precision_improved": false,
+    "precision_delta": 0.015773,
+    "floor": 0.05,
+    "precision_delta_interval": {
+      "valid_draws": 400,
+      "low": 0.003833,
+      "high": 0.022831,
+      "median": 0.012372,
+      "standard_error": 0.004958
+    }
+  },
+  "outcome": {
+    "lever_auc": 0.7959612328439469,
+    "control_auc": 0.8226433610683003,
+    "lever_best_f1": 0.40966842268360704,
+    "control_best_f1": 0.41203400915631133,
+    "auc_cluster_delta": {
+      "valid_draws": 400,
+      "low": -0.046333,
+      "high": -0.018874,
+      "median": -0.033825,
+      "standard_error": 0.007331
+    },
+    "best_f1_delta": -0.002366,
+    "exact_boards": {
+      "nonempty": 0,
+      "empty": 0
+    }
+  },
+  "audit": {
+    "record": "docs/evidence/m3-occupancy-stacking-r1/audit.json",
+    "claims": 8,
+    "drift": 0,
+    "receipt_joins": 24,
+    "scope": "a large integer on a line this pass added must equal a receipt value, a value derived from the trained model, or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope"
+  },
+  "preserved_attempts": [
+    "runs/attempts/m3-occstack-lever-r1-launch-refused",
+    "runs/attempts/m3-occstack-sweep-launch-refused",
+    "runs/attempts/m3-occstack-curation-r1-failed"
+  ],
+  "unchanged": {
+    "ceiling": "not raised",
+    "gates": "not moved",
+    "population": "not changed",
+    "attribution_floor": "not moved",
+    "re_runs_to_pass": "none",
+    "frozen_manifest": "untouched",
+    "prior_evidence": "untouched"
+  },
+  "next": {
+    "step": "leave the read-out and target the labels",
+    "reason": "all read-out levers moved ordering (0.7427 -> 0.8244 -> 0.8226 -> 0.8804) while the swept-F1 deficit stayed 0.21-0.29 and 0/28 boards are exact at any threshold; precision 0.25 at recall 0.99 at the standing point is a label-overlap signature"
+  },
+  "real_image_chain": "parked pending user authorization"
+}

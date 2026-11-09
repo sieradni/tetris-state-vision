@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-stacking-r1",
+  "baseline": "979d89f",
+  "claims": 8,
+  "drift": 0,
+  "receipt_joins": 24,
+  "per_document": {
+    "docs/M3_OCCUPANCY_STACKING.md": 6,
+    "docs/M3_OCCUPANCY_RANKING.md": 0,
+    "docs/ROADMAP.md": 0,
+    "docs/CONTINUATION_STATE.md": 2,
+    "docs/BUG_LOG.md": 0
+  },
+  "receipts": [
+    "runs\\m3-occstack-closing-suite-r1-job.json",
+    "runs\\m3-occstack-closing-suite-r2-job.json",
+    "runs\\m3-occstack-control-r1-profile-r1-job.json",
+    "runs\\m3-occstack-control-r2-job.json",
+    "runs\\m3-occstack-control-r2-sweep-r1-job.json",
+    "runs\\m3-occstack-control-r2-sweep-r1-profile-r1-job.json",
+    "runs\\m3-occstack-curation-r1-job.json",
+    "runs\\m3-occstack-curation-r2-job.json",
+    "runs\\m3-occstack-fullsuite-r1-job.json",
+    "runs\\m3-occstack-lever-r1-job.json",
+    "runs\\m3-occstack-lever-r1-profile-r1-job.json",
+    "runs\\m3-occstack-lever-r2-job.json",
+    "runs\\m3-occstack-lever-r2-sweep-r1-job.json",
+    "runs\\m3-occstack-lever-r2-sweep-r1-profile-r1-job.json",
+    "runs\\m3-occstack-predeclaration-suite-r1-job.json",
+    "runs\\m3-occstack-predeclaration-suite-r2-job.json"
+  ],
+  "known_set": "every m3-occstack receipt, every committed evidence record under docs/evidence, and the census derived from the trained model itself (dimension 192 read from the checkpoint, 9 * dimension^2 = 331776)",
+  "note": "two earlier scoped runs flagged the context census because the known set held only this pass's receipts, then because the census was derived from the pilot config's dimension 64 instead of the trained model's dimension; the instrument was corrected both times and no document figure changed",
+  "scope": "a large integer on a line this pass added must equal a receipt value, a value derived from the trained model, or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope"
+}
