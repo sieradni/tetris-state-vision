@@ -140,7 +140,7 @@ Deltas (lever minus control): best swept F1 **-0.0138**; pooled AUC **+0.0816** 
 median 0.0580).
 
 **Verdict: NOT CLEARED**, failing all three declared conditions — per-cell F1 0.3600 against 0.70,
-ranking `uninformative` (AUC 0.176 short of 0.90 and best F1 0.28 short of 0.70), and attribution
+ranking `uninformative` (AUC 0.076 short of 0.90 and best F1 0.28 short of 0.70), and attribution
 -0.0138 against the +0.05 floor.
 
 The block does something real, and the record should say exactly what. At matched budget it

@@ -13,6 +13,19 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **cell-precision representation lever is measured: not cleared, but its mechanism worked**
+([M3_OCCUPANCY_PRECISION.md](M3_OCCUPANCY_PRECISION.md), predeclared at `684d775`,
+`docs/evidence/m3-occupancy-precision-r1/scope.json`). A declared zero-initialized stride-2 detail
+tap at the cell centers — identity at step zero — continued 64 matched steps from the published
+checkpoint against a fresh control under one catalogue, both inside 1,152 MiB. Precision at the
+standing point rose **0.1752 -> 0.2363** (cluster delta 0.0104-0.0939, excluding zero) *and* recall
+rose 0.7616 -> 0.9910, so standing-point F1 gained **+0.0968** (0.2848 -> 0.3816) — the largest of
+any read-out lever so far. No gate cleared: AUC 0.8226 is **0.077 short** of 0.90, best swept F1
+0.4120 is **0.288 short** of 0.70, 0/28 boards are exact, and the swept optimum stays below the
+control's (0.4338 at `3.90`). So precision is addressable from the read-out, but read-out
+information at this budget is not separation. Next-ranked: a 2x2 in-cell detail stencil through the
+same projection, then encoder resolution, then scale.
+
 Latest: the **occupancy representation question has a measured verdict** — not cleared, with a named
 mechanism ([M3_OCCUPANCY_REPRESENTATION.md](M3_OCCUPANCY_REPRESENTATION.md), predeclared at
 `a07f9d2`, `docs/evidence/m3-occupancy-representation-r1/scope.json`). A declared zero-initialized
@@ -21,7 +34,7 @@ was continued 64 matched steps from the published checkpoint against a control c
 the same bytes, both inside 1,152 MiB. The lever raised pooled AUC **0.7427 -> 0.8244** (cluster
 0.7491 -> 0.8199) and the standing-point F1 **0.2848 -> 0.3600** (cluster delta 0.0142-0.1106), but
 its recall at `0.0` went 0.73-0.79 -> 0.985-0.998, its **best swept F1 was slightly lower**
-(0.4200 against 0.4338 at `3.90`) and **no gate cleared**: 0/28 exact boards, AUC 0.176 short of
+(0.4200 against 0.4338 at `3.90`) and **no gate cleared**: 0/28 exact boards, AUC 0.076 short of
 0.90, best F1 0.28 short of 0.70, attribution -0.0138 against the declared +0.05 floor. So the
 block moves ordering and coverage, not separation — the mechanism the conditioning pass named
 still binds. Next-ranked step: a representation targeting cell-level **precision** (contrastive or

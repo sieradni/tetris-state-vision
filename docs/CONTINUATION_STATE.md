@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## Cell-precision detail tap measured: not cleared, but precision improved as declared (2026-11-09)
+
+The next-ranked lever after the neighborhood result now has its own measured verdict
+([M3_OCCUPANCY_PRECISION.md](M3_OCCUPANCY_PRECISION.md), predeclared at `684d775`,
+`docs/evidence/m3-occupancy-precision-r1/scope.json`, curation `runs/m3-occdetail-curation-r1-job.json`).
+One declared change — the stride-2 first-stage feature sampled at each cell center through a
+zero-initialized projection, exactly the published function at step zero — was continued **64 matched
+steps** from `m3-percell-balance-r1` against a fresh control under the same captured catalogue; both
+arms ran inside 1,152 MiB and 64 steps (lever 191.2 s / 1,053,134,848 B, control 229.5 s /
+1,055,244,288 B), and each was scored on the widened deciding population (36 images, 28 nonempty
+boards, 667/4,933 cells, 81-point grid, 54 forwards per sweep under 640 MiB, twelve ancestry
+clusters).
+
+**Verdict: NOT CLEARED**, all three gate conditions failing: per-cell F1 **0.3816** against 0.70;
+ranking `uninformative` (AUC **0.8226**, CI 0.8027-0.8426, **0.077 short** of 0.90; best swept F1
+0.4120, **0.288 short** of 0.70); attribution -0.0217 against the +0.05 floor. **Mechanism:
+`precision_improved = true`** — precision at `0.0` rose **0.1752 -> 0.2363** with the twelve-cluster
+interval excluding zero, and it did not cost coverage (recall 0.7616 -> 0.9910), so standing-point
+F1 gained **+0.0968**, the largest read-out gain so far.
+
+Implication: precision is addressable from the read-out, but read-out information at this budget is
+not separation — the swept optimum still sits below the control's (0.4338 at `3.90`). **Next-ranked
+step, in priority order:** (1) a 2x2 in-cell detail stencil per cell through the same
+zero-initialized projection (more capacity for a mechanism that measurably moved precision); (2)
+encoder-side resolution if that saturates; (3) scale the matched budget on whichever carries the
+gain. Threshold, conditioned-threshold and class-budget families stay closed. The first control
+study was killed by the platform's 295 s cap at step 26 and is preserved under `runs/attempts/`,
+re-recorded canonically (V-059 corrects a hand-computed AUC gap in four documents).
+
 ## Occupancy representation lever measured: not cleared — ordering improved, separation did not (2026-11-09)
 
 The last ranked occupancy question now has a measured verdict rather than a ranking
@@ -15,7 +44,7 @@ point grid, 54 forwards each under 640 MiB).
 
 **Verdict: NOT CLEARED**, all three declared conditions failing: per-cell F1 0.3600 against 0.70;
 ranking `uninformative` (AUC **0.8244** CI 0.8045-0.8442, cluster 0.8199 [0.7941, 0.8390], still
-0.176 short of 0.90; best swept F1 0.4200 against 0.70); attribution **-0.0138** against the +0.05
+0.076 short of 0.90; best swept F1 0.4200 against 0.70); attribution **-0.0138** against the +0.05
 floor. What the block did do is improve **ordering** (AUC 0.7427 -> 0.8244 versus its control, and
 standing-point F1 0.2848 -> 0.3600, cluster delta 0.0142-0.1106) and make the read-out permissive
 (recall at `0.0` 0.73-0.79 -> 0.985-0.998) rather than better-separating: the control's swept

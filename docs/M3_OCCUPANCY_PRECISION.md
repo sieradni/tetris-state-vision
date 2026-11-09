@@ -133,6 +133,59 @@ and every delta. No gate reads an interval.
   policy, and the remaining families stay closed.
 - **Not admissible** — the constraint itself is the measured result.
 
-## Measured result
+## Measured result: NOT CLEARED — precision improved, the gate did not
 
-(appended after the canonical receipts exist)
+Receipts: profiles `runs/m3-occdetail-lever-r1-profile-r1-job.json` (passed, 67.1 s,
+1,036,972,032 B) and `runs/m3-occdetail-control-r1-profile-r1-job.json` (passed, 49.0 s,
+1,016,107,008 B); studies `runs/m3-occdetail-lever-r1-job.json` (passed, 64/64, 191.2 s,
+1,053,134,848 B) and `runs/m3-occdetail-control-r1-job.json` (passed, 64/64, 229.5 s,
+1,055,244,288 B), both inside 1,152 MiB, under one captured catalogue (`27a0e917`) and from
+`9ae1fef9f649...`; both sweeps 54 forwards under 640 MiB; curation
+`runs/m3-occdetail-curation-r1-job.json` into `docs/evidence/m3-occupancy-precision-r1/scope.json`.
+
+| widened deciding population | detail lever | control | neighborhood lever |
+|---|---|---|---|
+| pooled AUC | **0.8226** (CI 0.8027-0.8426) | 0.7427 (0.7204-0.7651) | 0.8244 |
+| precision at `0.0` | **0.2363** | 0.1752 | not recorded |
+| recall at `0.0` | 0.9910 | 0.7616 | 0.985-0.998 |
+| occupied-cell F1 at `0.0` | **0.3816** | 0.2848 | 0.3600 |
+| best swept F1 (threshold) | 0.4120 (0.90) | **0.4338** (3.90) | 0.4200 (2.70) |
+| exact nonempty boards | 0/28 | 0/28 | 0/28 |
+| ranking verdict | `uninformative` | `uninformative` | `uninformative` |
+
+Deltas (lever minus control): precision **+0.0612** (cluster interval 0.0104-0.0939, median
+0.0460); F1 at `0.0` **+0.0968** (cluster 0.0194-0.1379); recall **+0.2294**; AUC **+0.0799**
+(cluster -0.0289 to +0.1710); best swept F1 **-0.0217**.
+
+**Verdict: NOT CLEARED**, failing all three gate conditions — per-cell F1 0.3816 against 0.70;
+ranking `uninformative` (AUC 0.077 short of 0.90, best F1 0.288 short of 0.70); attribution
+-0.0217 against the +0.05 floor.
+
+**Mechanism: `precision_improved = true`.** The declared quantity moved in the declared direction:
+precision at the standing decision rose 0.1752 -> 0.2363, and the twelve-cluster interval on that
+delta excludes zero. Crucially it did not come at coverage's expense — recall rose 0.7616 -> 0.9910,
+so per-cell F1 at `0.0` gained **+0.0968**, the largest standing-point gain of either read-out lever.
+The detail tap therefore addresses the precision failure the neighborhood pass exposed, in a
+read-out that had neither precision nor separation before.
+
+What it still does not do is clear the bar. AUC is 0.077 short of 0.90, the best swept F1 is 0.288
+short of 0.70, no board is exact, and the swept optimum remains slightly below the control's
+(0.4120 at `0.90` against 0.4338 at `3.90`) — the control reaches its best F1 only by moving far up
+the threshold curve and sacrificing coverage. So at this budget read-out detail supplies **precision
+information but not enough separation**, and the two read-out taps together have now moved ordering
+by about +0.08 AUC each while neither moves the gate.
+
+**Next-ranked step, in priority order:** (1) carry the same demonstrated signal with more capacity —
+a 2x2 in-cell detail stencil per cell (four stride-2 samples instead of one) through the same
+zero-initialized projection, which is the cheapest continuation of a mechanism that measurably
+worked; (2) only if that saturates, move upstream to encoder resolution (a finer native tap than
+stride-2); (3) scale the matched budget on whichever of the two carries the gain. Threshold,
+conditioned-threshold and class-budget families remain closed throughout.
+
+Attempt preserved: the first control study was killed by the platform's 295 s command cap at step
+26 (`runs/attempts/m3-occdetail-control-r1-shell-cap*`) and re-recorded canonically; no ceiling,
+gate, population or floor moved.
+
+`tests/test_precision_lever.py` re-derives both arms, the twelve-cluster paired bootstrap, the
+population, the work arithmetic, the verdict, the mechanism flag and the documents' quoted gaps
+from the committed receipts.

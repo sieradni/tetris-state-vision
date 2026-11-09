@@ -21,6 +21,25 @@ a named green run. An unrun gate leaves the entry OPEN.
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
 
+## V-059 — CLOSED: four documents quoted the AUC gap with a hand-computed error
+
+- Symptom: the neighborhood result was published with "AUC 0.176 short of 0.90" in
+  `M3_OCCUPANCY_REPRESENTATION.md`, `M3_OCCUPANCY_RANKING.md`, `ROADMAP.md` and
+  `CONTINUATION_STATE.md`, while the evidence gives AUC 0.8244 and therefore a gap of 0.0756 ->
+  **0.076**. A 0.10 error, in the direction that overstates how far the lever was from the bar.
+- Root cause: the gap was subtracted in prose at authoring time. The curators publish `f1_gap` and
+  `best_gap` for F1 but no AUC gap, and no test bound the documents' numeric qualifiers to the
+  evidence, so the error survived two commits.
+- Detection class: published-number (first entry in this class): a prose qualifier derived from a
+  measured value without a mechanical check.
+- Instrument: `tests/test_precision_lever.py::test_the_published_auc_gap_prose_matches_the_evidence`
+  re-computes both AUC gaps and the best-F1 gap from the committed evidence, asserts the precision
+  document quotes them at three decimals, and refuses the stale `0.176` string in all four
+  documents. The standing rule for this class is that a derived number in prose must have a test
+  that recomputes it.
+- Green run: `runs/m3-occdetail-fullsuite-r1-job.json` (full contract suite on the corrective tree,
+  `OK`).
+
 ## V-058 — CLOSED: the paired bootstrap resampled every split instead of the declared deciding one
 
 - Symptom: the first curation of `m3-occupancy-representation-r1` wrote a block labelled
