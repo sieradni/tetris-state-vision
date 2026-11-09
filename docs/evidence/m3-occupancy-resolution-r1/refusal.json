@@ -1,0 +1,84 @@
+{
+  "status": "refused",
+  "instrument": "m3-occupancy-resolution-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_RESOLUTION.md",
+  "declared_receipt": "docs/M3_OCCUPANCY_RESOLUTION.md (declared 2026-11-09, commit eee9362)",
+  "declared_memory_bytes": 671088640,
+  "rule_applied": "the predeclaration's own refusal rule: a lever arm that cannot be admitted inside 1,152 MiB at the matched budget is not admissible as declared",
+  "ceiling_bytes": 1207959552,
+  "profiles": {
+    "lever": {
+      "receipt": "runs/m3-occres-lever-r1-profile-r1-job.json",
+      "status": "failed",
+      "exit_code": 3221225477,
+      "occupancy_resolution": 1,
+      "peak_job_commit_bytes": 1231880192,
+      "elapsed_seconds": 45.955
+    },
+    "control": {
+      "receipt": "runs/m3-occres-control-r1-profile-r1-job.json",
+      "status": "passed",
+      "exit_code": 0,
+      "occupancy_resolution": 0,
+      "peak_job_commit_bytes": 1034313728,
+      "elapsed_seconds": 88.788
+    }
+  },
+  "measured": {
+    "peak_delta_bytes": 197566464,
+    "ceiling_excess_bytes": 23920640,
+    "estimate_error_bytes": 147234816,
+    "estimate_understated_by": 3.9253
+  },
+  "activation_census": {
+    "capture_side": 512,
+    "bytes_per_feature_map": 1048576,
+    "branch_feature_maps_retained_for_backward": 4,
+    "lower_bound_bytes": 204472320,
+    "declaration_estimate_bytes": 50331648
+  },
+  "mechanism": "a stride-1 convolution over the full captured image retains four full-resolution 48-channel maps through autograd (input, output, grad output, grad input), so the branch costs ~190 MiB, four times the ~48 MiB of one map the declaration estimated from a single-activation count",
+  "not_done": [
+    "no ceiling raised",
+    "no smaller branch substituted",
+    "no capture side reduced",
+    "no cumulative-cursor variant tried",
+    "no study, sweep or curation launched",
+    "no re-run under a fresh number"
+  ],
+  "verdict": {
+    "verdict": "refused",
+    "precision_improved": false,
+    "precision_measured": false,
+    "cleared": false,
+    "reason": "the lever arm could not be admitted inside the declared envelope"
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "contexts": 12,
+    "note": "declared and unmeasured: no sweep ran"
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "attribution_floor": 0.05,
+    "ceiling_bytes": 1207959552,
+    "steps": 64,
+    "grid_points": 81,
+    "catalogue": "not re-captured",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  },
+  "next": {
+    "step": "stack occupancy_context with occupancy_detail",
+    "reason": "the refused lever needed 188.4 MiB of headroom it did not have, while the undeclared 8x8 context tap retains roughly 0.02 MiB of activation, so it is the only remaining lever that changes information and fits the declared envelope"
+  },
+  "open": [
+    "stacking the occupancy_context and occupancy_detail taps remains untested"
+  ]
+}

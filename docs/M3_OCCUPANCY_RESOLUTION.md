@@ -68,9 +68,9 @@ serve as an independent repetition check of that baseline; the stencil arm itsel
 `27a0e917`) is reported as an unmatched **reference** and cannot enter this verdict.
 
 Envelope per arm, declared before admission: **1,152 MiB** aggregate commit, **64 steps**, **1,200 s**
-runner wall / 900 s trainer wall, one heavy job at a time. The branch adds 1,344 parameters and one
-1 x 512 x 512 feature map of 48 channels (about 50 MB of activations at capture side), so the ceiling
-is not certain to hold. **Declared refusal rule:** if either arm cannot be admitted inside 1,152 MiB at
+runner wall / 900 s trainer wall, one heavy job at a time. The branch adds 1,344 parameters and, at capture side 512, four retained full-resolution 48-channel
+feature maps - input, output, grad output and grad input - plus the masked 3-channel image, a census of
+204,472,320 B, so the 1,152 MiB ceiling is not certain to hold. **Declared refusal rule:** if either arm cannot be admitted inside 1,152 MiB at
 the matched budget, the outcome is **NOT ADMISSIBLE AS DECLARED**, recorded with the measured peak and
 the receipt; no ceiling is raised, no smaller variant is substituted, and no run is repeated to pass.
 
@@ -138,3 +138,48 @@ and is re-recorded under a fresh number; no ceiling, gate, population or floor m
   the untested stacking of `occupancy_context` with `occupancy_detail`, which is the only remaining
   lever that changes information rather than sampling.
 - **Not admissible** — the constraint itself is the measured result, recorded with its peak.
+
+## Outcome — NOT ADMISSIBLE AS DECLARED (measured refusal)
+
+The two-step admission profile ran before any study, as V-057 requires, and the lever arm breached the
+declared ceiling on its first launch. Nothing was trained, so nothing can be scored.
+
+| quantity | value |
+|---|---|
+| declared ceiling | 1,207,959,552 B (1,152 MiB) |
+| lever peak (resolution 1) | 1,231,880,192 B |
+| control peak (resolution 0) | 1,034,313,728 B |
+| measured increment of the branch | 197,566,464 B (188.4 MiB) |
+| excess over the ceiling | 23,920,640 B (22.8 MiB) |
+| declaration estimate | 50,331,648 B (one retained map) |
+| estimate understated by | 3.93x |
+| lever receipt | `runs/m3-occres-lever-r1-profile-r1-job.json`, failed, exit 3221225477, 46.0 s |
+| control receipt | `runs/m3-occres-control-r1-profile-r1-job.json`, passed, 88.8 s |
+
+The guard terminated the child at the ceiling; the receipt and launch log are preserved under
+`runs/attempts/m3-occres-lever-refused-r1/` with a written note, and
+`docs/evidence/m3-occupancy-resolution-r1/refusal.json` binds every number above to both receipts.
+The control profile was run in the same session under the same ceiling, so the increment is
+attributable to the branch alone rather than to drift in a replay.
+
+**Mechanism.** A trained stride-1 convolution over the whole captured image keeps four
+full-resolution 48-channel maps alive through backward, so the branch costs 3.9x what a
+single-activation estimate says.
+
+**What was not done.** No ceiling was raised, no smaller branch substituted, no capture side reduced,
+no cumulative-cursor variant tried, no study, sweep or curation launched, and no re-run under a fresh
+number. The declaration's own refusal rule is the whole disposition.
+
+**Verdict.** `refused`; `precision_improved = false` because precision was never measured, not because
+it failed to improve. The gates, floor, population and grid are untouched and unanswered: this pass
+says nothing about whether pixel-resolution sampling separates cells, only that the declared envelope
+cannot pay for it.
+
+## What this licenses
+
+Resolution stays open only as a *separately declared* configuration - a smaller branch, a reduced
+capture side, or a computed-at-the-cell formulation are three different instruments with their own
+predeclarations, and none of them is a substitution inside this one. The ranked next step is the
+untested stacking of `occupancy_context` with `occupancy_detail`: the 8 x 8 context tap retains two
+2 x 2 48-channel maps (about 0.02 MiB), so it fits the declared envelope, and it is the last lever
+that changes the information the read-out sees rather than the sampling of it.

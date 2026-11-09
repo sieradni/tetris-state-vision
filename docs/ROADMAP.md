@@ -13,6 +13,20 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **encoder-resolution lever is refused at the declared envelope, not scored**
+([M3_OCCUPANCY_RESOLUTION.md](M3_OCCUPANCY_RESOLUTION.md), predeclared at `eee9362`,
+`docs/evidence/m3-occupancy-resolution-r1/refusal.json`). Its single declared change - a stride-1
+convolution of the captured image feeding the same zero-initialized detail projection - breached the
+1,152 MiB ceiling on its 2-step admission profile: peak **1,231,880,192 B** against 1,207,959,552 B,
+while the same-session stride-2 control peaked at 1,034,313,728 B, so the branch costs
+**197,566,464 B (188.4 MiB)** and the envelope is short by 23,920,640 B (22.8 MiB). No ceiling was
+raised, no smaller variant substituted, no capture side reduced and nothing re-run;
+`precision_improved = false` because precision was never measured, and the gates stand unanswered.
+The estimate error (one map against four retained) is ledger entry **V-062**. Next-ranked: **stack
+`occupancy_context` with `occupancy_detail`** - the last information-changing lever, at about
+0.02 MiB of retained activation - then scale; resolution reopens only as a separately declared
+configuration, and the real-image chain stays parked pending authorization.
+
 Latest: the **2x2 in-cell detail stencil is measured: not cleared, but it met the attribution floor
 and closed most of the ordering deficit** ([M3_OCCUPANCY_STENCIL.md](M3_OCCUPANCY_STENCIL.md),
 predeclared at `3ecbf2a`, `docs/evidence/m3-occupancy-stencil-r1/scope.json`). Both arms carried the
@@ -24,8 +38,9 @@ catalogue, both inside 1,152 MiB. The stencil is the best-ordering arm of the ca
 floor for the first time. Standing-point precision moved only 0.2363 -> 0.2474 (below its 0.05
 mechanism floor, so `precision_improved = false`), so the extra capacity bought ordering, not
 precision; the gate still fails (best F1 **0.209 short** of 0.70, 0/28 exact boards) because
-**separation, not ordering, now binds**. Next-ranked: encoder resolution, then scale; stacking the two
-read-out taps stays open.
+**separation, not ordering, now binds**. Encoder resolution was the next-ranked step and has since
+been **refused at the declared envelope** (above), so next is stacking the two read-out taps, then
+scale.
 
 Latest: the **cell-precision representation lever is measured: not cleared, but its mechanism worked**
 ([M3_OCCUPANCY_PRECISION.md](M3_OCCUPANCY_PRECISION.md), predeclared at `684d775`,

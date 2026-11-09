@@ -14,13 +14,37 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
-| resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
+| resource-profile | V-013, V-039, V-040, V-043, V-045, V-046, V-062 (7) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
 | tooling-harness | V-060 (1) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed |
+
+## V-062 — CLOSED: the resolution lever's memory estimate counted one map and understated 3.9x
+
+**Symptom.** The predeclared admission profile for the stride-1 resolution lever died at its declared
+1,152 MiB ceiling (peak 1,231,880,192 B against 1,207,959,552 B, exit 3221225477, 46.0 s) even though
+`docs/M3_OCCUPANCY_RESOLUTION.md` said the branch adds "about 50 MB of activations at capture side".
+
+**Root cause.** The estimate counted one 48 x 512 x 512 feature map (50,331,648 B) and omitted the
+three other full-resolution maps autograd retains for a trained stride-1 convolution (output, grad
+output, grad input) plus the masked image, so the census is 204,472,320 B and the measured increment
+over the same-session stride-2 control is 197,566,464 B - low by 147,234,816 B, 3.93x.
+
+**Detection class.** resource-profile.
+
+**Instrument.** A lever predeclaration now states its branch cost as a tensor census of retained
+full-resolution maps rather than one activation, and
+`tests/test_occupancy_resolution.py::test_the_declaration_states_the_measured_increment` fails if the
+declared figures, the census or the exact bytes stop matching
+`docs/evidence/m3-occupancy-resolution-r1/refusal.json` and the two profile receipts. The two-step
+admission profile caught the error before any study launched, so no step was trained against a bad
+envelope and the refusal cost 46 s rather than a wasted 64-step run.
+
+**Named green run.** `runs/m3-occres-refusal-r1-job.json` (recorder, 4 work items) with
+`runs/m3-occres-predeclaration-suite-r1-job.json` (590 tests, 102.6 s, peak 525,856,768 B).
 
 ## V-061 — CLOSED: the sweep work-item arithmetic is declared and asserted, not remembered
 

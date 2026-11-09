@@ -1,4 +1,5 @@
 """The declared resolution lever: a stride-1 source for the detail tap, identity at zero."""
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -116,6 +117,49 @@ class OccupancyResolutionTests(unittest.TestCase):
                      "m3-occres-lever-r1-sweep-r1", "m3-occres-control-r1-sweep-profile-r1"):
             self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
         self.assertFalse(OWNED_RUN_PATTERN.fullmatch("m3-occres-"))
+
+
+class RefusalRecordTests(unittest.TestCase):
+    """The refused configuration: measured peak, own-session control, and the declared number."""
+
+    @classmethod
+    def setUpClass(cls):
+        root = Path(__file__).resolve().parents[1]
+        cls.root = root
+        cls.record = json.loads((root/"docs/evidence/m3-occupancy-resolution-r1/refusal.json")
+                                .read_text(encoding="utf-8"))
+        cls.declaration = (root/"docs/M3_OCCUPANCY_RESOLUTION.md").read_text(encoding="utf-8")
+
+    def receipt(self, name):
+        return json.loads((self.root/"runs"/(name+"-job.json")).read_text(encoding="utf-8"))
+
+    def test_the_refusal_is_measured_against_its_own_session_control(self):
+        lever = self.receipt("m3-occres-lever-r1-profile-r1")
+        control = self.receipt("m3-occres-control-r1-profile-r1")
+        self.assertEqual((lever["status"], lever["exit_code"]), ("failed", 3221225477))
+        self.assertEqual((control["status"], control["exit_code"]), ("passed", 0))
+        self.assertEqual(lever["peak_job_commit_bytes"], 1231880192)
+        self.assertEqual(control["peak_job_commit_bytes"], 1034313728)
+        self.assertEqual(lever["peak_job_commit_bytes"]-control["peak_job_commit_bytes"],
+                         self.record["measured"]["peak_delta_bytes"])
+        self.assertEqual(lever["peak_job_commit_bytes"]-self.record["ceiling_bytes"],
+                         self.record["measured"]["ceiling_excess_bytes"])
+        self.assertGreater(self.record["measured"]["peak_delta_bytes"], 0)
+        self.assertEqual(self.record["verdict"], {**self.record["verdict"], "verdict": "refused",
+                                                  "precision_improved": False,
+                                                  "precision_measured": False, "cleared": False})
+
+    def test_the_declaration_states_the_measured_increment(self):
+        for figure in ("1,231,880,192", "1,034,313,728", "197,566,464", "23,920,640",
+                       "204,472,320", "3.93x"):
+            self.assertIn(figure, self.declaration)
+        self.assertNotIn("about 50 MB", self.declaration)
+        self.assertEqual(self.record["activation_census"]["lower_bound_bytes"], 204472320)
+
+    def test_nothing_was_launched_after_the_refusal(self):
+        for study in ("m3-occres-lever-r1", "m3-occres-control-r1"):
+            self.assertFalse((self.root/"runs"/study/"summary.json").exists(), study)
+        self.assertTrue((self.root/"runs/attempts/m3-occres-lever-refused-r1/note.txt").exists())
 
 
 if __name__ == "__main__":

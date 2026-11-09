@@ -1,5 +1,37 @@
 # Contributor handoff — 2026-10-30
 
+## Encoder resolution refused at the declared envelope: the stride-1 source costs 188 MiB, not 48 (2026-11-09)
+
+The step the stencil pass ranked was predeclared at `eee9362`
+([M3_OCCUPANCY_RESOLUTION.md](M3_OCCUPANCY_RESOLUTION.md)) as a single declared change: a stride-1
+convolution of the captured image whose cell-center sample joins the same zero-initialized detail
+projection, against the same single-sample control, 64 matched steps from `m3-percell-balance-r1`,
+one catalogue, 1,152 MiB, 54 sweep forwards and the standing 0.70 / 0.90 / 0.05 gates and floor.
+
+**Outcome: REFUSED, not scored.** The 2-step admission profile - run before any study, as V-057
+requires - breached the declared ceiling on its first launch: lever peak **1,231,880,192 B** against
+1,207,959,552 B (exit 3221225477, 46.0 s), while the same-session stride-2 control peaked at
+1,034,313,728 B. The branch therefore costs **197,566,464 B (188.4 MiB)**, 3.93x the 50,331,648 B
+one-map estimate the predeclaration carried, and 23,920,640 B (22.8 MiB) more than the envelope
+allows.
+
+**Disposition:** the predeclaration's own refusal rule applied - no ceiling raised, no smaller branch
+substituted, no capture side reduced, no variant tried, no study/sweep/curation launched and no re-run
+under a fresh number. `precision_improved = false` because precision was **never measured**, not
+because it failed to improve; every gate and the population stay untouched and unanswered. The attempt
+is preserved at `runs/attempts/m3-occres-lever-refused-r1/` with a written note, and
+`docs/evidence/m3-occupancy-resolution-r1/refusal.json` binds the numbers to both receipts (recorder
+`runs/m3-occres-refusal-r1-job.json`). The estimate error is ledger entry **V-062**
+(resource-profile), guarded by a census instrument, so a lever's declared cost is now four retained
+maps rather than one.
+
+**Next-ranked: stack `occupancy_context` with `occupancy_detail`.** It is the last lever that changes
+the information the read-out sees rather than the sampling of it, and it fits the declared envelope
+(the 8x8 context tap retains about 0.02 MiB against the refused branch's 188.4 MiB). Resolution stays
+open only as a separately declared configuration - smaller branch, reduced capture side, or a
+computed-at-the-cell formulation - never as a substitution inside this pass. Scale waits on whichever
+lever carries the gain; the real-image chain remains parked pending authorization.
+
 ## 2x2 in-cell detail stencil measured: not cleared, attribution floor met, separation now binds (2026-11-09)
 
 The step the precision pass ranked now has its own measured verdict

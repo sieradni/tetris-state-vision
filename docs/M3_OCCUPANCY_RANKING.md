@@ -184,3 +184,19 @@ read-out lever has converted capacity into ordering rather than separation; then
 budget on whichever carries the gain. Stacking the two read-out taps remains untested. See
 [M3_OCCUPANCY_STENCIL.md](M3_OCCUPANCY_STENCIL.md) and
 `docs/evidence/m3-occupancy-stencil-r1/scope.json`.
+
+**The encoder-resolution step that paragraph ranked has since been tested and refused.** The declared
+single change was a stride-1 convolution of the captured image whose cell-center sample joins the same
+zero-initialized detail projection, against the same single-sample control, at the identical 64-step
+budget, gates, 1,152 MiB ceiling, population and catalogue identity ([M3_OCCUPANCY_RESOLUTION.md](M3_OCCUPANCY_RESOLUTION.md),
+predeclared at `eee9362`). Its 2-step admission profile breached the ceiling before any study: lever
+peak **1,231,880,192 B** against 1,207,959,552 B, same-session control 1,034,313,728 B, so the branch
+costs **197,566,464 B (188.4 MiB)** - 3.93x the one-map estimate the declaration carried - and the
+envelope is short by 23,920,640 B (22.8 MiB). Under the declaration's own refusal rule nothing was
+relaxed, substituted or re-run, so the verdict is **refused** with `precision_improved = false` because
+precision was never measured ([refusal.json](evidence/m3-occupancy-resolution-r1/refusal.json)). The
+result answers only one thing: a learned pixel-resolution source is not affordable inside this
+envelope, so **the ranked next step is stacking `occupancy_context` with `occupancy_detail`** - the
+only remaining lever that changes what the read-out sees rather than how finely it samples it, at
+about 0.02 MiB of retained activation - with scale after it and resolution reopenable only as a
+separately declared smaller configuration.
