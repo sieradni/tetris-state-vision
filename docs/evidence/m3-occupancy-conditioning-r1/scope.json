@@ -1,0 +1,678 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-conditioning-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_CONDITIONING.md",
+  "scope": "Read-only decomposition of the closed occupancy failure into per-board ranking versus operating-point conditioning on the widened deciding population. No training, model, loss, threshold, gate or prior evidence byte changes, and the ranking verdict is untouched by construction.",
+  "inputs": {
+    "scope": "docs/evidence/m3-widened-deciding-population-r1/scope.json",
+    "sweep": "docs/evidence/m3-widened-deciding-population-r1/sweep-result.json",
+    "replay": "docs/evidence/m3-widened-deciding-population-r1/occupancy-result.json"
+  },
+  "input_sha256": {
+    "scope": "0829475553fdcf4481243f441e5d33e90951698280169382e3b49285bcbe5c0f",
+    "sweep": "f2cf4aa1888ecadd16e38cf901e01ae4bf908658a5509ca28ac01900abbde173",
+    "replay": "85df4a3527379a866fa5eab5a45a17ce3d1786da08e7e7362246e5477f514d35"
+  },
+  "declared_receipt": "runs/m3-occupancy-conditioning-r1-job.json",
+  "declared_memory_bytes": 402653184,
+  "population": {
+    "split": "training",
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "ancestry_groups": 12
+  },
+  "classification": {
+    "verdict": "representation-limited",
+    "reaching": 0,
+    "boards": 28,
+    "minimum_reaching": 4,
+    "oracle_threshold_spread": 0.0,
+    "spread_bar": 1.5,
+    "bar": 0.7,
+    "reaching_thresholds": []
+  },
+  "auc": {
+    "pooled": 0.7851859596250932,
+    "per_board": {
+      "count": 28,
+      "min": 0.2914572864321608,
+      "median": 0.8291039426523298,
+      "max": 0.9698492462311558
+    }
+  },
+  "oracle": {
+    "pooled": {
+      "true_positive": 551,
+      "false_positive": 1342,
+      "false_negative": 116,
+      "f1": 0.430469
+    },
+    "pooled_threshold": -0.9,
+    "pooled_f1_median": 0.085714
+  },
+  "boards": [
+    {
+      "board": "training-20261026-v2",
+      "group": "ancestry-training-20261026",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.9698492462311558,
+      "oracle_threshold": 1.95,
+      "oracle_f1": 0.166667,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 10,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 62,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.03125
+    },
+    {
+      "board": "training-20261027-v0",
+      "group": "ancestry-training-20261027",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.6439393939393939,
+      "oracle_threshold": -1.35,
+      "oracle_f1": 0.043011,
+      "oracle_counts": {
+        "true_positive": 2,
+        "false_positive": 89,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 65,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.029412
+    },
+    {
+      "board": "training-20261027-v1",
+      "group": "ancestry-training-20261027",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.6666666666666666,
+      "oracle_threshold": -1.35,
+      "oracle_f1": 0.045977,
+      "oracle_counts": {
+        "true_positive": 2,
+        "false_positive": 83,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 59,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.032258
+    },
+    {
+      "board": "training-20261027-v2",
+      "group": "ancestry-training-20261027",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 3,
+      "auc": 0.5143824027072758,
+      "oracle_threshold": -1.35,
+      "oracle_f1": 0.044444,
+      "oracle_counts": {
+        "true_positive": 2,
+        "false_positive": 85,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 59,
+        "false_negative": 2
+      },
+      "pooled_f1": 0.031746
+    },
+    {
+      "board": "training-20261028-v0",
+      "group": "ancestry-training-20261028",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 53,
+      "auc": 0.7959183673469388,
+      "oracle_threshold": -1.2,
+      "oracle_f1": 0.590909,
+      "oracle_counts": {
+        "true_positive": 39,
+        "false_positive": 40,
+        "false_negative": 14
+      },
+      "pooled_counts": {
+        "true_positive": 34,
+        "false_positive": 30,
+        "false_negative": 19
+      },
+      "pooled_f1": 0.581197
+    },
+    {
+      "board": "training-20261028-v1",
+      "group": "ancestry-training-20261028",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 53,
+      "auc": 0.8034912078038763,
+      "oracle_threshold": -1.2,
+      "oracle_f1": 0.602941,
+      "oracle_counts": {
+        "true_positive": 41,
+        "false_positive": 42,
+        "false_negative": 12
+      },
+      "pooled_counts": {
+        "true_positive": 34,
+        "false_positive": 32,
+        "false_negative": 19
+      },
+      "pooled_f1": 0.571429
+    },
+    {
+      "board": "training-20261028-v2",
+      "group": "ancestry-training-20261028",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 54,
+      "auc": 0.7812024353120244,
+      "oracle_threshold": -1.2,
+      "oracle_f1": 0.58209,
+      "oracle_counts": {
+        "true_positive": 39,
+        "false_positive": 41,
+        "false_negative": 15
+      },
+      "pooled_counts": {
+        "true_positive": 34,
+        "false_positive": 30,
+        "false_negative": 20
+      },
+      "pooled_f1": 0.576271
+    },
+    {
+      "board": "training-20261029-v2",
+      "group": "ancestry-training-20261029",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.2914572864321608,
+      "oracle_threshold": -2.7,
+      "oracle_f1": 0.013699,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 144,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 0,
+        "false_positive": 59,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.0
+    },
+    {
+      "board": "training-20261030-v0",
+      "group": "ancestry-training-20261030",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.648989898989899,
+      "oracle_threshold": 0.45,
+      "oracle_f1": 0.066667,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 27,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 66,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.028986
+    },
+    {
+      "board": "training-20261030-v1",
+      "group": "ancestry-training-20261030",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.648989898989899,
+      "oracle_threshold": 0.3,
+      "oracle_f1": 0.064516,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 28,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 62,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.030769
+    },
+    {
+      "board": "training-20261030-v2",
+      "group": "ancestry-training-20261030",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.4472361809045226,
+      "oracle_threshold": -2.1,
+      "oracle_f1": 0.017391,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 113,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 0,
+        "false_positive": 64,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.0
+    },
+    {
+      "board": "training-20261031-v0",
+      "group": "ancestry-training-20261031",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 55,
+      "auc": 0.862319749216301,
+      "oracle_threshold": -1.2,
+      "oracle_f1": 0.671429,
+      "oracle_counts": {
+        "true_positive": 47,
+        "false_positive": 38,
+        "false_negative": 8
+      },
+      "pooled_counts": {
+        "true_positive": 40,
+        "false_positive": 31,
+        "false_negative": 15
+      },
+      "pooled_f1": 0.634921
+    },
+    {
+      "board": "training-20261031-v1",
+      "group": "ancestry-training-20261031",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 55,
+      "auc": 0.8715987460815047,
+      "oracle_threshold": -1.65,
+      "oracle_f1": 0.693333,
+      "oracle_counts": {
+        "true_positive": 52,
+        "false_positive": 43,
+        "false_negative": 3
+      },
+      "pooled_counts": {
+        "true_positive": 42,
+        "false_positive": 31,
+        "false_negative": 13
+      },
+      "pooled_f1": 0.65625
+    },
+    {
+      "board": "training-20261031-v2",
+      "group": "ancestry-training-20261031",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 54,
+      "auc": 0.8750634195839675,
+      "oracle_threshold": -1.5,
+      "oracle_f1": 0.693878,
+      "oracle_counts": {
+        "true_positive": 51,
+        "false_positive": 42,
+        "false_negative": 3
+      },
+      "pooled_counts": {
+        "true_positive": 42,
+        "false_positive": 31,
+        "false_negative": 12
+      },
+      "pooled_f1": 0.661417
+    },
+    {
+      "board": "training-20261032-v2",
+      "group": "ancestry-training-20261032",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.864321608040201,
+      "oracle_threshold": 0.15,
+      "oracle_f1": 0.060606,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 31,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 59,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.032787
+    },
+    {
+      "board": "training-20261033-v0",
+      "group": "ancestry-training-20261033",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 3,
+      "auc": 0.8324873096446701,
+      "oracle_threshold": -0.3,
+      "oracle_f1": 0.133333,
+      "oracle_counts": {
+        "true_positive": 3,
+        "false_positive": 39,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 3,
+        "false_positive": 64,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.085714
+    },
+    {
+      "board": "training-20261033-v1",
+      "group": "ancestry-training-20261033",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 3,
+      "auc": 0.8460236886632826,
+      "oracle_threshold": -0.15,
+      "oracle_f1": 0.15,
+      "oracle_counts": {
+        "true_positive": 3,
+        "false_positive": 34,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 3,
+        "false_positive": 64,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.085714
+    },
+    {
+      "board": "training-20261033-v2",
+      "group": "ancestry-training-20261033",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 4,
+      "auc": 0.6989795918367347,
+      "oracle_threshold": -0.15,
+      "oracle_f1": 0.146341,
+      "oracle_counts": {
+        "true_positive": 3,
+        "false_positive": 34,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 3,
+        "false_positive": 64,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.084507
+    },
+    {
+      "board": "training-20261034-v0",
+      "group": "ancestry-training-20261034",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 58,
+      "auc": 0.8484701311316173,
+      "oracle_threshold": -1.5,
+      "oracle_f1": 0.689655,
+      "oracle_counts": {
+        "true_positive": 50,
+        "false_positive": 37,
+        "false_negative": 8
+      },
+      "pooled_counts": {
+        "true_positive": 41,
+        "false_positive": 27,
+        "false_negative": 17
+      },
+      "pooled_f1": 0.650794
+    },
+    {
+      "board": "training-20261034-v1",
+      "group": "ancestry-training-20261034",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 58,
+      "auc": 0.8471345313258863,
+      "oracle_threshold": -1.5,
+      "oracle_f1": 0.689655,
+      "oracle_counts": {
+        "true_positive": 50,
+        "false_positive": 37,
+        "false_negative": 8
+      },
+      "pooled_counts": {
+        "true_positive": 41,
+        "false_positive": 29,
+        "false_negative": 17
+      },
+      "pooled_f1": 0.640625
+    },
+    {
+      "board": "training-20261034-v2",
+      "group": "ancestry-training-20261034",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 59,
+      "auc": 0.8434908041831951,
+      "oracle_threshold": -1.5,
+      "oracle_f1": 0.684932,
+      "oracle_counts": {
+        "true_positive": 50,
+        "false_positive": 37,
+        "false_negative": 9
+      },
+      "pooled_counts": {
+        "true_positive": 41,
+        "false_positive": 27,
+        "false_negative": 18
+      },
+      "pooled_f1": 0.645669
+    },
+    {
+      "board": "training-20261035-v2",
+      "group": "ancestry-training-20261035",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.6733668341708543,
+      "oracle_threshold": -1.05,
+      "oracle_f1": 0.028571,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 68,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 0,
+        "false_positive": 62,
+        "false_negative": 1
+      },
+      "pooled_f1": 0.0
+    },
+    {
+      "board": "training-20261036-v0",
+      "group": "ancestry-training-20261036",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.8560606060606061,
+      "oracle_threshold": 1.35,
+      "oracle_f1": 0.111111,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 15,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 2,
+        "false_positive": 69,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.054795
+    },
+    {
+      "board": "training-20261036-v1",
+      "group": "ancestry-training-20261036",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 2,
+      "auc": 0.8484848484848485,
+      "oracle_threshold": 1.5,
+      "oracle_f1": 0.111111,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 15,
+        "false_negative": 1
+      },
+      "pooled_counts": {
+        "true_positive": 2,
+        "false_positive": 67,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.056338
+    },
+    {
+      "board": "training-20261036-v2",
+      "group": "ancestry-training-20261036",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 1,
+      "auc": 0.7788944723618091,
+      "oracle_threshold": -0.45,
+      "oracle_f1": 0.037736,
+      "oracle_counts": {
+        "true_positive": 1,
+        "false_positive": 51,
+        "false_negative": 0
+      },
+      "pooled_counts": {
+        "true_positive": 1,
+        "false_positive": 70,
+        "false_negative": 0
+      },
+      "pooled_f1": 0.027778
+    },
+    {
+      "board": "training-20261037-v0",
+      "group": "ancestry-training-20261037",
+      "view": 0,
+      "known_cells": 200,
+      "occupied_cells": 46,
+      "auc": 0.8094297007340485,
+      "oracle_threshold": -0.9,
+      "oracle_f1": 0.571429,
+      "oracle_counts": {
+        "true_positive": 30,
+        "false_positive": 29,
+        "false_negative": 16
+      },
+      "pooled_counts": {
+        "true_positive": 30,
+        "false_positive": 29,
+        "false_negative": 16
+      },
+      "pooled_f1": 0.571429
+    },
+    {
+      "board": "training-20261037-v1",
+      "group": "ancestry-training-20261037",
+      "view": 1,
+      "known_cells": 200,
+      "occupied_cells": 46,
+      "auc": 0.8318746470920384,
+      "oracle_threshold": -1.35,
+      "oracle_f1": 0.6,
+      "oracle_counts": {
+        "true_positive": 39,
+        "false_positive": 45,
+        "false_negative": 7
+      },
+      "pooled_counts": {
+        "true_positive": 33,
+        "false_positive": 33,
+        "false_negative": 13
+      },
+      "pooled_f1": 0.589286
+    },
+    {
+      "board": "training-20261037-v2",
+      "group": "ancestry-training-20261037",
+      "view": 2,
+      "known_cells": 200,
+      "occupied_cells": 45,
+      "auc": 0.8291039426523298,
+      "oracle_threshold": -1.35,
+      "oracle_f1": 0.59375,
+      "oracle_counts": {
+        "true_positive": 38,
+        "false_positive": 45,
+        "false_negative": 7
+      },
+      "pooled_counts": {
+        "true_positive": 32,
+        "false_positive": 34,
+        "false_negative": 13
+      },
+      "pooled_f1": 0.576577
+    }
+  ],
+  "density": {
+    "available": true,
+    "labels": {
+      "dense": {
+        "boards": 12,
+        "median_oracle_threshold": -1.35,
+        "spread": 0.75
+      },
+      "empty": {
+        "boards": 4,
+        "median_oracle_threshold": -0.45,
+        "spread": 4.65
+      },
+      "sparse": {
+        "boards": 12,
+        "median_oracle_threshold": -0.225,
+        "spread": 3.6
+      }
+    }
+  },
+  "unchanged": {
+    "point_estimates": true,
+    "thresholds": {
+      "fit_gate_exact_nonempty_boards": 3,
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_chance_auc": 0.5,
+      "ranking_f1": 0.7,
+      "sweep_grid_points": 81,
+      "identity_distinct_classes": 3
+    },
+    "ranking_verdict": "uninformative",
+    "frozen_manifest": "not touched"
+  }
+}

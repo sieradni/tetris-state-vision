@@ -1,5 +1,29 @@
 # Contributor handoff — 2026-10-30
 
+## Occupancy conditioning measured: the failure is per-board, so the boundary is closed when conditioned (2026-11-09)
+
+The **unranked** representation question is now ranked by measurement rather than inference
+([M3_OCCUPANCY_CONDITIONING.md](M3_OCCUPANCY_CONDITIONING.md), predeclared at `deaba0f` before the
+canonical receipt, `docs/evidence/m3-occupancy-conditioning-r1/scope.json`). Read-only, on the
+committed widened sweep cases, with the standing 81-point grid and the 0.70 bar: **0 of 28**
+nonempty deciding boards reach the bar even at its own oracle grid point (floor was 4), so the
+verdict is `representation-limited` and the oracle threshold spread is 0.0. Even with one
+threshold per board chosen with the labels in hand, the oracle-pooled F1 is **0.4305** (551 true /
+1,342 false positive / 116 missed), 0.27 short of the bar; the per-board F1 at the standing `-0.90`
+point has median **0.0857**, while per-board AUC runs min **0.291**, median **0.829**, max
+**0.970** — the logits order occupied above empty on most boards but never separate them enough
+for a board to clear the bar. Density joins (dense 12 boards at median oracle threshold -1.35,
+sparse 12 at -0.225, empty 4 at -0.45) but cannot license a conditioned rule when no board reaches.
+
+Consequence: the decision-boundary family is closed **when conditioned as well as globally**, so
+no density-conditioned or per-board threshold is ranked, and the next lever is the representation —
+now a measured claim instead of an inference. The ranking verdict itself is untouched (`occupancy_sweep`
+still returns `uninformative`), and no model, loss, threshold, gate or prior evidence byte moved.
+Receipt `runs/m3-occupancy-conditioning-r1-job.json` (passed, 384 MiB ceiling, 37,457,920 B peak);
+the first receipt predated the predeclaration commit and is preserved under `runs/attempts/` with
+its evidence directory, with the canonical one re-run afterwards. `tests/test_board_conditioning_artifacts.py`
+re-derives every published number from the committed bytes.
+
 ## Deciding population widened: both verdicts re-derive unchanged and tighter (2026-11-09)
 
 The instrument change is measured ([M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md),

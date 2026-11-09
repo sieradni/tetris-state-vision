@@ -165,4 +165,4 @@ later widened from three groups / nine images to the canonical twelve / thirty-s
 against 0.90 becomes **0.7852 (CI 0.7640-0.8064)** over 667 occupied and 4,933 empty known
 cells; best swept F1 0.3470 becomes **0.3704** at the same `-0.90` threshold against the same
 0.70 bar; exact nonempty boards stay 0/28. The verdict is still **UNINFORMATIVE**, and the
-interval now shows the gap to the bar is not sampling noise: its upper bound is 0.094 short.
+interval now shows the gap to the bar is not sampling noise: its upper bound is 0.094 short. The *conditioned* family is measured closed as well: giving every board its own grid point, 0 of 28 reach F1 0.70 and the oracle-pooled F1 is 0.4305 ([M3_OCCUPANCY_CONDITIONING.md](M3_OCCUPANCY_CONDITIONING.md)), so "exhausted" now holds for conditioned thresholds too.

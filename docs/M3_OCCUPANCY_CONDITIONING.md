@@ -88,6 +88,46 @@ artefact written outside that directory. Prior receipts, evidence bytes and the 
 untouched, and the artifact-dependent test re-derives every published number from the committed
 bytes.
 
-## Measured result
+## Measured result: the failure is in the boards, and the boundary is closed even when conditioned
 
-(appended after the receipt exists)
+Status: measured (2026-11-09) from the committed widened sweep cases; canonical receipt
+`runs/m3-occupancy-conditioning-r1-job.json` (passed, 384 MiB declared ceiling, 37,457,920 B peak,
+0.35 s), evidence `docs/evidence/m3-occupancy-conditioning-r1/scope.json`. The first receipt was
+produced before this predeclaration was committed; it is preserved as
+`runs/attempts/m3-occupancy-conditioning-r1-job-premature.json` with its own evidence directory,
+and the canonical receipt was re-run after `deaba0f`. Nothing was changed between them.
+
+**Verdict: `representation-limited`.** Zero of the 28 nonempty deciding boards reach the 0.70 bar
+even at its own oracle grid point; the predeclared floor was 4. The oracle threshold spread is
+therefore 0.0, and the conditioned-boundary branch is not merely unsupported but unmeasurable —
+there is no board for which a conditioned rule could exist.
+
+| measured quantity | value |
+|---|---|
+| boards reaching per-board oracle F1 >= 0.70 | **0 of 28** (floor 4) |
+| oracle pooled F1 (each board at its own oracle point) | **0.4305** — 551 true / 1,342 false positive / 116 missed |
+| per-board F1 at the standing `-0.90` operating point, median | **0.0857** |
+| per-board AUC | min **0.291**, median **0.829**, max **0.970** |
+| population | 28 boards, 12 ancestry groups, 667 occupied / 5,600 known cells |
+
+The median board AUC of 0.829 and a maximum of 0.970 say the logits do order occupied above empty
+on most boards; what they never do is separate them cleanly enough for a single board to clear the
+bar. The oracle-pooled 0.4305 is the strongest statement the boundary can make: with one threshold
+per board chosen using the labels themselves, the ranking still lands 0.27 short. That is the
+measured form of the inference the record has carried since the sweep, and it is stronger, because
+it rules out the conditioning explanation the sweep could never test.
+
+Density is joined and recorded (dense 12 boards, median oracle threshold -1.35 with 0.75 spread;
+sparse 12 at -0.225 with 3.60; empty 4 at -0.45 with 4.65), but because no board reaches, those
+offsets cannot license a conditioned rule. They are recorded as a descriptive lead for a future
+representation pass and nothing more.
+
+Two things this does not do: it does not move the ranking verdict (that is
+`occupancy_sweep.sweep_verdict` on the global rule and stays `uninformative`), and it does not
+start a model change. What it does settle is the *ranking* of the next lever: the open question is
+the representation, and the decision boundary — global or conditioned — is now closed by
+measurement rather than by inference.
+
+`tests/test_board_conditioning_artifacts.py` re-derives the classification, the per-board oracle
+table, the AUC distribution and the density block from the committed bytes, so a drifting number
+fails the suite.

@@ -13,6 +13,19 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the occupancy failure is measured to be **per-board, not per-boundary**, so the last open
+model question is now ranked by evidence ([M3_OCCUPANCY_CONDITIONING.md](M3_OCCUPANCY_CONDITIONING.md),
+predeclared at `deaba0f`, `docs/evidence/m3-occupancy-conditioning-r1/scope.json`). Read-only on
+the committed widened cases with the standing 81-point grid and 0.70 bar: **0 of 28** nonempty
+deciding boards reach the bar even at their own oracle grid point (floor 4), so the verdict is
+`representation-limited` and no conditioned threshold can exist. Even with one threshold per board
+chosen using the labels, the oracle-pooled F1 is **0.4305** (551/1,342/116), 0.27 short; median
+per-board F1 at the standing `-0.90` point is **0.0857**, while per-board AUC runs 0.291 /**0.829** /
+0.970 — the ordering is real, the separation is not. Density offsets are recorded descriptively but
+license nothing. This closes the decision-boundary family **globally and conditioned**, leaves the
+ranking verdict untouched, and moves no model, loss, threshold, gate or evidence byte; the ranked
+next lever is the representation.
+
 Latest: the **deciding population is widened and both verdicts re-derive on it unchanged and
 tighter** ([M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md), predeclared
 at `111aa9e` before any receipt, `docs/evidence/m3-widened-deciding-population-r1/scope.json`).
