@@ -1,7 +1,8 @@
 # M3 per-cell decision — occupied-cell class budget lever (predeclaration)
 
-Status: predeclared. This document was committed before any per-cell-decision admission
-profile, study or probe receipt existed in the tree.
+Status: measured (2026-11-09). The rule below was predeclared and committed at `0d77cef`,
+before any per-cell-decision admission profile, study or probe receipt existed in the
+tree; the measured result is the section at the end and does not revise the rule.
 
 ## The question
 
@@ -101,7 +102,75 @@ once (V-052), and the curator's sidecar names read from a single declaration (V-
 defect this pass exposes is fixed at its root with a regression test and recorded in
 `docs/BUG_LOG.md`.
 
-## Measured result
+## Measured result: the lever STANDS, and the class budget trades misses for inventions
 
-(Measured below this predeclaration, in a later commit; the rule above is not revised by
-the result.)
+Receipts: admission `runs/m3-percell-balance-r1-profile-r1-job.json` (passed, 2 work items,
+980,099,072 B peak), the matched study `runs/m3-percell-balance-r1-job.json` (passed, 128/128
+updates, 459.2 s, 963,743,744 B peak under the declared 1,152 MiB ceiling,
+`arguments.occupancy_factor: 4`, `arguments.occupancy_positive_weight: 4`), the independent
+replay `runs/m3-percell-balance-r1-errors-r1-job.json` (passed, 27 forwards, 23.0 s, weights
+`9ae1fef9f649...` unchanged, every saved metric reproduced), its curation
+`runs/m3-percell-balance-r1-errors-r1-curation.json` (passed) into
+`docs/evidence/m3-percell-balance-r1-errors-r1/scope.json`, and the instrument tests
+`runs/m3-percell-balance-tests-r2.json` (8 modules).
+
+**The lever STANDS on the predeclared rule.** The deciding quantity, occupied-cell F1 on the
+seven nonempty training boards, is **0.3109** = `2*67/(2*67+196+101)`, below the threshold
+0.70. Development is 0.5350 (275 of 2,800 occupied cells recovered, 352 false positives,
+126 misses).
+
+| quantity (independent replay) | fit-gate run, `occupancy-factor 4` | this run, `+ positive weight 4` |
+|---|---|---|
+| training nonempty occupied-cell F1 | 0.2605 | 0.3109 |
+| training nonempty TP / FP / FN | 34 / 59 / 134 | 67 / 196 / 101 |
+| development nonempty occupied-cell F1 | 0.6045 | 0.5350 |
+| development nonempty TP / FP / FN | 230 / 130 / 171 | 275 / 352 / 126 |
+| exact nonempty boards (training, development) | 0/7, 0/14 | 0/7, 0/14 |
+| exact empty boards; empty-population FP | 0/2, 23; 0/4, 130 | 0/2, 72; 0/4, 135 |
+| exact roles (active, ghost), training | 0/9, 0/9 | 0/9, 0/9 |
+| exact roles (active, ghost), development | 0/18, 0/18 | 0/18, 0/18 |
+| exact readable components (train, dev) | 0/9, 3/18 | 0/9, 0/18 |
+| queue piece tokens (train, dev) | 15/54, 9/90 | 0/54, 0/90 |
+| queue EOS (train, dev) | 0/9, 0/15 | 9/9, 15/15 |
+| queue presence (train, dev) | 54/63, 90/105 | 54/63, 90/105 |
+| queue slot status (train, dev) | 54/54, 90/90 | 54/54, 90/90 |
+| hold piece (train, dev) | `T`x9 0/9, `T`x12 3/12 | `T`x9 0/9, `T`x12 3/12 |
+| geometry mean cells (train, dev) | 3.3397, 2.6864 | 4.2468, 2.1467 |
+| position logit spread (max, train / dev) | 0.0641, 0.0379 | 0.1003, 0.0954 |
+
+**The mechanism is measured and it is a reallocation, not discrimination.** The class budget
+moved the bound in the direction it was asked to: occupied-cell recall rose from 34/168 to
+67/168 (0.202 to 0.399) while precision fell from 34/93 to 67/263 (0.366 to 0.255), and the
+misses it removed came back as inventions (false negatives 134 -> 101, false positives 59 ->
+196). F1 therefore rose by only 0.0504 absolute and the decision still separates the classes
+no better than a fixed threshold shift would. The empty population makes the same point from
+the other side: its false positives tripled from 23 to 72 on 400 known empty training cells
+(130 -> 135 in development), so the change is a decision-boundary shift, not a representation
+change. `decision_mechanism` labels this population `specificity-limited`, because on the
+deciding split the inventions outnumber the misses (196 > 101); a tie between the two would
+classify as `both-limited`. This is the same conclusion the fit gate reached from the other
+direction: the per-cell decision, not the term's scale or its class split, is what pins fit.
+
+Family instability, none of it a criterion and none of it fit: queue EOS recovered to exact
+9/9 and 15/15 (it was 0/9 and 0/15 in the fit-gate run) while piece tokens collapsed from
+15/54 and 9/90 to 0/54 and 0/90, hold stayed on one class, ghost exactness stayed 0/9 and
+0/18, and the three development exact-readable cases disappeared (3/18 -> 0/18). The queue
+read-out swings in both directions across runs of this family; presence and slot status are
+the only queue fields unchanged at 54/63, 90/105 and 54/54, 90/90.
+
+`scripts/percell_gate.py` holds the rule as code (`CELL_F1_THRESHOLD`, `occupied_cell_f1`,
+`percell_gate_opens`, `decision_mechanism`) and `tests/test_percell_gate.py` reproduces both
+the rule (an exact tie at 0.70 opens; a partial fit below it stands; exact-board counts can
+neither open nor close the gate; a missing population is refused) and this verdict from the
+committed bytes: F1 0.3109, standing gate, `specificity-limited`, 0/7 exact nonempty training
+boards, `occupancy_positive_weight: 4`.
+
+What this does not license: no real-image, complete-state, calibration or quality claim, no
+re-opening of the closed identity or fit questions, and no further extension of the class
+budget as a fit lever - at this budget it reallocates errors without separating the classes.
+The ranked next instrument is a read-only **ranking** measurement on this committed
+checkpoint: a predeclared threshold sweep of the locked occupancy logits, which separates
+"the logits rank occupied cells above empty ones and only the operating point is wrong" from
+"the logits do not separate the classes at all". If the ranking turns out to be informative,
+fixing the operating point is a precision/recall budget choice that only the owner can make,
+and this document names that choice rather than inventing one.

@@ -1,5 +1,39 @@
 # Contributor handoff — 2026-10-30
 
+## Per-cell decision lever measured: class budget STANDS, error reallocation (2026-11-09)
+
+The predeclared per-cell rule ([M3_PERCELL_DECISION.md](M3_PERCELL_DECISION.md), rule
+committed at `0d77cef` with no receipts in the tree) is measured and **STANDS**: the deciding
+quantity, occupied-cell F1 on the seven nonempty training boards, is **0.3109** against a
+predeclared threshold of 0.70 (development 0.5350). Evidence:
+`docs/evidence/m3-percell-balance-r1-errors-r1/scope.json`. The lever was
+`--occupancy-positive-weight 4`, a class budget inside the balanced occupancy term with the
+term's total weight held at the already-measured `4.`, matched to `m3-fit-occupancy-r1` on
+capacity 64, identity factor 4, capture 512, seed `20261026`, LR .001, 128 updates,
+eval/checkpoint 64 and six development groups.
+
+The mechanism is a reallocation, not discrimination: recall rose 34/168 -> 67/168 while
+precision fell 34/93 -> 67/263, misses 134 -> 101 and inventions 59 -> 196, so F1 moved only
+0.2605 -> 0.3109; empty-population false positives tripled 23 -> 72, which is a decision
+boundary shift rather than a representation change. Exact boards stayed 0/7 and 0/14, empty
+boards 0/2 and 0/4, roles 0/9 and 0/18, ghost 0/9 and 0/18, readable components 0/9 and
+0/18. Family instability continued and is inert: queue EOS returned to exact 9/9 and 15/15
+(0/9 and 0/15 in the fit-gate run) while piece tokens collapsed 15/54 -> 0/54 and 9/90 ->
+0/90; presence 54/63, 90/105 and slot status 54/54, 90/90 were unchanged.
+
+Receipts: admission `runs/m3-percell-balance-r1-profile-r1-job.json`, study
+`runs/m3-percell-balance-r1-job.json` (128/128, 459.2 s, 963,743,744 B),
+replay/curation `runs/m3-percell-balance-r1-errors-r1-job.json` and `...-curation.json`
+(weights `9ae1fef9f649...`, 27 forwards, all saved metrics reproduced), tests
+`runs/m3-percell-balance-tests-r2.json`. The rule and this verdict are executable in
+`scripts/percell_gate.py` with `tests/test_percell_gate.py`; the objective join is
+`arguments.occupancy_positive_weight` + `recovery_contract`, replayed and curated.
+
+Ranked next instrument: a read-only threshold sweep of the locked occupancy logits on this
+committed checkpoint, to separate a wrong operating point from logits that do not rank the
+classes. If the ranking is informative, the operating point is an owner precision/recall
+budget choice, not something this evidence can settle.
+
 ## Fit gate measured: it stands, and the occupancy term is not starved - 2026-11-08
 
 `docs/M3_FIT_GATE.md` predeclared the rule at `5065811`, before any fit receipt: the gate

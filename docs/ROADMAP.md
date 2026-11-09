@@ -11,6 +11,24 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the **per-cell decision lever is measured and STANDS**, with the mechanism labelled
+as error reallocation rather than discrimination ([M3_PERCELL_DECISION.md](M3_PERCELL_DECISION.md),
+rule predeclared at `0d77cef` before any receipt,
+`docs/evidence/m3-percell-balance-r1-errors-r1/scope.json`). The predeclared rule is an
+occupied-cell F1 >= 0.70 on the seven nonempty training boards; the independent replay reports
+**0.3109** (development 0.5350). The lever was `--occupancy-positive-weight 4`, a class budget
+inside the balanced occupancy term with the term's total weight matched at the already-measured
+`4.`. It moved the bound as asked and stopped there: recall 34/168 -> 67/168, precision
+34/93 -> 67/263, misses 134 -> 101, inventions 59 -> 196, F1 0.2605 -> 0.3109, and
+empty-population false positives 23 -> 72 - a decision-boundary shift, labelled
+`specificity-limited` from the receipt's own counts. Exact boards stayed 0/7 and 0/14; roles
+0/9 and 0/18, ghost 0/9 and 0/18, readable components 0/9 and 0/18 are costs. The family's
+queue instability ran the other way this time (EOS 0/9 and 0/15 -> 9/9 and 15/15 while piece
+tokens 15/54 and 9/90 -> 0/54 and 0/90) and is inert. Neither the term's scale nor its class
+split opens fit, so the ranked next instrument is a read-only threshold sweep of the locked
+occupancy logits on the committed checkpoint: it decides whether the logits rank occupied above
+empty cells and only the operating point is wrong, in which case the precision/recall budget is
+an owner choice, or whether the ranking itself is near chance.
 Latest: the **fit gate is measured for the first time and STANDS**, with a mechanism that is
 not the one it was ranked on ([M3_FIT_GATE.md](M3_FIT_GATE.md), rule predeclared at
 `5065811` before any receipt, `docs/evidence/m3-fit-occupancy-r1-errors-r1/scope.json`).

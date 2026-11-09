@@ -3608,6 +3608,23 @@
         "scope.json": "627b0bdc117e435e5b9b6d1a8e114e91bad4cde369679db7d9651a211e29ba08"
       }
     },
+    "m3-percell-balance-r1-errors-r1": {
+      "record_commit": "",
+      "files": {
+        "checkpoint-manifest.json": "d5c9797b27196f280550ace8436e734a6d6d1927ae7e129723301083fa663d14",
+        "development-probe.jsonl": "39449beae733d1fc95179ed5f46061b5a4f3b4e615a75700743b98c708ebfccf",
+        "input-run-job.json": "4410364f5f106e2d6fcce4a763e0017cad550300b4ab81ebbc54d2204edefecf",
+        "input-summary.json": "04dedd663dc84fca0636fc6528f8fe7702654b79f10c413bad8fc2918130237d",
+        "native-job.json": "b8dfab5237ff1c1e507671890609f2f07d1170230ec3142aa294eff980e5fba9",
+        "native.log": "3d1dc4c1d3a9204cf9fb77e923c2f0eb2b068640f21ff05c37654f4554294b62",
+        "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "4814ce2eeaac78833fae314c1c4165fa110f86d74b3fcd5523ac15fce90173ce",
+        "scope.json": "fbedba58181879385104eac42fbc8708b04240114c21dc52f33ea1d65159b21d",
+        "source-manifest.json": "be22ee164f825110a7f587041cce60198b560295ca7690a0e54bca0f4abf1279",
+        "training-probe.jsonl": "c59e10a67c67d3f053c7779fe8bb8703ed289f7749a36a28a26683770de8300f"
+      }
+    },
     "m3-stream-controller-recovery-full": {
       "record_commit": "329e4a0c0dbcbbba45c6707349aa609583f3af98",
       "files": {
@@ -4420,7 +4437,7 @@
     }
   },
   "totals": {
-    "directories": 187,
-    "files": 3473
+    "directories": 188,
+    "files": 3485
   }
 }
