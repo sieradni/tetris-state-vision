@@ -1,0 +1,59 @@
+{
+  "instrument": "m3-occupancy-resolution-r1",
+  "status": "passed",
+  "closing_of_commit": "09e5bf95a22cf47265872c650df27e4f03112d78",
+  "predeclaration": {
+    "document": "docs/M3_OCCUPANCY_RESOLUTION.md",
+    "commit": "eee9362"
+  },
+  "outcome": {
+    "verdict": "refused",
+    "precision_improved": false,
+    "precision_measured": false,
+    "reason": "the lever arm breached the 1,152 MiB envelope on its admission profile"
+  },
+  "refusal": {
+    "record": "docs/evidence/m3-occupancy-resolution-r1/refusal.json",
+    "receipt": "runs/m3-occres-refusal-r1-job.json",
+    "ceiling_bytes": 1207959552,
+    "lever_peak_bytes": 1231880192,
+    "control_peak_bytes": 1034313728,
+    "delta_bytes": 197566464,
+    "excess_bytes": 23920640
+  },
+  "suite": {
+    "receipt": "runs/m3-occres-closing-suite-r4-job.json",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 601,
+    "result": "OK",
+    "peak_commit_bytes": 528592896,
+    "elapsed_seconds": 53.9
+  },
+  "audit": {
+    "record": "docs/evidence/m3-occupancy-resolution-r1/audit.json",
+    "claims": 30,
+    "drift": 0,
+    "receipt_joins": 16,
+    "scope": "a large integer on a line this pass added must equal a receipt value or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope"
+  },
+  "preserved_attempt": "runs/attempts/m3-occres-lever-refused-r1",
+  "unchanged": {
+    "ceiling": "not raised",
+    "gates": "not moved",
+    "population": "not re-measured",
+    "attribution_floor": "not moved",
+    "re_runs": "none",
+    "frozen_manifest": "untouched",
+    "prior_evidence": "untouched"
+  },
+  "open": [
+    "stacking the occupancy_context and occupancy_detail taps remains untested",
+    "resolution as a separately declared smaller configuration"
+  ],
+  "next": {
+    "step": "stack occupancy_context with occupancy_detail",
+    "reason": "last lever that changes the information the read-out sees, at about 0.02 MiB of retained activation against the refused branch's 188.4 MiB"
+  },
+  "real_image_chain": "parked pending user authorization"
+}
