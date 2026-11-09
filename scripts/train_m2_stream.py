@@ -68,6 +68,10 @@ def arguments(argv=None):
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
                              "only, the one the occupancy read-out reads")
+    parser.add_argument("--lattice-support", type=int, choices=(0, 1), default=0,
+                        help="declared box-origin lever;0 is the published global-token box head;"
+                             "1 adds a zero-initialized residual from the coarse feature map's "
+                             "spatial moments, so the origin can be board-dependent")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -184,7 +188,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, geometry_final_only=0):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, geometry_final_only=0, lattice_support=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -202,11 +206,13 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
-    from tetris_vision.losses import (require_geometry_final_only, require_occupancy_context,
+    from tetris_vision.losses import (require_geometry_final_only, require_lattice_support,
+                                     require_occupancy_context,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
                                      require_positive_weight)
     require_geometry_final_only(geometry_final_only, summary)
+    require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
     require_occupancy_factor(occupancy_factor, summary)
     require_positive_weight(positive_weight, summary)
@@ -444,7 +450,8 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_context=args.occupancy_context,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
-                     occupancy_resolution=args.occupancy_resolution)
+                     occupancy_resolution=args.occupancy_resolution,
+                     lattice_support=args.lattice_support)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -464,6 +471,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_detail_stencil=args.occupancy_detail_stencil,
                            occupancy_resolution=args.occupancy_resolution,
                            geometry_final_only=args.geometry_final_only,
+                           lattice_support=args.lattice_support,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -479,7 +487,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 not compatible_config(source_manifest["config"], config_json,
                                       allow_absent=("occupancy_context", "occupancy_detail",
                                                     "occupancy_detail_stencil",
-                                                    "occupancy_resolution")) or
+                                                    "occupancy_resolution", "lattice_support")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -489,7 +497,7 @@ def main(argv=None, *, _archive=None, _started=None):
         missing = sorted(set(model.state_dict())-set(source_state))
         if set(source_state)-set(model.state_dict()) or any(
                 not key.startswith(("occupancy_neighborhood.", "occupancy_detail_tap.",
-                                    "occupancy_resolution_branch."))
+                                    "occupancy_resolution_branch.", "support_box."))
                 for key in missing):
             raise ValueError("initial-weight source tensors differ from the declared representation")
         model.load_state_dict(source_state, strict=False)
@@ -623,6 +631,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil
     recovery_contract["occupancy_resolution"] = args.occupancy_resolution
     recovery_contract["geometry_final_only"] = args.geometry_final_only
+    recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:

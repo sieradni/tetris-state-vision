@@ -107,6 +107,68 @@ def attribution_delta(lever_best, baseline_best):
     return lever_best-baseline_best
 
 
+SIGNED_REDUCTION = 0.5
+
+
+def signed_reduction(baseline, lever):
+    """Per-axis fractional reduction of the signed offset magnitude."""
+    reduction = {}
+    for axis in ("signed_column_offset_cells", "signed_row_offset_cells"):
+        if abs(baseline[axis]) < 1e-12:
+            raise ValueError("baseline signed offset must be nonzero")
+        reduction[axis] = 1-abs(lever[axis])/abs(baseline[axis])
+    return reduction
+
+
+def signed_offsets_moved(baseline, lever, *, floor=SIGNED_REDUCTION):
+    """Declared condition: both signed components fall to at most half their baseline."""
+    reduction = signed_reduction(baseline, lever)
+    return all(value >= floor for value in reduction.values()), reduction
+
+
+def translation_verdict(occupancy, ranking, attribution, baseline_placement, lever_placement, *,
+                        cell_bar=CELL_F1_THRESHOLD, attribution_floor=ATTRIBUTION_FLOOR,
+                        signed_floor=SIGNED_REDUCTION):
+    """Three standing gates plus the declared signed-offset condition."""
+    moved, reduction = signed_offsets_moved(baseline_placement, lever_placement, floor=signed_floor)
+    conditions = {"per_cell_f1": occupancy["f1"] >= cell_bar,
+                  "ranking": ranking == "informative",
+                  "attribution": attribution >= attribution_floor,
+                  "signed_offsets": moved}
+    return {"verdict": "cleared" if all(conditions.values()) else "not-cleared",
+            "conditions": conditions,
+            "failing": [name for name, met in conditions.items() if not met],
+            "cell_bar": cell_bar, "attribution_floor": attribution_floor,
+            "signed_reduction_floor": signed_floor, "signed_reduction": reduction,
+            "signed_column_offset_cells": lever_placement["signed_column_offset_cells"],
+            "signed_row_offset_cells": lever_placement["signed_row_offset_cells"],
+            "ranking_auc_bar": AUC_THRESHOLD, "ranking_f1_bar": F1_THRESHOLD}
+
+
+def translation_decomposition(baseline_placement, lever_placement, decision):
+    """The declared non-circular rule that names the next suspect after this lever."""
+    reduction = decision["signed_reduction"]
+    smallest = min(reduction.values())
+    occupancy_met = decision["conditions"]["per_cell_f1"] and decision["conditions"]["ranking"]
+    if smallest < 0.25:
+        rule, suspect = "extent", "box-extent supervision of the lattice box"
+    elif decision["conditions"]["signed_offsets"] and not occupancy_met:
+        rule, suspect = "read-out_inheritance", "a lattice-agnostic occupancy read-out"
+    elif lever_placement["board_error_spread_cells"] >= DISPERSION_FLOOR:
+        rule, suspect = "dispersion", "per-board lattice refinement capacity"
+    else:
+        rule, suspect = "extent", "box-extent supervision of the lattice box"
+    return {"rule": rule, "next_suspect": suspect, "signed_reduction": reduction,
+            "smallest_signed_reduction": smallest,
+            "occupancy_gates_met": occupancy_met,
+            "lever_extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "lever_extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "lever_board_error_spread_cells": lever_placement["board_error_spread_cells"],
+            "floors": {"signed_reduction": decision["signed_reduction_floor"],
+                       "extent_unmoved_below": 0.25,
+                       "dispersion_cells": DISPERSION_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \

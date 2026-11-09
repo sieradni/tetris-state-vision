@@ -33,6 +33,7 @@ class ModelConfig:
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
     occupancy_resolution: int = 0
+    lattice_support: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -67,6 +68,8 @@ class ModelConfig:
               "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
+        check(type(self.lattice_support) is int and self.lattice_support in (0, 1),
+              "lattice support is 0 (published box head) or 1 (declared support-moment residual)")
 
     @classmethod
     def pilot(cls):
@@ -206,6 +209,16 @@ class TetrisStateNet(nn.Module):
         self.board_query = nn.Parameter(torch.randn(1, 1, dimension)*.02)
         self.board_reader = nn.MultiheadAttention(dimension, config.heads, batch_first=True)
         self.initial_box = nn.Sequential(nn.LayerNorm(dimension), nn.Linear(dimension, 4))
+        # Declared translation lever: the box head sees one global token, while the
+        # measured placement residual is a board-dependent origin shift. This
+        # zero-initialized projection adds the coarse feature map's spatial moments
+        # (centroid and spread), so step zero is exactly the published function and the
+        # paired control starts from the same tensors.
+        self.support_box = None
+        if config.lattice_support:
+            self.support_box = nn.Linear(5, 4)
+            nn.init.zeros_(self.support_box.weight)
+            nn.init.zeros_(self.support_box.bias)
         self.box_refine = nn.ModuleList(nn.Linear(dimension, 4) for _ in range(config.refinements))
         self.row_embedding = nn.Embedding(config.visible_rows+config.spawn_rows, dimension)
         self.column_embedding = nn.Embedding(config.columns, dimension)
@@ -296,6 +309,22 @@ class TetrisStateNet(nn.Module):
             nn.init.zeros_(self.occupancy_neighborhood[-1].weight)
             nn.init.zeros_(self.occupancy_neighborhood[-1].bias)
 
+    @staticmethod
+    def support_moments(coarse):
+        """Normalized spatial moments of the coarse feature energy, shape [batch, 5]."""
+        energy = coarse.mean(1).relu()
+        total = energy.sum((1, 2), keepdim=True).clamp_min(1e-6)
+        weights = energy/total
+        height, width = energy.shape[-2:]
+        xs = ((torch.arange(width, device=energy.device, dtype=energy.dtype)+.5)/width*2-1).view(1, 1, width)
+        ys = ((torch.arange(height, device=energy.device, dtype=energy.dtype)+.5)/height*2-1).view(1, height, 1)
+        column = (weights*xs).sum((1, 2))
+        row = (weights*ys).sum((1, 2))
+        spread_x = (weights*(xs-column[:, None, None])**2).sum((1, 2)).clamp_min(0).sqrt()
+        spread_y = (weights*(ys-row[:, None, None])**2).sum((1, 2)).clamp_min(0).sqrt()
+        return torch.stack((column, row, spread_x, spread_y,
+                            torch.log1p(energy.mean((1, 2)))), -1)
+
     def forward(self, pixels, valid):
         check(pixels.ndim == 4 and pixels.shape[1] == 3 and pixels.is_floating_point(), "expected BCHW floating RGB")
         batch, _, height, width = pixels.shape
@@ -311,6 +340,8 @@ class TetrisStateNet(nn.Module):
         board = self.board_reader(self.board_query.expand(batch, -1, -1), context, context,
                                   key_padding_mask=~context_valid, need_weights=False)[0]
         raw_box = self.initial_box(board[:, 0])
+        if self.support_box is not None:
+            raw_box = raw_box+self.support_box(self.support_moments(coarse))
         cells = (self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None].expand(batch, -1, -1)
         stages = []
         for index, decoder in enumerate(self.decoders):

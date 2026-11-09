@@ -193,6 +193,15 @@ def require_positive_weight(weight, summary):
 # Declared geometry-stage policy: 0 averages every stage's lattice error (published objective),
 # 1 spends the geometry term on the final lattice only - the one the occupancy head reads.
 GEOMETRY_STAGE_POLICIES = (0, 1)
+LATTICE_SUPPORT_LEVERS = (0, 1)
+
+
+def require_lattice_support(value, summary):
+    """One declaration of the admission join for the box-origin support lever."""
+    if (type(value) is not int or value not in LATTICE_SUPPORT_LEVERS or
+            summary.get("arguments", {}).get("lattice_support", 0) != value or
+            summary.get("recovery_contract", {}).get("lattice_support", 0) != value):
+        raise ValueError("lattice support differs from resource admission")
 
 
 def require_geometry_final_only(value, summary):
