@@ -18,7 +18,36 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051 (1) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053 (10) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+
+## V-054 — The occupancy sweep pooled the empty population into its deciding curve
+
+**Symptom.** The first sweep attempt's per-threshold rows reported the training zero row as
+67 true positive / 268 false positive / 101 false negative (F1 0.2664) although the committed
+replay of the same checkpoint reports 67 / 196 / 101 on the deciding nonempty population, and
+the pooled F1 depressed every row of the curve.
+
+**Root cause.** `occupancy_sweep.evaluate` accumulated the per-threshold confusion counts over
+all saved boards, including the empty population's 400 known cells, while
+`exact_empty_boards` and the empty-population false-positive rate were already separated. The
+deciding quantity and the reported curve therefore mixed two populations. The curator's
+absolute check on the admission directory name was a second, cosmetic join defect: it assumed
+`<run>-profile` while the admitted profile run is `<run>-profile-r1`.
+
+**Detection class.** Instrument, caught before curation by a predeclared instrument: the
+grid's zero row must reproduce the replay's published locked counts (`reference_join` in
+`scripts/record_stream_sweep.py`).
+
+**Instrument.** The reference join plus
+`tests/test_sweep_rule.py::test_counts_come_from_the_deciding_population_only` (a mixed
+nonempty/empty population must count only the deciding cells and report the empty board's
+cells separately), and the curator now derives the admission directory from the sweep
+receipt's own `admission.run` and re-validates that profile summary.
+
+**Named green run.** `runs/m3-sweep-occupancy-r1-ranking-r1-job.json` (passed, zero row
+67 / 196 / 101 on training and 275 / 352 / 126 on development) with
+`runs/m3-sweep-occupancy-tests-r3-job.json` (11 tests, `OK`). The failed attempt and its
+receipt are preserved under `runs/attempts/`.
 
 ## V-053 - CLOSED: the curator read a log name the launch never wrote
 

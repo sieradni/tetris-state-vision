@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "source_base_commit": "9ad3598c0063b10e7b7df71521906066712be304",
+  "core_architecture": "TetrisStateNet-M3",
+  "run": "m3-percell-balance-r1",
+  "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+  "grid": {
+    "low": -6.0,
+    "high": 6.0,
+    "step": 0.15,
+    "count": 81
+  },
+  "verdict": "uninformative",
+  "reference_join": {
+    "reference": "docs/evidence/m3-percell-balance-r1-errors-r1/result.json",
+    "threshold": 0.0,
+    "training_nonempty": {
+      "true_positive": 67,
+      "false_positive": 196,
+      "false_negative": 101
+    }
+  },
+  "auc": {
+    "training": 0.7491158395176253,
+    "development": 0.8712192008515601,
+    "chance": 0.5
+  },
+  "best": {
+    "training": {
+      "threshold": -0.9,
+      "true_positive": 106,
+      "false_positive": 337,
+      "false_negative": 62,
+      "true_negative": 895,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 0,
+      "precision": 0.23927765237020315,
+      "recall": 0.6309523809523809,
+      "f1": 0.3469721767594108
+    },
+    "development": {
+      "threshold": -0.45,
+      "true_positive": 335,
+      "false_positive": 492,
+      "false_negative": 66,
+      "true_negative": 1907,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 0,
+      "precision": 0.40507859733978235,
+      "recall": 0.8354114713216958,
+      "f1": 0.5456026058631922
+    }
+  },
+  "native_peak_job_commit_bytes": 558596096,
+  "native_elapsed_seconds": 26.667,
+  "diagnostic_sources": {
+    "scripts/sweep_stream_occupancy.py": "2be3aabcd840a326300638bbd9e2714253034685d2a3b48649d47c48b410087f",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/record_stream_run.py": "de8b90fd79ba4e97b25d6f44bc23906b1eb04f30060cfdd2bacb3d2962e93c2f",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "artifact_sha256": {
+    "result.json": "1a07f0e1f681493894ce1802aab2408b79abba0a33261dfb465e93a0fac450a5",
+    "progress.json": "c6308ffff6b95186742fe8b7aa1628dac6707f94b4a87797f798786ee65652c3",
+    "input-summary.json": "b9490851f38a3514c0187182b4a93876675337cd7e03443ac09728cdf1d60c5c",
+    "source-manifest.json": "0de038b655a0b7b3cf591b20e858374eb42bf396c0b184b218300b5114eaacbb",
+    "checkpoint-manifest.json": "809569ef2192e72bf51df47c0ae10ae2bcbf7f07f33b9fe7f72c0cb798d57b19",
+    "input-run-job.json": "a39472e243d49792bbf59274c20c6a872b81be69157a7f58d23c0e142898cc01",
+    "admission-summary.json": "99ade6af916e8367bbdbe829252770ffe4e41dcbc5656b9a9d1c9c1c9932a305",
+    "native-job.json": "91f2e5bb6a3308742a558449b95001f25487e06a4c59f303db706656029cd1c2",
+    "native.log": "47e78bd45f1b870cc03d8b92d15c4bf5cd0668f35c8e56408227336a9e12fddb",
+    "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "curator_sha256": "738c378da5f2e3e89d953f7a6ce30dd9284e0cca2ce1c4c593fd5cbcaca9db5a",
+  "scope": "Read-only threshold sweep of saved synthetic probe boards from one committed checkpoint; no training, no weight change, no decoded complete-state, no real-image or calibrated accuracy claim. Unknown cells are excluded; the grid and rule were predeclared before this receipt existed."
+}

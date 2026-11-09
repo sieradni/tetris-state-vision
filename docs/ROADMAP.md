@@ -11,6 +11,24 @@ selected as the release model. The larger configuration
 has now passed its first resource profile; its learning gate remains open.
 No complete screenshot parser or real-image accuracy is claimed.
 
+Latest: the **occupancy ranking sweep is measured and returns UNINFORMATIVE**, closing the
+occupancy head and exhausting the operating-point family
+([M3_OCCUPANCY_RANKING.md](M3_OCCUPANCY_RANKING.md), rule predeclared at `9ad3598` before any
+receipt, `docs/evidence/m3-sweep-occupancy-r1-ranking-r1/scope.json`). Read-only, on the
+committed `m3-percell-balance-r1` checkpoint over the fixed 81-point grid: training AUC
+**0.7491** against chance 0.5 (bar 0.90) and no threshold on the grid reaches the required
+occupied-cell F1 0.70 - the best point is -0.90 with precision 0.2393, recall 0.6310, F1
+**0.3470**, 0/7 exact boards and 122/400 empty-population false positives. Development AUC
+0.8712, best F1 0.5456 at -0.45, 0/14 exact boards. The grid's zero row reproduces the
+replay's 67/196/101 counts, so the sweep joins the earlier receipt instead of restating it.
+Consequence: the occupancy head of this representation is **closed** and the
+operating-point family is **exhausted**; the logits order occupied above empty better than
+chance but not enough for any threshold to approach fit, and the class-budget run's 0.3109
+sits below the swept ceiling of 0.3470. Nothing re-opens the fit gate, class weight or scale
+lever, and no real-image, complete-state or quality claim follows. Occupancy is now closed
+from all three sides (weight scale, class split, decision boundary); the next model question
+is a representation that separates occupied from empty cells at this budget, which is not a
+threshold choice and is not ranked as a lever here.
 Latest: the **per-cell decision lever is measured and STANDS**, with the mechanism labelled
 as error reallocation rather than discrimination ([M3_PERCELL_DECISION.md](M3_PERCELL_DECISION.md),
 rule predeclared at `0d77cef` before any receipt,

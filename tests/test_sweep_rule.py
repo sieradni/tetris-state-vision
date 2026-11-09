@@ -101,5 +101,37 @@ class SweepRuleTests(unittest.TestCase):
             evaluate([board("training", [1.0], [-1.0]), board("development", [1.0], [-1.0])])
 
 
+class SweepEvidenceTests(unittest.TestCase):
+    def test_the_recorded_sweep_reproduces_an_uninformative_ranking(self):
+        result = json.loads(EVIDENCE.read_text())
+        self.assertEqual(result["status"], "passed")
+        self.assertEqual(result["verdict"], "uninformative")
+        self.assertEqual(result["grid"]["count"], 81)
+        cases = result["cases"]
+        self.assertEqual(sum(1 for case in cases if case["split"] == "training"), 9)
+        for key, split in (("deciding", "training"), ("development", "development")):
+            summary = evaluate([case for case in cases if case["split"] == split])
+            self.assertEqual(summary, result[key])
+            self.assertEqual(sweep_verdict(summary), "uninformative")
+        deciding = result["deciding"]
+        self.assertEqual(round(deciding["auc"], 4), 0.7491)
+        self.assertEqual((deciding["occupied_cells"], deciding["empty_cells_on_nonempty_boards"]),
+                         (168, 1232))
+        self.assertLess(deciding["auc"], AUC_THRESHOLD)
+        self.assertGreater(deciding["auc"], CHANCE_AUC)
+        self.assertEqual(deciding["best"]["threshold"], -0.9)
+        self.assertAlmostEqual(deciding["best"]["f1"], 212/611, places=12)
+        self.assertLess(deciding["best"]["f1"], F1_THRESHOLD)
+        self.assertEqual((deciding["best"]["true_positive"], deciding["best"]["false_positive"],
+                          deciding["best"]["false_negative"]), (106, 337, 62))
+        self.assertEqual(deciding["exact_boards_at_best"], {"nonempty": 0, "empty": 0})
+        self.assertEqual(deciding["empty_population"]["false_positive_rate"], 122/400)
+        zero = next(row for row in deciding["rows"] if row["threshold"] == 0.0)
+        self.assertEqual((zero["true_positive"], zero["false_positive"], zero["false_negative"]),
+                         (67, 196, 101))
+        self.assertAlmostEqual(zero["f1"], 134/431, places=12)
+        self.assertEqual(round(result["development"]["auc"], 4), 0.8712)
+
+
 if __name__ == "__main__":
     unittest.main()

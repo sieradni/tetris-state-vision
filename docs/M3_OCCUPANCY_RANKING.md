@@ -1,7 +1,8 @@
 # M3 occupancy ranking — read-only threshold sweep (predeclaration)
 
-Status: predeclared. Committed before any sweep admission profile, sweep receipt or sweep
-evidence directory existed in the tree.
+Status: measured (2026-11-09). The rule below was predeclared and committed at `9ad3598`,
+before any sweep admission profile, sweep receipt or sweep evidence directory
+existed in the tree; the measured result is the last section and does not revise it.
 
 ## The question
 
@@ -90,7 +91,65 @@ killed stages preserved and re-run to a passing canonical receipt, and any defec
 exposes fixed at its root with a regression test and recorded in `docs/BUG_LOG.md` - only if
 something genuinely breaks.
 
-## Measured result
+## Measured result: the ranking is UNINFORMATIVE, and the operating-point family is exhausted
 
-(Measured below this predeclaration, in a later commit; the rule above is not revised by the
-result.)
+Receipts: admission `runs/m3-sweep-occupancy-r1-profile-r1-job.json` (passed, 2 forwards),
+the sweep `runs/m3-sweep-occupancy-r1-ranking-r1-job.json` (passed, 27 forwards, 25.6 s,
+under the declared 640 MiB ceiling), its curation
+`runs/m3-sweep-occupancy-r1-ranking-r1-curation-job.json` (passed) into
+`docs/evidence/m3-sweep-occupancy-r1-ranking-r1/scope.json`, and the instrument tests
+`runs/m3-sweep-occupancy-tests-r4.json`. The sweep reloads the committed
+`m3-percell-balance-r1` checkpoint (weights `9ae1fef9f649...`), changes no weight, and its
+curator re-derives every number below from the receipt's own per-cell logits.
+
+| quantity (sweep receipt) | training (deciding) | development |
+|---|---|---|
+| pooled AUC over known cells | **0.7491** | 0.8712 |
+| chance reference | 0.5 | 0.5 |
+| occupied / empty known cells on nonempty boards | 168 / 1,232 | 401 / 2,399 |
+| best swept threshold | **-0.90** | -0.45 |
+| best true / false positive / false negative | 106 / 337 / 62 | 335 / 492 / 66 |
+| best precision / recall / F1 | 0.2393 / 0.6310 / **0.3470** | 0.4051 / 0.8354 / 0.5456 |
+| exact nonempty boards at the best point | 0/7 | 0/14 |
+| empty-population false positive rate at the best point | 122/400 = **0.3050** | 189/800 = 0.23625 |
+| grid zero row (join with the replay) | 67 / 196 / 101 | 275 / 352 / 126 |
+
+**The verdict is the second of the two predeclared forms: the ranking is UNINFORMATIVE.** No
+swept threshold on the predeclared 81-point grid reaches the required occupied-cell F1 of
+0.70 - the best of all 81 points is **0.3470** on training - and the training AUC of 0.7491
+is below the predeclared informativity bar of 0.90. Both conditions fail, so the occupancy
+head of this representation is **closed** and the operating-point family is recorded as
+**exhausted**: no threshold of this checkpoint's locked occupancy logits, at any point of the
+declared grid, approaches fit, and nobody should re-sweep it.
+
+What the numbers do say, precisely and without upgrading the verdict: the head ranks better
+than chance (0.7491 on training, 0.8712 in development), so the logits carry some ordering
+signal about occupied cells. What they do not carry is enough separation to matter. Even the
+best training point trades 62 remaining misses for 337 inventions and 122 false positives on
+the 400 known empty training cells, and the favourite operating point of the previous run
+(`0.0`, the replay's own decision) records the same 67/196/101 counts the replay published -
+the reference join that makes this receipt a consistency check as well as a measurement. The
+class-budget run's 0.3109 F1 sits 0.036 below the swept maximum of 0.3470, so the whole
+operating-point family buys a few percent of F1 and nothing else; the ceiling of what a
+threshold can do here is 0.3470, and the predeclared bar was 0.70.
+
+Costs, all inert and all reported: exact nonempty boards are 0/7 and 0/14 at the best point,
+exact empty boards are 0/2 and 0/4, development never enters the verdict, and the empty
+population's false-positive rate at the best point (0.3050 training) is the price of the
+boundary the sweep chose. Tuning any of these into the report is exactly what the
+predeclaration forbids: the swept best point is an operating point of this checkpoint, not a
+model improvement and not a new result.
+
+`scripts/occupancy_sweep.py` holds the rule as code (`threshold_grid`, `pooled_auc`,
+`evaluate`, `sweep_verdict`) and `tests/test_sweep_rule.py` reproduces it from the committed
+receipt: the grid is 81 fixed points including zero, logits exactly at a threshold count as
+empty, the AUC counts ties as one half, both conditions are required with boundary ties met,
+counts come from the deciding population only, a missing population is refused, and the
+recorded sweep re-derives as `uninformative` with AUC 0.7491 and best F1 0.3470.
+
+What this does not license: no real-image, complete-state, calibration or quality claim, no
+re-opening of the fit-gate, class-weight or scale levers, and no further occupancy threshold
+work - this family is spent. The occupancy question of this representation is now closed
+from both sides, the scalar weight and the class split by measurement, and the decision
+boundary by this sweep. What remains open is out of scope for a threshold: a representation
+that separates occupied from empty cells at this budget is a different model question.

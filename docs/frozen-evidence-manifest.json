@@ -3866,6 +3866,22 @@
         "scope.json": "9b673dc911b758089f64e4619b4ba5d4b7bf4c0a50345803f4c159498412684e"
       }
     },
+    "m3-sweep-occupancy-r1-ranking-r1": {
+      "record_commit": "",
+      "files": {
+        "admission-summary.json": "ce6d8ed910cad16714019d16e188211accdd8eb7f806f170e402635bc8161ca6",
+        "checkpoint-manifest.json": "d5c9797b27196f280550ace8436e734a6d6d1927ae7e129723301083fa663d14",
+        "input-run-job.json": "4410364f5f106e2d6fcce4a763e0017cad550300b4ab81ebbc54d2204edefecf",
+        "input-summary.json": "04dedd663dc84fca0636fc6528f8fe7702654b79f10c413bad8fc2918130237d",
+        "native-job.json": "943bbc6af857b43b3b609437123108d8ec1baa10d490b236dd84ddbc385fca28",
+        "native.log": "6b6b8a772fa1f6c30bcaa1713874544e972605f1111cec1196cdedcef0f22bb3",
+        "native.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "progress.json": "151444aff8b6f43fbb2c21951300922a6068e79a81d0f3928d2cf22f9699ca12",
+        "result.json": "d9cf5993e5965969b4b4f2185764f8d208f60fdbc4ee91c62b4e40985e18ae35",
+        "scope.json": "79dfb0096c3b9e7c15cacd757611dd80ef0a6411e8896c1725d956b3032cd847",
+        "source-manifest.json": "be22ee164f825110a7f587041cce60198b560295ca7690a0e54bca0f4abf1279"
+      }
+    },
     "pixel-replay-contract-r2": {
       "record_commit": "4c0f6b38b0e60cf4562f926a1c36f70947c3b9e3",
       "files": {
@@ -4437,7 +4453,7 @@
     }
   },
   "totals": {
-    "directories": 188,
-    "files": 3485
+    "directories": 189,
+    "files": 3496
   }
 }

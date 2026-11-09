@@ -1,5 +1,39 @@
 # Contributor handoff — 2026-10-30
 
+## Occupancy ranking measured: UNINFORMATIVE, operating-point family exhausted (2026-11-09)
+
+The read-only threshold sweep named by the per-cell pass is measured and returns the second
+predeclared verdict: the locked occupancy **ranking is UNINFORMATIVE**
+([M3_OCCUPANCY_RANKING.md](M3_OCCUPANCY_RANKING.md), rule committed at `9ad3598` before any
+sweep receipt, `docs/evidence/m3-sweep-occupancy-r1-ranking-r1/scope.json`). On the committed
+`m3-percell-balance-r1` checkpoint, swept over the predeclared 81-point grid, training AUC is
+**0.7491** against chance 0.5 (bar 0.90) and no threshold on the whole grid reaches the
+required occupied-cell F1 0.70 - the best point is **-0.90** with precision 0.2393, recall
+0.6310, F1 **0.3470**, 0/7 exact boards and 122/400 empty-population false positives.
+Development AUC is 0.8712, best F1 0.5456 at -0.45, 0/14 exact boards. The grid's zero row
+reproduces the replay's 67/196/101 counts exactly, so the sweep is a join as well as a
+measurement.
+
+Consequence, stated as the rule requires: the occupancy head of this representation is
+**closed** and the operating-point family is **exhausted** - nobody re-sweeps it. The logits
+rank better than chance but do not separate the classes well enough for any threshold to
+approach fit; the class-budget run's 0.3109 sits below the swept ceiling of 0.3470, so the
+entire threshold family buys a few percent and nothing more. Nothing here re-opens the fit
+gate, the class weight or the scale lever, and no real-image, complete-state or quality claim
+follows.
+
+Receipts: admission `runs/m3-sweep-occupancy-r1-profile-r1-job.json` (passed), sweep
+`runs/m3-sweep-occupancy-r1-ranking-r1-job.json` (passed, 27 forwards, 25.6 s, under the
+640 MiB ceiling), curation `runs/m3-sweep-occupancy-r1-ranking-r1-curation-job.json`
+(passed), tests `runs/m3-sweep-occupancy-tests-r4.json`. The rule is code in
+`scripts/occupancy_sweep.py` (`threshold_grid`, `pooled_auc`, `evaluate`, `sweep_verdict`),
+curated by `scripts/record_stream_sweep.py`, and re-derived by `tests/test_sweep_rule.py`.
+V-054 records the counting defect the predeclared zero-row join caught in the first attempt.
+
+Stopping point: the occupancy question is closed from all three sides (weight scale, class
+split, decision boundary). The next model question is a representation that separates
+occupied from empty cells at this budget, which is not a threshold choice and not ranked here.
+
 ## Per-cell decision lever measured: class budget STANDS, error reallocation (2026-11-09)
 
 The predeclared per-cell rule ([M3_PERCELL_DECISION.md](M3_PERCELL_DECISION.md), rule
