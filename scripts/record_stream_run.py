@@ -19,7 +19,8 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m3-identity-factor-[a-z0-9-]{1,40}|m3-fit-[a-z0-9-]{1,40}"
                                r"|m3-percell-[a-z0-9-]{1,40}|m3-sweep-[a-z0-9-]{1,40}"
                                r"|m3-occctx-[a-z0-9-]{1,40}|m3-occdetail-[a-z0-9-]{1,40}"
-                               r"|m3-occdstencil-[a-z0-9-]{1,40}|m3-occres-[a-z0-9-]{1,40})")
+                               r"|m3-occdstencil-[a-z0-9-]{1,40}|m3-occres-[a-z0-9-]{1,40}"
+                               r"|m3-occstack-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):

@@ -343,7 +343,10 @@ class TetrisStateNet(nn.Module):
                 occupancy_features = occupancy_features+self.occupancy_detail_tap(sample)
             if self.occupancy_neighborhood is not None:
                 neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
-                occupancy_features = cells+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
+                # Declared stacking lever: the two residuals are summed, so turning both taps on
+                # adds their information instead of letting the context block overwrite the detail
+                # tap. With either tap alone this is byte-identical to the published composition.
+                occupancy_features = occupancy_features+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
             stages.append({"lattice": lattice, "occupancy": self.occupancy(occupancy_features).reshape(batch, rows, columns),
                            "semantic": self.semantic(cells).reshape(batch, rows, columns, 8),
                            "observability": self.observability(cells).reshape(batch, rows, columns),
