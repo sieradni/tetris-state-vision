@@ -1,0 +1,28 @@
+{
+  "instrument": "m3-occupancy-precision-r1",
+  "verification_of_commit": "f5d578b14208a6bcaa429607a829483b22c99208",
+  "suite": {
+    "receipt": "runs/m3-occdetail-fullsuite-r1-job.json",
+    "sha256": "4471ae42aad3f4c33637b1839def2c9198aa599db5946e47b69ca7f588af6990",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 570,
+    "result": "OK",
+    "peak_job_commit_bytes": 528437248,
+    "memory_bytes": 671088640
+  },
+  "executed_on": "the working tree committed as this hash (no source change between the run and the commit)",
+  "invariance": {
+    "prior_evidence_and_manifest": "byte-identical to bdfaf4c (empty git diff)",
+    "gate_sweep_power_clustering_modules": "byte-identical to bdfaf4c (empty git diff)",
+    "model_and_loss": "changed only by the declared occupancy_detail tap from 684d775 (+26/-2 lines)"
+  },
+  "records": [
+    "docs/evidence/m3-occupancy-precision-r1/scope.json",
+    "docs/M3_OCCUPANCY_PRECISION.md",
+    "docs/M3_OCCUPANCY_RANKING.md",
+    "docs/ROADMAP.md",
+    "docs/CONTINUATION_STATE.md",
+    "docs/BUG_LOG.md"
+  ]
+}
