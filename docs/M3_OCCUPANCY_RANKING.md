@@ -153,3 +153,16 @@ work - this family is spent. The occupancy question of this representation is no
 from both sides, the scalar weight and the class split by measurement, and the decision
 boundary by this sweep. What remains open is out of scope for a threshold: a representation
 that separates occupied from empty cells at this budget is a different model question.
+
+## Widened-population update: the same verdict on a population 3.8x larger
+
+The numbers above are this sweep's own scope and stand unchanged. The deciding population was
+later widened from three groups / nine images to the canonical twelve / thirty-six and the same
+81-point grid and rule re-measured on the same checkpoint
+([M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md),
+`docs/evidence/m3-widened-deciding-population-r1/scope.json`). The narrow numbers are
+**superseded without invalidation**; old and new side by side: AUC 0.7491 (CI 0.7049-0.7934)
+against 0.90 becomes **0.7852 (CI 0.7640-0.8064)** over 667 occupied and 4,933 empty known
+cells; best swept F1 0.3470 becomes **0.3704** at the same `-0.90` threshold against the same
+0.70 bar; exact nonempty boards stay 0/28. The verdict is still **UNINFORMATIVE**, and the
+interval now shows the gap to the bar is not sampling noise: its upper bound is 0.094 short.

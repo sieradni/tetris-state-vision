@@ -1,0 +1,221 @@
+{
+  "status": "passed",
+  "instrument_change": "widened-deciding-population-r1",
+  "predeclaration": "docs/M3_WIDENED_DECIDING_POPULATION.md",
+  "scope": "Instrument change only: the deciding training population is widened from the recorded three groups to the canonical twelve and the already-published rules are re-derived on it. No model, loss, seed, capture or data change, no new gate threshold, no threshold re-sweep of the closed occupancy family, and no real-image, complete-state, calibrated or quality claim.",
+  "populations": {
+    "deciding_split": "training",
+    "before": {
+      "groups": 3,
+      "images": 9,
+      "nonempty_images": 7,
+      "occupied_cells": 168
+    },
+    "after": {
+      "groups": 12,
+      "images": 36,
+      "nonempty_images": 28,
+      "occupied_cells": 667,
+      "empty_cells_on_nonempty_boards": 4933,
+      "empty_images": 8,
+      "ancestry_groups": 12,
+      "base_seed": 20261026
+    },
+    "development": {
+      "groups": 6,
+      "images": 18,
+      "nonempty_images": 14,
+      "occupied_cells": 401
+    }
+  },
+  "unchanged_thresholds": {
+    "fit_gate_exact_nonempty_boards": 3,
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_chance_auc": 0.5,
+    "ranking_f1": 0.7,
+    "sweep_grid_points": 81,
+    "identity_distinct_classes": 3
+  },
+  "occupancy": {
+    "replay_operating_point": {
+      "threshold": 0.0,
+      "true_positive": 299,
+      "false_positive": 765,
+      "false_negative": 368,
+      "f1": 0.345465,
+      "f1_gap_to_bar": 0.354535,
+      "intervals": {
+        "precision": {
+          "successes": 299,
+          "trials": 1064,
+          "estimate": 0.281015,
+          "low": 0.254831,
+          "high": 0.308774
+        },
+        "recall": {
+          "successes": 299,
+          "trials": 667,
+          "estimate": 0.448276,
+          "low": 0.410938,
+          "high": 0.486206
+        }
+      },
+      "exact_nonempty_boards": 0,
+      "nonempty_images": 28
+    },
+    "fit_gate": {
+      "quantity": "exact nonempty training boards",
+      "threshold": 3,
+      "opens": false,
+      "exact": 0,
+      "images": 28,
+      "mechanism": "per-cell-error",
+      "interval": null
+    },
+    "per_cell_gate": {
+      "quantity": "occupied-cell F1",
+      "threshold": 0.7,
+      "opens": false,
+      "f1": 0.345465,
+      "mechanism": "specificity-limited"
+    },
+    "ranking": {
+      "auc": 0.7851859596250932,
+      "bar": 0.9,
+      "auc_interval": {
+        "auc": 0.785186,
+        "standard_error": 0.01083,
+        "low": 0.763959,
+        "high": 0.806412,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "positives": 667,
+      "negatives": 4933,
+      "verdict": "uninformative",
+      "best": {
+        "threshold": -0.9,
+        "true_positive": 465,
+        "false_positive": 1379,
+        "false_negative": 202,
+        "precision": 0.25216919739696314,
+        "recall": 0.697151424287856,
+        "f1": 0.3703703703703704,
+        "exact_nonempty_boards": 0
+      },
+      "best_f1_gap_to_bar": 0.32963,
+      "best_intervals": {
+        "precision": {
+          "successes": 465,
+          "trials": 1844,
+          "estimate": 0.252169,
+          "low": 0.232878,
+          "high": 0.272491
+        },
+        "recall": {
+          "successes": 465,
+          "trials": 667,
+          "estimate": 0.697151,
+          "low": 0.661233,
+          "high": 0.730812
+        }
+      },
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "empty_population": {
+        "images": 8,
+        "known_cells": 1600,
+        "false_positive": 483,
+        "false_positive_rate": 0.301875
+      }
+    }
+  },
+  "identity": {
+    "queue": {
+      "images": 36,
+      "distinct_predicted_classes": 1,
+      "constant_predictor": true,
+      "predicted_classes": {
+        "EOS": 216
+      }
+    },
+    "hold": {
+      "images": 36,
+      "distinct_predicted_classes": 1,
+      "constant_predictor": true,
+      "predicted_classes": {
+        "J": 33
+      }
+    },
+    "verdict": "stands",
+    "queue_exact_rate": {
+      "known": 216,
+      "correct": 0,
+      "errors": 216,
+      "accuracy": 0.0
+    },
+    "queue_exact_interval": {
+      "successes": 0,
+      "trials": 216,
+      "estimate": 0.0,
+      "low": 0.0,
+      "high": 0.017474
+    },
+    "position_spread": {
+      "max": 0.08766287317327447,
+      "mean": 0.063898
+    },
+    "hold_exact_interval": {
+      "successes": 15,
+      "trials": 33,
+      "estimate": 0.454545,
+      "low": 0.298429,
+      "high": 0.620141
+    }
+  },
+  "superseded_without_invalidation": {
+    "occupancy_counts": {
+      "true_positive": 67,
+      "false_positive": 196,
+      "false_negative": 101
+    },
+    "occupancy_exact_nonempty_boards": 0,
+    "sweep_auc": 0.7491158395176253,
+    "sweep_best_f1": 0.3469721767594108,
+    "sweep_verdict": "uninformative",
+    "identity_queue_classes": {
+      "EOS": 54
+    },
+    "identity_hold_classes": {
+      "J": 9
+    },
+    "join": "recorded nine-case subset reproduced exactly from the widened replay's own cases"
+  },
+  "receipts": {
+    "occupancy": "m3-percell-widened-r1",
+    "identity": "m3-identity-factor-widened-r1",
+    "sweep": "m3-sweep-widened-occupancy-r1",
+    "admission": "m3-sweep-widened-occupancy-r1-profile-r1"
+  },
+  "forwards": {
+    "occupancy": 54,
+    "identity": 54,
+    "sweep": 54
+  },
+  "weights_sha256": {
+    "occupancy": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "identity": "8042c28811a8254756739e97a09d164011e8515a30af6bcfdf4922a98dcf70c7"
+  },
+  "artifact_sha256": {
+    "admission-summary.json": "cb0d07e50efdae71b9d6bd79da5083309de893360c83b9c8e0a7fa553c5469c2",
+    "identity-job.json": "54f0c2c9c23b79b7d3057cd4f157849268b75e49b589b5effd8446c0895c63bc",
+    "identity-result.json": "706e64e7a2f05099e3768c29f2b104a134ba14ed9c467c95c70fa248cb1b6722",
+    "occupancy-job.json": "12658af0f9e60a4d0e54e900f3392002ae2a7d8da1e49ddebde58999b417115d",
+    "occupancy-result.json": "85df4a3527379a866fa5eab5a45a17ce3d1786da08e7e7362246e5477f514d35",
+    "sweep-job.json": "e682d17e09281b57248df72c946f92f0ccdc4278ce1e5db0c43690d850f7199d",
+    "sweep-result.json": "f2cf4aa1888ecadd16e38cf901e01ae4bf908658a5509ca28ac01900abbde173"
+  }
+}

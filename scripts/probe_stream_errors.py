@@ -30,6 +30,30 @@ def read(path):
     return json.loads(path.read_text())
 
 
+OBJECTIVE_DEFAULTS = {"identity_factor": 1, "endpoint_term": "joint", "occupancy_factor": 1,
+                      "positive_weight": 1}
+
+
+def objective_kwargs(parameters, *, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
+                     positive_weight=1):
+    """Bind the recorded objective to the frozen archive's own `joint_loss` signature.
+
+    A run trained before a term existed has an archive whose loss has no such parameter.
+    Omitting a term reproduces that run's objective only when the recorded value is the
+    term's declared default; a non-default value on an archive that cannot execute it is
+    refused rather than silently dropped.
+    """
+    values = {"identity_factor": identity_factor, "endpoint_term": endpoint_term,
+              "occupancy_factor": occupancy_factor, "positive_weight": positive_weight}
+    bound = {}
+    for name, value in values.items():
+        if name in parameters:
+            bound[name] = value
+        elif value != OBJECTIVE_DEFAULTS[name]:
+            raise ValueError("recorded objective term is not supported by the frozen archive")
+    return bound
+
+
 def require_frozen_callables(code, *functions):
     # Torch's no_grad wrapper lives in Torch, while __wrapped__ keeps the actual
     # verified metric implementation. Validate that implementation's source.
@@ -150,6 +174,11 @@ def main():
     positive_weight = summary.get("arguments", {}).get("occupancy_positive_weight", 1)
     if type(positive_weight) is not int or positive_weight not in (1, 4):
         raise ValueError("recorded occupancy positive weight must be1 or4")
+    # Bind to the archive's own signature: an older frozen archive cannot execute a term that
+    # did not exist when it was captured, and its recorded default is what must be replayed.
+    loss_kwargs = objective_kwargs(inspect.signature(joint_loss).parameters,
+                                   identity_factor=identity_factor, endpoint_term=endpoint_term,
+                                   occupancy_factor=occupancy_factor, positive_weight=positive_weight)
     if capacity:
         from tetris_vision.components import component_metrics
         require_frozen_callables(code, component_metrics)
@@ -175,8 +204,7 @@ def main():
         if int(target["known"].sum()) != 200 or not bool(target["registered"].all()):
             raise ValueError("saved streaming probe requires200 supported cells and registered grid")
         output = model(prepared.pixels[None], prepared.valid[None])
-        loss, _ = joint_loss(output, target, identity_factor=identity_factor, endpoint_term=endpoint_term,
-                             occupancy_factor=occupancy_factor, positive_weight=positive_weight)
+        loss, _ = joint_loss(output, target, **loss_kwargs)
         baseline = diagnostic_metrics(output, target)
         diagnostics = analyze_case(*pack(output["final"], target))
         known_layers = [layer for layer in diagnostics["layers"].values() if layer["target_known"]]
@@ -252,7 +280,11 @@ def main():
                             (recipe["group_index"], recipe["view"], recipe["base_seed"]) !=
                             (spec["group_index"], spec["view"], spec["base_seed"])):
                         raise ValueError("training extension identity differs")
-                    target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                    # An extension row carries the same component target policy as a saved row;
+                    # without it the model emits components the target lacks and the loss refuses.
+                    _, target_kwargs = replay_keywords(recipe, capacity)
+                    if manifest["config"].get("layer_evidence", False):
+                        target_kwargs["layer_evidence"] = True
                     evaluate(recipe, case, target_kwargs, split=split, saved=False)
                     training_extension.append(recipe)
             if split == "development":
@@ -264,7 +296,9 @@ def main():
                     recipe = json.loads(json.dumps(case.record))
                     if recipe["sample_id"] != spec["sample_id"] or recipe["group_id"] != spec["group_id"]:
                         raise ValueError("development extension identity differs")
-                    target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                    _, target_kwargs = replay_keywords(recipe, capacity)
+                    if manifest["config"].get("layer_evidence", False):
+                        target_kwargs["layer_evidence"] = True
                     evaluate(recipe, case, target_kwargs, split=split, saved=False)
                     extension_recipes.append(recipe)
     if not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()):

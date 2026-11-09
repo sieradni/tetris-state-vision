@@ -1,5 +1,63 @@
 # Contributor handoff — 2026-10-30
 
+## Deciding population widened: both verdicts re-derive unchanged and tighter (2026-11-09)
+
+The instrument change is measured ([M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md),
+predeclared at `111aa9e` before any widened-population receipt existed,
+`docs/evidence/m3-widened-deciding-population-r1/scope.json`). Every M3 verdict had been decided
+on the three-group training probe population while development already admitted twelve; the
+deciding split is now the canonical twelve groups, and **no threshold, gate or bar changed**.
+
+| population | narrow (superseded) | widened |
+|---|---|---|
+| training groups / images | 3 / 9 | **12 / 36** |
+| nonempty boards | 7 | **28** |
+| occupied known cells | 168 | **667** |
+| empty known cells on nonempty boards | 1,232 | **4,933** |
+| development images (unchanged) | 18 | 18 |
+
+Neither verdict flips, and neither is now explained away by a small population:
+
+| gate number | narrow (superseded) | widened, with 95% interval | verdict |
+|---|---|---|---|
+| ranking AUC (bar 0.90) | 0.7491, CI 0.7049-0.7934 | **0.7852, CI 0.7640-0.8064** | UNINFORMATIVE |
+| best swept F1 (bar 0.70) | 0.3470 | **0.3704**, precision 0.2522 [0.2329, 0.2725], recall 0.6972 [0.6612, 0.7308] | UNINFORMATIVE |
+| operating-point F1 (bar 0.70) | 0.3109 | **0.3455**, gap 0.3545, precision 0.2810 [0.2548, 0.3088], recall 0.4483 [0.4109, 0.4862] | STANDS |
+| exact nonempty training boards (bar 3) | 0/7 | **0/28** | FALSE |
+| identity distinct classes (bar 3) | `EOS`x54, `J`x9 | **`EOS`x216, `J`x33** | STANDS |
+| identity exact piece rate | 0/54 | **0/216**, CI [0.0, 0.0175] | cost |
+| hold exact rate | 3/12 | **15/33**, CI [0.2984, 0.6201] | cost (J's frequency) |
+
+The intervals are the finding as much as the points: the AUC interval narrowed from +-0.044 to
++-0.021 and its **upper bound is still 0.094 below the bar**; the widened best F1 sits 0.33 below
+0.70. At the sweep's best recall (465 of 667 recovered, 202 still missed), reaching F1 0.70
+would need false positives to fall from 1,379 to **at most 196** - a 7.0x precision gain at fixed
+recall. The fit gate is also a *harder* gate at the same threshold - 3 boards now means 3 of 28. The identity heads emit one class each at four times the population and 216
+supervised positions, so the constant-predictor finding is confirmed rather than an artefact
+of `n`; hold exactness (15/33) is exactly `J`'s frequency.
+
+Superseded without invalidation: the recorded nine-case subset of each widened replay reproduces
+the earlier published bytes exactly - 67 true / 196 false positive / 101 missed occupied cells,
+0 exact nonempty boards, and the queue `EOS`x54 / hold `J`x9 classes. The earlier receipts,
+evidence directories and the frozen manifest are untouched; the narrow numbers in
+[M3_OCCUPANCY_RANKING.md](M3_OCCUPANCY_RANKING.md), [M3_PERCELL_DECISION.md](M3_PERCELL_DECISION.md)
+and [M3_FIT_GATE.md](M3_FIT_GATE.md) remain their runs' own scope and are marked there.
+
+Receipts: admission `runs/m3-sweep-widened-occupancy-r1-profile-r1-job.json` (passed),
+occupancy replay `runs/m3-percell-widened-r1-job.json` (passed, 54 forwards, 45.0 s, 559,869,952 B),
+identity replay `runs/m3-identity-factor-widened-r1-job.json` (passed, 54 forwards, 45.7 s,
+555,425,792 B, weights `8042c288...` unchanged), sweep
+`runs/m3-sweep-widened-occupancy-r1-job.json` (passed, 54 forwards, 44.3 s, 585,424,896 B), and
+curation `runs/m3-widened-population-curation-r1-job.json` (passed) into the evidence directory.
+The rule is code in `scripts/probe_population.py` (population), `scripts/gate_power.py`
+(intervals, which no verdict reads), `scripts/identity_gate.py` (the discrimination rule) and
+`scripts/record_widened_gates.py` (curator), re-derived by `tests/test_widened_gates.py`.
+V-055 records the objective-binding defect this pass exposed in the replay.
+
+Stopping point: occupancy is closed from all three sides **on a population 3.8x larger**, and
+identity is closed at four times the supervised positions. The next model question is unchanged
+and still unranked: a representation that separates occupied from empty cells at this budget.
+
 ## Occupancy ranking measured: UNINFORMATIVE, operating-point family exhausted (2026-11-09)
 
 The read-only threshold sweep named by the per-cell pass is measured and returns the second

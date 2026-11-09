@@ -167,6 +167,11 @@ def main():
     deciding_negative = sweep["deciding"]["empty_cells_on_nonempty_boards"]
     development_locked = widened_development["locked_populations"]["nonempty"]
     queue, hold = identity_components["queue"], identity_components["hold"]
+    spreads = [row["diagnostics"]["components"]["identity"].get("queue_position_logit_spread")
+               for row in identity_training]
+    spreads = [value for value in spreads if value is not None]
+    position_spread = ({"max": max(spreads), "mean": round(sum(spreads)/len(spreads), 6)}
+                       if spreads else None)
 
     scope = {
         "status": "passed",
@@ -238,14 +243,16 @@ def main():
             },
         },
         "identity": {
-            "queue": {key: queue.get(key) for key in ("images", "distinct_predicted_classes",
-                                                      "constant_predictor", "predicted_classes")},
-            "hold": {key: hold.get(key) for key in ("images", "distinct_predicted_classes",
-                                                    "constant_predictor", "predicted_classes")},
+            "queue": {"images": len(identity_training),
+                      **{key: queue.get(key) for key in ("distinct_predicted_classes",
+                                                         "constant_predictor", "predicted_classes")}},
+            "hold": {"images": len(identity_training),
+                     **{key: hold.get(key) for key in ("distinct_predicted_classes",
+                                                       "constant_predictor", "predicted_classes")}},
             "verdict": identity_verdict(queue, hold),
             "queue_exact_rate": queue["piece_tokens"],
             "queue_exact_interval": None,
-            "position_spread": identity_totals.get("position_spread"),
+            "position_spread": position_spread,
         },
         "superseded_without_invalidation": {
             "occupancy_counts": counts(old_occupancy["totals"]["training"]["locked_populations"]["nonempty"], ""),

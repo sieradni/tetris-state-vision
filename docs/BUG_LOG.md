@@ -16,7 +16,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046 (6) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
-| objective-provenance | V-051 (1) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
+| objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 
@@ -48,6 +48,38 @@ receipt's own `admission.run` and re-validates that profile summary.
 67 / 196 / 101 on training and 275 / 352 / 126 on development) with
 `runs/m3-sweep-occupancy-tests-r3-job.json` (11 tests, `OK`). The failed attempt and its
 receipt are preserved under `runs/attempts/`.
+
+## V-055 — CLOSED: the replay bound the objective and target policy by hand, not from the archive
+
+**Symptom.** The widened-population identity replay of `m3-identity-factor-length-r1` died on
+its first saved case with `TypeError: joint_loss() got an unexpected keyword argument
+'occupancy_factor'`; an earlier attempt of the same pass died at the first extension row with
+`ValueError: joint component outputs/targets must match`.
+
+**Root cause.** One cause, two bindings. `probe_stream_errors.py` passed every objective term
+to its frozen archive's `joint_loss` unconditionally, so any run captured before the per-cell
+lever (which added `occupancy_factor`/`positive_weight`) could not be replayed at all. And both
+extension paths built their target keywords by hand (`{"layer_evidence": ...}`), omitting the
+component target policy the saved rows take from `replay_keywords`, so the first extension row
+a capacity-64 run ever evaluated produced targets without components while the model emitted
+them. The development extension carried the same latent gap; no earlier run had exercised it
+at capacity 64.
+
+**Detection class.** objective-provenance (V-051 was the first entry). The replay must bind the
+objective a run trained under from that run's own artifacts, never from a fixed call shape.
+
+**Instrument.** `probe_stream_errors.objective_kwargs` binds the recorded terms to the frozen
+archive's own `joint_loss` signature and refuses a non-default term the archive cannot execute,
+and both extension paths now take their target keywords from `replay_keywords`.
+`tests/test_objective_binding.py` holds the binding (defaults omitted, supported terms bound,
+unsupported non-default terms refused); the target-keyword fix is exercised by the two capacity-64
+extension replays below.
+
+**Named green run.** `runs/m3-percell-widened-r1-job.json` and
+`runs/m3-identity-factor-widened-r1-job.json` (each passed, 54 forwards, weights unchanged at
+`9ae1fef9...` and `8042c288...`, every saved metric reproduced, extension rows scored), with
+`runs/m3-widened-population-tests-r4-job.json`. Both failed attempts and their partial output
+directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 
 ## V-053 - CLOSED: the curator read a log name the launch never wrote
 

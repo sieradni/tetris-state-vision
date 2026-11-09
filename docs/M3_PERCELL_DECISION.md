@@ -174,3 +174,15 @@ checkpoint: a predeclared threshold sweep of the locked occupancy logits, which 
 "the logits do not separate the classes at all". If the ranking turns out to be informative,
 fixing the operating point is a precision/recall budget choice that only the owner can make,
 and this document names that choice rather than inventing one.
+
+## Widened-population update: STANDS on a population 3.8x larger
+
+The 0.3109 above is this run's own scope and stands. Re-derived on the widened deciding
+population (twelve groups, thirty-six images, 28 nonempty boards, 667 occupied cells) with the
+same 0.70 bar, the operating-point F1 is **0.3455** (299 of 667 occupied cells recovered, 765
+invented, 368 missed; precision 0.2810 with 95% CI 0.2548-0.3088, recall 0.4483 with CI
+0.4109-0.4862), a gap of **0.3545** to the bar, still labelled `specificity-limited`. The
+narrow numbers are **superseded without invalidation** - the recorded nine-case subset still
+reproduces 67/196/101 exactly. Evidence:
+`docs/evidence/m3-widened-deciding-population-r1/scope.json`;
+[M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md).

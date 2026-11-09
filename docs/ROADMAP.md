@@ -13,6 +13,21 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **deciding population is widened and both verdicts re-derive on it unchanged and
+tighter** ([M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATION.md), predeclared
+at `111aa9e` before any receipt, `docs/evidence/m3-widened-deciding-population-r1/scope.json`).
+The training deciding population moves from 3 groups / 9 images / 7 nonempty boards / 168
+occupied cells to **12 groups / 36 images / 28 nonempty boards / 667 occupied cells**, with the
+fit-gate threshold 3, the F1 bar 0.70, the AUC bar 0.90, the 81-point grid and the identity
+class bar 3 all unchanged. Occupancy stays **UNINFORMATIVE**: AUC **0.7852** with 95% CI
+0.7640-0.8064 against 0.90 (narrow 0.7491, CI 0.7049-0.7934), best swept F1 **0.3704** against
+0.70 (narrow 0.3470), the replay's own operating point at F1 **0.3455**, gap 0.3545 (narrow
+0.3109), and the fit gate **0/28** exact nonempty boards (narrow 0/7). Identity still
+**stands**: the queue head emits `EOS` at all **216** supervised training positions (narrow 54)
+and the hold head `J` at all 33 cases (narrow 9), so the constant-predictor finding was not
+small-`n`. The narrow numbers are **superseded without invalidation** - the recorded nine-case
+subset reproduces 67/196/101 and the published identity classes exactly.
+
 Latest: the **occupancy ranking sweep is measured and returns UNINFORMATIVE**, closing the
 occupancy head and exhausting the operating-point family
 ([M3_OCCUPANCY_RANKING.md](M3_OCCUPANCY_RANKING.md), rule predeclared at `9ad3598` before any
