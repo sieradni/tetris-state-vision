@@ -1,0 +1,43 @@
+{
+  "instrument": "m3-occupancy-resolution-r1",
+  "status": "passed",
+  "commit": "a82427ca9dd8eef95194a8e504359b6700675325",
+  "suite": {
+    "receipt": "runs/m3-occres-closing-suite-r1-job.json",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 601,
+    "result": "OK",
+    "peak_commit_bytes": 526704640,
+    "elapsed_seconds": 91.8
+  },
+  "refusal": {
+    "record": "docs/evidence/m3-occupancy-resolution-r1/refusal.json",
+    "receipt": "runs/m3-occres-refusal-r1-job.json",
+    "verdict": "refused",
+    "precision_improved": false,
+    "precision_measured": false,
+    "ceiling_bytes": 1207959552,
+    "lever_peak_bytes": 1231880192,
+    "control_peak_bytes": 1034313728
+  },
+  "declared_envelope": {
+    "memory_bytes": 671088640,
+    "steps": 64,
+    "sweep_work_items": 54,
+    "gates": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "attribution_floor": 0.05
+  },
+  "unchanged": {
+    "ceiling": "not raised",
+    "population": "not re-measured (no sweep ran)",
+    "gates": "not moved",
+    "re_runs": "none",
+    "frozen_manifest": "untouched",
+    "prior_evidence": "untouched"
+  }
+}
