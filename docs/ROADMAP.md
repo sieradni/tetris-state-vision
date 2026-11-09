@@ -28,6 +28,17 @@ and the hold head `J` at all 33 cases (narrow 9), so the constant-predictor find
 small-`n`. The narrow numbers are **superseded without invalidation** - the recorded nine-case
 subset reproduces 67/196/101 and the published identity classes exactly.
 
+Addendum (2026-11-09): those intervals are **cell-count** intervals, and the deciding cells are
+nested (28 boards of 200 cells in 12 ancestry groups). Measured clustering is small on the pooled
+per-cell error (ICC 0.0009-0.0092, design effect 1.19-5.30, **232-562 effective occupied cells**
+rather than 667) but large on *precision* alone (design effect 14.4-76.0; recall 0.25-1.99).
+Correlation-respecting 95% intervals: AUC **0.7474-0.8186** (cell 0.7640-0.8064) still 0.081
+below the 0.90 bar, precision at `0.0` **0.0908-0.4538** (cell 0.2548-0.3088), recall at `0.0`
+**0.4076-0.4695**, empirical F1 at `0.0` 0.1488-0.4538, hold exactness **0.1818-0.7273** (design
+effect 3.3); the queue's 0/216 census has design effect 1.0 and cannot widen. **No verdict
+changes** - occupancy stays UNINFORMATIVE, the per-cell gate stands and is strengthened, identity
+stands - and nothing is re-swept, re-litigated or moved off its threshold (V-056).
+
 Latest: the **occupancy ranking sweep is measured and returns UNINFORMATIVE**, closing the
 occupancy head and exhausting the operating-point family
 ([M3_OCCUPANCY_RANKING.md](M3_OCCUPANCY_RANKING.md), rule predeclared at `9ad3598` before any

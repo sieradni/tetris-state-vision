@@ -19,6 +19,43 @@ a named green run. An unrun gate leaves the entry OPEN.
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
+| interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
+
+## V-056 — OPEN CLAIM: the published 95% intervals treated nested cells as independent
+
+**Symptom.** Every interval printed beside a gate number in the widened-population record is a
+cell-count interval: AUC `0.763959-0.806412`, precision `0.254831-0.308774` at the replay's
+operating point, precision `0.232878-0.272491` at the swept best, hold exactness
+`0.298429-0.620141`. All four are computed as if the 667 occupied and 4,933 empty cells were
+independent draws, although they are 28 nonempty boards of 200 cells nested in 12 ancestry
+groups. Resampling whole boards and whole ancestry groups widens precision by 3.4x-6.7x and the
+AUC by 1.68x at the ancestry level.
+
+**Root cause.** `gate_power` supplies closed-form Hanley-McNeil and Wilson intervals, which
+assume independent observations. The deciding population has two nesting levels and matched
+views share ancestry - a fact the repo's own scope lines already state - so the widths were an
+untested assumption rather than a measured property. The defect is methodological: the point
+estimates, thresholds and verdicts were all correct, the *confidence* attached to the precision
+figures was overstated.
+
+**Detection class.** interval-validity (first entry). The class is distinct from
+evidence-reporting: the published numbers re-derived exactly from the committed bytes, and the
+defect was that the derived interval was the wrong kind of interval for the design.
+
+**Instrument.** `scripts/cluster_interval.py` (one-way ICC(1), design effect, effective size,
+deterministic whole-cluster percentile bootstrap, design-effect-reduced Wilson) and
+`scripts/record_cluster_addendum.py`, which re-derives every published point estimate, asserts
+it unchanged, and records the measured clustering in
+`docs/evidence/m3-widened-deciding-population-clustering-r1/scope.json`. Measured: ICC 0.000941
+(board) / 0.004024 (ancestry) at the operating point, 0.005906 / 0.009233 at the swept best;
+design effect 1.19-2.87 and 2.18-5.30, so the instrument has 232-562 effective occupied cells
+rather than 667; precision design effect 14.4-76.0 while recall stays 0.25-1.99.
+
+**Named green run.** `runs/m3-widened-clustering-r2-job.json` (passed, 384 MiB declared ceiling,
+39,444,480 B peak) with `tests/test_cluster_addendum.py` re-deriving every interval and design
+effect from the committed artifacts and `tests/test_cluster_interval.py` covering the estimator
+itself. The claim is OPEN because the corrected widths now need to be the ones quoted in the
+record; the addendum does that while keeping every prior number beside it.
 
 ## V-054 — The occupancy sweep pooled the empty population into its deciding curve
 

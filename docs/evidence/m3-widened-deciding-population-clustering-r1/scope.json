@@ -1,0 +1,410 @@
+{
+  "status": "passed",
+  "addendum": "widened-deciding-population-clustering-r1",
+  "kind": "methodological addendum to the widened-population predeclaration; not a sweep, lever, threshold or data change",
+  "predeclaration": "docs/M3_WIDENED_DECIDING_POPULATION.md",
+  "scope": "Measures the within-board and within-ancestry-group clustering of the widened deciding population's per-cell errors and reports a correlation-respecting 95% interval beside every published cell-level interval. No gate, threshold, point estimate, model, loss, seed or prior evidence byte changes; no real-image, complete-state or quality claim.",
+  "inputs": {
+    "scope": "docs/evidence/m3-widened-deciding-population-r1/scope.json",
+    "sweep": "docs/evidence/m3-widened-deciding-population-r1/sweep-result.json",
+    "identity": "docs/evidence/m3-widened-deciding-population-r1/identity-result.json",
+    "narrow_sweep": "docs/evidence/m3-sweep-occupancy-r1-ranking-r1/result.json"
+  },
+  "input_sha256": {
+    "scope": "0829475553fdcf4481243f441e5d33e90951698280169382e3b49285bcbe5c0f",
+    "sweep": "f2cf4aa1888ecadd16e38cf901e01ae4bf908658a5509ca28ac01900abbde173",
+    "identity": "706e64e7a2f05099e3768c29f2b104a134ba14ed9c467c95c70fa248cb1b6722",
+    "narrow_sweep": "1a07f0e1f681493894ce1802aab2408b79abba0a33261dfb465e93a0fac450a5"
+  },
+  "declared_receipt": "runs/m3-widened-clustering-r2-job.json",
+  "declared_memory_bytes": 402653184,
+  "bootstrap": {
+    "method": "whole-cluster percentile resampling over sorted cluster ids",
+    "seed": 20261026,
+    "auc_draws": 400,
+    "count_draws": 1000,
+    "note": "degenerate draws are skipped; each draw resamples as many clusters as exist"
+  },
+  "population": {
+    "boards": 28,
+    "ancestry_groups": 12,
+    "known_cells": 5600,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "cells_per_board": 200.0
+  },
+  "clustering": {
+    "operating_point": {
+      "threshold": 0.0,
+      "cells": 5600,
+      "occupied_cells": 667,
+      "empty_cells": 4933,
+      "board": {
+        "clusters": 28,
+        "mean_cells_per_cluster": 200.0,
+        "icc": 0.000941,
+        "design_effect": 1.187325,
+        "effective_cells": 4716.48,
+        "effective_occupied": 561.77,
+        "effective_empty": 4154.72
+      },
+      "group": {
+        "clusters": 12,
+        "mean_cells_per_cluster": 466.667,
+        "icc": 0.004024,
+        "design_effect": 2.873618,
+        "effective_cells": 1948.76,
+        "effective_occupied": 232.11,
+        "effective_empty": 1716.65
+      }
+    },
+    "best_point": {
+      "threshold": -0.9,
+      "cells": 5600,
+      "occupied_cells": 667,
+      "empty_cells": 4933,
+      "board": {
+        "clusters": 28,
+        "mean_cells_per_cluster": 200.0,
+        "icc": 0.005906,
+        "design_effect": 2.175287,
+        "effective_cells": 2574.37,
+        "effective_occupied": 306.63,
+        "effective_empty": 2267.75
+      },
+      "group": {
+        "clusters": 12,
+        "mean_cells_per_cluster": 466.667,
+        "icc": 0.009233,
+        "design_effect": 5.299545,
+        "effective_cells": 1056.69,
+        "effective_occupied": 125.86,
+        "effective_empty": 930.83
+      }
+    },
+    "note": "ICC(1) is the one-way variance-components estimate of the per-cell error indicator; the design effect is 1+(mean cluster size-1)*ICC"
+  },
+  "occupancy": {
+    "ranking_auc": {
+      "point": 0.7851859596250932,
+      "cell_level": {
+        "auc": 0.785186,
+        "standard_error": 0.01083,
+        "low": 0.763959,
+        "high": 0.806412,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "bar": 0.9,
+      "verdict": "uninformative",
+      "board_cluster": {
+        "valid_draws": 400,
+        "low": 0.765266,
+        "high": 0.803474,
+        "median": 0.786324,
+        "standard_error": 0.010001
+      },
+      "group_cluster": {
+        "valid_draws": 400,
+        "low": 0.747438,
+        "high": 0.818608,
+        "median": 0.786146,
+        "standard_error": 0.01932
+      },
+      "design_effect": {
+        "board": 0.852766,
+        "group": 3.182419
+      }
+    },
+    "operating_point": {
+      "label": "replay operating point",
+      "threshold": 0.0,
+      "true_positive": 299,
+      "false_positive": 765,
+      "false_negative": 368,
+      "f1": 0.345465,
+      "f1_gap_to_bar": 0.354535,
+      "cell_level": {
+        "precision": {
+          "successes": 299,
+          "trials": 1064,
+          "estimate": 0.281015,
+          "low": 0.254831,
+          "high": 0.308774
+        },
+        "recall": {
+          "successes": 299,
+          "trials": 667,
+          "estimate": 0.448276,
+          "low": 0.410938,
+          "high": 0.486206
+        }
+      },
+      "board_cluster": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 28,
+        "precision": {
+          "valid_draws": 1000,
+          "low": 0.175435,
+          "high": 0.380699,
+          "median": 0.282041,
+          "standard_error": 0.052358
+        },
+        "recall": {
+          "valid_draws": 1000,
+          "low": 0.427775,
+          "high": 0.466249,
+          "median": 0.448834,
+          "standard_error": 0.009697
+        },
+        "f1": {
+          "valid_draws": 1000,
+          "low": 0.251614,
+          "high": 0.414611,
+          "median": 0.346804,
+          "standard_error": 0.041427
+        }
+      },
+      "group_cluster": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 12,
+        "precision": {
+          "valid_draws": 1000,
+          "low": 0.090827,
+          "high": 0.453809,
+          "median": 0.272227,
+          "standard_error": 0.09331
+        },
+        "recall": {
+          "valid_draws": 1000,
+          "low": 0.407616,
+          "high": 0.469513,
+          "median": 0.448583,
+          "standard_error": 0.019142
+        },
+        "f1": {
+          "valid_draws": 1000,
+          "low": 0.148758,
+          "high": 0.453838,
+          "median": 0.339123,
+          "standard_error": 0.078681
+        }
+      },
+      "standard_error_ratio": {
+        "precision": {
+          "board": {
+            "binomial_standard_error": 0.01378,
+            "design_effect": 14.436382
+          },
+          "group": {
+            "binomial_standard_error": 0.01378,
+            "design_effect": 45.850982
+          }
+        },
+        "recall": {
+          "board": {
+            "binomial_standard_error": 0.019256,
+            "design_effect": 0.253591
+          },
+          "group": {
+            "binomial_standard_error": 0.019256,
+            "design_effect": 0.988173
+          }
+        }
+      }
+    },
+    "best_point": {
+      "label": "swept best-F1 point",
+      "threshold": -0.9,
+      "true_positive": 465,
+      "false_positive": 1379,
+      "false_negative": 202,
+      "f1": 0.37037,
+      "f1_gap_to_bar": 0.32963,
+      "cell_level": {
+        "precision": {
+          "successes": 465,
+          "trials": 1844,
+          "estimate": 0.252169,
+          "low": 0.232878,
+          "high": 0.272491
+        },
+        "recall": {
+          "successes": 465,
+          "trials": 667,
+          "estimate": 0.697151,
+          "low": 0.661233,
+          "high": 0.730812
+        }
+      },
+      "board_cluster": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 28,
+        "precision": {
+          "valid_draws": 1000,
+          "low": 0.156852,
+          "high": 0.347351,
+          "median": 0.253453,
+          "standard_error": 0.049264
+        },
+        "recall": {
+          "valid_draws": 1000,
+          "low": 0.668616,
+          "high": 0.726374,
+          "median": 0.698349,
+          "standard_error": 0.014119
+        },
+        "f1": {
+          "valid_draws": 1000,
+          "low": 0.25558,
+          "high": 0.465002,
+          "median": 0.372231,
+          "standard_error": 0.053979
+        }
+      },
+      "group_cluster": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 12,
+        "precision": {
+          "valid_draws": 1000,
+          "low": 0.080246,
+          "high": 0.423657,
+          "median": 0.244506,
+          "standard_error": 0.088171
+        },
+        "recall": {
+          "valid_draws": 1000,
+          "low": 0.647292,
+          "high": 0.740023,
+          "median": 0.697186,
+          "standard_error": 0.025109
+        },
+        "f1": {
+          "valid_draws": 1000,
+          "low": 0.14374,
+          "high": 0.529574,
+          "median": 0.362994,
+          "standard_error": 0.098904
+        }
+      },
+      "standard_error_ratio": {
+        "precision": {
+          "board": {
+            "binomial_standard_error": 0.010113,
+            "design_effect": 23.731483
+          },
+          "group": {
+            "binomial_standard_error": 0.010113,
+            "design_effect": 76.018109
+          }
+        },
+        "recall": {
+          "board": {
+            "binomial_standard_error": 0.017792,
+            "design_effect": 0.629769
+          },
+          "group": {
+            "binomial_standard_error": 0.017792,
+            "design_effect": 1.991737
+          }
+        }
+      }
+    }
+  },
+  "identity": {
+    "queue": {
+      "successes": 0,
+      "trials": 216,
+      "images": 36,
+      "cell_level": {
+        "successes": 0,
+        "trials": 216,
+        "estimate": 0.0,
+        "low": 0.0,
+        "high": 0.017474
+      },
+      "design_effect": 1.0,
+      "corrected": {
+        "successes": 0,
+        "trials": 216,
+        "estimate": 0.0,
+        "low": 0.0,
+        "high": 0.017474,
+        "design_effect": 1.0,
+        "effective_trials": 216.0
+      },
+      "corrected_equals_cell_level": true,
+      "note": "every supervised position fails, so no between-image variance is estimable; the design effect is 1 and the census carries the claim"
+    },
+    "hold": {
+      "successes": 15,
+      "trials": 33,
+      "images": 33,
+      "groups": 11,
+      "cell_level": {
+        "successes": 15,
+        "trials": 33,
+        "estimate": 0.454545,
+        "low": 0.298429,
+        "high": 0.620141
+      },
+      "group_cluster": {
+        "valid_draws": 1000,
+        "low": 0.181818,
+        "high": 0.727273,
+        "median": 0.454545,
+        "standard_error": 0.153609
+      },
+      "design_effect_group": 3.3,
+      "corrected": {
+        "successes": 15,
+        "trials": 33,
+        "estimate": 0.454545,
+        "low": 0.204541,
+        "high": 0.72978,
+        "design_effect": 3.3,
+        "effective_trials": 10.0
+      },
+      "note": "an image is the observation unit and ancestry groups nest them; the corrected interval evaluates the Wilson interval at the reduced sample size"
+    }
+  },
+  "narrow_like_for_like": {
+    "boards": 7,
+    "groups": 3,
+    "point": 0.7491158395176253,
+    "cell_level": {
+      "auc": 0.749116,
+      "standard_error": 0.022584,
+      "low": 0.704851,
+      "high": 0.79338,
+      "positives": 168,
+      "negatives": 1232
+    },
+    "board_cluster": {
+      "valid_draws": 400,
+      "low": 0.703924,
+      "high": 0.779389,
+      "median": 0.748229,
+      "standard_error": 0.021091
+    },
+    "note": "seven boards over three ancestry groups; group resampling is uninformative"
+  },
+  "unchanged": {
+    "point_estimates": true,
+    "thresholds": {
+      "fit_gate_exact_nonempty_boards": 3,
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_chance_auc": 0.5,
+      "ranking_f1": 0.7,
+      "sweep_grid_points": 81,
+      "identity_distinct_classes": 3
+    },
+    "frozen_manifest": "not touched",
+    "prior_evidence": "byte-identical"
+  }
+}

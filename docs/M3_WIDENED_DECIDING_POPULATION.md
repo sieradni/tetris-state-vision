@@ -182,3 +182,115 @@ What this does not license: no representation, model, loss or data claim; no re-
 closed family; no real-image, complete-state, calibration or quality claim. The one open model
 question is unchanged — a representation that separates occupied from empty cells at this
 budget — and this pass deliberately does not rank or start it.
+
+## Methodological addendum: the intervals were cell-count intervals, and the cells are clustered
+
+Status: measured (2026-11-09) from the committed widened artifacts; recorded in
+`docs/evidence/m3-widened-deciding-population-clustering-r1/scope.json`. This is an addendum to
+the predeclaration above, not a new predeclaration, sweep or lever: no gate, threshold, point
+estimate, model, loss, seed or prior evidence byte changes, and the widening is not re-litigated.
+
+### The defect this measures
+
+Every interval in the section above (and in the state docs) is a cell-count interval: Hanley-
+McNeil for the AUC and Wilson for precision, recall and identity exactness. Both formulas treat
+all 5,600 known cells — 667 occupied across 28 nonempty boards inside 12 ancestry groups, plus
+4,933 empty — as independent observations. They are not: each board contributes 200 cells, and
+three views share an ancestry. The repo's own scope lines already said "matched views share
+ancestry; no independent-sample interval", so the published widths were an untested assumption.
+
+### Measured clustering (per-cell error indicator, one-way ICC(1))
+
+| operating point | level | clusters | mean cells | ICC | design effect | effective cells | effective occupied |
+|---|---|---|---|---|---|---|---|
+| `0.0` | board | 28 | 200.0 | 0.000941 | **1.187** | 4,716.5 | 561.8 |
+| `0.0` | ancestry group | 12 | 466.7 | 0.004024 | **2.874** | 1,948.8 | 232.1 |
+| `-0.90` | board | 28 | 200.0 | 0.005906 | **2.175** | 2,574.4 | 306.6 |
+| `-0.90` | ancestry group | 12 | 466.7 | 0.009233 | **5.300** | 1,056.7 | 125.9 |
+
+The pooled per-cell error indicator is **only weakly clustered**: design effects of 1.19-2.87 at
+the operating point and 2.18-5.30 at the swept best, so the instrument has roughly **232-562
+effective occupied cells instead of 667**, and 1,057-4,716 effective cells instead of 5,600.
+That is the honest effective sample size: between one third and one fifth of the nominal
+occupied count, and between one sixth and one tenth of the nominal cell count at the swept best.
+
+### The clustering is not in the error rate — it is in precision
+
+The pooled ICC mixes two regimes: 88% of known cells are empty, and empty-cell behaviour is
+stable. Conditioning on each class separates them, and the asymmetry is the finding:
+
+| quantity | cell-level width | board-cluster width | ancestry-cluster width | design effect (group) |
+|---|---|---|---|---|
+| precision at `0.0` | 0.0539 | 0.2053 | 0.3630 | **45.85** |
+| recall at `0.0` | 0.0753 | 0.0385 | 0.0619 | **0.99** |
+| precision at `-0.90` | 0.0396 | 0.1905 | 0.3434 | **76.02** |
+| recall at `-0.90` | 0.0696 | 0.0578 | 0.0927 | **1.99** |
+
+Recall is essentially binomial (design effect 0.99-1.99, sometimes *narrower* than the cell
+formula). Precision is 14-76x more variable than the cell formula assumes, because how many of a
+board's predicted cells are wrong is a board-level property, not a cell-level one. The published
+precision interval was therefore the one overstated claim in the record: its true width is 3.4x
+to 6.7x larger than printed. The F1 point and the specificity-limited mechanism are unaffected,
+because both are decided by the point estimate.
+
+### Corrected intervals beside the published ones
+
+Whole-cluster percentile bootstrap (seed 20261026, 400 draws for the AUC, 1,000 for counts and
+rates, degenerate draws skipped), ancestry group as the primary sampling unit because matched
+views share ancestry, board as the finer partition.
+
+| gate number | point | cell-level 95% (published) | board-cluster 95% | ancestry-cluster 95% |
+|---|---|---|---|---|
+| ranking AUC (bar 0.90) | 0.785186 | 0.763959-0.806412 | 0.765266-0.803474 | **0.747438-0.818608** |
+| precision at `0.0` | 0.281015 | 0.254831-0.308774 | 0.175435-0.380699 | **0.090827-0.453809** |
+| recall at `0.0` | 0.448276 | 0.410938-0.486206 | 0.427775-0.466249 | **0.407616-0.469513** |
+| F1 at `0.0` (gap 0.3545) | 0.345465 | — (F1 is scored as a point) | 0.251614-0.414611 | **0.148758-0.453838** |
+| precision at `-0.90` | 0.252169 | 0.232878-0.272491 | 0.156852-0.347351 | **0.080246-0.423657** |
+| recall at `-0.90` | 0.697151 | 0.661233-0.730812 | 0.668616-0.726374 | **0.647292-0.740023** |
+| F1 at `-0.90` (gap 0.3296) | 0.370370 | — | 0.255580-0.465002 | **0.143740-0.529574** |
+| queue exactness | 0/216 | 0.0-0.017474 | — | **0.0-0.017474** (design effect 1.0) |
+| hold exactness | 15/33 | 0.298429-0.620141 | — | **0.181818-0.727273** (bootstrap), 0.204541-0.729780 (Wilson at design effect 3.3) |
+
+The F1 rows are supplementary empirical intervals: the published rule still scores F1 as a point
+and the predeclaration's "no interval is invented for F1" stands; the bootstrap is reported
+because it resamples the boards rather than assuming a distribution for the ratio.
+
+### Does any verdict change?
+
+**No. All three decided verdicts are confirmed, none is flipped, and none is weakened against its
+bar.** The corrected intervals are wider, and in every case the bar is still excluded at 95%:
+
+- **Occupancy ranking stays UNINFORMATIVE.** The ancestry-cluster interval is 1.68x wider than the
+  cell interval, and its upper bound **0.8186** is still **0.081 below the 0.90 bar** (board level
+  0.8035, 0.096 below). The board-level resampling gives a design effect of 0.85, i.e. the cell
+  formula was *not* optimistic for the AUC — it was mildly conservative. The verdict does not rest
+  on the earlier narrow interval: it rests on the point estimate (0.7852) against the bar, and no
+  threshold on the 81-point grid reaches F1 0.70 either (best 0.3704, empirical F1 upper 0.5296,
+  0.170 below the bar).
+- **Per-cell gate still STANDS**, and its mechanism is *strengthened*: the corrected precision
+  interval (upper bound 0.454 at `0.0`, 0.424 at `-0.90`) cannot support the precision F1 0.70
+  needs at this recall, so `specificity-limited` is now a claim about the sampling distribution and
+  not only about the point.
+- **Identity still STANDS.** The queue is a 0/216 all-failure census: a proportion at 0 has no
+  estimable between-board variance, so the measured design effect is exactly 1.0 and clustering
+  *cannot* widen that interval — the finding rests on the count, and it is unchanged. The hold
+  design effect is 3.3 over 11 ancestry groups with supervised hold, so its interval widens from
+  0.298-0.620 to 0.182-0.727 (bootstrap) / 0.205-0.730 (Wilson at reduced n); the point 15/33 is
+  still exactly `J`'s target frequency, which is an identity of frequencies, not an interval claim.
+- **Fit gate unchanged**: 0/28 is a census of boards, carries no interval, and no interval method
+  applies to a count gate.
+
+### Does "superseded without invalidation" still hold?
+
+Yes, and the like-for-like recomputation supports it. Re-running the same *method* on the narrow
+sweep's own committed cases (7 nonempty boards over 3 ancestry groups) gives point 0.749116,
+cell-level 0.704851-0.793380 and board-cluster 0.703924-0.779389: the narrow interval was already
+essentially honest at board level, so the narrow numbers are superseded because the *population* is
+larger and less noisy, not because their intervals were wrong. Only the precision intervals change
+materially under correction, and they change in both the narrow and widened records, which is a
+method correction rather than a scope boundary.
+
+The single claim in the record that needs qualifying is therefore narrow and now stated: **the
+cell-level precision intervals were over-confident by 3.4-6.7x**. No verdict, threshold, point
+estimate, gate, closed family, model, loss, seed or frozen evidence byte moves, and
+`docs/frozen-evidence-manifest.json` is untouched.
