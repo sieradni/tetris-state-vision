@@ -64,7 +64,7 @@ class ModelConfig:
         check(not self.occupancy_detail_stencil or self.occupancy_detail == 1,
               "the detail stencil is a declared form of the detail tap, not a separate read-out")
         check(type(self.occupancy_resolution) is int and self.occupancy_resolution in (0, 1),
-              "occupancy resolution is0 (stride-2 sample) or1 (declared stride-1 sample)")
+              "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
 
