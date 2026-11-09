@@ -72,16 +72,19 @@ widths (V-056, [M3_WIDENED_DECIDING_POPULATION.md](M3_WIDENED_DECIDING_POPULATIO
 | hold exactness (15/33) | 0.4545 | 0.2984-0.6201 | **0.1818-0.7273** (design effect 3.3) |
 
 Measured design effect: 1.19 (board) / 2.87 (ancestry) on the per-cell error at the operating
-point, 2.18 / 5.30 at the swept best, ICC 0.00094 / 0.00402 and 0.00591 / 0.00923 - so the
+point, 2.18 / 5.30 at the swept best, ICC 0.000941 / 0.004024 and 0.005906 / 0.009233 - so the
 instrument has **232-562 effective occupied cells, not 667**. The clustering is almost entirely
 in *precision* (design effect 14.4-76.0) and not in recall (0.25-1.99): how many of a board's
 predicted cells are wrong is a board property. The queue's 0/216 census has design effect 1.0
 and its interval cannot widen. **No verdict changes**: the corrected AUC upper bound 0.8186 is
 still 0.081 below 0.90, every corrected precision upper bound is far below what F1 0.70 needs,
 and the identity findings rest on counts and class frequencies. The only claim qualified is that
-the cell-level precision intervals were over-confident by 3.4-6.7x; superseded-without-
-invalidation still holds, and a like-for-like recomputation of the narrow sweep (0.7049-0.7934
-cell, 0.7039-0.7794 board) shows the narrow numbers were superseded for population, not width.
+the cell-level precision intervals were over-confident by **3.80x-8.72x** - the square root of
+the 14.4x-76.0x precision design effects, confirmed by the measured interval-width ratios of
+6.73x at `0.0` and 8.67x at `-0.90` (the first draft printed 3.4x-6.7x, which was wrong at both
+ends). Superseded-without-invalidation still holds, and a like-for-like recomputation of the
+narrow sweep (0.7049-0.7934 cell, 0.7039-0.7794 board) shows the narrow numbers were superseded
+for population, not width.
 
 Stopping point: occupancy is closed from all three sides **on a population 3.8x larger**, and
 identity is closed at four times the supervised positions. The next model question is unchanged

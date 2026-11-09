@@ -222,6 +222,180 @@ def identity_block(identity, scope):
     }
 
 
+def quantify(payload):
+    """The quantifiers the record quotes, each derived from a stored interval or design effect.
+
+    The over-confidence multiplier is the square root of the precision design effect (a standard
+    error or an interval width scales with the root of the variance ratio); the width ratio is
+    measured directly from the two published endpoints, so the two must agree up to bootstrap
+    asymmetry. Nothing here is typed in by hand.
+    """
+    points = {"0.0": payload["occupancy"]["operating_point"],
+              "-0.90": payload["occupancy"]["best_point"]}
+    clustering = payload["clustering"]
+    per_point, effective = {}, {}
+    for label, block in points.items():
+        for level in ("board", "group"):
+            record = block["standard_error_ratio"]["precision"][level]
+            clustered, cell = block[level+"_cluster"]["precision"], block["cell_level"]["precision"]
+            per_point[f"{label}/{level}"] = {
+                "precision_design_effect": record["design_effect"],
+                "precision_standard_error_inflation": round(math.sqrt(record["design_effect"]), 6),
+                "precision_width_ratio": round((clustered["high"]-clustered["low"]) /
+                                                (cell["high"]-cell["low"]), 6)}
+            effective.setdefault(label, {})[level] = clustering[
+                "operating_point" if label == "0.0" else "best_point"][level]["effective_occupied"]
+    values = list(per_point.values())
+    cells = [clustering[key][level]["effective_cells"]
+             for key in ("operating_point", "best_point") for level in ("board", "group")]
+    ranking = payload["occupancy"]["ranking_auc"]
+    return {
+        "derivation": ("precision_design_effect = (resampled standard error / binomial standard "
+                       "error)^2; over-confidence multiplier = sqrt(precision_design_effect); "
+                       "precision_width_ratio = clustered interval width / cell interval width"),
+        "per_point": per_point,
+        "precision_design_effect_range": {"low": min(v["precision_design_effect"] for v in values),
+                                          "high": max(v["precision_design_effect"] for v in values)},
+        "precision_standard_error_inflation_range": {
+            "low": min(v["precision_standard_error_inflation"] for v in values),
+            "high": max(v["precision_standard_error_inflation"] for v in values)},
+        "precision_width_ratio_range": {"low": min(v["precision_width_ratio"] for v in values),
+                                        "high": max(v["precision_width_ratio"] for v in values)},
+        "precision_width_ratio_at": {f"{label}/{level}": per_point[f"{label}/{level}"]["precision_width_ratio"]
+                                     for label in ("0.0", "-0.90") for level in ("board", "group")},
+        "effective_occupied": effective,
+        "effective_cells_range": {"low": min(cells), "high": max(cells)},
+        "auc_width_ratio": {"board": round((ranking["board_cluster"]["high"]-ranking["board_cluster"]["low"]) /
+                                            (ranking["cell_level"]["high"]-ranking["cell_level"]["low"]), 6),
+                            "group": round((ranking["group_cluster"]["high"]-ranking["group_cluster"]["low"]) /
+                                           (ranking["cell_level"]["high"]-ranking["cell_level"]["low"]), 6)},
+    }
+
+
+def published_strings(payload):
+    """Canonical renderings of the quoted quantifiers, so a doc cannot drift from the artifact."""
+    q, pop, ranking = payload["quantifiers"], payload["population"], payload["occupancy"]["ranking_auc"]
+    op, best = payload["occupancy"]["operating_point"], payload["occupancy"]["best_point"]
+    clustering, hold = payload["clustering"], payload["identity"]["hold"]
+
+    def span(block, level, name, digits):
+        interval = block["cell_level"][name] if level == "cell" else block[level+"_cluster"][name]
+        return f"{interval['low']:.{digits}f}-{interval['high']:.{digits}f}"
+
+    strings = {
+        "boards": f"{pop['boards']} nonempty boards",
+        "groups": f"{pop['ancestry_groups']} ancestry groups",
+        "known_cells": f"{pop['known_cells']:,} known cells",
+        "occupied_cells": f"{pop['occupied_cells']} occupied",
+        "empty_cells": f"{pop['empty_cells']:,} empty",
+        "cells_per_board": f"{pop['cells_per_board']:.0f} cells",
+        "precision_design_effect_range": (f"{q['precision_design_effect_range']['low']:.1f}x-"
+                                          f"{q['precision_design_effect_range']['high']:.1f}x"),
+        "precision_design_effect_range_2dp": (f"{q['precision_design_effect_range']['low']:.2f}x-"
+                                              f"{q['precision_design_effect_range']['high']:.2f}x"),
+        "standard_error_inflation_range": (f"{q['precision_standard_error_inflation_range']['low']:.2f}x-"
+                                           f"{q['precision_standard_error_inflation_range']['high']:.2f}x"),
+        "width_ratio_range": (f"{q['precision_width_ratio_range']['low']:.2f}x to "
+                              f"{q['precision_width_ratio_range']['high']:.2f}x"),
+        "width_ratio_operating": f"{q['precision_width_ratio_at']['0.0/group']:.2f}x",
+        "width_ratio_best": f"{q['precision_width_ratio_at']['-0.90/group']:.2f}x",
+        "auc_width_ratio": f"{q['auc_width_ratio']['group']:.2f}x",
+        "effective_occupied_operating": (f"{q['effective_occupied']['0.0']['group']:.0f}-"
+                                         f"{q['effective_occupied']['0.0']['board']:.0f}"),
+        "effective_occupied_best": (f"{q['effective_occupied']['-0.90']['group']:.0f}-"
+                                    f"{q['effective_occupied']['-0.90']['board']:.0f}"),
+        "effective_cells_range": (f"{q['effective_cells_range']['low']:,.0f}-"
+                                  f"{q['effective_cells_range']['high']:,.0f}"),
+        "auc": f"{ranking['point']:.4f}",
+        "auc_cell_4": f"{ranking['cell_level']['low']:.4f}-{ranking['cell_level']['high']:.4f}",
+        "auc_group_4": f"{ranking['group_cluster']['low']:.4f}-{ranking['group_cluster']['high']:.4f}",
+        "auc_cell_6": f"{ranking['cell_level']['low']:.6f}-{ranking['cell_level']['high']:.6f}",
+        "auc_group_6": f"{ranking['group_cluster']['low']:.6f}-{ranking['group_cluster']['high']:.6f}",
+        "op_precision_cell_4": span(op, "cell", "precision", 4),
+        "op_precision_group_4": span(op, "group", "precision", 4),
+        "op_precision_cell_6": span(op, "cell", "precision", 6),
+        "op_precision_group_6": span(op, "group", "precision", 6),
+        "op_recall_cell_4": span(op, "cell", "recall", 4),
+        "op_recall_group_4": span(op, "group", "recall", 4),
+        "op_recall_cell_6": span(op, "cell", "recall", 6),
+        "op_recall_group_6": span(op, "group", "recall", 6),
+        "best_precision_cell_4": span(best, "cell", "precision", 4),
+        "best_precision_group_4": span(best, "group", "precision", 4),
+        "best_precision_cell_6": span(best, "cell", "precision", 6),
+        "best_precision_group_6": span(best, "group", "precision", 6),
+        "best_recall_cell_4": span(best, "cell", "recall", 4),
+        "best_recall_group_4": span(best, "group", "recall", 4),
+        "best_recall_cell_6": span(best, "cell", "recall", 6),
+        "best_recall_group_6": span(best, "group", "recall", 6),
+        "op_f1": f"{op['f1']:.4f}", "op_gap": f"{op['f1_gap_to_bar']:.4f}",
+        "best_f1": f"{best['f1']:.4f}", "best_gap": f"{best['f1_gap_to_bar']:.4f}",
+        "hold_deff": f"{hold['design_effect_group']:.1f}",
+        "hold_corrected_4": f"{hold['corrected']['low']:.4f}-{hold['corrected']['high']:.4f}",
+        "hold_cell_4": f"{hold['cell_level']['low']:.4f}-{hold['cell_level']['high']:.4f}",
+        "hold_bootstrap_4": f"{hold['group_cluster']['low']:.4f}-{hold['group_cluster']['high']:.4f}",
+        "hold_bootstrap_6": f"{hold['group_cluster']['low']:.6f}-{hold['group_cluster']['high']:.6f}",
+        "hold_corrected_6": f"{hold['corrected']['low']:.6f}-{hold['corrected']['high']:.6f}",
+        "queue_exact": f"{payload['identity']['queue']['successes']}/{payload['identity']['queue']['trials']}",
+        "hold_exact": f"{hold['successes']}/{hold['trials']}",
+        "f1_bar": "0.70", "auc_bar": f"{ranking['bar']:.2f}",
+    }
+    for name in ("operating_point", "best_point"):
+        for level in ("board", "group"):
+            strings[f"icc_{name}_{level}"] = f"{clustering[name][level]['icc']:.6f}"
+            strings[f"deff_{name}_{level}"] = f"{clustering[name][level]['design_effect']:.2f}"
+    return strings
+
+
+# Each document must still carry the qualifiers it quotes (V-056's standing instrument).
+PUBLISHED = {
+    "docs/M3_WIDENED_DECIDING_POPULATION.md": (
+        "boards", "groups", "known_cells", "occupied_cells", "empty_cells", "cells_per_board",
+        "icc_operating_point_board", "icc_operating_point_group", "icc_best_point_board",
+        "icc_best_point_group", "deff_operating_point_board", "deff_operating_point_group",
+        "deff_best_point_board", "deff_best_point_group", "precision_design_effect_range",
+        "standard_error_inflation_range", "width_ratio_range", "width_ratio_operating",
+        "width_ratio_best", "auc", "auc_cell_6", "auc_group_6", "auc_width_ratio",
+        "op_precision_cell_6", "op_precision_group_6", "op_recall_cell_6", "op_recall_group_6",
+        "best_precision_cell_6", "best_precision_group_6", "best_recall_cell_6",
+        "best_recall_group_6", "op_f1", "op_gap", "best_f1", "best_gap",
+        "effective_occupied_operating", "effective_occupied_best", "effective_cells_range",
+        "queue_exact", "hold_exact", "hold_deff", "hold_corrected_6", "hold_bootstrap_6",
+        "auc_bar", "f1_bar"),
+    "docs/CONTINUATION_STATE.md": (
+        "precision_design_effect_range", "standard_error_inflation_range", "width_ratio_operating",
+        "width_ratio_best", "effective_occupied_operating",
+        "icc_operating_point_board", "icc_operating_point_group", "icc_best_point_board",
+        "icc_best_point_group", "auc_group_4", "op_precision_group_4", "best_precision_group_4",
+        "hold_bootstrap_4", "hold_deff", "queue_exact", "hold_exact", "auc_bar", "f1_bar"),
+    "docs/ROADMAP.md": (
+        "precision_design_effect_range", "standard_error_inflation_range",
+        "effective_occupied_operating", "auc_group_4", "op_precision_group_4",
+        "op_recall_group_4", "auc_bar"),
+    "docs/BUG_LOG.md": (
+        "precision_design_effect_range_2dp", "standard_error_inflation_range", "width_ratio_operating",
+        "width_ratio_best", "auc_width_ratio", "effective_occupied_operating",
+        "icc_operating_point_board", "icc_operating_point_group", "icc_best_point_board",
+        "icc_best_point_group", "deff_operating_point_board", "deff_operating_point_group",
+        "deff_best_point_board", "deff_best_point_group"),
+}
+
+
+def check_published(payload, root=ROOT):
+    """Fail loudly when a quoted qualifier no longer matches the committed measurement."""
+    strings, failures = published_strings(payload), []
+    unknown = sorted({key for keys in PUBLISHED.values() for key in keys} - set(strings))
+    if unknown:
+        raise ValueError("published table names qualifiers that are never computed: "+", ".join(unknown))
+    for name, keys in PUBLISHED.items():
+        text = (root/name).read_text(encoding="utf-8")
+        for key in keys:
+            if strings[key] not in text:
+                failures.append(f"{name}: {key} -> {strings[key]!r} not published")
+    if failures:
+        raise ValueError("published quantifiers drifted from the measurement: "+"; ".join(failures))
+    return {"documents": len(PUBLISHED), "strings": sum(len(keys) for keys in PUBLISHED.values())}
+
+
 def main():
     declare = {}
     declare["memory_bytes"] = require_bounded_job()
@@ -302,6 +476,10 @@ def main():
                                            ("auc",), draws=AUC_DRAWS)["auc"],
         "note": "seven boards over three ancestry groups; group resampling is uninformative"}
 
+    clustering = {"operating_point": icc_block(cells, OPERATING_THRESHOLD),
+                  "best_point": icc_block(cells, best_threshold),
+                  "note": ("ICC(1) is the one-way variance-components estimate of the per-cell "
+                           "error indicator; the design effect is 1+(mean cluster size-1)*ICC")}
     addendum = {
         "status": "passed",
         "addendum": "widened-deciding-population-clustering-r1",
@@ -324,16 +502,15 @@ def main():
                        "occupied_cells": sum(int(cell["label"]) for cell in cells),
                        "empty_cells": sum(1-int(cell["label"]) for cell in cells),
                        "cells_per_board": round(len(cells)/len(boards), 3)},
-        "clustering": {"operating_point": icc_block(cells, OPERATING_THRESHOLD),
-                       "best_point": icc_block(cells, best_threshold),
-                       "note": ("ICC(1) is the one-way variance-components estimate of the per-cell "
-                                "error indicator; the design effect is 1+(mean cluster size-1)*ICC")},
+        "clustering": clustering,
         "occupancy": occupancy,
         "identity": identity_block(identity, scope),
         "narrow_like_for_like": narrow_block,
         "unchanged": {"point_estimates": True, "thresholds": scope["unchanged_thresholds"],
                       "frozen_manifest": "not touched", "prior_evidence": "byte-identical"},
     }
+    addendum["quantifiers"] = quantify(addendum)
+    addendum["published_check"] = check_published(addendum)
     args.output.mkdir(parents=True)
     with (args.output/"scope.json").open("x", encoding="utf-8") as stream:
         json.dump(addendum, stream, indent=2, allow_nan=False)

@@ -203,16 +203,18 @@ ancestry; no independent-sample interval", so the published widths were an untes
 
 | operating point | level | clusters | mean cells | ICC | design effect | effective cells | effective occupied |
 |---|---|---|---|---|---|---|---|
-| `0.0` | board | 28 | 200.0 | 0.000941 | **1.187** | 4,716.5 | 561.8 |
-| `0.0` | ancestry group | 12 | 466.7 | 0.004024 | **2.874** | 1,948.8 | 232.1 |
-| `-0.90` | board | 28 | 200.0 | 0.005906 | **2.175** | 2,574.4 | 306.6 |
-| `-0.90` | ancestry group | 12 | 466.7 | 0.009233 | **5.300** | 1,056.7 | 125.9 |
+| `0.0` | board | 28 | 200.0 | 0.000941 | **1.19** | 4,716.5 | 561.8 |
+| `0.0` | ancestry group | 12 | 466.7 | 0.004024 | **2.87** | 1,948.8 | 232.1 |
+| `-0.90` | board | 28 | 200.0 | 0.005906 | **2.18** | 2,574.4 | 306.6 |
+| `-0.90` | ancestry group | 12 | 466.7 | 0.009233 | **5.30** | 1,056.7 | 125.9 |
 
 The pooled per-cell error indicator is **only weakly clustered**: design effects of 1.19-2.87 at
 the operating point and 2.18-5.30 at the swept best, so the instrument has roughly **232-562
 effective occupied cells instead of 667**, and 1,057-4,716 effective cells instead of 5,600.
 That is the honest effective sample size: between one third and one fifth of the nominal
-occupied count, and between one sixth and one tenth of the nominal cell count at the swept best.
+occupied count, and between one sixth and one tenth of the nominal cell count at the swept best,
+where the effective occupied count is 126-307. Those are the numbers the instrument really has;
+every qualifier below is recomputed from them rather than typed.
 
 ### The clustering is not in the error rate — it is in precision
 
@@ -229,9 +231,14 @@ stable. Conditioning on each class separates them, and the asymmetry is the find
 Recall is essentially binomial (design effect 0.99-1.99, sometimes *narrower* than the cell
 formula). Precision is 14-76x more variable than the cell formula assumes, because how many of a
 board's predicted cells are wrong is a board-level property, not a cell-level one. The published
-precision interval was therefore the one overstated claim in the record: its true width is 3.4x
-to 6.7x larger than printed. The F1 point and the specificity-limited mechanism are unaffected,
-because both are decided by the point estimate.
+precision interval was therefore the one overstated claim in the record. Measured over the four
+precision cells (two operating points x two cluster levels) the design effects are
+**14.4x-76.0x** (14.44x-76.02x unrounded), so the standard error the Wilson interval should have
+carried is **3.80x-8.72x** larger than printed - that is the square root of the design effect,
+because a standard error and an interval width scale with the root of a variance ratio. The
+direct interval-width inflation measured from the two published endpoints agrees: **3.81x to 8.67x**,
+i.e. 6.73x at `0.0` and 8.67x at `-0.90` at ancestry level (3.81x and 4.81x at board level). The F1 point and the specificity-limited mechanism are unaffected, because both are
+decided by the point estimate.
 
 ### Corrected intervals beside the published ones
 
@@ -291,6 +298,10 @@ materially under correction, and they change in both the narrow and widened reco
 method correction rather than a scope boundary.
 
 The single claim in the record that needs qualifying is therefore narrow and now stated: **the
-cell-level precision intervals were over-confident by 3.4-6.7x**. No verdict, threshold, point
-estimate, gate, closed family, model, loss, seed or frozen evidence byte moves, and
-`docs/frozen-evidence-manifest.json` is untouched.
+cell-level precision intervals were over-confident by 3.80x-8.72x** - not the 3.4x-6.7x this
+addendum first printed, which was the square root of only the design-effect range's ends and not
+of its measured values, and which read the 6.73x width ratio at `0.0` as if it were the upper
+bound. The derivation is `sqrt(precision design effect)` checked against the ratio of the two
+published interval widths, and both now agree: design effects 14.44x-76.02x, root 3.80x-8.72x,
+widths 3.81x-8.67x. No verdict, threshold, point estimate, gate, closed family, model, loss,
+seed or frozen evidence byte moves, and `docs/frozen-evidence-manifest.json` is untouched.

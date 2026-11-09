@@ -1,6 +1,7 @@
 """The clustering addendum's numbers re-derive from the committed artifacts, not from prose."""
 from bisect import bisect_left, bisect_right
 import json
+from math import sqrt
 from pathlib import Path
 import sys
 import unittest
@@ -114,6 +115,55 @@ class ClusterAddendumTests(unittest.TestCase):
         self.assertGreater(block["hold"]["design_effect_group"], 1.0)
         self.assertGreater(block["hold"]["corrected"]["high"]-block["hold"]["corrected"]["low"],
                            block["hold"]["cell_level"]["high"]-block["hold"]["cell_level"]["low"])
+
+    def test_the_quantifiers_re_derive_from_the_stored_intervals(self):
+        quantifiers = self.addendum["quantifiers"]
+        for label, key in (("0.0", "operating_point"), ("-0.90", "best_point")):
+            block = self.addendum["occupancy"][key]
+            for level in ("board", "group"):
+                record = quantifiers["per_point"][f"{label}/{level}"]
+                design = block["standard_error_ratio"]["precision"][level]["design_effect"]
+                clustered = block[level+"_cluster"]["precision"]
+                cell = block["cell_level"]["precision"]
+                self.assertAlmostEqual(record["precision_design_effect"], design, places=6)
+                self.assertAlmostEqual(record["precision_standard_error_inflation"], sqrt(design), places=4)
+                self.assertAlmostEqual(record["precision_width_ratio"],
+                                       (clustered["high"]-clustered["low"]) / (cell["high"]-cell["low"]),
+                                       places=4)
+                self.assertAlmostEqual(record["precision_standard_error_inflation"],
+                                       record["precision_width_ratio"], delta=0.25)
+        self.assertEqual(quantifiers["precision_design_effect_range"]["low"],
+                         min(block["standard_error_ratio"]["precision"][level]["design_effect"]
+                             for key in ("operating_point", "best_point")
+                             for level in ("board", "group")
+                             for block in [self.addendum["occupancy"][key]]))
+        self.assertAlmostEqual(quantifiers["precision_standard_error_inflation_range"]["low"],
+                               sqrt(14.436382), places=3)
+        self.assertAlmostEqual(quantifiers["precision_standard_error_inflation_range"]["high"],
+                               sqrt(76.018109), places=3)
+        # The corrected range must be the root of the design effects, not the design effects' ends.
+        self.assertAlmostEqual(quantifiers["precision_standard_error_inflation_range"]["high"], 8.72, delta=0.01)
+        self.assertLess(quantifiers["precision_standard_error_inflation_range"]["low"], 3.81)
+
+    def test_the_published_qualifiers_still_match_the_measurement(self):
+        report = addendum.check_published(self.addendum)
+        self.assertEqual(report["documents"], 4)
+        self.assertGreaterEqual(report["strings"], 60)
+        mutated = json.loads(json.dumps(self.addendum))
+        mutated["quantifiers"]["precision_design_effect_range"]["high"] = 6.7
+        with self.assertRaises(ValueError):
+            addendum.check_published(mutated)
+        drifted = json.loads(json.dumps(self.addendum))
+        drifted["quantifiers"]["precision_standard_error_inflation_range"]["high"] = 6.7
+        with self.assertRaises(ValueError):
+            addendum.check_published(drifted)
+
+    def test_the_old_wrong_multiplier_is_gone_from_the_record(self):
+        for name in ("docs/M3_WIDENED_DECIDING_POPULATION.md", "docs/CONTINUATION_STATE.md",
+                     "docs/BUG_LOG.md"):
+            text = (ROOT/name).read_text(encoding="utf-8")
+            self.assertNotIn("over-confident by 3.4", text.replace("\r\n", "\n"), name)
+            self.assertNotIn("widens precision by 3.4x-6.7x", text.replace("\r\n", "\n"), name)
 
     def test_nothing_that_decides_a_verdict_was_changed(self):
         self.assertEqual(self.addendum["unchanged"]["thresholds"], self.scope["unchanged_thresholds"])

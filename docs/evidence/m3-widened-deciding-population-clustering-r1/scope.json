@@ -16,7 +16,7 @@
     "identity": "706e64e7a2f05099e3768c29f2b104a134ba14ed9c467c95c70fa248cb1b6722",
     "narrow_sweep": "1a07f0e1f681493894ce1802aab2408b79abba0a33261dfb465e93a0fac450a5"
   },
-  "declared_receipt": "runs/m3-widened-clustering-r2-job.json",
+  "declared_receipt": "runs/m3-widened-clustering-r6-job.json",
   "declared_memory_bytes": 402653184,
   "bootstrap": {
     "method": "whole-cluster percentile resampling over sorted cluster ids",
@@ -406,5 +406,70 @@
     },
     "frozen_manifest": "not touched",
     "prior_evidence": "byte-identical"
+  },
+  "quantifiers": {
+    "derivation": "precision_design_effect = (resampled standard error / binomial standard error)^2; over-confidence multiplier = sqrt(precision_design_effect); precision_width_ratio = clustered interval width / cell interval width",
+    "per_point": {
+      "0.0/board": {
+        "precision_design_effect": 14.436382,
+        "precision_standard_error_inflation": 3.799524,
+        "precision_width_ratio": 3.805202
+      },
+      "0.0/group": {
+        "precision_design_effect": 45.850982,
+        "precision_standard_error_inflation": 6.771335,
+        "precision_width_ratio": 6.728992
+      },
+      "-0.90/board": {
+        "precision_design_effect": 23.731483,
+        "precision_standard_error_inflation": 4.871497,
+        "precision_width_ratio": 4.809002
+      },
+      "-0.90/group": {
+        "precision_design_effect": 76.018109,
+        "precision_standard_error_inflation": 8.718836,
+        "precision_width_ratio": 8.669149
+      }
+    },
+    "precision_design_effect_range": {
+      "low": 14.436382,
+      "high": 76.018109
+    },
+    "precision_standard_error_inflation_range": {
+      "low": 3.799524,
+      "high": 8.718836
+    },
+    "precision_width_ratio_range": {
+      "low": 3.805202,
+      "high": 8.669149
+    },
+    "precision_width_ratio_at": {
+      "0.0/board": 3.805202,
+      "0.0/group": 6.728992,
+      "-0.90/board": 4.809002,
+      "-0.90/group": 8.669149
+    },
+    "effective_occupied": {
+      "0.0": {
+        "board": 561.77,
+        "group": 232.11
+      },
+      "-0.90": {
+        "board": 306.63,
+        "group": 125.86
+      }
+    },
+    "effective_cells_range": {
+      "low": 1056.69,
+      "high": 4716.48
+    },
+    "auc_width_ratio": {
+      "board": 0.900007,
+      "group": 1.676442
+    }
+  },
+  "published_check": {
+    "documents": 4,
+    "strings": 84
   }
 }

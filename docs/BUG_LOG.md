@@ -28,8 +28,10 @@ cell-count interval: AUC `0.763959-0.806412`, precision `0.254831-0.308774` at t
 operating point, precision `0.232878-0.272491` at the swept best, hold exactness
 `0.298429-0.620141`. All four are computed as if the 667 occupied and 4,933 empty cells were
 independent draws, although they are 28 nonempty boards of 200 cells nested in 12 ancestry
-groups. Resampling whole boards and whole ancestry groups widens precision by 3.4x-6.7x and the
-AUC by 1.68x at the ancestry level.
+groups. Resampling whole boards and whole ancestry groups widens precision's standard error by
+3.80x-8.72x (the square root of design effects 14.44x-76.02x; the measured interval-width
+inflation is 6.73x at 0.0 and 8.67x at -0.90) and the AUC interval by 1.68x at the ancestry
+level.
 
 **Root cause.** `gate_power` supplies closed-form Hanley-McNeil and Wilson intervals, which
 assume independent observations. The deciding population has two nesting levels and matched
@@ -49,7 +51,10 @@ it unchanged, and records the measured clustering in
 `docs/evidence/m3-widened-deciding-population-clustering-r1/scope.json`. Measured: ICC 0.000941
 (board) / 0.004024 (ancestry) at the operating point, 0.005906 / 0.009233 at the swept best;
 design effect 1.19-2.87 and 2.18-5.30, so the instrument has 232-562 effective occupied cells
-rather than 667; precision design effect 14.4-76.0 while recall stays 0.25-1.99.
+rather than 667; precision design effect 14.44x-76.02x while recall stays 0.25-1.99. The
+over-confidence multiplier is therefore 3.80x-8.72x, derived as the square root of the precision
+design effect and checked against the interval-width ratios 6.73x and 8.67x - the first draft's
+3.4x-6.7x was wrong at both ends and is corrected in place.
 
 **Named green run.** `runs/m3-widened-clustering-r2-job.json` (passed, 384 MiB declared ceiling,
 39,444,480 B peak) with `tests/test_cluster_addendum.py` re-deriving every interval and design
