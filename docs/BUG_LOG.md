@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058 (11) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061 (12) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -20,6 +20,53 @@ a named green run. An unrun gate leaves the entry OPEN.
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
+| tooling-harness | V-060 (1) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
+
+## V-061 — CLOSED: the sweep work-item arithmetic is declared and asserted, not remembered
+
+- Symptom: V-057's refusal - a receipt declaring 36 work items while the sweep performed 54 forwards -
+  was a live risk on every verbatim-continued pass, because the launch arithmetic lived in per-pass
+  prose and no mechanical check joined the declaration to the receipt.
+- Root cause: the predeclaration named a forward count, but nothing bound the launch, the receipt and
+  the curator to that number together, so each new pass could reproduce the same off-by-18.
+- Detection class: test-instrument (declaration/launch join) - twelfth entry in the class, on the
+  standing instrument V-057 named.
+- Instrument: this pass declares **54** forwards in `docs/M3_OCCUPANCY_STENCIL.md` before any launch,
+  launches 54, and the curator refuses unless `job.work_items == result.forwards == 54`, the deciding
+  population is exactly 36 images / 28 nonempty boards / 12 ancestry clusters, and the sweep evaluated
+  12 groups. `tests/test_detail_stencil.py::test_the_population_and_work_arithmetic_are_the_declared_ones`
+  re-derives the same arithmetic from the committed receipts, and the curation asserted 36 cases / 28
+  boards / 667 occupied / 4,933 empty / 12 clusters before writing its record.
+- Green run: `runs/m3-occdstencil-curation-r1-job.json` (passed, 4 work items) and
+  `runs/m3-occdstencil-fullsuite-r1-job.json` (588 tests, OK). No ceiling, gate, population or floor
+  moved, and no launch was repeated to pass.
+
+## V-060 — CLOSED: a curation patch exceeded the shell command cap and was truncated
+
+- Symptom: the doc/test patch for this pass was submitted as a single ~15 KB bash heredoc; bash
+  reported `here-document at line 1 delimited by end-of-file (wanted PYEOF)` and the child Python died
+  with `SyntaxError: unterminated triple-quoted string literal`, so no edit landed and the curation
+  stopped before writing any document text.
+- Root cause: the command transport caps a single command's length and cuts a payload past it
+  mid-string, leaving only the shell's truncated-input warning; the heredoc form put the whole payload
+  in the command.
+- Detection class: tooling-harness (first entry in this class): a harness limit that truncates an
+  authoring payload instead of failing at its boundary.
+- Instrument: the workaround is structural rather than per-incident - the payload is written to a file
+  with the file-writing tool, executed, and removed (`.patch_stencil.py`, deleted after it reported
+  every target it patched); the script asserts each marker's uniqueness before rewriting, and its
+  effect was checked by the following greps and `tests/test_detail_stencil.py` (18 tests, OK). Long
+  authoring payloads go through a file from now on.
+- Green run: `runs/m3-occdstencil-fullsuite-r1-job.json` (588 tests, OK) on the commit carrying the
+  patched documents.
+
+## Scope note — the stencil pass produced no lever-level defect
+
+Both entries above are a harness limit and the closure of a prior arithmetic defect; neither is a
+defect in the occupancy stencil instrument or its measurement. The pass admitted both arms inside the
+declared 1,152 MiB and 64 steps, performed the declared 54 forwards per sweep, refused nothing, moved
+no ceiling, gate, population or floor, and needed no re-run to pass. That is recorded deliberately:
+the absence of a lever-level entry means "nothing broke in the lever", not "nobody looked".
 
 ## V-059 — CLOSED: four documents quoted the AUC gap with a hand-computed error
 
