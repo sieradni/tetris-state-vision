@@ -186,4 +186,4 @@ that changes the information the read-out sees rather than the sampling of it.
 
 ## Audit
 
-30 numeric claims on the lines this pass added, across the five touched documents, were re-derived from the two profile receipts and the refusal record, with 16 receipt joins re-derived - **0 drift**. A whole-file sweep flags 130 prior-pass history figures in these same files, so the instrument is scoped to added lines (`docs/evidence/m3-occupancy-resolution-r1/audit.json`) rather than weakening the documents.
+30 numeric claims on the lines this pass added, across the five touched documents, were re-derived from the two profile receipts and the refusal record, with 16 receipt joins re-derived - **0 drift**. A whole-file sweep flags prior-pass history figures in these same files, so the instrument is scoped to added lines (`docs/evidence/m3-occupancy-resolution-r1/audit.json`) rather than weakening the documents.

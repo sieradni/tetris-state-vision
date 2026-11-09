@@ -1,10 +1,9 @@
 {
   "status": "passed",
   "instrument": "m3-occupancy-resolution-r1",
-  "scope": "a large integer on a line this pass added must equal a receipt value or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope",
   "baseline": "20d2ffd",
   "claims": 30,
-  "drift": 1,
+  "drift": 0,
   "receipt_joins": 16,
   "per_document": {
     "docs/M3_OCCUPANCY_RESOLUTION.md": 7,
@@ -17,7 +16,10 @@
     "runs/m3-occres-lever-r1-profile-r1-job.json",
     "runs/m3-occres-control-r1-profile-r1-job.json",
     "runs/m3-occres-refusal-r1-job.json",
+    "runs/m3-occres-predeclaration-suite-r1-job.json",
+    "runs/m3-occres-fullsuite-r1-job.json",
     "runs/m3-occres-closing-suite-r1-job.json"
   ],
-  "note": "whole-file sweeps flag prior-pass history, so the instrument audits only added lines; no document figure was corrected because none drifted"
+  "scope": "a large integer on a line this pass added must equal a receipt value or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope",
+  "note": "the first scoped run flagged the predeclaration suite's 525,856,768 because the known set omitted that receipt; the instrument was corrected, no document figure changed, and a tee pipeline masked that run's exit status"
 }
