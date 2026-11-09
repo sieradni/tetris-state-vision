@@ -3867,7 +3867,7 @@
       }
     },
     "m3-sweep-occupancy-r1-ranking-r1": {
-      "record_commit": "",
+      "record_commit": "0188af40cf9b6c460194218bc05a1d8aed0c49ca",
       "files": {
         "admission-summary.json": "ce6d8ed910cad16714019d16e188211accdd8eb7f806f170e402635bc8161ca6",
         "checkpoint-manifest.json": "d5c9797b27196f280550ace8436e734a6d6d1927ae7e129723301083fa663d14",
