@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-resolution-r1",
+  "scope": "a large integer on a line this pass added must equal a receipt value or be carried verbatim from the same document's prior canonical version; whole-file history is out of scope",
+  "baseline": "20d2ffd",
+  "claims": 30,
+  "drift": 1,
+  "receipt_joins": 16,
+  "per_document": {
+    "docs/M3_OCCUPANCY_RESOLUTION.md": 7,
+    "docs/M3_OCCUPANCY_RANKING.md": 5,
+    "docs/ROADMAP.md": 5,
+    "docs/CONTINUATION_STATE.md": 6,
+    "docs/BUG_LOG.md": 7
+  },
+  "receipts": [
+    "runs/m3-occres-lever-r1-profile-r1-job.json",
+    "runs/m3-occres-control-r1-profile-r1-job.json",
+    "runs/m3-occres-refusal-r1-job.json",
+    "runs/m3-occres-closing-suite-r1-job.json"
+  ],
+  "note": "whole-file sweeps flag prior-pass history, so the instrument audits only added lines; no document figure was corrected because none drifted"
+}

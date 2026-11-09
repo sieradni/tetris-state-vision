@@ -25,6 +25,8 @@ is preserved at `runs/attempts/m3-occres-lever-refused-r1/` with a written note,
 (resource-profile), guarded by a census instrument, so a lever's declared cost is now four retained
 maps rather than one.
 
+**Audit:** 30 numeric claims on the lines this pass added, across the five touched documents, were re-derived from the two profile receipts and the refusal record, with 16 receipt joins re-derived - **0 drift**. A whole-file sweep flags 130 prior-pass history figures in these same files, so the instrument is scoped to added lines (`docs/evidence/m3-occupancy-resolution-r1/audit.json`) rather than weakening the documents.
+
 **Next-ranked: stack `occupancy_context` with `occupancy_detail`.** It is the last lever that changes
 the information the read-out sees rather than the sampling of it, and it fits the declared envelope
 (the 8x8 context tap retains about 0.02 MiB against the refused branch's 188.4 MiB). Resolution stays
