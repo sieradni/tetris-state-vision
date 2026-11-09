@@ -1,0 +1,245 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-representation-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_REPRESENTATION.md",
+  "scope": "Matched 64-step continuation of one published checkpoint, lever = declared zero-initialized occupancy read-out neighborhood, control = the same budget without it. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population, ceiling or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occctx-curation-r3-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "attribution_floor": 0.05
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_context"
+    ],
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occctx-lever-r1",
+      "sweep": "m3-occctx-lever-r1-sweep-r1",
+      "occupancy_context": 1,
+      "weights_sha256": "90c77c8166ae39cc92b47a198b123fee5fa336ebaf87b72e686496fa66cef47c",
+      "study_elapsed_seconds": 206.41294379999454,
+      "study_peak_commit_bytes": 1059500032,
+      "sweep_peak_commit_bytes": 566644736,
+      "auc": 0.824386205437723,
+      "auc_interval": {
+        "auc": 0.824386,
+        "standard_error": 0.010123,
+        "low": 0.804545,
+        "high": 0.844227,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.360033,
+      "per_cell_gap": 0.339967,
+      "operating_counts": {
+        "true_positive": 663,
+        "false_positive": 2353,
+        "false_negative": 4
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 663,
+          "trials": 3016,
+          "estimate": 0.219828,
+          "low": 0.205409,
+          "high": 0.234959
+        },
+        "recall": {
+          "successes": 663,
+          "trials": 667,
+          "estimate": 0.994003,
+          "low": 0.984683,
+          "high": 0.997665
+        }
+      },
+      "best": {
+        "threshold": 2.7,
+        "true_positive": 596,
+        "false_positive": 1575,
+        "false_negative": 71,
+        "precision": 0.2745278673422386,
+        "recall": 0.8935532233883059,
+        "f1": 0.42001409443269905,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.279986,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative"
+    },
+    "control": {
+      "study": "m3-occctx-control-r1",
+      "sweep": "m3-occctx-control-r1-sweep-r1",
+      "occupancy_context": 0,
+      "weights_sha256": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+      "study_elapsed_seconds": 192.29873109999608,
+      "study_peak_commit_bytes": 1043173376,
+      "sweep_peak_commit_bytes": 562659328,
+      "auc": 0.7427413396484406,
+      "auc_interval": {
+        "auc": 0.742741,
+        "standard_error": 0.011403,
+        "low": 0.720391,
+        "high": 0.765092,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.284833,
+      "per_cell_gap": 0.415167,
+      "operating_counts": {
+        "true_positive": 508,
+        "false_positive": 2392,
+        "false_negative": 159
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 508,
+          "trials": 2900,
+          "estimate": 0.175172,
+          "low": 0.16177,
+          "high": 0.189434
+        },
+        "recall": {
+          "successes": 508,
+          "trials": 667,
+          "estimate": 0.761619,
+          "low": 0.727843,
+          "high": 0.792399
+        }
+      },
+      "best": {
+        "threshold": 3.9,
+        "true_positive": 316,
+        "false_positive": 474,
+        "false_negative": 351,
+        "precision": 0.4,
+        "recall": 0.4737631184407796,
+        "f1": 0.43376801647220314,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.266232,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 3
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "best_f1_delta": -0.013754,
+    "auc_delta": 0.081645,
+    "per_cell_f1_delta": 0.0752,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.794051,
+        "high": 0.838964,
+        "median": 0.819861,
+        "standard_error": 0.01219
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.098021,
+        "high": 0.47215,
+        "median": 0.290451,
+        "standard_error": 0.09994
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.649795,
+        "high": 0.826131,
+        "median": 0.749099,
+        "standard_error": 0.046919
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.07759,
+        "high": 0.369143,
+        "median": 0.23004,
+        "standard_error": 0.079851
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": 0.014154,
+        "high": 0.110647,
+        "median": 0.058015,
+        "standard_error": 0.025901
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": -0.02518,
+        "high": 0.179396,
+        "median": 0.073623,
+        "standard_error": 0.05305
+      }
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

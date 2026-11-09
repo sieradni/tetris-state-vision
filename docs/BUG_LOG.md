@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049 (9) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058 (11) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -20,6 +20,45 @@ a named green run. An unrun gate leaves the entry OPEN.
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
+
+## V-058 — CLOSED: the paired bootstrap resampled every split instead of the declared deciding one
+
+- Symptom: the first curation of `m3-occupancy-representation-r1` wrote a block labelled
+  `"split": "training"` with 36 images but 42 nonempty boards, and a paired bootstrap over
+  **18** ancestry clusters, while the predeclaration fixes the deciding population at 28
+  nonempty boards and twelve clusters.
+- Root cause: the curator took `result["cases"]`, which holds all 54 forwards (36 deciding +
+  18 development), so the nonempty-board count and the seed-token clustering mixed
+  `development-*` clusters into a training-scope block. The gate numbers were unaffected —
+  they come from the sweep's own `deciding` block — but the published population and the
+  interval's resampling were not the declared ones.
+- Detection class: test-instrument (declaration scope); the numbers looked plausible, which
+  is exactly why the scope has to be asserted rather than assumed.
+- Instrument: the curator now selects `split == "training"`, refuses anything but 36 deciding
+  cases, asserts exactly twelve clusters, and derives the context count from the data;
+  `tests/test_representation_lever.py` re-derives the population, both arms, the bootstrap and
+  the verdict from the committed receipts.
+- Green run: `runs/m3-occctx-curation-r3-job.json` (passed) into
+  `docs/evidence/m3-occupancy-representation-r1/scope.json`; the all-split scope is preserved,
+  not deleted, at `runs/attempts/evidence-m3-occupancy-representation-r1-allsplit-bootstrap/`.
+
+## V-057 — CLOSED: a sweep receipt declared fewer work items than the forwards it performed
+
+- Symptom: both widened sweeps of the lever/control pair completed and passed with
+  `forwards: 54`, while their job receipts declared `work_items: 36`; the curation refused with
+  `lever sweep did not pass under the declared 640 MiB`.
+- Root cause: the launches declared the deciding image count (36) instead of the total work
+  performed (54 = 36 deciding + 18 development), so the receipts could not certify their own
+  execution under the repo's declared work-item bound.
+- Detection class: test-instrument (declaration/launch join). With V-058 this is the eleventh
+  entry in the class; the standing instrument is the curator's declared-bound joins
+  (`job.work_items == forwards`, `evaluated_cases == 36`, `clusters == 12`) rather than a
+  per-launch reminder.
+- Instrument: the curator requires `job.work_items == result.forwards == 54` and
+  `training_population.evaluated_cases == 36`; the canonical re-run declared 54.
+- Green run: `runs/m3-occctx-{lever,control}-r1-sweep-r1-job.json` (passed, 54 forwards each)
+  and `runs/m3-occctx-curation-r3-job.json`; the 36-cap attempts are preserved under
+  `runs/attempts/m3-occctx-*-r1-sweep-r1-workcap36*`.
 
 ## V-056 — CLOSED: the published 95% intervals treated nested cells as independent
 

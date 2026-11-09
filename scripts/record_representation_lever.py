@@ -20,7 +20,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CEILING_BYTES = 1152*1024**2
 SWEEP_CEILING_BYTES = 640*1024**2
 STEPS = 64
-POPULATION = 36
+DECIDING_IMAGES = 36
+DEVELOPMENT_IMAGES = 18
+FORWARDS = DECIDING_IMAGES+DEVELOPMENT_IMAGES
 ATTRIBUTION_DELTA = 0.05
 BOOTSTRAP_DRAWS = 400
 BOOTSTRAP_SEED = 20261026
@@ -178,8 +180,8 @@ def require_sweep(name):
             job.get("memory_bytes") != SWEEP_CEILING_BYTES or job.get("work_items") != result.get("forwards")):
         raise ValueError(f"{name} sweep did not pass under the declared 640 MiB")
     if (result.get("status") != "passed" or result.get("run") != study or
-            result.get("forwards") != POPULATION or len(result.get("cases", [])) != POPULATION):
-        raise ValueError(f"{name} sweep is not a complete 36-forward widened measurement")
+            result.get("forwards") != FORWARDS or len(result.get("cases", [])) != FORWARDS):
+        raise ValueError(f"{name} sweep is not a complete 54-forward widened measurement")
     if result.get("weights_sha256") != summary.get("checkpoint_sha256"):
         raise ValueError(f"{name} sweep measured different weights from its study")
     if sweep_verdict(result["deciding"]) != result["verdict"]:
@@ -187,7 +189,8 @@ def require_sweep(name):
     if len(result["deciding"]["thresholds"]) != 81 or 0.0 not in result["deciding"]["thresholds"]:
         raise ValueError(f"{name} sweep did not use the standing 81-point grid")
     declared = result.get("training_population") or {}
-    if declared.get("evaluated_groups") != 12 or declared.get("evaluated_cases") != POPULATION:
+    if (declared.get("evaluated_groups") != 12 or
+            declared.get("evaluated_cases") != DECIDING_IMAGES):
         raise ValueError(f"{name} sweep did not score the widened deciding population")
     if (profile_job.get("status") != "passed" or profile.get("status") != "complete" or
             profile.get("weights_sha256") != result.get("weights_sha256")):
@@ -215,8 +218,10 @@ def main():
                       "result": result, "sweep_job": sweep_job}
     if arms["lever"]["summary"]["initial_weights_sha256"] == arms["control"]["summary"]["initial_weights_sha256"]:
         raise ValueError("the lever and control must not share one saved initial tensor file")
-    lever_cases = arms["lever"]["result"]["cases"]
-    control_cases = arms["control"]["result"]["cases"]
+    lever_cases = [row for row in arms["lever"]["result"]["cases"] if row["split"] == "training"]
+    control_cases = [row for row in arms["control"]["result"]["cases"] if row["split"] == "training"]
+    if len(lever_cases) != DECIDING_IMAGES or len(control_cases) != DECIDING_IMAGES:
+        raise ValueError("the paired bootstrap requires exactly the 36 deciding training images")
     if ([row["sample_id"] for row in lever_cases] != [row["sample_id"] for row in control_cases] or
             [(row["logits"], row["occupied"]) for row in lever_cases] ==
             [(row["logits"], row["occupied"]) for row in control_cases]):
@@ -224,6 +229,8 @@ def main():
 
     measured = {name: arm_summary(arms[name]["result"]["deciding"]) for name in ARMS}
     bootstrap = paired_bootstrap(lever_cases, control_cases)
+    if bootstrap["clusters"] != 12:
+        raise ValueError("the paired bootstrap must resample the twelve ancestry clusters")
     delta_best = measured["lever"]["best"]["f1"]-measured["control"]["best"]["f1"]
     verdict = lever_verdict(measured["lever"]["per_cell_f1"], measured["lever"]["verdict"], delta_best)
 
@@ -261,11 +268,11 @@ def main():
                         "per_cell_f1_delta": round(measured["lever"]["per_cell_f1"]-measured["control"]["per_cell_f1"], 6),
                         "cluster_bootstrap": bootstrap},
         "verdict": verdict,
-        "population": {"split": "training", "images": POPULATION,
+        "population": {"split": "training", "images": DECIDING_IMAGES,
                        "nonempty_boards": sum(1 for row in lever_cases if any(row["occupied"])),
                        "occupied_cells": arms["lever"]["result"]["deciding"]["occupied_cells"],
                        "empty_cells": arms["lever"]["result"]["deciding"]["empty_cells_on_nonempty_boards"],
-                       "contexts": 12},
+                       "contexts": len({ancestry_of(row["sample_id"]) for row in lever_cases})},
         "unchanged": {"thresholds": {"per_cell_f1": CELL_F1_THRESHOLD, "ranking_auc": AUC_THRESHOLD,
                                      "ranking_f1": F1_THRESHOLD},
                       "population": "widened deciding population, twelve groups",

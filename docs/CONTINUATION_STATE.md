@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## Occupancy representation lever measured: not cleared — ordering improved, separation did not (2026-11-09)
+
+The last ranked occupancy question now has a measured verdict rather than a ranking
+([M3_OCCUPANCY_REPRESENTATION.md](M3_OCCUPANCY_REPRESENTATION.md), predeclared at `a07f9d2`,
+`docs/evidence/m3-occupancy-representation-r1/scope.json`, curation receipt
+`runs/m3-occctx-curation-r3-job.json`). One declared read-out change — a zero-initialized 3x3
+neighborhood residual before the occupancy head, exactly the published function at step zero —
+was continued **64 matched steps** from the published checkpoint `m3-percell-balance-r1` against a
+control continuation from the same bytes; both arms ran inside the declared 1,152 MiB / 64-step
+envelope (lever 206.4 s / 1,059,500,032 B, control 193.8 s / 1,043,173,376 B) and were scored
+read-only on the widened deciding population (36 images, 28 nonempty boards, 667/4,933 cells, 81
+point grid, 54 forwards each under 640 MiB).
+
+**Verdict: NOT CLEARED**, all three declared conditions failing: per-cell F1 0.3600 against 0.70;
+ranking `uninformative` (AUC **0.8244** CI 0.8045-0.8442, cluster 0.8199 [0.7941, 0.8390], still
+0.176 short of 0.90; best swept F1 0.4200 against 0.70); attribution **-0.0138** against the +0.05
+floor. What the block did do is improve **ordering** (AUC 0.7427 -> 0.8244 versus its control, and
+standing-point F1 0.2848 -> 0.3600, cluster delta 0.0142-0.1106) and make the read-out permissive
+(recall at `0.0` 0.73-0.79 -> 0.985-0.998) rather than better-separating: the control's swept
+optimum is slightly higher (0.4338 at `3.90`), and exact boards stay 0/28 in both arms.
+
+So separation remains the binding constraint at this budget, and read-out local context is not the
+representation that supplies it. **Next-ranked step:** a representation aimed at cell-level
+*precision* (contrastive or boundary-aware detail at the lattice, or higher-resolution sampling at
+the cell points), with the same matched-control discipline; threshold, conditioned-threshold and
+class-budget families stay closed. Attempts preserved and re-recorded canonically: a runner-restart
+kill at step 46, a 36-item work cap on 54-forward sweeps, and an all-split bootstrap scope — each
+under `runs/attempts/`, none used as evidence (V-057, V-058).
+
 ## Occupancy conditioning measured: the failure is per-board, so the boundary is closed when conditioned (2026-11-09)
 
 The **unranked** representation question is now ranked by measurement rather than inference

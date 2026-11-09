@@ -116,6 +116,56 @@ lever-vs-control delta. No gate reads an interval, and no interval can move the 
 - **Not admissible** — the lever is recorded as exceeding its declared envelope, which is itself
   the measured constraint on this read-out at this budget.
 
-## Measured result
+## Measured result: NOT CLEARED — the block buys ordering and coverage, not separation
 
-(appended after the canonical receipts exist)
+Receipts: lever profile `runs/m3-occctx-lever-r1-profile-r1-job.json` (passed, 51.0 s,
+1,045,307,392 B) and control profile `runs/m3-occctx-control-r1-profile-r1-job.json` (passed,
+49.7 s, 1,015,898,112 B), both under the declared 1,152 MiB; lever study
+`runs/m3-occctx-lever-r1-job.json` (passed, 64 steps, 206.4 s, 1,059,500,032 B) and control study
+`runs/m3-occctx-control-r1-job.json` (passed, 64 steps, 193.8 s, 1,043,173,376 B); both sweeps 54
+forwards under 640 MiB; curation `runs/m3-occctx-curation-r3-job.json` into
+`docs/evidence/m3-occupancy-representation-r1/scope.json`. Both arms start from
+`9ae1fef9f649...` and differ in `occupancy_context` alone.
+
+| widened deciding population | lever (`1`) | control (`0`) | published 128-step |
+|---|---|---|---|
+| pooled AUC | **0.8244** (CI 0.8045-0.8442; cluster 0.8199 [0.7941, 0.8390]) | 0.7427 (CI 0.7204-0.7651; cluster 0.7491 [0.6498, 0.8261]) | 0.7852 |
+| occupied-cell F1 at `0.0` | **0.3600** (recall 0.985-0.998) | 0.2848 (recall 0.728-0.792) | 0.3455 |
+| best swept F1 (threshold) | 0.4200 (2.70) | **0.4338** (3.90) | 0.3704 (-0.90) |
+| exact nonempty boards at best | 0/28 | 0/28 | 0/28 |
+| ranking verdict | `uninformative` | `uninformative` | `uninformative` |
+
+Deltas (lever minus control): best swept F1 **-0.0138**; pooled AUC **+0.0816** (cluster interval
+-0.0252 to +0.1794); F1 at the standing point **+0.0752** (cluster interval 0.0142 to 0.1106,
+median 0.0580).
+
+**Verdict: NOT CLEARED**, failing all three declared conditions — per-cell F1 0.3600 against 0.70,
+ranking `uninformative` (AUC 0.176 short of 0.90 and best F1 0.28 short of 0.70), and attribution
+-0.0138 against the +0.05 floor.
+
+The block does something real, and the record should say exactly what. At matched budget it
+improves **ordering**: pooled AUC rises 0.7427 -> 0.8244, and the cluster-respecting interval on
+the standing-point F1 excludes zero. What it does not improve is **separation**. Recall at the
+standing `0.0` decision jumps from 0.73-0.79 to 0.985-0.998 — the read-out becomes permissive,
+flagging nearly every occupied cell — while the swept F1 optimum falls slightly below the control's
+(0.4200 at `2.70` against 0.4338 at `3.90`). The neighborhood term therefore moved the read-out's
+operating behaviour and its ranking, not its ability to separate occupied from empty at a point
+that clears the bar; 0/28 boards are exact in either arm.
+
+Relative to the conditioning pass, this sharpens the mechanism rather than contradicting it:
+separation is still the binding constraint, and a local-context term added at the read-out does
+not create it at this budget. The next ranked representation step is therefore one that targets
+**cell-level precision** — a contrastive or boundary-aware detail tap at the lattice, or a
+higher-resolution detail feature at the sampled points — not another threshold, conditioning or
+class-budget pass, all of which remain closed.
+
+Provenance, preserved rather than hidden: the first lever study was killed by a runner restart at
+step 46 (`runs/attempts/m3-occctx-lever-r1-runner-restart/` with its receipt), the first pair of
+sweeps declared a 36 work-item cap while performing 54 forwards
+(`runs/attempts/m3-occctx-*-r1-sweep-r1-workcap36*`), and the first curation bootstrapped all 54
+cases instead of the declared 36 (`runs/attempts/evidence-m3-occupancy-representation-r1-allsplit-bootstrap/`).
+Each was preserved, refused by a declared check, and re-recorded canonically; neither the
+ceiling, the gates, the population nor the floor moved.
+
+`tests/test_representation_lever.py` re-derives both arms, the paired twelve-cluster bootstrap,
+the population and the verdict from the committed receipts.

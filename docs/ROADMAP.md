@@ -13,6 +13,21 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **occupancy representation question has a measured verdict** — not cleared, with a named
+mechanism ([M3_OCCUPANCY_REPRESENTATION.md](M3_OCCUPANCY_REPRESENTATION.md), predeclared at
+`a07f9d2`, `docs/evidence/m3-occupancy-representation-r1/scope.json`). A declared zero-initialized
+read-out neighborhood (eight lattice neighbors before the occupancy head, identity at step zero)
+was continued 64 matched steps from the published checkpoint against a control continuation from
+the same bytes, both inside 1,152 MiB. The lever raised pooled AUC **0.7427 -> 0.8244** (cluster
+0.7491 -> 0.8199) and the standing-point F1 **0.2848 -> 0.3600** (cluster delta 0.0142-0.1106), but
+its recall at `0.0` went 0.73-0.79 -> 0.985-0.998, its **best swept F1 was slightly lower**
+(0.4200 against 0.4338 at `3.90`) and **no gate cleared**: 0/28 exact boards, AUC 0.176 short of
+0.90, best F1 0.28 short of 0.70, attribution -0.0138 against the declared +0.05 floor. So the
+block moves ordering and coverage, not separation — the mechanism the conditioning pass named
+still binds. Next-ranked step: a representation targeting cell-level **precision** (contrastive or
+boundary-aware detail at the lattice); threshold, conditioning and class-budget families stay
+closed.
+
 Latest: the occupancy failure is measured to be **per-board, not per-boundary**, so the last open
 model question is now ranked by evidence ([M3_OCCUPANCY_CONDITIONING.md](M3_OCCUPANCY_CONDITIONING.md),
 predeclared at `deaba0f`, `docs/evidence/m3-occupancy-conditioning-r1/scope.json`). Read-only on
