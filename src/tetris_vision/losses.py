@@ -152,6 +152,14 @@ def require_occupancy_detail_stencil(stencil, summary):
         raise ValueError("occupancy detail stencil differs from resource admission")
 
 
+def require_occupancy_resolution(resolution, summary):
+    """One declaration of the admission join for the stride-1 resolution lever."""
+    if (type(resolution) is not int or resolution not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_resolution", 0) != resolution or
+            summary.get("recovery_contract", {}).get("occupancy_resolution", 0) != resolution):
+        raise ValueError("occupancy resolution differs from resource admission")
+
+
 def require_occupancy_context(context, summary):
     """One declaration of the admission join for the occupancy representation lever."""
     if (context not in (0, 1) or

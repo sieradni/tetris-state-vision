@@ -32,6 +32,7 @@ class ModelConfig:
     occupancy_context: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
+    occupancy_resolution: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -62,6 +63,10 @@ class ModelConfig:
               "occupancy detail stencil is0 (single center sample) or1 (declared 2x2 in-cell stencil)")
         check(not self.occupancy_detail_stencil or self.occupancy_detail == 1,
               "the detail stencil is a declared form of the detail tap, not a separate read-out")
+        check(type(self.occupancy_resolution) is int and self.occupancy_resolution in (0, 1),
+              "occupancy resolution is0 (stride-2 sample) or1 (declared stride-1 sample)")
+        check(not self.occupancy_resolution or self.occupancy_detail == 1,
+              "the resolution lever is a declared form of the detail tap, not a separate read-out")
 
     @classmethod
     def pilot(cls):
@@ -275,6 +280,13 @@ class TetrisStateNet(nn.Module):
             self.occupancy_detail_tap = nn.Linear(config.widths[0]*samples, dimension)
             nn.init.zeros_(self.occupancy_detail_tap.weight)
             nn.init.zeros_(self.occupancy_detail_tap.bias)
+        self.occupancy_resolution_branch = None
+        if config.occupancy_resolution:
+            # Declared resolution lever: a stride-1 source for the same zero-initialized
+            # projection, so the tap can read pixel resolution instead of the encoder's
+            # stride-2 feature. It exists only on the levered arm and the projection stays
+            # zero-initialized, which keeps step zero exactly the published function.
+            self.occupancy_resolution_branch = nn.Conv2d(3, config.widths[0], 3, padding=1)
         self.occupancy_neighborhood = None
         if config.occupancy_context:
             self.occupancy_neighborhood = nn.Sequential(
@@ -322,7 +334,13 @@ class TetrisStateNet(nn.Module):
                 offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
                            torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
-                occupancy_features = occupancy_features+self.occupancy_detail_tap(centers.flatten(2))
+                sample = centers.flatten(2)
+                if self.occupancy_resolution_branch is not None:
+                    fine = self.occupancy_resolution_branch((2*pixels-1)*valid)
+                    fine = sample_features(fine, lattice, self.coordinates, torch.zeros(
+                        1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))[0]
+                    sample = sample+fine.flatten(2)
+                occupancy_features = occupancy_features+self.occupancy_detail_tap(sample)
             if self.occupancy_neighborhood is not None:
                 neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
                 occupancy_features = cells+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)

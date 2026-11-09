@@ -60,6 +60,10 @@ def arguments(argv=None):
                         help="declared stencil form of the cell-precision tap;1 reads the four "
                              "quarter-cell samples of a 2x2 in-cell grid instead of the single center "
                              "sample through the same zero-initialized projection; requires --occupancy-detail 1")
+    parser.add_argument("--occupancy-resolution", type=int, choices=(0, 1), default=0,
+                        help="declared resolution lever;1 adds a stride-1 conv of the image whose "
+                             "cell-center sample joins the same zero-initialized detail projection, "
+                             "so the tap reads pixel resolution; requires --occupancy-detail 1")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -176,7 +180,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -195,7 +199,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
     from tetris_vision.losses import (require_occupancy_context, require_occupancy_detail,
-                                     require_occupancy_detail_stencil,
+                                     require_occupancy_detail_stencil, require_occupancy_resolution,
                                      require_occupancy_factor, require_positive_weight)
     require_endpoint_term(endpoint_term, summary)
     require_occupancy_factor(occupancy_factor, summary)
@@ -203,6 +207,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_context(occupancy_context, summary)
     require_occupancy_detail(occupancy_detail, summary)
     require_occupancy_detail_stencil(occupancy_detail_stencil, summary)
+    require_occupancy_resolution(occupancy_resolution, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -432,7 +437,8 @@ def main(argv=None, *, _archive=None, _started=None):
                      component_endpoint_term=args.component_endpoint_term,
                      occupancy_context=args.occupancy_context,
                      occupancy_detail=args.occupancy_detail,
-                     occupancy_detail_stencil=args.occupancy_detail_stencil)
+                     occupancy_detail_stencil=args.occupancy_detail_stencil,
+                     occupancy_resolution=args.occupancy_resolution)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -450,6 +456,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_context=args.occupancy_context,
                            occupancy_detail=args.occupancy_detail,
                            occupancy_detail_stencil=args.occupancy_detail_stencil,
+                           occupancy_resolution=args.occupancy_resolution,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -464,7 +471,8 @@ def main(argv=None, *, _archive=None, _started=None):
         if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
                 not compatible_config(source_manifest["config"], config_json,
                                       allow_absent=("occupancy_context", "occupancy_detail",
-                                                    "occupancy_detail_stencil")) or
+                                                    "occupancy_detail_stencil",
+                                                    "occupancy_resolution")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -473,7 +481,8 @@ def main(argv=None, *, _archive=None, _started=None):
         source_state = source_model.state_dict()
         missing = sorted(set(model.state_dict())-set(source_state))
         if set(source_state)-set(model.state_dict()) or any(
-                not key.startswith(("occupancy_neighborhood.", "occupancy_detail_tap."))
+                not key.startswith(("occupancy_neighborhood.", "occupancy_detail_tap.",
+                                    "occupancy_resolution_branch."))
                 for key in missing):
             raise ValueError("initial-weight source tensors differ from the declared representation")
         model.load_state_dict(source_state, strict=False)
@@ -605,6 +614,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_context"] = args.occupancy_context
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil
+    recovery_contract["occupancy_resolution"] = args.occupancy_resolution
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
