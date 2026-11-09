@@ -1,6 +1,8 @@
 {
   "instrument": "m3-occupancy-stencil-r1",
-  "closing_of_commit": "20c99f4ebf8bd8ca7a1d936021b1ce9238e3c174",
+  "revision": 2,
+  "supersedes": "6926f95 (closing record written before the ledger table repair)",
+  "closing_of_commit": "3c9600c057f2453cf7e5f11383a943304f2b61bc",
   "deliverables": {
     "ledger": [
       "docs/BUG_LOG.md#V-060",
@@ -22,15 +24,16 @@
     "applied_declaration_joins": 28
   },
   "suite": {
-    "receipt": "runs/m3-occdstencil-closing-suite-r1-job.json",
-    "sha256": "6a688990dfc56cf9e754d7c13f75f011892d564a04f1a24244f308098913066d",
+    "receipt": "runs/m3-occdstencil-closing-suite-r3-job.json",
+    "sha256": "db4ada41a5b8e9d11e037fa452963375063c15513736a1af7e3750ab9da36ca0",
     "status": "passed",
     "exit_code": 0,
     "tests": 588,
     "result": "OK",
-    "peak_job_commit_bytes": 527376384,
+    "peak_job_commit_bytes": 528314368,
     "memory_bytes": 671088640
   },
+  "preserved_attempt": "runs/attempts/m3-occdstencil-closing-suite-r2-interrupted",
   "invariance": {
     "prior_evidence_and_manifest": "byte-identical to 0d54ff4 (empty git diff)",
     "gate_sweep_power_clustering_modules": "byte-identical to 0d54ff4 (empty git diff)",
