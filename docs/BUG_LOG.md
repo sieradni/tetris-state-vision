@@ -21,7 +21,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054 (11) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
 | interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
 
-## V-056 — OPEN CLAIM: the published 95% intervals treated nested cells as independent
+## V-056 — CLOSED: the published 95% intervals treated nested cells as independent
 
 **Symptom.** Every interval printed beside a gate number in the widened-population record is a
 cell-count interval: AUC `0.763959-0.806412`, precision `0.254831-0.308774` at the replay's
@@ -54,8 +54,9 @@ rather than 667; precision design effect 14.4-76.0 while recall stays 0.25-1.99.
 **Named green run.** `runs/m3-widened-clustering-r2-job.json` (passed, 384 MiB declared ceiling,
 39,444,480 B peak) with `tests/test_cluster_addendum.py` re-deriving every interval and design
 effect from the committed artifacts and `tests/test_cluster_interval.py` covering the estimator
-itself. The claim is OPEN because the corrected widths now need to be the ones quoted in the
-record; the addendum does that while keeping every prior number beside it.
+itself. The gate is green: the corrected widths are now quoted beside every cell-level width in the
+addendum, the roadmap and this handoff, with every prior number left beside them, and
+`tests/test_cluster_addendum.py` re-derives each one from the committed artifacts.
 
 ## V-054 — The occupancy sweep pooled the empty population into its deciding curve
 
