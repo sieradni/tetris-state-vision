@@ -166,3 +166,21 @@ against 0.90 becomes **0.7852 (CI 0.7640-0.8064)** over 667 occupied and 4,933 e
 cells; best swept F1 0.3470 becomes **0.3704** at the same `-0.90` threshold against the same
 0.70 bar; exact nonempty boards stay 0/28. The verdict is still **UNINFORMATIVE**, and the
 interval now shows the gap to the bar is not sampling noise: its upper bound is 0.094 short. The *conditioned* family is measured closed as well: giving every board its own grid point, 0 of 28 reach F1 0.70 and the oracle-pooled F1 is 0.4305 ([M3_OCCUPANCY_CONDITIONING.md](M3_OCCUPANCY_CONDITIONING.md)), so "exhausted" now holds for conditioned thresholds too. The *representation* question that this left ranked has since been measured: a declared zero-initialized read-out neighborhood, continued for 64 matched steps against a control continuation from the same checkpoint, raised pooled AUC 0.7427 -> 0.8244 and the standing-point F1 0.2848 -> 0.3600 but lowered the best swept F1 0.4338 -> 0.4200 and cleared no gate (0/28 exact boards, AUC 0.076 short, best F1 0.28 short), so it is **not cleared** ([M3_OCCUPANCY_REPRESENTATION.md](M3_OCCUPANCY_REPRESENTATION.md)). The next-ranked step is a representation that targets cell-level *precision* rather than ordering at this budget. That lever has now also been measured: a declared zero-initialized stride-2 detail tap at the cell centers, 64 matched steps against a fresh control under one catalogue, **not cleared** either — but its declared mechanism moved as intended, with precision at `0.0` 0.1752 -> 0.2363 (cluster delta 0.0104-0.0939), recall *also* up (0.7616 -> 0.9910) and standing-point F1 0.2848 -> 0.3816, while AUC (0.8226) stays 0.077 short of 0.90, the best swept F1 (0.4120) stays 0.288 short of 0.70, and 0/28 boards are exact ([M3_OCCUPANCY_PRECISION.md](M3_OCCUPANCY_PRECISION.md)). So precision is addressable from the read-out, but read-out information at this budget is not enough separation. **Next-ranked step:** carry the same demonstrated signal with more capacity (a 2x2 in-cell detail stencil per cell through the same zero-initialized projection), then encoder resolution, then scale; every threshold, conditioning and class-budget family stays closed.
+
+**The stencil step this paragraph ranked has since been measured.** A declared 2x2 in-cell detail
+stencil - four quarter-cell stride-2 samples instead of the single center sample, through the same
+zero-initialized projection - continued 64 matched steps from the same published checkpoint against a
+matched single-sample control under one catalogue, both inside 1,152 MiB. It is **not cleared** (0/28
+exact boards; AUC 0.8804, **0.020 short** of 0.90; best swept F1 0.4913, **0.209 short** of 0.70), but
+for the first time an arm **meets the attribution floor**: its swept optimum beats the single-sample
+control's 0.4120 by **+0.0793** against the declared +0.05 floor, and its pooled AUC is the highest of
+the campaign (cluster delta +0.0385 to +0.0943). Its declared mechanism, standing-point precision,
+moved only 0.2363 -> 0.2474 - below the 0.05 floor, so `precision_improved = false`. The implication
+is specific: **extra in-cell capacity carries ordering and the swept optimum, not the standing-point
+precision, and separation is now the binding constraint** - the ordering deficit has fallen from
+0.076/0.077 to 0.020 since the neighborhood pass while the swept-F1 deficit held at 0.21-0.29
+throughout. **Next-ranked step:** encoder resolution, a finer native tap than stride-2, because every
+read-out lever has converted capacity into ordering rather than separation; then scale the matched
+budget on whichever carries the gain. Stacking the two read-out taps remains untested. See
+[M3_OCCUPANCY_STENCIL.md](M3_OCCUPANCY_STENCIL.md) and
+`docs/evidence/m3-occupancy-stencil-r1/scope.json`.

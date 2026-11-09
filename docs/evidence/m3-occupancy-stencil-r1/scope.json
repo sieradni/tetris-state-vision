@@ -1,0 +1,329 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-stencil-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_STENCIL.md",
+  "scope": "Matched 64-step continuation of one published checkpoint, both arms carrying the declared zero-initialized detail tap and differing only in its form: lever = the 2x2 in-cell stencil (four quarter-cell samples instead of one), control = the single center sample. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population, ceiling or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occdstencil-curation-r1-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 4
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_detail_stencil"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_context": 0
+    },
+    "catalogue_sha256": "6ff287a1609dea632cc4758ef95bcb68c7e0ce15fe11ce7d230890e53b293b96",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occdstencil-lever-r1",
+      "sweep": "m3-occdstencil-lever-r1-sweep-r1",
+      "occupancy_detail_stencil": 1,
+      "weights_sha256": "29552fc727243a910dfe9120e69a25114bc1932251eafe9fb0126b132ab3c7c3",
+      "catalogue_sha256": "6ff287a1609dea632cc4758ef95bcb68c7e0ce15fe11ce7d230890e53b293b96",
+      "study_elapsed_seconds": 201.73105000000214,
+      "study_peak_commit_bytes": 1032060928,
+      "sweep_peak_commit_bytes": 562356224,
+      "auc": 0.8803953486463741,
+      "auc_interval": {
+        "auc": 0.880395,
+        "standard_error": 0.00873,
+        "low": 0.863285,
+        "high": 0.897505,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.395166,
+      "per_cell_gap": 0.304834,
+      "operating_counts": {
+        "true_positive": 654,
+        "false_positive": 1989,
+        "false_negative": 13
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 654,
+          "trials": 2643,
+          "estimate": 0.247446,
+          "low": 0.231369,
+          "high": 0.264256
+        },
+        "recall": {
+          "successes": 654,
+          "trials": 667,
+          "estimate": 0.98051,
+          "low": 0.966941,
+          "high": 0.988575
+        }
+      },
+      "best": {
+        "threshold": 1.8,
+        "true_positive": 437,
+        "false_positive": 675,
+        "false_negative": 230,
+        "precision": 0.39298561151079137,
+        "recall": 0.6551724137931034,
+        "f1": 0.4912872400224845,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.208713,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.247446
+    },
+    "control": {
+      "study": "m3-occdstencil-control-r1",
+      "sweep": "m3-occdstencil-control-r1-sweep-r1",
+      "occupancy_detail_stencil": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "6ff287a1609dea632cc4758ef95bcb68c7e0ce15fe11ce7d230890e53b293b96",
+      "study_elapsed_seconds": 217.26595860000089,
+      "study_peak_commit_bytes": 1031536640,
+      "sweep_peak_commit_bytes": 561889280,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "best_f1_delta": 0.079253,
+    "auc_delta": 0.057752,
+    "per_cell_f1_delta": 0.013526,
+    "precision_delta": 0.011121,
+    "recall_delta": -0.010494,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.853615,
+        "high": 0.909454,
+        "median": 0.885808,
+        "standard_error": 0.018948
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.11026,
+        "high": 0.50996,
+        "median": 0.326794,
+        "standard_error": 0.107256
+      },
+      "precision_lever": {
+        "valid_draws": 400,
+        "low": 0.058722,
+        "high": 0.343836,
+        "median": 0.196114,
+        "standard_error": 0.077198
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.791568,
+        "high": 0.837309,
+        "median": 0.818417,
+        "standard_error": 0.01359
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.103117,
+        "high": 0.500633,
+        "median": 0.30809,
+        "standard_error": 0.106455
+      },
+      "precision_control": {
+        "valid_draws": 400,
+        "low": 0.054452,
+        "high": 0.334912,
+        "median": 0.182374,
+        "standard_error": 0.075355
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": 0.005695,
+        "high": 0.027313,
+        "median": 0.017505,
+        "standard_error": 0.005559
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": 0.038454,
+        "high": 0.094305,
+        "median": 0.06702,
+        "standard_error": 0.014858
+      },
+      "precision_delta": {
+        "valid_draws": 400,
+        "low": 0.004677,
+        "high": 0.021036,
+        "median": 0.012835,
+        "standard_error": 0.004294
+      }
+    }
+  },
+  "mechanism": {
+    "precision_improved": false,
+    "precision_delta": 0.011121,
+    "floor": 0.05,
+    "precision_delta_interval": {
+      "valid_draws": 400,
+      "low": 0.004677,
+      "high": 0.021036,
+      "median": 0.012835,
+      "standard_error": 0.004294
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": true
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "reference": {
+    "instrument": "m3-occupancy-precision-r1",
+    "predeclaration": "docs/M3_OCCUPANCY_PRECISION.md",
+    "scope": "Matched 64-step continuation of one published checkpoint, lever = declared zero-initialized stride-2 detail tap at the cell centers, control = the same budget without it. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population, ceiling or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+    "matched_to_this_pass": false,
+    "catalogue_sha256": "27a0e917c4e98b1180092a13684529ce9568175d78ed11b51790cc3bbd7ae517",
+    "arm": {
+      "auc": 0.8226433610683003,
+      "precision": 0.236325,
+      "per_cell_f1": 0.38164,
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "reference_comparison": {
+    "note": "Unmatched cross-pass comparison: the prior arms ran under another catalogue, so nothing here enters the verdict.",
+    "precision_vs_prior_single_tap": 0.011121,
+    "per_cell_f1_vs_prior_single_tap": 0.013526,
+    "auc_vs_prior_single_tap": 0.057752,
+    "best_f1_vs_prior_single_tap": 0.079253
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "open": [
+    "stacking the occupancy_context and occupancy_detail taps remains untested"
+  ],
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

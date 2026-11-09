@@ -151,3 +151,67 @@ gate, population or floor moves.
   rather than more read-out detail. If precision is *worse*, the reference comparison against the
   prior pass must say so explicitly.
 - **Not admissible** — the constraint itself is the measured result.
+
+## Measured result: NOT CLEARED — extra in-cell capacity bought ordering and the swept optimum, not standing-point precision
+
+Receipts: profiles `runs/m3-occdstencil-lever-r1-profile-r1-job.json` (passed, 55.5 s,
+1,039,421,440 B) and `runs/m3-occdstencil-control-r1-profile-r1-job.json` (passed, 54.6 s,
+1,037,393,920 B); studies `runs/m3-occdstencil-lever-r1-job.json` (passed, 64/64, 202.8 s,
+1,032,060,928 B) and `runs/m3-occdstencil-control-r1-job.json` (passed, 64/64, 218.5 s,
+1,031,536,640 B), both inside 1,152 MiB, under one captured catalogue (`6ff287a1`) and from
+`9ae1fef9f649...`; both sweeps 54 forwards under 640 MiB (peak 562,356,224 / 561,889,280 B);
+curation `runs/m3-occdstencil-curation-r1-job.json` into
+`docs/evidence/m3-occupancy-stencil-r1/scope.json`.
+
+| widened deciding population | stencil lever | single-sample control | prior single tap (reference) |
+|---|---|---|---|
+| pooled AUC | **0.8804** (CI 0.8633-0.8975) | 0.8226 (CI 0.8027-0.8426) | 0.8226 |
+| precision at `0.0` | 0.2474 | 0.2363 | 0.2363 |
+| recall at `0.0` | 0.9805 | **0.9910** | 0.9910 |
+| occupied-cell F1 at `0.0` | **0.3952** | 0.3816 | 0.3816 |
+| best swept F1 (threshold) | **0.4913** (1.80) | 0.4120 (0.90) | 0.4120 (0.90) |
+| exact nonempty boards | 0/28 | 0/28 | 0/28 |
+| ranking verdict | `uninformative` | `uninformative` | `uninformative` |
+
+Deltas (lever minus control): AUC **+0.0578** (cluster 0.0385-0.0943); best swept F1 **+0.0793**;
+occupied-cell F1 at `0.0` +0.0135 (cluster 0.0057-0.0273); precision +0.0111 (cluster
+0.0047-0.0210); recall -0.0105.
+
+**Verdict: NOT CLEARED**, failing `per_cell_f1` (0.3952 against 0.70) and `ranking`
+(`uninformative`: AUC 0.020 short of 0.90, best swept F1 0.209 short of 0.70). The **attribution
+condition is met**: the stencil's swept optimum exceeds the single-sample control's by 0.0793 against
+the declared +0.05 floor, the first arm of this campaign to clear it (neighborhood -0.0138, detail
+tap -0.0217).
+
+**Mechanism: `precision_improved = false`.** The declared floor was 0.05 and the measured precision
+delta is +0.0111, so the mechanism quantity missed its own bar even though its twelve-cluster
+interval excludes zero (0.0047-0.0210). Extra in-cell capacity therefore did **not** carry the
+precision gain further: it bought ordering instead.
+
+What the numbers do say: the stencil is the best-ordering arm of the campaign - AUC **0.8804**, 0.020
+short of the 0.90 bar, with an interval upper bound of 0.8975, the closest any arm has come - and its
+swept optimum **0.4913** is the highest measured here (0.4120 single tap, 0.4338 prior no-tap
+control, 0.4200 neighborhood, 0.3704 published). Its standing decision pays for that ordering with
+recall (0.9805 against 0.9910) while precision improves only marginally, the same shape every
+read-out lever has shown: information rises, separation does not.
+
+**Separation, not ordering, is now the binding constraint.** The AUC deficit fell from 0.076
+(neighborhood) and 0.077 (precision tap) to **0.020**, while the swept-F1 deficit has stayed at
+0.209-0.288 throughout and no board is exact. The read-out can rank cells; the ranking at this budget
+is not sharp enough to separate them.
+
+Reproducibility note, recorded rather than used: the single-sample control reproduces the previous
+pass's *lever* exactly - pooled AUC 0.8226433610683003, operating counts 661/2136/6, best F1
+0.41203400915631133 at `0.90` - under a different catalogue hash. The captured pixels and the matched
+continuation are therefore deterministic across passes, and this pass's contrast is against exactly
+the tap the previous pass demonstrated rather than an approximation of it.
+
+**Next-ranked step, in priority order:** (1) move upstream to encoder resolution - a finer native tap
+than stride-2 - because every read-out lever has now converted extra capacity into ordering without
+separation, so more read-out information is the wrong currency; (2) scale the matched budget on
+whichever of the two carries the gain. Threshold, conditioned-threshold and class-budget families stay
+closed, and stacking `occupancy_context` with `occupancy_detail` remains untested and out of scope.
+
+`tests/test_detail_stencil.py` re-derives both arms, the twelve-cluster paired bootstrap, the
+population, the work arithmetic, the verdict, the mechanism flag, the unmatched reference and the
+documents' quoted gaps from the committed receipts.

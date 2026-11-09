@@ -1,5 +1,35 @@
 # Contributor handoff — 2026-10-30
 
+## 2x2 in-cell detail stencil measured: not cleared, attribution floor met, separation now binds (2026-11-09)
+
+The step the precision pass ranked now has its own measured verdict
+([M3_OCCUPANCY_STENCIL.md](M3_OCCUPANCY_STENCIL.md), predeclared at `3ecbf2a`,
+`docs/evidence/m3-occupancy-stencil-r1/scope.json`, curation `runs/m3-occdstencil-curation-r1-job.json`).
+Both arms carried the declared zero-initialized detail tap and differed only in its form: the lever
+read four quarter-cell samples of a 2x2 in-cell grid, the control the single center sample. Each arm
+was continued **64 matched steps** from `m3-percell-balance-r1` under the same captured catalogue
+(`6ff287a1`) inside 1,152 MiB (lever 202.8 s / 1,032,060,928 B, control 218.5 s / 1,031,536,640 B) and
+scored on the widened deciding population (36 images, 28 nonempty boards, 667/4,933 cells, 81-point
+grid, 54 forwards per sweep under 640 MiB, twelve ancestry clusters).
+
+**Verdict: NOT CLEARED** - per-cell F1 0.3952 against 0.70; ranking `uninformative` (AUC **0.8804**,
+CI 0.8633-0.8975, **0.020 short** of 0.90; best swept F1 0.4913, **0.209 short** of 0.70); 0/28 exact
+boards. The **attribution condition is met** (+0.0793 against the +0.05 floor) - the first arm of the
+campaign to clear it. **Mechanism: `precision_improved = false`** - precision at `0.0` moved 0.2363 ->
+0.2474 (+0.0111, cluster 0.0047-0.0210, interval excluding zero but below the declared 0.05 floor),
+so the extra in-cell capacity did not carry the demonstrated precision gain further; it raised
+ordering (AUC 0.8226 -> 0.8804, cluster delta +0.0385 to +0.0943) and the swept optimum (0.4120 ->
+0.4913) instead.
+
+**Implication: separation, not ordering, is the binding constraint.** The ordering deficit has shrunk
+from 0.076 (neighborhood) and 0.077 (precision tap) to 0.020, while the swept-F1 deficit has stayed at
+0.209-0.288 and no board is exact. Next-ranked: **encoder resolution** (a finer native tap than
+stride-2), then scale; threshold, conditioned-threshold and class-budget families stay closed, and
+stacking `occupancy_context` with `occupancy_detail` is still untested. The single-sample control
+reproduced the prior pass's lever bit-for-bit (AUC 0.8226433610683003, counts 661/2136/6, best F1
+0.41203400915631133), so the continuation is deterministic and the contrast is against exactly the
+demonstrated tap. No escaped run, no ceiling, gate, population or floor change, and no new defect.
+
 ## Cell-precision detail tap measured: not cleared, but precision improved as declared (2026-11-09)
 
 The next-ranked lever after the neighborhood result now has its own measured verdict

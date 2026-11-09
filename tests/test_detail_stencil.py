@@ -1,5 +1,6 @@
 """The declared 2x2 in-cell stencil: same tap, four quadrant samples, identity at zero."""
 from copy import deepcopy
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -10,6 +11,10 @@ import torch
 from tetris_vision.losses import require_occupancy_detail_stencil
 from tetris_vision.model import ModelConfig, TetrisStateNet
 
+from occupancy_sweep import sweep_verdict
+from record_precision_lever import mechanism, paired_bootstrap, precision_of
+from record_representation_lever import arm_summary, lever_verdict
+import record_stencil_lever as curator
 from record_stream_run import OWNED_RUN_PATTERN
 
 
@@ -131,6 +136,93 @@ class DetailStencilTests(unittest.TestCase):
             self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
         self.assertFalse(OWNED_RUN_PATTERN.fullmatch("m3-occdstencil-"))
 
+
+ROOT = Path(__file__).resolve().parents[1]
+EVIDENCE = ROOT/"docs/evidence/m3-occupancy-stencil-r1/scope.json"
+
+
+class StencilLeverRecordTests(unittest.TestCase):
+    """The stencil record re-derives from its committed receipts, and the prose matches them."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.record = json.loads(EVIDENCE.read_text(encoding="utf-8"))
+        cls.sweeps = {arm: json.loads((ROOT/"runs"/f"m3-occdstencil-{arm}-r1-sweep-r1"/"result.json")
+                                      .read_text(encoding="utf-8")) for arm in curator.ARMS}
+        cls.studies = {arm: json.loads((ROOT/"runs"/f"m3-occdstencil-{arm}-r1"/"summary.json")
+                                       .read_text(encoding="utf-8")) for arm in curator.ARMS}
+
+    def training(self, arm):
+        return [row for row in self.sweeps[arm]["cases"] if row["split"] == "training"]
+
+    def test_the_record_is_a_passed_measurement_of_the_declared_instrument(self):
+        self.assertEqual(self.record["status"], "passed")
+        self.assertEqual(self.record["instrument"], "m3-occupancy-stencil-r1")
+        self.assertEqual(self.record["predeclaration"], "docs/M3_OCCUPANCY_STENCIL.md")
+
+    def test_the_population_and_work_arithmetic_are_the_declared_ones(self):
+        population = self.record["population"]
+        self.assertEqual((population["images"], population["nonempty_boards"]), (36, 28))
+        self.assertEqual((population["occupied_cells"], population["empty_cells"]), (667, 4933))
+        self.assertEqual(population["contexts"], 12)
+        self.assertEqual(self.record["envelope"]["work_items"],
+                         {"profile": 2, "study": 64, "sweep_profile": 2, "sweep": 54, "curation": 4})
+        for arm, sweep in self.sweeps.items():
+            self.assertEqual(sweep["forwards"], 54, arm)
+            self.assertEqual(len(self.training(arm)), 36, arm)
+
+    def test_each_arm_re_derives_from_its_own_sweep(self):
+        for arm in curator.ARMS:
+            measured = arm_summary(self.sweeps[arm]["deciding"])
+            measured["precision"] = round(precision_of(measured["operating_counts"]), 6)
+            for key in ("auc", "per_cell_f1", "best", "verdict", "precision", "operating_counts"):
+                self.assertEqual(self.record["arms"][arm][key], measured[key], (arm, key))
+
+    def test_the_sweeps_use_the_standing_grid_and_re_derive_their_verdict(self):
+        for arm, sweep in self.sweeps.items():
+            self.assertEqual(len(sweep["deciding"]["thresholds"]), 81, arm)
+            self.assertEqual(sweep["training_population"]["evaluated_groups"], 12, arm)
+            self.assertEqual(sweep["verdict"], sweep_verdict(sweep["deciding"]), arm)
+
+    def test_the_paired_bootstrap_re_derives_over_twelve_clusters(self):
+        expected = paired_bootstrap(self.training("lever"), self.training("control"))
+        self.assertEqual(self.record["attribution"]["cluster_bootstrap"], expected)
+        self.assertEqual(expected["clusters"], 12)
+
+    def test_the_verdict_and_mechanism_are_the_predeclared_rules(self):
+        arms = self.record["arms"]
+        verdict = lever_verdict(arms["lever"]["per_cell_f1"], arms["lever"]["verdict"],
+                                arms["lever"]["best"]["f1"]-arms["control"]["best"]["f1"])
+        self.assertEqual(self.record["verdict"], verdict)
+        self.assertEqual(verdict["conditions"],
+                         {"per_cell_f1": False, "ranking": False, "attribution": True})
+        record = mechanism(arms["lever"]["precision"]-arms["control"]["precision"],
+                           self.record["attribution"]["cluster_bootstrap"])
+        self.assertEqual(self.record["mechanism"], record)
+        self.assertFalse(record["precision_improved"])
+        self.assertGreater(record["precision_delta_interval"]["low"], 0)
+
+    def test_the_pair_is_matched_and_differs_only_in_the_stencil(self):
+        self.assertEqual(len({self.studies[arm]["catalogue_sha256"] for arm in curator.ARMS}), 1)
+        for arm in curator.ARMS:
+            self.assertEqual(self.studies[arm]["arguments"]["occupancy_detail"], 1)
+            self.assertEqual(self.studies[arm]["arguments"]["occupancy_detail_stencil"], curator.ARMS[arm])
+            self.assertEqual(self.studies[arm]["arguments"]["occupancy_context"], 0)
+            self.assertEqual((self.studies[arm]["status"], self.studies[arm]["steps"]), ("complete", 64))
+        self.assertEqual(self.record["matched"]["config_difference"], ["occupancy_detail_stencil"])
+        self.assertFalse(self.record["reference"]["matched_to_this_pass"])
+
+    def test_the_published_gaps_and_next_step_match_the_evidence(self):
+        arm = self.record["arms"]["lever"]
+        self.assertEqual((round(0.90-arm["auc"], 3), round(0.70-arm["best"]["f1"], 3)), (0.020, 0.209))
+        text = (ROOT/"docs/M3_OCCUPANCY_STENCIL.md").read_text(encoding="utf-8")
+        self.assertIn("0.020 short of 0.90", text)
+        self.assertIn("0.209 short of 0.70", text)
+        self.assertIn("precision_improved = false", text)
+        for name in ("docs/M3_OCCUPANCY_RANKING.md", "docs/ROADMAP.md", "docs/CONTINUATION_STATE.md"):
+            body = (ROOT/name).read_text(encoding="utf-8")
+            self.assertIn("encoder resolution", body, name)
+            self.assertIn("stencil", body.lower(), name)
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,6 +13,20 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **2x2 in-cell detail stencil is measured: not cleared, but it met the attribution floor
+and closed most of the ordering deficit** ([M3_OCCUPANCY_STENCIL.md](M3_OCCUPANCY_STENCIL.md),
+predeclared at `3ecbf2a`, `docs/evidence/m3-occupancy-stencil-r1/scope.json`). Both arms carried the
+declared zero-initialized detail tap and differed only in its form - four quarter-cell samples instead
+of the single center sample - continued 64 matched steps from the published checkpoint under one
+catalogue, both inside 1,152 MiB. The stencil is the best-ordering arm of the campaign: pooled AUC
+**0.8804** (cluster delta +0.0385 to +0.0943), **0.020 short** of 0.90, and its best swept F1
+**0.4913** beats the single-sample control's 0.4120 by **+0.0793**, clearing the +0.05 attribution
+floor for the first time. Standing-point precision moved only 0.2363 -> 0.2474 (below its 0.05
+mechanism floor, so `precision_improved = false`), so the extra capacity bought ordering, not
+precision; the gate still fails (best F1 **0.209 short** of 0.70, 0/28 exact boards) because
+**separation, not ordering, now binds**. Next-ranked: encoder resolution, then scale; stacking the two
+read-out taps stays open.
+
 Latest: the **cell-precision representation lever is measured: not cleared, but its mechanism worked**
 ([M3_OCCUPANCY_PRECISION.md](M3_OCCUPANCY_PRECISION.md), predeclared at `684d775`,
 `docs/evidence/m3-occupancy-precision-r1/scope.json`). A declared zero-initialized stride-2 detail
