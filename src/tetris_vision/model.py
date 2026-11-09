@@ -31,6 +31,7 @@ class ModelConfig:
     layer_evidence: bool = False
     occupancy_context: int = 0
     occupancy_detail: int = 0
+    occupancy_detail_stencil: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -57,6 +58,10 @@ class ModelConfig:
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
         check(type(self.occupancy_detail) is int and self.occupancy_detail in (0, 1),
               "occupancy detail is0 (published read-out) or1 (declared high-resolution detail tap)")
+        check(type(self.occupancy_detail_stencil) is int and self.occupancy_detail_stencil in (0, 1),
+              "occupancy detail stencil is0 (single center sample) or1 (declared 2x2 in-cell stencil)")
+        check(not self.occupancy_detail_stencil or self.occupancy_detail == 1,
+              "the detail stencil is a declared form of the detail tap, not a separate read-out")
 
     @classmethod
     def pilot(cls):
@@ -254,12 +259,20 @@ class TetrisStateNet(nn.Module):
         # projection is zero-initialized, which makes step zero exactly the published
         # function and gives the paired control the same starting tensors.
         self.occupancy_detail_tap = None
+        # Declared stencil form: the four quarter-cell positions of a 2x2 grid inside
+        # each cell, in the lattice's own units. Kept out of the state dict so both
+        # arms carry identical keys except the projection itself.
+        self.register_buffer("detail_stencil", torch.tensor([[-.25, -.25], [.25, -.25],
+                                                             [-.25, .25], [.25, .25]]).reshape(1, 1, 4, 2),
+                             persistent=False)
         if config.occupancy_detail:
             # Declared precision lever: the occupancy read-out also sees the stride-2
-            # first-stage feature at the cell center, a sharper sample than the decoder
-            # latent. The projection is zero-initialized, so step zero is exactly the
-            # published function and the paired control starts from the same tensors.
-            self.occupancy_detail_tap = nn.Linear(config.widths[0], dimension)
+            # first-stage feature at the cell center (or, in the declared stencil form,
+            # its four quarter-cell samples), a sharper sample than the decoder latent.
+            # The projection is zero-initialized, so step zero is exactly the published
+            # function and the paired control starts from the same tensors.
+            samples = 4 if config.occupancy_detail_stencil else 1
+            self.occupancy_detail_tap = nn.Linear(config.widths[0]*samples, dimension)
             nn.init.zeros_(self.occupancy_detail_tap.weight)
             nn.init.zeros_(self.occupancy_detail_tap.bias)
         self.occupancy_neighborhood = None
@@ -306,9 +319,10 @@ class TetrisStateNet(nn.Module):
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
             occupancy_features = cells
             if self.occupancy_detail_tap is not None:
-                centers = sample_features(first, lattice, self.coordinates,
-                                          torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))[0]
-                occupancy_features = occupancy_features+self.occupancy_detail_tap(centers[:, :, 0])
+                offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
+                           torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
+                centers = sample_features(first, lattice, self.coordinates, offsets)[0]
+                occupancy_features = occupancy_features+self.occupancy_detail_tap(centers.flatten(2))
             if self.occupancy_neighborhood is not None:
                 neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
                 occupancy_features = cells+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)

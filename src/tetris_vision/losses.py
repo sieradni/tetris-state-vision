@@ -144,6 +144,14 @@ def require_occupancy_detail(detail, summary):
         raise ValueError("occupancy detail differs from resource admission")
 
 
+def require_occupancy_detail_stencil(stencil, summary):
+    """One declaration of the admission join for the 2x2 in-cell detail stencil."""
+    if (type(stencil) is not int or stencil not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_detail_stencil", 0) != stencil or
+            summary.get("recovery_contract", {}).get("occupancy_detail_stencil", 0) != stencil):
+        raise ValueError("occupancy detail stencil differs from resource admission")
+
+
 def require_occupancy_context(context, summary):
     """One declaration of the admission join for the occupancy representation lever."""
     if (context not in (0, 1) or
