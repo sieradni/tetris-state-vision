@@ -1,0 +1,59 @@
+{
+  "instrument": "m3-occupancy-stacking-r1",
+  "status": "passed",
+  "closing_of_commit": "3acadca9e6647e3acc341cb7d373204e25e2d042",
+  "predeclaration": {
+    "document": "docs/M3_OCCUPANCY_STACKING.md",
+    "commit": "4135a2b"
+  },
+  "outcome": {
+    "verdict": "not-cleared",
+    "precision_improved": false,
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "auc": 0.7959612328439469,
+    "control_auc": 0.8226433610683003,
+    "best_f1": 0.40966842268360704,
+    "attribution_delta": -0.002366
+  },
+  "suite": {
+    "receipt": "runs/m3-occstack-closing-suite-r2-job.json",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 609,
+    "result": "OK",
+    "peak_commit_bytes": 528306176,
+    "elapsed_seconds": 39.4
+  },
+  "audit": {
+    "record": "docs/evidence/m3-occupancy-stacking-r1/audit.json",
+    "claims": 8,
+    "drift": 0,
+    "receipt_joins": 24
+  },
+  "preserved_attempts": [
+    "runs/attempts/m3-occstack-lever-r1-launch-refused",
+    "runs/attempts/m3-occstack-sweep-launch-refused",
+    "runs/attempts/m3-occstack-curation-r1-failed"
+  ],
+  "unchanged": {
+    "ceiling": "1,152 MiB, not raised",
+    "gates": "0.70 / 0.90 / 0.05, not moved",
+    "population": "36 / 28 / 667 / 4,933 / 12, not changed",
+    "re_runs_to_pass": "none",
+    "frozen_manifest": "untouched",
+    "prior_evidence": "untouched"
+  },
+  "open": [
+    "stacking is closed",
+    "resolution reopens only as a separately declared cheaper configuration"
+  ],
+  "next": {
+    "step": "leave the read-out and target the labels",
+    "reason": "every read-out lever moved ordering (0.7427 -> 0.8244 -> 0.8226 -> 0.8804) while the swept-F1 deficit stayed 0.21-0.29 and no board is exact at any threshold"
+  },
+  "real_image_chain": "parked pending user authorization"
+}
