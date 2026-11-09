@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 # because they are named for the predeclared policy, not for a stream study.
 OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-arm-[a-z0-9]+(?:-[a-z0-9]+)*"
                                r"|m3-identity-factor-[a-z0-9-]{1,40}|m3-fit-[a-z0-9-]{1,40}"
-                               r"|m3-percell-[a-z0-9-]{1,40}|m3-sweep-[a-z0-9-]{1,40})")
+                               r"|m3-percell-[a-z0-9-]{1,40}|m3-sweep-[a-z0-9-]{1,40}"
+                               r"|m3-occctx-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):

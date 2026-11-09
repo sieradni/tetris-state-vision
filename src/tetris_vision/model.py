@@ -29,6 +29,7 @@ class ModelConfig:
     component_identity_readout: str = "separate"
     component_endpoint_term: str = "joint"
     layer_evidence: bool = False
+    occupancy_context: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -51,6 +52,8 @@ class ModelConfig:
               "separate or length endpoint term requires the joint heads and a declared identity read-out, "
               "and length requires the positional read-out")
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
+        check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
+              "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
 
     @classmethod
     def pilot(cls):
@@ -243,6 +246,18 @@ class TetrisStateNet(nn.Module):
         if config.layer_evidence:
             from .layer_evidence import LayerEvidence
             self.layer_evidence = LayerEvidence(dimension)
+        # Declared representation lever: the occupancy read-out sees its eight lattice
+        # neighbors, so a cell's decision can use the local edge it sits on. The final
+        # projection is zero-initialized, which makes step zero exactly the published
+        # function and gives the paired control the same starting tensors.
+        self.occupancy_neighborhood = None
+        if config.occupancy_context:
+            self.occupancy_neighborhood = nn.Sequential(
+                nn.Conv2d(dimension, dimension, 3, padding=1, bias=False),
+                nn.GroupNorm(8, dimension), nn.SiLU(),
+                nn.Conv2d(dimension, dimension, 1))
+            nn.init.zeros_(self.occupancy_neighborhood[-1].weight)
+            nn.init.zeros_(self.occupancy_neighborhood[-1].bias)
 
     def forward(self, pixels, valid):
         check(pixels.ndim == 4 and pixels.shape[1] == 3 and pixels.is_floating_point(), "expected BCHW floating RGB")
@@ -277,7 +292,11 @@ class TetrisStateNet(nn.Module):
                 layer_cells, local_layers = self.layer_evidence(cells)
                 layers = layers+local_layers
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
-            stages.append({"lattice": lattice, "occupancy": self.occupancy(cells).reshape(batch, rows, columns),
+            occupancy_features = cells
+            if self.occupancy_neighborhood is not None:
+                neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
+                occupancy_features = cells+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
+            stages.append({"lattice": lattice, "occupancy": self.occupancy(occupancy_features).reshape(batch, rows, columns),
                            "semantic": self.semantic(cells).reshape(batch, rows, columns, 8),
                            "observability": self.observability(cells).reshape(batch, rows, columns),
                            "registration": self.registration(board[:, 0]).squeeze(-1),

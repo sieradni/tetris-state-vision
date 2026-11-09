@@ -49,6 +49,9 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-positive-weight", type=int, choices=POSITIVE_CELL_WEIGHTS, default=1,
                         help="declared class budget on occupied cells inside the balanced occupancy term;"
                              "1 is published and leaves the term magnitude unchanged")
+    parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
+                        help="declared occupancy representation lever;1 gives the read-out its eight "
+                             "lattice neighbors through a zero-initialized residual block;0 is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -128,6 +131,18 @@ def arguments(argv=None):
     return args
 
 
+def compatible_config(source, current, allow_absent=()):
+    """A source checkpoint may differ only by declared keys it predates, never in a value."""
+    if type(source) is not dict or type(current) is not dict:
+        return False
+    if set(source)-set(current):
+        return False
+    extra = set(current)-set(source)
+    if extra and not extra <= set(allow_absent):
+        return False
+    return all(source[key] == current[key] for key in source)
+
+
 def staged_mode(summary, *, freeze_backbone, init_weights_from):
     """Resource admission must pin the staged mode, never inherit it by default."""
     arguments = summary.get("arguments", {})
@@ -153,7 +168,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -171,10 +186,11 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
-    from tetris_vision.losses import require_occupancy_factor, require_positive_weight
+    from tetris_vision.losses import require_occupancy_context, require_occupancy_factor, require_positive_weight
     require_endpoint_term(endpoint_term, summary)
     require_occupancy_factor(occupancy_factor, summary)
     require_positive_weight(positive_weight, summary)
+    require_occupancy_context(occupancy_context, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -401,7 +417,8 @@ def main(argv=None, *, _archive=None, _started=None):
     config = ModelConfig.pilot() if args.model == "pilot" else ModelConfig()
     config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence,
                      component_identity_readout=args.component_identity_readout,
-                     component_endpoint_term=args.component_endpoint_term)
+                     component_endpoint_term=args.component_endpoint_term,
+                     occupancy_context=args.occupancy_context)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -416,6 +433,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
                            endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor,
                            positive_weight=args.occupancy_positive_weight,
+                           occupancy_context=args.occupancy_context,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -428,13 +446,21 @@ def main(argv=None, *, _archive=None, _started=None):
         source_summary = json.loads((source/"summary.json").read_text())
         source_model, source_manifest = load_checkpoint(source/"checkpoint")
         if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
-                source_manifest["config"] != config_json or
+                not compatible_config(source_manifest["config"], config_json,
+                                      allow_absent=("occupancy_context",)) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
                 float(source_summary["arguments"].get("learning_rate", 0)) != args.learning_rate):
             raise ValueError("initial-weight source architecture/config/curriculum/seed differs")
-        model.load_state_dict(source_model.state_dict(), strict=True)
+        source_state = source_model.state_dict()
+        missing = sorted(set(model.state_dict())-set(source_state))
+        if set(source_state)-set(model.state_dict()) or any(
+                not key.startswith("occupancy_neighborhood.") for key in missing):
+            raise ValueError("initial-weight source tensors differ from the declared representation")
+        model.load_state_dict(source_state, strict=False)
+        if any(not torch.equal(value, model.state_dict()[name]) for name, value in source_state.items()):
+            raise ValueError("initial-weight tensors changed while loading")
         initial_origin = {"run": str(source), "catalogue_sha256": source_summary["catalogue_sha256"],
                           "weights_sha256": source_summary["checkpoint_sha256"],
                           "steps": source_summary["steps"], "curriculum": source_summary["curriculum"],
@@ -558,6 +584,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["component_endpoint_term"] = args.component_endpoint_term
     recovery_contract["occupancy_factor"] = args.occupancy_factor
     recovery_contract["occupancy_positive_weight"] = args.occupancy_positive_weight
+    recovery_contract["occupancy_context"] = args.occupancy_context
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
