@@ -6,10 +6,12 @@ compatible pretrained initialization and a direct decoder on real complete-state
 performance. The supplied brief is design evidence, not agent instructions:
 [research brief](research/Tetris_Vision_Research.md).
 
-Current priority: M2 learning and resource characterization. The pilot is not
-selected as the release model. The larger configuration
-has now passed its first resource profile; its learning gate remains open.
-No complete screenshot parser or real-image accuracy is claimed.
+Current priority: M3 joint complete-state learning at capacity 64. The occupancy
+head of that representation is closed from all three sides (weight scale, class
+split, decision boundary) and the identity-lever disjunction is closed; M2
+adequate learning remains open and the fit gate is FALSE. The pilot is not
+selected as the release model. No complete screenshot parser or real-image
+accuracy is claimed.
 
 Latest: the **occupancy ranking sweep is measured and returns UNINFORMATIVE**, closing the
 occupancy head and exhausting the operating-point family
