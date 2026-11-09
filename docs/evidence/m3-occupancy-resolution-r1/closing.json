@@ -1,7 +1,7 @@
 {
   "instrument": "m3-occupancy-resolution-r1",
   "status": "passed",
-  "closing_of_commit": "09e5bf95a22cf47265872c650df27e4f03112d78",
+  "closing_of_commit": "ab3e9cb1a4bed46e7b698ae0f3b33937d492466e",
   "predeclaration": {
     "document": "docs/M3_OCCUPANCY_RESOLUTION.md",
     "commit": "eee9362"
@@ -22,13 +22,13 @@
     "excess_bytes": 23920640
   },
   "suite": {
-    "receipt": "runs/m3-occres-closing-suite-r4-job.json",
+    "receipt": "runs/m3-occres-closing-suite-r5-job.json",
     "status": "passed",
     "exit_code": 0,
     "tests": 601,
     "result": "OK",
-    "peak_commit_bytes": 528592896,
-    "elapsed_seconds": 53.9
+    "peak_commit_bytes": 561520640,
+    "elapsed_seconds": 52.9
   },
   "audit": {
     "record": "docs/evidence/m3-occupancy-resolution-r1/audit.json",
@@ -55,5 +55,7 @@
     "step": "stack occupancy_context with occupancy_detail",
     "reason": "last lever that changes the information the read-out sees, at about 0.02 MiB of retained activation against the refused branch's 188.4 MiB"
   },
-  "real_image_chain": "parked pending user authorization"
+  "real_image_chain": "parked pending user authorization",
+  "revision": 2,
+  "superseded_suite": "runs/m3-occres-closing-suite-r4-job.json (same verdict, pre-fix tree)"
 }
