@@ -1,0 +1,28 @@
+{
+  "instrument": "m3-occupancy-stencil-r1",
+  "verification_of_commit": "ee050d4a13a6f857ca162a05d130feea11da4202",
+  "suite": {
+    "receipt": "runs/m3-occdstencil-fullsuite-r1-job.json",
+    "sha256": "4fb956837fadfc462e11aca9ed867c39ebbbba2ea43438e35063f7c8789c441a",
+    "status": "passed",
+    "exit_code": 0,
+    "tests": 588,
+    "result": "OK",
+    "peak_job_commit_bytes": 529018880,
+    "memory_bytes": 671088640
+  },
+  "executed_on": "the working tree committed as this hash (the commit changes no source)",
+  "invariance": {
+    "prior_evidence_and_manifest": "byte-identical to 0d54ff4 (empty git diff)",
+    "gate_sweep_power_clustering_modules": "byte-identical to 0d54ff4 (empty git diff)",
+    "model_and_loss": "changed only by the declared stencil form of the detail tap from 3ecbf2a"
+  },
+  "records": [
+    "docs/evidence/m3-occupancy-stencil-r1/scope.json",
+    "docs/M3_OCCUPANCY_STENCIL.md",
+    "docs/M3_OCCUPANCY_RANKING.md",
+    "docs/ROADMAP.md",
+    "docs/CONTINUATION_STATE.md",
+    "tests/test_detail_stencil.py"
+  ]
+}
