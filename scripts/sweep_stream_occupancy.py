@@ -16,6 +16,8 @@ import time
 
 from occupancy_sweep import evaluate, replay_keywords, sweep_verdict, threshold_grid
 from probe_model import require_bounded_job
+from probe_population import (RECORDED_TRAINING_GROUPS, require_training_population,
+                              training_extension_specs)
 from record_stream_run import checkpoint_architecture, require_owned_run, validate_completion
 from source_snapshot import verify_source
 
@@ -42,6 +44,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--training-groups", type=int, default=None,
+                        help="widen the deciding training population to the canonical group set")
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--profile", action="store_true")
     mode.add_argument("--admission", type=Path)
@@ -68,13 +72,13 @@ def main():
     os.environ.update({"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"})
     import torch
     from PIL import Image
-    from m2_curriculum import replay_case
+    from m2_curriculum import replay_case, sample_for
     from m2_stream_data import sample_case
     from tetris_vision.checkpoint import file_digest, load_checkpoint
     from tetris_vision.losses import targets_for
     from tetris_vision.preprocess import prepare_image
     import tetris_vision.model as model_module
-    for function in (targets_for, sample_case, replay_case):
+    for function in (targets_for, sample_case, replay_case, sample_for):
         if not Path(inspect.unwrap(function).__code__.co_filename).resolve().is_relative_to(code):
             raise ValueError("sweep model/label implementation is not frozen")
     if not Path(model_module.__file__).resolve().is_relative_to(code):
@@ -97,9 +101,30 @@ def main():
         if ledger.stat().st_size > 1024**2:
             raise ValueError("probe ledger byte budget exceeded")
         recipes[split] = [json.loads(line) for line in ledger.read_text().splitlines()]
+    evaluated_training = (RECORDED_TRAINING_GROUPS if args.training_groups is None
+                          else require_training_population(RECORDED_TRAINING_GROUPS, args.training_groups))
+    saved_ids = {split: {row["sample_id"] for row in rows} for split, rows in recipes.items()}
+    saved_training_cases = len(recipes["training"])
+    if evaluated_training != RECORDED_TRAINING_GROUPS:
+        if (saved_training_cases != RECORDED_TRAINING_GROUPS*3 or
+                {(row["group_index"], row["view"]) for row in recipes["training"]} !=
+                {(group, view) for group in range(RECORDED_TRAINING_GROUPS) for view in range(3)}):
+            raise ValueError("recorded training probe population is three complete groups")
+        # The same widening the error replay applies, from the same declaration, so the two
+        # independent executions sweep and replay an identical deciding population.
+        for spec in training_extension_specs(recipes["training"][0]["base_seed"],
+                                             RECORDED_TRAINING_GROUPS, evaluated_training):
+            case = sample_for(spec["group_index"], spec["view"], "training", spec["base_seed"],
+                              curriculum=curriculum, component_capacity=capacity, max_side=max_side)
+            recipe = json.loads(json.dumps(case.record))
+            if (recipe.get("split") != "training" or
+                    (recipe["group_index"], recipe["view"], recipe["base_seed"]) !=
+                    (spec["group_index"], spec["view"], spec["base_seed"])):
+                raise ValueError("sweep training extension identity differs")
+            recipes["training"].append(recipe)
     population = {split: len(rows) for split, rows in recipes.items()}
 
-    def sweep_case(recipe, split):
+    def sweep_case(recipe, split, *, saved=True):
         sample_kwargs, target_kwargs = replay_keywords(recipe, capacity)
         if manifest["config"].get("layer_evidence", False):
             target_kwargs["layer_evidence"] = True
@@ -109,13 +134,14 @@ def main():
                             max_side=max_side, **sample_kwargs))
         if json.loads(json.dumps(case.record)) != recipe:
             raise ValueError("sweep recipe/pixel/label identity differs")
-        stem = run/(split+"-probe")/recipe["sample_id"]
-        with Image.open(stem.with_suffix(".png")) as image:
-            if (image.mode != case.frame.image.mode or image.size != case.frame.image.size or
-                    image.tobytes() != case.frame.image.tobytes()):
-                raise ValueError("saved probe raster differs")
-        if file_digest(stem.with_suffix(".json")) != recipe["state_sha256"]:
-            raise ValueError("saved probe annotation differs")
+        if saved:
+            stem = run/(split+"-probe")/recipe["sample_id"]
+            with Image.open(stem.with_suffix(".png")) as image:
+                if (image.mode != case.frame.image.mode or image.size != case.frame.image.size or
+                        image.tobytes() != case.frame.image.tobytes()):
+                    raise ValueError("saved probe raster differs")
+            if file_digest(stem.with_suffix(".json")) != recipe["state_sha256"]:
+                raise ValueError("saved probe annotation differs")
         prepared = prepare_image(case.frame.image, max_side=max_side)
         target = targets_for(case.frame.state, prepared, **target_kwargs)
         if int(target["known"].sum()) != 200:
@@ -158,7 +184,7 @@ def main():
     cases = []
     for split in ("training", "development"):
         for recipe in recipes[split]:
-            cases.append(sweep_case(recipe, split))
+            cases.append(sweep_case(recipe, split, saved=recipe["sample_id"] in saved_ids[split]))
             (args.output/"progress.json").write_text(json.dumps({"cases": len(cases)})+"\n")
     if not all(torch.equal(value, model.state_dict()[name]) for name, value in weights.items()):
         raise ValueError("read-only sweep changed model tensors")
@@ -169,6 +195,11 @@ def main():
               "weights_sha256": summary["checkpoint_sha256"], "config": manifest["config"],
               "core_architecture": architecture, "forwards": len(cases),
               "job_ceiling_bytes": ceiling, "component_capacity": capacity, "curriculum": curriculum,
+              "training_population": {"recorded_groups": RECORDED_TRAINING_GROUPS,
+                                      "evaluated_groups": evaluated_training,
+                                      "recorded_cases": saved_training_cases,
+                                      "evaluated_cases": len(recipes["training"]),
+                                      "extension_cases": len(recipes["training"])-saved_training_cases},
               "admission": {"run": args.admission.name, "weights_sha256": profile_summary["weights_sha256"],
                             "ceiling_bytes": ceiling, "cases": population},
               "grid": {"low": thresholds[0], "high": thresholds[-1],

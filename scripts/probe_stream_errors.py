@@ -16,6 +16,8 @@ import time
 from m2_error_analysis import analyze_case, fit_metrics_from_diagnostics, recipe_strata, summarize
 from m3_error_analysis import analyze_components, pack_components, replay_keywords, summarize_components
 from probe_model import require_bounded_job
+from probe_population import (RECORDED_TRAINING_GROUPS, require_training_population,
+                              training_extension_specs)
 from record_stream_run import checkpoint_architecture, require_owned_run, validate_completion
 from source_snapshot import verify_source
 
@@ -88,6 +90,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--development-groups", type=int, default=None,
                         help="complete development evidence on the canonical group set")
+    parser.add_argument("--training-groups", type=int, default=None,
+                        help="widen the deciding training population to the canonical group set")
     args = parser.parse_args()
     require_owned_run(args.run)
     run = ROOT/"runs"/args.run
@@ -161,6 +165,9 @@ def main():
         raise ValueError("explicit development group counts required")
     if evaluated_groups != recorded_groups:
         extension_specs(summary["arguments"]["seed"], recorded_groups, evaluated_groups)
+    evaluated_training = (RECORDED_TRAINING_GROUPS if args.training_groups is None
+                          else require_training_population(RECORDED_TRAINING_GROUPS, args.training_groups))
+    training_extension = []
 
     def evaluate(recipe, case, target_kwargs, *, split, saved, expected_row=None):
         prepared = prepare_image(case.frame.image, max_side=max_side)
@@ -200,6 +207,7 @@ def main():
         (args.output/"progress.json").write_text(json.dumps({"forwards": len(records), "sample_id": recipe["sample_id"]})+"\n")
 
     records = []
+    training_base_seed = None
     with torch.no_grad():
         for split, field in (("training", "final_training_probe"), ("development", "development")):
             ledger = run/(split+"-probe.jsonl")
@@ -226,6 +234,27 @@ def main():
                 if file_digest(stem.with_suffix(".json")) != recipe["state_sha256"]:
                     raise ValueError("saved probe annotation differs")
                 evaluate(recipe, case, target_kwargs, split=split, saved=True, expected_row=expected[recipe["sample_id"]])
+            if split == "training":
+                training_base_seed = recipes[0]["base_seed"]
+                recorded = {(row["group_index"], row["view"]) for row in recipes}
+                if (len(recipes) != RECORDED_TRAINING_GROUPS*3 or
+                        recorded != {(group, view) for group in range(RECORDED_TRAINING_GROUPS)
+                                     for view in range(3)}):
+                    raise ValueError("recorded training probe population is three complete groups")
+                # Widen the deciding population with the run's own training-stream drawings
+                # (groups 3..11 are the stream's steps 10..36), resampled deterministically.
+                for spec in training_extension_specs(training_base_seed, RECORDED_TRAINING_GROUPS,
+                                                     evaluated_training):
+                    case = sample_for(spec["group_index"], spec["view"], "training", spec["base_seed"],
+                                      curriculum=curriculum, component_capacity=capacity, max_side=max_side)
+                    recipe = json.loads(json.dumps(case.record))
+                    if (recipe.get("split") != "training" or
+                            (recipe["group_index"], recipe["view"], recipe["base_seed"]) !=
+                            (spec["group_index"], spec["view"], spec["base_seed"])):
+                        raise ValueError("training extension identity differs")
+                    target_kwargs = {"layer_evidence": True} if manifest["config"].get("layer_evidence", False) else {}
+                    evaluate(recipe, case, target_kwargs, split=split, saved=False)
+                    training_extension.append(recipe)
             if split == "development":
                 for spec in extension_specs(recipes[0]["base_seed"], recorded_groups, evaluated_groups):
                     case = (sample_for(spec["group_index"], spec["view"], split, spec["base_seed"],
@@ -247,10 +276,20 @@ def main():
         "extension_cases": len(extension_recipes), "recipes": extension_recipes}
     if sources != {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in source_paths}:
         raise ValueError("diagnostic source changed during execution")
-    totals = summarize(records, max_cases=68 if curriculum in ("all-class-fit-v1", "all-class-interleaved-v1") else 45)
+    # Summarize each split against its own bound: the widened deciding population is larger
+    # than the whole-suite 45-case budget, but neither split alone is (36 training, 18
+    # development). `summarize` groups by split internally, so the result is unchanged for the
+    # narrow population.
+    totals = {}
+    for split in ("training", "development"):
+        subset = [row for row in records if row["split"] == split]
+        if subset:
+            totals.update(summarize(subset, max_cases=45))
     if capacity:
-        for split, values in summarize_components(records).items():
-            totals[split]["components"] = values
+        for split in ("training", "development"):
+            subset = [row for row in records if row["split"] == split]
+            if subset:
+                totals[split]["components"] = summarize_components(subset)[split]
     result = {"status": "passed", "diagnostic_format_version": 2,
               "run": args.run, "run_status": summary["status"], "global_steps": summary["steps"],
               "target_steps": summary["requested_steps"], "forwards": len(records), "job_ceiling_bytes": ceiling,
@@ -260,6 +299,11 @@ def main():
               "component_identity_factor": identity_factor,              "component_endpoint_term": endpoint_term, "occupancy_factor": occupancy_factor,
               "occupancy_positive_weight": positive_weight,
               "curriculum": curriculum, "development_extension": extension,
+              "training_population": {"recorded_groups": RECORDED_TRAINING_GROUPS,
+                                      "evaluated_groups": evaluated_training,
+                                      "evaluated_cases": evaluated_training*3,
+                                      "extension_cases": len(training_extension),
+                                      "base_seed": training_base_seed},
               "totals": totals, "cases": records, "sources": sources,
               "elapsed_seconds": time.monotonic()-started,
               "scope": "Saved synthetic raw-head error decomposition only. Matched views share ancestry; no independent-sample interval, calibrated confidence, decoded complete-state or real accuracy claim. Unknown component targets are excluded. No training/label/production-output changes."}
