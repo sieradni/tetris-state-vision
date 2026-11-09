@@ -30,6 +30,7 @@ class ModelConfig:
     component_endpoint_term: str = "joint"
     layer_evidence: bool = False
     occupancy_context: int = 0
+    occupancy_detail: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -54,6 +55,8 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
+        check(type(self.occupancy_detail) is int and self.occupancy_detail in (0, 1),
+              "occupancy detail is0 (published read-out) or1 (declared high-resolution detail tap)")
 
     @classmethod
     def pilot(cls):
@@ -127,7 +130,7 @@ class ImageEncoder(nn.Module):
         size = (min(16, coarse.shape[-2]), min(16, coarse.shape[-1]))
         weight = F.adaptive_avg_pool2d(mask, size)
         context = F.adaptive_avg_pool2d(coarse*mask, size)/weight.clamp_min(1e-6)
-        return detail, context, weight[:, 0] > 0
+        return detail, context, weight[:, 0] > 0, first
 
 
 def spatial_encoding(height, width, dimension, device, dtype):
@@ -250,6 +253,15 @@ class TetrisStateNet(nn.Module):
         # neighbors, so a cell's decision can use the local edge it sits on. The final
         # projection is zero-initialized, which makes step zero exactly the published
         # function and gives the paired control the same starting tensors.
+        self.occupancy_detail_tap = None
+        if config.occupancy_detail:
+            # Declared precision lever: the occupancy read-out also sees the stride-2
+            # first-stage feature at the cell center, a sharper sample than the decoder
+            # latent. The projection is zero-initialized, so step zero is exactly the
+            # published function and the paired control starts from the same tensors.
+            self.occupancy_detail_tap = nn.Linear(config.widths[0], dimension)
+            nn.init.zeros_(self.occupancy_detail_tap.weight)
+            nn.init.zeros_(self.occupancy_detail_tap.bias)
         self.occupancy_neighborhood = None
         if config.occupancy_context:
             self.occupancy_neighborhood = nn.Sequential(
@@ -267,7 +279,7 @@ class TetrisStateNet(nn.Module):
         check(min(height, width) >= 16 and height % 16 == 0 and width % 16 == 0, "pad image dimensions to multiples of 16")
         check(valid.shape == (batch, 1, height, width) and valid.dtype == torch.bool, "valid-pixel mask required")
         check(bool(valid.flatten(1).any(1).all()) and bool(torch.isfinite(pixels).all()), "nonfinite/empty input")
-        detail, coarse, context_valid = self.encoder(pixels, valid)
+        detail, coarse, context_valid, first = self.encoder(pixels, valid)
         context = coarse.flatten(2).transpose(1, 2)
         context = context+spatial_encoding(*coarse.shape[-2:], self.config.dimension, pixels.device, pixels.dtype)
         context_valid = context_valid.flatten(1)
@@ -293,6 +305,10 @@ class TetrisStateNet(nn.Module):
                 layers = layers+local_layers
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
             occupancy_features = cells
+            if self.occupancy_detail_tap is not None:
+                centers = sample_features(first, lattice, self.coordinates,
+                                          torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))[0]
+                occupancy_features = occupancy_features+self.occupancy_detail_tap(centers[:, :, 0])
             if self.occupancy_neighborhood is not None:
                 neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
                 occupancy_features = cells+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)

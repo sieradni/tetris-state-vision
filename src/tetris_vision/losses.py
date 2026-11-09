@@ -136,6 +136,14 @@ def geometry_error(predicted, target):
 OCCUPANCY_FACTORS = (1, 4)
 
 
+def require_occupancy_detail(detail, summary):
+    """One declaration of the admission join for the precision detail tap."""
+    if (detail not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_detail", 0) != detail or
+            summary.get("recovery_contract", {}).get("occupancy_detail", 0) != detail):
+        raise ValueError("occupancy detail differs from resource admission")
+
+
 def require_occupancy_context(context, summary):
     """One declaration of the admission join for the occupancy representation lever."""
     if (context not in (0, 1) or

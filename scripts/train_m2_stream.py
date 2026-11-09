@@ -52,6 +52,10 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
                         help="declared occupancy representation lever;1 gives the read-out its eight "
                              "lattice neighbors through a zero-initialized residual block;0 is published")
+    parser.add_argument("--occupancy-detail", type=int, choices=(0, 1), default=0,
+                        help="declared cell-precision lever;1 gives the occupancy read-out the stride-2 "
+                             "first-stage feature sampled at each cell center through a zero-initialized "
+                             "projection;0 is published")
     parser.add_argument("--layer-evidence", action="store_true", help="optional independent visible-cell layer supervision/readout")
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
@@ -168,7 +172,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -186,11 +190,13 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
             summary.get("recovery_contract", {}).get("component_identity_factor", 1) != identity_factor):
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
-    from tetris_vision.losses import require_occupancy_context, require_occupancy_factor, require_positive_weight
+    from tetris_vision.losses import (require_occupancy_context, require_occupancy_detail,
+                                     require_occupancy_factor, require_positive_weight)
     require_endpoint_term(endpoint_term, summary)
     require_occupancy_factor(occupancy_factor, summary)
     require_positive_weight(positive_weight, summary)
     require_occupancy_context(occupancy_context, summary)
+    require_occupancy_detail(occupancy_detail, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -418,7 +424,8 @@ def main(argv=None, *, _archive=None, _started=None):
     config = replace(config, component_capacity=args.component_capacity, layer_evidence=args.layer_evidence,
                      component_identity_readout=args.component_identity_readout,
                      component_endpoint_term=args.component_endpoint_term,
-                     occupancy_context=args.occupancy_context)
+                     occupancy_context=args.occupancy_context,
+                     occupancy_detail=args.occupancy_detail)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -434,6 +441,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor,
                            positive_weight=args.occupancy_positive_weight,
                            occupancy_context=args.occupancy_context,
+                           occupancy_detail=args.occupancy_detail,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
                            max_side=args.capture_max_side,
@@ -447,7 +455,7 @@ def main(argv=None, *, _archive=None, _started=None):
         source_model, source_manifest = load_checkpoint(source/"checkpoint")
         if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
                 not compatible_config(source_manifest["config"], config_json,
-                                      allow_absent=("occupancy_context",)) or
+                                      allow_absent=("occupancy_context", "occupancy_detail")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -456,7 +464,8 @@ def main(argv=None, *, _archive=None, _started=None):
         source_state = source_model.state_dict()
         missing = sorted(set(model.state_dict())-set(source_state))
         if set(source_state)-set(model.state_dict()) or any(
-                not key.startswith("occupancy_neighborhood.") for key in missing):
+                not key.startswith(("occupancy_neighborhood.", "occupancy_detail_tap."))
+                for key in missing):
             raise ValueError("initial-weight source tensors differ from the declared representation")
         model.load_state_dict(source_state, strict=False)
         if any(not torch.equal(value, model.state_dict()[name]) for name, value in source_state.items()):
@@ -585,6 +594,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_factor"] = args.occupancy_factor
     recovery_contract["occupancy_positive_weight"] = args.occupancy_positive_weight
     recovery_contract["occupancy_context"] = args.occupancy_context
+    recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
