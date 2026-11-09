@@ -132,3 +132,51 @@ note and is re-recorded under a fresh number. No ceiling, bar, population or fea
   predeclaration guards against (an unregularized least-squares score extrapolating far past the
   compared grid, and a pooled AUC that ranked fold frequency). Only the canonical receipts above
   produce numbers, and V-066 records the defect and its instrument.
+
+## Receipt note
+
+The first profile launch was refused by the supervisor's own executable check (V-030) before any
+work ran, and because the durable receipt is written before argv is resolved it consumed the
+declared name (V-067); the first two curations were refused by their own arithmetic checks before
+they created an evidence directory (V-068). The canonical runs are therefore
+`runs/m3-occpix-ceiling-r1-profile-r2` (2 work items), `runs/m3-occpix-ceiling-r1-r2` (36 work
+items) and curation `runs/m3-occpix-ceiling-curation-r3-job.json`; each refused receipt and its
+written note is preserved under `runs/attempts/` and none is used as evidence.
+
+## Outcome — SEPARABLE: the labels are recoverable from the pixels, so the label lever is refused
+
+The probe passed inside its declared envelope and the curator re-derived every published number
+from the probe's own cells and the swept labels
+(`docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`).
+
+| quantity | pixel-only ceiling | committed model (same cells) |
+|---|---|---|
+| occupied-cell F1 at `0.0` | **0.9780** (667 true / 30 false / 0 missed) | **0.4019** (661 / 1,961 / 6) |
+| precision at `0.0` | **0.9570** | **0.2521** |
+| recall at `0.0` | **1.0000** | **0.9910** |
+| mean per-fold AUC (12 groups) | **0.9976**, per-fold 0.9799-1.0000 | **0.7960** pooled |
+| best swept F1 (81-point grid) | **0.9859** at `1.05` (666 / 18 / 1) | **0.4097** at `0.30` (661 / 1,899 / 6) |
+| peak commit / wall | 266.2-266.4 MB / 2.0-3.3 s | not applicable (read-only join) |
+
+**Control.** Within-group label permutation through the identical pipeline collapses: F1
+**0.0029** (1 true / 11 false / 666 missed), mean per-fold AUC **0.4885** (pooled 0.3675). The
+pipeline therefore measures label recovery rather than board density, and the instrument is valid.
+
+**Verdict: `separable`**, with both declared bars cleared by a wide margin (F1 **+0.278** against
+0.70, fold-mean AUC **+0.098** against 0.90). The measured gaps to the model on the same cells are
+**+0.5761** operating F1, **+0.5763** best swept F1 and **+0.2016** fold-mean AUC against the
+sweep's pooled AUC (a different statistic, quoted as a reference only).
+
+**Consequence, as predeclared:** the label-overlap signature is **refuted** as an explanation of
+the occupancy deficit (`indeterminate_target_licensed = false`), and the indeterminate/occluded
+cell target the stacking pass ranked **is not admitted**. No further label-policy variant is
+ranked. This is not a model or accuracy claim: the ceiling is a 30-feature linear read-out at
+oracle registration on the stream's own synthetic drawings, and it says only that these targets are
+already implicit in this capture.
+
+**What this licenses.** The registered next question is model-side. Scale the matched budget on the
+2x2 stencil configuration (the only read-out arm that met the +0.05 attribution floor, AUC 0.8804 /
+best F1 0.4913), and carry **registration** as the named alternative suspect, because this ceiling
+was granted the target lattice while the model's geometry error is about 3.3 cells. The refused
+resolution lever reopens only as its own declared configuration, stacking stays closed, and the
+real-image chain stays parked pending authorization.

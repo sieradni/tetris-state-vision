@@ -18,10 +18,79 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065 (12) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files |
-| interval-validity | V-056 (1) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width |
-| tooling-harness | V-060, V-064 (2) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval` |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068 (13) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts |
+| interval-validity | V-056, V-066 (2) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read |
+| tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-068 — CLOSED: the curator rebuilt labels in an assumed order instead of the committed order
+
+**Symptom.** The second canonical curation exited 1 with "the probe's stored statistics do not
+re-derive from its own cells" and wrote no evidence directory.
+
+**Root cause.** The re-derivation inferred each board's label vector from counts alone as
+occupied-first (`[1]*occupied + [0]*rest`), so a logit at a cell index was scored against a different
+cell's label: the observer emits interleaved cells. Counts matched, so the guard passed and the
+statistics simply disagreed.
+
+**Change.** The re-derivation takes the committed sweep's own label array, keyed by `sample_id`,
+and refuses unless its length and occupied count match the probe's stored case.
+
+**Detection class.** evidence-reporting.
+
+**Instrument.** The curator's arithmetic join against the swept bytes, plus a regression fixture
+that pins an interleaved board and shows a counts-identical reorder scoring differently (1/1/1
+instead of 2/0/0) and a wrong-length vector being refused.
+
+**Named green run.** `runs/m3-occpix-ceiling-curation-r3-job.json` (passed, 2 work items) writing
+`docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`; the refused receipt and note are preserved
+at `runs/attempts/m3-occpix-curation-refused-r2/`.
+
+## V-067 — CLOSED: a refused launch consumed the declared run name
+
+**Symptom.** Relaunching the profile after the interpreter path was corrected failed with
+`FileExistsError` on `runs/m3-occpix-ceiling-r1-profile-r1-job.json`. No step, feature extraction or
+evidence byte had been produced.
+
+**Root cause.** The supervisor writes its durable receipt before it resolves and validates the child
+argv, so a launch refused by the V-030 executable check still occupies the declared name.
+
+**Change.** None in the supervisor this pass; the launch discipline is what the instrument names.
+
+**Detection class.** tooling-harness.
+
+**Instrument.** The V-030 check still refuses loudly before any work; the refused receipt is preserved
+under `runs/attempts/` with a written note and the canonical runs use fresh numbers, so a refused
+name never enters evidence.
+
+**Named green run.** `runs/m3-occpix-ceiling-r1-profile-r2-job.json` (passed, 2 work items,
+266,375,168 B) and `runs/m3-occpix-ceiling-r1-r2-job.json` (passed, 36 work items, 266,182,656 B),
+both under the declared 640 MiB.
+
+## V-066 — CLOSED: pooled cross-fold AUC and an unbounded score made a read-only comparison lie
+
+**Symptom.** An exploratory read-out on the same deciding population reported a label-shuffled
+control at AUC 0.99 and a swept best F1 of 0.94 for a classifier that in fact recovered nothing
+(1 true / 33 false positive / 666 missed at its own boundary).
+
+**Root cause.** Two independent faults. (a) A leave-one-group-out score that is near-constant within
+a fold still orders folds by their class frequency, so a pooled AUC ranks fold frequency rather than
+cells. (b) A least-squares score fitted to 0/1 targets extrapolates far past `[-6, 6]`, so a global
+threshold grid no longer samples operating points meaningfully and its "best" point is noise.
+
+**Change.** The instrument fits L2 logistic regression (bounded log-odds), governs on pooled
+count-based F1 at the fit's own `0.0` boundary and on the mean per-fold AUC, reports pooled AUC as
+descriptive only, and requires the label-shuffled control to collapse under the identical pipeline.
+
+**Detection class.** interval-validity.
+
+**Instrument.** `tests/test_pixel_ceiling.py` pins a fold-constant score at pooled AUC 0.81 with
+per-fold AUC 0.5, asserts no verdict reads the pooled AUC, and asserts a control that clears a bar
+invalidates the instrument instead of measuring it.
+
+**Named green run.** `runs/m3-occpix-ceiling-r1-r2-job.json` (passed, 36 work items) and
+`runs/m3-occpix-ceiling-curation-r3-job.json` into
+`docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`; 20 instrument tests green.
 
 ## V-065 — CLOSED: the new curator read a reference record's catalogue from the wrong block
 

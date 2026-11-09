@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
 from pixel_ceiling import (AUC_THRESHOLD, F1_THRESHOLD, cell_features, ceiling_verdict, counts,
                            evaluate, f1, logistic_fit, raster, shuffled_labels, sweep,
                            tie_aware_auc)
-from record_pixel_ceiling import require_deciding
+from record_pixel_ceiling import rederive, require_deciding
 from record_stream_run import OWNED_RUN_PATTERN
 
 
@@ -150,12 +150,29 @@ class CuratorTests(unittest.TestCase):
         return {"nonempty_boards": 28, "empty_boards": 8, "occupied_cells": 667, "empty_cells": 4933}
 
     def cases(self):
-        rows = []
-        for index in range(36):
-            occupied = 0 if index < 8 else 0
-            rows.append({"known_cells": 200, "occupied": occupied})
-        rows[8]["occupied"] = 667
+        # The probe stores only the 28 nonempty boards it fits; empty boards are counted
+        # in the population block, not as cases.
+        rows = [{"known_cells": 200, "occupied": 0} for _ in range(28)]
+        rows[0]["occupied"] = 667
         return rows
+
+    def test_rederive_keeps_the_committed_cell_order(self):
+        # Occupied cells are interleaved, as the observer emits them. A positives-first
+        # reconstruction would score the same logits differently (V-068).
+        cases = [{"sample_id": "a", "known_cells": 4, "occupied": 2,
+                  "pixel_logits": [3., -3., -3., 3.], "control_logits": [0., 0., 0., 0.]}]
+        measured = rederive(cases, {"a": [1, 0, 0, 1]})
+        self.assertEqual(measured["operating"]["true_positive"], 2)
+        self.assertEqual(measured["operating"]["false_positive"], 0)
+        self.assertEqual(measured["operating"]["false_negative"], 0)
+        # A counts-identical reorder is the exact failure the old inference made; it must
+        # score differently, so the committed order is load-bearing rather than cosmetic.
+        reordered = rederive(cases, {"a": [1, 1, 0, 0]})
+        self.assertEqual((reordered["operating"]["true_positive"],
+                          reordered["operating"]["false_positive"],
+                          reordered["operating"]["false_negative"]), (1, 1, 1))
+        with self.assertRaises(ValueError):
+            rederive(cases, {"a": [1, 0, 0]})
 
     def test_the_declared_arithmetic_is_required(self):
         control = {"operating": {"f1": .1}, "fold_mean_auc": .5}

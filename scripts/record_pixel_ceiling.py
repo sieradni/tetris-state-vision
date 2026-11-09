@@ -31,20 +31,23 @@ def require_deciding(population, cases, control):
             population.get("occupied_cells"), population.get("empty_cells")) != (
             NONEMPTY, CASES-NONEMPTY, OCCUPIED, EMPTY):
         raise ValueError("the deciding arithmetic differs from the predeclaration")
-    if len(cases) != CASES or sum(row["known_cells"] for row in cases) != CASES*200:
-        raise ValueError("the probe did not measure thirty-six complete boards")
+    if len(cases) != NONEMPTY or sum(row["known_cells"] for row in cases) != NONEMPTY*200:
+        raise ValueError("the probe did not measure the twenty-eight nonempty boards")
     if sum(row["occupied"] for row in cases) != OCCUPIED:
         raise ValueError("the probe's case labels differ from the deciding population")
     if control["operating"]["f1"] >= F1_THRESHOLD or control["fold_mean_auc"] >= AUC_THRESHOLD:
         raise ValueError("the label-shuffled control did not collapse")
 
 
-def rederive(cases):
+def rederive(cases, labels_by_id):
+    """Re-derive from the probe's scores and the committed sweep's own cell order."""
     labels, logits, control = [], [], []
     for row in cases:
-        if len(row["pixel_logits"]) != row["known_cells"]:
-            raise ValueError("a case's pixel logits do not cover its cells")
-        labels.extend([1]*row["occupied"]+[0]*(row["known_cells"]-row["occupied"]))
+        truth = labels_by_id.get(row["sample_id"])
+        if (truth is None or len(truth) != row["known_cells"] or
+                sum(truth) != row["occupied"] or len(row["pixel_logits"]) != row["known_cells"]):
+            raise ValueError("a case's stored cell labels do not match the committed sweep")
+        labels.extend(truth)
         logits.extend(row["pixel_logits"])
         control.extend(row["control_logits"])
     operating = counts(logits, labels, 0.)
@@ -58,6 +61,7 @@ def main():
     bounded = require_bounded_job()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--probe", required=True)
+    parser.add_argument("--profile", required=True, help="the probe's admitted profile run name")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt", required=True)
     args = parser.parse_args()
@@ -65,8 +69,8 @@ def main():
         raise ValueError("evidence directory already exists")
     probe = read(ROOT/"runs"/args.probe/"result.json")
     job = read(ROOT/"runs"/(args.probe+"-job.json"))
-    profile_job = read(ROOT/"runs"/(args.probe+"-profile-r1-job.json"))
-    profile = read(ROOT/"runs"/(args.probe+"-profile-r1")/"summary.json")
+    profile_job = read(ROOT/"runs"/(args.profile+"-job.json"))
+    profile = read(ROOT/"runs"/args.profile/"summary.json")
     sweep_bytes = read(ROOT/"runs"/probe["sweep"]/"result.json")
     if (probe.get("status") != "passed" or job.get("status") != "passed" or job.get("exit_code") != 0 or
             job.get("work_items") != CASES or job.get("memory_bytes") != CEILING_BYTES):
@@ -77,8 +81,11 @@ def main():
     if (probe["weights_sha256"] != sweep_bytes["weights_sha256"] or
             probe["model_reference"]["source"] != probe["sweep"]):
         raise ValueError("the probe does not join the committed sweep")
+    labels_by_id = {row["sample_id"]: row["occupied"] for row in sweep_bytes["cases"]}
+    if not {row["sample_id"] for row in probe["cases"]} <= set(labels_by_id):
+        raise ValueError("the probe's cases are not a subset of the joined sweep")
     require_deciding(probe["population"], probe["cases"], probe["control"])
-    rederived = rederive(probe["cases"])
+    rederived = rederive(probe["cases"], labels_by_id)
     published = probe["measured"]
     if (rederived["operating"]["true_positive"] != published["operating"]["true_positive"] or
             rederived["operating"]["false_positive"] != published["operating"]["false_positive"] or

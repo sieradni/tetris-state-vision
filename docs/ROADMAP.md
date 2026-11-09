@@ -13,6 +13,26 @@ adequate learning remains open and the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: the **label lever is refused before admission, because the committed labels are pixel-separable**
+([M3_OCCUPANCY_PIXEL_CEILING.md](M3_OCCUPANCY_PIXEL_CEILING.md), predeclared at `6e40206`,
+`docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`). The stacking pass ranked an explicit
+indeterminate cell target next on a label-overlap signature; this read-only pass measured the premise
+instead of assuming it. On the committed 28 nonempty deciding boards (667 occupied / 4,933 empty cells,
+twelve ancestry groups), a logistic read-out over **30 per-cell pixel features** that never sees the
+model, with one ancestry group held out, scores occupied-cell F1 **0.9780** (667/30/0) and mean
+per-fold AUC **0.9976** (per-fold 0.9799-1.0000) against the standing 0.70 / 0.90 bars, while the
+label-shuffled control in the identical pipeline collapses to F1 **0.0029** and fold-mean AUC
+**0.4885**. The model's own committed numbers on the same cells are F1 **0.4019** and AUC **0.7960**.
+So the targets are already recoverable from this capture under oracle registration: an explicit
+indeterminate target cannot supply the missing separation, `indeterminate_target_licensed = false`,
+and no label-policy variant is admitted. Nothing moved - no model, loss, threshold, label, gate or
+prior evidence byte. Ranked next is therefore **model-side**: scale the matched budget on the 2x2
+stencil configuration (the only arm to meet the +0.05 attribution floor, AUC 0.8804 / best F1 0.4913),
+with **registration** named as the untested alternative suspect, because the ceiling was granted the
+target lattice while the model's geometry error is about 3.3 cells. The refused resolution lever still
+reopens only as its own declared configuration, and the real-image chain stays parked pending
+authorization.
+
 Latest: the **context+detail tap stack is measured: not cleared, and it orders worse than either
 half** ([M3_OCCUPANCY_STACKING.md](M3_OCCUPANCY_STACKING.md), predeclared at `4135a2b`,
 `docs/evidence/m3-occupancy-stacking-r1/scope.json`). The declared change was the composition itself -

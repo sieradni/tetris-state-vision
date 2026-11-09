@@ -1,5 +1,53 @@
 # Contributor handoff — 2026-10-30
 
+## Pixel ceiling measured: the labels are separable, so the label lever is refused before admission (2026-11-09)
+
+The step the stacking pass ranked now has a measured premise and a verdict
+([M3_OCCUPANCY_PIXEL_CEILING.md](M3_OCCUPANCY_PIXEL_CEILING.md), predeclared at `6e40206`,
+`docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`, curation
+`runs/m3-occpix-ceiling-curation-r3-job.json`). The ranked step was an explicit indeterminate /
+occluded cell target, justified by a label-overlap signature. Instead of spending a matched budget
+on that inference, this pass asked the premise's own question read-only: **can the captured pixels
+recover the committed determinate labels at all?**
+
+**Instrument.** Thirty per-cell pixel features (3x3 interior sRGB means plus per-channel interior
+standard deviation), an L2 logistic read-out with one ancestry group held out, its own `0.0`
+boundary, the standing 81-point grid beside it, and the identical pipeline on within-group shuffled
+labels as the control. No model, no forward pass, no training, no label or threshold change.
+Governing statistics are pooled count-based F1 and the **mean per-fold AUC**, because a
+leave-one-group-out score can be near-constant within a fold and still rank fold frequency pooled
+(measured design of this defect: V-066).
+
+**Measured, on the committed 28 nonempty deciding boards** (667 occupied / 4,933 empty cells,
+twelve ancestry groups, 36 replayed training images): F1 **0.9780** (667 true / 30 false / 0 missed),
+precision 0.9570, recall 1.0000, mean per-fold AUC **0.9976** (every fold 0.9799-1.0000), best swept
+F1 0.9859 at `1.05`. The model's own committed numbers on exactly these cells are F1 **0.4019** and
+AUC **0.7960**. The shuffled control collapses to F1 **0.0029** and fold-mean AUC **0.4885**, so the
+pipeline is measuring label recovery, not board density.
+
+**Verdict: `separable`** - both declared bars cleared (F1 +0.278, AUC +0.098), gaps to the model
++0.5761 operating F1, +0.5763 best F1, +0.2016 on the ranking statistic. **Consequence: the
+label-overlap signature is refuted, `indeterminate_target_licensed = false`, and the
+indeterminate/occluded cell target is not admitted.** No further label-policy variant is ranked.
+This is not an accuracy claim: the ceiling is a linear read-out at oracle registration on the
+stream's own synthetic drawings.
+
+**Ranked next: model-side.** Scale the matched budget on the 2x2 stencil configuration - the only
+read-out arm that met the +0.05 attribution floor (AUC 0.8804 / best F1 0.4913) - and carry
+**registration** as the named alternative suspect, because this ceiling was granted the target
+lattice while the model's geometry error is about 3.3 cells. Stacking stays closed, the refused
+resolution lever reopens only as its own declared configuration, and the real-image chain stays
+parked pending authorization.
+
+**Receipts and defects.** Canonical: profile `runs/m3-occpix-ceiling-r1-profile-r2` (2 work items,
+266,375,168 B / 2.0 s) and study `runs/m3-occpix-ceiling-r1-r2` (36 work items, 266,182,656 B /
+3.3 s), both inside the declared 640 MiB, plus curation `-r3`. V-066 records the pooled-AUC and
+unregularized-score defect the exploratory read exposed; V-067 the refused launch that consumed a
+declared name; V-068 the curator's assumed label order. Each refused receipt and its note is
+preserved under `runs/attempts/` and none is evidence. The instrument is `scripts/pixel_ceiling.py`
+with `scripts/probe_pixel_ceiling.py`, `scripts/record_pixel_ceiling.py` and
+`tests/test_pixel_ceiling.py` (20 tests).
+
 ## Context+detail stacking measured: not cleared, and the stack orders worse than either half (2026-11-09)
 
 The lever the resolution pass ranked now has its own verdict ([M3_OCCUPANCY_STACKING.md](M3_OCCUPANCY_STACKING.md),
