@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069 (13) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join) |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070 (14) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join) |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -45,6 +45,25 @@ instead of 2/0/0) and a wrong-length vector being refused.
 **Named green run.** `runs/m3-occpix-ceiling-curation-r3-job.json` (passed, 2 work items) writing
 `docs/evidence/m3-occupancy-pixel-ceiling-r1/scope.json`; the refused receipt and note are preserved
 at `runs/attempts/m3-occpix-curation-refused-r2/`.
+
+## V-070 — CLOSED: a curator guard required the matched arms to differ
+
+- Symptom: the first geometry-lever curation refused with "the arms must not share one saved initial
+  tensor file", although both arms were declared to start from the same published checkpoint. No
+  evidence directory was written.
+- Root cause: the guard was copied from the read-out curators, where a lever added parameters and
+  therefore necessarily changed the saved initial tensors. This lever adds no parameter, so identity
+  of the initial state is the *matched* condition, and the inherited inequality asserted the
+  opposite.
+- Detection class: test-instrument.
+- Instrument: the guard now asserts equality of `initial_weights_sha256` between the two arms (and
+  each arm's origin is separately bound to the published checkpoint bytes), so an unmatched start
+  still fails closed. `tests/test_geometry_lever.py` binds the admission join and the flag's
+  two-value declaration; the curator's join is unchanged by this defect.
+- Green gate: `runs/m3-occgeom-curation-r2-job.json`, which publishes the full deciding population
+  (28 boards, 5,600 known cells, 667 occupied) and verdict `not-cleared` with attribution +0.078064
+  and placement improvement -0.199086. The refused receipt and its log are preserved under
+  `runs/attempts/` with a note and are not evidence.
 
 ## V-069 — CLOSED: the registration summariser scored the wrong population
 

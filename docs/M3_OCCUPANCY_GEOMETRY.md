@@ -139,3 +139,65 @@ evidence.
   sweep over stage weightings.
 - Placement error is measured against the committed target lattice; it says nothing about situations
   where the target lattice itself is unavailable in deployment.
+
+## Measured: the stage policy moves occupancy but not placement, so the lever is refused
+
+The declaration above is unchanged from commit `35ae175` and was committed before any receipt
+for this instrument existed. Everything below is re-derived by the curator
+(`scripts/record_geometry_lever.py`) from the two probes' own cells and published in
+`docs/evidence/m3-occupancy-geometry-r1/scope.json`.
+
+Both arms ran 256 steps from `9ae1fef9f649...` under one captured catalogue (`6879a8208ad2`) and one
+identical initial tensor file, at 1,152 MiB / 1,800 s:
+
+| arm | best swept F1 (threshold) | F1 @ 0.0 (TP/FP/FN) | AUC | placement (cells) | peak | wall |
+|---|---|---|---|---|---|---|
+| lever (final-stage geometry) | 0.5018 (0.45) | 0.4791 (459/790/208) | 0.8316 | 2.3757 | 1,087,176,704 B | 396.3 s |
+| baseline (all six stages) | 0.4237 (-0.30) | 0.4146 (351/675/316) | 0.8255 | 1.9812 | 1,058,406,400 B | 399.7 s |
+
+**Attribution is real: +0.0781 best swept F1** (cluster interval -0.0152 to +0.1243, 400 draws),
+with +0.0645 per-cell F1 and +0.0061 AUC. **Placement is not: it got 19.9% worse**, 1.9812 -> 2.3757
+cells, and the shift share rose from 0.5375 to 0.5816. The lever therefore fails the declared
+test it was ranked on, and it also fails the per-cell gate (0.4791 < 0.70) and the ranking gate
+(AUC 0.8316 < 0.90). **Verdict: `not-cleared`, failing `per_cell_f1`, `ranking`, `placement`** -
+the stage policy buys occupancy decisions but does not fix where the cells are put.
+
+That combination is itself the result: the occupancy head improved while the lattice it samples
+got *further* from the target, so the gain came from the read-out absorbing the offset, not from
+better geometry. Spending the whole placement gradient on the final lattice is therefore not the
+binding constraint on placement.
+
+### The refusal names the next suspect, by the declared rule
+
+The measured decomposition of the lever's own residual hits the first declared branch:
+
+| quantity | lever | baseline |
+|---|---|---|
+| signed column offset | **+2.3243 cells** | +1.3830 |
+| signed row offset | **-2.3848 cells** | -2.1914 |
+| cell-extent ratio u / v | 1.2231 / 1.1386 | 1.2257 / 1.1804 |
+| per-board error spread | 5.4583 cells | 4.6043 |
+
+Both signed offsets exceed the 1.0-cell translation floor, so the rule returns **`translation`** and
+names **box-origin supervision of the lattice box** as the next measurable lever. The residual is
+not a vague "geometry problem": it is a systematic ~2.3-cell right / ~2.4-cell down displacement of
+the predicted board box, stable across the two objectives, with a 22% extent exaggeration in train.
+
+### Re-ranked next step
+
+**Predeclare a box-origin (translation) lever on the lattice box, and read it with these same four
+conditions.** The origin displacement is the largest single measured component, it survives the
+stage-policy change, and it is the cheapest of the remaining branches to instrument: the declared
+quantity to move is `signed_column_offset_cells` and `signed_row_offset_cells` toward zero, the
+occupancy gates stay as published, and the placement condition stays the 25% relative floor. If the
+origin lever also refuses, the predeclared rule's next branch is extent (the u/v ratios are already
+1.22/1.14), then per-board dispersion (spread 5.46 cells), then read-out inheritance.
+
+### What this pass does and does not show
+
+- It shows the geometry-stage policy is not the binding constraint on placement, and it quantifies
+  the residual as a translation with an inflated extent on the full 28-board deciding population.
+- It does **not** show that placement cannot be fixed from this objective, nor that the occupancy
+  gain would survive a corrected lattice: the +0.0781 attribution is on the uncorrected population.
+- Synthetic, training-fit, one checkpoint, one budget, one policy change; no real-image,
+  generalization, calibration or complete-state claim follows.

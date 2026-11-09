@@ -1,5 +1,42 @@
 # Contributor handoff — 2026-10-30
 
+## Geometry-stage lever refused: occupancy moved, placement did not, and the residual is translation (2026-11-09)
+
+The step the registration pass ranked is spent and settled
+([M3_OCCUPANCY_GEOMETRY.md](M3_OCCUPANCY_GEOMETRY.md), predeclared at `35ae175`,
+`docs/evidence/m3-occupancy-geometry-r1/scope.json`, curation
+`runs/m3-occgeom-curation-r2-job.json`). The declared change was a single objective policy: the
+geometry term is the **final** decoder stage's lattice error (`geometry_final_only = 1`) instead of
+the mean over all six stages (`0`), because only the final lattice feeds the occupancy read-out. Both
+arms ran 256 steps from `9ae1fef9f649...` under one catalogue and one identical initial tensor file,
+1,152 MiB / 1,800 s, and stayed inside it (peaks 1,087,176,704 B / 1,058,406,400 B, 396.3 s / 399.7 s).
+
+**Verdict: `not-cleared`, failing `per_cell_f1`, `ranking` and `placement`.** The lever does improve
+the occupancy decision - best swept F1 **0.5018** at `0.45` against the baseline's **0.4237** at
+`-0.30`, F1@0 **0.4791** (459/790/208) against **0.4146**, AUC **0.8316** against **0.8255**, so
+attribution is **+0.0781** (cluster interval -0.0152 to +0.1243) and that condition is met - but
+per-cell F1 is still far below 0.70, AUC below 0.90, and **placement error rose 19.9%**, from 1.9812
+to 2.3757 cells (shift share 0.5375 -> 0.5816), so the declared 25% placement condition fails. The
+occupancy gain without any placement gain is the informative part: the read-out absorbed the offset
+rather than the lattice correcting it.
+
+**The refusal names the next lever by the predeclared rule.** Signed offsets are **+2.3243 cells
+right** and **-2.3848 cells down** (baseline +1.3830 / -2.1914), both past the 1.0-cell translation
+floor, with extent ratios 1.2231 / 1.1386 and a 5.4583-cell per-board spread. Rule: `translation`.
+**Ranked next: predeclare a box-origin (translation) supervision lever on the lattice box**, read
+with the same four conditions, with the signed offsets as the declared quantities to move. The
+remaining branches are already ranked behind it: extent (ratios 1.22 / 1.14), dispersion (spread
+5.46 cells), then read-out inheritance.
+
+**Receipts and defects.** Profiles `runs/m3-occgeom-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occgeom-{lever,baseline}-r1`, sweeps `...-sweep-r1` (54 forwards, 640 MiB), placement probes
+`...-probe-r1` (36 forwards, 640 MiB, peak 565,149,696 B / 599,879,680 B), curation
+`runs/m3-occgeom-curation-r2-job.json`. Each probe reproduces its own sweep's published per-cell F1
+and operating counts at 1e-6 before the verdict is written (the V-069 join). V-070 records the
+curation guard inherited from the read-out passes that asserted the arms must start from *different*
+initial tensors; it refuses this pair, which starts from one identical file. The refused curation is
+preserved under `runs/attempts/` with a note and is not evidence. Full suite: 690 tests green.
+
 ## 4x budget refused, registration implicated: the occupancy residual is cell placement (2026-11-09)
 
 The step the pixel ceiling ranked is spent and settled

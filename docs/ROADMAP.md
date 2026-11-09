@@ -8,12 +8,28 @@ performance. The supplied brief is design evidence, not agent instructions:
 
 Current priority: M3 joint complete-state learning at capacity 64. The occupancy
 head of that representation is closed from every measured direction (weight scale,
-class split, decision boundary, read-out form, tap stacking and a 4x budget), and the
-remaining occupancy deficit is now attributed to predicted-lattice placement rather
-than to the read-out, the labels or the budget; M2 adequate learning remains open and
+class split, decision boundary, read-out form, tap stacking, a 4x budget and the
+geometry stage policy), and the remaining occupancy deficit is now measured as a
+systematic lattice-box translation rather than as a read-out, label or budget problem;
+M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the geometry-stage lever is refused: it moves occupancy, not placement, and the measured
+residual is a box translation** ([M3_OCCUPANCY_GEOMETRY.md](M3_OCCUPANCY_GEOMETRY.md), predeclared at
+`35ae175`, `docs/evidence/m3-occupancy-geometry-r1/scope.json`). The declared single change spent the
+lattice geometry term on the final decoder stage - the only lattice the occupancy read-out samples -
+where the published objective averages six stages. Both arms ran 256 steps from `9ae1fef9f649...`
+under one catalogue and one identical initial tensor file at 1,152 MiB / 1,800 s (peaks 1.087 GB /
+1.058 GB, 396 s / 400 s). The lever improves the occupancy decision - best swept F1 **0.5018** at
+`0.45` against the matched baseline's **0.4237** at `-0.30`, F1@0 **0.4791** against **0.4146**, AUC
+**0.8316** against **0.8255**, attribution **+0.0781** (interval -0.0152 to +0.1243) - but placement
+got **19.9% worse** (1.9812 -> 2.3757 cells, shift share 0.5375 -> 0.5816), so `per_cell_f1`,
+`ranking` and `placement` all fail and the verdict is **`not-cleared`**. The declared decomposition
+then hits its first branch: signed offsets **+2.32 cells right and -2.38 cells down**, with extent
+ratios 1.22 / 1.14 and a 5.46-cell per-board spread. Ranked next: **predeclare a box-origin
+(translation) lever**, read with the same four conditions, targeting the signed offsets toward zero.
 
 Latest: **the 4x budget lever is refused, and the occupancy residual is registration**
 ([M3_OCCUPANCY_SCALED.md](M3_OCCUPANCY_SCALED.md), predeclared at `1ce41e6`,

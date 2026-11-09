@@ -181,8 +181,11 @@ def main():
                       "probe_result": probe_result, "probe_job": probe_job}
     if arms["lever"]["summary"]["catalogue_sha256"] != arms["baseline"]["summary"]["catalogue_sha256"]:
         raise ValueError("the arms were captured under different catalogues")
-    if arms["lever"]["summary"]["initial_weights_sha256"] == arms["baseline"]["summary"]["initial_weights_sha256"]:
-        raise ValueError("the arms must not share one saved initial tensor file")
+    # This lever adds no parameter, so both arms must start from one identical saved tensor file;
+    # a differing initial state would mean the comparison is not matched.
+    if (arms["lever"]["summary"]["initial_weights_sha256"] !=
+            arms["baseline"]["summary"]["initial_weights_sha256"]):
+        raise ValueError("the arms must start from one identical saved initial tensor file")
 
     measured = {}
     for name in ARMS:
