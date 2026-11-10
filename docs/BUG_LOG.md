@@ -1624,3 +1624,38 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m3-occextent-curation-r2-job.json` passed and published
   `docs/evidence/m3-occupancy-extent-r1/scope.json`. The refused launch is preserved as
   `runs/attempts/m3-occextent-curation-r1-job.json.attempt1` with a note.
+
+## V-073 — CLOSED: a patch generator deleted a published function's return line
+
+- Symptom: after applying the capacity lever's `losses.py` patch, `extent_error` returned `None` and
+  `tests.test_extent_lever` failed with `TypeError: equal(): argument 'input' ... must be Tensor, not
+  NoneType`.
+- Root cause: the anchor block was substituted for a span that began with `extent_error`'s
+  `return torch.log(predicted/reference)` line, and the replacement text started at the new comment,
+  so the published return was dropped. The patch's own count guard checked the anchor span, not the
+  preserved neighbour.
+- Detection class: generated-patch integrity. This is the first instance in this class; the new
+  tests could not have caught it, because they exercise only the added term.
+- Instrument: the pass re-ran the *existing* lever suites (`test_extent_lever`, `test_geometry_lever`,
+  `test_lattice_lever`, `test_placement_error`) alongside the new ones, so a published function's
+  regression is caught by its own instrument rather than by inspection.
+- Green gate: `runs/m3-occgeocap-focused-r3-job.json`, 67/67 in 1.881 s, peak 249,286,656 B. A third
+  instance in this class would require a standing patch-integrity instrument.
+
+## V-074 — CLOSED: two mis-wired receipt paths refused the capacity curation
+
+- Symptom: `runs/m3-occgeocap-curation-r1` refused in 2.2 s with `declared receipt ...-sweep-r1-
+  profile-r1/summary-job.json is missing`; the r2 retry refused in 2.1 s with `TypeError: argument
+  should be a str or an os.PathLike object ..., not 'dict'`, both before writing a scope.
+- Root cause: the curator derived the sweep profile's job path from `profile_summary.stem` (which is
+  `summary`) instead of rebuilding `runs/<profile>-job.json` from the profile directory, and the first
+  fix then passed the loaded job *dict* where a path was required. Both are the same wiring error: the
+  curator resolves some receipts as paths and others as parsed documents.
+- Detection class: curator refusal-to-run wiring. Two instances in this pass; a third requires a
+  standing instrument (a dry-run that resolves every declared receipt before any measurement is read).
+- Instrument: `receipts_after` names the missing path in its refusal, and the pass's own tests keep
+  `receipts_after` bound to real files; the definitive check is that curation re-derives every number
+  from the same receipts.
+- Green gate: `runs/m3-occgeocap-curation-r3-job.json` passed in 5.153 s, peak 321,175,552 B and
+  published `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`. Refused launches are
+  preserved as `runs/attempts/m3-occgeocap-curation-r{1,2}-job.json.attempt1` with notes.

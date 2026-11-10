@@ -197,3 +197,66 @@ Any launch that dies, leaves its declared arithmetic or is superseded is preserv
   board does not have, and it says nothing about rotation or shear.
 - Placement is measured against the committed target lattice, so it says nothing about deployment
   situations where that lattice is unavailable.
+
+---
+
+# Measured (2026-11-10)
+
+Both arms ran the declared 256 continuation steps from the published checkpoint
+`9ae1fef9f649...` under one captured catalogue (`7675899b8186...`), inside the declared 1,152 MiB /
+1,800 s envelope: lever **1,033,744,384 B / 946.6 s**, baseline **1,055,576,064 B / 701.7 s**. Admission
+profiles passed at 85.6 s / 86.5 s (peaks 1,040,781,312 B and 1,039,638,528 B); the sweeps
+(54 forwards, 640 MiB) took 59.2 s / 59.6 s and the placement probes (36 forwards, 640 MiB / 300 s)
+40.6 s / 40.9 s, peaking at 564,621,312 B and 558,620,672 B. Curation `runs/m3-occgeocap-curation-r3-job.json`
+published `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`.
+
+**Matched start.** The guard's no-addition branch passed: the two saved initial states are bitwise
+identical (`eec1e10ee4d1...`) and the step-0 probes are equal after the objective's own value is
+stripped. The baseline's weights (`d149351cbd...`) and the lever's (`9d17915349cc...`) differ only
+through the 256 steps.
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.2017**
+(106 TP / 278 FP / 561 FN) against **0.4146** (351/675/316); AUC **0.8116** against **0.8255**
+(-0.0140); best swept F1 **0.3996** at `-1.95` against **0.4237** at `-0.30`, attribution **-0.0241**,
+with the twelve-cluster paired bootstrap median **-0.2007** and interval **-0.2795 to -0.0696**.
+Placement improved **-28.2%** (1.9812 -> 2.5401 cells): the declared condition fails in the wrong
+direction, so condition 4 fails rather than merely falling short.
+
+**The anchors did act on the box, and in the wrong direction.** Extent ratio u 1.2257 -> **1.3338**
+(**+8.8%**, past the falsifier's 5% line), v 1.1804 -> 1.0975; signed column offset +1.3830 ->
+**+2.3077** and row -2.1914 -> **-2.9483**, so the box moved further right and down, not onto its
+target boundary. Spread 4.6043 -> **5.6679**, shifted share 0.5375 -> 0.5609, mapped share 0.6507 ->
+0.6175. Because placement moved by more than 5% and occupancy attribution is negative, neither the
+"boundary supervision did not act" nor the "occupancy moved, placement did not" falsifier applies;
+what holds is the predeclared **extent-or-origin regress** falsifier, and the write-up therefore may
+not describe this term as boundary pinning.
+
+**What the capacity reading means.** Boundary points carrying 2% of one geometry term became a
+full-weight term of their own, and the outcome was the largest occupancy loss of the four levers -
+worse than reducing the anchors' share to nothing. Supervision capacity at the boundary is not the
+binding constraint, and more of it is not neutral: it moves the box while the occupancy score falls.
+The honest reading is that the geometry supervision's *distribution* is not a lever on occupancy at
+this budget point, not that the anchors need more weight.
+
+**Reconciliation.** Four geometry-side levers are now measured on the same control: geometry
+**+0.0781** at **19.9%** placement cost, origin **+0.0102** at **11.0%**, extent **+0.0318** at
+**67.5%**, capacity **-0.0241** at **28.2%**. The first three each bought occupancy at a placement
+cost; capacity is the first to lose both. No earlier gain was a hidden capacity correction, and
+boundary supervision does not repay any of the geometry lever's +0.0781 - it reverses it.
+
+**Ranked next.** The declared non-circular rule takes its first branch - placement improvement
+**-0.282 < 0.05** - and names **per-stage lattice residual capacity**. **Ranked next: predeclare a
+per-stage lattice residual lever**, read with the same four conditions plus this pass's placement
+condition; `read_out_inheritance` (the occupancy gates did not follow a placement move),
+`dispersion` (spread 5.6679) and `scaling` stay behind it. `translation`, `scale` and
+`geometry_capacity` cannot be returned by the rule.
+
+**Defects logged.** Two instrument defects in this pass's own new files, recorded as V-073 and V-074:
+the patch generator deleted `extent_error`'s return line (caught by the existing extent test, not by
+the new tests) and the curator twice mis-wired receipt paths (caught only by running it). Neither
+touched a measurement; both refused before publishing, and the refused launches are preserved under
+`runs/attempts/` with notes.
+
+**Unchanged.** No gate widened or retuned, no anchor or weight changed after the receipts, no prior
+evidence or frozen manifest touched. Limits are as declared: synthetic training-fit, one budget point,
+one checkpoint, one anchor set, one seed, committed lattice only.

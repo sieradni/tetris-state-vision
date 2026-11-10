@@ -1,5 +1,52 @@
 # Contributor handoff — 2026-10-30
 
+## Geometry-capacity lever refused: boundary supervision lost occupancy and placement together (2026-11-10)
+
+The lever the extent pass ranked is spent and settled ([M3_OCCUPANCY_CAPACITY.md](M3_OCCUPANCY_CAPACITY.md),
+predeclared at `8211a5f`, `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`, curation
+`runs/m3-occgeocap-curation-r3-job.json`). The declared change was one objective term and no new
+parameter: eight boundary support anchors - four corners and four edge midpoints in cell units -
+mapped through the predicted and target lattices, differenced, normalized by the target spacing and
+averaged as smooth-L1 on the **final** decoder lattice at `support_anchor_weight 1.0`, the geometry
+term's own weight. The published geometry mean gives those anchors 4/204 = 2% of one term; this made
+them a full-weight term of their own, so the same supervision was spent where the box is read. Both
+arms ran 256 steps from `9ae1fef9f649...` under one catalogue (`7675899b8186...`) at 1,152 MiB / 1,800 s
+and stayed inside it (peaks 1,033,744,384 B / 1,055,576,064 B, 946.6 s / 701.7 s).
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.2017** (106/278/561)
+against **0.4146** (351/675/316); AUC **0.8116** against **0.8255**; best swept F1 **0.3996** at `-1.95`
+against **0.4237** at `-0.30`, attribution **-0.0241** with twelve-cluster paired-bootstrap median
+**-0.2007** and interval **-0.2795 to -0.0696**. The placement condition fails in the wrong direction:
+mean error 1.9812 -> **2.5401** (**-28.2%** improvement), signed column +1.3830 -> **+2.3077**, row
+-2.1914 -> **-2.9483**.
+
+**The anchors did act, and the predeclared regress falsifier holds.** Column extent ratio 1.2257 ->
+**1.3338** (+8.8%, past the 5% line), rows 1.1804 -> 1.0975, spread 4.6043 -> **5.6679**, mapped share
+0.6507 -> 0.6175. The box moved further right and down rather than onto its target boundary, so this
+term may not be described as boundary pinning and no occupancy gain can be credited to it.
+
+**Reconciliation.** Geometry **+0.0781** at 19.9% placement cost, origin **+0.0102** at 11.0%, extent
+**+0.0318** at 67.5%, capacity **-0.0241** at 28.2%. The first three bought occupancy at a placement
+cost; capacity is the first to lose both, so boundary supervision does not repay any earlier gain and
+is not a cheaper route to one.
+
+**Ranked next.** The non-circular rule takes its first branch - placement improvement **-0.282 < 0.05**
+- and names **per-stage lattice residual capacity**. **Ranked next: predeclare a per-stage lattice
+residual lever**, read with the same four conditions plus this pass's placement condition;
+`read_out_inheritance`, dispersion (spread 5.6679) and scaling stay behind it, and `translation`,
+`scale` and `geometry_capacity` cannot be returned by the rule.
+
+**Receipts and defects.** Profiles `runs/m3-occgeocap-lever-r1-profile-r1` and
+`...-baseline-r1-profile-r2` (the r1 baseline profile was killed by a runner restart and is preserved
+under `runs/attempts/` with a note), studies `runs/m3-occgeocap-{lever,baseline}-r1`, sweeps
+`...-sweep-r1` with their own profiles (54 forwards, 640 MiB), probes `...-probe-r1` (36 forwards, 640
+MiB / 300 s), curation `runs/m3-occgeocap-curation-r3-job.json` (r1 and r2 refused on curator path
+wiring and are preserved with notes). Each probe reproduces its own sweep's per-cell F1 and TP/FP/FN
+counts, and the baseline reproduces the curated control to 1e-6. New defects V-073 (patch generator
+dropped `extent_error`'s return) and V-074 (curator receipt-path wiring, two instances) are logged.
+Source checkpoint, catalogues and weights identities are in the scope file; no prior evidence or
+frozen manifest was touched.
+
 ## Box-extent lever refused: the extent term inflated the box and cost both scores (2026-11-09)
 
 The lever the origin pass ranked is spent and settled

@@ -275,7 +275,8 @@ def main():
         probe, probe_result, probe_job = require_probe(name)
         receipts += [ROOT/"runs"/study/"summary.json", ROOT/"runs"/(study+"-job.json"),
                      ROOT/"runs"/sweep/"result.json", ROOT/"runs"/(sweep+"-job.json"),
-                     profile_summary, profile_summary.parent/(profile_summary.stem+"-job.json"),
+                     profile_summary,
+                     profile_summary.parent.parent/(profile_summary.parent.name+"-job.json"),
                      ROOT/"runs"/probe/"result.json", ROOT/"runs"/(probe+"-job.json")]
         arms[name] = {"study": study, "summary": summary, "job": job, "sweep": sweep,
                       "result": result, "sweep_job": sweep_job, "probe": probe,

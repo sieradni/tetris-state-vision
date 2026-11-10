@@ -9,15 +9,30 @@ performance. The supplied brief is design evidence, not agent instructions:
 Current priority: M3 joint complete-state learning at capacity 64. The occupancy
 head of that representation is closed from every measured direction (weight scale,
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
-geometry stage policy, the box origin and the box extent), and the remaining occupancy deficit
-is a geometric supervision capacity question rather than a read-out, label, budget, origin or
-extent problem;
+geometry stage policy, the box origin, the box extent and boundary supervision capacity). Every
+geometry-side lever either bought occupancy at a placement cost or lost both, so the remaining
+occupancy deficit is ranked as per-stage lattice residual capacity rather than a read-out, label,
+budget, origin, extent or supervision-capacity problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the box-extent lever is refused: the extent term inflated the box, and the residual is now
+Latest: **the geometry-capacity lever is refused: spending a full-weight term on the boundary
+support anchors lost occupancy and placement together** ([M3_OCCUPANCY_CAPACITY.md](M3_OCCUPANCY_CAPACITY.md),
+predeclared at `8211a5f`, `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`). The declared
+single change was a boundary support-anchor geometry term on the final lattice - eight declared corner
+and edge-midpoint anchors, smooth-L1 in normalized cell units, at weight `1.0` equal to the geometry
+term's own weight - with no new parameter, input, stage policy or read-out, replacing the 2% share the
+boundary had inside the published geometry mean. Both arms ran 256 steps from `9ae1fef9f649...` under
+one catalogue at 1,152 MiB / 1,800 s (peaks 1.034 GB / 1.056 GB, 946.6 s / 701.7 s). F1@0 **0.2017**
+against **0.4146**, AUC **0.8116** against **0.8255**, best swept F1 **0.3996** at `-1.95` against
+**0.4237** at `-0.30` (attribution **-0.0241**, twelve-cluster interval **-0.2795 to -0.0696**), and
+placement **28.2% worse** (1.9812 -> 2.5401) with column extent ratio **+8.8%**. All four declared
+conditions fail in the wrong direction and the predeclared extent-or-origin regress falsifier holds. The
+non-circular rule names **per-stage lattice residual capacity**.
+
+Previous: **the box-extent lever is refused: the extent term inflated the box, and the residual is now
 the geometry supervision capacity** ([M3_OCCUPANCY_EXTENT.md](M3_OCCUPANCY_EXTENT.md), predeclared at
 `e5e9668`, `docs/evidence/m3-occupancy-extent-r1/scope.json`). The declared single change was a relative
 log-scale term on the final decoder lattice - the mean absolute log ratio of the predicted to the target

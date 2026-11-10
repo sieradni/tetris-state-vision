@@ -1,0 +1,296 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-geometry-capacity-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_CAPACITY.md",
+  "predeclaration_commit": "8211a5f9a8e860e119bbdaec0c05a12fb03158a0",
+  "scope": "Matched 256-step continuation of one published checkpoint. The only difference is the declared geometry-capacity lever: a boundary support-anchor geometry term on the final lattice, so the box is pinned at the eight anchors the read-out runs through instead of being diluted into 200 interior centers. No parameter, input, stage policy or read-out changes. Scored read-only on the full widened deciding population (28 nonempty boards, 200 cells each) with the standing grid and the standing placement measurement; no threshold, population, ceiling, label or prior-evidence change, and no real-image, complete-state or calibrated claim.",
+  "declared_receipt": "runs/m3-occgeocap-curation-r3-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 256,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "probe_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 256,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "probe": 36,
+      "curation": 8
+    }
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [],
+    "objective_difference": [
+      "support_anchor_weight"
+    ],
+    "shared": {
+      "geometry_final_only": 0,
+      "lattice_support": 0,
+      "box_extent_weight": 0.0,
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_context": 0,
+      "occupancy_factor": 4,
+      "occupancy_positive_weight": 4
+    },
+    "catalogue_sha256": "7675899b8186a368206aee10ffd7d434657abb94270295550b76229e9c21d1ab",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    },
+    "initial_weights_sha256": "eec1e10ee4d141b480b031252bb3e5f67f3acc8ae425a055f158db5a5baf5ea8",
+    "baseline_control": {
+      "f1": 0.4146485528647372,
+      "auc": 0.8255386800822172,
+      "best_f1": 0.4237196765498652,
+      "best_threshold": -0.3,
+      "mean_abs_offset_cells": 1.9812198625,
+      "mean_scale_ratio_u": 1.2256880473012681,
+      "mean_scale_ratio_v": 1.18035288054444,
+      "board_error_spread_cells": 4.604344325
+    },
+    "control_tolerance": 1e-06
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occgeocap-lever-r1",
+      "sweep": "m3-occgeocap-lever-r1-sweep-r1",
+      "probe": "m3-occgeocap-lever-r1-probe-r1",
+      "support_anchor_weight": 1.0,
+      "weights_sha256": "9d17915349cce142fc915f673adaf07d0207e0859cb97d2e4c6e8f4d452f5bd9",
+      "study_elapsed_seconds": 945.4431616000002,
+      "study_peak_commit_bytes": 1033744384,
+      "probe_peak_commit_bytes": 557182976,
+      "occupancy": {
+        "images": 28,
+        "known_cells": 5600,
+        "occupied_cells": 667,
+        "empty_cells": 4933,
+        "auc": 0.811563709327173,
+        "f1": 0.2017126546146527,
+        "counts": {
+          "true_positive": 106,
+          "false_positive": 278,
+          "false_negative": 561,
+          "true_negative": 4655
+        }
+      },
+      "placement": {
+        "images": 28,
+        "cells": 5600,
+        "mean_abs_offset_cells": 2.5400726910714284,
+        "mean_board_error_cells": 2.540072691071429,
+        "signed_column_offset_cells": 2.307726521428571,
+        "signed_row_offset_cells": -2.7178669535714284,
+        "mean_scale_ratio_u": 1.3337727107652246,
+        "mean_scale_ratio_v": 1.0975444365161084,
+        "board_error_spread_cells": 5.667863699999999,
+        "shifted_share": 0.5608928571428572,
+        "mapped_share": 0.6175
+      },
+      "best": {
+        "threshold": -1.95,
+        "f1": 0.39961202715809896,
+        "precision": 0.25474031327287716,
+        "recall": 0.9265367316341829
+      },
+      "verdict": "uninformative"
+    },
+    "baseline": {
+      "study": "m3-occgeocap-baseline-r1",
+      "sweep": "m3-occgeocap-baseline-r1-sweep-r1",
+      "probe": "m3-occgeocap-baseline-r1-probe-r1",
+      "support_anchor_weight": 0.0,
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "study_elapsed_seconds": 700.8303336999998,
+      "study_peak_commit_bytes": 1055576064,
+      "probe_peak_commit_bytes": 558620672,
+      "occupancy": {
+        "images": 28,
+        "known_cells": 5600,
+        "occupied_cells": 667,
+        "empty_cells": 4933,
+        "auc": 0.8255386800822172,
+        "f1": 0.4146485528647372,
+        "counts": {
+          "true_positive": 351,
+          "false_positive": 675,
+          "false_negative": 316,
+          "true_negative": 4258
+        }
+      },
+      "placement": {
+        "images": 28,
+        "cells": 5600,
+        "mean_abs_offset_cells": 1.9812198625,
+        "mean_board_error_cells": 1.9812198625,
+        "signed_column_offset_cells": 1.3829651714285713,
+        "signed_row_offset_cells": -2.191449457142857,
+        "mean_scale_ratio_u": 1.2256880473012681,
+        "mean_scale_ratio_v": 1.18035288054444,
+        "board_error_spread_cells": 4.604344325,
+        "shifted_share": 0.5375,
+        "mapped_share": 0.6507142857142857
+      },
+      "best": {
+        "threshold": -0.3,
+        "f1": 0.4237196765498652,
+        "precision": 0.33080808080808083,
+        "recall": 0.5892053973013494
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "known_cells": 5600,
+    "occupied_cells": 667,
+    "clusters": 12,
+    "note": "Full deciding population; the oracle pairing's co-scoreable subset is never the judgement population."
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "placement_improvement_floor": 0.25,
+    "placement_error": "mean |offset| in target cells over 200 cells x 2 axes",
+    "grid_points": 81,
+    "decision_threshold": 0.0
+  },
+  "anchor_term": {
+    "weight": 1.0,
+    "points": [
+      "(0,0)",
+      "(5,0)",
+      "(10,0)",
+      "(0,10)",
+      "(10,10)",
+      "(0,20)",
+      "(5,20)",
+      "(10,20)"
+    ],
+    "lattice": "final",
+    "loss": "masked mean smooth-L1 of normalized anchor error"
+  },
+  "attribution": {
+    "best_f1_delta": -0.024108,
+    "auc_delta": -0.013975,
+    "per_cell_f1_delta": -0.212936,
+    "placement_improvement": -0.28207511904622273,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.074046,
+        "high": 0.284919,
+        "median": 0.188107,
+        "standard_error": 0.054932
+      },
+      "f1_baseline": {
+        "valid_draws": 400,
+        "low": 0.143678,
+        "high": 0.535401,
+        "median": 0.385537,
+        "standard_error": 0.098651
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": -0.279501,
+        "high": -0.069572,
+        "median": -0.200728,
+        "standard_error": 0.052974
+      }
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false,
+      "placement": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution",
+      "placement"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05,
+    "placement_floor": 0.25,
+    "ranking_auc_bar": 0.9,
+    "ranking_f1_bar": 0.7,
+    "placement_improvement": -0.28207511904622273
+  },
+  "next_step": {
+    "rule": "placement_capacity",
+    "next_suspect": "per-stage lattice residual capacity",
+    "placement_improvement": -0.28207511904622273,
+    "improvement_floor": 0.25,
+    "unmoved_below": 0.05,
+    "occupancy_gates_met": false,
+    "lever_mean_abs_offset_cells": 2.5400726910714284,
+    "baseline_mean_abs_offset_cells": 1.9812198625,
+    "lever_signed_column_offset_cells": 2.307726521428571,
+    "lever_signed_row_offset_cells": -2.7178669535714284,
+    "lever_extent_ratio_u": 1.3337727107652246,
+    "lever_extent_ratio_v": 1.0975444365161084,
+    "lever_board_error_spread_cells": 5.667863699999999,
+    "floors": {
+      "placement_improvement": 0.25,
+      "unmoved_below": 0.05,
+      "dispersion_cells": 1.5
+    }
+  },
+  "reconciliation": {
+    "available": true,
+    "note": "reference only, never verdict input",
+    "geometry": {
+      "instrument": "m3-occupancy-geometry-r1",
+      "occupancy_best_f1_delta": 0.078064,
+      "placement_improvement": -0.199086
+    },
+    "origin": {
+      "instrument": "m3-occupancy-translation-r1",
+      "occupancy_best_f1_delta": 0.010235,
+      "placement_improvement": -0.10981886021893102
+    },
+    "extent": {
+      "instrument": "m3-occupancy-extent-r1",
+      "occupancy_best_f1_delta": 0.031836,
+      "placement_improvement": -0.6748132495026696
+    }
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "full widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}
