@@ -1,5 +1,57 @@
 # Contributor handoff — 2026-10-30
 
+## M2 fit gate measured at 1.5x budget: it stands, and the budget is not the limiter (2026-11-10)
+
+The step the per-board refinement pass ranked is spent and settled
+([M3_OCCUPANCY_FIT_BUDGET.md](M3_OCCUPANCY_FIT_BUDGET.md), predeclared at `875543d`,
+`docs/evidence/m3-occupancy-fit-budget-r1/scope.json`, curation `runs/m3-occfit-curation-r1-job.json`).
+The declared change was **training budget only**: the lever arm continues the published checkpoint for
+**384 steps** (1.5x the settled 256) and the baseline arm for **256**, with no new parameter, objective,
+label, read-out or stage policy in either. Both arms ran from `9ae1fef9f649...` under one catalogue (`f0c833eb9221...`),
+lever at 1,033,187,328 B / 1522.4 s and baseline at
+1,060,024,320 B / 1046.2 s.
+
+**Activation condition, answered.** The budget **engaged**: **0.5481** of known deciding cells (3946/7200) changed decision between the arms, against the declared floor **0.05**. The relative L2 weight displacement between the endpoints
+is **0.0724** over
+266 of 271 tensors.
+
+**Fit gate.** The fit gate **STANDS (FALSE)**: **0 of 28** exact nonempty training boards at threshold `0.0`, below the declared threshold **3**. Mechanism `per-cell-error`; the baseline reports
+0 of 28. Under the predeclared rule the boolean ends exactly here:
+**FALSE**, on the measured count and nowhere else.
+
+**Verdict: `not-cleared`, failing per_cell_f1, ranking, placement, fit_gate.** Per-cell F1 **0.2808** against
+**0.4146**, AUC **0.8998** against **0.8255**, best swept F1
+**0.5459** at `4.35` against **0.4237** at
+`-0.3`, attribution **+0.1221** with twelve-cluster interval
+**-0.2589 to -0.0326**, placement
+1.9812 -> 1.8419 cells
+(+7.0% improvement), spread 4.6043 ->
+2.6965.
+
+**Campaign reconciliation on the single control.**
+
+| lever | attribution | placement | activation | verdict |
+|---|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% cost | n/a | not-cleared |
+| box origin | +0.0102 | 11.0% cost | n/a | not-cleared |
+| box extent | +0.0318 | 67.5% cost | n/a | not-cleared |
+| geometry capacity | -0.0241 | 28.2% cost | n/a | not-cleared |
+| per-stage residual | -0.0115 | 19.2% cost | n/a | not-cleared |
+| lattice-free read-out | +0.0147 | 22.3% gain | gate 0.0742 | not-cleared |
+| per-board refinement | +0.0539 | 19.2% worse | 0.0014 cells (off) | not-cleared |
+| fit budget (1.5x) | +0.1221 | +7.0% | 0.5481 flips | not-cleared |
+
+**Ranked next.** The non-circular rule takes its **`capacity_limit`** branch and names **a wider shared trunk than capacity 64**.
+**Ranked next: predeclare a wider shared trunk than capacity 64**, read with the same conditions and activation discipline; the other
+branch stays behind it, and the seven spent levers cannot be returned by the rule.
+
+**Receipts.** Profiles `runs/m3-occfit-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occfit-{lever,baseline}-r1` (384 and 256 steps), sweeps `...-sweep-r1` with their own profiles
+(54 forwards, 640 MiB), probes `...-probe-r1` (36 forwards, 640 MiB / 300 s), curation
+`runs/m3-occfit-curation-r1-job.json`. Each probe reproduces its own sweep's per-cell F1 and TP/FP/FN counts,
+the baseline reproduces the curated control to 1e-6, and the matched start is proven by the bitwise
+identity of the two saved initial state dictionaries plus the step-0 probes. No prior evidence or frozen
+manifest was touched.
 ## Per-board refinement capacity lever refused: the channel never engaged and the arm regressed (2026-11-10)
 
 The lever the read-out pass ranked is spent and settled

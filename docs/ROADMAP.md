@@ -11,14 +11,31 @@ head of that representation is closed from every measured direction (weight scal
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
 lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
-lost both, so the remaining occupancy deficit is now a question about the M2 fit gate at capacity 64 rather than about a label, budget, origin,
-extent, supervision-capacity, per-stage-capacity, read-out or per-board-refinement problem;
+lost both, so the remaining occupancy deficit is now ranked as a wider shared trunk than capacity 64 rather than about a label, budget, origin,
+extent, supervision-capacity, per-stage-capacity, read-out, per-board-refinement or fit-budget problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the per-board refinement capacity lever is refused: its channel never engaged, and the arm
+Latest: **the M2 fit gate is measured at 1.5x budget and stands (FALSE): the extra compute moved decisions without reproducing a single board**
+([M3_OCCUPANCY_FIT_BUDGET.md](M3_OCCUPANCY_FIT_BUDGET.md), predeclared at `875543d`,
+`docs/evidence/m3-occupancy-fit-budget-r1/scope.json`). The declared change was **budget only**: the same
+architecture for **384 continuity steps against the settled 256**, with **no new tensor in either arm**
+(the lever's declared added-parameter count is exactly zero), so this is the first budget lever on the
+reconciled read-out and the first time the standing FIT-GATE-FALSE sentence was measured as a gate. The
+criterion is the repository's own: `fit_gate.fit_gate_opens` needs **3 of 28** exact nonempty training
+boards at threshold `0.0`, and the lever reports **0 of 28**
+(mechanism `per-cell-error`). The pass also declared a behavioural activation floor, answered
+at **0.5481** of known deciding cells flipping against **0.05**
+(engaged). Both arms ran from `9ae1fef9f649...` under one catalogue (peaks
+0.962 GB / 0.987 GB,
+1522.4 s / 1046.2 s). F1@0 **0.2808** against
+**0.4146**, AUC **0.8998** against **0.8255**, best swept F1
+**0.5459** at `4.35` against **0.4237**, attribution
+**+0.1221**, placement 1.9812 -> 1.8419 cells. The
+rule takes its **`capacity_limit`** branch and names **a wider shared trunk than capacity 64**.
+Previous: **the per-board refinement capacity lever is refused: its channel never engaged, and the arm
 regressed anyway** ([M3_OCCUPANCY_BOARD_REFINEMENT.md](M3_OCCUPANCY_BOARD_REFINEMENT.md), predeclared at
 `72f95bc`, `docs/evidence/m3-occupancy-board-refinement-r1/scope.json`). The declared single change was
 capacity per board: one board-conditioned four-vector, predicted from the board token, correcting the

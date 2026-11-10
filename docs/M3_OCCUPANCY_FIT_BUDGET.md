@@ -172,3 +172,74 @@ cost, origin **+0.0102** at 11.0%, extent **+0.0318** at 67.5%, capacity **-0.02
 - The measurement is a single-seed diagnostic: a null at 1.5x closes 1.5x, not "any budget".
 - The activation floor is behavioural (prediction flips); a budget can flip decisions without that making it
   adequate, which is a `not-cleared` result, not evidence that compute is irrelevant.
+
+---
+
+# Measured (2026-11-10)
+
+Both arms continued the published checkpoint `9ae1fef9f649...` under one captured catalogue (`f0c833eb9221...`) inside
+their declared envelopes: lever **384 steps, 1,033,187,328 B /
+1522.4 s** (declared 1,152 MiB / 1,800 s) and baseline **256 steps,
+1,060,024,320 B / 1046.2 s** (declared
+1,152 MiB / 1,800 s). The sweeps (54 forwards, 640 MiB) took 67.8 s / 68.1 s
+and the placement probes (36 forwards, 640 MiB / 300 s) 45.3 s / 46.7 s. Curation `runs/m3-occfit-curation-r1-job.json` passed and
+published `docs/evidence/m3-occupancy-fit-budget-r1/scope.json`; every receipt it read postdates the
+predeclaration commit `875543d`.
+
+**Matched start.** With no declared tensor the guard is the strict form: the two saved initial state
+dictionaries are **bitwise identical** (`eec1e10ee4d1...`), the declared added-tensor set is exactly empty, and
+the step-0 probes agree after the objective's own value is stripped. The trained weights differ only
+through the extra steps: relative L2 displacement **0.0724** across
+**266 of 271** tensors.
+
+**Activation: ENGAGED.**
+The budget **engaged**: **0.5481** of known deciding cells (3946/7200) changed decision between the arms, against the declared floor **0.05**.
+
+**Fit gate: STANDS (FALSE).**
+The fit gate **STANDS (FALSE)**: **0 of 28** exact nonempty training boards at threshold `0.0`, below the declared threshold **3**.
+The mechanism label is **`per-cell-error`** (the repository's own
+`fit_gate.occupancy_mechanism`): the read-out does predict occupied cells and still reproduces no board, so the errors are per-cell and bidirectional. The baseline arm reports
+**0 of 28** at the same threshold, mechanism
+`per-cell-error`.
+
+**Verdict: `not-cleared`, failing per_cell_f1, ranking, placement, fit_gate.** Per-cell F1@0 **0.2808**
+(661 TP / 3380 FP /
+6 FN) against **0.4146** (351 /
+675 / 316); AUC **0.8998** against
+**0.8255**; best swept F1 **0.5459** at `4.35` against
+**0.4237** at `-0.3`, attribution **+0.1221** against the plus-0.05
+floor, and the twelve-cluster interval on the per-cell F1 delta **-0.2589 to -0.0326** - the gain is
+in ranking toward a stricter operating point (the swept optimum moved from `-0.3` to `4.35`), not at the
+standing `0.0` decision where the counts moved to 661 TP / 3380 FP / 6 FN. Placement moved
+1.9812 -> 1.8419 cells
+(+7.0% improvement), and the per-board spread 4.6043 ->
+2.6965.
+
+**What the 1.5x budget did.** The extra compute moved the head's decisions and still bought no exact board, so at this budget the limit is not compute alone.
+The deciding occupancy numbers moved by per-cell F1 **-0.1338** and
+AUC **+0.0743**, while the deciding-threshold counts went
+351/675/316 ->
+661/3380/6.
+Read against the campaign's other levers, this is a budget lever whose activation number is published:
+it engaged and still stands the gate.
+
+**Reconciliation.** Eight levers now sit on the same curated control:
+
+| lever | attribution | placement | activation | verdict |
+|---|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% cost | n/a | not-cleared |
+| box origin | +0.0102 | 11.0% cost | n/a | not-cleared |
+| box extent | +0.0318 | 67.5% cost | n/a | not-cleared |
+| geometry capacity | -0.0241 | 28.2% cost | n/a | not-cleared |
+| per-stage residual | -0.0115 | 19.2% cost | n/a | not-cleared |
+| lattice-free read-out | +0.0147 | 22.3% gain | gate 0.0742 | not-cleared |
+| per-board refinement | +0.0539 | 19.2% worse | 0.0014 cells (off) | not-cleared |
+| fit budget (1.5x) | +0.1221 | +7.0% | 0.5481 flips | not-cleared |
+
+**Ranked next.** The declared non-circular rule takes its **`capacity_limit`** branch and names
+**a wider shared trunk than capacity 64**. **Ranked next: predeclare a wider shared trunk than capacity 64**, read with the same conditions and the same activation
+discipline; the other branch stays behind it, and the seven spent levers cannot be returned by the rule.
+
+**Unchanged.** No gate widened or retuned, no ceiling, population, label or prior-evidence change, no frozen
+manifest touched. Limits are as declared: synthetic training-fit, one budget point, one seed, committed
+lattice only. No real-image, generalization or complete-state claim follows.
