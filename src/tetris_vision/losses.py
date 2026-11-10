@@ -194,6 +194,7 @@ def require_positive_weight(weight, summary):
 # 1 spends the geometry term on the final lattice only - the one the occupancy head reads.
 GEOMETRY_STAGE_POLICIES = (0, 1)
 LATTICE_SUPPORT_LEVERS = (0, 1)
+LATTICE_RESIDUAL_LEVERS = (0, 1)
 
 
 def require_lattice_support(value, summary):
@@ -250,6 +251,14 @@ def support_anchor_term(lattice, target, registered):
     error = support_anchor_error(lattice, target)
     return masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)),
                        registered)
+
+
+def require_lattice_residual(value, summary):
+    """One declaration of the admission join for the per-stage lattice residual lever."""
+    if (type(value) is not int or value not in LATTICE_RESIDUAL_LEVERS or
+            summary.get("arguments", {}).get("lattice_residual", 0) != value or
+            summary.get("recovery_contract", {}).get("lattice_residual", 0) != value):
+        raise ValueError("lattice residual differs from resource admission")
 
 
 def require_support_anchor_weight(weight, summary):

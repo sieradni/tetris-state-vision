@@ -34,6 +34,7 @@ class ModelConfig:
     occupancy_detail_stencil: int = 0
     occupancy_resolution: int = 0
     lattice_support: int = 0
+    lattice_residual: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -70,6 +71,8 @@ class ModelConfig:
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
         check(type(self.lattice_support) is int and self.lattice_support in (0, 1),
               "lattice support is 0 (published box head) or 1 (declared support-moment residual)")
+        check(type(self.lattice_residual) is int and self.lattice_residual in (0, 1),
+              "lattice residual is 0 (published shared decode) or 1 (declared per-stage residual)")
 
     @classmethod
     def pilot(cls):
@@ -164,6 +167,20 @@ def decode_lattice(raw, columns=10, rows=20):
                         torch.stack((zero, -height/rows), -1)), dim=1)
 
 
+LATTICE_RESIDUAL_SCALE = .25
+
+
+def apply_lattice_residual(lattice, residual):
+    """Declared per-stage lattice residual in cell units and log-scale; the identity at zero."""
+    check(residual.shape == (lattice.shape[0], 4),
+          "a lattice residual is one four-vector per board")
+    value = LATTICE_RESIDUAL_SCALE*torch.tanh(residual)
+    cells, scale = value[:, :2], torch.exp(value[:, 2:])
+    origin = lattice[:, 0]+cells[:, :1]*lattice[:, 1]+cells[:, 1:]*lattice[:, 2]
+    return torch.stack((origin, lattice[:, 1]*scale[:, :1],
+                        lattice[:, 2]*scale[:, 1:]), dim=1)
+
+
 def lattice_points(lattice, coordinates, offsets):
     locations = coordinates[None, :, None, :]+offsets
     return (lattice[:, None, None, 0]+locations[..., :1]*lattice[:, None, None, 1]
@@ -219,6 +236,17 @@ class TetrisStateNet(nn.Module):
             self.support_box = nn.Linear(5, 4)
             nn.init.zeros_(self.support_box.weight)
             nn.init.zeros_(self.support_box.bias)
+        # Declared per-stage lattice residual: the shared affine decode ties the origin to the
+        # extent through one sigmoid and is refined before that sigmoid for only `refinements`
+        # stages. This zero-initialized projection acts in decoded cell space at every stage, so
+        # a stage's boundary can be pinned without moving the shared box. Zero init keeps step
+        # zero exactly the published function.
+        self.lattice_residual = None
+        if config.lattice_residual:
+            self.lattice_residual = nn.ModuleList(nn.Linear(4, 4) for _ in range(config.blocks))
+            for layer in self.lattice_residual:
+                nn.init.zeros_(layer.weight)
+                nn.init.zeros_(layer.bias)
         self.box_refine = nn.ModuleList(nn.Linear(dimension, 4) for _ in range(config.refinements))
         self.row_embedding = nn.Embedding(config.visible_rows+config.spawn_rows, dimension)
         self.column_embedding = nn.Embedding(config.columns, dimension)
@@ -348,6 +376,8 @@ class TetrisStateNet(nn.Module):
             if index < len(self.box_refine):
                 raw_box = raw_box+.2*torch.tanh(self.box_refine[index](board[:, 0]+cells.mean(1)))
             lattice = decode_lattice(raw_box)
+            if self.lattice_residual is not None:
+                lattice = apply_lattice_residual(lattice, self.lattice_residual[index](raw_box))
             offsets = self.base_offsets+.1*torch.tanh(self.offsets(cells+board)).reshape(batch, -1, 9, 2)
             sampled, points = sample_features(detail, lattice, self.coordinates, offsets)
             cells = decoder(cells+self.sample_reader(sampled.flatten(2)), context, context_valid)
