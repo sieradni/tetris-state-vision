@@ -301,6 +301,34 @@ def lattice_residual_decomposition(baseline_placement, lever_placement, decision
                        "unmoved_below": CAPACITY_MOVED_FLOOR, "dispersion_cells": DISPERSION_FLOOR}}
 
 
+def lattice_free_decomposition(baseline_placement, lever_placement, decision):
+    """Declared non-circular rule after the lattice-agnostic read-out lever.
+
+    The five spent levers - translation, scale, geometry_capacity, placement_capacity and
+    lattice_residual - are inputs to this rule, never outputs; only the two remaining suspects
+    exist, decided by the measured per-board spread.
+    """
+    improvement = decision["placement_improvement"]
+    spread = lever_placement["board_error_spread_cells"]
+    occupancy_met = (decision["conditions"]["per_cell_f1"] and decision["conditions"]["ranking"])
+    if spread >= DISPERSION_FLOOR:
+        rule, suspect = "dispersion", "per-board lattice refinement capacity"
+    else:
+        rule, suspect = "scaling", "occupancy read-out at a second scale"
+    return {"rule": rule, "next_suspect": suspect, "placement_improvement": improvement,
+            "improvement_floor": PLACEMENT_IMPROVEMENT,
+            "unmoved_below": CAPACITY_MOVED_FLOOR, "occupancy_gates_met": occupancy_met,
+            "lever_mean_abs_offset_cells": lever_placement["mean_abs_offset_cells"],
+            "baseline_mean_abs_offset_cells": baseline_placement["mean_abs_offset_cells"],
+            "lever_signed_column_offset_cells": lever_placement["signed_column_offset_cells"],
+            "lever_signed_row_offset_cells": lever_placement["signed_row_offset_cells"],
+            "lever_extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "lever_extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "lever_board_error_spread_cells": spread,
+            "floors": {"placement_improvement": PLACEMENT_IMPROVEMENT,
+                       "unmoved_below": CAPACITY_MOVED_FLOOR, "dispersion_cells": DISPERSION_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \

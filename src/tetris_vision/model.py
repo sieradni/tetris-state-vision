@@ -35,6 +35,7 @@ class ModelConfig:
     occupancy_resolution: int = 0
     lattice_support: int = 0
     lattice_residual: int = 0
+    occupancy_lattice_free: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -73,6 +74,8 @@ class ModelConfig:
               "lattice support is 0 (published box head) or 1 (declared support-moment residual)")
         check(type(self.lattice_residual) is int and self.lattice_residual in (0, 1),
               "lattice residual is 0 (published shared decode) or 1 (declared per-stage residual)")
+        check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1),
+              "occupancy lattice-free readout is 0 (published read-out) or 1 (declared gated channel)")
 
     @classmethod
     def pilot(cls):
@@ -336,6 +339,21 @@ class TetrisStateNet(nn.Module):
                 nn.Conv2d(dimension, dimension, 1))
             nn.init.zeros_(self.occupancy_neighborhood[-1].weight)
             nn.init.zeros_(self.occupancy_neighborhood[-1].bias)
+        # Declared read-out lever: a lattice-agnostic occupancy channel. It reads the encoder's
+        # image-level context and fixed cell coordinates, never the predicted lattice, so it is
+        # identical at every decoder stage. The gate starts at exactly zero and the projections are
+        # zero-initialized, so step zero is bitwise the published read-out; as the gate moves to 1
+        # the published lattice-sampled path (and its detail tap) is replaced by this channel.
+        # Constructed last so the published tensors draw the same seeded values in paired studies.
+        self.occupancy_lattice_free = None
+        self.occupancy_lattice_gate = None
+        if config.occupancy_lattice_free:
+            self.occupancy_lattice_free = nn.Sequential(nn.Linear(dimension, dimension), nn.SiLU(),
+                                                        nn.Linear(dimension, 1))
+            for layer in (self.occupancy_lattice_free[0], self.occupancy_lattice_free[2]):
+                nn.init.zeros_(layer.weight)
+                nn.init.zeros_(layer.bias)
+            self.occupancy_lattice_gate = nn.Parameter(torch.zeros(1))
 
     @staticmethod
     def support_moments(coarse):
@@ -408,7 +426,16 @@ class TetrisStateNet(nn.Module):
                 # adds their information instead of letting the context block overwrite the detail
                 # tap. With either tap alone this is byte-identical to the published composition.
                 occupancy_features = occupancy_features+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
-            stages.append({"lattice": lattice, "occupancy": self.occupancy(occupancy_features).reshape(batch, rows, columns),
+            occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
+            if self.occupancy_lattice_free is not None:
+                weight = context_valid.float()[:, :, None]
+                pooled = (context*weight).sum(1)/weight.sum(1).clamp_min(1)
+                free = ((self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None]
+                        +pooled[:, None])
+                gate = torch.tanh(self.occupancy_lattice_gate)
+                occupancy_logits = ((1-gate)*occupancy_logits+
+                                    gate*self.occupancy_lattice_free(free).reshape(batch, rows, columns))
+            stages.append({"lattice": lattice, "occupancy": occupancy_logits,
                            "semantic": self.semantic(cells).reshape(batch, rows, columns, 8),
                            "observability": self.observability(cells).reshape(batch, rows, columns),
                            "registration": self.registration(board[:, 0]).squeeze(-1),
