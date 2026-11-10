@@ -363,6 +363,35 @@ def board_refinement_decomposition(baseline_placement, lever_placement, decision
                        "activation_log_scale": BOARD_REFINE_SCALE_FLOOR}}
 
 
+FIT_ACTIVATION_FLOOR = 0.05
+
+
+def fit_budget_decomposition(baseline_placement, lever_placement, decision):
+    """Declared non-circular rule after the M2 fit-budget lever.
+
+    The seven spent levers - translation, scale, geometry_capacity, placement_capacity,
+    lattice_residual, the lattice-free read-out and per-board refinement - are inputs to this rule,
+    never outputs. The activation condition comes first: a budget the model did not feel cannot
+    answer the fit question, so it ranks a larger budget rather than a different architecture.
+    """
+    engaged = bool(decision["conditions"].get("activation", False))
+    gate_open = bool(decision["conditions"].get("fit_gate", False))
+    if not engaged:
+        rule, suspect = "under_trained", "a larger declared continuation budget than 4x"
+    elif not gate_open:
+        rule, suspect = "capacity_limit", "a wider shared trunk than capacity 64"
+    else:
+        rule, suspect = "fit_opens", "the occupancy label family at the opened gate"
+    return {"rule": rule, "next_suspect": suspect, "activation": engaged,
+            "fit_gate_open": gate_open,
+            "placement_improvement": decision["placement_improvement"],
+            "lever_mean_abs_offset_cells": lever_placement["mean_abs_offset_cells"],
+            "baseline_mean_abs_offset_cells": baseline_placement["mean_abs_offset_cells"],
+            "lever_board_error_spread_cells": lever_placement["board_error_spread_cells"],
+            "floors": {"placement_improvement": PLACEMENT_IMPROVEMENT,
+                       "activation_decision_flip_rate": FIT_ACTIVATION_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \
