@@ -11,6 +11,8 @@ import argparse
 import json
 from pathlib import Path
 
+import torch
+
 from cluster_interval import cluster_bootstrap
 from occupancy_sweep import AUC_THRESHOLD, F1_THRESHOLD, sweep_verdict
 from percell_gate import CELL_F1_THRESHOLD
@@ -38,6 +40,30 @@ PREVIOUS = ROOT/"docs/evidence/m3-occupancy-geometry-r1/scope.json"
 FAMILY = "m3-occorigin"
 INSTRUMENT = "m3-occupancy-translation-r1"
 ARMS = {"lever": 1, "baseline": 0}
+SUPPORT_PARAMETERS = frozenset({"support_box.weight", "support_box.bias"})
+
+
+def initial_state_matches(lever_state, baseline_state):
+    """The matched start for a lever that *adds* parameters.
+
+    The geometry lever added none, so its arms had to save one identical tensor file. This lever adds
+    `support_box`, so the saved digests legitimately differ; what has to hold is that every published
+    tensor is bitwise identical and the added projection is exactly zero, which makes step zero the
+    published function. Comparing a file digest here would refuse a correct matched start (V-071).
+    """
+    if not isinstance(lever_state, dict) or not isinstance(baseline_state, dict):
+        raise ValueError("initial tensor files must both be state dictionaries")
+    added = set(lever_state)-set(baseline_state)
+    removed = set(baseline_state)-set(lever_state)
+    if added != SUPPORT_PARAMETERS or removed:
+        raise ValueError("the arms differ by more than the declared box-origin parameters")
+    for name, tensor in baseline_state.items():
+        if not torch.equal(tensor, lever_state[name]):
+            raise ValueError(f"shared initial tensor {name} differs between the arms")
+    for name in SUPPORT_PARAMETERS:
+        if int(torch.count_nonzero(lever_state[name])):
+            raise ValueError("the declared box-origin projection must start at exactly zero")
+    return True
 
 
 def arm_matches(summary, job, lattice_support, *, steps=STEPS, ceiling=CEILING_BYTES):
@@ -197,9 +223,13 @@ def main():
                       "probe_result": probe_result, "probe_job": probe_job}
     if arms["lever"]["summary"]["catalogue_sha256"] != arms["baseline"]["summary"]["catalogue_sha256"]:
         raise ValueError("the arms were captured under different catalogues")
-    if (arms["lever"]["summary"]["initial_weights_sha256"] !=
-            arms["baseline"]["summary"]["initial_weights_sha256"]):
-        raise ValueError("the arms must start from one identical saved initial tensor file")
+    mappable = {"map_location": "cpu", "weights_only": True, "mmap": True}
+    initial_state_matches(
+        torch.load(ROOT/"runs"/arms["lever"]["study"]/"initial-weights.pt", **mappable),
+        torch.load(ROOT/"runs"/arms["baseline"]["study"]/"initial-weights.pt", **mappable))
+    for probe_name in ("initial_training_probe", "initial_development"):
+        if arms["lever"]["summary"].get(probe_name) != arms["baseline"]["summary"].get(probe_name):
+            raise ValueError(f"step zero is not the same measured function in both arms ({probe_name})")
 
     measured = {}
     for name in ARMS:

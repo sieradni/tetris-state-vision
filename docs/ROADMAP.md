@@ -10,11 +10,29 @@ Current priority: M3 joint complete-state learning at capacity 64. The occupancy
 head of that representation is closed from every measured direction (weight scale,
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy), and the remaining occupancy deficit is now measured as a
-systematic lattice-box translation rather than as a read-out, label or budget problem;
+systematic lattice-box **extent** rather than as a read-out, label or budget problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the box-origin (translation) lever is refused: the origin did not move, and the residual is
+box extent** ([M3_OCCUPANCY_TRANSLATION.md](M3_OCCUPANCY_TRANSLATION.md), predeclared at `24ae9b9`,
+`docs/evidence/m3-occupancy-translation-r1/scope.json`). The declared single change was a
+zero-initialized `Linear(5,4)` over the coarse feature map's spatial moments (energy centroid x/y, spread
+x/y, log energy) added to `raw_box`, so the lattice origin could depend on where the board is. Both arms
+ran 256 steps from `9ae1fef9f649...` under one catalogue at 1,152 MiB / 1,800 s (peaks 1.086 GB / 1.083 GB,
+380.8 s / 380.7 s). It moved the operating point, not the ranking: F1@0 **0.4165** against **0.4146**
+(trading 271 misses for 1,023 false positives), AUC **0.8446** against **0.8255**, best swept F1 **0.4340**
+against **0.4237** - attribution **+0.0102**, with the twelve-cluster interval **-0.1700 to +0.0872**
+(median -0.0378). The signed offsets went the wrong way - columns **+1.3830 -> +1.3998** (-1.2%), rows
+**-2.1914 -> -2.6181** (-19.5%) - and mean placement error rose **11.0%** (1.9812 -> 2.1988), so all four
+declared conditions fail and the verdict is **`not-cleared`**. Reconciled against the geometry lever: its
++0.0781 occupancy gain and 19.9% placement cost were not repaid by moving the origin - this lever buys an
+eighth of that gain and adds another 11.0% placement cost. The declared non-circular rule now names **box
+extent** (smallest signed reduction -0.19 < 0.25; measured ratios 1.3242 / 1.1709, both past the 0.10
+log-ratio floor). Ranked next: **predeclare a box-extent supervision lever**, read with the same four
+conditions.
 
 Latest: **the geometry-stage lever is refused: it moves occupancy, not placement, and the measured
 residual is a box translation** ([M3_OCCUPANCY_GEOMETRY.md](M3_OCCUPANCY_GEOMETRY.md), predeclared at

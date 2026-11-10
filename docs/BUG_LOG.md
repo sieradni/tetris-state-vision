@@ -1579,3 +1579,26 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   child/grandchild death. Numerical worker admitted the exact 1 GiB Job and
   completed one forward/backward step (m2-probe-r2-result.json). Source/lock
   identity: numerical.json. Raw historical failure/diagnostic logs retained.
+
+## V-071 — CLOSED: a no-parameter matched-start guard refused a parameter-adding lever
+
+- Symptom: `runs/m3-occorigin-curation-r1` (`scripts/record_lattice_lever.py`) failed in 0.24 s with
+  `ValueError: the arms must start from one identical saved initial tensor file`, before writing a scope,
+  on data whose arms did start from the published checkpoint.
+- Root cause: the guard was copied from the geometry lever together with its comment "this lever adds no
+  parameter". The box-origin lever adds `support_box.{weight,bias}`, so the two saved `initial-weights.pt`
+  files differ in digest by four zero tensors. The predeclaration sentence "both arms start from identical
+  saved tensors" repeated the same false premise; what it meant - and what matching requires - is
+  functional identity at step zero.
+- Detection class: test-instrument.
+- Instrument: `initial_state_matches` compares the two saved state dictionaries directly - every published
+  tensor bitwise equal, the added keys exactly `support_box.{weight,bias}` and all-zero, nothing else added
+  or removed - and the curator additionally requires identical step-0 probe metrics
+  (`initial_training_probe`, `initial_development`). Bound by `MatchedStartTests` in
+  `tests/test_lattice_lever.py`, which rejects a moved shared tensor, a nonzero projection, and any other
+  added or missing tensor. The file-digest guard was removed rather than relaxed; it remains the correct
+  check for levers that add no parameter.
+- Green gate: focused `tests.test_lattice_lever tests.test_placement_error tests.test_geometry_lever
+  tests.test_detail_stencil`, 55/55 in 2.810 s, peak 293,011,456 B (`runs/m3-occorigin-focused-r1-job.json`);
+  curation `runs/m3-occorigin-curation-r2-job.json` passed and published
+  `docs/evidence/m3-occupancy-translation-r1/scope.json`.

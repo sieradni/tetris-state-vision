@@ -1,5 +1,46 @@
 # Contributor handoff — 2026-10-30
 
+## Box-origin (translation) lever refused: the origin did not move, and the residual is extent (2026-11-09)
+
+The lever the geometry pass ranked is spent and settled
+([M3_OCCUPANCY_TRANSLATION.md](M3_OCCUPANCY_TRANSLATION.md), predeclared at `24ae9b9`,
+`docs/evidence/m3-occupancy-translation-r1/scope.json`, curation
+`runs/m3-occorigin-curation-r2-job.json`). The declared change was one structural addition: a
+zero-initialized `Linear(5,4)` over the coarse feature map's spatial moments (energy centroid x/y, spread
+x/y, log energy) added to `raw_box`, so the lattice origin can depend on where the board is in the image.
+Both arms ran 256 steps from `9ae1fef9f649...` under one catalogue, 1,152 MiB / 1,800 s, and stayed inside
+it (peaks 1,085,526,016 B / 1,083,441,152 B, 380.8 s / 380.7 s).
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.4165** (622/1,698/45)
+against **0.4146** (351/675/316); AUC **0.8446** against **0.8255**; best swept F1 **0.4340** at `0.45`
+against **0.4237** at `-0.30`, so attribution is **+0.0102** against the +0.05 floor, with the
+twelve-cluster paired bootstrap at median **-0.0378** and interval **-0.1700 to +0.0872**. The declared
+signed condition fails on both axes: columns **+1.3998** against **+1.3830** (reduction **-0.0122**) and
+rows **-2.6181** against **-2.1914** (**-0.1947**) - the origin moved outward, not toward zero. Mean
+placement error rose **11.0%** (1.9812 -> 2.1988), mapped share fell 0.6507 -> 0.6334, spread rose
+4.6043 -> 4.7870. The occupancy movement is an operating-point shift: +271 true positives bought with
++1,023 false positives.
+
+**Reconciliation.** The geometry lever's **+0.0781** occupancy gain came with **19.9%** worse placement;
+this lever buys **+0.0102** (an eighth of it) and adds another **11.0%** placement cost, so the two costs
+add rather than compensate, and the geometry gain was not a hidden origin correction.
+
+**Ranked next.** The declared non-circular rule takes its first branch - smallest signed reduction
+**-0.19 < 0.25** - and names **box extent**, which the same receipts measure at ratios **1.3242 / 1.1709**
+(both past the 0.10 log-ratio floor). **Ranked next: predeclare a box-extent supervision lever on the
+lattice box**, read with the same four conditions; dispersion (spread 4.7870) and read-out inheritance
+stay behind it.
+
+**Receipts and defects.** Profiles `runs/m3-occorigin-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occorigin-{lever,baseline}-r1`, sweeps `...-sweep-r1` with their profiles (54 forwards, 640 MiB),
+placement probes `...-probe-r1` (36 forwards, 640 MiB / 300 s), curation
+`runs/m3-occorigin-curation-r2-job.json`. Each probe reproduces its own sweep's per-cell F1 and TP/FP/FN
+counts over the full deciding population before the verdict was written. **V-071** records the first
+curation refusal: the inherited matched-start guard asserted one identical `initial-weights.pt` digest,
+which a lever that *adds* parameters cannot satisfy; it now asserts shared-tensor identity, a zero
+projection and identical step-0 probe loss. The refused launch is preserved under `runs/attempts/` and
+cited nowhere.
+
 ## Geometry-stage lever refused: occupancy moved, placement did not, and the residual is translation (2026-11-09)
 
 The step the registration pass ranked is spent and settled

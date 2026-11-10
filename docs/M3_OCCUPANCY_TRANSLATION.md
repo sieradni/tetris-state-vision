@@ -135,3 +135,77 @@ Any launch that dies, leaves its declared arithmetic or is superseded is preserv
   zero-initialized projection; it does not add capacity to the encoder or a second box head.
 - Placement is measured against the committed target lattice, so it says nothing about deployment
   situations where that lattice is unavailable.
+
+## Measured (curated 2026-11-09)
+
+Receipts, each passed inside its declared envelope: profiles
+`runs/m3-occorigin-{lever,baseline}-r1-profile-r1` (2 work items), studies
+`runs/m3-occorigin-{lever,baseline}-r1` (256 steps, 1,152 MiB / 1,800 s; 380.8 s / 380.7 s, peaks
+1,085,526,016 B / 1,083,441,152 B), sweep profiles `...-sweep-r1-profile-r1` and sweeps `...-sweep-r1`
+(54 forwards, 640 MiB), probes `...-probe-r1` (36 forwards, 640 MiB / 300 s), and curation
+`runs/m3-occorigin-curation-r2-job.json` into `docs/evidence/m3-occupancy-translation-r1/scope.json`.
+Every published number below is re-derived by the curator from the probes' own cells, and each probe
+reproduces its own sweep's per-cell F1 at `0.0` and its TP/FP/FN counts before any verdict is written.
+
+**One predeclaration sentence was imprecise and is corrected here.** "Both arms start from identical
+saved tensors" cannot hold for a lever that *adds* a parameter: the lever's `initial-weights.pt` carries
+four extra zero tensors, so its digest differs (`a5f71c8b...` against `eec1e10e...`). The matched
+condition that was actually required - and is now enforced - is the one that matters: every published
+tensor is bitwise identical between the two saved states, the added `support_box.{weight,bias}` are
+exactly zero, and both arms' step-0 probes report the identical loss on the identical cases
+(`12.281119876437717` training, `10.749210410647922` development), so step zero is the same function in
+both arms. The first curation launch enforced the inherited file-digest guard instead and was refused by
+it (V-071); that launch is preserved under `runs/attempts/` and is cited nowhere.
+
+| quantity | lever | baseline |
+|---|---|---|
+| per-cell F1 at `0.0` | 0.4165 (622/1,698/45) | 0.4146 (351/675/316) |
+| AUC | 0.8446 | 0.8255 |
+| best swept F1 (threshold) | 0.4340 (`0.45`) | 0.4237 (`-0.30`) |
+| signed column offset | +1.3998 | +1.3830 |
+| signed row offset | -2.6181 | -2.1914 |
+| mean placement error | 2.1988 | 1.9812 |
+| extent ratio u / v | 1.3242 / 1.1709 | 1.2257 / 1.1804 |
+| per-board error spread | 4.7870 | 4.6043 |
+| mapped share / shift share | 0.6334 / 0.6020 | 0.6507 / 0.5375 |
+
+**Verdict: `not-cleared`; all four declared conditions fail.**
+
+1. `per_cell_f1` - 0.4165 < 0.70.
+2. `ranking` - `uninformative`: AUC 0.8446 < 0.90 and no swept point reaches 0.70 (best 0.4340).
+3. `attribution` - the best-F1 point delta **+0.0102** is below the declared +0.05. The
+   whole-ancestry-cluster paired bootstrap (400 draws, seed 20261026, twelve clusters) puts that delta
+   at median **-0.0378** with interval **-0.1700 to +0.0872**: at this budget the occupancy difference
+   is not distinguishable from zero, and the resampling does not reproduce the sign of the point delta.
+4. `signed_offsets` - both reductions are negative: columns `1 - 1.3998/1.3830 = -0.0122`, rows
+   `1 - 2.6181/2.1914 = -0.1947`. The origin moved *outward* on both axes, not toward zero.
+
+**The lever did not do the thing it was ranked to do.** Giving the box head spatially localized moment
+evidence left the signed column offset essentially where it was (-1.2%) and pushed the row offset
+**19.5% further out**, while mean placement error rose **11.0%** (1.9812 -> 2.1988) and the share of
+cells mapping onto any target cell fell 0.6507 -> 0.6334. What occupancy movement it did produce is an
+operating-point shift, not a better-ordered score: F1@0 gains 0.0018 by trading 271 false negatives for
+1,023 false positives, and AUC gains 0.0191. Per-board spread rose 4.6043 -> 4.7870.
+
+**Reconciliation with the geometry pass (reference only, never verdict input).** That lever bought
+**+0.0781** best F1 (interval -0.0152 to +0.1243) and cost **19.9%** placement (1.9812 -> 2.3757). This
+lever buys **+0.0102** - about an eighth of that occupancy gain - and adds a further **11.0%** placement
+cost (to 2.1988). The two costs add rather than compensate, so the geometry lever's placement cost was
+*not* repaid by moving the origin, and its occupancy gain was not a hidden origin correction: it was the
+read-out absorbing the offset, exactly as that pass concluded.
+
+**Next suspect, by the declared non-circular rule: `extent` -> box-extent supervision of the lattice
+box.** The smallest per-axis signed reduction is **-0.1947 < 0.25**, so the first row of the declared
+table matches: the origin barely moved. The rule cannot return `translation` again, by construction.
+Extent is the next *measurable* branch because this pass measured it on the same receipts - ratios
+**1.3242 / 1.1709**, both past the 0.10 log-ratio floor (log 0.2808 / 0.1578) - and because an extent
+lever is one structural change to the same four box parameters (their scale, not their origin), so it
+can be admitted, matched and read with this instrument unchanged. Dispersion (spread 4.7870, past 1.5
+cells) and read-out inheritance remain ranked behind it.
+
+**Limits.** Synthetic, training-fit population; nine of the twelve ancestry groups never appear in the
+run's own ledger. One budget point (256 steps), one checkpoint (`9ae1fef9f649...`), one structural
+change, one seed. The bootstrap resamples only twelve clusters, so its interval is coarse. Placement is
+measured against the committed target lattice and says nothing about deployment situations where that
+lattice is unavailable. Nothing here is a real-screenshot, generalization, calibration or complete-state
+claim - and a cleared lever would not have been one either.

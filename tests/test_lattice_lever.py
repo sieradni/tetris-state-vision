@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"src"))
 
 from placement_error import (SIGNED_REDUCTION, signed_offsets_moved, signed_reduction,
                              translation_decomposition, translation_verdict)
-from record_lattice_lever import STEPS, arm_matches
+from record_lattice_lever import STEPS, arm_matches, initial_state_matches
 from record_stream_run import OWNED_RUN_PATTERN
 from tetris_vision.losses import LATTICE_SUPPORT_LEVERS, require_lattice_support
 
@@ -69,10 +69,53 @@ class AdmissionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             require_lattice_support(True, summary(1))
 
+    def test_the_lever_saved_state_differs_from_its_control_by_the_projection(self):
+        from record_lattice_lever import SUPPORT_PARAMETERS
+        self.assertEqual(SUPPORT_PARAMETERS, {"support_box.weight", "support_box.bias"})
+
     def test_the_owned_family_is_declared(self):
         for name in ("m3-occorigin-lever-r1", "m3-occorigin-baseline-r1",
                      "m3-occorigin-lever-r1-sweep-r1", "m3-occorigin-baseline-r1-probe-r1"):
             self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
+
+
+class MatchedStartTests(unittest.TestCase):
+    """V-071: the matched start is tensor identity plus a zero projection, not a file digest."""
+
+    def setUp(self):
+        import torch
+        self.torch = torch
+        self.shared = {"encoder.weight": torch.tensor([1.0, -2.0, 3.5])}
+        self.lever_only = {"support_box.weight": torch.zeros(4, 5),
+                           "support_box.bias": torch.zeros(4)}
+
+    def lever(self, **overrides):
+        state = {**self.shared, **self.lever_only}
+        state.update(overrides)
+        return state
+
+    def test_identical_shared_tensors_with_a_zero_projection_are_a_matched_start(self):
+        self.assertTrue(initial_state_matches(self.lever(), dict(self.shared)))
+
+    def test_a_differing_shared_tensor_is_refused(self):
+        moved = {**self.shared, "encoder.weight": self.torch.tensor([1.0, -2.0, 3.6])}
+        with self.assertRaises(ValueError):
+            initial_state_matches(self.lever(), moved)
+
+    def test_a_nonzero_projection_is_refused(self):
+        with self.assertRaises(ValueError):
+            initial_state_matches(self.lever(**{"support_box.bias": self.torch.ones(4)}),
+                                  dict(self.shared))
+
+    def test_any_other_extra_or_missing_tensor_is_refused(self):
+        with self.assertRaises(ValueError):
+            initial_state_matches(self.lever(**{"decoder.weight": self.torch.zeros(2)}),
+                                  dict(self.shared))
+        with self.assertRaises(ValueError):
+            initial_state_matches({"support_box.weight": self.torch.zeros(4, 5),
+                                   "support_box.bias": self.torch.zeros(4)}, dict(self.shared))
+        with self.assertRaises(ValueError):
+            initial_state_matches(self.lever(), {**self.shared, "extra.weight": self.torch.zeros(1)})
 
 
 class RuleTests(unittest.TestCase):
