@@ -1765,3 +1765,23 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   activation floor, matched start and zero added parameters are unchanged. The rejected launch is preserved as
   `runs/attempts/m3-occfit-lever-r1.attempt2.log` with a note and is not evidence.
 - Green gate: `runs/m3-occfit-focused-r3-job.json`.
+
+## V-082 - CLOSED: the non-circular rule ranked an intervention this architecture cannot express
+
+- Symptom: the fit-budget record's `capacity_limit` branch named *"a wider shared trunk than capacity 64"*.
+  Building the declared configuration at capacity 32 and 64 returns identical censuses (8,018,505 parameters
+  over 271 tensors), `ModelConfig` refuses 65 and above, the driver refuses it earlier with the renderer's
+  ten-slot reason, and the encoder widths `(48, 96, 192, 256)` with dimension 192 have no training flag, so
+  the ranked arm had no experiment to run.
+- Root cause: the rule was authored from the lever's name (`capacity`) instead of from what that parameter
+  changes: `component_capacity` bounds the component decoder's slots, so it is parameter-identical across
+  10..64 and cannot be widened at all.
+- Detection class: a decision rule naming an intervention the model cannot express. First instance.
+- Instrument: `placement_error.capacity_width_admissibility` takes the two censuses, the trunk description and
+  the construction bound, and refuses to report "expressible" unless capacity demonstrably changes the parameter
+  count; three tests bind the equal-census case, the changed-census case (which refuses rather than repeating a
+  stale verdict) and the bound-is-not-a-dial case.
+- Resolution: the `capacity_limit` branch now names *"a declared trunk-width lever, which capacity 64 cannot
+  express"*, and `docs/M3_OCCUPANCY_TRUNK_WIDTH.md` records the block with the exact numbers and the user
+  decision that would unblock a real width lever. No arm was launched and no receipt was manufactured.
+- Green gate: `runs/m3-occtrunk-suite-r1-job.json`.

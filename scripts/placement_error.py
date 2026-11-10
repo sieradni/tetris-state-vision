@@ -366,6 +366,35 @@ def board_refinement_decomposition(baseline_placement, lever_placement, decision
 FIT_ACTIVATION_FLOOR = 0.05
 
 
+TRUNK_CAPACITY_BOUND = 64
+
+
+def capacity_width_admissibility(*, settled_parameters, narrower_parameters, widths, dimension,
+                                 settled=64, bound=TRUNK_CAPACITY_BOUND):
+    """Whether a trunk wider than capacity 64 exists to measure at all (V-082).
+
+    `component_capacity` bounds the component decoder's slots, not a width: values below the bound are
+    parameter-identical and values above it are refused at construction, so the rule's "wider" has no
+    parameter space to move in. The check is data-driven - it refuses to answer if a future model does make
+    capacity change the parameter count, rather than quietly repeating a stale verdict.
+    """
+    if bound != TRUNK_CAPACITY_BOUND:
+        raise ValueError("the capacity bound is a construction constant, not a policy dial")
+    if settled != bound:
+        raise ValueError("the settled configuration no longer sits at the construction bound")
+    if settled_parameters != narrower_parameters:
+        raise ValueError("capacity now changes the parameter count; re-derive this admissibility check")
+    if not widths or dimension <= 0:
+        raise ValueError("the trunk description is required")
+    return {"expressible": False, "rule": "capacity_limit", "bound": bound,
+            "reason": ("component capacity is a slot bound: every value below 64 is parameter-identical and "
+                       "anything above 64 is refused at construction, so a wider trunk has no parameter space"),
+            "settled_parameters": settled_parameters, "narrower_parameters": narrower_parameters,
+            "trunk": {"widths": tuple(widths), "dimension": dimension, "knob": False},
+            "requires": ("a declared architecture identity with a width knob, a fresh baseline, and a "
+                         "matched-start policy for shape-changed tensors")}
+
+
 def fit_budget_decomposition(baseline_placement, lever_placement, decision):
     """Declared non-circular rule after the M2 fit-budget lever.
 
@@ -379,7 +408,7 @@ def fit_budget_decomposition(baseline_placement, lever_placement, decision):
     if not engaged:
         rule, suspect = "under_trained", "a larger declared continuation budget than 1.5x"
     elif not gate_open:
-        rule, suspect = "capacity_limit", "a wider shared trunk than capacity 64"
+        rule, suspect = "capacity_limit", "a declared trunk-width lever, which capacity 64 cannot express"
     else:
         rule, suspect = "fit_opens", "the occupancy label family at the opened gate"
     return {"rule": rule, "next_suspect": suspect, "activation": engaged,

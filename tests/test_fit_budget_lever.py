@@ -199,3 +199,26 @@ class CuratorJoinTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class CapacityWidthAdmissibilityTest(unittest.TestCase):
+    """The rule must not rank an arm the architecture cannot build (V-082)."""
+
+    def test_equal_censuses_mean_capacity_is_not_a_width(self):
+        from placement_error import capacity_width_admissibility
+        verdict = capacity_width_admissibility(settled_parameters=8018505, narrower_parameters=8018505,
+                                               widths=(48, 96, 192, 256), dimension=192)
+        self.assertFalse(verdict["expressible"])
+        self.assertEqual(verdict["bound"], 64)
+        self.assertFalse(verdict["trunk"]["knob"])
+
+    def test_a_capacity_that_changes_parameters_reopens_the_question(self):
+        from placement_error import capacity_width_admissibility
+        with self.assertRaises(ValueError):
+            capacity_width_admissibility(settled_parameters=8018505, narrower_parameters=8010000,
+                                         widths=(48, 96, 192, 256), dimension=192)
+
+    def test_the_bound_is_not_a_policy_dial(self):
+        from placement_error import capacity_width_admissibility
+        with self.assertRaises(ValueError):
+            capacity_width_admissibility(settled_parameters=1, narrower_parameters=1,
+                                         widths=(48, 96, 192, 256), dimension=192, bound=128)

@@ -1,5 +1,30 @@
 # Contributor handoff — 2026-10-30
 
+## Capacity branch blocked: 64 is a slot bound and the trunk has no width knob (2026-11-10)
+
+The step the fit-budget record ranked is not runnable and was not run
+([M3_OCCUPANCY_TRUNK_WIDTH.md](M3_OCCUPANCY_TRUNK_WIDTH.md), committed before any launch; no receipt exists).
+The reason is code-level, not budgetary. `component_capacity` is the number of component slots the decoder may
+emit: the declared configuration at capacity **32** and at capacity **64** both build
+8,018,505 parameters over 271 tensors, so capacity is not a width and "wider
+than 64" has no smaller sibling to extrapolate from. `ModelConfig` refuses anything above 64
+(`component capacity must be0 (M2) or1..64 (M3)`), the driver refuses it first with the renderer's ten-slot
+reason, and the encoder widths `(48, 96, 192, 256)` with attention dimension `192` are fixed in the config
+with no training flag.
+
+A wider trunk would change the shape of every trunk tensor, so the published checkpoint `9ae1fef9f649...`
+cannot be continued into it and the matched-start contract cannot be satisfied by declaring added tensors. That
+makes it a new architecture identity with a fresh baseline, not a continuation.
+
+**Outcome.** No arm, sweep, probe or curation ran for this instrument; no occupancy, placement or gate number is
+claimed, and the fit gate remains FALSE at 0 of 28 exact nonempty boards. The rule now reports the block and the
+requirement instead of naming an impossible arm (V-082). The campaign's next step is a user decision: authorize
+a declared trunk-width lever (new identity, fresh baseline, per-step cost measured before the budget is fixed,
+explicitly not comparable to the capacity-64 control through the existing table), or accept the standing limit
+that under the frozen architecture every ranked suspect is spent or inexpressible.
+
+**Receipts.** None. This pass wrote no measurement, and the two runner limits that bind any future architecture
+arm remain as settled: `run_bounded.py` at 3,600 s and the training driver at 1,800 s (V-080/V-081).
 ## M2 fit gate measured at 1.5x budget: it stands, and the budget is not the limiter (2026-11-10)
 
 The step the per-board refinement pass ranked is spent and settled

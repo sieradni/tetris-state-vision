@@ -11,14 +11,26 @@ head of that representation is closed from every measured direction (weight scal
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
 lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
-lost both, so the remaining occupancy deficit is now ranked as a wider shared trunk than capacity 64 rather than about a label, budget, origin,
+lost both, so the remaining occupancy deficit is now blocked at the declared architecture - capacity 64 is a component-slot bound and the trunk has no width knob - so a wider trunk needs a user-authorized architecture lever rather than a label, budget, origin,
 extent, supervision-capacity, per-stage-capacity, read-out, per-board-refinement or fit-budget problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the M2 fit gate is measured at 1.5x budget and stands (FALSE): the extra compute moved decisions without reproducing a single board**
+Latest: **the capacity branch is inexpressible, not untested: capacity 64 is a slot bound, and the trunk has no width knob**
+([M3_OCCUPANCY_TRUNK_WIDTH.md](M3_OCCUPANCY_TRUNK_WIDTH.md), committed before any launch, with no receipt in
+existence). The fit-budget rule ranked *"a wider shared trunk than capacity 64"*; building the declared
+configuration at capacity 32 and 64 returns **identical** censuses (8,018,505 parameters over
+271 tensors), so capacity gates the component decoder rather than any width, `ModelConfig`
+refuses anything above 64, the driver refuses it earlier with the renderer's ten-slot reason attached, and the
+encoder widths `(48, 96, 192, 256)` with dimension `192` have no training flag at all. Widening the trunk
+would change the shape of every trunk tensor, so the published checkpoint cannot be continued into it and the
+matched-start contract cannot be met by added tensors: it is a new architecture identity, and therefore a user
+decision rather than an arm. Nothing was trained, swept or probed, no occupancy number is claimed, and the
+fit gate stays FALSE. The next step is a declared width lever with a fresh baseline and a measured per-step
+cost, or the standing limit.
+Previous: **the M2 fit gate is measured at 1.5x budget and stands (FALSE): the extra compute moved decisions without reproducing a single board**
 ([M3_OCCUPANCY_FIT_BUDGET.md](M3_OCCUPANCY_FIT_BUDGET.md), predeclared at `875543d`,
 `docs/evidence/m3-occupancy-fit-budget-r1/scope.json`). The declared change was **budget only**: the same
 architecture for **384 continuity steps against the settled 256**, with **no new tensor in either arm**
