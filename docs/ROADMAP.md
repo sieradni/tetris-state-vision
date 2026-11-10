@@ -11,14 +11,35 @@ head of that representation is closed from every measured direction (weight scal
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
 lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
-lost both, so the remaining occupancy deficit is ranked as per-board lattice refinement capacity rather than
-a label, budget, origin, extent, supervision-capacity, per-stage-capacity or read-out problem;
+lost both, so the remaining occupancy deficit is now a question about the M2 fit gate at capacity 64 rather than about a label, budget, origin,
+extent, supervision-capacity, per-stage-capacity, read-out or per-board-refinement problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the lattice-agnostic read-out lever is refused: the gate barely opened, and the free channel
+Latest: **the per-board refinement capacity lever is refused: its channel never engaged, and the arm
+regressed anyway** ([M3_OCCUPANCY_BOARD_REFINEMENT.md](M3_OCCUPANCY_BOARD_REFINEMENT.md), predeclared at
+`72f95bc`, `docs/evidence/m3-occupancy-board-refinement-r1/scope.json`). The declared single change was
+capacity per board: one board-conditioned four-vector, predicted from the board token, correcting the
+decoded lattice in cell space (origin offset plus log-scale per axis) and applied identically at every
+stage, for **12,612 declared parameters** in four zero-initialized tensors. The pass also declared an
+**activation floor** after the read-out null, and that floor is what the measurement answers: the applied
+correction reached only **0.001428 cells** against the declared **0.10** and
+**0.006048 axis scale** against **0.02**, so the channel is **not engaged** and
+this pass cannot speak for per-board refinement capacity. Both arms ran 256 steps from `9ae1fef9f649...` under
+one catalogue at 1,152 MiB / 1,800 s (peaks 0.997 GB /
+0.957 GB, 1059.9 s /
+1019.5 s). F1@0 **0.4232** against **0.4146** (570/1457/97 against
+351/675/316), AUC
+**0.8596** against **0.8255**, best swept F1 **0.4776** at
+`0.9` against **0.4237** at `-0.3` (attribution
+**+0.0539**, twelve-cluster interval **-0.1341 to +0.0740**),
+and placement **19.2% worse** with the error spread
+4.6043 -> 5.4599. Because the correction was
+a thousandth of a cell, the regression is a trajectory effect of the inert parameter addition, not the
+refinement. The rule takes its **fit_gate** branch and names **the M2 fit gate at capacity 64**.
+Previous: **the lattice-agnostic read-out lever is refused: the gate barely opened, and the free channel
 bought placement rather than occupancy** ([M3_OCCUPANCY_LATTICE_FREE.md](M3_OCCUPANCY_LATTICE_FREE.md),
 predeclared at `7b3ca9a`, `docs/evidence/m3-occupancy-lattice-free-readout-r1/scope.json`). The declared
 single change was the occupancy read-out: a channel built from the encoder's image-level context and

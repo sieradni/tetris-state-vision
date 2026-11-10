@@ -1718,3 +1718,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   constant is checked separately against the full architecture.
 - Green gate: `runs/m3-occlatfree-focused-r2-job.json`, 98/98 in 0.757 s; the predeclaration commit
   `7b3ca9a` was made only after that green run.
+
+## V-079 — CLOSED: an activation test assumed both axis-scale entries shared a sign
+
+- Symptom: `tests.test_board_refine_lever.BoardRefineContractTests.test_the_activation_summary_reports_applied_magnitudes`
+  failed with `0.243347 != 0.272530` in the first focused run of this pass.
+- Root cause: the test fed `[2, -2, 2, -2]` and expected `|exp(x)-1|` for both scale entries, but the
+  declared diagnostic averages the applied magnitudes of a signed pair, `(|exp(x)-1| + |exp(-x)-1|)/2`,
+  which is the meaningful quantity for a log-scale. The instrument was right and the expectation was
+  wrong; the test now checks both a same-signed pair and a signed pair.
+- Detection class: test expectation conflated two inputs. Second instance after V-078.
+- Instrument: the diagnostic is one declared function (`activation_summary`) used by the probe, with the
+  floor applied by one function (`activation_engaged`) that the rule reads, so a disagreement between
+  measurement and verdict has one place to show up.
+- Green gate: `runs/m3-occbref-focused-r2-job.json`, 93/93 in 0.958 s; the predeclaration commit
+  `72f95bc` was made only after that green run, and the full suite is run again before the record commit.

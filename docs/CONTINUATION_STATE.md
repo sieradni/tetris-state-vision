@@ -1,5 +1,63 @@
 # Contributor handoff — 2026-10-30
 
+## Per-board refinement capacity lever refused: the channel never engaged and the arm regressed (2026-11-10)
+
+The lever the read-out pass ranked is spent and settled
+([M3_OCCUPANCY_BOARD_REFINEMENT.md](M3_OCCUPANCY_BOARD_REFINEMENT.md), predeclared at `72f95bc`,
+`docs/evidence/m3-occupancy-board-refinement-r1/scope.json`, curation
+`runs/m3-occbref-curation-r1-job.json`). The declared change was **capacity per board**: the published
+decode is one shared affine function, and two earlier levers corrected it globally (origin) or per stage
+(residual). This one added a two-layer projection of the board token producing one four-vector per board,
+applied through the published `0.25*tanh` cell-space map - origin offset in cells plus log-scale per axis
+- identically at every stage, for **12,612 declared parameters** in four zero-initialized tensors. Both
+arms ran 256 steps from `9ae1fef9f649...` under one catalogue (`f0c833eb9221...`) at 1,152 MiB / 1,800 s (peaks
+1,070,809,088 B / 1,027,080,192 B,
+1059.9 s / 1019.5 s).
+
+**Activation condition, answered - and it fails.** The probe measured the applied correction at
+**0.001428** cells against the declared 0.10 floor and
+**0.006048** relative axis scale against the declared 0.02 floor (maxima
+0.002142 / 0.009243). The head started at zero and never
+left it: the correction is about a thousandth of a cell, so the lever was measured switched off and **no
+claim about per-board refinement capacity follows**. This is the activation condition working as declared,
+not an excuse: the number is published, and it is the reason the verdict cannot be spun as a channel test.
+
+**Verdict: `not-cleared`, failing per_cell_f1, ranking, placement, activation.** Per-cell F1 **0.4232** (570/1457/97)
+against **0.4146** (351/675/316);
+AUC **0.8596** against **0.8255**; best swept F1 **0.4776** at
+`0.9` against **0.4237** at `-0.3`, attribution
+**+0.0539** with twelve-cluster interval **-0.1341 to +0.0740**
+(median -0.0247); placement **19.2% worse**
+(1.9812 -> 2.3614); spread
+4.6043 -> 5.4599 cells, column extent ratio
+1.2257 -> 1.4471. Since the correction itself carried
+0.0014 cells, the regression is a trajectory effect of an inert 12,612-parameter addition at this budget,
+which is itself a finding about how tight the 256-step continuation is.
+
+**Campaign reconciliation on the single control.**
+
+| lever | attribution | placement | activation | verdict |
+|---|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% cost | n/a | not-cleared |
+| box origin | +0.0102 | 11.0% cost | n/a | not-cleared |
+| box extent | +0.0318 | 67.5% cost | n/a | not-cleared |
+| geometry capacity | -0.0241 | 28.2% cost | n/a | not-cleared |
+| per-stage residual | -0.0115 | 19.2% cost | n/a | not-cleared |
+| lattice-free read-out | +0.0147 | 22.3% gain | gate 0.0742 | not-cleared |
+| per-board refinement | +0.0539 | -19.2% (worse) | 0.0014 cells (off) | not-cleared |
+
+**Ranked next.** The non-circular rule takes its **fit_gate** branch and names **the M2 fit gate at capacity 64**.
+**Ranked next: predeclare the M2 fit gate at capacity 64**, read with the same four conditions and the same activation
+discipline; `scaling` stays behind it, and the six spent levers cannot be returned by the rule.
+
+**Receipts and defects.** Profiles `runs/m3-occbref-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occbref-{lever,baseline}-r1`, sweeps `...-sweep-r1` with their own profiles (54 forwards,
+640 MiB), probes `...-probe-r1` (36 forwards, 640 MiB / 300 s) carrying the activation diagnostic,
+curation `runs/m3-occbref-curation-r1-job.json`. Each probe reproduces its own sweep's per-cell F1 and
+TP/FP/FN counts, the baseline reproduces the curated control to 1e-6, and the matched start is proven by
+the parameter-addition branch (four declared zero tensors, shared tensors bitwise identical, step-0
+probes equal). No launch was refused or killed. New defect V-079 is logged; no prior evidence or frozen
+manifest was touched.
 ## Lattice-agnostic read-out lever refused: the gate barely opened and bought placement, not occupancy (2026-11-10)
 
 The lever the residual pass ranked is spent and settled

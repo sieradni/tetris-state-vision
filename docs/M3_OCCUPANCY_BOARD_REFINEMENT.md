@@ -160,3 +160,85 @@ states where this lever sits on that single control, with its own activation mag
   fail, which is a `not-cleared` result and not a null about the channel's existence.
 - Placement is measured against the committed target lattice, so it says nothing about deployment
   situations where that lattice is unavailable.
+
+---
+
+# Measured (2026-11-10)
+
+Both arms ran the declared 256 continuation steps from the published checkpoint `9ae1fef9f649...` under one
+captured catalogue (`f0c833eb9221...`), inside the declared 1,152 MiB / 1,800 s envelope: lever
+**1,070,809,088 B / 1059.9 s**, baseline
+**1,027,080,192 B / 1019.5 s**. Admission profiles
+passed at 84.6 s / 84.1 s; the sweeps (54 forwards, 640 MiB) took 67.9 s / 28.7 s and the placement
+probes (36 forwards, 640 MiB / 300 s) 48.2 s / 22.9 s, peaking at
+558,477,312 B and 565,313,536 B. Curation
+`runs/m3-occbref-curation-r1-job.json` passed in 5.7 s (peak 355,024,896 B) and published
+`docs/evidence/m3-occupancy-board-refinement-r1/scope.json`; every receipt it read postdates the
+predeclaration commit `72f95bc`.
+
+**Matched start.** The parameter-addition branch passed: the shared initial tensors are bitwise
+identical (`ac893585948a...`), the two saved states differ by exactly the four declared tensors
+(`lattice_board_refine.0.weight`, `.0.bias`, `.2.weight`, `.2.bias`), all exactly zero at initialization,
+and the step-0 probes agree after the objective's own value is stripped. The baseline's weights
+(`d149351cbdfb...`) and the lever's (`f7a70f25d142...`) differ only through the 256 steps.
+
+**Activation: NOT ENGAGED — the declared falsifier holds.** The probe measured the applied correction on
+the deciding population at **0.001428** cells against the declared **0.10**
+floor and **0.006048** relative axis scale against the declared **0.02** floor
+(maxima 0.002142 / 0.009243). The correction the model
+actually applied is on the order of a thousandth of a cell, fifty times below the floor: the head was
+initialized to zero and 256 steps of the published objective never moved it into a regime that changes
+the decoded lattice. Per the predeclaration this pass **may not** be read as evidence about per-board
+refinement capacity - the channel was measured while effectively switched off, which is exactly the
+ambiguity the activation condition existed to expose.
+
+**Verdict: `not-cleared`, failing per_cell_f1, ranking, placement, activation.** Per-cell F1@0 **0.4232**
+(570/1457/97) against **0.4146** (351/675/
+316); AUC **0.8596** against **0.8255**; best swept F1
+**0.4776** at `0.9` against **0.4237** at
+`-0.3`, attribution **+0.0539** against the **+0.05** floor,
+with the twelve-cluster paired bootstrap median **-0.0247** and interval
+**-0.1341 to +0.0740**. Placement regressed **-19.2%**
+(1.9812 -> 2.3614 cells), so the predeclared
+placement-regressed falsifier holds as well.
+
+**The one condition that passed is a threshold shift, not a read-out gain.** Attribution cleared its **+0.05** floor at **+0.0539**, but the receipt shows where it came from: best swept F1 **0.4776** at `0.9` against **0.4237** at `-0.3`, while per-cell F1@0 moved only 0.4146 -> 0.4232 (**+0.0085**) and stays far below the 0.70 bar; AUC went 0.8255 -> 0.8596. The arm is therefore not a pure operating-point artifact - F1@0 moved the same way - but the deciding gain is small and the twelve-cluster interval **-0.1341 to +0.0740** spans zero. The predeclared `capacity moved, score did not` falsifier applies instead: placement moved past 5% (in the wrong direction) while F1@0 stayed under the bar.
+
+**What actually moved, and why that matters.** The arms' trained weights differ by far more than the
+declared tiny correction: signed offsets went to column 2.1531 (from
+1.3830) and row -2.3996, the column extent
+ratio widened 1.2257 -> 1.4471, and the per-board spread
+rose 4.6043 -> 5.4599 cells with shifted
+share 0.5375 -> 0.5134. With the correction itself at 0.0014 cells,
+the regression cannot be attributed to the refinement it computes; it is a trajectory effect of adding
+12,612 zero-initialized parameters and their optimizer slots to a 256-step continuation. That is a real
+result about the budget, not about the channel: this campaign's training is sensitive enough that an
+inert addition of this size moves placement by ~19%.
+
+**Reconciliation.** Seven levers now sit on the same curated control:
+
+| lever | attribution | placement | activation | verdict |
+|---|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% cost | n/a | not-cleared |
+| box origin | +0.0102 | 11.0% cost | n/a | not-cleared |
+| box extent | +0.0318 | 67.5% cost | n/a | not-cleared |
+| geometry capacity | -0.0241 | 28.2% cost | n/a | not-cleared |
+| per-stage residual | -0.0115 | 19.2% cost | n/a | not-cleared |
+| lattice-free read-out | +0.0147 | 22.3% gain | gate 0.0742 | not-cleared |
+| per-board refinement | +0.0539 | -19.2% (worse) | 0.0014 cells (off) | not-cleared |
+
+**Ranked next.** The declared non-circular rule takes its **fit_gate** branch - the activation condition
+failed, and the spread (5.4599) exceeds the 1.5-cell floor as well - and
+names **the M2 fit gate at capacity 64**. **Ranked next: predeclare the M2 fit gate at capacity 64**, read with the same four conditions and the
+same activation discipline; `scaling` (a read-out at a second scale) stays behind it, and the six spent
+levers cannot be returned by the rule.
+
+**Defects.** One authoring defect in this pass's own files is logged as V-079 (the activation test
+assumed both axis-scale entries carried the same sign, while the declared diagnostic averages
+`|exp(x)-1|` and `|exp(-x)-1|`; caught by the test itself). No run was refused, killed or superseded, so
+`runs/attempts/` gained nothing.
+
+**Unchanged.** No gate widened or retuned, no ceiling, population, label or prior-evidence change, no
+frozen manifest touched. Limits are as declared: synthetic training-fit, one budget point, one
+checkpoint, one refinement form, one seed, committed lattice only. The fit gate remains FALSE and no
+real-image, generalization or complete-state claim follows.
