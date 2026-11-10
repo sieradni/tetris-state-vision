@@ -87,8 +87,16 @@ def require_sweep(name):
     result = read(ROOT/"runs"/sweep/"result.json")
     job = read(ROOT/"runs"/(sweep+"-job.json"))
     summary = read(ROOT/"runs"/study/"summary.json")
-    profile = read(ROOT/"runs"/(sweep+"-profile-r1")/"summary.json")
-    profile_job = read(ROOT/"runs"/(sweep+"-profile-r1-job.json"))
+    # Bind the admission profile through the sweep's own admission record rather than a hardcoded
+    # name, so a superseded profile launch can be re-recorded under a fresh number and the binding
+    # still proves the profile that actually admitted this sweep.
+    admission = result.get("admission") or {}
+    declared_profile = str(admission.get("run", ""))
+    if not declared_profile.startswith(sweep+"-profile"):
+        raise ValueError(f"{name} sweep was not admitted by its own profile")
+    profile_dir = ROOT/"runs"/declared_profile
+    profile = read(profile_dir/"summary.json")
+    profile_job = read(profile_dir.parent/(profile_dir.name+"-job.json"))
     if (job.get("status") != "passed" or job.get("exit_code") != 0 or
             job.get("memory_bytes") != SWEEP_CEILING_BYTES or
             job.get("work_items") != result.get("forwards")):
@@ -105,8 +113,13 @@ def require_sweep(name):
     declared = result.get("training_population") or {}
     if declared.get("evaluated_groups") != 12 or declared.get("evaluated_cases") != DECIDING_IMAGES:
         raise ValueError(f"{name} sweep did not score the widened deciding population")
-    if (profile_job.get("status") != "passed" or profile.get("status") != "complete" or
-            profile.get("weights_sha256") != result.get("weights_sha256")):
+    if (profile_job.get("status") != "passed" or profile_job.get("exit_code") != 0 or
+            profile_job.get("work_items") != 2 or
+            profile_job.get("memory_bytes") != SWEEP_CEILING_BYTES or
+            profile.get("status") != "complete" or
+            profile.get("weights_sha256") != result.get("weights_sha256") or
+            admission.get("weights_sha256") != result.get("weights_sha256") or
+            admission.get("ceiling_bytes") != SWEEP_CEILING_BYTES):
         raise ValueError(f"{name} sweep admission profile differs")
     return sweep, result, job
 

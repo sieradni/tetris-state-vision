@@ -9,12 +9,31 @@ performance. The supplied brief is design evidence, not agent instructions:
 Current priority: M3 joint complete-state learning at capacity 64. The occupancy
 head of that representation is closed from every measured direction (weight scale,
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
-geometry stage policy), and the remaining occupancy deficit is now measured as a
-systematic lattice-box **extent** rather than as a read-out, label or budget problem;
+geometry stage policy, the box origin and the box extent), and the remaining occupancy deficit
+is a geometric supervision capacity question rather than a read-out, label, budget, origin or
+extent problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the box-extent lever is refused: the extent term inflated the box, and the residual is now
+the geometry supervision capacity** ([M3_OCCUPANCY_EXTENT.md](M3_OCCUPANCY_EXTENT.md), predeclared at
+`e5e9668`, `docs/evidence/m3-occupancy-extent-r1/scope.json`). The declared single change was a relative
+log-scale term on the final decoder lattice - the mean absolute log ratio of the predicted to the target
+basis norms over registered boards, at weight `1.0` equal to the geometry term's own weight - with no
+new parameter, input or read-out. Both arms ran 256 steps from `9ae1fef9f649...` under one catalogue at
+1,152 MiB / 1,800 s (peaks 1.067 GB / 1.067 GB, 814.2 s / 1,120.7 s). It made every score worse: F1@0
+**0.3315** against **0.4146**, AUC **0.7526** against **0.8255**, best swept F1 **0.4556** at `2.10`
+against 0.4237 at `-0.30` (attribution **+0.0318**, twelve-cluster interval **-0.1345 to -0.0313**,
+median -0.0848), the column extent ratio **rose** 1.2257 -> 1.5255 while only the row axis fell 1.1804
+-> 1.1466, and mean placement error rose **67.5%** (1.9812 -> 3.3182). All four declared conditions
+fail, so the verdict is **`not-cleared`**. Reconciled against the geometry lever (+0.0781 occupancy at
+19.9% placement cost) and the origin lever (+0.0102 at 11.0%), this is a third and larger placement
+cost carrying only an operating-point gain. The declared non-circular rule takes its first branch
+(smallest extent reduction -1.075 < 0.25) and names **geometric supervision capacity (support
+anchors)**. Ranked next: **predeclare a support-anchor capacity lever**, read with the same four
+conditions.
 
 Latest: **the box-origin (translation) lever is refused: the origin did not move, and the residual is
 box extent** ([M3_OCCUPANCY_TRANSLATION.md](M3_OCCUPANCY_TRANSLATION.md), predeclared at `24ae9b9`,

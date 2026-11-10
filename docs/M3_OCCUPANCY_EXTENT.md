@@ -158,3 +158,83 @@ Any launch that dies, leaves its declared arithmetic or is superseded is preserv
   situations where that lattice is unavailable.
 - The term supervises `|log|` of the basis norms only; it cannot teach which of two axis-aligned bases is
   the intended one, and it says nothing about rotation or shear.
+
+
+## Measured (2026-11-09): the extent term did not shrink the box, and it cost both scores
+
+Both arms ran 256 steps from `9ae1fef9f649...` under one captured catalogue (`f50dee7a...`), each admitted
+only by its own 2-step profile, and both stayed inside the declared envelope: lever **814.2 s**, peak
+**1,066,991,616 B**; baseline **1,120.7 s**, peak **1,067,384,832 B** (ceiling 1,200,000,000 B). The
+baseline reproduces the curated baseline of both earlier passes exactly - F1@0 **0.414649** with counts
+351/675/316/4258, AUC **0.825539**, best swept F1 **0.423720** at `-0.30`, ratios **1.225688 / 1.180353**,
+mean placement **1.981220**, spread **4.604344**, mapped share **0.650714** - so the pair is the same
+configuration and the contrast is the declared change.
+
+| condition | bar | lever | baseline | met |
+|---|---|---|---|---|
+| per-cell F1 at `0.0` | >= 0.70 | **0.331497** (361 TP / 1,150 FP / 306 FN) | 0.414649 (351 / 675 / 316) | **no** |
+| ranking | AUC >= 0.90, swept F1 >= 0.70 | **0.752582**, best **0.455556** at `2.10` | 0.825539, 0.423720 at `-0.30` | **no** |
+| attribution | best-F1 delta >= +0.05 | **+0.031836** | - | **no** |
+| extent | both axes reduced >= 50% | u **-1.075204**, v **+0.174746** | 1.225688 / 1.180353 | **no** |
+
+**Verdict: `not-cleared`, failing all four declared conditions.**
+
+The extent condition fails in the direction the predeclaration did not anticipate: the term *inflated* the
+column axis. Ratios moved **1.225688 -> 1.525480** on columns (|log| 0.2035 -> 0.4225, a reduction of
+**-107.5%**) while rows moved 1.180353 -> 1.146643 (**+17.5%**, not the 50% required). At weight `1.0`, on
+36 boards and 256 steps, the objective did not act as an extent regularizer: whatever descent path it took
+was dominated by the geometry and occupancy terms, and the box grew along the axis it was meant to
+constrain.
+
+**Placement did not follow either.** Mean placement error rose **67.5%**, 1.981220 -> **3.318173** cells,
+signed column offset +1.382965 -> **+3.686498**, row -2.191449 -> **-2.948318**, per-board spread 4.604344
+-> **5.971017**, mapped share 0.650714 -> **0.514464**. Both falsifiers declared before the measurement
+hold at once: the extent did not move as declared *and* the placement error did not improve, so neither
+"extent is the binding placement constraint" nor "the placement residual was an extent residual" can be
+credited to this lever.
+
+**Attribution is negative where it counts.** The best swept F1 rises by **+0.031836** (below the +0.05
+floor) at a threshold of `2.10` instead of `-0.30`, but that is an operating-point move: the twelve-cluster
+paired bootstrap (400 draws) puts the delta at median **-0.084752**, interval **-0.134500 to -0.031271**,
+and the standing point falls **0.414649 -> 0.331497** while AUC falls **0.825539 -> 0.752582**. The extra
+true positives (351 -> 361) arrive with 475 more false positives (675 -> 1,150). The same matched baseline
+appearing unchanged in three consecutive passes (geometry, origin, extent) is the control: the drift is
+the levers', not the checkpoint's.
+
+**Reconciliation.** Geometry supervision bought **+0.078064** occupancy at **19.9%** worse placement; the
+box origin bought **+0.010235** at **11.0%** worse; the extent term buys **+0.031836** (an operating point,
+not a ranking gain) at **67.5%** worse placement. The three costs add, and the third is the largest, so no
+earlier gain is explained by a hidden extent correction and extent supervision is not the cheaper route to
+either. The origin pass had already left the box wider than the baseline (1.3242 / 1.1709), so the box had
+been drifting outward under both prior levers.
+
+**Declared next suspect.** The non-circular rule takes its first branch: smallest extent reduction
+**-1.075204 < 0.25** -> `geometry_capacity`, **geometric supervision capacity (support anchors)**. This is
+a ranking, not a measurement; `read_out_inheritance`, `dispersion` (spread 5.971017) and `scaling` stay
+behind it, and neither `scale` nor `translation` can be returned.
+
+**Matched start, and one repair.** The first curation, `runs/m3-occextent-curation-r1`, was refused by
+`matched_start.step_zero_identical` on `initial_training_probe`. The arms' saved initial weights were
+bitwise identical and their step-0 predictions matched on every field; the only differences were `loss`
+and `cases[*].loss`, which an objective lever changes by construction. That is **V-072**, an instrument
+error of the V-071 class one layer lower (V-071 assumed the lever adds no parameter; this assumed it
+changes no objective value). `step_zero_identical` now strips the objective's own fields recursively and
+names the differing field, and `MatchedStartTests` binds both the accept case (a re-lossed probe) and the
+refuse cases (moved `cell_accuracy`, missing probe). The refused curation and a profile launch killed by a
+caller timeout are preserved under `runs/attempts/` with notes; neither is evidence.
+
+**Receipts.** Profiles `runs/m3-occextent-{lever,baseline}-r1-profile-r1` (40.4 s / 39.5 s); studies
+`runs/m3-occextent-{lever,baseline}-r1` (256 steps each); sweep profiles
+`runs/m3-occextent-{lever,baseline}-r1-sweep-r1-profile-{r1,r2}` (2 forwards each - the baseline's first
+launch was killed by a caller timeout and re-recorded as `-r2`, and each sweep now binds its profile
+through its own `admission.run` record); sweeps `...-sweep-r1` (54 forwards, 73.8 s / 74.0 s, 640 MiB);
+placement probes `...-probe-r1` (36 forwards, 51.3 s / 49.8 s, peaks 564,518,912 B / 556,527,616 B);
+curation `runs/m3-occextent-curation-r2-job.json` into `docs/evidence/m3-occupancy-extent-r1/scope.json`,
+which re-derived every published number and required each probe to reproduce its own sweep's per-cell F1
+and TP/FP/FN counts at 1e-6. Focused tests `runs/m3-occextent-tests-r4-job.json` (50 tests).
+
+**Limits.** Synthetic, training-fit, one budget point, one checkpoint, one declared weight, one seed,
+committed lattice only; nine of twelve groups never appear in the run's own ledger. The extent term
+supervises the magnitude of the basis norms only and cannot teach which axis-aligned basis is intended.
+Nothing here is a real-image, complete-state, calibration or generalization claim, and no gate, threshold,
+population or prior evidence byte moved.

@@ -1,4 +1,5 @@
 """The declared box-extent lever: admission, the shared matched start, the rule and the objective."""
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -123,15 +124,25 @@ class MatchedStartTests(unittest.TestCase):
             matched_start(dict(self.shared),
                           {**self.shared, "extra.weight": self.torch.zeros(1)}, added=())
 
-    def test_step_zero_must_be_the_same_measured_function(self):
-        probe = {"initial_training_probe": {"loss": 12.281119876437717},
-                 "initial_development": {"loss": 10.749210410647922}}
+    def test_step_zero_must_be_the_same_measured_function_not_the_same_objective_value(self):
+        probe = {"initial_training_probe": {"loss": 12.28, "cell_accuracy": .795,
+                                            "cases": [{"id": "a", "loss": 10.19, "cell_accuracy": .815}]},
+                 "initial_development": {"loss": 10.75, "cell_accuracy": .8297,
+                                         "cases": [{"id": "b", "loss": 9.99, "cell_accuracy": .83}]}}
         self.assertTrue(step_zero_identical(dict(probe), dict(probe)))
+        # V-072: an objective lever changes the step-0 loss - top level and per case - by construction.
+        relossed = json.loads(json.dumps(probe))
+        relossed["initial_training_probe"]["loss"] = 12.41
+        relossed["initial_training_probe"]["cases"][0]["loss"] = 10.32
+        self.assertTrue(step_zero_identical(relossed, dict(probe)))
+        # Any prediction field that differs is a real mismatch.
+        moved = {**probe, "initial_development": {**probe["initial_development"],
+                                                  "cell_accuracy": .831}}
         with self.assertRaises(ValueError):
-            step_zero_identical({**probe, "initial_development": {"loss": 10.75}}, dict(probe))
+            step_zero_identical(moved, dict(probe))
         with self.assertRaises(ValueError):
-            step_zero_identical({"initial_training_probe": {"loss": 1.0}},
-                                {"initial_training_probe": {"loss": 2.0}})
+            step_zero_identical({"initial_training_probe": probe["initial_training_probe"]},
+                                dict(probe))
 
 
 class ExtentRuleTests(unittest.TestCase):

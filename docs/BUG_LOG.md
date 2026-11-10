@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070 (14) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join) |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072 (15) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -1602,3 +1602,25 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   tests.test_detail_stencil`, 55/55 in 2.810 s, peak 293,011,456 B (`runs/m3-occorigin-focused-r1-job.json`);
   curation `runs/m3-occorigin-curation-r2-job.json` passed and published
   `docs/evidence/m3-occupancy-translation-r1/scope.json`.
+
+## V-072 — CLOSED: a matched-start guard compared the objective's value across the arms
+
+- Symptom: `runs/m3-occextent-curation-r1` (`scripts/record_extent_lever.py`) failed in 2.2 s with
+  `ValueError: step zero is not the same measured function in both arms (initial_training_probe)` and
+  wrote no scope, on two arms whose saved initial weights were bitwise identical
+  (`initial_weights_sha256` equal) and whose step-0 predictions matched on every field.
+- Root cause: `matched_start.step_zero_identical` compared the whole step-0 probe record, which carries
+  the objective's value both at the top level (`loss`) and per case (`cases[*].loss`). A lever that
+  changes the objective changes those numbers at step zero by construction, although the model is the
+  same function, so a correct matched start was refused. Same premise error as V-071 one layer lower:
+  V-071 assumed the lever adds no parameter, this assumed the lever changes no objective value.
+- Detection class: test-instrument.
+- Instrument: `step_zero_identical` strips the objective's own fields recursively (top level and every
+  case) before comparing, and names the differing field on failure; the shared-tensor/all-zero
+  comparison in `matched_start` is unchanged. Bound by `MatchedStartTests` in
+  `tests/test_extent_lever.py`, which accepts a re-lossed probe and refuses a moved `cell_accuracy` and
+  a missing probe.
+- Green gate: `runs/m3-occextent-tests-r4-job.json`, 50/50 in 2.188 s, peak 248,434,688 B; curation
+  `runs/m3-occextent-curation-r2-job.json` passed and published
+  `docs/evidence/m3-occupancy-extent-r1/scope.json`. The refused launch is preserved as
+  `runs/attempts/m3-occextent-curation-r1-job.json.attempt1` with a note.

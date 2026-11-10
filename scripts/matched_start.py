@@ -36,10 +36,36 @@ def matched_start(lever_state, baseline_state, *, added=()):
     return True
 
 
+def _without_objective(value, objective_fields):
+    """Drop the objective's own values (top-level and per case) before comparing measurements."""
+    if isinstance(value, dict):
+        return {k: _without_objective(v, objective_fields)
+                for k, v in value.items() if k not in objective_fields}
+    if isinstance(value, list):
+        return [_without_objective(v, objective_fields) for v in value]
+    return value
+
+
 def step_zero_identical(lever_summary, baseline_summary,
-                        *, probes=("initial_training_probe", "initial_development")):
-    """Both arms must report the same measured loss on the same cases at step zero."""
+                        *, probes=("initial_training_probe", "initial_development"),
+                        objective_fields=("loss",)):
+    """Both arms must report the same measured predictions at step zero.
+
+    Every probe field is compared except the objective's own value. A lever that changes the objective
+    changes `loss` at step zero by construction even though the model is the same function, so
+    comparing it would refuse a correct matched start (V-072) - the mirror of V-071's file digest. The
+    prediction fields (cell accuracy, exact boards and layers, geometry error) are objective-free and
+    must match exactly.
+    """
     for name in probes:
-        if lever_summary.get(name) != baseline_summary.get(name):
-            raise ValueError(f"step zero is not the same measured function in both arms ({name})")
+        left, right = lever_summary.get(name), baseline_summary.get(name)
+        if not isinstance(left, dict) or not isinstance(right, dict):
+            raise ValueError(f"step-zero probe {name} is missing from an arm")
+        clean_left = _without_objective(left, objective_fields)
+        clean_right = _without_objective(right, objective_fields)
+        if clean_left != clean_right:
+            differing = sorted(k for k in (set(clean_left) | set(clean_right))
+                               if clean_left.get(k) != clean_right.get(k))
+            raise ValueError("step zero is not the same measured function in both arms "
+                             f"({name}: {', '.join(differing) or 'cases'})")
     return True

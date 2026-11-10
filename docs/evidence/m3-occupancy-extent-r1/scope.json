@@ -1,0 +1,281 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-extent-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_EXTENT.md",
+  "scope": "Matched 256-step continuation of one published checkpoint. The only difference is the declared box-extent lever: a relative log-scale term on the final lattice, so the four box parameters' extent is supervised directly while the origin and the occupancy read-out are untouched. Scored read-only on the full widened deciding population (28 nonempty boards, 200 cells each) with the standing grid plus the extent log-ratios; no threshold, population, ceiling, label or prior-evidence change, and no real-image, complete-state or calibrated claim.",
+  "declared_receipt": "runs/m3-occextent-curation-r2-job.json",
+  "declared_memory_bytes": 671088640,
+  "envelope": {
+    "steps": 256,
+    "ceiling_bytes": 1207959552,
+    "sweep_ceiling_bytes": 671088640,
+    "probe_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 256,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "probe": 36,
+      "curation": 8
+    }
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [],
+    "objective_difference": [
+      "box_extent_weight"
+    ],
+    "shared": {
+      "geometry_final_only": 0,
+      "lattice_support": 0,
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_context": 0,
+      "occupancy_factor": 4,
+      "occupancy_positive_weight": 4
+    },
+    "catalogue_sha256": "f50dee7ab1b3f6c884dde642e6e01c239af8bde58df4d5fe629eeb03e8d33d76",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    },
+    "initial_weights_sha256": "eec1e10ee4d141b480b031252bb3e5f67f3acc8ae425a055f158db5a5baf5ea8"
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occextent-lever-r1",
+      "sweep": "m3-occextent-lever-r1-sweep-r1",
+      "probe": "m3-occextent-lever-r1-probe-r1",
+      "box_extent_weight": 1.0,
+      "weights_sha256": "444869688c9792ba7640e13c81dc917659feb8ef3fc05949b8bed7f73c3c1abe",
+      "study_elapsed_seconds": 814.2472450999994,
+      "study_peak_commit_bytes": 1066991616,
+      "probe_peak_commit_bytes": 564518912,
+      "occupancy": {
+        "images": 28,
+        "known_cells": 5600,
+        "occupied_cells": 667,
+        "empty_cells": 4933,
+        "auc": 0.7525823546771111,
+        "f1": 0.3314967860422406,
+        "counts": {
+          "true_positive": 361,
+          "false_positive": 1150,
+          "false_negative": 306,
+          "true_negative": 3783
+        }
+      },
+      "placement": {
+        "images": 28,
+        "cells": 5600,
+        "mean_abs_offset_cells": 3.3181732758928573,
+        "mean_board_error_cells": 3.318173275892857,
+        "signed_column_offset_cells": 3.6864976071428575,
+        "signed_row_offset_cells": -2.9483179625,
+        "mean_scale_ratio_u": 1.5254796517368259,
+        "mean_scale_ratio_v": 1.1466426492554298,
+        "board_error_spread_cells": 5.97101705,
+        "shifted_share": 0.5128571428571429,
+        "mapped_share": 0.5144642857142857
+      },
+      "best": {
+        "threshold": 2.1,
+        "f1": 0.45555555555555555,
+        "precision": 0.4839797639123103,
+        "recall": 0.4302848575712144
+      },
+      "verdict": "uninformative"
+    },
+    "baseline": {
+      "study": "m3-occextent-baseline-r1",
+      "sweep": "m3-occextent-baseline-r1-sweep-r1",
+      "probe": "m3-occextent-baseline-r1-probe-r1",
+      "box_extent_weight": 0.0,
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "study_elapsed_seconds": 1120.6659468999997,
+      "study_peak_commit_bytes": 1067384832,
+      "probe_peak_commit_bytes": 556527616,
+      "occupancy": {
+        "images": 28,
+        "known_cells": 5600,
+        "occupied_cells": 667,
+        "empty_cells": 4933,
+        "auc": 0.8255386800822172,
+        "f1": 0.4146485528647372,
+        "counts": {
+          "true_positive": 351,
+          "false_positive": 675,
+          "false_negative": 316,
+          "true_negative": 4258
+        }
+      },
+      "placement": {
+        "images": 28,
+        "cells": 5600,
+        "mean_abs_offset_cells": 1.9812198625,
+        "mean_board_error_cells": 1.9812198625,
+        "signed_column_offset_cells": 1.3829651714285713,
+        "signed_row_offset_cells": -2.191449457142857,
+        "mean_scale_ratio_u": 1.2256880473012681,
+        "mean_scale_ratio_v": 1.18035288054444,
+        "board_error_spread_cells": 4.604344325,
+        "shifted_share": 0.5375,
+        "mapped_share": 0.6507142857142857
+      },
+      "best": {
+        "threshold": -0.3,
+        "f1": 0.4237196765498652,
+        "precision": 0.33080808080808083,
+        "recall": 0.5892053973013494
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "known_cells": 5600,
+    "occupied_cells": 667,
+    "clusters": 12,
+    "note": "Full deciding population; the oracle pairing's co-scoreable subset is never the judgement population."
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "extent_reduction_floor": 0.5,
+    "grid_points": 81,
+    "decision_threshold": 0.0
+  },
+  "attribution": {
+    "best_f1_delta": 0.031836,
+    "auc_delta": -0.072956,
+    "per_cell_f1_delta": -0.083152,
+    "extent_reduction": {
+      "mean_scale_ratio_u": -1.0752039010638375,
+      "mean_scale_ratio_v": 0.17474582947442985
+    },
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.071787,
+        "high": 0.449006,
+        "median": 0.303398,
+        "standard_error": 0.093641
+      },
+      "f1_baseline": {
+        "valid_draws": 400,
+        "low": 0.143678,
+        "high": 0.535401,
+        "median": 0.385537,
+        "standard_error": 0.098651
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": -0.1345,
+        "high": -0.031271,
+        "median": -0.084752,
+        "standard_error": 0.026882
+      }
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false,
+      "extent": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution",
+      "extent"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05,
+    "extent_reduction_floor": 0.5,
+    "extent_reduction": {
+      "mean_scale_ratio_u": -1.0752039010638375,
+      "mean_scale_ratio_v": 0.17474582947442985
+    },
+    "extent_ratio_u": 1.5254796517368259,
+    "extent_ratio_v": 1.1466426492554298,
+    "ranking_auc_bar": 0.9,
+    "ranking_f1_bar": 0.7
+  },
+  "next_step": {
+    "rule": "geometry_capacity",
+    "next_suspect": "geometric supervision capacity (support anchors)",
+    "extent_reduction": {
+      "mean_scale_ratio_u": -1.0752039010638375,
+      "mean_scale_ratio_v": 0.17474582947442985
+    },
+    "smallest_extent_reduction": -1.0752039010638375,
+    "occupancy_gates_met": false,
+    "lever_signed_column_offset_cells": 3.6864976071428575,
+    "lever_signed_row_offset_cells": -2.9483179625,
+    "lever_extent_ratio_u": 1.5254796517368259,
+    "lever_extent_ratio_v": 1.1466426492554298,
+    "lever_board_error_spread_cells": 5.97101705,
+    "floors": {
+      "extent_reduction": 0.5,
+      "extent_unmoved_below": 0.25,
+      "dispersion_cells": 1.5
+    }
+  },
+  "reconciliation": {
+    "available": true,
+    "note": "reference only, never verdict input",
+    "geometry": {
+      "instrument": "m3-occupancy-geometry-r1",
+      "occupancy_best_f1_delta": 0.078064,
+      "occupancy_interval": {
+        "valid_draws": 400,
+        "low": -0.015218,
+        "high": 0.124297,
+        "median": 0.061974,
+        "standard_error": 0.035434
+      },
+      "placement_improvement": -0.199086,
+      "extent_ratio_u": 1.2231326362404482,
+      "extent_ratio_v": 1.1386339440025313
+    },
+    "origin": {
+      "instrument": "m3-occupancy-translation-r1",
+      "occupancy_best_f1_delta": 0.010235,
+      "placement_improvement": -0.10981886021893102,
+      "extent_ratio_u": 1.3242473300872661,
+      "extent_ratio_v": 1.170892978876829
+    }
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "full widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

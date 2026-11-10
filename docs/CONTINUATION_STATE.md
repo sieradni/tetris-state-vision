@@ -1,5 +1,52 @@
 # Contributor handoff — 2026-10-30
 
+## Box-extent lever refused: the extent term inflated the box and cost both scores (2026-11-09)
+
+The lever the origin pass ranked is spent and settled
+([M3_OCCUPANCY_EXTENT.md](M3_OCCUPANCY_EXTENT.md), predeclared at `e5e9668`,
+`docs/evidence/m3-occupancy-extent-r1/scope.json`, curation
+`runs/m3-occextent-curation-r2-job.json`). The declared change was one objective term and no new
+parameter: the mean absolute log ratio of the predicted to the target basis norms on the **final**
+decoder lattice, at `box_extent_weight 1.0`, so the box's scale is supervised directly while the origin
+and the occupancy read-out stay untouched. Both arms ran 256 steps from `9ae1fef9f649...` under one
+catalogue, 1,152 MiB / 1,800 s, and stayed inside it (peaks 1,066,991,616 B / 1,067,384,832 B,
+814.2 s / 1,120.7 s).
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.3315**
+(361/1,150/306) against **0.4146** (351/675/316); AUC **0.7526** against **0.8255**; best swept F1
+**0.4556** at `2.10` against **0.4237** at `-0.30`, so attribution is **+0.0318** - below the +0.05
+floor and an operating-point move, since the twelve-cluster paired bootstrap has median **-0.0848**
+and interval **-0.1345 to -0.0313**. The declared extent condition fails **in the opposite direction**:
+columns 1.2257 -> **1.5255** (log magnitude 0.2035 -> 0.4225, reduction **-107.5%**) while rows only
+fell 1.1804 -> 1.1466 (**+17.5%**).
+
+**Placement did not follow, so both predeclared falsifiers hold.** Mean placement error rose **67.5%**
+(1.9812 -> 3.3182), signed offsets +1.3830 -> **+3.6865** / -2.1914 -> **-2.9483**, spread 4.6043 ->
+**5.9710**, mapped share 0.6507 -> 0.5145. Neither "extent is the binding placement constraint" nor
+"the placement residual was an extent residual" can be credited.
+
+**Reconciliation.** Geometry **+0.0781** at 19.9% placement cost; origin **+0.0102** at 11.0%; extent
+**+0.0318** at **67.5%**. The costs add and the third is the largest, so no earlier gain was a hidden
+extent correction and extent supervision is not a cheaper route to either. The origin pass had already
+left the box wider than the baseline (1.3242 / 1.1709), so the box had been drifting outward before
+this lever.
+
+**Ranked next.** The non-circular rule takes its first branch - smallest extent reduction **-1.075 <
+0.25** - and names **geometric supervision capacity (support anchors)**. **Ranked next: predeclare a
+support-anchor capacity lever on the geometry supervision**, read with the same four conditions;
+`read_out_inheritance`, dispersion (spread 5.9710) and scaling stay behind it.
+
+**Receipts and defects.** Profiles `runs/m3-occextent-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occextent-{lever,baseline}-r1`, sweeps `...-sweep-r1` with their profiles (54 forwards, 640
+MiB; the baseline profile was killed by a caller timeout and re-recorded as `-r2`, and each sweep now
+binds its profile through its own `admission.run` record), placement probes `...-probe-r1` (36
+forwards, 640 MiB / 300 s), curation `runs/m3-occextent-curation-r2-job.json`. Each probe reproduces
+its own sweep's per-cell F1 and TP/FP/FN counts at 1e-6 before the verdict was written. **V-072**
+records the first curation refusal: the shared matched-start guard compared the step-0 probe record
+including its loss, which an objective lever changes by construction; it now strips the objective's own
+fields recursively. The refused curation and the killed profile launch are preserved under
+`runs/attempts/` with notes and are cited nowhere.
+
 ## Box-origin (translation) lever refused: the origin did not move, and the residual is extent (2026-11-09)
 
 The lever the geometry pass ranked is spent and settled
