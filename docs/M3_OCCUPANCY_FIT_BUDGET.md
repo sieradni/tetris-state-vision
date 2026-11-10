@@ -183,8 +183,9 @@ their declared envelopes: lever **384 steps, 1,033,187,328 B /
 1,060,024,320 B / 1046.2 s** (declared
 1,152 MiB / 1,800 s). The sweeps (54 forwards, 640 MiB) took 67.8 s / 68.1 s
 and the placement probes (36 forwards, 640 MiB / 300 s) 45.3 s / 46.7 s. Curation `runs/m3-occfit-curation-r1-job.json` passed and
-published `docs/evidence/m3-occupancy-fit-budget-r1/scope.json`; every receipt it read postdates the
-predeclaration commit `875543d`.
+published `docs/evidence/m3-occupancy-fit-budget-r1/scope.json`; every measurement receipt it read - study, sweep, sweep profile, probe - postdates the
+predeclaration commit `875543d`. One receipt does predate it: `runs/m3-occfit-focused-r1-job.json`, the bounded job
+of the authoring test run, which measures no arm and carries no study, sweep or probe output.
 
 **Matched start.** With no declared tensor the guard is the strict form: the two saved initial state
 dictionaries are **bitwise identical** (`eec1e10ee4d1...`), the declared added-tensor set is exactly empty, and
