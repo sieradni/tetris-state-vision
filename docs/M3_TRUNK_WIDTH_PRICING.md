@@ -50,9 +50,18 @@ and **384** steps (1522.4 s). Against those:
   below the 256-step baseline
   (89% of it), so at this scale the fit budget is **not comparable**
   and the arm would be measuring a different question.
-- Both wider trunks **exceed the settled 1,152 MiB ceiling** (21,549,056 B over on the first attempt, peak
-  1,442,033,664 B at the larger ceiling), so a wider study needs its own declared resource profile before any
-  predeclaration can name an envelope.
+**Memory.** The settled 1,152 MiB profile was then tested one trunk at a time.
+
+Isolated per-trunk runs under the settled **1,152 MiB** profile:
+
+| trunk | ceiling | peak commit | result |
+|---|---|---|---|
+| published | 1152 MiB | 996,831,232 B | fits |
+| wide A | 1152 MiB | 1,060,634,624 B | fits |
+| wide B | 1152 MiB | 1,241,505,792 B | does not fit |
+
+**published, wide A** fit that profile and **wide B** does not. The earlier combined run died at 15.7 s with peak 1,229,508,608 B, 21,549,056 B over the same ceiling. A wider study therefore
+  needs its own declared resource profile before any predeclaration can name an envelope.
 
 The finding in one line: **a moderately wider trunk is affordable at a comparable budget; the widest priced trunk
 is not, and neither fits the resource profile the existing studies were admitted under.**

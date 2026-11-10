@@ -1,0 +1,55 @@
+{
+  "supervisor_pid": 29356,
+  "command": [
+    "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe",
+    "docs/evidence/m3-trunk-width-pricing/price_trunk_width.py",
+    "--output",
+    "runs/tmp-pert-wide_a-r3",
+    "--receipt",
+    "runs/m3-trunkprice-pert-wide_a-r3-job.json",
+    "--memory-mib",
+    "1152",
+    "--only",
+    "wide_a"
+  ],
+  "memory_bytes": 1207959552,
+  "wall_seconds": 120.0,
+  "work_items": 4,
+  "cpu_library_threads": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OPENBLAS_DEFAULT_NUM_THREADS": "1",
+    "GOTO_NUM_THREADS": "1"
+  },
+  "child_executable": "C:\\Users\\micha\\Code\\tetris-state-vision\\.venv\\Scripts\\python.exe",
+  "job_name": "Local\\TetrisStateVision-d8f026e653a143faaad6a0598ba896c4",
+  "guard": "readback-verified Windows aggregate Job commit + kill-on-close",
+  "supervisor_script_sha256": "f5478185d8c5340cfd9efc670a2c78e39c10d66c1173a873935c2d0c02ee3642",
+  "system_pressure_guard": "GetPerformanceInfo/0.2s",
+  "system_at_admission": {
+    "commit_bytes": 28136767488,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 14186196992,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "system_pressure": {
+    "reason": null,
+    "stop_commit_bytes": 45626134118,
+    "minimum_available_physical_bytes": 2147483648,
+    "reserved_job_bytes": 0
+  },
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_seconds": 9.808,
+  "child_pid": 28772,
+  "last_system_memory": {
+    "commit_bytes": 28341587968,
+    "commit_limit_bytes": 50695704576,
+    "physical_bytes": 33515835392,
+    "available_physical_bytes": 13929668608,
+    "counter_source": "GetPerformanceInfo"
+  },
+  "peak_job_commit_bytes": 1060634624
+}

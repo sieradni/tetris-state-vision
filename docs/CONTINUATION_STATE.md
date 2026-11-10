@@ -22,6 +22,50 @@ declared 2560 MiB profile (peak 1,442,033,664 B).
 own resource profile (contract spelled out in the brief), or adopt the frozen-architecture limit and end the
 occupancy campaign with the gate FALSE. Nothing was changed in the published model, checkpoint or lever table to
 produce these numbers.
+## Wider-trunk fork priced with measured steps, not estimates (2026-11-10)
+
+The open fork from the capacity branch now has numbers ([M3_TRUNK_WIDTH_PRICING.md](M3_TRUNK_WIDTH_PRICING.md),
+pricing only, `docs/evidence/m3-trunk-width-pricing/pricing.json` with its job receipt). Measured through the bounded runner at the real
+512-pixel streaming step: the published trunk costs **1.3425 s** of model time per
+step (8,018,505 parameters, 271 tensors), wide A
+`[64, 128, 224, 256]`/192 costs **1.7082 s**
+(8,844,777 parameters, ratio 1.272) and wide B `[96, 192, 256, 256]`/240
+costs **2.5867 s** (12,870,089, ratio 1.927).
+
+Scaled to the trainer's measured 4.0867 s whole step at capacity
+64, that is **440 / 346 / 228**
+steps inside the 1,800 s wall. Against the 256-step baseline and 384-step budget lever, wide A
+is comparable at the baseline (90% of the lever) and wide B is not
+(89% of the baseline). **published, wide A fits the settled 1,152 MiB profile while wide B does not** in isolated per-trunk runs
+at the settled ceiling (peaks and receipts in the brief); the combined run had died at 1,229,508,608 B, 21,549,056 B
+over, and only the wider trunks passed under a declared 2560 MiB profile (peak 1,442,033,664 B).
+
+**The decision is the user's**: authorize a new architecture identity with a width knob, a fresh baseline and its
+own resource profile (contract spelled out in the brief), or adopt the frozen-architecture limit and end the
+occupancy campaign with the gate FALSE. Nothing was changed in the published model, checkpoint or lever table to
+produce these numbers.
+## Wider-trunk fork priced with measured steps, not estimates (2026-11-10)
+
+The open fork from the capacity branch now has numbers ([M3_TRUNK_WIDTH_PRICING.md](M3_TRUNK_WIDTH_PRICING.md),
+pricing only, `docs/evidence/m3-trunk-width-pricing/pricing.json` with its job receipt). Measured through the bounded runner at the real
+512-pixel streaming step: the published trunk costs **1.3425 s** of model time per
+step (8,018,505 parameters, 271 tensors), wide A
+`[64, 128, 224, 256]`/192 costs **1.7082 s**
+(8,844,777 parameters, ratio 1.272) and wide B `[96, 192, 256, 256]`/240
+costs **2.5867 s** (12,870,089, ratio 1.927).
+
+Scaled to the trainer's measured 4.0867 s whole step at capacity
+64, that is **440 / 346 / 228**
+steps inside the 1,800 s wall. Against the 256-step baseline and 384-step budget lever, wide A
+is comparable at the baseline (90% of the lever) and wide B is not
+(89% of the baseline). **published, wide A fits the settled 1,152 MiB profile while wide B does not** in isolated per-trunk runs
+at the settled ceiling (peaks and receipts in the brief); the combined run had died at 1,229,508,608 B, 21,549,056 B
+over, and only the wider trunks passed under a declared 2560 MiB profile (peak 1,442,033,664 B).
+
+**The decision is the user's**: authorize a new architecture identity with a width knob, a fresh baseline and its
+own resource profile (contract spelled out in the brief), or adopt the frozen-architecture limit and end the
+occupancy campaign with the gate FALSE. Nothing was changed in the published model, checkpoint or lever table to
+produce these numbers.
 ## Capacity branch blocked: 64 is a slot bound and the trunk has no width knob (2026-11-10)
 
 The step the fit-budget record ranked is not runnable and was not run

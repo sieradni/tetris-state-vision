@@ -13,7 +13,15 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+def repository_root():
+    """Find the repository by its scripts directory, so this file runs from docs/evidence too."""
+    for parent in Path(__file__).resolve().parents:
+        if (parent/"scripts"/"m2_curriculum.py").exists():
+            return parent
+    raise SystemExit("cannot locate the repository root")
+
+
+ROOT = repository_root()
 sys.path.insert(0, str(ROOT/"scripts"))
 sys.path.insert(0, str(ROOT/"src"))
 
@@ -67,12 +75,15 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt", required=True)
     parser.add_argument("--memory-mib", type=int, default=1152)
+    parser.add_argument("--only", default=None)
     args = parser.parse_args()
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
 
     records = []
     for name, widths, dimension in TRUNKS:
+        if args.only and name != args.only:
+            continue
         print(json.dumps({"trunk_start": name, "widths": list(widths), "dimension": dimension}), flush=True)
         model = TetrisStateNet(config(widths, dimension))
         census = {"parameters": sum(p.numel() for p in model.parameters()),
@@ -93,8 +104,11 @@ def main():
         del model, optimizer
         gc.collect()
 
-    published = records[0]
-    if published["parameters"] != PUBLISHED_PARAMETERS:
+    measured_names = {record["trunk"] for record in records}
+    published = next((record for record in records if record["trunk"] == "published"), None)
+    if published is None:
+        published = records[0]
+    elif published["parameters"] != PUBLISHED_PARAMETERS:
         raise ValueError(f"the reference census is not the published one: {published['parameters']}")
     for record in records:
         record["parameter_ratio"] = record["parameters"]/published["parameters"]

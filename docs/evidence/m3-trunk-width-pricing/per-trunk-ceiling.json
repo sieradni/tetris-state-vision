@@ -1,0 +1,56 @@
+{
+  "published": {
+    "trunk": "published",
+    "widths": [
+      48,
+      96,
+      192,
+      256
+    ],
+    "dimension": 192,
+    "parameters": 8018505,
+    "tensors": 271,
+    "ceiling_bytes": 1207959552,
+    "peak_bytes": 996831232,
+    "status": "passed",
+    "exit_code": 0,
+    "over_ceiling_bytes": 0,
+    "elapsed_seconds": 8.601
+  },
+  "wide_a": {
+    "trunk": "wide_a",
+    "widths": [
+      64,
+      128,
+      224,
+      256
+    ],
+    "dimension": 192,
+    "parameters": 8844777,
+    "tensors": 271,
+    "ceiling_bytes": 1207959552,
+    "peak_bytes": 1060634624,
+    "status": "passed",
+    "exit_code": 0,
+    "over_ceiling_bytes": 0,
+    "elapsed_seconds": 9.808
+  },
+  "wide_b": {
+    "trunk": "wide_b",
+    "widths": [
+      96,
+      192,
+      256,
+      256
+    ],
+    "dimension": 240,
+    "parameters": 12870089,
+    "tensors": 271,
+    "ceiling_bytes": 1207959552,
+    "peak_bytes": 1241505792,
+    "status": "failed",
+    "exit_code": 1,
+    "over_ceiling_bytes": 33546240,
+    "elapsed_seconds": 11.311
+  }
+}
