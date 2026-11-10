@@ -1748,3 +1748,20 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   unchanged. The rejected launch is preserved as `runs/attempts/m3-occfit-lever-r1.attempt1.log` with a note
   and is not evidence.
 - Green gate: `runs/m3-occfit-focused-r2-job.json`.
+
+## V-081 — CLOSED: the amended envelope still exceeded a tool cap, this time the driver's
+
+- Symptom: after the runner cap was repaired, the 768-step study was refused by the driver itself:
+  `train_m2_stream.py: error: wall budget (0,1800] and learning rate (0,.01] required`. No optimizer step ran.
+- Root cause: the amendment sized the lever from `run_bounded.py`'s 3,600 s cap while the training driver
+  enforces a second, tighter 1,800 s cap of its own, and `--resume-from` completes only an unfinished stream,
+  so the finished 256-step arm could not be extended in segments either.
+- Detection class: declared envelope exceeds an execution tool's own limit. Second instance (V-080 is the
+  first), so the guard now covers both caps and the predeclaration's own envelope table.
+- Instrument: `MAX_WALL_SECONDS = 1800` in the curator's admission join, bound by tests for an over-cap wall
+  (refused) and an in-cap one (accepted), so neither cap can be declared past again without failing curation.
+- Resolution: second amendment, in its own commit and still before any study receipt: lever 384 steps
+  (1.5x the settled 256) at 1,800 s, with 4.09 s/step measured on the baseline arm leaving headroom. Criterion,
+  activation floor, matched start and zero added parameters are unchanged. The rejected launch is preserved as
+  `runs/attempts/m3-occfit-lever-r1.attempt2.log` with a note and is not evidence.
+- Green gate: `runs/m3-occfit-focused-r3-job.json`.

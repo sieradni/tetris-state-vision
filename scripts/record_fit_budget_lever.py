@@ -1,4 +1,4 @@
-"""Curate the declared M2 fit-budget lever: does 4x compute open the fit gate at capacity 64?
+"""Curate the declared M2 fit-budget lever: does 1.5x compute open the fit gate at capacity 64?
 
 `docs/M3_OCCUPANCY_FIT_BUDGET.md` fixes the rule: the lever arm runs 768 continuation steps, the baseline
 arm the settled 256, with no new parameter in either. The fit gate is the repository's own rule
@@ -47,9 +47,9 @@ PREVIOUS = {"geometry": ROOT/"docs/evidence/m3-occupancy-geometry-r1/scope.json"
             "refinement": ROOT/"docs/evidence/m3-occupancy-board-refinement-r1/scope.json"}
 FAMILY = "m3-occfit"
 INSTRUMENT = "m3-occupancy-fit-budget-r1"
-ARMS = {"lever": 768, "baseline": 256}
+ARMS = {"lever": 384, "baseline": 256}
 # The bounded runner refuses any wall above this, so a declaration beyond it is inadmissible (V-080).
-MAX_WALL_SECONDS = 3600
+MAX_WALL_SECONDS = 1800
 # This lever adds no tensor: the two arms are the same architecture at two declared budgets.
 ADDED_TENSORS = frozenset()
 ADDED_PARAMETERS = 0
@@ -441,7 +441,7 @@ def main():
         "predeclaration": PREDECLARATION,
         "predeclaration_commit": commit,
         "scope": ("Matched continuation of one published checkpoint at two declared step budgets: the "
-                  "lever runs 1,024 steps (4x the settled 256), the baseline 256, with no new parameter, "
+                  "lever runs 384 steps (1.5x the settled 256), the baseline 256, with no new parameter, "
                   "objective, label, read-out or stage policy in either. The question is the repository's "
                   "own fit gate at capacity 64 - is the model under-trained or under-specified - scored "
                   "read-only on the full widened deciding population with the standing grid, threshold "
@@ -461,7 +461,7 @@ def main():
                    "steps": source["steps"]},
         "matched": {"seed": 20261026, "learning_rate": .001, "capture_max_side": 512,
                     "curriculum": "stream-v1", "config_difference": [],
-                    "objective_difference": [], "budget_difference": {"lever": 1024, "baseline": 256},
+                    "objective_difference": [], "budget_difference": {"lever": 384, "baseline": 256},
                     "shared": {"lattice_board_refine": 0, "lattice_residual": 0, "geometry_final_only": 0,
                                "lattice_support": 0, "occupancy_lattice_free": 0,
                                "box_extent_weight": 0.0, "support_anchor_weight": 0.0,

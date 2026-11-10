@@ -11,6 +11,16 @@ Amendment (2026-11-10, before any study receipt): the declared 5,400 s lever env
 declared at **768 steps (3x the settled 256)** inside **3,600 s**, the largest single job the runner admits.
 Raising the guard was not considered. The fitting criterion, the activation floor, the matched start and the
 zero-parameter declaration are unchanged; only the budget and its wall ceiling move.
+Second amendment (2026-11-10, before any study receipt): the 3,600 s ceiling is itself inadmissible. The
+training driver refuses any wall above **1,800 s**
+(`train_m2_stream.py: error: wall budget (0,1800] and learning rate (0,.01] required`), and its
+`--resume-from` completes only an *unfinished* stream, so a finished 256-step arm cannot be extended in
+segments. At the measured **4.09 s/step** (256 steps in 1,047.5 s) one admitted job reaches about 430 steps,
+so the lever is declared at **384 steps (1.5x the settled 256)** inside **1,800 s**, leaving headroom rather
+than a race against the cap. The rejected launch is preserved as
+`runs/attempts/m3-occfit-lever-r1.attempt2.log`. Criterion, activation floor, matched start, zero added
+parameters and the rule are unchanged; when the gate stays closed at the largest admissible budget the rule
+ranks the wider trunk, which is the branch this truncated budget is designed to decide.
 
 Previous lever: per-board lattice refinement capacity
 ([M3_OCCUPANCY_BOARD_REFINEMENT.md](M3_OCCUPANCY_BOARD_REFINEMENT.md)) failed its own activation condition
@@ -32,8 +42,8 @@ This pass answers that question with one declared compute intervention, not with
 
 ## The change under test
 
-**Training budget only.** The lever arm continues the published checkpoint for **768 optimizer steps**
-(3x the settled 256-step continuation, 6x the source checkpoint's own 128 steps); the baseline arm runs the
+**Training budget only.** The lever arm continues the published checkpoint for **384 optimizer steps**
+(1.5x the settled 256-step continuation, 3x the source checkpoint's own 128 steps); the baseline arm runs the
 **256 steps** every reconciled number in this campaign was produced at. Nothing else differs:
 
 - **No new parameters.** Explicit statement: the lever adds **0 tensors and 0 parameters**; both arms are
@@ -46,7 +56,7 @@ This pass answers that question with one declared compute intervention, not with
 - **Why this is not the spent 4x-budget pass.** The earlier `4x` lever
   ([M3_OCCUPANCY_SCALED.md](M3_OCCUPANCY_SCALED.md)) ran 256 steps, i.e. 4x of the 64-step stencil runs, on
   a different read-out form. This pass is the first budget lever on the reconciled read-out and takes it to
-  768 steps, the largest budget one admitted job can hold.
+  384 steps, the largest budget one admitted job can hold under the driver's own 1,800 s cap.
 
 ## The fitting criterion (numeric, executable)
 
@@ -69,7 +79,7 @@ negative names what pinned it.
 
 ## The activation condition (declared, with a floor)
 
-A 3x budget that never reaches the model cannot answer a fit question. The declared engaged quantity is
+A 1.5x budget that never reaches the model cannot answer a fit question. The declared engaged quantity is
 **behavioural**, measured on the same deciding population as the verdict:
 
 - **Quantity**: the share of known deciding cells whose thresholded decision at `0.0` **flips** between the
@@ -101,7 +111,7 @@ First match wins. No branch can return `translation`, `scale`, `geometry_capacit
 
 | rule | condition | next suspect |
 |---|---|---|
-| under_trained | activation flip rate `< 0.05` | a larger declared continuation budget than 3x |
+| under_trained | activation flip rate `< 0.05` | a larger declared continuation budget than 1.5x |
 | capacity_limit | engaged, fit gate still closed | a wider shared trunk than capacity 64 |
 | fit_opens | engaged and the gate opens | the occupancy label family at the opened gate |
 
@@ -119,7 +129,7 @@ the objective's own value is stripped.
 |---|---|---|---|
 | admission profile, per arm | 2 steps | 1,152 MiB | 300 s |
 | baseline study | 256 steps | 1,152 MiB | 1,800 s |
-| lever study | 768 steps | 1,152 MiB | 3,600 s |
+| lever study | 384 steps | 1,152 MiB | 1,800 s |
 | sweep profile, per arm | 2 forwards | 640 MiB | 300 s |
 | sweep, per arm | 54 forwards | 640 MiB | 600 s |
 | placement probe, per arm | 36 forwards | 640 MiB | 300 s |
@@ -144,8 +154,8 @@ cost, origin **+0.0102** at 11.0%, extent **+0.0318** at 67.5%, capacity **-0.02
 ## Receipts this pass must produce
 
 1. `runs/m3-occfit-{lever,baseline}-r1-profile-r1` (2 steps, 1,152 MiB / 300 s / 2 work items).
-2. `runs/m3-occfit-baseline-r1` (256 steps, 1,152 MiB / 1,800 s) and `runs/m3-occfit-lever-r1` (768 steps,
-   1,152 MiB / 3,600 s), each admitted only by its own profile.
+2. `runs/m3-occfit-baseline-r1` (256 steps, 1,152 MiB / 1,800 s) and `runs/m3-occfit-lever-r1` (384 steps,
+   1,152 MiB / 1,800 s), each admitted only by its own profile.
 3. `...-sweep-r1-profile-r1` (2 forwards) and `...-sweep-r1` (54 forwards) per arm, 640 MiB.
 4. `...-probe-r1` per arm (36 forwards, 640 MiB / 300 s).
 5. Curation `runs/m3-occfit-curation-r1-job.json` into
@@ -157,8 +167,8 @@ cost, origin **+0.0102** at 11.0%, extent **+0.0318** at 67.5%, capacity **-0.02
 ## Limits, stated before the measurement
 
 - Synthetic, training-fit population. Opening the gate would say this architecture can fit 28 synthetic
-  training views at 3x budget and nothing more: no real-image, complete-state, calibration or quality claim.
-- One budget point (768 steps), one seed, one continuation, committed catalogue.
-- The measurement is a single-seed diagnostic: a null at 3x closes 3x, not "any budget".
+  training views at 1.5x budget and nothing more: no real-image, complete-state, calibration or quality claim.
+- One budget point (384 steps), one seed, one continuation, committed catalogue.
+- The measurement is a single-seed diagnostic: a null at 1.5x closes 1.5x, not "any budget".
 - The activation floor is behavioural (prediction flips); a budget can flip decisions without that making it
   adequate, which is a `not-cleared` result, not evidence that compute is irrelevant.
