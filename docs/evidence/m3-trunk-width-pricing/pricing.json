@@ -1,0 +1,131 @@
+{
+  "status": "passed",
+  "instrument": "m3-trunk-width-pricing-r1",
+  "purpose": "pricing only",
+  "published_identity_untouched": true,
+  "capacity": 64,
+  "capture_max_side": 512,
+  "seed": 20261026,
+  "declared_ceiling_mib": 2560,
+  "warmup_steps": 1,
+  "timed_steps": 3,
+  "trainer_wall_seconds": 1800,
+  "measured_trainer": {
+    "baseline_256": {
+      "steps": 256,
+      "elapsed_seconds": 1046.2
+    },
+    "lever_384": {
+      "steps": 384,
+      "elapsed_seconds": 1522.4
+    }
+  },
+  "measured_whole_step_seconds": {
+    "baseline_256": 4.08671875,
+    "lever_384": 3.9645833333333336
+  },
+  "trunks": [
+    {
+      "trunk": "published",
+      "widths": [
+        48,
+        96,
+        192,
+        256
+      ],
+      "dimension": 192,
+      "parameters": 8018505,
+      "tensors": 271,
+      "input_shape": [
+        3,
+        480,
+        480
+      ],
+      "timed_steps": 3,
+      "per_step_seconds": [
+        1.336010199996963,
+        1.3424820000000182,
+        1.4683809999987716
+      ],
+      "median_step_seconds": 1.3424820000000182,
+      "losses": [
+        13.096856117248535,
+        15.832836151123047,
+        37.04917907714844,
+        34.82482147216797
+      ],
+      "parameter_ratio": 1.0,
+      "step_ratio": 1.0,
+      "whole_step_seconds_derived": 4.08671875,
+      "steps_in_1800s_derived": 440
+    },
+    {
+      "trunk": "wide_a",
+      "widths": [
+        64,
+        128,
+        224,
+        256
+      ],
+      "dimension": 192,
+      "parameters": 8844777,
+      "tensors": 271,
+      "input_shape": [
+        3,
+        480,
+        480
+      ],
+      "timed_steps": 3,
+      "per_step_seconds": [
+        1.7082006999989972,
+        1.669040299999324,
+        1.7504007000025013
+      ],
+      "median_step_seconds": 1.7082006999989972,
+      "losses": [
+        13.293750762939453,
+        10.075014114379883,
+        75.88477325439453,
+        25.92997932434082
+      ],
+      "parameter_ratio": 1.103045642548081,
+      "step_ratio": 1.2724198164288043,
+      "whole_step_seconds_derived": 5.200021921671153,
+      "steps_in_1800s_derived": 346
+    },
+    {
+      "trunk": "wide_b",
+      "widths": [
+        96,
+        192,
+        256,
+        256
+      ],
+      "dimension": 240,
+      "parameters": 12870089,
+      "tensors": 271,
+      "input_shape": [
+        3,
+        480,
+        480
+      ],
+      "timed_steps": 3,
+      "per_step_seconds": [
+        2.586670200002118,
+        2.5769619999991846,
+        2.7464972000016132
+      ],
+      "median_step_seconds": 2.586670200002118,
+      "losses": [
+        16.15732765197754,
+        14.002119064331055,
+        88.96887969970703,
+        32.501739501953125
+      ],
+      "parameter_ratio": 1.6050484473103153,
+      "step_ratio": 1.9267820350679434,
+      "whole_step_seconds_derived": 7.874216269875323,
+      "steps_in_1800s_derived": 228
+    }
+  ]
+}
