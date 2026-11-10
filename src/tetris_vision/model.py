@@ -35,6 +35,8 @@ class ModelConfig:
     occupancy_resolution: int = 0
     lattice_support: int = 0
     lattice_residual: int = 0
+    lattice_board_refine: int = 0
+    lattice_board_refine: int = 0
     occupancy_lattice_free: int = 0
 
     def __post_init__(self):
@@ -74,6 +76,10 @@ class ModelConfig:
               "lattice support is 0 (published box head) or 1 (declared support-moment residual)")
         check(type(self.lattice_residual) is int and self.lattice_residual in (0, 1),
               "lattice residual is 0 (published shared decode) or 1 (declared per-stage residual)")
+        check(type(self.lattice_board_refine) is int and self.lattice_board_refine in (0, 1),
+              "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
+        check(type(self.lattice_board_refine) is int and self.lattice_board_refine in (0, 1),
+              "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
         check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1),
               "occupancy lattice-free readout is 0 (published read-out) or 1 (declared gated channel)")
 
@@ -354,6 +360,30 @@ class TetrisStateNet(nn.Module):
                 nn.init.zeros_(layer.weight)
                 nn.init.zeros_(layer.bias)
             self.occupancy_lattice_gate = nn.Parameter(torch.zeros(1))
+        # Declared capacity lever: one correction of the decoded lattice per board, predicted from
+        # the board token and applied identically at every stage - origin offset in cells along the
+        # decoded axes plus a log-scale per axis. It is board-conditioned rather than per-stage, so
+        # the stages share one correction. Every tensor starts at exactly zero, which keeps step zero
+        # bitwise the published function; constructed last so published tensors keep their seeds.
+        self.lattice_board_refine = None
+        if config.lattice_board_refine:
+            self.lattice_board_refine = nn.Sequential(nn.Linear(dimension, 64), nn.SiLU(),
+                                                      nn.Linear(64, 4))
+            for layer in (self.lattice_board_refine[0], self.lattice_board_refine[2]):
+                nn.init.zeros_(layer.weight)
+                nn.init.zeros_(layer.bias)
+        # Declared capacity lever: one correction of the decoded lattice per board, predicted from
+        # the board token and applied identically at every stage - origin offset in cells along the
+        # decoded axes plus a log-scale per axis. It is board-conditioned rather than per-stage, so
+        # the stages share one correction. Every tensor starts at exactly zero, which keeps step zero
+        # bitwise the published function; constructed last so published tensors keep their seeds.
+        self.lattice_board_refine = None
+        if config.lattice_board_refine:
+            self.lattice_board_refine = nn.Sequential(nn.Linear(dimension, 64), nn.SiLU(),
+                                                      nn.Linear(64, 4))
+            for layer in (self.lattice_board_refine[0], self.lattice_board_refine[2]):
+                nn.init.zeros_(layer.weight)
+                nn.init.zeros_(layer.bias)
 
     @staticmethod
     def support_moments(coarse):
@@ -388,6 +418,10 @@ class TetrisStateNet(nn.Module):
         raw_box = self.initial_box(board[:, 0])
         if self.support_box is not None:
             raw_box = raw_box+self.support_box(self.support_moments(coarse))
+        refinement = (None if self.lattice_board_refine is None
+                      else self.lattice_board_refine(board[:, 0]))
+        refinement = (None if self.lattice_board_refine is None
+                      else self.lattice_board_refine(board[:, 0]))
         cells = (self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None].expand(batch, -1, -1)
         stages = []
         for index, decoder in enumerate(self.decoders):
@@ -396,6 +430,10 @@ class TetrisStateNet(nn.Module):
             lattice = decode_lattice(raw_box)
             if self.lattice_residual is not None:
                 lattice = apply_lattice_residual(lattice, self.lattice_residual[index](raw_box))
+            if refinement is not None:
+                lattice = apply_lattice_residual(lattice, refinement)
+            if refinement is not None:
+                lattice = apply_lattice_residual(lattice, refinement)
             offsets = self.base_offsets+.1*torch.tanh(self.offsets(cells+board)).reshape(batch, -1, 9, 2)
             sampled, points = sample_features(detail, lattice, self.coordinates, offsets)
             cells = decoder(cells+self.sample_reader(sampled.flatten(2)), context, context_valid)
@@ -446,4 +484,8 @@ class TetrisStateNet(nn.Module):
                 stages[-1]["layer_cells"] = layer_cells
             if self.components is not None:
                 stages[-1]["components"] = self.components(combined, combined_valid, board, capacity=self.config.component_capacity)
+        if refinement is not None:
+            stages[-1]["board_refinement"] = refinement
+        if refinement is not None:
+            stages[-1]["board_refinement"] = refinement
         return {"stages": stages, "final": stages[-1]}

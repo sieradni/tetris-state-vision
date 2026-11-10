@@ -52,6 +52,24 @@ def saved_recipe(recipe, run):
     return (run/"training-probe"/recipe["sample_id"]).with_suffix(".png").exists()
 
 
+def activation_summary(vectors, scale=.25):
+    """Declared activation diagnostic: the engaged magnitude of the per-board refinement.
+
+    Each vector is one board's raw four-vector; the applied correction is the model's own
+    `scale*tanh` map, so these are cell offsets and relative axis scale changes, not weights.
+    """
+    if not vectors:
+        return {"available": False}
+    import math
+    cells = [abs(scale*math.tanh(value)) for row in vectors for value in row[:2]]
+    logs = [abs(math.exp(scale*math.tanh(value))-1) for row in vectors for value in row[2:]]
+    return {"available": True, "boards": len(vectors),
+            "mean_abs_origin_cells": round(sum(cells)/len(cells), 6),
+            "mean_abs_log_scale": round(sum(logs)/len(logs), 6),
+            "max_abs_origin_cells": round(max(cells), 6),
+            "max_abs_log_scale": round(max(logs), 6)}
+
+
 def main():
     require_bounded_job()
     parser = argparse.ArgumentParser(description=__doc__)
@@ -121,7 +139,7 @@ def main():
     if len(recipes) != FORWARDS:
         raise ValueError("placement probe requires exactly 36 deciding boards")
 
-    cases = []
+    cases, activations = [], []
     for recipe in recipes:
         sample_kwargs, target_kwargs = replay_keywords(recipe, capacity)
         if manifest["config"].get("layer_evidence", False):
@@ -140,6 +158,9 @@ def main():
             raise ValueError("placement probe requires a fully known registered board")
         with torch.no_grad():
             output = model(prepared.pixels[None], prepared.valid[None])
+        refinement = output["final"].get("board_refinement")
+        if refinement is not None:
+            activations.append([float(value) for value in refinement[0]])
         predicted = output["final"]["lattice"][0].detach().cpu()
         geometry = target["lattice"][0]
         predicted = {"origin": predicted[0].tolist(), "u": predicted[1].tolist(),
@@ -172,6 +193,7 @@ def main():
                              "clusters": len({"-".join(case["sample_id"].split("-")[:2])
                                               for case in cases})},
               "threshold": 0.0, "measured": measured, "cases": cases,
+              "activation": activation_summary(activations),
               "sources": {name: digest(ROOT/name) for name in SOURCES},
               "elapsed_seconds": time.monotonic()-started,
               "scope": ("Read-only placement and occupancy probe on the widened deciding population: "

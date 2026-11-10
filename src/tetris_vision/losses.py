@@ -196,6 +196,8 @@ GEOMETRY_STAGE_POLICIES = (0, 1)
 LATTICE_SUPPORT_LEVERS = (0, 1)
 LATTICE_RESIDUAL_LEVERS = (0, 1)
 OCCUPANCY_LATTICE_FREE_LEVERS = (0, 1)
+LATTICE_BOARD_REFINE_LEVERS = (0, 1)
+LATTICE_BOARD_REFINE_LEVERS = (0, 1)
 
 
 def require_lattice_support(value, summary):
@@ -260,6 +262,22 @@ def require_occupancy_lattice_free(value, summary):
             summary.get("arguments", {}).get("occupancy_lattice_free", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_lattice_free", 0) != value):
         raise ValueError("occupancy lattice-free readout differs from resource admission")
+
+
+def require_lattice_board_refine(value, summary):
+    """One declaration of the admission join for the per-board refinement capacity lever."""
+    if (type(value) is not int or value not in LATTICE_BOARD_REFINE_LEVERS or
+            summary.get("arguments", {}).get("lattice_board_refine", 0) != value or
+            summary.get("recovery_contract", {}).get("lattice_board_refine", 0) != value):
+        raise ValueError("lattice board refinement differs from resource admission")
+
+
+def require_lattice_board_refine(value, summary):
+    """One declaration of the admission join for the per-board refinement capacity lever."""
+    if (type(value) is not int or value not in LATTICE_BOARD_REFINE_LEVERS or
+            summary.get("arguments", {}).get("lattice_board_refine", 0) != value or
+            summary.get("recovery_contract", {}).get("lattice_board_refine", 0) != value):
+        raise ValueError("lattice board refinement differs from resource admission")
 
 
 def require_lattice_residual(value, summary):

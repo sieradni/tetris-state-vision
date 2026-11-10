@@ -329,6 +329,40 @@ def lattice_free_decomposition(baseline_placement, lever_placement, decision):
                        "unmoved_below": CAPACITY_MOVED_FLOOR, "dispersion_cells": DISPERSION_FLOOR}}
 
 
+BOARD_REFINE_ACTIVATION_FLOOR = 0.10
+BOARD_REFINE_SCALE_FLOOR = 0.02
+
+
+def board_refinement_decomposition(baseline_placement, lever_placement, decision):
+    """Declared non-circular rule after the per-board refinement capacity lever.
+
+    The six spent levers - translation, scale, geometry_capacity, placement_capacity,
+    lattice_residual and the lattice-free read-out - are inputs to this rule, never outputs.
+    The activation condition comes first: a lever that never engaged cannot rank a suspect as if
+    its channel had been measured, so it falls through to the fit gate.
+    """
+    spread = lever_placement["board_error_spread_cells"]
+    engaged = bool(decision["conditions"].get("activation", False))
+    if not engaged or spread >= DISPERSION_FLOOR:
+        rule, suspect = "fit_gate", "the M2 fit gate at capacity 64"
+    else:
+        rule, suspect = "scaling", "occupancy read-out at a second scale"
+    return {"rule": rule, "next_suspect": suspect,
+            "activation": engaged, "placement_improvement": decision["placement_improvement"],
+            "improvement_floor": decision["placement_floor"],
+            "lever_mean_abs_offset_cells": lever_placement["mean_abs_offset_cells"],
+            "baseline_mean_abs_offset_cells": baseline_placement["mean_abs_offset_cells"],
+            "lever_signed_column_offset_cells": lever_placement["signed_column_offset_cells"],
+            "lever_signed_row_offset_cells": lever_placement["signed_row_offset_cells"],
+            "lever_extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "lever_extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "lever_board_error_spread_cells": spread,
+            "floors": {"placement_improvement": PLACEMENT_IMPROVEMENT,
+                       "dispersion_cells": DISPERSION_FLOOR,
+                       "activation_origin_cells": BOARD_REFINE_ACTIVATION_FLOOR,
+                       "activation_log_scale": BOARD_REFINE_SCALE_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \
