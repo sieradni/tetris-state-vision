@@ -204,6 +204,26 @@ def require_lattice_support(value, summary):
         raise ValueError("lattice support differs from resource admission")
 
 
+# Declared box-extent lever: 0 is the published objective; 1 adds a relative log-scale term on the
+# final lattice - the axis-resolved quantity the placement probe reports as L1/L2.
+BOX_EXTENT_WEIGHTS = (0.0, 1.0)
+
+
+def require_box_extent_weight(weight, summary):
+    """One declaration of the admission join for the box-extent supervision lever."""
+    if (type(weight) is not float or weight not in BOX_EXTENT_WEIGHTS or
+            summary.get("arguments", {}).get("box_extent_weight", 0.0) != weight or
+            summary.get("recovery_contract", {}).get("box_extent_weight", 0.0) != weight):
+        raise ValueError("box extent weight differs from resource admission")
+
+
+def extent_error(lattice, target):
+    """Relative log-scale error of the lattice basis per axis, in nats: shape [batch, 2]."""
+    predicted = torch.stack((lattice[:, 1].norm(dim=-1), lattice[:, 2].norm(dim=-1)), -1).clamp_min(1e-6)
+    reference = torch.stack((target[:, 1].norm(dim=-1), target[:, 2].norm(dim=-1)), -1).clamp_min(1e-6)
+    return torch.log(predicted/reference)
+
+
 def require_geometry_final_only(value, summary):
     """One declaration of the admission join for the geometry stage policy."""
     if (type(value) is not int or value not in GEOMETRY_STAGE_POLICIES or
@@ -254,9 +274,11 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 
 
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1, geometry_final_only=0):
+               positive_weight=1, geometry_final_only=0, box_extent_weight=0.0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
+    check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
+          "box extent weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight)
                  for stage in outputs["stages"]]
@@ -265,10 +287,17 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
         # Declared geometry lever: the occupancy read-out reads the final lattice only, so
         # every other stage's geometry mean is replaced by that one rather than diluting it.
         terms["geometry"] = per_stage[-1]["geometry"]
+    if box_extent_weight:
+        # Declared extent lever: the final basis's relative log-scale error, axis-resolved. The origin
+        # and the occupancy read-out are untouched, so this is supervision of the four box parameters'
+        # scale rather than of where the lattice sits.
+        terms["box_extent"] = masked_mean(
+            extent_error(outputs["final"]["lattice"], target["lattice"]).abs().mean(-1),
+            target["registered"])
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1.*occupancy_factor, "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
-               "components": .5, "layer_cells": .5}
+               "components": .5, "layer_cells": .5, "box_extent": box_extent_weight}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 

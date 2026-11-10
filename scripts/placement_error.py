@@ -169,6 +169,69 @@ def translation_decomposition(baseline_placement, lever_placement, decision):
                        "dispersion_cells": DISPERSION_FLOOR}}
 
 
+EXTENT_REDUCTION = 0.5
+
+
+def extent_reductions(baseline, lever):
+    """Per-axis reduction of |log extent ratio|; a ratio crossing 1.0 counts as a reduction."""
+    reduction = {}
+    for axis in ("mean_scale_ratio_u", "mean_scale_ratio_v"):
+        reference, value = abs(math.log(baseline[axis])), abs(math.log(lever[axis]))
+        if reference < 1e-12:
+            raise ValueError("baseline extent ratio must differ from 1.0")
+        reduction[axis] = 1-value/reference
+    return reduction
+
+
+def extent_offsets_moved(baseline, lever, *, floor=EXTENT_REDUCTION):
+    """Declared condition: both extent log-ratios fall to at most half their baseline magnitude."""
+    reduction = extent_reductions(baseline, lever)
+    return all(value >= floor for value in reduction.values()), reduction
+
+
+def extent_verdict(occupancy, ranking, attribution, baseline_placement, lever_placement, *,
+                   cell_bar=CELL_F1_THRESHOLD, attribution_floor=ATTRIBUTION_FLOOR,
+                   extent_floor=EXTENT_REDUCTION):
+    """Three standing gates plus the declared extent condition."""
+    moved, reduction = extent_offsets_moved(baseline_placement, lever_placement, floor=extent_floor)
+    conditions = {"per_cell_f1": occupancy["f1"] >= cell_bar,
+                  "ranking": ranking == "informative",
+                  "attribution": attribution >= attribution_floor,
+                  "extent": moved}
+    return {"verdict": "cleared" if all(conditions.values()) else "not-cleared",
+            "conditions": conditions,
+            "failing": [name for name, met in conditions.items() if not met],
+            "cell_bar": cell_bar, "attribution_floor": attribution_floor,
+            "extent_reduction_floor": extent_floor, "extent_reduction": reduction,
+            "extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "ranking_auc_bar": AUC_THRESHOLD, "ranking_f1_bar": F1_THRESHOLD}
+
+
+def extent_decomposition(baseline_placement, lever_placement, decision):
+    """The declared non-circular rule that names the next suspect after this lever."""
+    reduction = decision["extent_reduction"]
+    smallest = min(reduction.values())
+    occupancy_met = decision["conditions"]["per_cell_f1"] and decision["conditions"]["ranking"]
+    if smallest < 0.25:
+        rule, suspect = "geometry_capacity", "geometric supervision capacity (support anchors)"
+    elif decision["conditions"]["extent"] and not occupancy_met:
+        rule, suspect = "read_out_inheritance", "a lattice-agnostic occupancy read-out"
+    elif lever_placement["board_error_spread_cells"] >= DISPERSION_FLOOR:
+        rule, suspect = "dispersion", "per-board lattice refinement capacity"
+    else:
+        rule, suspect = "scaling", "occupancy read-out at a second scale"
+    return {"rule": rule, "next_suspect": suspect, "extent_reduction": reduction,
+            "smallest_extent_reduction": smallest, "occupancy_gates_met": occupancy_met,
+            "lever_signed_column_offset_cells": lever_placement["signed_column_offset_cells"],
+            "lever_signed_row_offset_cells": lever_placement["signed_row_offset_cells"],
+            "lever_extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "lever_extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "lever_board_error_spread_cells": lever_placement["board_error_spread_cells"],
+            "floors": {"extent_reduction": decision["extent_reduction_floor"],
+                       "extent_unmoved_below": 0.25, "dispersion_cells": DISPERSION_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \

@@ -8,7 +8,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"src"))
 
 from placement_error import (SIGNED_REDUCTION, signed_offsets_moved, signed_reduction,
                              translation_decomposition, translation_verdict)
-from record_lattice_lever import STEPS, arm_matches, initial_state_matches
+from matched_start import matched_start
+from record_lattice_lever import STEPS, SUPPORT_PARAMETERS, arm_matches
+
+
+def initial_state_matches(lever_state, baseline_state):
+    """The curator's parameter-adding call into the shared matched-start contract (V-071)."""
+    return matched_start(lever_state, baseline_state, added=SUPPORT_PARAMETERS)
 from record_stream_run import OWNED_RUN_PATTERN
 from tetris_vision.losses import LATTICE_SUPPORT_LEVERS, require_lattice_support
 
