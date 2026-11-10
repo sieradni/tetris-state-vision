@@ -1,5 +1,65 @@
 # Contributor handoff — 2026-10-30
 
+## Lattice-agnostic read-out lever refused: the gate barely opened and bought placement, not occupancy (2026-11-10)
+
+The lever the residual pass ranked is spent and settled
+([M3_OCCUPANCY_LATTICE_FREE.md](M3_OCCUPANCY_LATTICE_FREE.md), predeclared at `7b3ca9a`,
+`docs/evidence/m3-occupancy-lattice-free-readout-r1/scope.json`, curation
+`runs/m3-occlatfree-curation-r1-job.json`). The declared change was the **read-out**, not supervision,
+capacity or geometry: the published head reads each stage's decoder latent at that stage's own predicted
+lattice, so the lever added a channel built only from the encoder's image-level context (valid-token mean)
+plus fixed row and column embeddings - identical at every stage - and blended it with the published logits
+through one scalar gate, `logits = (1-gate)*published + gate*free`, `gate = tanh(raw)`. The two-layer head
+and the gate are zero-initialized, for **4,226 declared parameters** in five tensors, so step zero is
+bitwise the published function and `|gate| -> 1` replaces the lattice-sampled path and its detail tap. Both
+arms ran 256 steps from `9ae1fef9f649...` under one catalogue (`93742d5fb23f...`) at 1,152 MiB / 1,800 s (peaks
+1,082,392,576 B / 1,025,159,168 B, 1,057.0 s / 1,025.0 s).
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.4284**
+(371/694/296)
+against **0.4146** (351/675/316);
+AUC **0.8401** against **0.8255**; best swept F1 **0.4384** at
+`1.65` against **0.4237** at `-0.3`, attribution
+**+0.0147** with twelve-cluster paired-bootstrap median **+0.0150** and
+interval **-0.0836 to +0.1284**. Placement improved **22.3%** (1.9812 ->
+1.5393), short of the **25%** floor.
+
+**The declared channel was barely activated, and that is the finding.** The trained gate reached raw
+0.0744, `|tanh| = 0.0742` - above the 0.05 shut falsifier, but only
+~7% of the logits came from the lattice-agnostic path. What the arm did buy is the
+first movement in this campaign's other direction: placement improved rather than being spent, both signed
+offsets moved toward zero (+1.3830 -> +0.4926,
+-2.1914 -> -1.0181), and the per-board error spread
+fell 4.6043 -> **3.3544** cells. AUC
+0.8401 is the highest of the six levers, so the ranking signal moved without the decision
+boundary. The declared limit applies: a null result at a near-zero gate cannot prove the read-out is not
+the bottleneck.
+
+**Campaign reconciliation on the single control.**
+
+| lever | attribution | placement cost | verdict |
+|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% | not-cleared |
+| box origin | +0.0102 | 11.0% | not-cleared |
+| box extent | +0.0318 | 67.5% | not-cleared |
+| geometry capacity | -0.0241 | 28.2% | not-cleared |
+| per-stage residual | -0.0115 | 19.2% | not-cleared |
+| lattice-free read-out | +0.0147 | 22.3% gain | not-cleared |
+
+**Ranked next.** The non-circular rule takes its **first** branch - the lever's own spread
+**3.3544 >= 1.5** cells - and names **per-board lattice refinement
+capacity**. **Ranked next: predeclare a per-board lattice refinement capacity lever**, read with the same
+four conditions; `scaling` stays behind it, and `translation`, `scale`, `geometry_capacity`,
+`placement_capacity` and `lattice_residual` cannot be returned by the rule.
+
+**Receipts and defects.** Profiles `runs/m3-occlatfree-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occlatfree-{lever,baseline}-r1`, sweeps `...-sweep-r1` with their own profiles (54 forwards,
+640 MiB), probes `...-probe-r1` (36 forwards, 640 MiB / 300 s), curation
+`runs/m3-occlatfree-curation-r1-job.json`. Each probe reproduces its own sweep's per-cell F1 and TP/FP/FN
+counts, the baseline reproduces the curated control to 1e-6, and the matched start is proven by the
+parameter-addition branch (five declared zero tensors, shared tensors bitwise identical, step-0 probes
+equal). No launch was refused or killed, so `runs/attempts/` is unchanged. New defects V-077 and V-078 are
+logged; no prior evidence or frozen manifest was touched.
 ## Per-stage lattice-residual lever refused: more box capacity moved the lattice and lost both scores (2026-11-10)
 
 The lever the capacity pass ranked is spent and settled

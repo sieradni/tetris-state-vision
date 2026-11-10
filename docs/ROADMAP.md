@@ -11,14 +11,33 @@ head of that representation is closed from every measured direction (weight scal
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
 lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
-lost both, so the remaining occupancy deficit is ranked as a lattice-agnostic read-out rather than a
-label, budget, origin, extent, supervision-capacity or per-stage-capacity problem;
+lost both, so the remaining occupancy deficit is ranked as per-board lattice refinement capacity rather than
+a label, budget, origin, extent, supervision-capacity, per-stage-capacity or read-out problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the per-stage lattice-residual lever is refused: independently correctable stage boxes
+Latest: **the lattice-agnostic read-out lever is refused: the gate barely opened, and the free channel
+bought placement rather than occupancy** ([M3_OCCUPANCY_LATTICE_FREE.md](M3_OCCUPANCY_LATTICE_FREE.md),
+predeclared at `7b3ca9a`, `docs/evidence/m3-occupancy-lattice-free-readout-r1/scope.json`). The declared
+single change was the occupancy read-out: a channel built from the encoder's image-level context and
+fixed cell coordinates, never from the predicted lattice, blended with the published logits through
+`logits = (1-gate)*published + gate*free` with `gate = tanh(raw)` - **4,226 declared parameters** in five
+zero-initialized tensors, so step zero was bitwise the published function and `|gate| -> 1` suppresses
+the lattice-sampled path and its detail tap. Both arms ran 256 steps from `9ae1fef9f649...` under one catalogue
+at 1,152 MiB / 1,800 s (peaks 1.082 GB / 1.025 GB, 1,057.0 s / 1,025.0 s). F1@0 **0.4284**
+against **0.4146** (371/694/296
+against 351/675/316),
+AUC **0.8401** against **0.8255**, best swept F1 **0.4384** at
+`1.65` against **0.4237** at `-0.3` (attribution
+**+0.0147**, twelve-cluster interval **-0.0836 to +0.1284**,
+median **+0.0150**), and placement **22.3% better** (1.9812 -> 1.5393)
+with the error spread falling 4.6043 -> **3.3544**. The trained gate reached
+`|tanh| = 0.0742`, so the channel carried only ~7% of the
+logits: the change was barely activated, all four conditions fail, and the rule's spread branch names
+**per-board lattice refinement capacity**.
+Previous: **the per-stage lattice-residual lever is refused: independently correctable stage boxes
 moved the lattice and lost both scores** ([M3_OCCUPANCY_LATTICE_RESIDUAL.md](M3_OCCUPANCY_LATTICE_RESIDUAL.md),
 predeclared at `473440c`, `docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`). The declared
 single change was capacity, not supervision: each of the six decoder stages gained a zero-initialized

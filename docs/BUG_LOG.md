@@ -1691,3 +1691,30 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Green gate: `runs/m3-occlatres-focused-r3-job.json` (85/85) and curation
   `runs/m3-occlatres-curation-r1-job.json`, which passed in 6.346 s, peak 322,686,976 B, and
   published `docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`.
+
+## V-077 — CLOSED: the rule-insertion anchor matched two functions
+
+- Symptom: none in a run. `runs/patch_lattice_free.py` refused to apply the
+  `lattice_free_decomposition` insertion until its anchor was narrowed, because the trailing two lines of
+  `capacity_decomposition` and `lattice_residual_decomposition` are identical.
+- Root cause: the anchor was written from the tail of the function it followed, and the earlier capacity
+  rule ends with the same `floors` lines apart from one preceding line. A blind replace would have
+  inserted the new rule inside `capacity_decomposition`.
+- Detection class: text-anchor ambiguity on a shared suffix. First instance in this campaign.
+- Instrument: the patch counts occurrences and aborts unless exactly one matches, and the new rule's test
+  drives all four branches; the anchor now includes the distinguishing `PLACEMENT_IMPROVEMENT` line.
+- Green gate: the patch applied cleanly to five files, `ast.parse` passed for each, and
+  `runs/m3-occlatfree-focused-r2-job.json` ran 98/98.
+
+## V-078 — CLOSED: a test compared the declared constant with a tiny-config count
+
+- Symptom: `tests.test_lattice_free_lever.LatticeFreeContractTests.test_the_declared_addition_is_exactly_the_model_difference`
+  failed with `4226 != 290` in the first focused run.
+- Root cause: the assertion reused the full-model declared parameter constant next to a tiny-config
+  expectation, so it checked two different configurations in one line. The model-difference check above it
+  was correct; only the arithmetic expectation was wrong.
+- Detection class: test expectation conflated two configurations. First instance.
+- Instrument: the tiny-config assertion now sums the tiny model's own added tensors, and the declared
+  constant is checked separately against the full architecture.
+- Green gate: `runs/m3-occlatfree-focused-r2-job.json`, 98/98 in 0.757 s; the predeclaration commit
+  `7b3ca9a` was made only after that green run.
