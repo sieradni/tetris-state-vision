@@ -232,6 +232,47 @@ def extent_decomposition(baseline_placement, lever_placement, decision):
                        "extent_unmoved_below": 0.25, "dispersion_cells": DISPERSION_FLOOR}}
 
 
+CAPACITY_MOVED_FLOOR = 0.05
+
+
+def placement_reduction(baseline, lever):
+    """Declared placement reduction: 1 - lever error / baseline error, both in target cells."""
+    base = baseline["mean_abs_offset_cells"]
+    if not base > 0:
+        raise ValueError("baseline placement error must be positive")
+    return 1-lever["mean_abs_offset_cells"]/base
+
+
+def capacity_decomposition(baseline_placement, lever_placement, decision):
+    """The declared non-circular rule that names the next suspect after the capacity lever.
+
+    No branch can return `translation`, `scale` or `geometry_capacity`: those three levers have been
+    run and refused, so they are inputs to this rule, never outputs.
+    """
+    improvement = decision["placement_improvement"]
+    occupancy_met = decision["conditions"]["per_cell_f1"] and decision["conditions"]["ranking"]
+    if improvement < CAPACITY_MOVED_FLOOR:
+        rule, suspect = "placement_capacity", "per-stage lattice residual capacity"
+    elif decision["conditions"]["placement"] and not occupancy_met:
+        rule, suspect = "read_out_inheritance", "a lattice-agnostic occupancy read-out"
+    elif lever_placement["board_error_spread_cells"] >= DISPERSION_FLOOR:
+        rule, suspect = "dispersion", "per-board lattice refinement capacity"
+    else:
+        rule, suspect = "scaling", "occupancy read-out at a second scale"
+    return {"rule": rule, "next_suspect": suspect, "placement_improvement": improvement,
+            "improvement_floor": decision["placement_floor"],
+            "unmoved_below": CAPACITY_MOVED_FLOOR, "occupancy_gates_met": occupancy_met,
+            "lever_mean_abs_offset_cells": lever_placement["mean_abs_offset_cells"],
+            "baseline_mean_abs_offset_cells": baseline_placement["mean_abs_offset_cells"],
+            "lever_signed_column_offset_cells": lever_placement["signed_column_offset_cells"],
+            "lever_signed_row_offset_cells": lever_placement["signed_row_offset_cells"],
+            "lever_extent_ratio_u": lever_placement["mean_scale_ratio_u"],
+            "lever_extent_ratio_v": lever_placement["mean_scale_ratio_v"],
+            "lever_board_error_spread_cells": lever_placement["board_error_spread_cells"],
+            "floors": {"placement_improvement": decision["placement_floor"],
+                       "unmoved_below": CAPACITY_MOVED_FLOOR, "dispersion_cells": DISPERSION_FLOOR}}
+
+
 def decomposition(placement, placement_delta):
     """The declared precedence that names the next measurable suspect from a refusal."""
     if abs(placement["signed_column_offset_cells"]) >= TRANSLATION_FLOOR or \

@@ -74,6 +74,8 @@ def arguments(argv=None):
                         help="declared box-origin lever;0 is the published global-token box head;"
                              "1 adds a zero-initialized residual from the coarse feature map's "
                              "spatial moments, so the origin can be board-dependent")
+    parser.add_argument("--support-anchor-weight", type=float, default=0.0,
+                        help="declared capacity lever: weight of the boundary support-anchor geometry term")
     parser.add_argument("--box-extent-weight", type=float, choices=(0.0, 1.0), default=0.0,
                         help="declared box-extent lever;0 is the published objective;1 adds a "
                              "relative log-scale term on the final lattice, the quantity the "
@@ -142,6 +144,9 @@ def arguments(argv=None):
         parser.error("a matching warm-optimizer square resource admission is required")
     if args.box_extent_weight and (args.lattice_support or args.geometry_final_only):
         parser.error("the box-extent lever is declared on the published box head and geometry stage")
+    if args.support_anchor_weight and (args.lattice_support or args.geometry_final_only or
+                                       args.box_extent_weight):
+        parser.error("the capacity lever is declared on the published box head, stage policy and objective")
     if args.accumulation_policy is not None:
         size = ACCUMULATION_POLICIES[args.accumulation_policy][0]
         expected = "all-class-fit-v1" if args.accumulation_policy == "ordered-eight-v1" else "all-class-interleaved-v1"
@@ -196,7 +201,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0):
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -215,7 +220,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
         raise ValueError("component identity factor differs from resource admission")
     from tetris_vision.components import require_endpoint_term
     from tetris_vision.losses import (require_box_extent_weight, require_geometry_final_only,
-                                     require_lattice_support,
+                                     require_lattice_support, require_support_anchor_weight,
                                      require_occupancy_context,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
@@ -229,6 +234,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_detail(occupancy_detail, summary)
     require_occupancy_detail_stencil(occupancy_detail_stencil, summary)
     require_box_extent_weight(box_extent_weight, summary)
+    require_support_anchor_weight(support_anchor_weight, summary)
     require_occupancy_resolution(occupancy_resolution, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
@@ -476,6 +482,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            type_head_rate_factor=args.type_head_rate_factor, identity_factor=args.component_identity_factor,
                            endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor,
                            positive_weight=args.occupancy_positive_weight, box_extent_weight=args.box_extent_weight,
+                           support_anchor_weight=args.support_anchor_weight,
                            occupancy_context=args.occupancy_context,
                            occupancy_detail=args.occupancy_detail,
                            occupancy_detail_stencil=args.occupancy_detail_stencil,
@@ -559,7 +566,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -643,6 +650,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight
+    recovery_contract["support_anchor_weight"] = args.support_anchor_weight
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:
@@ -698,7 +706,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -781,7 +789,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()

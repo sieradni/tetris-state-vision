@@ -224,6 +224,42 @@ def extent_error(lattice, target):
     return torch.log(predicted/reference)
 
 
+# Declared geometry-capacity lever: 0 is the published objective; 1 adds a boundary support-anchor
+# geometry term on the final lattice. The published geometry mean dilutes the four boundary anchors
+# into 200 interior centers - they carry 1/51 of it - so the box is weakly pinned exactly where it is
+# read. This term spends weight 1.0, the geometry term's own weight, on the eight boundary support
+# anchors.
+SUPPORT_ANCHOR_WEIGHTS = (0.0, 1.0)
+SUPPORT_ANCHORS = ((0., 0.), (5., 0.), (10., 0.), (0., 10.), (10., 10.),
+                   (0., 20.), (5., 20.), (10., 20.))
+
+
+def support_anchor_error(lattice, target):
+    """Normalized error of the eight boundary support anchors, shape [batch, 8, 2]."""
+    coordinates = torch.tensor(SUPPORT_ANCHORS, device=lattice.device, dtype=lattice.dtype)
+
+    def points(basis):
+        return (basis[:, None, 0]+coordinates[None, :, :1]*basis[:, None, 1]
+                +coordinates[None, :, 1:]*basis[:, None, 2])
+    spacing = torch.stack((target[:, 1].norm(dim=-1), target[:, 2].norm(dim=-1)), -1).clamp_min(1e-6)
+    return (points(lattice)-points(target))/spacing[:, None]
+
+
+def support_anchor_term(lattice, target, registered):
+    """The declared capacity term: masked mean smooth-L1 of the boundary anchors' error."""
+    error = support_anchor_error(lattice, target)
+    return masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)),
+                       registered)
+
+
+def require_support_anchor_weight(weight, summary):
+    """One declaration of the admission join for the capacity (support-anchor) lever."""
+    if (type(weight) is not float or weight not in SUPPORT_ANCHOR_WEIGHTS or
+            summary.get("arguments", {}).get("support_anchor_weight", 0.0) != weight or
+            summary.get("recovery_contract", {}).get("support_anchor_weight", 0.0) != weight):
+        raise ValueError("support anchor weight differs from resource admission")
+
+
 def require_geometry_final_only(value, summary):
     """One declaration of the admission join for the geometry stage policy."""
     if (type(value) is not int or value not in GEOMETRY_STAGE_POLICIES or
@@ -274,11 +310,14 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 
 
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1, geometry_final_only=0, box_extent_weight=0.0):
+               positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
+               support_anchor_weight=0.0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
           "box extent weight must be0 or1")
+    check(type(support_anchor_weight) is float and support_anchor_weight in SUPPORT_ANCHOR_WEIGHTS,
+          "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight)
                  for stage in outputs["stages"]]
@@ -294,10 +333,16 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
         terms["box_extent"] = masked_mean(
             extent_error(outputs["final"]["lattice"], target["lattice"]).abs().mean(-1),
             target["registered"])
+    if support_anchor_weight:
+        # Declared capacity lever: the final lattice's boundary support anchors, supervised on
+        # their own instead of diluted into the 200 interior centers.
+        terms["support_anchor"] = support_anchor_term(outputs["final"]["lattice"],
+                                                     target["lattice"], target["registered"])
     # Pilot hypotheses, not tuned or established research hyperparameters.
     weights = {"geometry": 1., "occupancy": 1.*occupancy_factor, "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
-               "components": .5, "layer_cells": .5, "box_extent": box_extent_weight}
+               "components": .5, "layer_cells": .5, "box_extent": box_extent_weight,
+               "support_anchor": support_anchor_weight}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
