@@ -1733,3 +1733,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   measurement and verdict has one place to show up.
 - Green gate: `runs/m3-occbref-focused-r2-job.json`, 93/93 in 0.958 s; the predeclaration commit
   `72f95bc` was made only after that green run, and the full suite is run again before the record commit.
+
+## V-080 — CLOSED: the fit-budget predeclaration declared a wall envelope the runner refuses
+
+- Symptom: `runs/m3-occfit-lever-r1.log` recorded `run_bounded.py: error: command and wall cap in (0, 3600]
+  required`; the lever study never started, although its 2-step admission profile had already passed.
+- Root cause: the predeclaration sized the 1,024-step lever at 5,400 s from an arithmetic estimate without
+  checking the bounded runner's own hard cap. The cap is a guard and is not raised to fit a declaration.
+- Detection class: declared envelope exceeds the execution tool's own limit. First instance.
+- Instrument: the curator's admission join now refuses a declared wall above `MAX_WALL_SECONDS = 3600`
+  (bound by a test), so an over-cap envelope fails at curation as well as at launch.
+- Resolution: the predeclaration is amended in its own commit, before any study receipt, to a 768-step (3x)
+  lever at 3,600 s; criterion, activation floor, matched start and the zero-parameter declaration are
+  unchanged. The rejected launch is preserved as `runs/attempts/m3-occfit-lever-r1.attempt1.log` with a note
+  and is not evidence.
+- Green gate: `runs/m3-occfit-focused-r2-job.json`.

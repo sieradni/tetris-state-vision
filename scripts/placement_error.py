@@ -377,7 +377,7 @@ def fit_budget_decomposition(baseline_placement, lever_placement, decision):
     engaged = bool(decision["conditions"].get("activation", False))
     gate_open = bool(decision["conditions"].get("fit_gate", False))
     if not engaged:
-        rule, suspect = "under_trained", "a larger declared continuation budget than 4x"
+        rule, suspect = "under_trained", "a larger declared continuation budget than 3x"
     elif not gate_open:
         rule, suspect = "capacity_limit", "a wider shared trunk than capacity 64"
     else:

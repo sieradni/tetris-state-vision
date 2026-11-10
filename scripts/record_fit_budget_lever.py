@@ -1,6 +1,6 @@
 """Curate the declared M2 fit-budget lever: does 4x compute open the fit gate at capacity 64?
 
-`docs/M3_OCCUPANCY_FIT_BUDGET.md` fixes the rule: the lever arm runs 1,024 continuation steps, the baseline
+`docs/M3_OCCUPANCY_FIT_BUDGET.md` fixes the rule: the lever arm runs 768 continuation steps, the baseline
 arm the settled 256, with no new parameter in either. The fit gate is the repository's own rule
 (`fit_gate.fit_gate_opens`): at least three of the 28 nonempty deciding training boards must be exactly
 right. The pass also carries a declared activation condition - the extra compute must flip at least 5% of
@@ -47,7 +47,9 @@ PREVIOUS = {"geometry": ROOT/"docs/evidence/m3-occupancy-geometry-r1/scope.json"
             "refinement": ROOT/"docs/evidence/m3-occupancy-board-refinement-r1/scope.json"}
 FAMILY = "m3-occfit"
 INSTRUMENT = "m3-occupancy-fit-budget-r1"
-ARMS = {"lever": 1024, "baseline": 256}
+ARMS = {"lever": 768, "baseline": 256}
+# The bounded runner refuses any wall above this, so a declaration beyond it is inadmissible (V-080).
+MAX_WALL_SECONDS = 3600
 # This lever adds no tensor: the two arms are the same architecture at two declared budgets.
 ADDED_TENSORS = frozenset()
 ADDED_PARAMETERS = 0
@@ -106,6 +108,8 @@ def arm_matches(summary, job, steps, *, ceiling=CEILING_BYTES, wall_seconds=None
         raise ValueError("study did not pass inside its declared envelope")
     if job.get("work_items") != steps or job.get("memory_bytes") != ceiling:
         raise ValueError("study receipt does not certify the declared work and ceiling")
+    if wall_seconds is not None and not (0 < wall_seconds <= MAX_WALL_SECONDS):
+        raise ValueError("the declared study wall exceeds the runner's admissible cap")
     if (summary.get("status") != "complete" or summary.get("steps") != steps or
             summary.get("requested_steps") != steps or not summary.get("checkpoint_round_trip_exact")):
         raise ValueError("study is not a complete run at the declared budget")
@@ -446,7 +450,7 @@ def main():
         "declared_receipt": args.receipt,
         "declared_memory_bytes": bounded,
         "envelope": {"ceiling_bytes": CEILING_BYTES, "steps": dict(ARMS),
-                     "wall_seconds": {"profile": 300, "baseline": 1800, "lever": 5400,
+                     "wall_seconds": {"profile": 300, "baseline": 1800, "lever": MAX_WALL_SECONDS,
                                       "sweep_profile": 300, "sweep": 600, "probe": 300,
                                       "curation": 300},
                      "sweep_ceiling_bytes": SWEEP_CEILING_BYTES,

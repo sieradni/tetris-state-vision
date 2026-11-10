@@ -122,13 +122,19 @@ class CuratorJoinTests(unittest.TestCase):
         return job
 
     def test_each_arm_is_admitted_only_for_its_own_budget(self):
-        self.assertEqual(ARMS, {"lever": 1024, "baseline": 256})
-        self.assertTrue(arm_matches(self.summary(1024), self.job(1024), 1024))
-        self.assertTrue(arm_matches(self.summary(256), self.job(256), 256))
-        for declared, summary, job in ((1024, self.summary(256), self.job(1024)),
-                                       (256, self.summary(256), self.job(1024))):
+        self.assertEqual(ARMS, {"lever": 768, "baseline": 256})
+        self.assertTrue(arm_matches(self.summary(768), self.job(768), 768, wall_seconds=3600))
+        self.assertTrue(arm_matches(self.summary(256), self.job(256), 256, wall_seconds=1800))
+        for declared, summary, job in ((768, self.summary(256), self.job(768)),
+                                       (256, self.summary(256), self.job(768))):
             with self.assertRaises(ValueError):
                 arm_matches(summary, job, declared)
+
+    def test_a_declared_wall_beyond_the_runner_cap_is_refused(self):
+        with self.assertRaises(ValueError):
+            arm_matches(self.summary(768), self.job(768), 768, wall_seconds=5400)
+        with self.assertRaises(ValueError):
+            arm_matches(self.summary(768), self.job(768), 768, wall_seconds=0)
 
     def test_the_join_refuses_foreign_configuration_or_envelope(self):
         for job, summary in ((self.job(256, status="failed"), self.summary(256)),
