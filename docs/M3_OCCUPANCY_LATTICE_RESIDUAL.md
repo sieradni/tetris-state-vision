@@ -191,3 +191,77 @@ Any launch that dies, leaves its declared arithmetic or is superseded is preserv
   non-rectangular board, and the 120 parameters are a declared cost that the occupancy score must repay.
 - Placement is measured against the committed target lattice, so it says nothing about deployment
   situations where that lattice is unavailable.
+
+---
+
+# Measured (2026-11-10)
+
+Both arms ran the declared 256 continuation steps from the published checkpoint
+`9ae1fef9f649...` under one captured catalogue (`242e8c767c9f...`), inside the declared 1,152 MiB /
+1,800 s envelope: lever **1,059,573,760 B / 826.1 s**, baseline **1,056,604,160 B / 1,017.6 s**.
+Admission profiles passed at 77.4 s / 54.2 s (peaks 1,041,580,032 B and 1,041,199,104 B); the sweeps
+(54 forwards, 640 MiB) took 60.6 s / 69.7 s and the placement probes (36 forwards, 640 MiB / 300 s)
+42.8 s / 47.5 s, peaking at 561,954,816 B and 556,920,832 B. Curation
+`runs/m3-occlatres-curation-r1-job.json` passed and published
+`docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`.
+
+**Matched start.** The parameter-addition branch passed: the shared initial tensors are bitwise
+identical (`f426e4061d60...`), the two saved states differ by exactly the twelve declared
+`lattice_residual.{0..5}.{weight,bias}` tensors, all exactly zero, and the step-0 probes agree after the
+objective's own value is stripped. The baseline's weights (`d149351cbd...`) and the lever's
+(`6dfb6be736c9...`) differ only through the 256 steps.
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.3520**
+(661 TP / 2,428 FP / 6 FN) against **0.4146** (351/675/316); AUC **0.8209** against **0.8255**
+(-0.0046); best swept F1 **0.4122** at `2.25` against **0.4237** at `-0.30`, attribution **-0.0115**,
+with the twelve-cluster paired bootstrap median **-0.0954** and interval **-0.2795 to +0.0300**.
+Placement improved **-19.2%** (1.9812 -> 2.3615 cells): condition 4 fails in the wrong direction, so the
+declared **placement-regressed** falsifier holds and this residual may not be described as a refinement
+of the box.
+
+**The residual moved the lattice decisively, and the move was the wrong one.** The column extent ratio
+**shrank** 1.2257 -> **0.9084** while rows went 1.1804 -> 1.0781; signed offsets +1.3830 -> **+1.5856**
+and -2.1914 -> **-2.9092**; spread 4.6043 -> **4.8346**, shifted share 0.5375 -> **0.7093** and mapped
+share 0.6507 -> **0.7243**. So 71% of cells were shifted rather than the 54% the baseline shifted, and
+the occupancy head answered by predicting every cell occupied: 661 of 667 occupied cells found with
+only 6 misses, at 2,428 false positives and recall **0.991** at threshold `0.0`. The per-stage capacity
+did not fail to act - it pushed the read-out into an almost all-positive regime, which is why the
+per-cell gate and the ranking gate fail while AUC stays near the baseline.
+
+**What the capacity reading means.** Six stages each given an independently correctable decoded box,
+zero-initialized and supervised by the existing geometry term, produced the second-worst occupancy
+result of the five geometry-side levers and the second-worst placement. Per-stage box capacity is
+therefore not the binding constraint on the occupancy score; it is a channel through which the lattice
+can move without the score following. The rule's first branch names the read-out, because placement
+moved by 19.2% and occupancy did not follow it.
+
+**Reconciliation.** Five geometry-side levers now sit on the same control: geometry **+0.0781** at
+**19.9%** placement cost, origin **+0.0102** at **11.0%**, extent **+0.0318** at **67.5%**, capacity
+**-0.0241** at **28.2%**, residual **-0.0115** at **19.2%**. No lever cleared the four conditions; the
+two supervision-side gains were bought with placement, and the two capacity-side levers lost both.
+
+| lever | attribution | placement cost | verdict |
+|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% | not-cleared |
+| box origin | +0.0102 | 11.0% | not-cleared |
+| box extent | +0.0318 | 67.5% | not-cleared |
+| geometry capacity | -0.0241 | 28.2% | not-cleared |
+| per-stage residual | -0.0115 | 19.2% | not-cleared |
+
+**Ranked next.** The declared non-circular rule takes its first branch - improvement **-0.192 < 0.05** -
+and names **a lattice-agnostic occupancy read-out**. **Ranked next: predeclare a lattice-agnostic
+read-out lever**, read with the same four conditions; dispersion (spread 4.8346, below the 1.5-cell
+floor) and scaling stay behind it, and `translation`, `scale`, `geometry_capacity` and
+`placement_capacity` cannot be returned by the rule.
+
+**Defects and preserved launches.** The baseline study was killed at step 247 of 256 when the host went
+offline; it is preserved with its receipt and log as `runs/attempts/m3-occlatres-baseline-r1.attempt1`
+and re-recorded at the same declared name, admitted by the same passed profile. No measurement was taken
+from the killed launch. Two defects in this pass's own files are logged as V-075 (the owned-run regex
+replacement dropped the previously owned family, caught by the capacity lever's own test) and V-076 (the
+new rule recomputed the placement reduction instead of using the declared decision value, caught by its
+own test).
+
+**Unchanged.** No gate widened or retuned, no residual scale or parameter count changed after the
+receipts, no prior evidence or frozen manifest touched. Limits are as declared: synthetic training-fit,
+one budget point, one checkpoint, one residual scale, one seed, committed lattice only.

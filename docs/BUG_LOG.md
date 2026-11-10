@@ -1659,3 +1659,35 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Green gate: `runs/m3-occgeocap-curation-r3-job.json` passed in 5.153 s, peak 321,175,552 B and
   published `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`. Refused launches are
   preserved as `runs/attempts/m3-occgeocap-curation-r{1,2}-job.json.attempt1` with notes.
+
+## V-075 — CLOSED: adding the new owned family silently removed the previous one
+
+- Symptom: `tests.test_capacity_lever.CuratorJoinTests.test_the_family_is_owned` failed with
+  `AssertionError: None is not true` for `m3-occgeocap-lever-r1` after the residual lever added its
+  own family.
+- Root cause: the owned-family update replaced the existing alternation
+  `m3-occgeocap-[a-z0-9-]{1,40}` with `m3-occlatres-[a-z0-9-]{1,40}` instead of adding a branch, so a
+  previously owned family stopped being recognised by `record_stream_run`.
+- Detection class: ownership/wiring regression. First instance in this pass; caught by the *previous*
+  lever's own test, which is why the focused run includes every earlier lever suite.
+- Instrument: `tests/test_capacity_lever.py::test_the_family_is_owned` asserts the old family, and
+  `tests/test_lattice_residual_lever.py` asserts the new one, so neither can regress silently.
+- Green gate: `runs/m3-occlatres-focused-r3-job.json`, 85/85 in 0.557 s, peak 296,853,504 B for the
+  failing run and 322,686,976 B for the curation.
+
+## V-076 — CLOSED: the new rule ignored the declared placement reduction
+
+- Symptom: `tests.test_lattice_residual_lever.LatticeResidualRuleTests.test_the_decomposition_is_non_circular`
+  returned `scaling` where the declared first branch (`improvement < 0.05`) required
+  `read_out_inheritance`.
+- Root cause: `lattice_residual_decomposition` recomputed `placement_reduction` from the two placement
+  summaries instead of reading `decision["placement_improvement"]`, the value the verdict itself
+  scored. The two agree on real receipts but not on a constructed decision, which is exactly the state
+  a rule test builds; a divergence would have made the rule and the verdict disagree silently.
+- Detection class: rule/verdict disagreement. First instance.
+- Instrument: the rule is now a pure function of the verdict's own decision record, and its test
+  drives improvement and spread independently, including that none of the four spent levers can be
+  returned.
+- Green gate: `runs/m3-occlatres-focused-r3-job.json` (85/85) and curation
+  `runs/m3-occlatres-curation-r1-job.json`, which passed in 6.346 s, peak 322,686,976 B, and
+  published `docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`.

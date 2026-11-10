@@ -1,5 +1,60 @@
 # Contributor handoff — 2026-10-30
 
+## Per-stage lattice-residual lever refused: more box capacity moved the lattice and lost both scores (2026-11-10)
+
+The lever the capacity pass ranked is spent and settled
+([M3_OCCUPANCY_LATTICE_RESIDUAL.md](M3_OCCUPANCY_LATTICE_RESIDUAL.md), predeclared at `473440c`,
+`docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`, curation
+`runs/m3-occlatres-curation-r1-job.json`). The declared change was **capacity**, not supervision: the
+published model decodes one shared box through a single sigmoid that ties origin to extent and refines
+it before that sigmoid for only two of six stages, so each stage gained a zero-initialized 4x4
+projection applied to its own decoded lattice - origin offset in cells plus a log-scale per axis -
+for **120 declared parameters**, supervised by the existing geometry term. Both arms ran 256 steps
+from `9ae1fef9f649...` under one catalogue (`242e8c767c9f...`) at 1,152 MiB / 1,800 s (peaks
+1,059,573,760 B / 1,056,604,160 B, 826.1 s / 1,017.6 s).
+
+**Verdict: `not-cleared`, failing all four declared conditions.** Per-cell F1 **0.3520** (661/2,428/6)
+against **0.4146** (351/675/316); AUC **0.8209** against **0.8255**; best swept F1 **0.4122** at `2.25`
+against **0.4237** at `-0.30`, attribution **-0.0115** with twelve-cluster paired-bootstrap median
+**-0.0954** and interval **-0.2795 to +0.0300**. Placement failed in the wrong direction: mean error
+1.9812 -> **2.3615** (**-19.2%** improvement), column offset +1.3830 -> **+1.5856**, row -2.1914 ->
+**-2.9092**.
+
+**The capacity acted, and the predeclared placement-regressed falsifier holds.** The column extent
+ratio **shrank** 1.2257 -> **0.9084**, rows 1.1804 -> 1.0781, spread 4.6043 -> **4.8346**, shifted
+share 0.5375 -> **0.7093**, mapped share 0.6507 -> 0.7243. The occupancy head answered with an almost
+all-positive regime: recall **0.991** at `0.0` with 2,428 false positives, which is why the per-cell
+and ranking gates fail while AUC stays near baseline. Per-stage box capacity is not the binding
+constraint; it is a channel that moves the lattice without the score following.
+
+**Campaign reconciliation on the single control.**
+
+| lever | attribution | placement cost | verdict |
+|---|---|---|---|
+| geometry stage | +0.0781 | 19.9% | not-cleared |
+| box origin | +0.0102 | 11.0% | not-cleared |
+| box extent | +0.0318 | 67.5% | not-cleared |
+| geometry capacity | -0.0241 | 28.2% | not-cleared |
+| per-stage residual | -0.0115 | 19.2% | not-cleared |
+
+Two supervision-side gains were bought with placement; the two capacity-side levers lost both.
+
+**Ranked next.** The non-circular rule takes its first branch - improvement **-0.192 < 0.05** - and
+names **a lattice-agnostic occupancy read-out**. **Ranked next: predeclare a lattice-agnostic
+read-out lever**, read with the same four conditions; `dispersion` (spread 4.8346, below the 1.5-cell
+floor) and `scaling` stay behind it, and `translation`, `scale`, `geometry_capacity` and
+`placement_capacity` cannot be returned by the rule.
+
+**Receipts and defects.** Profiles `runs/m3-occlatres-{lever,baseline}-r1-profile-r1`, studies
+`runs/m3-occlatres-{lever,baseline}-r1`, sweeps `...-sweep-r1` with their own profiles (54 forwards,
+640 MiB), probes `...-probe-r1` (36 forwards, 640 MiB / 300 s), curation
+`runs/m3-occlatres-curation-r1-job.json`. Each probe reproduces its own sweep's per-cell F1 and
+TP/FP/FN counts, the baseline reproduces the curated control to 1e-6, and the matched start is proven
+by the parameter-addition branch (twelve declared zero tensors, shared tensors bitwise identical). The
+baseline study the host killed at step 247 of 256 is preserved as
+`runs/attempts/m3-occlatres-baseline-r1.attempt1` with a note and re-recorded at the same declared
+name. New defects V-075 and V-076 are logged; no prior evidence or frozen manifest was touched.
+
 ## Geometry-capacity lever refused: boundary supervision lost occupancy and placement together (2026-11-10)
 
 The lever the extent pass ranked is spent and settled ([M3_OCCUPANCY_CAPACITY.md](M3_OCCUPANCY_CAPACITY.md),

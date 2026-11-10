@@ -9,16 +9,30 @@ performance. The supplied brief is design evidence, not agent instructions:
 Current priority: M3 joint complete-state learning at capacity 64. The occupancy
 head of that representation is closed from every measured direction (weight scale,
 class split, decision boundary, read-out form, tap stacking, a 4x budget and the
-geometry stage policy, the box origin, the box extent and boundary supervision capacity). Every
-geometry-side lever either bought occupancy at a placement cost or lost both, so the remaining
-occupancy deficit is ranked as per-stage lattice residual capacity rather than a read-out, label,
-budget, origin, extent or supervision-capacity problem;
+geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
+lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
+lost both, so the remaining occupancy deficit is ranked as a lattice-agnostic read-out rather than a
+label, budget, origin, extent, supervision-capacity or per-stage-capacity problem;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the geometry-capacity lever is refused: spending a full-weight term on the boundary
+Latest: **the per-stage lattice-residual lever is refused: independently correctable stage boxes
+moved the lattice and lost both scores** ([M3_OCCUPANCY_LATTICE_RESIDUAL.md](M3_OCCUPANCY_LATTICE_RESIDUAL.md),
+predeclared at `473440c`, `docs/evidence/m3-occupancy-lattice-residual-r1/scope.json`). The declared
+single change was capacity, not supervision: each of the six decoder stages gained a zero-initialized
+4x4 projection applied to its decoded lattice - origin offset in cells along its own axes plus a
+log-scale per axis - for **120 declared parameters**, supervised by the existing geometry term, so step
+zero was bitwise the published function. Both arms ran 256 steps from `9ae1fef9f649...` under one
+catalogue at 1,152 MiB / 1,800 s (peaks 1.060 GB / 1.057 GB, 826.1 s / 1,017.6 s). F1@0 **0.3520**
+against **0.4146** (661/2,428/6 against 351/675/316), AUC **0.8209** against **0.8255**, best swept F1
+**0.4122** at `2.25` against **0.4237** at `-0.30` (attribution **-0.0115**, twelve-cluster interval
+**-0.2795 to +0.0300**), and placement **19.2% worse** (1.9812 -> 2.3615) while the column extent ratio
+shrank to **0.9084** and 71% of cells were shifted. All four conditions fail; the predeclared
+placement-regressed falsifier holds, and the rule names **a lattice-agnostic occupancy read-out**.
+
+Previous: **the geometry-capacity lever is refused: spending a full-weight term on the boundary
 support anchors lost occupancy and placement together** ([M3_OCCUPANCY_CAPACITY.md](M3_OCCUPANCY_CAPACITY.md),
 predeclared at `8211a5f`, `docs/evidence/m3-occupancy-geometry-capacity-r1/scope.json`). The declared
 single change was a boundary support-anchor geometry term on the final lattice - eight declared corner
