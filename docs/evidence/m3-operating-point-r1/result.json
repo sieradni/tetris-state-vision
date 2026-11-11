@@ -1,0 +1,4050 @@
+{
+  "status": "passed",
+  "verdict": {
+    "label": "standing_read_confounded",
+    "states": {
+      "refusal_reversed": 6,
+      "gain_reversed": 1,
+      "shifted": 5,
+      "aligned": 2
+    },
+    "pairs": 14,
+    "floor": 0.05
+  },
+  "population": {
+    "training_cases": 36,
+    "training_groups": 12,
+    "occupied_cells": 667,
+    "known_cells_per_board": 200
+  },
+  "grid": {
+    "low": -6.0,
+    "high": 6.0,
+    "step": 0.15,
+    "count": 81
+  },
+  "bootstrap": {
+    "draws": 1000,
+    "seed": 20261026,
+    "z_95": 1.959963984540054
+  },
+  "reads": {
+    "m3-occbref-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occbref-lever-r1": {
+      "auc": 0.8595859175622,
+      "f1_at_zero": 0.42316258351893093,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4366391184573003,
+        "counts": {
+          "true_positive": 317,
+          "false_positive": 468,
+          "false_negative": 350
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 21,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 50,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 1.2,
+            "boards": 3,
+            "true_positive": 19,
+            "false_positive": 21,
+            "false_negative": 141,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 6,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 68,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 1.2,
+            "boards": 3,
+            "true_positive": 93,
+            "false_positive": 43,
+            "false_negative": 71,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 12,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 25,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 160,
+            "false_positive": 81,
+            "false_negative": 15,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 34,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 77,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 36,
+            "false_positive": 30,
+            "false_negative": 101,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.112259,
+        "median": 0.417575,
+        "high": 0.612275,
+        "standard_error": 0.128822
+      },
+      "logit_offset": 2.034664,
+      "median_occupied": 0.985547,
+      "median_empty": -1.049117,
+      "logit_scale": 1.584368,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occctx-control-r1": {
+      "auc": 0.7427413396484406,
+      "f1_at_zero": 0.28483319315951783,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4185430463576159,
+        "counts": {
+          "true_positive": 316,
+          "false_positive": 527,
+          "false_negative": 351
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 3.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 3,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 3.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 78,
+            "false_negative": 6,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 99,
+            "false_positive": 80,
+            "false_negative": 61,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 3.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 25,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 70,
+            "false_positive": 29,
+            "false_negative": 94,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 3.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 130,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 54,
+            "false_positive": 41,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 3.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 46,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 3.9,
+            "boards": 3,
+            "true_positive": 84,
+            "false_positive": 92,
+            "false_negative": 53,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.217464,
+        "median": 0.414874,
+        "high": 0.514677,
+        "standard_error": 0.078419
+      },
+      "logit_offset": 3.608768,
+      "median_occupied": 3.483011,
+      "median_empty": -0.125757,
+      "logit_scale": 2.811715,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occctx-lever-r1": {
+      "auc": 0.824386205437723,
+      "f1_at_zero": 0.3600325821341298,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4200140944326991,
+        "counts": {
+          "true_positive": 596,
+          "false_positive": 1575,
+          "false_negative": 71
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 2.7,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 78,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 237,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 134,
+            "false_positive": 90,
+            "false_negative": 26,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 2.7,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 74,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 223,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 151,
+            "false_positive": 97,
+            "false_negative": 13,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 2.7,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 78,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 9,
+            "false_positive": 219,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 165,
+            "false_positive": 78,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 2.7,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 74,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 222,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 2.7,
+            "boards": 3,
+            "true_positive": 119,
+            "false_positive": 105,
+            "false_negative": 18,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.155812,
+        "median": 0.408946,
+        "high": 0.610049,
+        "standard_error": 0.116769
+      },
+      "logit_offset": 3.841731,
+      "median_occupied": 3.532974,
+      "median_empty": -0.308757,
+      "logit_scale": 2.466484,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occdetail-lever-r1": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.3816397228637413,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4003990688393748,
+        "counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 81,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 244,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 1.05,
+            "boards": 3,
+            "true_positive": 130,
+            "false_positive": 104,
+            "false_negative": 30,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 80,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 244,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 158,
+            "false_positive": 106,
+            "false_negative": 6,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 81,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 9,
+            "false_positive": 254,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 167,
+            "false_positive": 101,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.9,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 83,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.9,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 245,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 1.05,
+            "boards": 3,
+            "true_positive": 120,
+            "false_positive": 115,
+            "false_negative": 17,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.144903,
+        "median": 0.392982,
+        "high": 0.592502,
+        "standard_error": 0.114037
+      },
+      "logit_offset": 3.740067,
+      "median_occupied": 2.386517,
+      "median_empty": -1.35355,
+      "logit_scale": 2.469312,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occdstencil-lever-r1": {
+      "auc": 0.8803953486463741,
+      "f1_at_zero": 0.39516616314199393,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.46739757645701097,
+        "counts": {
+          "true_positive": 405,
+          "false_positive": 661,
+          "false_negative": 262
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 1.8,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 18,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 59,
+            "false_negative": 7,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 87,
+            "false_positive": 66,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 1.8,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 18,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 49,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 1.95,
+            "boards": 3,
+            "true_positive": 108,
+            "false_positive": 78,
+            "false_negative": 56,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 1.8,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 25,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 88,
+            "false_negative": 7,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 138,
+            "false_positive": 83,
+            "false_negative": 37,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 1.8,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 12,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 86,
+            "false_negative": 2,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 64,
+            "false_positive": 79,
+            "false_negative": 73,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.210102,
+        "median": 0.461744,
+        "high": 0.5841,
+        "standard_error": 0.09441
+      },
+      "logit_offset": 3.364236,
+      "median_occupied": 2.339265,
+      "median_empty": -1.024971,
+      "logit_scale": 2.522804,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occextent-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occextent-lever-r1": {
+      "auc": 0.7525823546771111,
+      "f1_at_zero": 0.3314967860422406,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.45555555555555555,
+        "counts": {
+          "true_positive": 287,
+          "false_positive": 306,
+          "false_negative": 380
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 2.1,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 10,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 29,
+            "false_negative": 7,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 21,
+            "false_positive": 31,
+            "false_negative": 139,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 2.1,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 4,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 27,
+            "false_negative": 2,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 100,
+            "false_positive": 57,
+            "false_negative": 64,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 2.1,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 1,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 23,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 137,
+            "false_positive": 72,
+            "false_negative": 38,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 2.1,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 12,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 10,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 24,
+            "false_positive": 30,
+            "false_negative": 113,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.142556,
+        "median": 0.444982,
+        "high": 0.612695,
+        "standard_error": 0.12473
+      },
+      "logit_offset": 3.906563,
+      "median_occupied": 1.264855,
+      "median_empty": -2.641708,
+      "logit_scale": 2.484852,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occfit-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occfit-lever-r1": {
+      "auc": 0.8997906276944642,
+      "f1_at_zero": 0.2807986406117247,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.5326743547501372,
+        "counts": {
+          "true_positive": 485,
+          "false_positive": 669,
+          "false_negative": 182
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 4.35,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 15,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 4.35,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 88,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 4.35,
+            "boards": 3,
+            "true_positive": 121,
+            "false_positive": 60,
+            "false_negative": 39,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 4.2,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 17,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 4.35,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 46,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 4.35,
+            "boards": 3,
+            "true_positive": 135,
+            "false_positive": 67,
+            "false_negative": 29,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 4.2,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 4.2,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 88,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 4.2,
+            "boards": 3,
+            "true_positive": 128,
+            "false_positive": 65,
+            "false_negative": 47,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 4.2,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 17,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 4.2,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 102,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 4.35,
+            "boards": 3,
+            "true_positive": 90,
+            "false_positive": 90,
+            "false_negative": 47,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.254281,
+        "median": 0.52538,
+        "high": 0.656892,
+        "standard_error": 0.101923
+      },
+      "logit_offset": 3.398868,
+      "median_occupied": 4.690259,
+      "median_empty": 1.291391,
+      "logit_scale": 3.020763,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occgeocap-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occgeocap-lever-r1": {
+      "auc": 0.811563709327173,
+      "f1_at_zero": 0.2017126546146527,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.3656716417910448,
+        "counts": {
+          "true_positive": 539,
+          "false_positive": 1742,
+          "false_negative": 128
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -1.95,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 78,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -1.95,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 236,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": -1.35,
+            "boards": 3,
+            "true_positive": 104,
+            "false_positive": 110,
+            "false_negative": 56,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -1.95,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 81,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -1.95,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 236,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": -1.95,
+            "boards": 3,
+            "true_positive": 147,
+            "false_positive": 133,
+            "false_negative": 17,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -1.95,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 83,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -1.95,
+            "boards": 3,
+            "true_positive": 9,
+            "false_positive": 237,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -1.95,
+            "boards": 3,
+            "true_positive": 171,
+            "false_positive": 117,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -1.95,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 78,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": -1.8,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 236,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": -1.5,
+            "boards": 3,
+            "true_positive": 93,
+            "false_positive": 117,
+            "false_negative": 44,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.125768,
+        "median": 0.357403,
+        "high": 0.542048,
+        "standard_error": 0.106258
+      },
+      "logit_offset": 1.881486,
+      "median_occupied": -0.970777,
+      "median_empty": -2.852263,
+      "logit_scale": 1.653578,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occgeom-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occgeom-lever-r1": {
+      "auc": 0.8316142455834722,
+      "f1_at_zero": 0.4791231732776618,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4907018596280744,
+        "counts": {
+          "true_positive": 409,
+          "false_positive": 591,
+          "false_negative": 258
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 16,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 67,
+            "false_negative": 6,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 66,
+            "false_positive": 80,
+            "false_negative": 94,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 7,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 71,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 140,
+            "false_positive": 82,
+            "false_negative": 24,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 10,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 46,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 163,
+            "false_positive": 80,
+            "false_negative": 12,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 33,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 43,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.6,
+            "boards": 3,
+            "true_positive": 32,
+            "false_positive": 56,
+            "false_negative": 105,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.168698,
+        "median": 0.479993,
+        "high": 0.652597,
+        "standard_error": 0.121447
+      },
+      "logit_offset": 2.978801,
+      "median_occupied": 1.083103,
+      "median_empty": -1.895698,
+      "logit_scale": 2.382226,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occlatfree-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occlatfree-lever-r1": {
+      "auc": 0.8401467216928734,
+      "f1_at_zero": 0.4284064665127021,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.34062140391254314,
+        "counts": {
+          "true_positive": 296,
+          "false_positive": 775,
+          "false_negative": 371
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 1.65,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 8,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 1.65,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 71,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 1.65,
+            "boards": 3,
+            "true_positive": 72,
+            "false_positive": 54,
+            "false_negative": 88,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 1.65,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 2,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.9,
+            "boards": 3,
+            "true_positive": 4,
+            "false_positive": 115,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 84,
+            "false_positive": 65,
+            "false_negative": 80,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 1.65,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 159,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 1.8,
+            "boards": 3,
+            "true_positive": 73,
+            "false_positive": 60,
+            "false_negative": 102,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 1.65,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 3,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": -0.9,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 190,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 1.65,
+            "boards": 3,
+            "true_positive": 60,
+            "false_positive": 48,
+            "false_negative": 77,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.123762,
+        "median": 0.339539,
+        "high": 0.475094,
+        "standard_error": 0.087135
+      },
+      "logit_offset": 3.07534,
+      "median_occupied": 0.491734,
+      "median_empty": -2.583606,
+      "logit_scale": 2.94538,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occlatres-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occlatres-lever-r1": {
+      "auc": 0.8209391148739436,
+      "f1_at_zero": 0.35197018104366345,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.3946512468377304,
+        "counts": {
+          "true_positive": 546,
+          "false_positive": 1554,
+          "false_negative": 121
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 2.25,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 74,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 219,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 2.4,
+            "boards": 3,
+            "true_positive": 114,
+            "false_positive": 90,
+            "false_negative": 46,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 2.25,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 75,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 220,
+            "false_negative": 2,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 150,
+            "false_positive": 91,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 2.25,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 74,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 220,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 2.4,
+            "boards": 3,
+            "true_positive": 147,
+            "false_positive": 87,
+            "false_negative": 28,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 2.25,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 74,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 219,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 2.25,
+            "boards": 3,
+            "true_positive": 113,
+            "false_positive": 111,
+            "false_negative": 24,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.14264,
+        "median": 0.387817,
+        "high": 0.579438,
+        "standard_error": 0.111012
+      },
+      "logit_offset": 3.237545,
+      "median_occupied": 2.876301,
+      "median_empty": -0.361244,
+      "logit_scale": 2.60969,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occorigin-baseline-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occorigin-lever-r1": {
+      "auc": 0.8446146883987562,
+      "f1_at_zero": 0.41647137596250416,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.4339544513457557,
+        "counts": {
+          "true_positive": 524,
+          "false_positive": 1224,
+          "false_negative": 143
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 56,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 163,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 108,
+            "false_positive": 78,
+            "false_negative": 52,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 54,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 170,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 136,
+            "false_positive": 82,
+            "false_negative": 28,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 60,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 168,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 156,
+            "false_positive": 73,
+            "false_negative": 19,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.45,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 56,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 173,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 103,
+            "false_positive": 91,
+            "false_negative": 34,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.164607,
+        "median": 0.427206,
+        "high": 0.604182,
+        "standard_error": 0.111986
+      },
+      "logit_offset": 2.338947,
+      "median_occupied": 0.785731,
+      "median_empty": -1.553216,
+      "logit_scale": 1.564794,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occscale-control-r1": {
+      "auc": 0.8255386800822172,
+      "f1_at_zero": 0.4146485528647372,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.38323353293413176,
+        "counts": {
+          "true_positive": 352,
+          "false_positive": 818,
+          "false_negative": 315
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 30,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 107,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 39,
+            "false_positive": 45,
+            "false_negative": 121,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 11,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 76,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 91,
+            "false_positive": 75,
+            "false_negative": 73,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 14,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 2,
+            "false_positive": 162,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -0.75,
+            "boards": 3,
+            "true_positive": 161,
+            "false_positive": 98,
+            "false_negative": 14,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": -0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 24,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 122,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.15,
+            "boards": 3,
+            "true_positive": 45,
+            "false_positive": 54,
+            "false_negative": 92,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.120421,
+        "median": 0.368666,
+        "high": 0.550897,
+        "standard_error": 0.111052
+      },
+      "logit_offset": 4.164563,
+      "median_occupied": 0.234516,
+      "median_empty": -3.930047,
+      "logit_scale": 3.397537,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occscale-lever-r1": {
+      "auc": 0.8006042589894998,
+      "f1_at_zero": 0.3791469194312796,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.35942028985507246,
+        "counts": {
+          "true_positive": 310,
+          "false_positive": 748,
+          "false_negative": 357
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.6,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 11,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": -0.3,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 113,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.6,
+            "boards": 3,
+            "true_positive": 25,
+            "false_positive": 70,
+            "false_negative": 135,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.6,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 5,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": -0.3,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 113,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.6,
+            "boards": 3,
+            "true_positive": 85,
+            "false_positive": 64,
+            "false_negative": 79,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.6,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 7,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": -0.3,
+            "boards": 3,
+            "true_positive": 3,
+            "false_positive": 136,
+            "false_negative": 7,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": -1.2,
+            "boards": 3,
+            "true_positive": 168,
+            "false_positive": 110,
+            "false_negative": 7,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.6,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 14,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.6,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 42,
+            "false_negative": 5,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.6,
+            "boards": 3,
+            "true_positive": 19,
+            "false_positive": 63,
+            "false_negative": 118,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.086937,
+        "median": 0.34102,
+        "high": 0.550712,
+        "standard_error": 0.125093
+      },
+      "logit_offset": 1.953213,
+      "median_occupied": -0.117777,
+      "median_empty": -2.07099,
+      "logit_scale": 2.553671,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occsched-constant-r1": {
+      "auc": 0.8457164079626516,
+      "f1_at_zero": 0.4306732055283103,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.3896470588235294,
+        "counts": {
+          "true_positive": 414,
+          "false_positive": 1044,
+          "false_negative": 253
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.0,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 49,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 154,
+            "false_negative": 2,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 51,
+            "false_positive": 41,
+            "false_negative": 109,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.0,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 38,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 138,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 134,
+            "false_positive": 77,
+            "false_negative": 30,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.0,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 46,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 164,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 153,
+            "false_positive": 75,
+            "false_negative": 22,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.0,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 45,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.0,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 149,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 57,
+            "false_positive": 68,
+            "false_negative": 80,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.117048,
+        "median": 0.381573,
+        "high": 0.569547,
+        "standard_error": 0.114006
+      },
+      "logit_offset": 2.334757,
+      "median_occupied": 0.446571,
+      "median_empty": -1.888186,
+      "logit_scale": 1.652318,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occsched-cosine-r1": {
+      "auc": 0.8863906785711138,
+      "f1_at_zero": 0.4357142857142857,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.47381242387332523,
+        "counts": {
+          "true_positive": 389,
+          "false_positive": 586,
+          "false_negative": 278
+        },
+        "exact_boards": 1,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 1.95,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 5,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 1.35,
+            "boards": 3,
+            "true_positive": 4,
+            "false_positive": 77,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 1.95,
+            "boards": 3,
+            "true_positive": 54,
+            "false_positive": 48,
+            "false_negative": 106,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 1.95,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 0,
+            "false_negative": 0,
+            "exact_boards": 1
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 1.35,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 58,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 106,
+            "false_positive": 79,
+            "false_negative": 58,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 1.95,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 0,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 1.35,
+            "boards": 3,
+            "true_positive": 0,
+            "false_positive": 87,
+            "false_negative": 10,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 1.35,
+            "boards": 3,
+            "true_positive": 172,
+            "false_positive": 96,
+            "false_negative": 3,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 1.95,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 6,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 1.35,
+            "boards": 3,
+            "true_positive": 1,
+            "false_positive": 88,
+            "false_negative": 4,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 2.1,
+            "boards": 3,
+            "true_positive": 44,
+            "false_positive": 42,
+            "false_negative": 93,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.174638,
+        "median": 0.460825,
+        "high": 0.63125,
+        "standard_error": 0.11415
+      },
+      "logit_offset": 3.736104,
+      "median_occupied": 2.292807,
+      "median_empty": -1.443297,
+      "logit_scale": 2.642877,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    },
+    "m3-occstack-lever-r2": {
+      "auc": 0.7959612328439469,
+      "f1_at_zero": 0.40194588020674976,
+      "exact_at_zero": 0,
+      "cv": {
+        "f1": 0.40571606088847467,
+        "counts": {
+          "true_positive": 653,
+          "false_positive": 1899,
+          "false_negative": 14
+        },
+        "exact_boards": 0,
+        "boards": 28,
+        "folds": [
+          {
+            "group_id": "ancestry-training-20261026",
+            "threshold": 0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 90,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261027",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 6,
+            "false_positive": 270,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261028",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 159,
+            "false_positive": 120,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261029",
+            "threshold": 0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 93,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261030",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 268,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261031",
+            "threshold": 0.45,
+            "boards": 3,
+            "true_positive": 156,
+            "false_positive": 109,
+            "false_negative": 8,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261032",
+            "threshold": 0.3,
+            "boards": 1,
+            "true_positive": 0,
+            "false_positive": 92,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261033",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 9,
+            "false_positive": 260,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261034",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 174,
+            "false_positive": 99,
+            "false_negative": 1,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261035",
+            "threshold": 0.3,
+            "boards": 1,
+            "true_positive": 1,
+            "false_positive": 90,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261036",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 5,
+            "false_positive": 268,
+            "false_negative": 0,
+            "exact_boards": 0
+          },
+          {
+            "group_id": "ancestry-training-20261037",
+            "threshold": 0.3,
+            "boards": 3,
+            "true_positive": 137,
+            "false_positive": 140,
+            "false_negative": 0,
+            "exact_boards": 0
+          }
+        ],
+        "groups": 12,
+        "selection": "leave-one-group-out; grid, criterion and tie-break from occupancy_sweep"
+      },
+      "cv_interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "groups": 12,
+        "low": 0.147043,
+        "median": 0.395749,
+        "high": 0.601507,
+        "standard_error": 0.117272
+      },
+      "logit_offset": 3.771769,
+      "median_occupied": 1.858855,
+      "median_empty": -1.912914,
+      "logit_scale": 2.737922,
+      "nonempty_boards": 28,
+      "empty_boards": 8,
+      "scored_cells": 5600,
+      "occupied_cells": 667
+    }
+  },
+  "receipts": {
+    "m3-occbref-baseline-r1": {
+      "path": "runs\\m3-occbref-baseline-r1-sweep-r1\\result.json",
+      "sha256": "8f6d3eb3a102aebfab02e58efdc3964dd40258f6b5926f9bd724118169a0197d",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occbref-lever-r1": {
+      "path": "runs\\m3-occbref-lever-r1-sweep-r1\\result.json",
+      "sha256": "7a3e71bba33620c6d4c06634819f843164824bb8db7f66bb0aa6859781d2e50f",
+      "weights_sha256": "f7a70f25d1420db15e2f1ec91bda3f5d9aea8d6f9ff1bde6f80451f32f25e52b",
+      "published": {
+        "auc": 0.8595859175622,
+        "f1_at_zero": 0.42316258351893093
+      }
+    },
+    "m3-occctx-control-r1": {
+      "path": "runs\\m3-occctx-control-r1-sweep-r1\\result.json",
+      "sha256": "027e1efa7833e6e63c25add29fd01c589dfc3265d4e6533540183f10b10064c6",
+      "weights_sha256": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+      "published": {
+        "auc": 0.7427413396484406,
+        "f1_at_zero": 0.28483319315951783
+      }
+    },
+    "m3-occctx-lever-r1": {
+      "path": "runs\\m3-occctx-lever-r1-sweep-r1\\result.json",
+      "sha256": "99d2845ba228f1802e848d814d7c34a9f606f8ae410b63a9b1489417a100028a",
+      "weights_sha256": "90c77c8166ae39cc92b47a198b123fee5fa336ebaf87b72e686496fa66cef47c",
+      "published": {
+        "auc": 0.824386205437723,
+        "f1_at_zero": 0.3600325821341298
+      }
+    },
+    "m3-occdetail-lever-r1": {
+      "path": "runs\\m3-occdetail-lever-r1-sweep-r1\\result.json",
+      "sha256": "d0bbd38a6fd8248190f95c63ad4d2dd1d6720c72d853c1efb6ddc9b88df51f83",
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "published": {
+        "auc": 0.8226433610683003,
+        "f1_at_zero": 0.3816397228637413
+      }
+    },
+    "m3-occdstencil-lever-r1": {
+      "path": "runs\\m3-occdstencil-lever-r1-sweep-r1\\result.json",
+      "sha256": "567b85498258bc8c0578c9d5f7f5452cf0dc2c42a57b9342ea494adf5a4ab13b",
+      "weights_sha256": "29552fc727243a910dfe9120e69a25114bc1932251eafe9fb0126b132ab3c7c3",
+      "published": {
+        "auc": 0.8803953486463741,
+        "f1_at_zero": 0.39516616314199393
+      }
+    },
+    "m3-occextent-baseline-r1": {
+      "path": "runs\\m3-occextent-baseline-r1-sweep-r1\\result.json",
+      "sha256": "aafbdfd4a4f7f518b8c170abf77109f571a3a6e6ca266c0d4392e5e5155cdcd2",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occextent-lever-r1": {
+      "path": "runs\\m3-occextent-lever-r1-sweep-r1\\result.json",
+      "sha256": "a01635a1f5905abdb62aec57c05f391fd2778081febcf00e4000ba2d616c3301",
+      "weights_sha256": "444869688c9792ba7640e13c81dc917659feb8ef3fc05949b8bed7f73c3c1abe",
+      "published": {
+        "auc": 0.7525823546771111,
+        "f1_at_zero": 0.33149678604224053
+      }
+    },
+    "m3-occfit-baseline-r1": {
+      "path": "runs\\m3-occfit-baseline-r1-sweep-r1\\result.json",
+      "sha256": "2d545ba7653badbaeae9774ed2835c7b7059c2612c68c4f26179f9133d5d3007",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occfit-lever-r1": {
+      "path": "runs\\m3-occfit-lever-r1-sweep-r1\\result.json",
+      "sha256": "a5308746053621faf6787a4522c86cf2375a743a4259086d59fb037d3c30deef",
+      "weights_sha256": "4d2c77997253a997fbd05fa33f6e3a557d6136f97085b0d8ffe1bbe7aeb9b3f6",
+      "published": {
+        "auc": 0.8997906276944642,
+        "f1_at_zero": 0.2807986406117247
+      }
+    },
+    "m3-occgeocap-baseline-r1": {
+      "path": "runs\\m3-occgeocap-baseline-r1-sweep-r1\\result.json",
+      "sha256": "bcacd24e8efe551bb77f11503e3f6de79cf61dc15f6c33000caeb6e2e7c24888",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occgeocap-lever-r1": {
+      "path": "runs\\m3-occgeocap-lever-r1-sweep-r1\\result.json",
+      "sha256": "a483e8b9e349c2eae93f955f8a9e1c6d5be0b7ac1b98a78833ee06d77a16405b",
+      "weights_sha256": "9d17915349cce142fc915f673adaf07d0207e0859cb97d2e4c6e8f4d452f5bd9",
+      "published": {
+        "auc": 0.811563709327173,
+        "f1_at_zero": 0.2017126546146527
+      }
+    },
+    "m3-occgeom-baseline-r1": {
+      "path": "runs\\m3-occgeom-baseline-r1-sweep-r1\\result.json",
+      "sha256": "c8f0238da239c99ff6d690945958d4da948785d9352fa5d47716009d39eb97fa",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occgeom-lever-r1": {
+      "path": "runs\\m3-occgeom-lever-r1-sweep-r1\\result.json",
+      "sha256": "051277ef13129fd28e85ade5cd16962a6d8f444289939077ab103390b7abbfc0",
+      "weights_sha256": "81d32d10d148ed553c576aae5e10ad7558a58b3c72aaa43595750b5d8eee46b9",
+      "published": {
+        "auc": 0.8316142455834722,
+        "f1_at_zero": 0.47912317327766174
+      }
+    },
+    "m3-occlatfree-baseline-r1": {
+      "path": "runs\\m3-occlatfree-baseline-r1-sweep-r1\\result.json",
+      "sha256": "faecf6cdff2faf39147a2e27b51ca633f2e7aeca6a79b92a9d3031fd4722aa22",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occlatfree-lever-r1": {
+      "path": "runs\\m3-occlatfree-lever-r1-sweep-r1\\result.json",
+      "sha256": "cfd54b288aa9156b530dbcb560822c52c578f939ec77ff69dbc326dc16281221",
+      "weights_sha256": "747714d38f28834e5a685b241bf55b0ebd16d0c9e233efbe0225378db5e63d17",
+      "published": {
+        "auc": 0.8401467216928734,
+        "f1_at_zero": 0.42840646651270214
+      }
+    },
+    "m3-occlatres-baseline-r1": {
+      "path": "runs\\m3-occlatres-baseline-r1-sweep-r1\\result.json",
+      "sha256": "ce9788e389f50c7432b7ebaf0da72fc84723f0a660a651efc7e9458b0e14693e",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occlatres-lever-r1": {
+      "path": "runs\\m3-occlatres-lever-r1-sweep-r1\\result.json",
+      "sha256": "4b5a4854214f9aedeb48b998d47dae37bb91fd4449211043a65aa194a616046f",
+      "weights_sha256": "6dfb6be736c91d97c251e5c653e24aebd8775e06dc6621a2e03038d53e489090",
+      "published": {
+        "auc": 0.8209391148739436,
+        "f1_at_zero": 0.35197018104366345
+      }
+    },
+    "m3-occorigin-baseline-r1": {
+      "path": "runs\\m3-occorigin-baseline-r1-sweep-r1\\result.json",
+      "sha256": "d81a64e0715f17db9a1555f1b81c918f4b8532dc6b132212d6a5bc72cb44431a",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occorigin-lever-r1": {
+      "path": "runs\\m3-occorigin-lever-r1-sweep-r1\\result.json",
+      "sha256": "704bd811fcfde4890e2baac7910615458a0260b3d7cfca8be4d2abdea1cef66d",
+      "weights_sha256": "e2c897dfebefab09442b38165e11edffabc5137a36203d96175eea366e2903df",
+      "published": {
+        "auc": 0.8446146883987562,
+        "f1_at_zero": 0.41647137596250416
+      }
+    },
+    "m3-occscale-control-r1": {
+      "path": "runs\\m3-occscale-control-r1-sweep-r1\\result.json",
+      "sha256": "0e32ba5d64ecee2b1cf52a87ac87b5600f46fdacfbfef6eb6c2b86d187fc9b1a",
+      "weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "published": {
+        "auc": 0.8255386800822172,
+        "f1_at_zero": 0.4146485528647372
+      }
+    },
+    "m3-occscale-lever-r1": {
+      "path": "runs\\m3-occscale-lever-r1-sweep-r1\\result.json",
+      "sha256": "4203762a7eef7ec1f101f7eec587c9cf1637a3aabd7b7260d7d5e2bf0bc4c262",
+      "weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "published": {
+        "auc": 0.8006042589894998,
+        "f1_at_zero": 0.3791469194312797
+      }
+    },
+    "m3-occsched-constant-r1": {
+      "path": "runs\\m3-occsched-constant-r1-sweep-r1\\result.json",
+      "sha256": "7be2d284b4fb5bc52c0959169177fcba900ccc15eff99ef1e265196d3942293e",
+      "weights_sha256": "5d52b3f14c71bda436b15a56185f87ec084caf5f4fa87ec6111f6fb6f88f6214",
+      "published": {
+        "auc": 0.8457164079626516,
+        "f1_at_zero": 0.43067320552831034
+      }
+    },
+    "m3-occsched-cosine-r1": {
+      "path": "runs\\m3-occsched-cosine-r1-sweep-r1\\result.json",
+      "sha256": "92fa0769b329ca655639858101259172567586dc3b8390e8a56708f9c1a92037",
+      "weights_sha256": "28fcd85bbafe9d4f9c305c9e669f0163331bb1f8ba413721e75c7af4d89fad53",
+      "published": {
+        "auc": 0.8863906785711138,
+        "f1_at_zero": 0.4357142857142857
+      }
+    },
+    "m3-occstack-lever-r2": {
+      "path": "runs\\m3-occstack-lever-r2-sweep-r1\\result.json",
+      "sha256": "376777248ccaede860a2bf310482623338b64b51e5f77b479d68dc3aae555bf8",
+      "weights_sha256": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+      "published": {
+        "auc": 0.7959612328439469,
+        "f1_at_zero": 0.40194588020674976
+      }
+    }
+  },
+  "pairs": [
+    {
+      "pair": "representation",
+      "control": "m3-occctx-control-r1",
+      "lever": "m3-occctx-lever-r1",
+      "control_weights_sha256": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+      "lever_weights_sha256": "90c77c8166ae39cc92b47a198b123fee5fa336ebaf87b72e686496fa66cef47c",
+      "d_f1_at_zero": 0.075199,
+      "d_cv_f1": 0.001471,
+      "d_auc": 0.081645,
+      "d_logit_offset": 0.232963,
+      "d_cv_minus_zero": -0.073728,
+      "state": "shifted"
+    },
+    {
+      "pair": "precision",
+      "control": "m3-occctx-control-r1",
+      "lever": "m3-occdetail-lever-r1",
+      "control_weights_sha256": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+      "lever_weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "d_f1_at_zero": 0.096807,
+      "d_cv_f1": -0.018144,
+      "d_auc": 0.079902,
+      "d_logit_offset": 0.131299,
+      "d_cv_minus_zero": -0.114951,
+      "state": "gain_reversed"
+    },
+    {
+      "pair": "stencil",
+      "control": "m3-occdetail-lever-r1",
+      "lever": "m3-occdstencil-lever-r1",
+      "control_weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "lever_weights_sha256": "29552fc727243a910dfe9120e69a25114bc1932251eafe9fb0126b132ab3c7c3",
+      "d_f1_at_zero": 0.013526,
+      "d_cv_f1": 0.066999,
+      "d_auc": 0.057752,
+      "d_logit_offset": -0.375831,
+      "d_cv_minus_zero": 0.053472,
+      "state": "refusal_reversed"
+    },
+    {
+      "pair": "stacking",
+      "control": "m3-occdstencil-lever-r1",
+      "lever": "m3-occstack-lever-r2",
+      "control_weights_sha256": "29552fc727243a910dfe9120e69a25114bc1932251eafe9fb0126b132ab3c7c3",
+      "lever_weights_sha256": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+      "d_f1_at_zero": 0.00678,
+      "d_cv_f1": -0.061682,
+      "d_auc": -0.084434,
+      "d_logit_offset": 0.407533,
+      "d_cv_minus_zero": -0.068461,
+      "state": "shifted"
+    },
+    {
+      "pair": "scale",
+      "control": "m3-occscale-control-r1",
+      "lever": "m3-occscale-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "d_f1_at_zero": -0.035502,
+      "d_cv_f1": -0.023813,
+      "d_auc": -0.024934,
+      "d_logit_offset": -2.21135,
+      "d_cv_minus_zero": 0.011688,
+      "state": "aligned"
+    },
+    {
+      "pair": "fit_budget",
+      "control": "m3-occfit-baseline-r1",
+      "lever": "m3-occfit-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "4d2c77997253a997fbd05fa33f6e3a557d6136f97085b0d8ffe1bbe7aeb9b3f6",
+      "d_f1_at_zero": -0.13385,
+      "d_cv_f1": 0.149441,
+      "d_auc": 0.074252,
+      "d_logit_offset": -0.765695,
+      "d_cv_minus_zero": 0.283291,
+      "state": "refusal_reversed"
+    },
+    {
+      "pair": "geometry_stage",
+      "control": "m3-occgeom-baseline-r1",
+      "lever": "m3-occgeom-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "81d32d10d148ed553c576aae5e10ad7558a58b3c72aaa43595750b5d8eee46b9",
+      "d_f1_at_zero": 0.064475,
+      "d_cv_f1": 0.107468,
+      "d_auc": 0.006076,
+      "d_logit_offset": -1.185762,
+      "d_cv_minus_zero": 0.042994,
+      "state": "aligned"
+    },
+    {
+      "pair": "translation",
+      "control": "m3-occorigin-baseline-r1",
+      "lever": "m3-occorigin-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "e2c897dfebefab09442b38165e11edffabc5137a36203d96175eea366e2903df",
+      "d_f1_at_zero": 0.001823,
+      "d_cv_f1": 0.050721,
+      "d_auc": 0.019076,
+      "d_logit_offset": -1.825616,
+      "d_cv_minus_zero": 0.048898,
+      "state": "refusal_reversed"
+    },
+    {
+      "pair": "extent",
+      "control": "m3-occextent-baseline-r1",
+      "lever": "m3-occextent-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "444869688c9792ba7640e13c81dc917659feb8ef3fc05949b8bed7f73c3c1abe",
+      "d_f1_at_zero": -0.083152,
+      "d_cv_f1": 0.072322,
+      "d_auc": -0.072956,
+      "d_logit_offset": -0.258,
+      "d_cv_minus_zero": 0.155474,
+      "state": "refusal_reversed"
+    },
+    {
+      "pair": "support_anchors",
+      "control": "m3-occgeocap-baseline-r1",
+      "lever": "m3-occgeocap-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "9d17915349cce142fc915f673adaf07d0207e0859cb97d2e4c6e8f4d452f5bd9",
+      "d_f1_at_zero": -0.212936,
+      "d_cv_f1": -0.017562,
+      "d_auc": -0.013975,
+      "d_logit_offset": -2.283077,
+      "d_cv_minus_zero": 0.195374,
+      "state": "shifted"
+    },
+    {
+      "pair": "lattice_residual",
+      "control": "m3-occlatres-baseline-r1",
+      "lever": "m3-occlatres-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "6dfb6be736c91d97c251e5c653e24aebd8775e06dc6621a2e03038d53e489090",
+      "d_f1_at_zero": -0.062678,
+      "d_cv_f1": 0.011418,
+      "d_auc": -0.0046,
+      "d_logit_offset": -0.927018,
+      "d_cv_minus_zero": 0.074096,
+      "state": "shifted"
+    },
+    {
+      "pair": "lattice_free",
+      "control": "m3-occlatfree-baseline-r1",
+      "lever": "m3-occlatfree-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "747714d38f28834e5a685b241bf55b0ebd16d0c9e233efbe0225378db5e63d17",
+      "d_f1_at_zero": 0.013758,
+      "d_cv_f1": -0.042612,
+      "d_auc": 0.014608,
+      "d_logit_offset": -1.089223,
+      "d_cv_minus_zero": -0.05637,
+      "state": "shifted"
+    },
+    {
+      "pair": "board_refinement",
+      "control": "m3-occbref-baseline-r1",
+      "lever": "m3-occbref-lever-r1",
+      "control_weights_sha256": "d149351cbdfb070c51e777905c11b1196ba54064c5775381a4176b16903be7bc",
+      "lever_weights_sha256": "f7a70f25d1420db15e2f1ec91bda3f5d9aea8d6f9ff1bde6f80451f32f25e52b",
+      "d_f1_at_zero": 0.008514,
+      "d_cv_f1": 0.053406,
+      "d_auc": 0.034047,
+      "d_logit_offset": -2.129899,
+      "d_cv_minus_zero": 0.044892,
+      "state": "refusal_reversed"
+    },
+    {
+      "pair": "schedule",
+      "control": "m3-occsched-constant-r1",
+      "lever": "m3-occsched-cosine-r1",
+      "control_weights_sha256": "5d52b3f14c71bda436b15a56185f87ec084caf5f4fa87ec6111f6fb6f88f6214",
+      "lever_weights_sha256": "28fcd85bbafe9d4f9c305c9e669f0163331bb1f8ba413721e75c7af4d89fad53",
+      "d_f1_at_zero": 0.005041,
+      "d_cv_f1": 0.084165,
+      "d_auc": 0.040674,
+      "d_logit_offset": 1.401347,
+      "d_cv_minus_zero": 0.079124,
+      "state": "refusal_reversed"
+    }
+  ],
+  "sources": {
+    "scripts/operating_point.py": "91d185b73b4bace48d6d7200710a94cc938b546e29b46f30ebdff6d4be1a502e",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "scope": "Read-only audit of the standing threshold-0.0 occupancy read against an out-of-fold threshold on committed sweep receipts. No training, no weight change, no gate, no threshold for any gate, and no re-verdict: the state rule was predeclared in docs/M3_OPERATING_POINT.md before this receipt."
+}

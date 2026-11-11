@@ -1,5 +1,45 @@
 # Contributor handoff — 2026-10-30
 
+## The standing occupancy attribution is a boundary, not a model difference, and two compute refusals reverse (2026-11-11)
+
+[M3_OPERATING_POINT.md](M3_OPERATING_POINT.md) was predeclared before its receipt; it is read-only
+(`docs/evidence/m3-operating-point-r2/result.json`, `runs/m3-opaudit-r5-job.json` passed, 88.7 s, peak
+46,661,632 B of 128 MiB) and it moves no verdict. Every occupancy verdict in the campaign was read at
+a fixed threshold `0.0`, while the levers move that boundary: the fit-budget arm's best swept
+threshold is `4.35` against its control's `0.15`, the width lever's `+0.75` against `-0.75`, the
+schedule's `+1.95` against `0.0`. On the committed per-cell logits of 27 arms over the widened
+deciding population (36 cases, 12 ancestry groups, 7,200 known cells, 667 occupied, 28 nonempty
+boards) the audit recomputes four reads per arm and chooses the threshold **leave-one-group-out** -
+the sweep's own grid, criterion and tie-break, with the boundary never seeing the cell it scores.
+Every receipt reproduced its own published `deciding.auc` and `threshold 0.0` F1 first; the shared
+control's `0.414649` is the verdict table's own number.
+
+**Verdict `standing_read_confounded`:** of 14 declared pairs, **6** are `refusal_reversed` (standing
+attribution below +0.05, out-of-fold at or above it), **1** `gain_reversed`, **5** `shifted` by at
+least a floor, **2** `aligned`. Paired whole-group intervals, reported and never read by a state,
+leave **2** reversals standing:
+
+- the **1.5x fit budget** at **+0.149** out-of-fold F1 (interval **+0.006 .. +0.277**), AUC +0.074 and
+  its own published placement better (1.9812 -> 1.8419 cells), refused by the standing read at
+  **-0.134**;
+- the **cosine schedule** at **+0.084** (**+0.010 .. +0.168**), AUC +0.041, placement 39.9% better,
+  refused at **+0.005**.
+
+Five further reversals are unresolved at twelve groups (stencil +0.067, translation +0.051, extent
++0.072, board refinement +0.053, and the precision arm's credited +0.097 that becomes -0.018 out of
+fold). Four refusals are supported (stacking -0.062, lattice-free -0.043, 4x scale -0.024, support
+anchors -0.018), so the read-out family's negative is not uniformly an artifact.
+
+**No gate moves:** 0 of 28 exact nonempty boards at `0.0` in every arm, 0 of 28 under the out-of-fold
+boundary in every arm but the cosine arm's 1, and no arm's `cv_f1` exceeds 0.533, so the level claim
+stands and the fit gate stays FALSE. The width `capacity_null` is unaffected - it read best swept F1
+and AUC. What the audit retires is the *compute* closure: "budget is not the limiter" and "more
+optimisation is not a substitute" were read at a boundary the levers moved. Ranked next is a
+declared calibration-neutral re-read of those two arms, with replicate arms and a group-level
+interval, before any further lever is read at `0.0`. V-091 records the defect and its standing
+instrument; V-092 records the join defect this pass exposed in its own first two attempts, both
+preserved under `runs/attempts/`.
+
 ## The readout cleanup is proven at every consumer, and a receipt reproduces (2026-11-11)
 
 `tests/test_consumer_pins.py` drives each converted non-loss call site - `visible_units`, `sweep_logits`,

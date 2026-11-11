@@ -12,11 +12,30 @@ class split, decision boundary, read-out form, tap stacking, a 4x budget and the
 geometry stage policy, the box origin, the box extent, boundary supervision capacity and per-stage
 lattice residual capacity). Every geometry-side lever either bought occupancy at a placement cost or
 lost both, so the remaining occupancy deficit is now blocked at the declared architecture - capacity 64 is a component-slot bound and the trunk has no width knob - so a wider trunk needs a user-authorized architecture lever rather than a label, budget, origin,
-extent, supervision-capacity, per-stage-capacity, read-out, per-board-refinement or fit-budget problem;
+extent, supervision-capacity, per-stage-capacity, read-out or per-board-refinement problem; the
+compute-side attributions (budget, schedule) are qualified by
+[M3_OPERATING_POINT.md](M3_OPERATING_POINT.md), because the read they were taken at moves with the
+head's calibration;
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the standing occupancy attribution is a boundary, not a model difference, and two compute refusals reverse**
+([M3_OPERATING_POINT.md](M3_OPERATING_POINT.md), predeclared before its receipt, `docs/evidence/m3-operating-point-r2/result.json`).
+Every occupancy lever was read at a fixed threshold `0.0`, and the levers move that boundary: the
+fit-budget arm's best swept threshold is `4.35` against its control's `0.15`. With the boundary chosen
+on the other eleven ancestry groups, **7 of 14** committed pairs reverse the standing attribution - 6
+refused arms clear the +0.05 floor and 1 credited gain does not - and **2** survive their own paired
+whole-group interval: the 1.5x fit budget (**+0.149** out-of-fold F1, interval +0.006..+0.277, AUC
++0.074, placement better) and the cosine schedule (**+0.084**, +0.010..+0.168, AUC +0.041, placement
+39.9% better), refused by the standing read at **-0.134** and **+0.005**. **No gate moves:** 0 of 28
+exact nonempty boards at `0.0`, 0 of 28 under the out-of-fold boundary in every arm but the cosine
+arm's 1, and no arm's out-of-fold F1 exceeds 0.533, so the model is still far from fit - but "budget is
+not the limiter" and "more optimisation is not a substitute" were artifacts of the read. The width
+`capacity_null` is unaffected (it read best swept F1 and AUC). Ranked next: a declared,
+calibration-neutral re-read of the two compute-side arms with replicate arms, not another lever at
+`0.0`.
 
 Latest: **the decision-path width lever is a null, and the wider arm is worse at equal steps**
 ([M3_TRUNK_WIDTH_LEVER.md](M3_TRUNK_WIDTH_LEVER.md), `docs/evidence/m3-trunkwidth-r1/scope.json`). Two

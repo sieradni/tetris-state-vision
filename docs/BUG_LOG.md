@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072 (15) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092 (16) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -19,9 +19,43 @@ a named green run. An unrun gate leaves the entry OPEN.
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068 (13) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts |
-| interval-validity | V-056, V-066 (2) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read |
+| interval-validity | V-056, V-066, V-091 (3) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-091 — CLOSED: the standing occupancy attribution was read at a threshold the levers move
+
+- Symptom: fourteen committed occupancy pairs were credited or refused by per-cell F1 at logit
+  threshold `0.0`, while the arms' own receipts report best swept thresholds from `-1.35` to `+4.35`,
+  and the arm the standing read scored worst at `0.0` (the 1.5x fit budget, `-0.134`) is the best
+  arm in the table once the boundary is transferable (`+0.149`).
+- Root cause: F1 at a fixed threshold is a function of ranking *and* of the head's logit offset, and
+  that offset is unconstrained - a 64-step continuation moves the occupied-minus-empty median offset
+  by more than two logit units (`+4.16` on the shared control, `+1.88` on the support-anchor arm).
+  The verdicts read the offset as precision.
+- Change: no verdict, gate, threshold, population or model byte changes. A read-only audit
+  (`scripts/operating_point.py`) recomputes `f1_at_zero`, `auc`, a leave-one-group-out `cv_f1` and the
+  logit offset from every committed sweep receipt, and classifies each declared pair by a rule fixed
+  before its receipt (`docs/M3_OPERATING_POINT.md`).
+- Detection class: interval-validity.
+- Instrument: the leave-one-group-out boundary plus the paired whole-group interval, pinned by
+  `tests/test_operating_point.py` (shift invariance, no held-out leakage, the state table and the
+  population/join guards). Standing under the three-instance rule.
+- Named green run: `runs/m3-opaudit-r5-job.json` (passed, 88.7 s, peak 46,661,632 B of 128 MiB)
+  writing `docs/evidence/m3-operating-point-r2/result.json`; the full suite is green.
+
+## V-092 — CLOSED: the audit's read and its provenance join held two copies of one convention
+
+- Symptom: two consecutive audit attempts refused with "sweep receipt does not reproduce its own
+  published read" although every receipt was intact.
+- Root cause: the sweep's F1 curve is over the 28 nonempty boards while the join pooled all 36, and
+  the fix that restricted the read was not applied to the join in the same function - so the defect
+  survived its own fix.
+- Detection class: test-instrument.
+- Instrument: one `nonempty` helper feeds the population guard, the read and the join, and a
+  regression test asserts that an all-empty board contributes no cells and is counted separately.
+- Named green run: `runs/m3-opaudit-r5-job.json`; the refused attempts are preserved with notes under
+  `runs/attempts/m3-opaudit-r1-refused/`, `-r2-refused/` and `-r3-refused/`.
 
 ## V-068 — CLOSED: the curator rebuilt labels in an assumed order instead of the committed order
 
