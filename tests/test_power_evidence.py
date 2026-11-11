@@ -74,6 +74,22 @@ class PowerFigures(unittest.TestCase):
                      "floor_design"):
             self.assertIn(self.head[name], roadmap, f"roadmap is stale for {name}")
 
+    def test_the_replication_document_decomposition_rows_match_recomputation(self):
+        """The worked example also lives in the replicate document; it is not allowed to drift."""
+        text = (ROOT/"docs/M3_COMPUTE_REPLICATION.md").read_text(encoding="utf-8")
+        for seed in map(str, power.SEEDS):
+            row = self.result["decomposition_deltas"]["budget192"][seed]
+            parts = row["parts"]
+            self.assertIn(f"| `{seed}` | {row['auc']:+.3f} | "
+                          f"{parts['ranking_best_boundary']:+.3f} | "
+                          f"{parts['zero_boundary_cost']:+.3f} | "
+                          f"{parts['transfer_cost']:+.3f} | {row['cv_f1']:+.3f} |", text)
+        for seed in map(str, power.SEEDS):
+            parts = self.result["decomposition_deltas"]["cosine128"][seed]["parts"]
+            self.assertIn(f"{parts['ranking_best_boundary']:+.3f}/"
+                          f"{parts['zero_boundary_cost']:+.3f}/"
+                          f"{parts['transfer_cost']:+.3f}", text)
+
     def test_the_band_brackets_the_point_and_moves_the_counts_apart(self):
         for lever in power.LEVERS:
             variance = self.result["levers"][lever]["variance"]
