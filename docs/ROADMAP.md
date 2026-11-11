@@ -23,20 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **every figure in the power analysis is now generated and suite-checked, and the 2 df band shows the recommendation's weak end**
+Latest: **every power figure is generated, suite-checked, and the guard is itself exercised by mutation**
 ([M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md),
-`docs/evidence/m3-power-mde-r3/result.json`). The block's detectable floor is `0.083151`
-for the budget lever and `0.126475` for the schedule at 80% power, with both observed
-magnitudes inside it and power at a true `+0.05` of `0.3917` and
+`docs/evidence/m3-power-mde-r3/result.json`). The detectable floor is `0.083151` for the
+budget lever and `0.126475` for the schedule at 80% power, with both observed magnitudes
+inside it and power at a true `+0.05` of `0.3917` and
 `0.1981`; the audit's `+0.149` stays inside its own design's floor
 (`0.196212`, power `0.5665`), and the 36 clusters carry a design effect
 against cells of `16.8` and `29.2`.
-The method document carries no typed numbers: `scripts/power_analysis.py --render` emits its figure
-block, and `tests/test_power_evidence.py` recomputes the analysis from the nine committed receipts and
-fails if the evidence, the block or these headline figures disagree. The between-population variance
-rests on 2 df, so the `+0.149` recommendation is a band - `3 to 83` seeds,
+The method document carries no typed number, and `tests/test_power_evidence.py` recomputes the whole
+analysis from the nine committed receipts, compares the committed evidence field by field and the
+document's block with `render`, and mutates a block figure, a `20261103` decomposition row and an
+evidence number to prove it rejects them. The between-population variance rests on 2 df, so the
+`+0.149` recommendation is a band - `3 / 5 / 83 seeds and 1.20 / 1.99 / 33.11 arm-hours` (low / point / high), `3 to 83` seeds and
 `1.20 to 33.11` arm-hours - against `44 seeds, 528 clusters, 17.55 arm-hours` for the campaign's own floor.
-Nothing re-reads either verdict; the retired closure stands as underpowered by construction.
+The point estimate clears `+0.149` by about 0.003, so the weak end is what to plan against. Nothing
+re-reads either verdict.
 
 Latest: **the two compute levers do not replicate, so the compute closure is retired rather than
 confirmed** ([M3_COMPUTE_REPLICATION.md](M3_COMPUTE_REPLICATION.md), predeclared before its receipts,

@@ -40,38 +40,35 @@ interval, before any further lever is read at `0.0`. V-091 records the defect an
 instrument; V-092 records the join defect this pass exposed in its own first two attempts, both
 preserved under `runs/attempts/`.
 
-## Every power figure is now generated and suite-checked, and the 2 df band bounds the recommendation (2026-11-11)
+## Every power figure is generated, suite-checked, and the guard is itself exercised by mutation (2026-11-11)
 
 [M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md) no longer contains a typed number:
 its figure block is emitted by `scripts/power_analysis.py --render` from
 `docs/evidence/m3-power-mde-r3/result.json`, and `tests/test_power_evidence.py` recomputes the whole
 analysis from the nine committed sweep receipts, requires the committed evidence to equal that
-recomputation, requires the document's block to equal `render`, and requires the headline figures in
-this file and ROADMAP to equal the recomputed strings. A hand edit to any table is a suite failure
-(V-096).
+recomputation field by field, requires the document's block to equal `render`, and requires the
+headline figures in this file and ROADMAP to equal the recomputed strings. The check is demonstrated
+rather than assumed: negative tests mutate a figure inside the block, a row of the `20261103`
+decomposition table and a number in the committed evidence, and require the check to raise with a
+message naming the figure, so a guard that accepted a mutation would itself fail (V-096).
 
-The figures themselves are unchanged where they were already derived: MDE `0.083151` for
-the budget lever and `0.126475` for the schedule at 80% power, both observed magnitudes
-inside them, power at a true `+0.05` of `0.3917` and
-`0.1981`; the audit's fit-budget pair at MDE `0.196212` with
-power `0.5665` against its own claim; cluster design effects against cells of
-`16.8` and `29.2`.
+The figures: MDE `0.083151` for the budget lever and `0.126475` for the
+schedule at 80% power, both observed magnitudes inside them, power at a true `+0.05` of
+`0.3917` and `0.1981`; the audit's fit-budget pair
+at MDE `0.196212` with power `0.5665` against its own claim; cluster design
+effects against cells of `16.8` and
+`29.2`.
 
-**The between-population variance is now a band, not a point.** On 2 df a scaled chi-square interval
-gives `0.003959` to
-`0.231199` around
-`0.011859`, and propagating it through the
-same seeds-needed arithmetic makes the `+0.149` recommendation `3 to 83` seeds and
-`1.20 to 33.11` arm-hours, against `44 seeds, 528 clusters, 17.55 arm-hours` for the campaign's own floor.
-The point estimate (five seeds for the budget variance) is the middle of that band, not a commitment:
-a block sized to it is powered only if the variance sits near its point estimate, and the band's weak
-end is what a claim that must actually be settled should be planned against.
+**The between-population variance is a band, not a point.** On 2 df the scaled chi-square interval is
+`0.003959` to `0.231199` around `0.011859`, and
+propagating it through the same seeds-needed arithmetic gives `3 / 5 / 83 seeds and 1.20 / 1.99 / 33.11 arm-hours` (low / point / high) for the
+`+0.149` claim, against `44 seeds, 528 clusters, 17.55 arm-hours` for the campaign's own `+0.05` floor. The range is
+`3 to 83` seeds and `1.20 to 33.11` arm-hours, not one number: the point
+estimate clears `+0.149` by roughly 0.003, so the band's weak end is what a claim that must actually be
+settled should be planned against.
 
-The conclusion is unchanged and unaffected by the band: the lever reads were underpowered by
-construction, the compute closure is retired because it could not be resolved at the design that was
-run, and no verdict is re-read here.
-
-
+The conclusion is unchanged: the lever reads were underpowered by construction, the compute closure is
+retired because it could not be resolved at the design that was run, and no verdict is re-read here.
 
 ## The compute levers do not replicate, so the compute closure is retired but unconfirmed (2026-11-11)
 
