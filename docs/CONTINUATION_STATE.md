@@ -40,46 +40,38 @@ interval, before any further lever is read at `0.0`. V-091 records the defect an
 instrument; V-092 records the join defect this pass exposed in its own first two attempts, both
 preserved under `runs/attempts/`.
 
-## The lever reads were underpowered by construction, and the campaign can now say so numerically (2026-11-11)
+## Every power figure is now generated and suite-checked, and the 2 df band bounds the recommendation (2026-11-11)
 
-[M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md) is read-only at
-`docs/evidence/m3-power-mde-r2/result.json` (`runs/m3-power-r2-job.json` passed), derived entirely
-from the nine committed sweeps and their 36 `(seed, group)` clusters. It refuses to run unless it
-reproduces the published read: pooled F1 to `1e-6`, both paired point deltas to `1e-6`, and both
-bootstrap intervals compared whole. Its delta-method linearisation of pooled F1 - per-cluster
-influences summing to zero - then reproduces the bootstrap standard error to ratios of 1.0044 and
-0.9749, so the width is not a resampling artifact.
+[M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md) no longer contains a typed number:
+its figure block is emitted by `scripts/power_analysis.py --render` from
+`docs/evidence/m3-power-mde-r3/result.json`, and `tests/test_power_evidence.py` recomputes the whole
+analysis from the nine committed sweep receipts, requires the committed evidence to equal that
+recomputation, requires the document's block to equal `render`, and requires the headline figures in
+this file and ROADMAP to equal the recomputed strings. A hand edit to any table is a suite failure
+(V-096).
 
-**The block could not resolve its own +0.05 floor.** MDE (two-sided alpha 0.05, power 0.80) is
-`0.083151` for the budget lever and `0.126475` for the schedule; the observed magnitudes,
-`0.079599` and `0.021276`, are both **inside** it. At a true floor-sized effect this design had 39%
-and 20% power. The clusters show a design effect of 9.5/12.3 against boards and 16.8/29.2 against
-cells, so the 36 clusters - not the 7,200 cells - are the sample size.
+The figures themselves are unchanged where they were already derived: MDE `0.083151` for
+the budget lever and `0.126475` for the schedule at 80% power, both observed magnitudes
+inside them, power at a true `+0.05` of `0.3917` and
+`0.1981`; the audit's fit-budget pair at MDE `0.196212` with
+power `0.5665` against its own claim; cluster design effects against cells of
+`16.8` and `29.2`.
 
-**The audit's claim was below its own floor.** Its fit-budget pair carries
-`standard_error 0.070036` over 12 groups in one population, an MDE of `0.196212`, and power `0.567`
-against its own `+0.1494`. The reversal that motivated the re-read was never resolvable at the design
-that produced it.
+**The between-population variance is now a band, not a point.** On 2 df a scaled chi-square interval
+gives `0.003959` to
+`0.231199` around
+`0.011859`, and propagating it through the
+same seeds-needed arithmetic makes the `+0.149` recommendation `3 to 83` seeds and
+`1.20 to 33.11` arm-hours, against `44 seeds, 528 clusters, 17.55 arm-hours` for the campaign's own floor.
+The point estimate (five seeds for the budget variance) is the middle of that band, not a commitment:
+a block sized to it is powered only if the variance sits near its point estimate, and the band's weak
+end is what a claim that must actually be settled should be planned against.
 
-**A three-seed 256/384 block would not settle +0.149.** Once populations count as random (corrected
-between-population variance `0.01186`; within-seed SEs `0.020/0.033/0.064`) the SE at three seeds is
-`0.0677` and the MDE `0.190`, with power `0.596`. Five seeds (60 clusters, `1.99` arm-hours at the
-measured 2.24375 s/step) clear it only by 0.002; eight seeds give SE `0.0416` and real margin.
-Resolving the campaign's own `+0.05` floor needs **44 seeds, 528 clusters, `17.55` arm-hours**. The
-between-population variance rests on 2 df and its 90% upper limit would push the `+0.149` count to
-~41 seeds, so these are point-estimate answers, not commitments.
+The conclusion is unchanged and unaffected by the band: the lever reads were underpowered by
+construction, the compute closure is retired because it could not be resolved at the design that was
+run, and no verdict is re-read here.
 
-**The primary is now two components.** For every arm the analysis reports F1 at the arm's own best
-boundary (ranking), the cost of the `0.0` boundary, and the transfer cost of a boundary chosen
-elsewhere; the parts add exactly to the out-of-fold F1. This corrected an earlier claim in this
-repository: seed `20261103`'s budget loss is **not** mostly boundary transfer - its F1 at its own
-best boundary is `0.169` below control (dAUC only `-0.030`), the `0.0` boundary penalised it less,
-and transfer cost `-0.150`. Future blocks declare both components instead of F1 alone.
 
-**Conclusion for the stopping decision:** the compute closure is retired because it could not be
-resolved at the design that was run, not because it was measured null, and the same is true of the
-audit's reversal. Either fund ~44 seeds for floor-level resolution, or treat every future lever read
-as exploratory. V-095 records the defect and the standing instrument.
 
 ## The compute levers do not replicate, so the compute closure is retired but unconfirmed (2026-11-11)
 

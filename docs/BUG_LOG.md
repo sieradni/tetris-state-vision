@@ -18,7 +18,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050, V-093 (4) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068 (13) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096 (14) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, so a hand edit to a table cannot pass silently |
 | interval-validity | V-056, V-066, V-091, V-095 (4) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
@@ -73,6 +73,22 @@ a named green run. An unrun gate leaves the entry OPEN.
   floor and the seed count each target would need, before any block is read.
 - Named green run: `runs/m3-power-r2-job.json` writing `docs/evidence/m3-power-mde-r2/result.json`;
   `tests/test_power_analysis.py` and the full suite are green.
+
+## V-096 — CLOSED: the power tables were transcribed by hand, and one cell was wrong on first write
+
+- Symptom: the MDE document and its evidence were produced in one pass with the tables typed from
+  the console. The 44-seed row's standard error was roughly 9% too high and the 8-seed row was off in
+  the fourth decimal, and nothing on disk could notice either.
+- Root cause: the numbers were copied, not generated. The analysis wrote its own evidence, but the
+  document quoting it was authored separately, so the two could diverge silently.
+- Detection class: evidence-reporting.
+- Instrument: `power_analysis.render` emits the figure block from the analysis result alone, the
+  document embeds it between `power-figures` markers, and `tests/test_power_evidence.py` recomputes
+  the whole analysis from the nine receipts, requires the committed evidence to match, requires the
+  document block to equal `render`, and requires every headline figure quoted in ROADMAP and
+  CONTINUATION_STATE to equal the recomputed string.
+- Named green run: `runs/m3-power-r3-job.json` writing `docs/evidence/m3-power-mde-r3/result.json`;
+  the suite check is green.
 
 ## V-093 — CLOSED: two block chains ran against one seed because nothing knew the other was alive
 
