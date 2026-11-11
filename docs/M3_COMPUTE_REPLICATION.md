@@ -169,6 +169,17 @@ width `capacity_null` stands as the remaining actionable verdict. Nothing here i
 alternative threshold, arm, budget or population is substituted, and the `-0.0796` is reported at the
 same floor, interval and rule that were fixed before the first receipt.
 
+**Where the F1 loss sits (descriptive; not a substitute read).** The primary is out-of-fold F1, so
+it charges a lever for moving the head's logit distribution as well as for ranking worse. Comparing
+each arm's own sweep AUC, which is boundary-free, with its F1 delta: `budget192` reads
+`+0.043 / -0.076 / -0.030` AUC against `-0.030 / +0.009 / -0.257` F1, and `cosine128` reads
+`+0.102 / +0.041 / -0.005` against `+0.063 / +0.105 / -0.121`. At `20261103` both arms lose about
+three times more F1 than AUC, so that seed's losses are mostly boundary transfer rather than worse
+ranking; at `20261102` the budget arm loses on both. This is recorded because it names the mechanism,
+and it does not re-open the verdict: an AUC read was not predeclared and cannot be substituted for
+the primary, and a future study that wants the two components separately must declare both before
+its receipts.
+
 **What this does not settle, stated plainly:** the audit measured `+0.149` on continuations of the
 curated start at 256 -> 384 steps; this block measures fresh starts at 128 -> 192. The block cannot
 arbitrate the continuation contrast (pseudo-replication of those arms is impossible, see above), so
