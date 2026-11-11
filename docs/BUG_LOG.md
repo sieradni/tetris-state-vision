@@ -18,7 +18,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050, V-093 (4) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096 (14) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, so a hand edit cannot pass silently |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096 (14) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
 | interval-validity | V-056, V-066, V-091, V-095 (4) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
@@ -88,15 +88,20 @@ a named green run. An unrun gate leaves the entry OPEN.
 - Detection class: evidence-reporting.
 - Instrument: `power_analysis.render` emits the figure block from the analysis result alone, the
   document embeds it between `power-figures` markers, and `tests/test_power_evidence.py` recomputes
-  the analysis from the nine receipts, compares the committed evidence field by field (the failing
-  key is named), compares the document block with `render`, and compares the headline figures and the
-  band's per-design counts in ROADMAP and CONTINUATION_STATE. The guard is exercised by mutation:
-  tests perturb a figure in the block, a row of the `20261103` decomposition table and a number in the
-  committed evidence, and require each check to reject with a message naming the figure, so an
-  accepted mutation fails the suite instead of proving only that the check passes.
-- Named green run: `runs/m3-power-r3-job.json` writing `docs/evidence/m3-power-mde-r3/result.json`,
-  plus an on-disk mutation pass over the committed method document, the replicate table and the
-  evidence file with byte-exact restore; the suite is green.
+  the analysis from the nine receipts, compares the committed evidence field by field (naming the
+  failing key), compares the document block with `render`, and compares the headline figures and the
+  band's per-design counts in ROADMAP and CONTINUATION_STATE.
+- Exercised on the real files, not in a demonstration harness: three committed artefacts were
+  perturbed on disk and the committed tests were run against them. The block's budget MDE
+  (`0.083151` -> `0.083251`) failed with "figure block line 5 differs"; the `20261103` row of
+  `M3_COMPUTE_REPLICATION.md` (`-0.169` -> `-0.159`) failed with "decomposition row for budget192 seed
+  20261103 is stale or missing"; and one reported number in the committed `result.json` failed with
+  "result.levers.budget192.minimum_detectable_effect: 0.083251 != 0.083151". Each test exited 1 with
+  the figure named, and every file was restored to its committed bytes (`git diff --exit-code` clean).
+- Non-vacuity: with the three comparisons disabled in-process, all three encoded negative tests turned
+  red, so they detect the tampering rather than merely passing beside it.
+- Named green run: `runs/suite-power-r6-job.json`, the full suite under the bounded runner; the mutate
+  run wrote nothing permanent and left the three artefacts byte-identical.
 
 ## V-093 — CLOSED: two block chains ran against one seed because nothing knew the other was alive
 
