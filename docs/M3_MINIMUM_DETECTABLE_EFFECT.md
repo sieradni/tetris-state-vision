@@ -81,8 +81,8 @@ power `0.596` and `0.746`. **A three-seed 256/384 block is underpowered for the 
 |---|---|---|---|---|
 | `+0.149`, budget variance | 5 | 60 | 1.99 | clears by 0.002 only |
 | `+0.149`, schedule variance | 4 | 48 | 1.60 | clears by ~0.01 |
-| `+0.149`, recommended margin | 8 | 96 | 3.19 | `SE 0.0416`, MDE `0.117` |
-| the campaign's own `+0.05` floor | 44 | 528 | 17.55 | `SE 0.0193`, MDE `0.054` |
+| `+0.149`, recommended margin | 8 | 96 | 3.19 | `SE 0.0414`, MDE `0.1161` |
+| the campaign's own `+0.05` floor | 44 | 528 | 17.55 | `SE 0.0177`, MDE `0.0495` |
 
 So the answer to "would three seeds settle `+0.149`" is **no**; five seeds clear it on the point
 estimate and eight give real margin. The answer to "can this campaign resolve the floor it judges
