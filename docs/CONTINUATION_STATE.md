@@ -79,7 +79,7 @@ and transfer cost `-0.150`. Future blocks declare both components instead of F1 
 **Conclusion for the stopping decision:** the compute closure is retired because it could not be
 resolved at the design that was run, not because it was measured null, and the same is true of the
 audit's reversal. Either fund ~44 seeds for floor-level resolution, or treat every future lever read
-as exploratory. V-094 records the defect and the standing instrument.
+as exploratory. V-095 records the defect and the standing instrument.
 
 ## The compute levers do not replicate, so the compute closure is retired but unconfirmed (2026-11-11)
 
