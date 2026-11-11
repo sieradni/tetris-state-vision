@@ -1,6 +1,8 @@
 """The declared replicate block: its rule, its pairing, its guards and its declared constants."""
 import copy
+import os
 import sys
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -8,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT/"src"), str(ROOT/"scripts")]
 
 import compute_replication as block
+import run_compute_replication as driver
 
 
 def folds(arm_counts):
@@ -124,6 +127,21 @@ class Guards(unittest.TestCase):
         with self.assertRaises(ValueError):
             block.require_one_population({"base128": base, "budget192": relabelled,
                                           "cosine128": same}, 1)
+
+
+class SeedLock(unittest.TestCase):
+    """V-093: one block per seed, enforced rather than assumed."""
+
+    def test_a_live_holder_refuses_a_second_block_and_a_dead_one_is_replaced(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/".repl-block.lock"
+            self.assertEqual(driver.acquire_lock(path, os.getpid()), "acquired")
+            with self.assertRaises(SystemExit):
+                driver.acquire_lock(path, os.getpid()+1)
+            self.assertEqual(path.read_text().strip(), str(os.getpid()))
+            path.write_text("999999999")
+            self.assertEqual(driver.acquire_lock(path, os.getpid()), "replaced_stale")
+            self.assertEqual(path.read_text().strip(), str(os.getpid()))
 
 
 if __name__ == "__main__":

@@ -75,6 +75,91 @@ def launch(label, memory_mib, wall_seconds, work_items, worker):
             "elapsed_seconds": round(data.get("elapsed_seconds", 0.), 1)}
 
 
+def _job_passed(label):
+    path = RUNS/(label+"-job.json")
+    if not path.is_file():
+        return False
+    data = json.loads(path.read_text())
+    return data.get("status") == "passed" and data.get("exit_code") == 0
+
+
+def _summary_status(path, steps=None):
+    if not path.is_file():
+        return False
+    data = json.loads(path.read_text())
+    return data.get("status") == "complete" and (steps is None or data.get("steps") == steps)
+
+
+def step_state(step, name):
+    """`verified` only when the output and its own job receipt both say the step finished."""
+    label = step["label"]
+    if step["kind"] == "arm":
+        done = (_summary_status(RUNS/name/"summary.json", ARMS[step["arm"]]["steps"])
+                and _job_passed(name))
+        present = (RUNS/name).exists() or (RUNS/(name+"-job.json")).exists()
+    elif step["kind"] == "sweep":
+        done = (RUNS/label/"result.json").is_file() and _job_passed(label)
+        present = (RUNS/label).exists() or (RUNS/(label+"-job.json")).exists()
+    elif step["kind"] == "profile":
+        done = _summary_status(RUNS/label/"summary.json", 2) and _job_passed(label)
+        present = (RUNS/label).exists() or (RUNS/(label+"-job.json")).exists()
+    else:
+        done = _summary_status(RUNS/label/"summary.json") and _job_passed(label)
+        present = (RUNS/label).exists() or (RUNS/(label+"-job.json")).exists()
+    return "verified" if done else ("partial" if present else "absent")
+
+
+def preserve(label, note):
+    """Move a partial step's output and receipts aside rather than deleting them (V-050)."""
+    destination = RUNS/"attempts"/("m3-repl-"+label)
+    destination.mkdir(parents=True, exist_ok=False)
+    moved = []
+    for path in (RUNS/label, RUNS/(label+"-job.json"), RUNS/(label+".log")):
+        if path.exists():
+            path.rename(destination/path.name)
+            moved.append(path.name)
+    (destination/"note.txt").write_text(note+"\n", encoding="utf-8")
+    print(json.dumps({"preserved": label, "moved": moved}), flush=True)
+
+
+def lock_path(seed):
+    return RUNS/f".repl-block-s{seed}.lock"
+
+
+def _pid_alive(pid):
+    if pid <= 0:
+        return False
+    if os.name != "nt":
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        return True
+    import ctypes
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    handle = kernel32.OpenProcess(0x1000, False, pid)  # QUERY_LIMITED_INFORMATION
+    if handle:
+        kernel32.CloseHandle(handle)
+        return True
+    return ctypes.get_last_error() == 5  # access denied still means the process exists
+
+
+def acquire_lock(path, pid):
+    """One block per seed. A holder that is no longer alive is replaced, never trusted."""
+    if path.exists():
+        try:
+            holder = int(path.read_text().strip() or 0)
+        except ValueError:
+            holder = 0
+        if _pid_alive(holder):
+            raise SystemExit(f"another block for this seed is live (pid {holder}); refusing to run a "
+                             f"second one against the same outputs")
+        path.write_text(str(pid)+"\n", encoding="utf-8")
+        return "replaced_stale"
+    path.write_text(str(pid)+"\n", encoding="utf-8")
+    return "acquired"
+
+
 def plan(seed):
     if seed not in SEEDS:
         raise SystemExit("seed outside the declared block")
@@ -92,8 +177,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--plan-only", action="store_true")
+    parser.add_argument("--resume", action="store_true",
+                        help="reuse only steps whose summary and job receipt both verify; preserve "
+                             "any partial output before re-running it")
     args = parser.parse_args(argv)
     steps = plan(args.seed)
+    acquire_lock(lock_path(args.seed), os.getpid())
     manifest_path = RUNS/f"compute-replication-s{args.seed}.json"
     if manifest_path.exists():
         raise SystemExit("this seed's manifest already exists; refusing to reuse")
@@ -104,6 +193,15 @@ def main(argv=None):
     records, started = [], {}
     for step in steps:
         arm, name = step["arm"], run_name(step["arm"], args.seed)
+        if args.resume:
+            state = step_state(step, name)
+            if state == "verified":
+                records.append({**step, "reused": True})
+                print(json.dumps({"job": step["label"], "status": "reused"}), flush=True)
+                continue
+            if state == "partial":
+                preserve(step["label"], "Interrupted by a host runner restart; preserved before "
+                                        "re-running. Partial output is not used as evidence.")
         if step["kind"] == "profile":
             worker = [str(ROOT/"scripts/train_m2_stream.py"), "--output", str(RUNS/step["label"]),
                       "--profile-square", "--steps", "2", "--seed", str(args.seed), *COMMON]

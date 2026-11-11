@@ -1,0 +1,203 @@
+{
+  "status": "passed",
+  "block": {
+    "seeds": [
+      20261101,
+      20261102,
+      20261103
+    ],
+    "arms": {
+      "base128": 128,
+      "budget192": 192,
+      "cosine128": 128
+    },
+    "steps": {
+      "base128": 128,
+      "budget192": 192,
+      "cosine128": 128
+    },
+    "clusters": 36,
+    "boards_per_seed": 36
+  },
+  "control_auc": {
+    "20261101": 0.800414,
+    "20261102": 0.826166,
+    "20261103": 0.917477
+  },
+  "per_seed_f1": {
+    "20261101": {
+      "base128": 0.400447,
+      "budget192": 0.370578,
+      "cosine128": 0.463932
+    },
+    "20261102": {
+      "base128": 0.312561,
+      "budget192": 0.321326,
+      "cosine128": 0.417742
+    },
+    "20261103": {
+      "base128": 0.673421,
+      "budget192": 0.416493,
+      "cosine128": 0.552129
+    }
+  },
+  "levers": {
+    "budget192": {
+      "point": -0.079599,
+      "per_seed": {
+        "20261101": -0.029869,
+        "20261102": 0.008765,
+        "20261103": -0.256928
+      },
+      "interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 36,
+        "low": -0.137965,
+        "median": -0.077293,
+        "high": -0.02504,
+        "standard_error": 0.029549,
+        "excludes_zero": true
+      },
+      "pooled_f1": {
+        "base128": 0.443717,
+        "budget192": 0.364118,
+        "cosine128": 0.464992
+      },
+      "verdict": {
+        "label": "unconfirmed",
+        "reason": "point_below_floor+interval_touches_zero+seed_reverses",
+        "auc_floor": 0.7,
+        "floor": 0.05
+      }
+    },
+    "cosine128": {
+      "point": 0.021276,
+      "per_seed": {
+        "20261101": 0.063485,
+        "20261102": 0.105181,
+        "20261103": -0.121292
+      },
+      "interval": {
+        "draws": 1000,
+        "seed": 20261026,
+        "clusters": 36,
+        "low": -0.07206,
+        "median": 0.020939,
+        "high": 0.113649,
+        "standard_error": 0.046307,
+        "excludes_zero": false
+      },
+      "pooled_f1": {
+        "base128": 0.443717,
+        "budget192": 0.364118,
+        "cosine128": 0.464992
+      },
+      "verdict": {
+        "label": "unconfirmed",
+        "reason": "point_below_floor+interval_touches_zero+seed_reverses",
+        "auc_floor": 0.7,
+        "floor": 0.05
+      }
+    }
+  },
+  "receipts": {
+    "base128-s20261101": {
+      "path": "runs\\m3-stream-repl-base128-s20261101-sweep-r1\\result.json",
+      "sha256": "5bff9340862d0f83a9b888dfa07f32c1bdf08a5659b192b2860b3e88683a764b",
+      "weights_sha256": "fdea24c2a502485fca136004b18881a01a23d0d44b2a556fa992ff12bf7f7b81",
+      "published": {
+        "auc": 0.8004137619655715,
+        "f1_at_zero": 0.3970425138632164
+      },
+      "auc": 0.8004137619655715
+    },
+    "budget192-s20261101": {
+      "path": "runs\\m3-stream-repl-budget192-s20261101-sweep-r1\\result.json",
+      "sha256": "daf20c071e30e162f3520b91b52950c4ce9786586a97522c33ace9828fd0da11",
+      "weights_sha256": "b5c632b35b1799439238081df733510d4b263ab24707b793e71adb86637b7b58",
+      "published": {
+        "auc": 0.843361016504226,
+        "f1_at_zero": 0.4124343257443082
+      },
+      "auc": 0.843361016504226
+    },
+    "cosine128-s20261101": {
+      "path": "runs\\m3-stream-repl-cosine128-s20261101-sweep-r1\\result.json",
+      "sha256": "50c4923d4be7f62ebcb513da8527fb3213bd585ebde4e849fec0b2f91675da38",
+      "weights_sha256": "e2e0b27c0e99421afef1c91a012148ff8d393c5576e95a0f5a4fc0c09a80d242",
+      "published": {
+        "auc": 0.9019637152687906,
+        "f1_at_zero": 0.4111215245235864
+      },
+      "auc": 0.9019637152687906
+    },
+    "base128-s20261102": {
+      "path": "runs\\m3-stream-repl-base128-s20261102-sweep-r1\\result.json",
+      "sha256": "28d7c0e9f089c9ad313a5afa94a312ff3c18087bf8435f305201d32e89f83c27",
+      "weights_sha256": "b01927cce96fa5d0b643e04229ff262b6099d14c83e5c47ed8df60526aa5c0d8",
+      "published": {
+        "auc": 0.8261659968250377,
+        "f1_at_zero": 0.3828421359789904
+      },
+      "auc": 0.8261659968250377
+    },
+    "budget192-s20261102": {
+      "path": "runs\\m3-stream-repl-budget192-s20261102-sweep-r1\\result.json",
+      "sha256": "1f2c78f4b2c874b6e64481fb0186177e352d2c76952d9ec43f0221e4978f27d3",
+      "weights_sha256": "a90aa9b06bee70f418890d60f6b81d416f02a7cc7149f2d20dbb62daa5762fb9",
+      "published": {
+        "auc": 0.7498317108372626,
+        "f1_at_zero": 0.224934036939314
+      },
+      "auc": 0.7498317108372626
+    },
+    "cosine128-s20261102": {
+      "path": "runs\\m3-stream-repl-cosine128-s20261102-sweep-r1\\result.json",
+      "sha256": "74796a3c4f43c4e4a6d5c3844eaa2c85cf7a1802697df4492c4491257ce3a99a",
+      "weights_sha256": "b5d5420d1fd4fee793db645065046e7f82fb574582422fad986b56ae2b9c847c",
+      "published": {
+        "auc": 0.8667368933354384,
+        "f1_at_zero": 0.44810211622438695
+      },
+      "auc": 0.8667368933354384
+    },
+    "base128-s20261103": {
+      "path": "runs\\m3-stream-repl-base128-s20261103-sweep-r1\\result.json",
+      "sha256": "c5ffcb33f3888ce1b6c2e14bcbe779faba80da833767ca80f0ec6cc484374d28",
+      "weights_sha256": "4dde02f96763ed37a0b8fd7333eea5aa6b37beabd9934ab76387d17fafb4fb51",
+      "published": {
+        "auc": 0.9174766247127661,
+        "f1_at_zero": 0.6173076923076923
+      },
+      "auc": 0.9174766247127661
+    },
+    "budget192-s20261103": {
+      "path": "runs\\m3-stream-repl-budget192-s20261103-sweep-r1\\result.json",
+      "sha256": "d81dd696a478da219524c94e79bb0f2e10f10d278f4541eea596277391ecb4f7",
+      "weights_sha256": "f4bd21afbc9f9127ce3364104bea41c2f344884c23f1aae57982d9014785a091",
+      "published": {
+        "auc": 0.8877122244934033,
+        "f1_at_zero": 0.5100087032201914
+      },
+      "auc": 0.8877122244934033
+    },
+    "cosine128-s20261103": {
+      "path": "runs\\m3-stream-repl-cosine128-s20261103-sweep-r1\\result.json",
+      "sha256": "281755e69d1425cf08be59186c43d7b5f19e8b2feaed0766d25b950622b27351",
+      "weights_sha256": "677cc13b27750d19c1468d234571ae8cdea72d71f923fc8def5cdf57902db96b",
+      "published": {
+        "auc": 0.9128587874310525,
+        "f1_at_zero": 0.44128553770086526
+      },
+      "auc": 0.9128587874310525
+    }
+  },
+  "sources": {
+    "scripts/compute_replication.py": "097952de40441aef1ebfc969aa263e42d3b112a0d3ca99de5d68a590e019b9cc",
+    "scripts/operating_point.py": "1e5df65b0c0f57498072fe77ad50d8c8e71247913c6a430e5efe0fa8cdf790f2",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "scope": "Read-only replicate read of the declared three-seed block: out-of-fold F1 per arm, paired whole-cluster interval, rule fixed before the receipts. No training, no gate, no quality claim."
+}

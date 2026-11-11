@@ -17,7 +17,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046, V-062 (7) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
-| launch-ownership | V-029, V-030, V-050 (3) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running |
+| launch-ownership | V-029, V-030, V-050, V-093 (4) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068 (13) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts |
 | interval-validity | V-056, V-066, V-091 (3) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
@@ -56,6 +56,25 @@ a named green run. An unrun gate leaves the entry OPEN.
   regression test asserts that an all-empty board contributes no cells and is counted separately.
 - Named green run: `runs/m3-opaudit-r5-job.json`; the refused attempts are preserved with notes under
   `runs/attempts/m3-opaudit-r1-refused/`, `-r2-refused/` and `-r3-refused/`.
+
+## V-093 — CLOSED: two block chains ran against one seed because nothing knew the other was alive
+
+- Symptom: after a host runner restart, the detached seed-`20261102` chain outlived the tool call that
+  had launched it and kept training while a replacement chain was started on the same seed. The
+  replacement reused the two finished arms, then failed `PermissionError [WinError 5]` renaming the
+  still-live arm directory; later the surviving chain's seed-3 step collided with profile directories
+  the replacement had created and exited 1.
+- Root cause: the driver's only reuse guard was the existence of outputs and receipts, which a
+  second process cannot observe being written. Liveness of the other chain was never consulted, so
+  "one heavy job at a time" was a human invariant rather than an enforced one.
+- Detection class: launch-ownership.
+- Instrument: `acquire_lock` in `scripts/run_compute_replication.py` writes a per-seed lock holding
+  the holder's pid; a live holder refuses the second block before it touches any output, and a dead
+  holder is replaced rather than trusted, so a crashed block stays resumable.
+- Named green run: seed `20261103` then ran alone as `runs/repl-parent-s20261103-r2-job.json`
+  (passed, 1,070.4 s, peak 1,037,963,264 B of 2,560 MiB), reusing exactly its three verified
+  profiles; the refused and collided receipts are preserved with a note under
+  `runs/attempts/m3-repl-restart/`.
 
 ## V-068 — CLOSED: the curator rebuilt labels in an assumed order instead of the committed order
 

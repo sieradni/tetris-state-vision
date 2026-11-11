@@ -15,11 +15,29 @@ lost both, so the remaining occupancy deficit is now blocked at the declared arc
 extent, supervision-capacity, per-stage-capacity, read-out or per-board-refinement problem; the
 compute-side attributions (budget, schedule) are qualified by
 [M3_OPERATING_POINT.md](M3_OPERATING_POINT.md), because the read they were taken at moves with the
-head's calibration;
+head's calibration, and a predeclared fresh-baseline replicate block then failed to confirm
+either lever at three seeds
+([M3_COMPUTE_REPLICATION.md](M3_COMPUTE_REPLICATION.md));
 M2 adequate learning remains open and
 the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
+
+Latest: **the two compute levers do not replicate, so the compute closure is retired rather than
+confirmed** ([M3_COMPUTE_REPLICATION.md](M3_COMPUTE_REPLICATION.md), predeclared before its receipts,
+`docs/evidence/m3-compute-replication-r1/result.json`). Seeding is the data here: `sample_case`
+derives each scene from `seed + group_index`, so a seed is a different synthetic population, and a
+continuation refuses a foreign seed, so the audit's exact arms cannot be pseudo-replicated. A
+fresh-baseline block of three seeds x three arms (128-step control, 192-step budget, cosine 128),
+with matched starts inside each seed and nine sweeps that each reproduced their own published read,
+reads **1.5x fit budget -0.0796 (-0.1380 .. -0.0250)** and **cosine +0.0213 (-0.0721 .. +0.1136)**
+against a predeclared +0.05 floor on 36 paired clusters. **Both are `unconfirmed`** - point below the
+floor, lower bound not above zero, one seed reversing in each - and the budget interval excludes zero
+*below* control, the opposite direction to the audit's +0.149 continuation. Controls clear the 0.70
+AUC floor (0.800/0.826/0.917) while spreading 0.12 across populations, more than either lever moves,
+so a one-trajectory delta cannot separate lever from population. Under the predeclared rule the
+compute closure stays retired but unconfirmed, and the width `capacity_null` stands as the remaining
+actionable verdict; arbitrating the 256-vs-384 contrast needs its own block, not a re-read here.
 
 Latest: **the standing occupancy attribution is a boundary, not a model difference, and two compute refusals reverse**
 ([M3_OPERATING_POINT.md](M3_OPERATING_POINT.md), predeclared before its receipt, `docs/evidence/m3-operating-point-r2/result.json`).

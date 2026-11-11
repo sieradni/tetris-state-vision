@@ -40,6 +40,46 @@ interval, before any further lever is read at `0.0`. V-091 records the defect an
 instrument; V-092 records the join defect this pass exposed in its own first two attempts, both
 preserved under `runs/attempts/`.
 
+## The compute levers do not replicate, so the compute closure is retired but unconfirmed (2026-11-11)
+
+[M3_COMPUTE_REPLICATION.md](M3_COMPUTE_REPLICATION.md) was predeclared before its first receipt and is
+read-only at `docs/evidence/m3-compute-replication-r1/result.json` (`runs/m3-replread-r1-job.json`
+passed, 29.4 s, peak 40,108,032 B of 256 MiB). Seeding decided the design: `sample_case` derives each
+scene from `scene_seed = seed + group_index`, so a seed is a different synthetic population, and
+`train_m2_stream` refuses a continuation whose source seed differs, so the audit's exact arms cannot
+be pseudo-replicated. The block is three fresh-baseline seeds x three arms, paired within seed:
+
+| seed | control AUC | base128 | budget192 | cosine128 |
+|---|---|---|---|---|
+| `20261101` | 0.800414 | 0.400447 | 0.370578 | 0.463932 |
+| `20261102` | 0.826166 | 0.312561 | 0.321326 | 0.417742 |
+| `20261103` | 0.917477 | 0.673421 | 0.416493 | 0.552129 |
+| pooled, 36 clusters | - | 0.443717 | 0.364118 | 0.464992 |
+
+All nine arms completed their declared steps with matched starts inside each seed and different
+initial weights and populations across seeds, and all nine sweeps reproduced their own published
+`deciding.auc` and `threshold 0.0` F1 before contributing, so no seed is unreadable.
+
+**Both levers are `unconfirmed` under the predeclared rule.** The 1.5x fit budget is `-0.0796`
+(interval `-0.1380 .. -0.0250`; per seed `-0.0299`, `+0.0088`, `-0.2569`); the cosine schedule is
+`+0.0213` (`-0.0721 .. +0.1136`; `+0.0635`, `+0.1052`, `-0.1213`), against the `+0.05` floor with a
+paired whole-group bootstrap over 36 clusters. Each fails its own conditions - point below the floor,
+lower bound not above zero, one seed reversing - and no condition was relaxed afterwards. Controls
+clear the 0.70 AUC floor everywhere, so `floor_limited` never applied.
+
+Two findings outrank the verdict. Control quality moves 0.12 AUC across populations while either
+lever moves pooled F1 by under 0.08, so a single-trajectory delta is not a measurement of a lever -
+the audit's one-trajectory reversals had no way to separate lever from population. And the budget
+interval excludes zero *below* control at 128 -> 192 steps, the opposite direction to the audit's
+`+0.149` at 256 -> 384 on a curated continuation; the block cannot arbitrate that contrast (fresh
+starts only), so the correct object is that the lever has no replicated support at any scale tested
+and points down at the scale that could be replicated.
+
+Consequence: the compute closure stays retired but is now **unconfirmed** rather than a live lever,
+no further compute arm is ranked on the audit's reversal, and the width `capacity_null` stands as the
+remaining actionable verdict. Arbitrating `+0.149` needs its own 256/384 block at three or more seeds
+under this same rule. V-093 records the restart defect this pass exposed.
+
 ## The readout cleanup is proven at every consumer, and a receipt reproduces (2026-11-11)
 
 `tests/test_consumer_pins.py` drives each converted non-loss call site - `visible_units`, `sweep_logits`,

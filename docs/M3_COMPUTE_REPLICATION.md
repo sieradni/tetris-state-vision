@@ -1,8 +1,9 @@
 # A replicate study of the two compute-side levers (predeclaration)
 
-Status: **predeclared before any receipt of this study exists.** Nothing here changes the published
-configuration, the checkpoint, the fit gate or any earlier verdict. It is a fresh-baseline block and
-its numbers are **not comparable** to the capacity-64 continuation table.
+Status: **read - both levers `unconfirmed`** (result at the end; the predeclaration above it is
+unchanged). Nothing here changes the published configuration, the checkpoint, the fit gate or any
+earlier verdict. It is a fresh-baseline block and its numbers are **not comparable** to the
+capacity-64 continuation table.
 
 ## The question, and why a fresh baseline is the only honest frame
 
@@ -59,6 +60,27 @@ cases, admission profile first. Parent driver jobs at 256 MiB / 3,600 s, one see
 heavy job at a time. Expected footprint: under 1.1 GB per arm, well below the ceiling; the pilot and
 each admission profile measure it rather than assuming it.
 
+## Operations note: an interrupted runner, recorded rather than hidden (V-093)
+
+The block's first launch completed seed `20261101` (parent receipt `passed`, 1,296.3 s) and was cut
+by a **host runner restart** during seed `20261102`. The restart killed the tool call, not the OS
+process: the detached chain kept running, finished that seed's `cosine128` arm (304.1 s) and all
+three of its sweeps, and wrote `runs/compute-replication-s20261102.json` at 13:00:20 - after a
+replacement chain had already been started on the same seed. That replacement reused the two
+verified arms and then failed with `PermissionError [WinError 5]` when its `--resume` tried to move
+the still-live `cosine128` directory aside; the failed receipt is preserved as
+`runs/attempts/m3-repl-restart/resume-s20261102-refused-job.json`. The replacement chain had also
+begun seed `20261103`, so the surviving chain's seed-3 step collided with those profile directories
+and exited 1 (preserved as `seed3-collision-job.json` with a note). Seed `20261103` was then run to
+completion by one chain with `--resume`, which reused its three verified profiles (45.7-45.8 s each),
+preserved the partial arm, and finished at 13:18:51.
+
+Two chains against one seed's outputs is the defect: nothing in the driver knew another block for
+that seed was alive. The standing instrument is a per-seed lock holding the holder's pid
+(`acquire_lock` in the driver): a live holder refuses a second block, a dead holder is replaced
+rather than trusted, so a crashed block stays resumable. No arm, seed, budget, ceiling, primary,
+floor or rule above changed, and every reused step is recorded in its seed's manifest.
+
 ## The primary read, the floor and the rule
 
 **Primary:** the out-of-fold F1 of [M3_OPERATING_POINT.md](M3_OPERATING_POINT.md) - the same
@@ -105,3 +127,52 @@ re-read.
 Not a continuation of the capacity-64 table, not a fit-gate reopening, not a quality, real-image or
 complete-state claim, and not a licence to re-read a threshold or a population after the numbers are
 in. One block, three seeds, two levers, twelve boards per seed.
+
+## Result: both levers `unconfirmed`, so the compute closure is retired rather than confirmed
+
+Read: `docs/evidence/m3-compute-replication-r1/result.json`, written by
+`runs/m3-replread-r1-job.json` (passed, 29.4 s, peak 40,108,032 B of 256 MiB). All nine arms completed
+their declared steps with matched starts within each seed (one initial-weights digest and one first
+board per seed, three different digests and boards across seeds), and all nine sweeps reproduced
+their own published `deciding.auc` and `threshold 0.0` F1 before contributing. No seed was
+unreadable and no cluster was dropped: 36 `(seed, group)` clusters, 12 per seed.
+
+| seed | control AUC | `base128` F1 | `budget192` F1 | `cosine128` F1 |
+|---|---|---|---|---|
+| `20261101` | 0.800414 | 0.400447 | 0.370578 | 0.463932 |
+| `20261102` | 0.826166 | 0.312561 | 0.321326 | 0.417742 |
+| `20261103` | 0.917477 | 0.673421 | 0.416493 | 0.552129 |
+| pooled (36 clusters) | - | **0.443717** | **0.364118** | **0.464992** |
+
+**The 1.5x fit budget: `-0.0796`, interval `-0.1380 .. -0.0250`, `unconfirmed`.** Per seed `-0.0299`,
+`+0.0088`, `-0.2569`; the reason string is `point_below_floor+interval_touches_zero+seed_reverses`,
+and seed `20261103` carries the reversal. This is not a null: the interval excludes zero **below**
+the control, so at this scale and start the extra 64 steps cost pooled F1.
+
+**The cosine schedule: `+0.0213`, interval `-0.0721 .. +0.1136`, `unconfirmed`.** Per seed `+0.0635`,
+`+0.1052`, `-0.1213`, the same reason string; two seeds point the audit's way and one reverses hard
+enough to pull the interval across zero. It is the better of the two levers and still short of the
+floor at four times the audit's cluster count.
+
+Controls clear the AUC floor everywhere (0.800 / 0.826 / 0.917), so `floor_limited` never applied.
+The spread is itself the block's most robust observation: control quality moves 0.12 AUC across
+populations while both levers move pooled F1 by less than 0.08, so population is a first-order axis
+and a single-trajectory delta is not a measurement of a lever. The `20261103` population is also
+where `budget192` loses most (`-0.257`), i.e. the extra budget hurt most where the control was
+already strongest - a hypothesis worth one predeclared arm later, not a finding from one seed.
+
+**Under the predeclared rule this reads as `unconfirmed` for both levers, therefore the compute
+closure is retired but unconfirmed:** "budget is not the limiter" and "more optimisation is not a
+substitute" stay retracted to the extent that the audit's reversal is now an unresolved alternative
+explanation rather than a live lever, and no further compute arm is ranked on the strength of it. The
+width `capacity_null` stands as the remaining actionable verdict. Nothing here is re-read: no
+alternative threshold, arm, budget or population is substituted, and the `-0.0796` is reported at the
+same floor, interval and rule that were fixed before the first receipt.
+
+**What this does not settle, stated plainly:** the audit measured `+0.149` on continuations of the
+curated start at 256 -> 384 steps; this block measures fresh starts at 128 -> 192. The block cannot
+arbitrate the continuation contrast (pseudo-replication of those arms is impossible, see above), so
+the correct object is: *the compute lever has no replicated support at any scale tested here, and at
+the scale that could be replicated it points down.* Confirming or refuting the audit's `+0.149`
+itself would need a 256/384 block at three or more seeds under this same rule - roughly 2.9 hours of
+arms by the cost model above - and that is a decision for the next pass, not a re-read of this one.
