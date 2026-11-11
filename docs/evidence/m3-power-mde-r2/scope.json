@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "reproduction": {
+    "published_read": "docs\\evidence\\m3-compute-replication-r1\\result.json",
+    "pooled_f1": {
+      "base128": 0.443717,
+      "budget192": 0.364118,
+      "cosine128": 0.464992
+    },
+    "point": {
+      "budget192": -0.079599,
+      "cosine128": 0.021276
+    },
+    "standard_error": {
+      "budget192": 0.029549,
+      "cosine128": 0.046307
+    }
+  },
+  "design": {
+    "alpha": 0.05,
+    "power": 0.8,
+    "floor": 0.05,
+    "audit_effect": 0.149,
+    "seeds": [
+      20261101,
+      20261102,
+      20261103
+    ],
+    "groups_per_seed": 12,
+    "clusters": 36
+  },
+  "levers": {
+    "budget192": {
+      "observed_point": -0.079599,
+      "observed_magnitude": 0.079599,
+      "standard_error_bootstrap": 0.029549,
+      "standard_error_analytic": 0.02968,
+      "analytic_over_bootstrap": 1.0044,
+      "minimum_detectable_effect": 0.083151,
+      "inside_detectable_floor": true,
+      "power_at_declared_floor": 0.3917,
+      "power_at_audit_effect": 0.9989,
+      "design_effect_board": 9.513,
+      "design_effect_cell": 16.819,
+      "units": {
+        "clusters": 36,
+        "boards": 40,
+        "cells": 16600
+      },
+      "per_seed": {
+        "20261101": -0.029869,
+        "20261102": 0.008765,
+        "20261103": -0.256928
+      },
+      "variance": {
+        "within_seed_standard_errors": [
+          0.020309,
+          0.03312,
+          0.064245
+        ],
+        "between_population_variance_corrected": 0.011859,
+        "between_population_variance_clamped": false,
+        "population_standard_error_at_three_seeds": 0.067671,
+        "population_mde_at_three_seeds": 0.189585,
+        "fixed_population_standard_error_at_three_seeds": 0.025026,
+        "fixed_population_mde_at_three_seeds": 0.070113,
+        "power_at_audit_effect_population": 0.5956,
+        "seeds_for_audit_effect": 5,
+        "seeds_for_floor": 44
+      }
+    },
+    "cosine128": {
+      "observed_point": 0.021276,
+      "observed_magnitude": 0.021276,
+      "standard_error_bootstrap": 0.046307,
+      "standard_error_analytic": 0.045144,
+      "analytic_over_bootstrap": 0.9749,
+      "minimum_detectable_effect": 0.126475,
+      "inside_detectable_floor": true,
+      "power_at_declared_floor": 0.1981,
+      "power_at_audit_effect": 0.91,
+      "design_effect_board": 12.253,
+      "design_effect_cell": 29.155,
+      "units": {
+        "clusters": 36,
+        "boards": 40,
+        "cells": 16600
+      },
+      "per_seed": {
+        "20261101": 0.063485,
+        "20261102": 0.105181,
+        "20261103": -0.121292
+      },
+      "variance": {
+        "within_seed_standard_errors": [
+          0.060854,
+          0.042316,
+          0.051552
+        ],
+        "between_population_variance_corrected": 0.006969,
+        "between_population_variance_clamped": false,
+        "population_standard_error_at_three_seeds": 0.05682,
+        "population_mde_at_three_seeds": 0.159187,
+        "fixed_population_standard_error_at_three_seeds": 0.030095,
+        "fixed_population_mde_at_three_seeds": 0.084314,
+        "power_at_audit_effect_population": 0.7461,
+        "seeds_for_audit_effect": 4,
+        "seeds_for_floor": 31
+      }
+    }
+  },
+  "cost": {
+    "budget192": {
+      "audit_effect": {
+        "seeds": 5,
+        "clusters": 60,
+        "arm_hours": 1.994
+      },
+      "floor": {
+        "seeds": 44,
+        "clusters": 528,
+        "arm_hours": 17.551
+      },
+      "seconds_per_step_median": 2.24375,
+      "steps_per_seed": 640
+    },
+    "cosine128": {
+      "audit_effect": {
+        "seeds": 4,
+        "clusters": 48,
+        "arm_hours": 1.596
+      },
+      "floor": {
+        "seeds": 31,
+        "clusters": 372,
+        "arm_hours": 12.366
+      },
+      "seconds_per_step_median": 2.24375,
+      "steps_per_seed": 640
+    }
+  },
+  "audit": {
+    "pair": "fit_budget",
+    "evidence": "docs\\evidence\\m3-operating-point-r2\\result.json",
+    "groups": 12,
+    "point": 0.149441,
+    "standard_error": 0.070036,
+    "minimum_detectable_effect": 0.196212,
+    "claim_resolvable_at_its_own_design": false,
+    "power_at_claim": 0.5665
+  },
+  "sources": {
+    "scripts/power_analysis.py": "a78ba59b711c8c196553f3438575696a4d9e2e3efd53e8dbd8a6a142ff4d0bcb",
+    "scripts/compute_replication.py": "097952de40441aef1ebfc969aa263e42d3b112a0d3ca99de5d68a590e019b9cc",
+    "scripts/operating_point.py": "1e5df65b0c0f57498072fe77ad50d8c8e71247913c6a430e5efe0fa8cdf790f2",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10"
+  },
+  "scope": "Read-only power analysis of the committed replicate block: reproducible paired standard errors, the design effect those 36 clusters show, the minimum detectable effect per lever, the seed count a 256/384 block would need, and a ranking/boundary decomposition of the out-of-fold F1. No training, no gate, no verdict change."
+}

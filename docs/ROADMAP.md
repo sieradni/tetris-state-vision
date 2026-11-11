@@ -23,6 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the campaign's lever reads were underpowered by construction, and that is now measured**
+([M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md),
+`docs/evidence/m3-power-mde-r2/result.json`). Re-derived from the nine committed sweeps and their 36
+clusters, and reproducing the published read first (pooled F1 to 1e-6, both bootstrap intervals
+exactly, and a delta-method SE that agrees to 1.004 and 0.975), the block's detectable floor is
+**0.083** for the budget lever and **0.126** for the schedule at 80% power. **Both observed deltas
+were inside it** (-0.0796 and +0.0213), so the `unconfirmed` verdicts mean "not resolvable here", and
+at a true `+0.05` the block had 39% and 20% power. The clusters carry a design effect of 16.8 and
+29.2 against cells. The audit's own `+0.149` was inside **its** design's floor too: 12 groups give
+SE 0.070, MDE **0.196**, power 0.567. A three-seed 256/384 block would be **underpowered** for that
+claim once populations count as random (between-population variance 0.0119, SE 0.0677, MDE 0.190);
+five seeds (60 clusters, 1.99 arm-hours) clear it on the point estimate and eight give margin, while
+resolving the campaign's own `+0.05` floor would need **44 seeds, 528 clusters, 17.6 arm-hours**. The
+out-of-fold F1 is now reported as two components - ranking at the arm's own boundary, and the two
+boundary costs - because seed `20261103` shows them separating (dAUC -0.030, dF1 at best boundary
+-0.169). Nothing re-reads either verdict.
+
 Latest: **the two compute levers do not replicate, so the compute closure is retired rather than
 confirmed** ([M3_COMPUTE_REPLICATION.md](M3_COMPUTE_REPLICATION.md), predeclared before its receipts,
 `docs/evidence/m3-compute-replication-r1/result.json`). Seeding is the data here: `sample_case`

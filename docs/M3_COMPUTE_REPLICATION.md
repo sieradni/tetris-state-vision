@@ -169,16 +169,26 @@ width `capacity_null` stands as the remaining actionable verdict. Nothing here i
 alternative threshold, arm, budget or population is substituted, and the `-0.0796` is reported at the
 same floor, interval and rule that were fixed before the first receipt.
 
-**Where the F1 loss sits (descriptive; not a substitute read).** The primary is out-of-fold F1, so
-it charges a lever for moving the head's logit distribution as well as for ranking worse. Comparing
-each arm's own sweep AUC, which is boundary-free, with its F1 delta: `budget192` reads
-`+0.043 / -0.076 / -0.030` AUC against `-0.030 / +0.009 / -0.257` F1, and `cosine128` reads
-`+0.102 / +0.041 / -0.005` against `+0.063 / +0.105 / -0.121`. At `20261103` both arms lose about
-three times more F1 than AUC, so that seed's losses are mostly boundary transfer rather than worse
-ranking; at `20261102` the budget arm loses on both. This is recorded because it names the mechanism,
-and it does not re-open the verdict: an AUC read was not predeclared and cannot be substituted for
-the primary, and a future study that wants the two components separately must declare both before
-its receipts.
+**Where the F1 loss sits.** The primary charges a lever for its ranking *and* for moving the head's
+boundary, so the two are now reported separately
+([M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md), `docs/evidence/m3-power-mde-r2/result.json`):
+the arm's F1 at its own best boundary (ranking), the cost of the fixed `0.0` boundary, and the cost of
+transferring a boundary chosen on other groups, in deltas against control:
+
+| seed | dAUC | d F1 at best boundary | d cost of `0.0` | d transfer cost | d out-of-fold F1 |
+|---|---|---|---|---|---|
+| `20261101` | +0.043 | +0.022 | -0.006 | -0.045 | -0.030 |
+| `20261102` | -0.076 | -0.063 | -0.095 | +0.167 | +0.009 |
+| `20261103` | -0.030 | -0.169 | +0.062 | -0.150 | -0.257 |
+
+An earlier revision of this section read seed `20261103` as "mostly boundary transfer" from the AUC
+gap alone. The decomposition refutes that: at that seed the budget arm's F1 at its own best boundary
+is `0.169` below control, so its ranking's operating-point quality collapsed even though AUC barely
+moved, the `0.0` boundary penalised it *less* than control, and the transfer cost finished the job.
+For `cosine128` the split is `+0.137/-0.123/+0.049`, `+0.061/+0.004/+0.040` and
+`-0.097/-0.079/+0.055`. The three parts add to the primary in every row (tested), and none of this
+re-opens the verdict: no alternative primary was substituted, and the split is reported beside the
+published read rather than in place of it.
 
 **What this does not settle, stated plainly:** the audit measured `+0.149` on continuations of the
 curated start at 256 -> 384 steps; this block measures fresh starts at 128 -> 192. The block cannot
