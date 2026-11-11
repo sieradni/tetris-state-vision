@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "arms": [
+    "m3-trunkwidth-base-r1",
+    "m3-trunkwidth-d240-r1"
+  ],
+  "weights_sha256": {
+    "m3-trunkwidth-base-r1": "50e94a31be27559bae57822775cac1268babf2977b1bdf31e79b0ade5691f78a",
+    "m3-trunkwidth-d240-r1": "7b1679ca8da6a074dab425242388c9dff415c28f84106f8d34c50bb91f490667"
+  },
+  "architectures": {
+    "m3-trunkwidth-base-r1": "TetrisStateNet-M3",
+    "m3-trunkwidth-d240-r1": "TetrisStateNet-M3-W48x96x192x256-D240"
+  },
+  "parameters": {
+    "m3-trunkwidth-base-r1": 8009097,
+    "m3-trunkwidth-d240-r1": 10565241
+  },
+  "population": {
+    "training_groups": 12,
+    "training_cases": 36,
+    "development_cases": 18,
+    "nonempty_deciding_boards": 28,
+    "known_cells": 7200
+  },
+  "readout": {
+    "m3-trunkwidth-base-r1": {
+      "readout_shape": [
+        1,
+        26,
+        10
+      ],
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "visible_cells": 200,
+      "derived_from": "config.visible_rows x config.columns",
+      "visible_mean_abs": 3.957758,
+      "visible_std": 2.790703,
+      "spawn_mean_abs": 3.298197
+    },
+    "m3-trunkwidth-d240-r1": {
+      "readout_shape": [
+        1,
+        26,
+        10
+      ],
+      "visible_rows": 20,
+      "spawn_rows": 6,
+      "columns": 10,
+      "visible_cells": 200,
+      "derived_from": "config.visible_rows x config.columns",
+      "visible_mean_abs": 1.217049,
+      "visible_std": 1.351655,
+      "spawn_mean_abs": 0.541425
+    }
+  },
+  "arms_read": {
+    "m3-trunkwidth-base-r1": {
+      "auc": 0.7815429909209191,
+      "f1_at_zero": 0.4074941451990633,
+      "best": {
+        "threshold": -0.75,
+        "true_positive": 329,
+        "false_positive": 579,
+        "false_negative": 338,
+        "true_negative": 4354,
+        "exact_nonempty_boards": 0,
+        "exact_empty_boards": 0,
+        "precision": 0.3623348017621145,
+        "recall": 0.49325337331334335,
+        "f1": 0.41777777777777775
+      },
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "development": {
+        "auc": 0.926819050747454,
+        "best": {
+          "threshold": -1.05,
+          "true_positive": 340,
+          "false_positive": 313,
+          "false_negative": 61,
+          "true_negative": 2086,
+          "exact_nonempty_boards": 0,
+          "exact_empty_boards": 0,
+          "precision": 0.5206738131699847,
+          "recall": 0.8478802992518704,
+          "f1": 0.6451612903225807
+        },
+        "mean_geometry_error_cells": 2.192851414283117
+      }
+    },
+    "m3-trunkwidth-d240-r1": {
+      "auc": 0.8561418662248037,
+      "f1_at_zero": 0.38749233599019006,
+      "best": {
+        "threshold": 0.75,
+        "true_positive": 526,
+        "false_positive": 1145,
+        "false_negative": 141,
+        "true_negative": 3788,
+        "exact_nonempty_boards": 0,
+        "exact_empty_boards": 0,
+        "precision": 0.3147815679233992,
+        "recall": 0.7886056971514243,
+        "f1": 0.44995722840034214
+      },
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "development": {
+        "auc": 0.8468033750554834,
+        "best": {
+          "threshold": 0.75,
+          "true_positive": 290,
+          "false_positive": 480,
+          "false_negative": 111,
+          "true_negative": 1919,
+          "exact_nonempty_boards": 0,
+          "exact_empty_boards": 0,
+          "precision": 0.37662337662337664,
+          "recall": 0.7231920199501247,
+          "f1": 0.4953031596925705
+        },
+        "mean_geometry_error_cells": 5.974369525909424
+      }
+    }
+  },
+  "decisions": {
+    "flips": 2701,
+    "known_cells": 7200
+  },
+  "verdict": {
+    "label": "capacity_null",
+    "attribution": 0.03217945062256439,
+    "control_best_f1": 0.41777777777777775,
+    "lever_best_f1": 0.44995722840034214,
+    "control_auc": 0.7815429909209191,
+    "lever_auc": 0.8561418662248037,
+    "f1_at_zero_delta": -0.020001809208873234,
+    "flip_fraction": 0.3751388888888889,
+    "activation_floor": 0.05,
+    "control_floor": 0.7,
+    "fit_gate_boards": 3,
+    "fit_gate_opened": false,
+    "control_exact_nonempty": 0,
+    "lever_exact_nonempty": 0,
+    "auc_bar": 0.9,
+    "f1_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "grid": {
+    "low": -6.0,
+    "high": 6.0,
+    "step": 0.15,
+    "count": 81
+  },
+  "forwards": 108,
+  "job_ceiling_bytes": 1073741824,
+  "sources": {
+    "scripts/width_lever_read.py": "3b2f6ea55eabc3de2246c6d783e6db8b8dd8a73a02f2a124f79dab8accdf815b",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/record_stream_run.py": "7430c6b48d907a8ceda93347caa6a35d6fe443d22be5c0a8d225c87d859f23c3",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/probe_population.py": "fa10ec11348c22df8bf6266b87858bb65372c961e84bc5de62975ae8dee26d8e"
+  },
+  "scope": "Read-only paired read of the declared trunk-width lever: two fresh-baseline arms differing only in dimension. No training, no weight change, no gate or complete-state claim; the verdict rule was predeclared in docs/M3_TRUNK_WIDTH_LEVER.md before this receipt existed."
+}

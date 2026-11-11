@@ -1,0 +1,163 @@
+{
+  "instrument": "m3-gpu-fit-r1 chain",
+  "scope": "Whether a 20,000-step fixed-pool GPU budget moves the exactness gate off zero. Training-fit and development probes only; no real-screenshot accuracy claim.",
+  "measured_checkpoints": [
+    {
+      "arm": "400 (prior arm)",
+      "steps_total": 400,
+      "skipped_batches": null,
+      "train": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.5722,
+        "best_threshold": 2.7,
+        "f1_at_best": 0.6634,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 2,
+        "geometry_cells": 0.7791,
+        "geometry_spread": 0.0
+      },
+      "development": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.6338,
+        "best_threshold": 3.0,
+        "f1_at_best": 0.7349,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 0,
+        "geometry_cells": 1.0572,
+        "geometry_spread": 0.0
+      }
+    },
+    {
+      "arm": "1000 steps",
+      "steps_total": 1000,
+      "skipped_batches": {
+        "nonfinite_forward": 0,
+        "nonfinite_loss": 0,
+        "nonfinite_grad": 0
+      },
+      "train": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.6298,
+        "best_threshold": 2.85,
+        "f1_at_best": 0.6611,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 8,
+        "geometry_cells": 1.0985,
+        "geometry_spread": 0.0
+      },
+      "development": {
+        "exact_at_zero": [
+          0,
+          1
+        ],
+        "f1_at_zero": 0.735,
+        "best_threshold": 3.0,
+        "f1_at_best": 0.8044,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 4,
+        "geometry_cells": 1.172,
+        "geometry_spread": 0.0
+      }
+    },
+    {
+      "arm": "12600 steps",
+      "steps_total": 12600,
+      "skipped_batches": {
+        "nonfinite_forward": 0,
+        "nonfinite_loss": 0,
+        "nonfinite_grad": 0
+      },
+      "train": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.4397,
+        "best_threshold": 1.35,
+        "f1_at_best": 0.5276,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 0,
+        "geometry_cells": 5.0298,
+        "geometry_spread": 0.0
+      },
+      "development": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.4728,
+        "best_threshold": 1.95,
+        "f1_at_best": 0.6373,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 0,
+        "geometry_cells": 4.5214,
+        "geometry_spread": 0.0
+      }
+    },
+    {
+      "arm": "12800 steps",
+      "steps_total": 12800,
+      "skipped_batches": {
+        "nonfinite_forward": 0,
+        "nonfinite_loss": 0,
+        "nonfinite_grad": 0
+      },
+      "train": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.4398,
+        "best_threshold": 1.65,
+        "f1_at_best": 0.5919,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 2,
+        "geometry_cells": 5.1142,
+        "geometry_spread": 0.0
+      },
+      "development": {
+        "exact_at_zero": [
+          0,
+          0
+        ],
+        "f1_at_zero": 0.4831,
+        "best_threshold": 1.35,
+        "f1_at_best": 0.5576,
+        "exact_nonempty_at_best": 0,
+        "exact_empty_at_best": 2,
+        "geometry_cells": 4.6127,
+        "geometry_spread": 0.0
+      }
+    }
+  ],
+  "segment_17_failure": {
+    "segment": 17,
+    "resume": "runs/m3-gpu-fit-r1-s16/state-rolling.pt",
+    "steps_done": 12800,
+    "exit": 1,
+    "last_steps_logged": 80,
+    "exception": "ValueError: finite board-conditioned component query required",
+    "source": "src/tetris_vision/components.py:71 guard, raised from model.forward on a non-finite board",
+    "weights_finite_at_failure": true,
+    "weights_finite_in_all_saved_states": true,
+    "meaning": "A single pathological batch produced non-finite board values inside the forward pass. No backward ran, so no saved weight tensor is non-finite; the segment simply aborted without writing a checkpoint.",
+    "fix": "runs/gpu_fit_test.py now counts and skips a non-finite batch (forward, loss or gradient norm), saves rolling state on the skip boundary, records skipped_batches in the result, and adds a faulthandler watchdog that dumps every stack if a step is silent for 90 s.",
+    "regression_instrument": "skipped_batches counters in every result.json (all zero where measured)"
+  },
+  "decision": {
+    "stopped_at_steps": 12800,
+    "target_was": 20000,
+    "reason": "The chain's own frozen gate shows degradation, not progress: the best measured point is 1,000 steps (dev F1 0.8044 at best threshold, geometry 1.17 cells); by 12,600 the same weights score dev F1 0.6373, geometry 4.52 cells, and the training loss has risen from ~7 to ~15. Continuing to 20,000 would spend hours on a worse model.",
+    "exactness": "zero nonempty boards exact at every measured checkpoint (0, 0, 0, 0)",
+    "pool_origin_note": "Each segment rebuilt the 512-frame pool before training, which is why 1,000-step segments were wall-capped around 200-1,000 steps. Now cached via --pool-cache."
+  }
+}

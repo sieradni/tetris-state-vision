@@ -39,6 +39,29 @@ class ComponentTests(unittest.TestCase):
     def output(self, capacity):
         return self.head(self.memory, self.valid, self.board, capacity=capacity)
 
+    def test_length_distribution_reference_tensor_is_built_on_its_device(self):
+        """Device-portability regression for the length-distribution check.
+
+        That check compares the distribution against a reference tensor. Building the reference
+        on the default device aborts every accelerator run with "Expected all tensors to be on
+        the same device", so the reference must be created on the distribution's own device.
+        The branch only executes for a length-configured read-out, which this CPU-only suite
+        cannot assemble here, so the guard reads the shipped call site instead: it fails against
+        the pre-fix source and passes once the device is threaded through.
+        """
+        import ast
+        import inspect
+        import textwrap
+        import tetris_vision.components as components
+        source = textwrap.dedent(inspect.getsource(components.component_loss))
+        calls = [node for node in ast.walk(ast.parse(source))
+                 if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                 and node.func.attr == "ones"]
+        self.assertTrue(calls, "the length-distribution reference tensor was not found")
+        self.assertTrue(any(any(keyword.arg == "device" for keyword in call.keywords)
+                            for call in calls),
+                        "length reference tensor must be built on the distribution's device")
+
     def test_shared_parameters_and_prefix_predictions_extend_to64(self):
         count = sum(value.numel() for value in self.head.parameters())
         short, long = self.output(4), self.output(64)

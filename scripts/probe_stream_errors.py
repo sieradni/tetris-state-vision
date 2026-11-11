@@ -86,9 +86,13 @@ def extension_specs(base_seed, recorded_groups, evaluated_groups):
 
 
 def pack(final, target):
-    prediction = {"occupancy_logits": final["occupancy"][0, :20].tolist(),
-                  "observability_logits": final["observability"][0, :20].tolist(),
-                  "semantic": final["semantic"][0, :20].argmax(-1).tolist(),
+    from board_window import visible_board_for_target
+    occupancy = visible_board_for_target(final["occupancy"], target, "occupancy")
+    observability = visible_board_for_target(final["observability"], target, "observability")
+    semantic = visible_board_for_target(final["semantic"], target, "semantic")
+    prediction = {"occupancy_logits": occupancy[0].tolist(),
+                  "observability_logits": observability[0].tolist(),
+                  "semantic": semantic[0].argmax(-1).tolist(),
                   "lattice": final["lattice"][0].tolist(), "registration_logit": float(final["registration"][0]),
                   "layers": [{"known_logit": float(final["layer_known"][0, i]),
                               "type": int(final["layer_type"][0, i].argmax()),
@@ -126,6 +130,12 @@ def main():
     verify_source(code, summary["catalogue_sha256"])
     args.output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
+    # Modules imported above came from the working tree, not from the run's frozen archive; drop
+    # them so the frozen-source check below reads the recorded implementation.
+    for stale in [name for name in sys.modules
+                  if name.split(".")[0] in ("m2_curriculum", "m2_stream_data", "m2_fit_contract",
+                                            "m2_interleaved_order", "tetris_vision")]:
+        del sys.modules[stale]
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     os.environ.update({"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"})

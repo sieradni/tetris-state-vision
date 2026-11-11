@@ -88,6 +88,31 @@ class ModelConfig:
         return cls(widths=(16, 32, 64, 96), dimension=64, heads=4, blocks=2)
 
 
+# Declared trunk shapes. The published and pilot shapes keep their historical identity;
+# any other declared shape is a second architecture identity with its own name.
+PUBLISHED_WIDTHS = (48, 96, 192, 256)
+PUBLISHED_DIMENSION = 192
+PILOT_WIDTHS = (16, 32, 64, 96)
+PILOT_DIMENSION = 64
+
+
+def trunk_suffix(config):
+    """Empty for the published/pilot shapes, else the declared shape in the name."""
+    shape = (tuple(config.widths), config.dimension)
+    if shape in ((PUBLISHED_WIDTHS, PUBLISHED_DIMENSION), (PILOT_WIDTHS, PILOT_DIMENSION)):
+        return ""
+    return "-W"+"x".join(str(channel) for channel in config.widths)+"-D"+str(config.dimension)
+
+
+def architecture_name(config):
+    """Derived identity: capacity decides M2/M3, the declared trunk shape decides the suffix.
+
+    Never a handwritten label: every reader rebuilds this from the configuration it
+    verified, so a widened configuration cannot be reported under the published name.
+    """
+    return ("TetrisStateNet-M3" if config.component_capacity else "TetrisStateNet-M2")+trunk_suffix(config)
+
+
 class Residual(nn.Module):
     def __init__(self, channels):
         super().__init__()

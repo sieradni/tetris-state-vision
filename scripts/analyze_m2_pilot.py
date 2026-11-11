@@ -26,6 +26,13 @@ def curve(path):
     return [{key: value for key, value in row.items() if key != "elapsed_seconds"} for row in rows]
 
 
+def pilot_maps(final, config):
+    """The visible occupancy and semantic maps of one pilot case, sized by the declared config."""
+    from board_window import visible_board
+    return (visible_board(final["occupancy"], config, "occupancy")[0],
+            visible_board(final["semantic"], config, "semantic")[0])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
@@ -91,12 +98,13 @@ def main():
             output = model(prepared.pixels[None], prepared.valid[None])
         final = output["final"]
         known, truth = target["known"][0], target["occupied"][0].bool()
-        predicted = final["occupancy"][0, :20] > 0
+        occupancy_read, semantic_read = pilot_maps(final, summary["config"])
+        predicted = occupancy_read > 0
         counts = {name: int(mask.sum()) for name, mask in {
             "tp": known & truth & predicted, "fp": known & ~truth & predicted,
             "fn": known & truth & ~predicted, "tn": known & ~truth & ~predicted}.items()}
         typed = target["typed"][0]
-        semantic_right = final["semantic"][0, :20].argmax(-1) == target["semantic"][0]
+        semantic_right = semantic_read.argmax(-1) == target["semantic"][0]
         layers = []
         for index, name in enumerate(("active", "ghost")):
             target_known = bool(target["layer_known"][0, index])

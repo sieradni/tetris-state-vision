@@ -18,6 +18,52 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the decision-path width lever is a null, and the wider arm is worse at equal steps**
+([M3_TRUNK_WIDTH_LEVER.md](M3_TRUNK_WIDTH_LEVER.md), `docs/evidence/m3-trunkwidth-r1/scope.json`). Two
+fresh-baseline arms differing only in `dimension` (192 vs 240; 8,009,097 vs 10,565,241 parameters) trained to
+the declared 256 steps and were read on the declared deciding population (12 groups, 36 cases, 28 nonempty
+boards, 7,200 known cells, 108 forwards, peak 679,141,376 B of 1024 MiB). **Verdict `capacity_null`:**
++0.0322 best-F1 attribution against the +0.05 floor, F1 at threshold 0 down 0.020, 0 of 28 exact boards in
+either arm, and a development read that is *worse* for the wider arm (AUC 0.9268 -> 0.8468, geometry 2.19 ->
+5.97 cells). The activation floor held (37.5% of known cells flipped) and the control cleared the AUC floor,
+so the pass speaks: 31.9% more decision-path parameters do not move the deciding read, and at step parity they
+cost fit. Capacity is not the missing lever here; any future capacity pass must be compute-matched and aimed at
+what the representation carries. The fit gate stays FALSE and no prior verdict moves.
+
+The decision path itself was audited before this verdict was trusted: `final.occupancy` is one logit
+channel per cell over 26 rows (20 visible plus a 6-row spawn margin), so the probe's row slice already
+read the whole visible board, and the literal `20` is now a config-derived slice whose corrected re-run
+reproduces this verdict to the digit (`docs/evidence/m3-trunkwidth-r2`).
+
+Previous: **structural and wider changes are authorized, so the decision-path width lever is now executable
+([M3_TRUNK_WIDTH_LEVER.md](M3_TRUNK_WIDTH_LEVER.md), predeclared before any receipt). The owner authorized all
+structural and wider changes; the old A/B fork is closed as *authorized* and the lever replaces it. Two design
+consequences are recorded rather than assumed: the priced wide A widens the encoder and leaves the decision path at
+`dimension` 192, which is the wrong end of the model given the `bias_limited` headroom verdict, so the declared
+lever is `dimension` 192 -> 240 on the published widths; and the required matched start cannot be exact because
+`GroupNorm(8, c)` statistics change under partial channel duplication while uniform 2x duplication exceeds the
+256-channel cap, so the pass is a **fresh-baseline pair** whose numbers are explicitly incomparable to the current
+table. Nothing is trained yet: the identity is derived from the verified configuration (`TetrisStateNet-M3` keeps
+its name, the wider shape becomes `...-W48x96x192x256-D240`), the knob defaults to published, and a bounded pilot
+must clear the 2048 MiB envelope before either arm is admitted. The fit gate stays FALSE and no prior verdict
+moves.
+
+
+([M3_DECIDING_HEADROOM.md](M3_DECIDING_HEADROOM.md), predeclared before any receipt,
+`docs/evidence/m3-deciding-headroom-r1/scope.json`). Two committed arms of the identical published
+architecture - same initial tensor file, seed and data order, differing only in the learning-rate schedule -
+were both reloaded and swept in one read-only execution on the declared deciding population (12 groups, 36
+cases, 28 nonempty boards, 667 occupied cells), and their **unweighted mean logit** was read by the
+predeclared three-branch rule. The members reproduce their own sweeps exactly (AUC 0.8457 / 0.8864;
+F1@0 0.4307 / 0.4357). The ensemble reaches AUC **0.8872** and best swept F1 **0.5074**,
+**-0.0099** against the better member and short of both bars, so the verdict is **`bias_limited`**: the
+two trajectories disagree on 169 of 667 occupied cells, yet combining them buys no
+separation, so the residual is a representational ceiling shared by both solutions rather than sampling
+variance. Nothing is trained, no weight or parameter changes, the fit gate stays FALSE, and no prior
+verdict moves. Consequence: **ensembling and more optimisation are not a substitute for the priced
+trunk-width fork** ([M3_TRUNK_WIDTH_PRICING.md](M3_TRUNK_WIDTH_PRICING.md)), which remains the user's
+decision; the variance measured here is a lower bound because the pair shares its initialisation.
+
 Latest: **the capacity branch is inexpressible, not untested: capacity 64 is a slot bound, and the trunk has no width knob**
 ([M3_OCCUPANCY_TRUNK_WIDTH.md](M3_OCCUPANCY_TRUNK_WIDTH.md), committed before any launch, with no receipt in
 existence). The fit-budget rule ranked *"a wider shared trunk than capacity 64"*; building the declared

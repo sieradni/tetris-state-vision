@@ -49,6 +49,10 @@ def validate_recipe(recipe):
     rate = recipe["learning_rate"]
     if type(rate) not in (int, float) or not math.isfinite(rate) or not 0 < rate <= .01:
         raise ValueError("resume learning rate outside finite bounds")
+    scheduled = recipe.get("lr_final")
+    if scheduled is not None and (type(scheduled) not in (int, float) or not math.isfinite(scheduled)
+                                  or not 0 < scheduled <= rate):
+        raise ValueError("schedule end rate outside finite bounds")
 
 
 def arguments(argv=None):
@@ -97,7 +101,7 @@ def segment_plan(args):
     if profile["model_kind"] not in {"pilot", "accuracy"}:
         raise ValueError("supported profile model configuration required")
     start, code = 0, admission/"code"
-    recipe = {"seed": 20261026, "learning_rate": .001, "evaluate_every": 128,
+    recipe = {"seed": 20261026, "learning_rate": .001, "lr_final": None, "evaluate_every": 128,
               "checkpoint_every": 64, "development_groups": profile["development_groups"]}
     run = ROOT/"runs"/args.name
     pipeline = ROOT/"runs"/(args.name+"-pipeline")
@@ -127,11 +131,12 @@ def segment_plan(args):
             raise ValueError("resume target/source differs; finished diagnostics cannot silently extend")
         start = manifest["step"]
         code = parent/"code"
-        recipe = {key: contract[key] for key in recipe}
+        recipe = {key: contract[key] for key in recipe if key != "lr_final"}
+        recipe["lr_final"] = contract.get("lr_final")
     if type(start) is not int or not 0 <= start < args.target_steps:
         raise ValueError("target already complete or resume cursor invalid")
     validate_recipe(recipe)
-    if type_head_rate_factor == 4 and (curriculum != "all-class-fit-v1" or capacity or layer_evidence or recipe["learning_rate"] != .001):
+    if type_head_rate_factor == 4 and (curriculum != "all-class-fit-v1" or capacity or layer_evidence or recipe["learning_rate"] != .001 or recipe["lr_final"] is not None):
         raise ValueError("candidate type-head rate requires the plain ordered fit recipe")
     supervisor_sha = hashlib.sha256((ROOT/"scripts/run_bounded.py").read_bytes()).hexdigest()
     if archive["files"]["scripts/run_bounded.py"] != supervisor_sha:
@@ -156,12 +161,15 @@ def segment_plan(args):
         worker += ["--curriculum", curriculum]
     if type_head_rate_factor != 1:
         worker += ["--type-head-rate-factor", str(type_head_rate_factor)]
+    if recipe["lr_final"] is not None:
+        worker += ["--lr-final", repr(recipe["lr_final"])]
     if args.resume_from is not None:
         worker += ["--resume-from", str(args.resume_from.resolve())]
     return {"run": run, "pipeline": pipeline, "start": start, "budget": budget, "worker": worker,
             "memory_mib": ceiling//1024**2, "component_capacity": capacity, "config": profile["config"], "curriculum": curriculum,
             "model_kind": profile["model_kind"], "layer_evidence": layer_evidence, "type_head_rate_factor": type_head_rate_factor, "catalogue_sha256": archive["catalogue_sha256"],
-            "architecture": architecture, "development_groups": recipe["development_groups"], "target_steps": args.target_steps}
+            "architecture": architecture, "development_groups": recipe["development_groups"], "lr_final": recipe["lr_final"],
+            "target_steps": args.target_steps}
 
 
 def validate_segment(summary, job, manifest, plan):
@@ -173,7 +181,8 @@ def validate_segment(summary, job, manifest, plan):
             summary["catalogue_sha256"] != plan["catalogue_sha256"] or summary["model_kind"] != plan["model_kind"] or
             architecture != plan["architecture"] or summary.get("component_capacity", 0) != plan["component_capacity"] or
             summary.get("curriculum", "stream-v1") != plan.get("curriculum", "stream-v1") or
-            summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != plan.get("type_head_rate_factor", 1)):
+            summary.get("recovery_contract", {}).get("type_head_rate_factor", 1) != plan.get("type_head_rate_factor", 1) or
+            summary.get("recovery_contract", {}).get("lr_final") != plan.get("lr_final")):
         raise ValueError("saved segment cursor/configuration/resource identity differs")
     probes = 0
     training_images = 32 if plan.get("curriculum", "stream-v1") in ("all-class-fit-v1", "all-class-interleaved-v1") else 9

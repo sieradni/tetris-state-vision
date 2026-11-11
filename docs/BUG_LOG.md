@@ -1785,3 +1785,284 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   express"*, and `docs/M3_OCCUPANCY_TRUNK_WIDTH.md` records the block with the exact numbers and the user
   decision that would unblock a real width lever. No arm was launched and no receipt was manufactured.
 - Green gate: `runs/m3-occtrunk-suite-r1-job.json`.
+
+## V-083 - CLOSED: one non-finite forward batch aborted a 1,000-step segment with no checkpoint
+
+- Symptom: segment 17 of the fixed-pool GPU chain exited 1 after about 80 steps with
+  `ValueError: finite board-conditioned component query required`, raised from `model.forward` at
+  `src/tetris_vision/components.py:71`. `state.pt` and `result.json` were never written, and the driver
+  stopped the chain at 12,800/20,000 steps with "produced no resumable state".
+- Root cause: one batch produced non-finite board values inside the forward pass, so the engine's own
+  finite-state guard raised. The guard was right; the trainer had no per-batch failure path, so a single
+  pathological batch was escalated into a whole-segment abort. No backward ran, so no saved weight was
+  poisoned (verified: 269 tensors, zero non-finite, in all 20 saved chain states).
+- Detection class: a per-item failure escalated into a whole-run abort. First instance.
+- Instrument: `runs/gpu_fit_test.py` counts and skips a non-finite batch at forward, loss and gradient-norm,
+  saves rolling state across the skip, and writes `skipped_batches` into every `result.json`; a 90 s
+  faulthandler watchdog dumps all stacks on genuine silence instead of leaving an unexplained stop.
+- Resolution: trainer hardened. The named green run is `runs/m3-gpu-fit-r1-eval-12800/result.json`, which
+  records `nonfinite_forward 0 / nonfinite_loss 0 / nonfinite_grad 0` and completes evaluation from the
+  12,800-step state. The chain itself was stopped deliberately on its own gate measurement
+  (`docs/evidence/m3-gpu-fit-r1/chain-12800.md`), not by this crash.
+
+## V-084 - CLOSED: pool rebuild time was read as a step-220 hang, and the bounded runner was blamed for it
+
+- Symptom: three consecutive chain launches appeared to stop advancing at about step 220 with one host core
+  pinned. The first two were attributed to `scripts/run_bounded.py`, which was replaced with a direct
+  `timeout` invocation; the apparent stall then recurred anyway.
+- Root cause: the logged step counter was read as a liveness signal for a process whose real per-step wall
+  time was much larger than the 0.39 s/step it reported early on. Measured afterwards: building the 512-frame
+  pool costs 10.6 s (17 ms/frame), so pool construction cannot account for multi-hour segments, and the same
+  driver advanced to 12,800 steps across 13 successful segments with no hang. The gap between logged and
+  effective step time is consistent with the accelerator being shared, which remains a hypothesis, not a
+  measurement. (This entry's first version blamed pool construction; the 10.6 s measurement retracts that.)
+- Detection class: progress inferred from a log counter without accounting for setup cost. First instance.
+- Instrument: `--pool-cache` persists the built pool once and every log line and result now reports
+  `pool_origin` ("built"/"cache") and `pool_size`, so setup cost is visible instead of inferred; the
+  faulthandler watchdog separates silence from work.
+- Resolution: pool cache added; the earlier "bounded supervisor spins at step 220" explanation is withdrawn in
+  favour of this measurement. The bounded runner was not the cause.
+
+## V-085 - CLOSED: the post-1,000-step collapse was a fixed-step random walk, not pool memorisation
+
+- Symptom: on the frozen gate the fixed-pool arm peaked at 1,000 steps (development F1 0.8044 at best
+  threshold) and then degraded (0.6373 at 12,600 with 4.52-cell geometry), training loss rising ~7 -> ~15,
+  while exactness stayed at zero nonempty boards everywhere.
+- Diagnosis: the training pool and the 36 training gate boards are the same frames (pixel-identical, max
+  absolute difference 0.0), so the only held-out set is the 18 development boards, and those score *higher*
+  than the seen ones (0.8044 vs 0.6611 at best threshold, geometry 1.0572 vs 1.0985). Memorisation is
+  therefore excluded. The mechanism is `constant learning rate with permanently saturated gradient clipping`: every logged step exceeds the 1.0 clip (plain arm
+  median norm 35.86, max 109.17; 100% clipped), so each update is `lr x unit direction` with a magnitude that
+  cannot shrink near the optimum — loss stays flat while the swept best threshold wanders 4.5 logits.
+- Detection class: a training curve diagnosed from end-point gate readings alone, without a trajectory or a
+  seen-versus-held-out probe. First instance.
+- Instrument: `--eval-every` writes a gate curve (both splits, and a seen-pool probe through the same
+  `swept`/`map_cells` code) into every `result.json`, and each step log now carries the pre-clip
+  `grad_norm`, so a flat loss with saturated gradients is visible rather than inferred.
+- Resolution: cosine decay 1e-3 -> 1e-4. The arm exceeds the previous peak inside the run
+  (0.8337 at step 1150) and ends at
+  0.7919 with 0.5983-cell geometry, against
+  0.7886 at 0.933 cells for the same
+  starting point without decay. Evidence: `docs/evidence/m3-gpu-fit-r1/stability-1600.md`.
+- Green gate: `runs/m3-gpu-fit-r1-armB-decay/result.json` (exits 0, `skipped_batches` all zero,
+  `pool_origin` cache) plus the CPU suite: OK: 784 tests in 45.727 s, exit 0, run under scripts/run_bounded.py (receipt runs/stability-suite-r2-job.json, peak job commit 570,347,520 B)
+
+## V-086 - CLOSED: the optimiser regime was never audited, and every committed step is clipped
+
+- Symptom: all 40,796 recorded training steps across 90 committed runs exceed the 1.0 gradient clip
+  (minimum pre-clip norm 1.657, median 23.89, maximum 1,785.62), so each update is `lr x unit direction`
+  at a constant `lr 1e-3` and no run in the record contains an unclipped step.
+- Root cause: `clip_grad_norm_(..., 1.)` runs on every step (`scripts/train_m2_pilot.py:171`,
+  `scripts/train_m2_stream.py:842`, `scripts/accumulation_contract.py:81`) and the tree contains no
+  learning-rate schedule, so the clip can never release as the model approaches an optimum.
+- Detection class: a training regime read from endpoints rather than from its own per-step record, the
+  class V-085 opened. This is the second instance, so the standing instrument is added before a third.
+- Instrument: `scripts/stability_regime.py` with `tests/test_stability_regime.py` - a stdlib-only census
+  of the `gradient_norm` field every curve already writes; `docs/M3_OPTIMISER_REGIME.md` carries the
+  reading, what it does and does not license, and the ranked next step.
+- Resolution: CLOSED as a measured **null**. The declared schedule lever
+  (`docs/M3_OPTIMISER_SCHEDULE.md`, predeclared before any receipt) ran two matched 256-step arms from
+  `9ae1fef9f649...` under 1,152 MiB / 1,800 s with zero added parameters. Per-cell F1 at the standing
+  `0.0` point moved +0.005041 against the +0.05 floor, placement improved 39.9%, AUC
+  0.8457 -> 0.8864, and the fit gate stayed 0 of 28 in both arms. The regime is now
+  audited and is not the missing separation; the per-step `learning_rate` is recorded in every curve, so
+  the census instrument can read any later arm's schedule. Evidence:
+  `docs/evidence/m3-optimiser-schedule-r1/scope.json`.
+
+## V-087 - CLOSED: a read-only headroom pass defaulted to the narrow deciding population
+
+- Symptom: the first execution of `scripts/ensemble_headroom.py` produced a complete receipt on 3 groups /
+  9 cases / 7 nonempty boards while its predeclaration names the canonical 12 groups / 36 cases / 28
+  nonempty boards.
+- Root cause: the script inherited the sweep helper's convention that `--training-groups` is optional, so
+  the decisive population was supplied by protocol memory rather than by the declaration; the widened
+  population was never requested and the self-check compared the pass against itself.
+- Detection class: predeclaration-versus-receipt population mismatch (declared scope silently narrowed).
+- Instrument: `--training-groups` is now **required** and cannot default; the admission profile and the
+  scope both record the evaluated group count; the off-declaration narrow run and the declared-population
+  pre-guard run are both preserved with their receipts (`docs/evidence/m3-deciding-headroom-narrow-r1/`,
+  `docs/evidence/m3-deciding-headroom-preguard-r1/`) rather than overwritten.
+- Named green run: `docs/evidence/m3-deciding-headroom-r1/scope.json` (12 groups / 36 cases / 28 nonempty
+  boards, 108 forwards, peak 635,166,720 B, verdict `bias_limited`).
+
+## V-088 - CLOSED: the derived checkpoint identity rejected the legacy configs it must keep naming
+
+- Symptom: the first full-suite run after the trunk-width plumbing failed 7 tests across
+  `tests/test_stream_evidence.py` and `tests/test_target_exposure.py` with `KeyError: 'widths'`.
+- Root cause: `checkpoint_architecture` derived the identity with `ModelConfig(**summary["config"])` and
+  required a `widths` field unconditionally, while the evidence contracts accept manifests whose recorded
+  config names only `dimension`. Derivation now runs only when the trunk shape is actually recorded: a
+  widened configuration still cannot be reported under a published name, and a legacy snippet keeps the
+  name it was written under.
+- Detection class: a new identity guard rejecting the older manifests it was meant to preserve
+  (guard-too-wide), caught by the existing evidence suite before any receipt was written.
+- Instrument: the existing `tests/test_stream_evidence.py` and `tests/test_target_exposure.py` fixtures,
+  plus `tests/test_width_lever.py` pinning the five predeclared verdict branches so the read cannot choose
+  a branch after seeing numbers.
+- Named green run: `runs/suite-falsification-r2-job.json` - 826 tests OK, job passed, 93.9 s, peak
+  569,962,496 B, and `runs/identity-fix-tests-r1-job.json` (33 focused tests) as the targeted rerun.
+
+## V-089 - CLOSED: probe read-outs sliced a single-channel cell map with a hardcoded `:20`
+
+- Symptom: none visible in the current arms, but `output["final"]["occupancy"]` is
+  `(batch, visible_rows+spawn_rows, columns)` and three read instruments sliced it with a literal `[:, :20]`,
+  so a structural change to the board height or the spawn margin would have truncated the read silently while
+  the receipt still claimed a full-board read.
+- Root cause: the literal encoded the published visible-row count instead of the config field that defines it;
+  because rows are bottom-first, the published shape made the literal correct and hid the coupling.
+- Detection class: a hardcoded assumption shadowing a declared/config field - the third instance in this
+  campaign after V-087 (narrow-population default) and V-088 (identity guard wider than its contract), so the
+  standing instrument is an assertion derived from the declaration, not another literal.
+- Instrument: `visible_board_logits(occupancy, config)` sizes the window from the verified config and refuses
+  any map that is not `(1, visible_rows+spawn_rows, columns)`; `readout_statistics` records the shape and
+  per-block logits in every receipt; `tests/test_width_lever.py` covers the slice, a 26-visible-row config the
+  literal would have got wrong, and the refusals.
+- Named green run: `docs/evidence/m3-trunkwidth-r2/result.json` reproduces r1 exactly;
+  `runs/readout-tests-r1-job.json` (37 focused tests) and `runs/suite-falsification-r2-job.json`
+  (830 tests, passed, no orphan child).
+- Resolution: the coupling is cleared across every consumer - `src/tetris_vision/losses.py`
+  (`stage_loss` and `diagnostic_metrics`), `scripts/train_m2_stream.py` (the fit-policy read),
+  `scripts/ensemble_headroom.py`, `scripts/sweep_stream_occupancy.py`, `scripts/probe_local_reading.py`,
+  `scripts/probe_stream_errors.py` and `scripts/analyze_m2_pilot.py` all size the window through
+  `visible_window`/`board_window`, which refuse a map that cannot cover the declared or labelled board.
+  `tests/test_visible_board.py` fails if a literal row slice or a wrong-shape map returns. Proof that no
+  reported number moved: the base arm's published development evaluation reproduces to the digit under both
+  the working tree and its frozen pre-change archive (`docs/evidence/visibleboard-proof-current-r1`,
+  `docs/evidence/visibleboard-proof-archive-r1`) - loss 18.55253728230794, cell accuracy 0.8986111150847541,
+  geometry 2.192851414283117, 0 exact boards out of 18 images and 6 ancestry groups.
+- Consumer-level proof: each non-loss consumer now exposes its own module-level entry point -
+  `ensemble_headroom.visible_units`, `sweep_stream_occupancy.sweep_logits`, `probe_local_reading.reading_map`,
+  `analyze_m2_pilot.pilot_maps`, `probe_stream_errors.pack` and `train_m2_stream.fit_correct` - and
+  `tests/test_consumer_pins.py` drives every one of those call sites with a 26-visible-row declaration and with
+  a shape-mismatched map, so a literal reintroduced in any single file fails that file's own named test.
+  `scripts/ensemble_headroom.py` was then re-run on its published arms over the declared 12-group population
+  and reproduces its receipt exactly: `docs/evidence/m3-deciding-headroom-rerun-r1/scope.json` equals
+  `docs/evidence/m3-deciding-headroom-r1/scope.json` on arms, members, ensemble, verdict, population, grid,
+  agreement and weights, with only source digests and timing differing (verdict `bias_limited`, ensemble AUC
+  0.8871656812988195, best F1 0.5074050225370251).
+- Frozen-fixture decision: `tests/fixtures/m2_original/losses.py` keeps its original `[:, :20]` on purpose. It
+  is frozen evidence for byte-compatibility with the published M2 model, not a consumer, and
+  `test_the_frozen_m2_reference_fixture_keeps_its_original_literal` fails if anyone edits it - so the scan
+  exclusion is deliberate and pinned rather than a silent hole.
+
+- Instrument replays (2026-11-11): all three converted non-loss replay instruments now run end to end under
+  the published config on their saved populations and reproduce their historical receipts field by field.
+  `ensemble_headroom.py` on its published arms (`docs/evidence/m3-deciding-headroom-rerun-r1`);
+  `sweep_stream_occupancy.py` on `m3-occbref-baseline-r1` (`runs/m3-sweep-obcref-rerun-r1/result.json` - grid,
+  deciding and development sweeps, verdict `uninformative`, training population, cases and weights identical);
+  `probe_stream_errors.py` on `m3-fit-occupancy-r1` (`docs/evidence/m3-fit-occupancy-r1-errors-r2/result.json` -
+  identical on run, weights, config, architecture, totals and cases). The only field-level differences are two
+  fields that `m3-fit-occupancy-r1-errors-r1` predates (`occupancy_positive_weight` and `training_population`,
+  both added later with default values), plus source digests and timing everywhere. Published attribution, F1
+  and threshold numbers are byte-identical.
+
+## V-090 - CLOSED: the derived-identity import broke every replay instrument's provenance guard
+
+- Symptom: the first consumer-level rerun of `scripts/ensemble_headroom.py` failed with
+  `headroom model/label implementation is not frozen` before reading a single case.
+- Root cause: `checkpoint_architecture` imports `tetris_vision.model` to derive the architecture name, and the
+  replay instruments call it before inserting their frozen archive on `sys.path`. That cached the working
+  tree's `tetris_vision`, so the frozen-source check no longer saw the archive and refused. No instrument had
+  been re-run since that change, so nothing had exercised the guard.
+- Detection class: a provenance guard defeated by import order - the same class as the width read's first run.
+- Instrument: `ensemble_headroom.py`, `sweep_stream_occupancy.py` and `probe_stream_errors.py` purge
+  working-tree modules before the path insert, with the reason recorded at the purge site.
+- Durable fix (2026-11-11): architecture identity no longer depends on `sys.path` order. `checkpoint_architecture`
+  resolves the rule through `working_tree_model()`, which loads the present `src/tetris_vision` package by path
+  under a private name (`tetris_vision_identity`), so an archive-era `model.py` shadowing the path can neither
+  supply nor withhold the derived-name helper. That replaces the per-consumer ordering patch: the errors probe's
+  single `checkpoint_architecture(summary, manifest)` call after the archive insert is restored and now works.
+  `tests/test_identity_import_order.py` shadows the model module with an archive-era one that has no
+  `architecture_name`, asserts a direct import fails there, and then requires the identity to stay correct - a
+  check the old call ordering could not pass. All three replay instruments were re-run afterwards and still
+  reproduce their receipts exactly (`docs/evidence/m3-deciding-headroom-rerun-r2`,
+  `runs/m3-sweep-obcref-rerun-r2`, `docs/evidence/m3-fit-occupancy-r1-errors-r3`).
+- Named green run: `docs/evidence/m3-deciding-headroom-rerun-r1/scope.json`, identical to the historical
+  receipt, under `runs/m3-deciding-headroom-rerun-r1-job.json`.
+
+## V-091 - CLOSED: an in-process module purge in a new test corrupted VisionState identity downstream
+
+- Symptom: the first full suite containing `tests/test_identity_import_order.py` failed three tests in
+  `test_layer_evidence` and `test_model_capture` with `TypeError: validated VisionState required`, while each of
+  those tests passed in isolation.
+- Root cause: to simulate the archive shadow, that test deleted every `tetris_vision.*` entry from
+  `sys.modules`; modules imported before the purge kept the old `VisionState` class object while the reimported
+  `component_targets` compared against a new one, so a valid state failed the `isinstance` check.
+- Detection class: test instrument (module-identity pollution between tests), not product code.
+- Instrument: the shadow scenario now runs in a fresh interpreter with the archive-era package first on
+  `sys.path`, which reproduces the real path race without touching the suite's module identity.
+- Named green run: `tests/test_identity_import_order.py` (3 tests OK, `runs/identity-order-tests-r2-job.json`)
+  and the full suite at 852 tests OK (`runs/suite-falsification-r2-job.json`).
+
+## V-092 - CLOSED: the replay "empty difference" compared projections and could not fail per field
+
+- Symptom: every replay was declared identical because an ad-hoc comparison printed `differing keys []`. That
+  output was not evidence each protected field had been compared: the headroom comparison read only
+  `scope.json`, which has no `cases`, so "cases equal" was never tested there; the error comparison excluded
+  `occupancy_positive_weight` and `training_population` by name, so a drift in either would have been invisible;
+  and the sweep's missing `attribution` was never stated.
+- Root cause: comparisons were written per replay over a union of keys with `.get()` on both sides, so a field
+  present on one side only compared as `None`, an excluded field was unguarded, and a projection of the receipt
+  was treated as the receipt. No mutation ever showed the comparison could report a difference.
+- Detection class: evidence instrument (an equivalence test with no failing control), not model or training code.
+- Instrument: `scripts/replay_equivalence.py` declares a carrier for each of the seven protected fields per
+  instrument, treats an absent carrier as a difference, and reports declared-absent fields with their reason
+  instead of skipping them. `tests/test_replay_equivalence.py` perturbs every carried field in a copy of a real
+  receipt and requires the comparison to name exactly that field, requires the unmodified pair to compare clean,
+  and requires every protected field to be carried by at least one instrument. The two later-added fields are
+  compared against the run's recorded defaults, verified against `runs/m3-fit-occupancy-r1/summary.json` and its
+  nine training rows rather than assumed.
+- Named green run: 7 tests OK, full suite at 859 tests (`runs/suite-falsification-r2-job.json`), and all three
+  replays re-run under the strict differ compare identical on every carried field
+  (`docs/evidence/m3-deciding-headroom-rerun-r3`, `runs/m3-sweep-obcref-rerun-r3`,
+  `docs/evidence/m3-fit-occupancy-r1-errors-r4`).
+
+## V-093 - CLOSED: the first differ was strict about values but tolerant about types, sections and absence
+
+- Symptom: the differ rejected one large perturbation per field, so an empty difference looked decisive. Near
+  misses were not: `1 == 1.0` and `0 == False` compared equal, so a type drift in any numeric or boolean carrier
+  was invisible; a NaN injected into a numeric field raised while serialising instead of naming that field; the
+  error F1 carrier divided its counts, so an int-to-float drift in the counts cancelled out; undeclared top-level
+  sections were never inspected, so a newly added receipt section shipped unguarded; and the "absent" fields had
+  no failing guard, so an instrument that started recording `attribution` or `threshold` would still pass.
+- Root cause: the comparison used Python `==` on extracted values (type-coercing), serialised cases to one JSON
+  string (no localisation, no NaN handling), only walked the seven carriers, and described absences in prose
+  rather than asserting them. The deciding-power figure was hand-written prose with nothing tying it to the
+  receipt.
+- Detection class: evidence instrument (an equivalence test whose control was too coarse and whose scope was
+  narrower than its claim), not model or training code.
+- Instrument: `scripts/replay_equivalence.py` now compares with `first_difference`, which requires identical
+  types (bool/int/float distinct), identical key sets, identical lengths and order, NaN only equal to NaN and
+  infinities by sign. The error F1 carrier includes the counts it is computed from. Every top-level section must
+  be a carrier root, a supporting section, an identity key, a documented default or declared metadata, else the
+  comparison fails as `unaccounted:<key>`. Declared-absent fields name the keys that would prove the instrument
+  started recording them, and their appearance is a difference. `tests/test_replay_equivalence.py` attacks every
+  carrier with ULP changes, 1e-12 nudges, type substitutions, NaN, infinity, dropped/duplicated cases,
+  one-sided keys and nested edits, and pins case order as sensitive and map order as insensitive.
+  `tests/test_deciding_power_pin.py` recomputes the power record from the receipt it names and requires the
+  documented sentence to be the record's own.
+- Named green run: 10 replay-equivalence tests and 4 power-pin tests OK; full suite green (see
+  `runs/suite-falsification-r2-job.json`); all three instruments re-run after the change
+  (`docs/evidence/m3-deciding-headroom-rerun-r4`, `runs/m3-sweep-obcref-rerun-r4`,
+  `docs/evidence/m3-fit-occupancy-r1-errors-r5`) and compare identical on every carried field with published
+  attribution/F1/threshold bytes unchanged.
+
+## V-094 - CLOSED: two receipts had no guard at all, two pins were brittle instead of protective
+
+- Symptom: the falsification pass built scratch copies of every published receipt. The three instrument receipts
+  and the deciding-power record rejected the six corruption classes, but the green suite receipt had no validator
+  whatsoever - any passing-looking JSON was accepted - and the power record only checked the keys it knew, so an
+  injected section passed silently. In the other direction, two irrelevant edits failed: reflowing the documented
+  figure's whitespace broke the pin, and adding a docstring to the power instrument broke its script-digest pin.
+- Root cause: the suite receipt was treated as an artifact rather than a claim, and the power record's validator
+  was a fixed key list; the prose pin compared raw substrings and the record pinned its own source digest, which
+  is configuration, not evidence.
+- Detection class: evidence instrument (guards with no adversarial control), not model or training code.
+- Instrument: `record_stream_run.job_receipt_problems` validates status, exit code, elapsed, ceiling and peak,
+  command shape, thread policy and pressure reason, and rejects unknown or missing keys;
+  `sweep_deciding_power.record_problems` recomputes the record from the receipt it names, checks the evidence
+  digest and rejects injected sections; `sweep_deciding_power.figure_appears` matches the documented figure with
+  whitespace collapsed; the script-digest pin is gone because recomputation already catches behaviour.
+  `tests/test_evidence_falsification.py` builds the corrupted and irrelevant copies and runs these checks.
+- Named green run: full suite green (`runs/suite-falsification-r2-job.json`), all three instrument receipts re-replayed after the last code
+  change with published bytes unchanged.

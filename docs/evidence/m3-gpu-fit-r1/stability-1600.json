@@ -1,0 +1,347 @@
+{
+  "instrument": "m3-gpu-fit-r1 stability arms",
+  "scope": "Why the fixed-pool training curve collapses after ~1,000 steps, and whether a learning-rate decay fixes it. Training-fit and development probes only; no real-screenshot claim.",
+  "seen_vs_held_out": {
+    "identity_check": [
+      {
+        "training_board": "training-20261026-v0",
+        "pool_index": 0,
+        "max_abs_pixel_difference": 0.0
+      },
+      {
+        "training_board": "training-20261026-v1",
+        "pool_index": 1,
+        "max_abs_pixel_difference": 0.0
+      },
+      {
+        "training_board": "training-20261026-v2",
+        "pool_index": 2,
+        "max_abs_pixel_difference": 0.0
+      }
+    ],
+    "identity_conclusion": "The 512-frame training pool and the 36 training gate boards are the same frames: each training board is pixel-identical to the pool frame with the same view index, so the only genuinely held-out set is the 18 development boards.",
+    "checkpoint_1000": {
+      "train_seen": {
+        "f1_at_zero": 0.6298,
+        "f1_at_best": 0.6611,
+        "best_threshold": 2.85,
+        "geometry_cells": 1.0985
+      },
+      "development_held_out": {
+        "f1_at_zero": 0.735,
+        "f1_at_best": 0.8044,
+        "best_threshold": 3.0,
+        "geometry_cells": 1.0572
+      }
+    },
+    "verdict": "Held-out development F1 (0.8044) exceeds seen training F1 (0.6611) at the peak checkpoint, and geometry is no worse on held-out boards (1.0572 vs 1.0985 cells). The collapse is not memorisation of the fixed pool."
+  },
+  "onset_window": {
+    "chain_segment_2_loss": {
+      "logged_steps": 20,
+      "grad_norm_median": null,
+      "grad_norm_mean": null,
+      "grad_norm_max": null,
+      "grad_norm_min": null,
+      "clipped_fraction": null,
+      "loss_first": 4.9408,
+      "loss_last": 35.2231,
+      "loss_max": 35.2231
+    },
+    "plain_arm": {
+      "arm": "armA_plain_lr",
+      "log": {
+        "logged_steps": 20,
+        "grad_norm_median": 35.857,
+        "grad_norm_mean": 46.073,
+        "grad_norm_max": 109.168,
+        "grad_norm_min": 13.057,
+        "clipped_fraction": 1.0,
+        "loss_first": 4.9488,
+        "loss_last": 5.1257,
+        "loss_max": 8.8098
+      },
+      "steps_total": 1400,
+      "lr_final": null,
+      "pool_origin": "cache",
+      "skipped_batches": {
+        "nonfinite_forward": 0,
+        "nonfinite_loss": 0,
+        "nonfinite_grad": 0
+      },
+      "seconds_per_step": 0.4378,
+      "curve": [
+        {
+          "step": 1000,
+          "lr": 0.001,
+          "train": {
+            "f1_at_zero": 0.6361,
+            "best_threshold": 2.85,
+            "f1_at_best": 0.6706,
+            "geometry_cells": 1.0133,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 8
+          },
+          "development": {
+            "f1_at_zero": 0.7362,
+            "best_threshold": 2.55,
+            "f1_at_best": 0.7987,
+            "geometry_cells": 1.1113,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 4
+          }
+        },
+        {
+          "step": 1100,
+          "lr": 0.001,
+          "train": {
+            "f1_at_zero": 0.641,
+            "best_threshold": -0.15,
+            "f1_at_best": 0.6479,
+            "geometry_cells": 0.8082,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 1
+          },
+          "development": {
+            "f1_at_zero": 0.7515,
+            "best_threshold": 0.15,
+            "f1_at_best": 0.7552,
+            "geometry_cells": 0.7478,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 2
+          }
+        },
+        {
+          "step": 1200,
+          "lr": 0.001,
+          "train": {
+            "f1_at_zero": 0.583,
+            "best_threshold": 1.05,
+            "f1_at_best": 0.6257,
+            "geometry_cells": 0.577,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 3
+          },
+          "development": {
+            "f1_at_zero": 0.6338,
+            "best_threshold": 1.2,
+            "f1_at_best": 0.7398,
+            "geometry_cells": 0.6636,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 2
+          }
+        },
+        {
+          "step": 1300,
+          "lr": 0.001,
+          "train": {
+            "f1_at_zero": 0.5119,
+            "best_threshold": 4.35,
+            "f1_at_best": 0.6681,
+            "geometry_cells": 0.7168,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 8
+          },
+          "development": {
+            "f1_at_zero": 0.5636,
+            "best_threshold": 4.05,
+            "f1_at_best": 0.764,
+            "geometry_cells": 0.8267,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 2
+          }
+        }
+      ],
+      "final": {
+        "train": {
+          "f1_at_zero": 0.5961,
+          "best_threshold": 2.4,
+          "f1_at_best": 0.6633,
+          "exact_nonempty_at_zero": 0,
+          "exact_empty_at_zero": 0,
+          "exact_nonempty_at_best": 1,
+          "exact_empty_at_best": 2,
+          "geometry_cells": 1.0123
+        },
+        "development": {
+          "f1_at_zero": 0.6962,
+          "best_threshold": 2.25,
+          "f1_at_best": 0.7886,
+          "exact_nonempty_at_zero": 0,
+          "exact_empty_at_zero": 0,
+          "exact_nonempty_at_best": 0,
+          "exact_empty_at_best": 2,
+          "geometry_cells": 0.933
+        }
+      }
+    },
+    "reading": "The chain's own segment trace shows loss 4.94 at segment step 30 rising to 35.22 by step 220, a divergence within ~200 steps of resuming. The replayed plain arm from the 1,000-step checkpoint keeps loss bounded (max 8.81) yet still loses gate accuracy: development F1 at logit 0.0 falls 0.7362 -> 0.5636 across steps 1,000 -> 1,300 while the best swept threshold jumps 2.85 -> -0.15 -> 1.05 -> 4.35."
+  },
+  "mechanism": {
+    "name": "constant learning rate with permanently saturated gradient clipping",
+    "evidence": "Every logged step in both arms is clipped: 100% of steps exceed the 1.0 clip in the plain arm (norm median 35.86, max 109.17) and in the decay arm (median 26.69, max 286.58). Clipping rescales every update to unit norm, so the weight change is lr x unit direction: a fixed-size step that cannot shrink near the optimum. Loss stays flat (4.9-8.8) with no downward trend after 1,000 steps, the swept best threshold wanders by 4.5 logits, and geometry oscillates 1.11 -> 0.75 -> 0.66 -> 0.83 cells.",
+    "ruled_out": [
+      "memorisation of the fixed pool (held-out beats seen)",
+      "non-finite weights (zero non-finite tensors in every saved state)",
+      "pool staleness as repeated samples (the pool is the training split itself and the held-out split still outperforms it)"
+    ]
+  },
+  "fix": {
+    "change": "cosine decay of the learning rate from 1e-3 to 1e-4 across the arm",
+    "why_smallest": "The mechanism is a fixed update magnitude, so the minimal change is to make that magnitude shrink; no architecture, data or loss change is implied by the evidence.",
+    "arm": {
+      "arm": "armB_cosine_decay",
+      "log": {
+        "logged_steps": 20,
+        "grad_norm_median": 26.691,
+        "grad_norm_mean": 46.884,
+        "grad_norm_max": 286.575,
+        "grad_norm_min": 9.352,
+        "clipped_fraction": 1.0,
+        "loss_first": 4.9538,
+        "loss_last": 4.2715,
+        "loss_max": 8.539
+      },
+      "steps_total": 1600,
+      "lr_final": 0.0001,
+      "pool_origin": "cache",
+      "skipped_batches": {
+        "nonfinite_forward": 0,
+        "nonfinite_loss": 0,
+        "nonfinite_grad": 0
+      },
+      "seconds_per_step": 0.4436,
+      "curve": [
+        {
+          "step": 1000,
+          "lr": 0.001,
+          "train": {
+            "f1_at_zero": 0.6361,
+            "best_threshold": 2.85,
+            "f1_at_best": 0.6706,
+            "geometry_cells": 1.0133,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 8
+          },
+          "development": {
+            "f1_at_zero": 0.7362,
+            "best_threshold": 2.55,
+            "f1_at_best": 0.7987,
+            "geometry_cells": 1.1113,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 4
+          }
+        },
+        {
+          "step": 1150,
+          "lr": 0.0008681980515339464,
+          "train": {
+            "f1_at_zero": 0.6526,
+            "best_threshold": 1.65,
+            "f1_at_best": 0.6691,
+            "geometry_cells": 0.8899,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 8
+          },
+          "development": {
+            "f1_at_zero": 0.7875,
+            "best_threshold": 1.95,
+            "f1_at_best": 0.8337,
+            "geometry_cells": 0.9588,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 4
+          }
+        },
+        {
+          "step": 1300,
+          "lr": 0.00055,
+          "train": {
+            "f1_at_zero": 0.6355,
+            "best_threshold": 2.7,
+            "f1_at_best": 0.7039,
+            "geometry_cells": 0.7339,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 4
+          },
+          "development": {
+            "f1_at_zero": 0.709,
+            "best_threshold": 1.8,
+            "f1_at_best": 0.7635,
+            "geometry_cells": 0.7012,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 2
+          }
+        },
+        {
+          "step": 1450,
+          "lr": 0.00023180194846605365,
+          "train": {
+            "f1_at_zero": 0.6757,
+            "best_threshold": 0.75,
+            "f1_at_best": 0.694,
+            "geometry_cells": 0.8465,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 0
+          },
+          "development": {
+            "f1_at_zero": 0.7691,
+            "best_threshold": 2.55,
+            "f1_at_best": 0.8157,
+            "geometry_cells": 0.6719,
+            "exact_nonempty_at_best": 0,
+            "exact_empty_at_best": 2
+          }
+        }
+      ],
+      "final": {
+        "train": {
+          "f1_at_zero": 0.7129,
+          "best_threshold": 3.15,
+          "f1_at_best": 0.7457,
+          "exact_nonempty_at_zero": 0,
+          "exact_empty_at_zero": 5,
+          "exact_nonempty_at_best": 0,
+          "exact_empty_at_best": 8,
+          "geometry_cells": 0.7144
+        },
+        "development": {
+          "f1_at_zero": 0.7552,
+          "best_threshold": 3.6,
+          "f1_at_best": 0.7919,
+          "exact_nonempty_at_zero": 0,
+          "exact_empty_at_zero": 0,
+          "exact_nonempty_at_best": 0,
+          "exact_empty_at_best": 4,
+          "geometry_cells": 0.5983
+        }
+      }
+    }
+  },
+  "comparison": {
+    "baseline_peak": {
+      "arm": "1000 steps (no decay)",
+      "dev_f1_at_best": 0.8044,
+      "dev_f1_at_zero": 0.735,
+      "geometry_cells": 1.0572
+    },
+    "decay_arm_best_reading": {
+      "step": 1150,
+      "dev_f1_at_best": 0.8337,
+      "dev_f1_at_zero": 0.7875,
+      "geometry_cells": 0.9588
+    },
+    "decay_arm_final": {
+      "step": 1600,
+      "dev_f1_at_best": 0.7919,
+      "dev_f1_at_zero": 0.7552,
+      "geometry_cells": 0.5983
+    },
+    "plain_arm_final": {
+      "step": 1400,
+      "dev_f1_at_best": 0.7886,
+      "dev_f1_at_zero": 0.6962,
+      "geometry_cells": 0.933
+    },
+    "verdict": "Decay exceeds the 0.8044 baseline peak inside the arm (0.8337 at step 1,150) and ends at 0.7919 with the tightest geometry measured anywhere (0.5983 cells); the plain arm from the same start ends at 0.7886 with 0.933 cells and a much lower logit-0.0 F1 (0.6962 vs 0.7552). Training F1 at best threshold rises to 0.7457 against 0.6611. Exactness stays at zero nonempty boards in both arms."
+  }
+}

@@ -304,15 +304,39 @@ def require_geometry_final_only(value, summary):
         raise ValueError("geometry stage policy differs from resource admission")
 
 
+def visible_window(tensor, target, name):
+    """The labelled visible board of a per-cell map, sized by the target, refused on mismatch.
+
+    `tensor` is `(batch, visible_rows[+spawn_rows], columns[, classes])` and the target's `occupied` field
+    is the labelled `(visible_rows, columns)`. Sizing the window from the label shape is what stops a
+    structural change from silently truncating a score; a map that cannot cover the board is an error
+    rather than a shorter slice (V-089).
+    """
+    rows, columns = (int(value) for value in target["occupied"].shape[-2:])
+    shape = tuple(int(value) for value in tensor.shape)
+    if tensor.dim() == 3:
+        produced_rows, produced_columns = shape[1], shape[2]
+    elif tensor.dim() == 4:
+        produced_rows, produced_columns = shape[1], shape[2]
+    else:
+        raise ValueError("%s must be (batch, rows, columns[, classes]), got %s" % (name, shape))
+    if produced_columns != columns or produced_rows < rows:
+        raise ValueError("%s cannot cover the labelled %dx%d board: %s"
+                         % (name, rows, columns, shape))
+    return tensor[:, :rows]
+
+
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
-    occupancy = balanced_occupancy(output["occupancy"][:, :20], target["occupied"], target["known"],
-                                   positive_weight)
-    type_error = F.cross_entropy(output["semantic"][:, :20].permute(0, 3, 1, 2), target["semantic"], reduction="none")
+    occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
+                                   target["occupied"], target["known"], positive_weight)
+    type_error = F.cross_entropy(visible_window(output["semantic"], target, "semantic").permute(0, 3, 1, 2),
+                                 target["semantic"], reduction="none")
     semantic = masked_mean(type_error, target["typed"])
-    visibility = F.binary_cross_entropy_with_logits(output["observability"][:, :20], target["known"].float())
+    visibility = F.binary_cross_entropy_with_logits(visible_window(output["observability"], target,
+                                                                 "observability"), target["known"].float())
     registration = F.binary_cross_entropy_with_logits(output["registration"], target["registered"].float())
     layer_error = F.cross_entropy(output["layer_type"].transpose(1, 2), target["layer_type"], reduction="none")
     layers = masked_mean(layer_error, target["layer_known"])
@@ -387,7 +411,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
 def diagnostic_metrics(outputs, target):
     final = outputs["final"]
     known = target["known"]
-    right = ((final["occupancy"][:, :20] > 0) == target["occupied"].bool()) | ~known
+    right = ((visible_window(final["occupancy"], target, "occupancy") > 0) == target["occupied"].bool()) | ~known
     count = int(known.sum())
     cell_accuracy = float((right & known).sum()/known.sum()) if count else None
     geometry = geometry_error(final["lattice"], target["lattice"]).norm(dim=-1).mean(-1)

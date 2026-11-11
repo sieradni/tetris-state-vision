@@ -39,6 +39,12 @@ def digest(path, maximum=64*1024**2):
     return value.hexdigest()
 
 
+def sweep_logits(occupancy, config):
+    """The swept logits of one case: the visible board of the map, sized by the declared config."""
+    from board_window import visible_board
+    return visible_board(occupancy, config, "occupancy")[0].flatten()
+
+
 def main():
     require_bounded_job()
     parser = argparse.ArgumentParser(description=__doc__)
@@ -67,6 +73,12 @@ def main():
     started = time.monotonic()
     code = run/"code"
     verify_source(code, summary["catalogue_sha256"])
+    # Modules imported above came from the working tree, not from the run's frozen archive; drop
+    # them so the frozen-source check below reads the recorded implementation.
+    for stale in [name for name in sys.modules
+                  if name.split(".")[0] in ("m2_curriculum", "m2_stream_data", "m2_fit_contract",
+                                            "m2_interleaved_order", "tetris_vision")]:
+        del sys.modules[stale]
     sys.path[:0] = [str(code/"scripts"), str(code)]
     sys.dont_write_bytecode = True
     os.environ.update({"ONEDNN_PRIMITIVE_CACHE_CAPACITY": "16", "DNNL_PRIMITIVE_CACHE_CAPACITY": "16"})
@@ -148,7 +160,7 @@ def main():
             raise ValueError("saved streaming sweep requires200 supported known cells")
         with torch.no_grad():
             output = model(prepared.pixels[None], prepared.valid[None])
-        logits = output["final"]["occupancy"][0, :20].flatten()
+        logits = sweep_logits(output["final"]["occupancy"], manifest["config"])
         known = target["known"][0].flatten().bool()
         occupied = target["occupied"][0].flatten().bool()
         return {"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],

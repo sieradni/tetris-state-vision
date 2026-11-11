@@ -1,0 +1,150 @@
+{
+  "status": "passed",
+  "instrument": "m3-optimiser-schedule-r1",
+  "predeclaration": "docs/M3_OPTIMISER_SCHEDULE.md",
+  "declared_receipt": "runs/m3-occsched-curation-r1-job.json",
+  "declared_memory_bytes": 134217728,
+  "scope": "Matched 256-step continuation of the published checkpoint, two arms differing only in the learning-rate schedule: constant 1e-3 against cosine 1e-3 -> 1e-4. Zero added parameters, one seed, one population and one objective. Read only by the standing gates; no threshold, population, ceiling or prior verdict changes, and no real-image, complete-state or quality claim.",
+  "envelope": {
+    "steps": 256,
+    "ceiling_bytes": 1207959552,
+    "work_items": 256,
+    "attribution_floor": 0.05,
+    "placement_tolerance": 0.05,
+    "fit_gate_threshold": 3
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "checkpoint_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d"
+  },
+  "arms": {
+    "constant": {
+      "study": "m3-occsched-constant-r1",
+      "lr_final": null,
+      "rates": {
+        "steps": 256,
+        "distinct": 1,
+        "first": 0.001,
+        "last": 0.001
+      },
+      "weights_sha256": "5d52b3f14c71bda436b15a56185f87ec084caf5f4fa87ec6111f6fb6f88f6214",
+      "catalogue_sha256": "983487e1627af6d6e0b5c683dfd3e78816df00125fcd62ee70c17f459b49dd01",
+      "elapsed_seconds": 520.4147450000019,
+      "peak_commit_bytes": 1016332288,
+      "parameters": null,
+      "auc": 0.8457164079626516,
+      "per_cell_f1_at_zero": 0.43067320552831034,
+      "operating_counts_at_zero": {
+        "true_positive": 483,
+        "false_positive": 1093,
+        "false_negative": 184
+      },
+      "best": {
+        "threshold": 0.0,
+        "f1": 0.43067320552831034,
+        "precision": 0.30647208121827413,
+        "recall": 0.7241379310344828,
+        "exact_nonempty_boards": 0
+      },
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "sweep_verdict": "uninformative",
+      "placement_cells": 3.0612423618634543
+    },
+    "cosine": {
+      "study": "m3-occsched-cosine-r1",
+      "lr_final": 0.0001,
+      "rates": {
+        "steps": 256,
+        "distinct": 256,
+        "first": 0.001,
+        "last": 0.0001
+      },
+      "weights_sha256": "28fcd85bbafe9d4f9c305c9e669f0163331bb1f8ba413721e75c7af4d89fad53",
+      "catalogue_sha256": "983487e1627af6d6e0b5c683dfd3e78816df00125fcd62ee70c17f459b49dd01",
+      "elapsed_seconds": 519.886993199998,
+      "peak_commit_bytes": 1071558656,
+      "parameters": null,
+      "auc": 0.8863906785711138,
+      "per_cell_f1_at_zero": 0.4357142857142857,
+      "operating_counts_at_zero": {
+        "true_positive": 610,
+        "false_positive": 1523,
+        "false_negative": 57
+      },
+      "best": {
+        "threshold": 1.95,
+        "f1": 0.5173333333333334,
+        "precision": 0.4657863145258103,
+        "recall": 0.5817091454272864,
+        "exact_nonempty_boards": 1
+      },
+      "exact_boards_at_best": {
+        "nonempty": 1,
+        "empty": 5
+      },
+      "sweep_verdict": "uninformative",
+      "placement_cells": 1.840850250588523
+    }
+  },
+  "matched_start": {
+    "initial_weights_sha256": "75da6eed0641f77c79825347b1cc66e026191db6cd368a551f8cf3bb3de2877d",
+    "seed": 20261026,
+    "step_one_identical": {
+      "step": true,
+      "sample_id": true,
+      "loss": true,
+      "gradient_norm": true
+    },
+    "step_one": {
+      "constant": {
+        "sample_id": "training-20261026-v0",
+        "loss": 21.661853790283203,
+        "gradient_norm": 118.76824951171875,
+        "learning_rate": 0.001
+      },
+      "cosine": {
+        "sample_id": "training-20261026-v0",
+        "loss": 21.661853790283203,
+        "gradient_norm": 118.76824951171875,
+        "learning_rate": 0.001
+      }
+    }
+  },
+  "attribution": {
+    "per_cell_f1_delta": 0.005041,
+    "placement_change": -0.398659,
+    "fit_gate_opened": false
+  },
+  "gates": {
+    "attribution": false,
+    "ranking_auc_bar": 0.9,
+    "ranking_f1_bar": 0.7,
+    "fit_gate": {
+      "constant": {
+        "threshold": 0.0,
+        "exact_nonempty_boards": 0,
+        "opens": false
+      },
+      "cosine": {
+        "threshold": 0.0,
+        "exact_nonempty_boards": 0,
+        "opens": false
+      }
+    },
+    "conditions": {
+      "attribution": false,
+      "placement": true,
+      "fit_gate": false
+    }
+  },
+  "verdict": "null",
+  "problems": [],
+  "limits": [
+    "One seed, synthetic training fit, committed lattice; no real-image or complete-state claim.",
+    "Pairwise attribution stands: both arms share the clip regime V-086 measured.",
+    "Placement is the trainer's own mean geometry error over the development probe population."
+  ]
+}

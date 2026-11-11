@@ -1,0 +1,38 @@
+{"pool": 256, "seconds": 8.4}
+{"pool_seconds": 8.4, "device": "cuda"}
+C:\Users\micha\Code\tetris-state-vision\runs\gpu_fit_test.py:276: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  return float(loss)
+{"step": 30, "loss": 10.1852, "s_per_step": 0.6642, "gpu_alloc_mb": 143}
+{"step": 40, "loss": 9.6326, "s_per_step": 0.6043, "gpu_alloc_mb": 144}
+{"step": 50, "loss": 8.831, "s_per_step": 0.6485, "gpu_alloc_mb": 143}
+{"step": 60, "loss": 8.351, "s_per_step": 0.5925, "gpu_alloc_mb": 143}
+{"step": 70, "loss": 8.5226, "s_per_step": 0.6324, "gpu_alloc_mb": 143}
+{"step": 80, "loss": 8.2509, "s_per_step": 0.6127, "gpu_alloc_mb": 143}
+{"step": 90, "loss": 12.532, "s_per_step": 0.6239, "gpu_alloc_mb": 143}
+{"step": 100, "loss": 8.9838, "s_per_step": 0.659, "gpu_alloc_mb": 144}
+{"step": 110, "loss": 7.8623, "s_per_step": 0.6118, "gpu_alloc_mb": 143}
+{"step": 120, "loss": 9.667, "s_per_step": 0.6734, "gpu_alloc_mb": 143}
+{"step": 130, "loss": 8.0545, "s_per_step": 0.5915, "gpu_alloc_mb": 143}
+{"step": 140, "loss": 5.8727, "s_per_step": 0.6258, "gpu_alloc_mb": 143}
+{"step": 150, "loss": 10.3924, "s_per_step": 0.6061, "gpu_alloc_mb": 143}
+{"step": 160, "loss": 7.7227, "s_per_step": 0.5902, "gpu_alloc_mb": 143}
+{"step": 170, "loss": 7.8078, "s_per_step": 0.6342, "gpu_alloc_mb": 143}
+{"step": 180, "loss": 7.9998, "s_per_step": 0.6679, "gpu_alloc_mb": 143}
+{"step": 190, "loss": 10.8842, "s_per_step": 0.584, "gpu_alloc_mb": 143}
+{"step": 200, "loss": 7.1914, "s_per_step": 0.6039, "gpu_alloc_mb": 144}
+{"step": 210, "loss": 10.7627, "s_per_step": 0.63, "gpu_alloc_mb": 144}
+{"step": 220, "loss": 6.9372, "s_per_step": 0.6038, "gpu_alloc_mb": 143}
+{
+  "status": "passed",
+  "seconds_per_step": 0.6313117050002256,
+  "final_loss": 7.847993278503418,
+  "accelerator_memory": {
+    "max_allocated_bytes": 1868885504,
+    "max_reserved_bytes": 3084910592,
+    "declared_limit_bytes": 6442450944,
+    "within_declared_envelope": true
+  }
+}
+train zero 0 0 f1 0.5722 best 2.7 0.6634 0 2 geom 0.7791
+development zero 0 0 f1 0.6338 best 3.0 0.7349 0 0 geom 1.0572

@@ -96,11 +96,16 @@ def arguments(argv=None):
     parser.add_argument("--curriculum", choices=("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1"), default="stream-v1")
     parser.add_argument("--capture-max-side", type=int, default=512,
                         help="model capture side;512 reproduces the published representation")
+    parser.add_argument("--trunk-dimension", type=int, default=192,
+                        help="declared decision-path width;192 is published;240 is the declared wider identity "
+                             "(heads 6 requires a multiple of 6, the config refuses anything else)")
     parser.add_argument("--accumulation-policy", choices=tuple(ACCUMULATION_POLICIES),
                         help="whole-group accumulation arm from the predeclared matched comparison")
     parser.add_argument("--steps", type=int, required=True)
     parser.add_argument("--seed", type=int, default=20261026)
     parser.add_argument("--learning-rate", type=float, default=.001)
+    parser.add_argument("--lr-final", type=float,
+                        help="optional cosine decay from --learning-rate to this rate across the segment's steps; absent keeps the published constant rate")
     parser.add_argument("--type-head-rate-factor", type=int, choices=(1, 4), default=1)
     parser.add_argument("--wall-seconds", type=float, default=300)
     parser.add_argument("--evaluate-every", type=int, default=128)
@@ -146,6 +151,10 @@ def arguments(argv=None):
         parser.error("initial weights define a fresh start; resume an existing run instead")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
         parser.error("wall budget (0,1800] and learning rate (0,.01] required")
+    if args.lr_final is not None and (not math.isfinite(args.lr_final) or not 0 < args.lr_final <= args.learning_rate):
+        parser.error("schedule end rate must be finite, positive and no greater than the learning rate")
+    if args.lr_final is not None and args.type_head_rate_factor != 1:
+        parser.error("the learning-rate schedule is declared on the published single-group optimiser")
     if not 1 <= args.evaluate_every <= 1024 or not 3 <= args.development_groups <= 12:
         parser.error("evaluation interval 1..1024 and development groups 3..12 required")
     if not 1 <= args.checkpoint_every <= 1024 or args.max_new_steps is not None and not 1 <= args.max_new_steps <= 4096:
@@ -314,6 +323,26 @@ def equal_tree(left, right):
     return type(left) is type(right) and left == right
 
 
+def cosine_rate(start, final, step, total):
+    """Cosine-decayed learning rate for one step of a `total`-step segment.
+
+    Declared by `docs/M3_OPTIMISER_SCHEDULE.md`: step 1 is exactly `start`, step `total`
+    is exactly `final`, and the curve is non-increasing between them. The endpoints are
+    returned literally rather than evaluated, so neither end of the schedule depends on
+    floating-point cancellation in the cosine.
+    """
+    if not math.isfinite(start) or not math.isfinite(final) or not 0 < final <= start:
+        raise ValueError("schedule requires finite 0 < final <= start")
+    if type(step) is not int or type(total) is not int or total < 1 or not 1 <= step <= total:
+        raise ValueError("schedule step must lie inside 1..total")
+    if step == 1:
+        return float(start)
+    if step == total:
+        return float(final)
+    progress = (step-1)/(total-1)
+    return float(final+(start-final)*.5*(1+math.cos(math.pi*progress)))
+
+
 def make_optimizer(model, learning_rate, factor):
     """Keep the original single group by default; isolate exactly the type head otherwise."""
     import torch
@@ -429,6 +458,12 @@ def run_accumulation_loop(*, run, policy, contract, model, optimizer, updates_to
     return {"state": state, "pointer": pointer, "snapshotted_images": snapshotted}
 
 
+def fit_correct(semantic, target):
+    """Per-cell semantic correctness over the labelled board, sized by the target."""
+    from board_window import visible_board_for_target
+    return visible_board_for_target(semantic, target, "semantic").argmax(-1) == target["semantic"]
+
+
 def main(argv=None, *, _archive=None, _started=None):
     args = arguments(argv)
     ceiling = require_bounded_job()
@@ -474,7 +509,7 @@ def main(argv=None, *, _archive=None, _started=None):
     from tetris_vision.checkpoint import file_digest, load_checkpoint, save_checkpoint
     from tetris_vision.dataset import source_digest
     from tetris_vision.losses import PIECE_NAMES, diagnostic_metrics, joint_loss, targets_for
-    from tetris_vision.model import ModelConfig, TetrisStateNet
+    from tetris_vision.model import ModelConfig, TetrisStateNet, architecture_name
     from tetris_vision.preprocess import prepare_image
     import tetris_vision.model as model_module
     if (not Path(model_module.__file__).resolve().is_relative_to(code) or
@@ -499,7 +534,8 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_resolution=args.occupancy_resolution,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
-                     lattice_board_refine=args.lattice_board_refine)
+                     lattice_board_refine=args.lattice_board_refine,
+                     dimension=args.trunk_dimension)
     config_json = json.loads(json.dumps(asdict(config)))
     accumulation = None
     if args.accumulation_policy is not None:
@@ -535,7 +571,7 @@ def main(argv=None, *, _archive=None, _started=None):
         source = owned_initial_source(args.init_weights_from, output=args.output)
         source_summary = json.loads((source/"summary.json").read_text())
         source_model, source_manifest = load_checkpoint(source/"checkpoint")
-        if (source_manifest["architecture"] != ("TetrisStateNet-M3" if args.component_capacity else "TetrisStateNet-M2") or
+        if (source_manifest["architecture"] != architecture_name(config) or
                 not compatible_config(source_manifest["config"], config_json,
                                       allow_absent=("occupancy_context", "occupancy_detail",
                                                     "occupancy_detail_stencil",
@@ -578,6 +614,7 @@ def main(argv=None, *, _archive=None, _started=None):
     capture_initial_tensors(model, initial_path)
     initial_sha256 = file_digest(initial_path)
     optimizer = make_optimizer(model, args.learning_rate, args.type_head_rate_factor)
+    scheduled_base_rates = tuple(group["lr"] for group in optimizer.param_groups)
     maximum_pixels, evaluation_identities = 0, {}
     warm_optimizer_backward = None
     recovery_profile_exact = False
@@ -632,7 +669,7 @@ def main(argv=None, *, _archive=None, _started=None):
                              **diagnostic_metrics(output, target)})
             if args.curriculum in FIT_POLICIES and split == "training":
                 typed = target["typed"]
-                correct = (output["final"]["semantic"][:, :20].argmax(-1) == target["semantic"]) & typed
+                correct = fit_correct(output["final"]["semantic"], target) & typed
                 per_case[-1].update(group_id=case.record["group_id"],
                                     fit_case={"semantic_known": int(typed.sum()), "semantic_correct": int(correct.sum()), "roles": fit_roles})
             if args.component_capacity:
@@ -674,6 +711,7 @@ def main(argv=None, *, _archive=None, _started=None):
                          "seed": args.seed, "learning_rate": args.learning_rate, "weight_decay": .01,
                          "steps": args.steps, "max_side": args.capture_max_side, "development_groups": args.development_groups,
                          "evaluate_every": args.evaluate_every, "checkpoint_every": args.checkpoint_every,
+                         "lr_final": args.lr_final,
                          "profile_square": args.profile_square, "threads": 1, "rng": "torch_cpu_only"}
     recovery_contract["native_cache_limits"] = NATIVE_CACHE_LIMITS
     recovery_contract["input_policy"] = "M3-final-capture-v1" if args.component_capacity else "M2-prepared-resize-v1"
@@ -817,6 +855,12 @@ def main(argv=None, *, _archive=None, _started=None):
             prepared, target = prepare(case)
             model.train()
             optimizer.zero_grad(set_to_none=True)
+            if args.lr_final is not None:
+                # The declared schedule lever: the rate is identical across the segment's
+                # own steps, so the two arms differ in nothing but this scalar.
+                rate = cosine_rate(args.learning_rate, args.lr_final, step, args.steps)
+                for group, base in zip(optimizer.param_groups, scheduled_base_rates):
+                    group["lr"] = base*rate/args.learning_rate
             if args.profile_square and step == 2:
                 parameters = [p for p in model.parameters() if p.requires_grad]
                 initialized = all(
@@ -844,7 +888,8 @@ def main(argv=None, *, _archive=None, _started=None):
             completed = step
             item = {"step": step, "sample_id": case.record["sample_id"], "loss": float(loss.detach()),
                     "terms": {key: float(value.detach()) for key, value in terms.items()},
-                    "gradient_norm": float(norm), "elapsed_seconds": time.monotonic()-started}
+                    "gradient_norm": float(norm), "learning_rate": float(optimizer.param_groups[0]["lr"]),
+                    "elapsed_seconds": time.monotonic()-started}
             curve.write(json.dumps(item, allow_nan=False)+"\n")
             ledger.write(json.dumps({"step": step, **case.record}, allow_nan=False)+"\n")
             curve.flush()

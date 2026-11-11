@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+from functools import lru_cache
 from pathlib import Path
 import re
 import shutil
@@ -16,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 # Owned, source-frozen finite runs. Acceleration arms keep their own family
 # because they are named for the predeclared policy, not for a stream study.
 OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-arm-[a-z0-9]+(?:-[a-z0-9]+)*"
-                               r"|m3-identity-factor-[a-z0-9-]{1,40}|m3-fit-[a-z0-9-]{1,40}"
+                               r"|m3-identity-factor-[a-z0-9-]{1,40}|m3-occsched-[a-z0-9-]{1,40}"
+                               r"|m3-fit-[a-z0-9-]{1,40}"
                                r"|m3-percell-[a-z0-9-]{1,40}|m3-sweep-[a-z0-9-]{1,40}"
                                r"|m3-occctx-[a-z0-9-]{1,40}|m3-occdetail-[a-z0-9-]{1,40}"
                                r"|m3-occdstencil-[a-z0-9-]{1,40}|m3-occres-[a-z0-9-]{1,40}"
@@ -24,7 +26,7 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m3-occscale-[a-z0-9-]{1,40}|m3-occgeom-[a-z0-9-]{1,40}"
                                r"|m3-occextent-[a-z0-9-]{1,40}"
                                r"|m3-occgeocap-[a-z0-9-]{1,40}|m3-occlatres-[a-z0-9-]{1,40}|m3-occlatfree-[a-z0-9-]{1,40}|m3-occbref-[a-z0-9-]{1,40}|m3-occfit-[a-z0-9-]{1,40}"
-                               r"|m3-occorigin-[a-z0-9-]{1,40})")
+                               r"|m3-occorigin-[a-z0-9-]{1,40}|m3-trunkwidth-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):
@@ -51,6 +53,32 @@ def validate_completion(summary, job, *, allow_partial=False):
     return partial
 
 
+@lru_cache(maxsize=1)
+def working_tree_model():
+    """The present repository's model module, loaded by path under a private package name.
+
+    Architecture identity must not depend on `sys.path` order: replay instruments insert a run's frozen
+    archive ahead of the working tree, and that archive may predate the derived-name helper. Loading the
+    current package from `src/` under its own name makes the identity rule deterministic wherever this is
+    called, so a consumer never has to sequence its calls around the archive (V-090).
+    """
+    import importlib.util
+    package = ROOT/"src"/"tetris_vision"
+    name = "tetris_vision_identity"
+    if name not in sys.modules:
+        spec = importlib.util.spec_from_file_location(name, package/"__init__.py",
+                                                      submodule_search_locations=[str(package)])
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        try:
+            spec.loader.exec_module(module)
+        except BaseException:
+            sys.modules.pop(name, None)
+            raise
+    from tetris_vision_identity.model import ModelConfig, architecture_name
+    return ModelConfig, architecture_name
+
+
 def checkpoint_architecture(summary, manifest):
     """Bind the report's model identity to the actual checkpoint configuration."""
     if type(summary["config"].get("layer_evidence", False)) is not bool:
@@ -67,9 +95,19 @@ def checkpoint_architecture(summary, manifest):
                 manifest.get("metadata", {}).get("recovery_contract", {}).get("curriculum") != curriculum):
             raise ValueError("checkpoint curriculum identity differs")
     expected = "TetrisStateNet-M3" if capacity else "TetrisStateNet-M2"
-    if manifest["architecture"] != expected or manifest["config"] != summary["config"]:
+    # The declared trunk shape is part of the identity, derived from the verified config so a
+    # widened configuration is never reported under the published name.
+    ModelConfig, architecture_name = working_tree_model()
+    settings = dict(summary["config"])
+    derived = expected
+    if "widths" in settings:
+        # Only a config that records the trunk shape can name a trunk; legacy snippets that carry
+        # neither shape field keep the published identity they were written under.
+        settings["widths"] = tuple(settings["widths"])
+        derived = architecture_name(ModelConfig(**settings))
+    if not derived.startswith(expected) or manifest["architecture"] != derived or manifest["config"] != summary["config"]:
         raise ValueError("checkpoint architecture/configuration identity differs")
-    return expected
+    return derived
 
 
 def digest(path, maximum=64*1024**2):
@@ -342,3 +380,49 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+RECEIPT_KEYS = {
+    "supervisor_pid", "command", "memory_bytes", "wall_seconds", "work_items", "cpu_library_threads",
+    "child_executable", "job_name", "guard", "supervisor_script_sha256", "system_pressure_guard",
+    "system_at_admission", "system_pressure", "status", "exit_code", "elapsed_seconds", "child_pid",
+    "last_system_memory", "peak_job_commit_bytes",
+}
+
+
+def job_receipt_problems(receipt):
+    """Named problems with a supervisor receipt; empty only for a clean passed job."""
+    if type(receipt) is not dict:
+        return {"receipt": "object required"}
+    if set(receipt) != RECEIPT_KEYS:
+        return {"keys": "expected %s, got %s" % (sorted(RECEIPT_KEYS), sorted(receipt))}
+    problems = {}
+    if receipt["status"] != "passed":
+        problems["status"] = "status %r" % (receipt["status"],)
+    if (type(receipt["exit_code"]) is not int or isinstance(receipt["exit_code"], bool) or
+            receipt["exit_code"] != 0):
+        problems["exit_code"] = "exit_code %r" % (receipt["exit_code"],)
+    if type(receipt["elapsed_seconds"]) is not float or not receipt["elapsed_seconds"] > 0:
+        problems["elapsed_seconds"] = "elapsed_seconds %r" % (receipt["elapsed_seconds"],)
+    memory = receipt["memory_bytes"]
+    if type(memory) is not int or isinstance(memory, bool) or not 0 < memory <= 8*1024**3:
+        problems["memory_bytes"] = "memory_bytes %r" % (memory,)
+    peak = receipt["peak_job_commit_bytes"]
+    if type(peak) is not int or isinstance(peak, bool) or not 0 < peak <= memory:
+        problems["peak_job_commit_bytes"] = "peak %r against ceiling %r" % (peak, memory)
+    command = receipt["command"]
+    if (type(command) is not list or len(command) < 2 or
+            not all(type(part) is str for part in command) or "unittest" not in command or
+            "discover" not in command):
+        problems["command"] = "command %r" % (command,)
+    threads = receipt["cpu_library_threads"]
+    if type(threads) is not dict or not threads or any(value != "1" for value in threads.values()):
+        problems["cpu_library_threads"] = "thread policy %r" % (threads,)
+    pressure = receipt["system_pressure"]
+    if type(pressure) is not dict or pressure.get("reason") is not None:
+        problems["system_pressure"] = "pressure reason %r" % (pressure,)
+    if type(receipt["work_items"]) is not int or receipt["work_items"] <= 0:
+        problems["work_items"] = "work_items %r" % (receipt["work_items"],)
+    if type(receipt["wall_seconds"]) is not float or not receipt["wall_seconds"] > 0:
+        problems["wall_seconds"] = "wall_seconds %r" % (receipt["wall_seconds"],)
+    return problems

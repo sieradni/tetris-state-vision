@@ -317,7 +317,8 @@ def component_loss(output, target, identity_factor=1, endpoint_term="joint"):
             if (not torch.is_tensor(distribution) or distribution.shape != (output["queue_tokens"].shape[0], capacity+1) or
                     not distribution.is_floating_point() or not bool(torch.isfinite(distribution).all()) or
                     not bool(torch.allclose(distribution.exp().sum(-1),
-                                            torch.ones(distribution.shape[0], dtype=distribution.dtype), atol=1e-4))):
+                                            torch.ones(distribution.shape[0], dtype=distribution.dtype,
+                                                       device=distribution.device), atol=1e-4))):
                 raise ValueError("length objective needs one finite length distribution per case")
             # The queue length is the observed endpoint index when the end is seen, else
             # the known piece count; one decision per case instead of 63 position questions.

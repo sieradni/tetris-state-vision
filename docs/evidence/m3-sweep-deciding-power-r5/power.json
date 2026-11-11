@@ -1,0 +1,80 @@
+{
+  "status": "passed",
+  "run": "m3-occbref-baseline-r1",
+  "deciding_split": "training",
+  "population": {
+    "images": 36,
+    "nonempty_images": 28,
+    "empty_images": 8,
+    "ancestry_groups": 12,
+    "occupied_cells": 667,
+    "empty_cells": 6533,
+    "known_cells": 7200,
+    "positive_rate": 0.092639,
+    "nonempty_share": 0.777778
+  },
+  "auc": {
+    "value": 0.8255386800822172,
+    "chance": 0.5,
+    "chance_standard_error": 0.011735,
+    "vs_chance_z": 27.741,
+    "hanley_mcneil": {
+      "auc": 0.825539,
+      "standard_error": 0.010047,
+      "low": 0.805848,
+      "high": 0.84523,
+      "positives": 667,
+      "negatives": 6533
+    },
+    "auc_bar": 0.9,
+    "gap_to_bar": 0.074461,
+    "bar_distance_standard_errors": 7.411,
+    "ci_high_below_bar": true,
+    "minimum_resolvable_gap": 0.019692
+  },
+  "operating_point": {
+    "threshold": -0.3,
+    "f1": 0.4237196765498652,
+    "f1_bar": 0.7,
+    "gap_to_bar": 0.27628,
+    "precision_recall_intervals": {
+      "precision": {
+        "successes": 393,
+        "trials": 1188,
+        "estimate": 0.330808,
+        "low": 0.304636,
+        "high": 0.358071
+      },
+      "recall": {
+        "successes": 393,
+        "trials": 667,
+        "estimate": 0.589205,
+        "low": 0.551462,
+        "high": 0.625927
+      }
+    }
+  },
+  "grid": {
+    "low": -6.0,
+    "high": 6.0,
+    "step": 0.15,
+    "count": 81,
+    "best_threshold": -0.3,
+    "best_is_interior": true,
+    "best_matches_swept_maximum": true,
+    "f1_at_low_edge": 0.27248514648637573,
+    "f1_at_high_edge": 0.0,
+    "f1_change_at_one_step": 0.005089,
+    "f1_range_across_grid": 0.42372
+  },
+  "verdict": {
+    "recorded": "uninformative",
+    "rule": "informative iff pooled AUC >= 0.90 and some swept point reaches F1 >= 0.70",
+    "real_finding": true,
+    "interpretation": "uninformative is a measured miss, not an artifact: the deciding population has 36 images in 12 ancestry groups and 7,200 known cells (667 occupied, 9.3%), which resolves a pooled AUC to +/-0.020 at 95%; the 0.90 bar sits 7.4 standard errors above the observed 0.8255 with the upper bound 0.8452 below it, the best swept F1 0.4237 is 0.276 short of its 0.70 bar, and the optimum threshold -0.30 is interior with an F1 range of 0.4237 across the grid."
+  },
+  "sources": {
+    "result": "dfbd35c564eb9308898c4d03b73364cb1d63cdaba6da7a9ef7e646cec841a06d",
+    "script": "46978ab6d772c8646413eae80479b9e175d6435924d7fc49fede2e76f417c803"
+  }
+}

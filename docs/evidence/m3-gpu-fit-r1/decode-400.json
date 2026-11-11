@@ -1,0 +1,206 @@
+{
+  "instrument": "m3-gpu-fit-r1-decode",
+  "decode": "single-cell morphological repair",
+  "rule": "remove occupied cells with no occupied 4-neighbour; fill empty cells with >=3 occupied 4-neighbours; one pass; never reads the target",
+  "splits": {
+    "training": {
+      "cases": 36,
+      "nonempty": 28,
+      "empty": 8,
+      "best_threshold": 2.7,
+      "best_threshold_f1": 0.6587,
+      "at_zero": {
+        "before": {
+          "threshold": 0.0,
+          "tp": 662,
+          "fp": 1018,
+          "fn": 5,
+          "tn": 5515,
+          "f1": 0.5641244141457179,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 28.416666666666668
+        },
+        "after_morphological": {
+          "threshold": 0.0,
+          "tp": 662,
+          "fp": 1007,
+          "fn": 5,
+          "tn": 5526,
+          "f1": 0.5667808219178082,
+          "exact_nonempty": 0,
+          "exact_empty": 2,
+          "mean_wrong_cells": 28.11111111111111
+        },
+        "after_snap": {
+          "threshold": 0.0,
+          "tp": 657,
+          "fp": 1023,
+          "fn": 10,
+          "tn": 5510,
+          "f1": 0.5598636557307201,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 28.694444444444443
+        },
+        "after_snap_then_morphological": {
+          "threshold": 0.0,
+          "tp": 657,
+          "fp": 1012,
+          "fn": 10,
+          "tn": 5521,
+          "f1": 0.5625,
+          "exact_nonempty": 0,
+          "exact_empty": 2,
+          "mean_wrong_cells": 28.38888888888889
+        }
+      },
+      "at_best": {
+        "before": {
+          "threshold": 2.7,
+          "tp": 603,
+          "fp": 561,
+          "fn": 64,
+          "tn": 5972,
+          "f1": 0.6586564718732933,
+          "exact_nonempty": 0,
+          "exact_empty": 2,
+          "mean_wrong_cells": 17.36111111111111
+        },
+        "after_morphological": {
+          "threshold": 2.7,
+          "tp": 621,
+          "fp": 579,
+          "fn": 46,
+          "tn": 5954,
+          "f1": 0.6652383502945902,
+          "exact_nonempty": 0,
+          "exact_empty": 4,
+          "mean_wrong_cells": 17.36111111111111
+        },
+        "after_snap": {
+          "threshold": 2.7,
+          "tp": 598,
+          "fp": 566,
+          "fn": 69,
+          "tn": 5967,
+          "f1": 0.6531949754232659,
+          "exact_nonempty": 0,
+          "exact_empty": 2,
+          "mean_wrong_cells": 17.63888888888889
+        },
+        "after_snap_then_morphological": {
+          "threshold": 2.7,
+          "tp": 617,
+          "fp": 583,
+          "fn": 50,
+          "tn": 5950,
+          "f1": 0.660953401178361,
+          "exact_nonempty": 0,
+          "exact_empty": 4,
+          "mean_wrong_cells": 17.583333333333332
+        }
+      }
+    },
+    "development": {
+      "cases": 18,
+      "nonempty": 14,
+      "empty": 4,
+      "best_threshold": 3.0,
+      "best_threshold_f1": 0.7317,
+      "at_zero": {
+        "before": {
+          "threshold": 0.0,
+          "tp": 386,
+          "fp": 460,
+          "fn": 15,
+          "tn": 2739,
+          "f1": 0.6190858059342421,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 26.38888888888889
+        },
+        "after_morphological": {
+          "threshold": 0.0,
+          "tp": 386,
+          "fp": 451,
+          "fn": 15,
+          "tn": 2748,
+          "f1": 0.6235864297253635,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 25.88888888888889
+        },
+        "after_snap": {
+          "threshold": 0.0,
+          "tp": 386,
+          "fp": 460,
+          "fn": 15,
+          "tn": 2739,
+          "f1": 0.6190858059342421,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 26.38888888888889
+        },
+        "after_snap_then_morphological": {
+          "threshold": 0.0,
+          "tp": 386,
+          "fp": 451,
+          "fn": 15,
+          "tn": 2748,
+          "f1": 0.6235864297253635,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 25.88888888888889
+        }
+      },
+      "at_best": {
+        "before": {
+          "threshold": 3.0,
+          "tp": 334,
+          "fp": 178,
+          "fn": 67,
+          "tn": 3021,
+          "f1": 0.7316538882803945,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 13.61111111111111
+        },
+        "after_morphological": {
+          "threshold": 3.0,
+          "tp": 338,
+          "fp": 172,
+          "fn": 63,
+          "tn": 3027,
+          "f1": 0.7420417124039517,
+          "exact_nonempty": 0,
+          "exact_empty": 4,
+          "mean_wrong_cells": 13.055555555555555
+        },
+        "after_snap": {
+          "threshold": 3.0,
+          "tp": 331,
+          "fp": 181,
+          "fn": 70,
+          "tn": 3018,
+          "f1": 0.7250821467688938,
+          "exact_nonempty": 0,
+          "exact_empty": 0,
+          "mean_wrong_cells": 13.944444444444445
+        },
+        "after_snap_then_morphological": {
+          "threshold": 3.0,
+          "tp": 335,
+          "fp": 175,
+          "fn": 66,
+          "tn": 3024,
+          "f1": 0.7354555433589461,
+          "exact_nonempty": 0,
+          "exact_empty": 4,
+          "mean_wrong_cells": 13.38888888888889
+        }
+      }
+    }
+  },
+  "conclusion": "The repair recovers empty boards and nudges F1, but no nonempty board becomes exact on either split at either operating point."
+}

@@ -16,6 +16,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"src"))
 
 
+def reading_map(output, config):
+    """The per-cell logit map of the visible board, sized by the declared config."""
+    from board_window import visible_board
+    return visible_board(output["occupancy"], config, "occupancy")[0]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
@@ -62,7 +68,7 @@ def main():
             raise ValueError("intervention must retain all 200 visible known cells")
         with torch.no_grad():
             output = model(prepared.pixels[None], prepared.valid[None])["final"]
-        return output["occupancy"][0, :20], output["lattice"], target
+        return reading_map(output, model.config), output["lattice"], target
 
     for record in records:
         scene = sample_scene(record["seed"], record["density"], varied=True)

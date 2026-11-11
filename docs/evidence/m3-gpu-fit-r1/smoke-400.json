@@ -1,0 +1,199 @@
+{
+  "status": "passed",
+  "instrument": "m3-gpu-fit-r1-smoke",
+  "scope": "Pipeline validation arm: fixed pool of 256 drawings, batch 4, 400 optimizer steps on CUDA, prices the decisive under-sampling test at 1.0x the campaign's largest lever budget (384 steps) before the 20,000-step chain. Training-fit and development probes only.",
+  "accelerator": {
+    "device_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "capability": [
+      8,
+      9
+    ],
+    "total_memory_bytes": 8585216000,
+    "declared_limit_gib": 6.0,
+    "torch_version": "2.14.1+cu126",
+    "cuda_version": "12.6"
+  },
+  "accelerator_memory": {
+    "max_allocated_bytes": 1868885504,
+    "max_reserved_bytes": 3084910592,
+    "declared_limit_bytes": 6442450944,
+    "within_declared_envelope": true
+  },
+  "recipe": {
+    "pool": 256,
+    "batch": 4,
+    "lr": 0.001,
+    "curriculum": "stream-v1",
+    "component_capacity": 64,
+    "max_side": 512,
+    "endpoint_term": "length",
+    "occupancy_factor": 4,
+    "positive_weight": 4,
+    "clip": 1.0,
+    "optimizer": "Adam",
+    "init": {
+      "checkpoint": "runs/m3-percell-balance-r1/checkpoint",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d"
+    }
+  },
+  "steps_total": 400,
+  "seconds_per_step": 0.6313117050002256,
+  "pool_seconds": 8.423085499998706,
+  "final_loss": 7.847993278503418,
+  "prior": {
+    "prevalence": 0.1354,
+    "bias_before": 0.029182935133576393,
+    "bias_after": -1.8540336117553569,
+    "note": "logit 0.0 is now the prior's 0.5 decision point"
+  },
+  "train": {
+    "boards": 36,
+    "nonempty": 28,
+    "empty": 8,
+    "at_zero": {
+      "threshold": 0.0,
+      "true_positive": 662,
+      "false_positive": 985,
+      "false_negative": 5,
+      "true_negative": 3948,
+      "precision": 0.4019429265330905,
+      "recall": 0.992503748125937,
+      "f1": 0.5721694036300777,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 0
+    },
+    "best": {
+      "threshold": 2.7,
+      "true_positive": 603,
+      "false_positive": 548,
+      "false_negative": 64,
+      "true_negative": 4385,
+      "precision": 0.523892267593397,
+      "recall": 0.904047976011994,
+      "f1": 0.6633663366336634,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 2
+    },
+    "exact_nonempty_at_best": 0,
+    "exact_empty_at_best": 2,
+    "f1_at_zero": 0.5721694036300777,
+    "placement": {
+      "images": 28,
+      "cells": 5600,
+      "mean_abs_offset_cells": 0.7790501241071428,
+      "mean_board_error_cells": 0.7790501241071429,
+      "signed_column_offset_cells": -0.03929049285714286,
+      "signed_row_offset_cells": 0.4417258339285714,
+      "mean_scale_ratio_u": 1.0182794937135748,
+      "mean_scale_ratio_v": 1.043198452925967,
+      "board_error_spread_cells": 1.4264344,
+      "board_error_min_cells": 0.22731085,
+      "board_error_max_cells": 1.65374525,
+      "shifted_share": 0.7314285714285714,
+      "mapped_share": 0.8544642857142857,
+      "per_board_error_cells": [
+        0.946081,
+        0.966514,
+        1.026015,
+        1.025867,
+        0.804509,
+        0.817066,
+        0.79593,
+        1.292524,
+        0.696373,
+        0.690304,
+        0.68643,
+        0.566897,
+        0.561886,
+        0.562204,
+        1.537121,
+        0.227311,
+        0.283493,
+        0.237719,
+        0.408747,
+        0.405592,
+        0.408398,
+        1.653745,
+        0.681513,
+        0.560631,
+        0.74401,
+        1.012378,
+        1.108282,
+        1.105863
+      ]
+    }
+  },
+  "development": {
+    "boards": 18,
+    "nonempty": 14,
+    "empty": 4,
+    "at_zero": {
+      "threshold": 0.0,
+      "true_positive": 386,
+      "false_positive": 431,
+      "false_negative": 15,
+      "true_negative": 1968,
+      "precision": 0.4724602203182375,
+      "recall": 0.9625935162094763,
+      "f1": 0.6338259441707718,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 0
+    },
+    "best": {
+      "threshold": 3.0,
+      "true_positive": 334,
+      "false_positive": 174,
+      "false_negative": 67,
+      "true_negative": 2225,
+      "precision": 0.65748031496063,
+      "recall": 0.8329177057356608,
+      "f1": 0.7348734873487349,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 0
+    },
+    "exact_nonempty_at_best": 0,
+    "exact_empty_at_best": 0,
+    "f1_at_zero": 0.6338259441707718,
+    "placement": {
+      "images": 14,
+      "cells": 2800,
+      "mean_abs_offset_cells": 1.0571725,
+      "mean_board_error_cells": 1.0571724999999998,
+      "signed_column_offset_cells": 0.14332296428571428,
+      "signed_row_offset_cells": 0.9490042642857144,
+      "mean_scale_ratio_u": 0.9743306812514005,
+      "mean_scale_ratio_v": 1.0235667263696098,
+      "board_error_spread_cells": 1.308433275,
+      "board_error_min_cells": 0.3901302,
+      "board_error_max_cells": 1.698563475,
+      "shifted_share": 0.7782142857142857,
+      "mapped_share": 0.8682142857142857,
+      "per_board_error_cells": [
+        1.243779,
+        1.453452,
+        1.698563,
+        1.393425,
+        1.159346,
+        1.155987,
+        1.16173,
+        1.409551,
+        0.927094,
+        1.128214,
+        0.893771,
+        0.395167,
+        0.39013,
+        0.390205
+      ]
+    }
+  },
+  "comparison": {
+    "budget_arm_384_steps": {
+      "f1_at_zero": 0.2808,
+      "best_f1": 0.5459,
+      "best_threshold": 4.35,
+      "placement_cells": 1.8419,
+      "exact_nonempty": 0
+    },
+    "note": "Same architecture and gate, 400 steps instead of 384, fixed pool and corrected prior: F1 and placement move, exactness does not."
+  }
+}

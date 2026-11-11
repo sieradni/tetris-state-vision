@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "arms": [
+    "m3-occsched-constant-r1",
+    "m3-occsched-cosine-r1"
+  ],
+  "weights_sha256": {
+    "m3-occsched-constant-r1": "5d52b3f14c71bda436b15a56185f87ec084caf5f4fa87ec6111f6fb6f88f6214",
+    "m3-occsched-cosine-r1": "28fcd85bbafe9d4f9c305c9e669f0163331bb1f8ba413721e75c7af4d89fad53"
+  },
+  "population": {
+    "training_groups": 12,
+    "training_cases": 36,
+    "development_cases": 18,
+    "nonempty_deciding_boards": 28
+  },
+  "members": {
+    "m3-occsched-constant-r1": {
+      "auc": 0.8457164079626516,
+      "f1_at_zero": 0.43067320552831034,
+      "best": {
+        "threshold": 0.0,
+        "true_positive": 483,
+        "false_positive": 1093,
+        "false_negative": 184,
+        "true_negative": 3840,
+        "exact_nonempty_boards": 0,
+        "exact_empty_boards": 0,
+        "precision": 0.30647208121827413,
+        "recall": 0.7241379310344828,
+        "f1": 0.43067320552831034
+      },
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      }
+    },
+    "m3-occsched-cosine-r1": {
+      "auc": 0.8863906785711138,
+      "f1_at_zero": 0.4357142857142857,
+      "best": {
+        "threshold": 1.95,
+        "true_positive": 388,
+        "false_positive": 445,
+        "false_negative": 279,
+        "true_negative": 4488,
+        "exact_nonempty_boards": 1,
+        "exact_empty_boards": 5,
+        "precision": 0.4657863145258103,
+        "recall": 0.5817091454272864,
+        "f1": 0.5173333333333334
+      },
+      "exact_boards_at_best": {
+        "nonempty": 1,
+        "empty": 5
+      }
+    }
+  },
+  "ensemble": {
+    "auc": 0.8871656812988195,
+    "f1_at_zero": 0.46165762974438423,
+    "best": {
+      "threshold": 1.05,
+      "true_positive": 394,
+      "false_positive": 492,
+      "false_negative": 273,
+      "true_negative": 4441,
+      "exact_nonempty_boards": 0,
+      "exact_empty_boards": 6,
+      "precision": 0.44469525959367945,
+      "recall": 0.5907046476761619,
+      "f1": 0.5074050225370251
+    },
+    "exact_boards_at_best": {
+      "nonempty": 0,
+      "empty": 6
+    },
+    "development": {
+      "auc": 0.9671506935038394,
+      "best": {
+        "threshold": 1.35,
+        "true_positive": 348,
+        "false_positive": 153,
+        "false_negative": 53,
+        "true_negative": 2246,
+        "exact_nonempty_boards": 0,
+        "exact_empty_boards": 4,
+        "precision": 0.6946107784431138,
+        "recall": 0.8678304239401496,
+        "f1": 0.7716186252771619
+      }
+    }
+  },
+  "agreement_at_zero": {
+    "both_right": 462,
+    "control_only": 21,
+    "lever_only": 148,
+    "both_wrong": 36,
+    "empty_both_right": 4330
+  },
+  "verdict": {
+    "label": "bias_limited",
+    "ensemble_best_f1": 0.5074050225370251,
+    "ensemble_auc": 0.8871656812988195,
+    "member_best_f1": 0.5173333333333334,
+    "best_delta": -0.009928310796308293,
+    "f1_at_zero_delta": 0.025943344030098514,
+    "auc_bar": 0.9,
+    "f1_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "grid": {
+    "low": -6.0,
+    "high": 6.0,
+    "step": 0.15,
+    "count": 81
+  },
+  "forwards": 108,
+  "job_ceiling_bytes": 671088640,
+  "sources": {
+    "scripts/ensemble_headroom.py": "6bca78c679a95cc4d8cdca0eadecfd75d92580b2f03c3fbb5a7a026455309157",
+    "scripts/occupancy_sweep.py": "3cc92d7c54617e217ff51352d4be232d50ab8e2b0dd5b69d249d11f321166bdd",
+    "scripts/record_stream_run.py": "e725f36b3e104e1621dc147dce0b31536ed861b8d333062c321278f7cf2e976b",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/probe_population.py": "fa10ec11348c22df8bf6266b87858bb65372c961e84bc5de62975ae8dee26d8e"
+  },
+  "scope": "Read-only bias-versus-variance read of two committed checkpoints differing only in schedule; unweighted mean logit; no training, no weight change, no new parameter, no gate or complete-state claim, and the rule was predeclared before this receipt existed."
+}

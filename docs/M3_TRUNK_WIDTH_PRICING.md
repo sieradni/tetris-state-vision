@@ -101,3 +101,30 @@ occupancy campaign, at the price of leaving the fit gate FALSE with no ranked su
 
 Limits unchanged either way: synthetic training fit, one seed, committed lattice, no real-image, generalization or
 complete-state claim, and no change to the default configuration, the published checkpoint or the lever table.
+
+## Authorization recorded, and what it changed (2026-11-11)
+
+The owner authorized **all structural and wider changes**. Option A is therefore no longer a user decision awaiting
+approval; it is an executable lever, predeclared in [M3_TRUNK_WIDTH_LEVER.md](M3_TRUNK_WIDTH_LEVER.md). Two design
+consequences follow from the measurement above and from the headroom result, and both are recorded there rather
+than left implicit:
+
+1. The priced wide A widens the **encoder** and leaves `dimension`, the six decoder blocks and the occupancy head
+   untouched - it adds no decision capacity, which is where the `bias_limited` evidence localises the residual. The
+declared lever is therefore `dimension` 192 -> 240 with the published widths, one knob on the decision path.
+2. The contractual "matched-start policy for shape-changed tensors" **cannot be exact here**: `GroupNorm(8, c)`
+   statistics change under partial channel duplication, and uniform 2x duplication exceeds the 256-channel cap. The
+   lever is a fresh-baseline pair with an explicitly incomparable record instead of a claimed matched start.
+
+## What the headroom read adds to this fork (2026-11-11)
+
+[M3_DECIDING_HEADROOM.md](M3_DECIDING_HEADROOM.md) supplies the benefit-side number these pricing passes could not:
+averaging two committed trajectories of the identical architecture, differing only in schedule, gives pooled AUC
+0.8872 and best swept F1 0.5074 on the 28 deciding boards - **-0.0099** against the better
+member alone, so **`bias_limited`**. Trajectory variance is real (the two arms disagree on 169 of
+667 occupied cells) and still does not buy separation.
+
+So the cheap alternative to a new identity - ensemble more runs, keep the architecture, spend the budget on
+optimisation instead of width - is measured out at this pair. Option A remains the only ranked suspect, and this
+does not make it likely to pass: it only means no non-structural route is left. Option B's "no ranked suspect"
+wording should now read "no ranked suspect except the architectural one".
