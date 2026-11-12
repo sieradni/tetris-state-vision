@@ -1,0 +1,215 @@
+{
+  "status": "passed",
+  "instrument": "m5-row-error-r1",
+  "predeclaration": "docs/M6_ROW_OFFSET.md",
+  "scope": "Read-only re-analysis of four frozen sweeps: for every column of every deciding board, the top-most decided row against the top-most occupied row, in rows, bottom-first. Positive means the decision claims a taller stack than the label. No training, no weight change, no decoded state, no accuracy claim.",
+  "declared_receipt": "runs/m5-rowerror-curation-r2-job.json",
+  "declared_memory_bytes": 671088640,
+  "rule": {
+    "statistic": "mean of (decided top row - label top row), rows bottom-first",
+    "threshold": 0.0,
+    "floor_rows": 0.5,
+    "arms_named": [
+      "control",
+      "wide"
+    ],
+    "readings": [
+      "systematic-row-offset",
+      "row-offset-arm-specific",
+      "no-row-offset"
+    ]
+  },
+  "reading": "systematic-row-offset",
+  "reading_text": "Both the published read-out and the family's best arm decide the stack above its label row by at least half a row, in the same direction, so the bias is geometry: the read looks one place and decides about another.",
+  "arms": {
+    "control": {
+      "zero": {
+        "mean": 7.818792,
+        "median": 7,
+        "min": -2,
+        "max": 15,
+        "p10": 7,
+        "p90": 12,
+        "mean_absolute_deviation": 1.760281,
+        "exact_fraction": 0.013423,
+        "within_one_fraction": 0.040268,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 0,
+          "-2": 2,
+          "-1": 1,
+          "0": 2,
+          "1": 3,
+          "2": 1,
+          "3": 140
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "mean": 2.885906,
+        "median": 1,
+        "exact_fraction": 0.342282,
+        "within_one_fraction": 0.577181
+      },
+      "arm": {
+        "occupancy_deform": 0,
+        "occupancy_column": 0,
+        "occupancy_detail": 1,
+        "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+        "sweep": "m5-colread-control-r1",
+        "catalogue_sha256": null
+      }
+    },
+    "wide": {
+      "zero": {
+        "mean": 5.872483,
+        "median": 7,
+        "min": -8,
+        "max": 16,
+        "p10": 0,
+        "p90": 11,
+        "mean_absolute_deviation": 3.439485,
+        "exact_fraction": 0.09396,
+        "within_one_fraction": 0.194631,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 2,
+          "-2": 1,
+          "-1": 0,
+          "0": 14,
+          "1": 15,
+          "2": 11,
+          "3": 106
+        }
+      },
+      "best": {
+        "threshold": 1.95,
+        "mean": 0.716216,
+        "median": 0,
+        "exact_fraction": 0.513514,
+        "within_one_fraction": 0.817568
+      },
+      "arm": {
+        "occupancy_deform": 2,
+        "occupancy_column": 0,
+        "occupancy_detail": 1,
+        "weights_sha256": "338c79c55608dc38cca13ea3d0ff37d9c31b699d33a70704511d849dde13a5b0",
+        "sweep": "m5-colread-wide-r1",
+        "catalogue_sha256": null
+      }
+    },
+    "demean": {
+      "zero": {
+        "mean": 5.651007,
+        "median": 6,
+        "min": -11,
+        "max": 19,
+        "p10": 0,
+        "p90": 10,
+        "mean_absolute_deviation": 3.216342,
+        "exact_fraction": 0.09396,
+        "within_one_fraction": 0.208054,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 2,
+          "-2": 0,
+          "-1": 0,
+          "0": 14,
+          "1": 17,
+          "2": 4,
+          "3": 112
+        }
+      },
+      "best": {
+        "threshold": 0.6,
+        "mean": 1.973154,
+        "median": 1,
+        "exact_fraction": 0.362416,
+        "within_one_fraction": 0.637584
+      },
+      "arm": {
+        "occupancy_deform": 3,
+        "occupancy_column": 0,
+        "occupancy_detail": 1,
+        "weights_sha256": "99954d8cacb8aeda30b762408e87f9696ed818e17dd9f4f42101b9ec2235545d",
+        "sweep": "m5-colread-demean-r1",
+        "catalogue_sha256": null
+      }
+    },
+    "column": {
+      "zero": {
+        "mean": 6.832215,
+        "median": 7,
+        "min": -2,
+        "max": 14,
+        "p10": 1,
+        "p90": 10,
+        "mean_absolute_deviation": 2.196478,
+        "exact_fraction": 0.067114,
+        "within_one_fraction": 0.147651,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 0,
+          "-2": 2,
+          "-1": 1,
+          "0": 10,
+          "1": 11,
+          "2": 1,
+          "3": 124
+        }
+      },
+      "best": {
+        "threshold": 1.35,
+        "mean": 1.080537,
+        "median": 0,
+        "exact_fraction": 0.47651,
+        "within_one_fraction": 0.771812
+      },
+      "arm": {
+        "occupancy_deform": 0,
+        "occupancy_column": 1,
+        "occupancy_detail": 1,
+        "weights_sha256": "02d8917299630e968c13dab8b1dd236e1aed00906a1cc299d52805cc82bf9a3f",
+        "sweep": "m5-colread-column-r1",
+        "catalogue_sha256": null
+      }
+    }
+  },
+  "population": {
+    "split": "training",
+    "boards": 28,
+    "occupied_cells": 667,
+    "columns_per_board": 10,
+    "column_observations": 280
+  },
+  "provenance": {
+    "result": "runs/m5-rowerror-r1/result.json",
+    "receipt": "runs/m5-rowerror-r1-job.json",
+    "sweeps": {
+      "control": "runs/m5-colread-control-r1-sweep-r1/result.json",
+      "wide": "runs/m5-colread-wide-r1-sweep-r1/result.json",
+      "demean": "runs/m5-colread-demean-r1-sweep-r1/result.json",
+      "column": "runs/m5-colread-column-r1-sweep-r1/result.json"
+    }
+  }
+}
