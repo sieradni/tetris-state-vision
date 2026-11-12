@@ -525,6 +525,7 @@ class TetrisStateNet(nn.Module):
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
             occupancy_features = cells
             occupancy_deform_offsets = None
+            occupancy_applied_offsets = None
             if self.occupancy_detail_tap is not None:
                 offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
                            torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
@@ -553,6 +554,11 @@ class TetrisStateNet(nn.Module):
                     offsets = offsets+shift
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
                 sample = centers.flatten(2)
+                # The tap's offsets as applied, so a measurement can bind "what the arm wrote"
+                # to "what it sampled" instead of assuming them equal.
+                occupancy_applied_offsets = (offsets+torch.zeros(
+                    batch, rows*columns, 1, 2, device=pixels.device, dtype=pixels.dtype
+                )).reshape(batch, rows*columns, 2)
                 if self.occupancy_resolution_branch is not None:
                     fine = self.occupancy_resolution_branch((2*pixels-1)*valid)
                     fine = sample_features(fine, lattice, self.coordinates, torch.zeros(
@@ -583,6 +589,8 @@ class TetrisStateNet(nn.Module):
                            "pose_row": self.pose_row(layers), "sample_points": points, "sample_offsets": offsets})
             if occupancy_deform_offsets is not None:
                 stages[-1]["occupancy_deform_offsets"] = occupancy_deform_offsets
+            if occupancy_applied_offsets is not None:
+                stages[-1]["occupancy_applied_offsets"] = occupancy_applied_offsets
             if layer_cells is not None:
                 stages[-1]["layer_cells"] = layer_cells
             if self.components is not None:

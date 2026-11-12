@@ -31,11 +31,11 @@ def read(path):
 
 
 OBJECTIVE_DEFAULTS = {"identity_factor": 1, "endpoint_term": "joint", "occupancy_factor": 1,
-                      "positive_weight": 1}
+                      "positive_weight": 1, "occupancy_placed": 0}
 
 
 def objective_kwargs(parameters, *, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-                     positive_weight=1):
+                     positive_weight=1, occupancy_placed=0):
     """Bind the recorded objective to the frozen archive's own `joint_loss` signature.
 
     A run trained before a term existed has an archive whose loss has no such parameter.
@@ -44,7 +44,8 @@ def objective_kwargs(parameters, *, identity_factor=1, endpoint_term="joint", oc
     refused rather than silently dropped.
     """
     values = {"identity_factor": identity_factor, "endpoint_term": endpoint_term,
-              "occupancy_factor": occupancy_factor, "positive_weight": positive_weight}
+              "occupancy_factor": occupancy_factor, "positive_weight": positive_weight,
+              "occupancy_placed": occupancy_placed}
     bound = {}
     for name, value in values.items():
         if name in parameters:
@@ -184,11 +185,17 @@ def main():
     positive_weight = summary.get("arguments", {}).get("occupancy_positive_weight", 1)
     if type(positive_weight) is not int or positive_weight not in (1, 4):
         raise ValueError("recorded occupancy positive weight must be1 or4")
+    # Replay the recorded placed-target lever too: the term's contribution is part of the
+    # objective its own saved losses were produced under.
+    occupancy_placed = summary.get("arguments", {}).get("occupancy_placed", 0)
+    if type(occupancy_placed) is not int or occupancy_placed not in (0, 1):
+        raise ValueError("recorded occupancy placed must be0 or1")
     # Bind to the archive's own signature: an older frozen archive cannot execute a term that
     # did not exist when it was captured, and its recorded default is what must be replayed.
     loss_kwargs = objective_kwargs(inspect.signature(joint_loss).parameters,
                                    identity_factor=identity_factor, endpoint_term=endpoint_term,
-                                   occupancy_factor=occupancy_factor, positive_weight=positive_weight)
+                                   occupancy_factor=occupancy_factor, positive_weight=positive_weight,
+                                   occupancy_placed=occupancy_placed)
     if capacity:
         from tetris_vision.components import component_metrics
         require_frozen_callables(code, component_metrics)

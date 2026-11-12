@@ -8,7 +8,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
 
 import torch
 import tetris_vision.model as model_module
-from tetris_vision.losses import require_occupancy_deform
+from tetris_vision.losses import (OCCUPANCY_PLACED_WEIGHTS, PLACED_TARGET_WEIGHT, joint_loss,
+                                 placed_displacement_term, placed_target_displacement,
+                                 require_occupancy_deform, require_occupancy_placed, targets_for)
+from tetris_vision.preprocess import prepare_image
+from tetris_vision.render import render, sample_scene
 from tetris_vision.model import (DEFORM_DEMEAN_REACH, DEFORM_LIMIT, DEFORM_REACH, DEFORM_WIDE_LIMIT,
                                  ModelConfig, TetrisStateNet, deform_offsets)
 
@@ -461,6 +465,175 @@ class WidenedRecordTests(unittest.TestCase):
         self.assertIn(f"{100*self.scope['reach']['field']['lever']['at_bound_fraction']:.1f}%", self.text)
         for arm in self.scope["arms"].values():
             self.assertIn(f"{arm['study_peak_commit_bytes']:,}", self.text)
+
+
+class PlacedTargetTests(unittest.TestCase):
+    """The placed-target lever: supervise where the tap samples, not what it finds there."""
+
+    @staticmethod
+    def wide(seed=20261026):
+        torch.manual_seed(seed)
+        return TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2)).eval()
+
+    @staticmethod
+    def target(lattice, rows=20, columns=10, known=None):
+        return {"occupied": torch.zeros(1, rows, columns),
+                "known": (torch.ones(1, rows, columns, dtype=torch.bool) if known is None else known),
+                "lattice": lattice, "registered": torch.ones(1, dtype=torch.bool)}
+
+    def stage(self, model):
+        pixels, valid = inputs()
+        with torch.no_grad():
+            return model(pixels, valid)["final"]
+
+    def test_a_field_that_already_sits_on_the_target_costs_nothing(self):
+        stage = self.stage(self.wide())
+        lattice = stage["lattice"]
+        shifted = lattice.clone()
+        shifted[:, 0] = lattice[:, 0]+2*lattice[:, 1]
+        wanted = placed_target_displacement(lattice, shifted, 20, 10, DEFORM_REACH)
+        self.assertAlmostEqual(float(wanted[..., 0].mean()), 2.0, places=4)
+        self.assertAlmostEqual(float(wanted[..., 1].abs().max()), 0.0, places=5)
+        # The displacement is two cells along the column axis and nothing along the row axis, so a
+        # field that already sits there pays exactly nothing.
+        placed = torch.tensor([[2.0, 0.0]]).expand(1, 200, 2)
+        output = {"lattice": lattice, "occupancy_deform_offsets": placed}
+        self.assertAlmostEqual(float(placed_displacement_term(output, self.target(shifted))), 0.0,
+                               places=6)
+        behind = {"lattice": lattice, "occupancy_deform_offsets": torch.zeros(1, 200, 2)}
+        self.assertGreater(float(placed_displacement_term(behind, self.target(shifted))), .5)
+
+    def test_an_unreachable_target_is_clipped_to_the_arms_own_reach(self):
+        stage = self.stage(self.wide())
+        lattice = stage["lattice"]
+        far = lattice.clone()
+        far[:, 0] = lattice[:, 0]+6*lattice[:, 1]
+        wanted = placed_target_displacement(lattice, far, 20, 10, DEFORM_REACH)
+        self.assertAlmostEqual(float(wanted[..., 0].max()), DEFORM_REACH, places=5)
+        self.assertLessEqual(float(wanted.abs().max()), DEFORM_REACH)
+
+    def test_the_target_depends_on_where_the_cells_are_not_on_what_they_contain(self):
+        stage = self.stage(self.wide())
+        lattice = stage["lattice"]
+        shifted = lattice.clone()
+        shifted[:, 0] = lattice[:, 0]+1.5*lattice[:, 2]
+        output = {"lattice": lattice, "occupancy_deform_offsets": torch.zeros(1, 200, 2)}
+        target = self.target(shifted)
+        before = float(placed_displacement_term(output, target))
+        target["occupied"] = 1-target["occupied"]
+        self.assertEqual(float(placed_displacement_term(output, target)), before)
+
+    def test_unknown_cells_are_not_scored(self):
+        stage = self.stage(self.wide())
+        lattice = stage["lattice"]
+        shifted = lattice.clone()
+        shifted[:, 0] = lattice[:, 0]+2*lattice[:, 1]
+        output = {"lattice": lattice, "occupancy_deform_offsets": torch.zeros(1, 200, 2)}
+        known = torch.zeros(1, 20, 10, dtype=torch.bool)
+        self.assertEqual(float(placed_displacement_term(output, self.target(shifted, known=known))),
+                         0.0)
+        known[:, :, :5] = True
+        # A zero field against a two-cell column displacement: 1.5 on that axis, 0 on the other.
+        self.assertAlmostEqual(float(placed_displacement_term(
+            output, self.target(shifted, known=known))), .75, places=5)
+
+    def test_a_field_that_cannot_cover_the_board_is_refused(self):
+        stage = self.stage(self.wide())
+        with self.assertRaises(ValueError):
+            placed_displacement_term({"lattice": stage["lattice"],
+                                      "occupancy_deform_offsets": torch.zeros(1, 150, 2)},
+                                     self.target(stage["lattice"]))
+        with self.assertRaises(ValueError):
+            placed_displacement_term({"lattice": stage["lattice"],
+                                      "occupancy_deform_offsets": None},
+                                     self.target(stage["lattice"]))
+
+    def test_the_placed_target_is_not_supervised_and_the_field_is(self):
+        model = self.wide()
+        result = render(sample_scene(4))
+        prepared = prepare_image(result.image, max_side=383)
+        target = targets_for(result.state, prepared)
+        model.train()
+        output = model(prepared.pixels[None], prepared.valid[None])
+        term = placed_displacement_term(output["final"], target)
+        wanted = placed_target_displacement(output["final"]["lattice"], target["lattice"], 20, 10,
+                                            DEFORM_REACH)
+        # The box and the occupancy labels are inputs, never targets: no gradient reaches them.
+        self.assertFalse(wanted.requires_grad)
+        self.assertFalse(target["lattice"].requires_grad)
+        for parameter in (model.occupancy_deform.weight, model.occupancy_deform_coarse.weight):
+            gradient = torch.autograd.grad(term, parameter, retain_graph=True)[0]
+            self.assertGreater(float(gradient.abs().sum()), 0.0)
+
+    def test_the_term_is_absent_at_zero_and_priced_at_the_declared_weight(self):
+        model = self.wide()
+        result = render(sample_scene(4))
+        prepared = prepare_image(result.image, max_side=383)
+        target = targets_for(result.state, prepared)
+        with torch.no_grad():
+            output = model(prepared.pixels[None], prepared.valid[None])
+        off, terms_off = joint_loss(output, target, occupancy_placed=0)
+        on, terms_on = joint_loss(output, target, occupancy_placed=1)
+        self.assertNotIn("placed", terms_off)
+        self.assertGreater(float(terms_on["placed"]), 0.0)
+        self.assertAlmostEqual(float(on-off), PLACED_TARGET_WEIGHT*float(terms_on["placed"]),
+                               places=6)
+        self.assertEqual(PLACED_TARGET_WEIGHT, .25)
+        self.assertEqual(OCCUPANCY_PLACED_WEIGHTS, (0, 1))
+        from train_m2_stream import OCCUPANCY_PLACED_WEIGHTS as MIRROR
+        self.assertEqual(MIRROR, OCCUPANCY_PLACED_WEIGHTS)
+        require_occupancy_placed(0, {"arguments": {}, "recovery_contract": {}})
+        with self.assertRaises(ValueError):
+            require_occupancy_placed(1, {"arguments": {}, "recovery_contract": {}})
+
+    def test_the_placed_arm_adds_no_tensors_and_its_step_zero_is_the_widened_arm(self):
+        torch.manual_seed(5)
+        plain = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2))
+        torch.manual_seed(5)
+        placed = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2))
+        self.assertEqual(set(plain.state_dict()), set(placed.state_dict()))
+        for name, value in plain.state_dict().items():
+            self.assertTrue(torch.equal(value, placed.state_dict()[name]), name)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            first, second = plain(pixels, valid)["final"], placed(pixels, valid)["final"]
+        self.assertTrue(torch.equal(first["occupancy"], second["occupancy"]))
+        self.assertTrue(torch.equal(first["occupancy_deform_offsets"],
+                                    second["occupancy_deform_offsets"]))
+        self.assertEqual(float(first["occupancy_deform_offsets"].abs().max()), 0.0)
+
+    def test_the_offsets_written_are_the_offsets_applied(self):
+        model = self.wide()
+        with torch.no_grad():
+            model.occupancy_deform.weight.normal_(0, 1.0)
+            model.occupancy_deform_coarse.weight.normal_(0, 1.0)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            stage = model(pixels, valid)["final"]
+        applied = stage["occupancy_applied_offsets"]
+        written = stage["occupancy_deform_offsets"]
+        self.assertEqual(applied.shape, written.shape)
+        # The declared fine arm samples at the cell centre, so the applied offset is the field.
+        self.assertTrue(torch.equal(applied, written))
+        self.assertLessEqual(float(written.abs().max()), DEFORM_REACH)
+
+    def test_the_placed_arm_reads_pixels_and_placement_not_hidden_labels(self):
+        model = self.wide()
+        with torch.no_grad():
+            model.occupancy_deform.weight.normal_(0, 1.0)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            left = model(pixels, valid)["final"]
+            right = model(pixels, valid)["final"]
+        self.assertTrue(torch.equal(left["occupancy"], right["occupancy"]))
+        target = self.target(left["lattice"])
+        output = {"lattice": left["lattice"],
+                  "occupancy_deform_offsets": left["occupancy_deform_offsets"]}
+        before = float(placed_displacement_term(output, target))
+        target["occupied"] = 1-target["occupied"]
+        flipped = {"lattice": right["lattice"],
+                   "occupancy_deform_offsets": right["occupancy_deform_offsets"]}
+        self.assertEqual(float(placed_displacement_term(flipped, target)), before)
 
 
 class DemeanedRecordTests(unittest.TestCase):

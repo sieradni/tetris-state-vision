@@ -72,7 +72,8 @@ def main():
                    "positive_weight": arguments.get("occupancy_positive_weight", 1),
                    "geometry_final_only": arguments.get("geometry_final_only", 0),
                    "box_extent_weight": arguments.get("box_extent_weight", 0.0),
-                   "support_anchor_weight": arguments.get("support_anchor_weight", 0.0)}
+                   "support_anchor_weight": arguments.get("support_anchor_weight", 0.0),
+                   "occupancy_placed": arguments.get("occupancy_placed", 0)}
     recipes = [json.loads(line) for line in (run/"development-probe.jsonl").read_text().splitlines()]
     model, loaded = load_checkpoint(run/"checkpoint")
     if loaded["weights_sha256"] != summary["checkpoint_sha256"]:

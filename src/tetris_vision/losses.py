@@ -160,6 +160,81 @@ def require_occupancy_deform(deform, summary):
         raise ValueError("occupancy deform differs from resource admission")
 
 
+# Declared placed-target lever: 0 is the published objective; 1 supervises the displacement the
+# detail tap applies against the displacement that would put each cell's sample on the cell it
+# should have read, derived from the target lattice. The weight is the auxiliary-term scale the
+# semantic, visibility and pose heads already use, declared before any receipt: the term reports
+# where a sample belongs and must not be able to dominate the published objective.
+OCCUPANCY_PLACED_WEIGHTS = (0, 1)
+PLACED_TARGET_WEIGHT = .25
+
+
+def require_occupancy_placed(value, summary):
+    """One declaration of the admission join for the placed-target lever."""
+    if (type(value) is not int or value not in OCCUPANCY_PLACED_WEIGHTS or
+            summary.get("arguments", {}).get("occupancy_placed", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_placed", 0) != value):
+        raise ValueError("occupancy placed differs from resource admission")
+
+
+def placed_target_displacement(lattice, target_lattice, rows, columns, reach):
+    """Per-cell displacement, in cells, from where the tap samples to where it should sample.
+
+    The target is the *target lattice's* cell of the same index, so this is information the
+    occupancy labels alone cannot carry: it says which cell the tap should have read, not what
+    that cell contains. Both latices are detached - the box is supervised by the geometry term,
+    and this term must only ever move the field. Targets are clipped to the arm's own reach, so a
+    lattice that is further away than the field can move does not ask for an impossible sample.
+    """
+    device = lattice.device
+    row, column = torch.meshgrid(torch.arange(rows, device=device),
+                                 torch.arange(columns, device=device), indexing="ij")
+    coordinates = torch.stack((column+.5, row+.5), -1).reshape(1, rows*columns, 1, 2).to(lattice.dtype)
+
+    def points(basis):
+        return (basis.detach()[:, None, None, 0]+coordinates[..., :1]*basis.detach()[:, None, None, 1]
+                +coordinates[..., 1:]*basis.detach()[:, None, None, 2])
+
+    delta = points(target_lattice)-points(lattice)
+    basis = lattice.detach()[:, None, 1:]
+    u, v = basis[..., 0, :], basis[..., 1, :]
+    determinant = u[..., 0]*v[..., 1]-u[..., 1]*v[..., 0]
+    determinant = torch.where(determinant.abs() < 1e-6, torch.full_like(determinant, 1e-6),
+                              determinant)
+    # The basis is applied to the target-minus-predicted *difference*, so these are already the
+    # displacement in cells along each axis: no cell index is subtracted (unlike an absolute
+    # position, which would carry the cell's own column and row).
+    along_u = ((delta[..., 0]*v[..., 1]-delta[..., 1]*v[..., 0])/determinant).squeeze(-1)
+    along_v = ((u[..., 0]*delta[..., 1]-u[..., 1]*delta[..., 0])/determinant).squeeze(-1)
+    displacement = torch.stack((along_u, along_v), -1)
+    return displacement.clamp(-reach, reach)
+
+
+def placed_displacement_term(output, target, reach=None):
+    """Masked smooth-L1 between the applied field and the placed-target displacement."""
+    if reach is None:
+        from .model import DEFORM_REACH
+        reach = DEFORM_REACH
+    offsets = output.get("occupancy_deform_offsets")
+    if offsets is None:
+        raise ValueError("the placed-target term needs the deformation field the tap applied")
+    rows, columns = (int(value) for value in target["occupied"].shape[-2:])
+    total = int(offsets.shape[1])
+    if columns <= 0 or total % columns:
+        raise ValueError("the applied field does not cover a rectangular cell grid")
+    produced = total//columns
+    if produced < rows:
+        raise ValueError("the applied field cannot cover the labelled board")
+    field = offsets.reshape(offsets.shape[0], produced, columns, 2)[:, :rows]
+    field = field.reshape(offsets.shape[0], rows*columns, 2)
+    wanted = placed_target_displacement(output["lattice"], target["lattice"], rows, columns, reach)
+    if wanted.shape != field.shape:
+        raise ValueError("placed-target displacement and applied field differ in shape")
+    error = F.smooth_l1_loss(field, wanted, reduction="none").mean(-1)
+    known = target["known"][:, :rows].reshape(offsets.shape[0], -1).bool()
+    return masked_mean(error, known)
+
+
 def require_occupancy_resolution(resolution, summary):
     """One declaration of the admission join for the stride-1 resolution lever."""
     if (type(resolution) is not int or resolution not in (0, 1) or
@@ -335,7 +410,7 @@ def visible_window(tensor, target, name):
 
 
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1):
+               positive_weight=1, occupancy_placed=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -369,6 +444,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
           "occupancy factor must be1 or4")
     check(type(positive_weight) is int and positive_weight in POSITIVE_CELL_WEIGHTS,
           "occupancy positive weight must be1 or4")
+    check(type(occupancy_placed) is int and occupancy_placed in OCCUPANCY_PLACED_WEIGHTS,
+          "occupancy placed must be0 or1")
+    if occupancy_placed:
+        # Declared placed-target lever: the term names the cell each sample should have read, which
+        # the occupancy label alone cannot express, and it moves only the field.
+        result["placed"] = placed_displacement_term(output, target)
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -379,7 +460,7 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
-               support_anchor_weight=0.0):
+               support_anchor_weight=0.0, occupancy_placed=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -387,7 +468,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     check(type(support_anchor_weight) is float and support_anchor_weight in SUPPORT_ANCHOR_WEIGHTS,
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
-                            positive_weight)
+                            positive_weight, occupancy_placed)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -410,7 +491,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     weights = {"geometry": 1., "occupancy": 1.*occupancy_factor, "semantic": .25, "visibility": .25,
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
                "components": .5, "layer_cells": .5, "box_extent": box_extent_weight,
-               "support_anchor": support_anchor_weight}
+               "support_anchor": support_anchor_weight,
+               "placed": PLACED_TARGET_WEIGHT*occupancy_placed}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
