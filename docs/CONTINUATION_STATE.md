@@ -1,5 +1,41 @@
 # Contributor handoff — 2026-10-30
 
+## Normalising the read makes zero a median, not an operating point (2026-11-12)
+
+[M8_NORMALISED_BOUNDARY.md](M8_NORMALISED_BOUNDARY.md) was predeclared before any receipt. It follows M7's
+conclusion that a post-hoc rule cannot convert the `-1` offset's ranking gain into F1 under a `11.9%` base rate,
+by moving the boundary inside training: the engine now has a declared output parameterisation
+(`--occupancy-normalise 1`) that z-scores each board's occupancy logits over its own visible cells **inside the
+forward pass**, so the tensor the loss differentiates is the tensor every scorer thresholds, and `0.0` is the
+operating point by construction. No parameter, no tensor, no state key, no label, no prevalence term; `0` is
+exactly the published function (tested bit-for-bit, plus shift- and scale-equivariance tests).
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | precision / recall at `0.0` | out-of-fold F1 | row error |
+|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.2363 / 0.9910 | 0.400399 | +7.819 |
+| normalised | 0.788463 | **0.384661** | 0.393300 @ `0.30` | 0.2399 / 0.9700 | 0.393367 | +5.134 |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly in the new catalogue (`efa02b84`). Reading
+`normalisation-moves-without-clearing` (`+0.003021`, bar `+0.05`), secondary `ranking-degraded` (`-0.034181`,
+tolerance `-0.02`), verdict `not-cleared`, fit gate **FALSE**.
+
+**The important part is why it could not have worked.** A per-board z-score fixes zero at the board's centre of
+mass, so `2,697 / 5,600 = 48.2%` of cells sit above it regardless of what the head learns. At `11.9%` prevalence
+a cut admitting `48%` of cells has precision `<= 0.119/0.482 = 0.247` and F1 `<= ~0.396`; the arm measured
+`0.2399` and `0.384661`. It reached the ceiling of its own parameterisation - so `+0.003021` is not a lever to
+build on, and no amount of training moves it. Removing the board's global scale also deleted information the
+ranking used (`-0.034181` AUC, `-0.007032` out-of-fold), while the row error improved `+7.819 -> +5.134` for the
+same reason.
+
+**Next arm, specified.** Supervise the boundary directly on the unnormalised read: a declared within-board hinge
+on the margin between each board's lowest occupied and highest empty logit, `max(0, margin - (lowest_occupied -
+highest_empty))`, with `margin` and its weight fixed before the receipt, so the objective is told what separation
+is rather than where zero should sit. Declared as a supervision change; no threshold, no sweep. Note the
+parameterisation lever stays in the engine as a measured negative result - do not add it to a positive arm
+without a new declaration, because it costs AUC.
+
+Defect: V-129 (curator recorded a Wilson interval where a point recall was declared; caught before the receipt).
+
 ## The shifted read has no usable boundary it can find itself (2026-11-12)
 
 [M7_CALIBRATION.md](M7_CALIBRATION.md) was predeclared before any receipt of the block; the mechanism is a

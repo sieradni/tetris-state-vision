@@ -2611,3 +2611,22 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `analyze_stream_learning`, `accumulate`-style diagnostics) can no longer be re-run for pruned families, because
   their weight inputs are gone while their published receipts remain. The policy - prune a run's blobs once its
   sweep is curated - is written into `docs/CONTINUATION_STATE.md` so the tree does not refill silently.
+
+## V-129 - CLOSED: the curator would have recorded a Wilson interval as a point recall
+
+- Symptom: the first draft of `scripts/record_normalised_boundary.py` carried the arm's precision and recall as
+  `block["operating_intervals"]["recall"]`. That key exists, but `gate_power.precision_recall_interval` returns
+  *Wilson intervals* for precision and recall, so the field would have written a `[low, high]` list into a
+  document that declares each arm's precision and recall as scalars - a record that looks complete and is
+  dimensionally wrong.
+- Root cause: a receipt field name guessed from the F1 machinery instead of read from the function that produces
+  it; the same mistake the M7 curator (V-127) made at the invocation boundary rather than in the record.
+- Detection class: evidence instrument (a scope field whose type was never checked), caught by reading the
+  producer before the receipt existed - no receipt, evidence directory or scope was written from the wrong draft.
+- Instrument: both proportions are now re-derived from the arm's own operating counts
+  (`true_positive / (true_positive + false_positive)` and `true_positive / (true_positive + false_negative)`),
+  so the record cannot disagree with the counts it prints, and `tests/test_normalised_boundary.py` pins the
+  readings to the printed numbers.
+- Named green run: curator passed at its declared 1,900 MiB ceiling (`runs/m8-normbound-curation-r1-job.json`,
+  exit 0, `0.311 s`), producing `docs/evidence/m8-normalised-boundary-r1/scope.json` with scalar precision and
+  recall per arm; full suite green (see the commit that carries this entry).

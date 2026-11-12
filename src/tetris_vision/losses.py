@@ -179,6 +179,7 @@ def require_occupancy_placed(value, summary):
 
 OCCUPANCY_COLUMN_ARMS = (0, 1)
 OCCUPANCY_OFFSET_ROWS = (-2, -1, 0, 1, 2)
+OCCUPANCY_NORMALISE_ARMS = (0, 1)
 
 
 def require_occupancy_offset_rows(value, summary):
@@ -187,6 +188,14 @@ def require_occupancy_offset_rows(value, summary):
             summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
         raise ValueError("occupancy offset rows differs from resource admission")
+
+
+def require_occupancy_normalise(value, summary):
+    """One declaration of the admission join for the declared output parameterisation."""
+    if (type(value) is not int or value not in OCCUPANCY_NORMALISE_ARMS or
+            summary.get("arguments", {}).get("occupancy_normalise", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_normalise", 0) != value):
+        raise ValueError("occupancy normalise differs from resource admission")
 
 
 def require_occupancy_column(value, summary):

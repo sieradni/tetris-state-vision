@@ -23,6 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **training the read in per-board normalised space cannot place the boundary either - the ceiling is
+geometric** ([M8_NORMALISED_BOUNDARY.md](M8_NORMALISED_BOUNDARY.md),
+`docs/evidence/m8-normalised-boundary-r1/scope.json`). A declared output parameterisation
+(`--occupancy-normalise 1`) z-scored each board's occupancy logits over its own visible cells *inside* the model,
+so the tensor the loss differentiates is the tensor scored and `0.0` is the operating point by construction - no
+parameter, no tensor, no label, no prevalence, and `0` exactly the published function. Control reproduced
+`0.8226433610683003` and `0.381640` exactly in the new catalogue (`efa02b84`). The normalised arm reached plain
+F1 **0.384661** (`+0.003021`, declared reading `normalisation-moves-without-clearing`) and AUC **0.788463**
+(`-0.034181`, secondary `ranking-degraded`), out-of-fold `-0.007032`. The reason is arithmetic, not training: a
+per-board z-score puts zero at the board's centre of mass, so `48.2%` of cells sit above it and at `11.9%`
+prevalence precision cannot exceed `0.247` - the arm measured `0.2399` and F1 `0.384661`, i.e. **it hit the
+ceiling of its own parameterisation**. Standardising the output makes zero a median, and a median is not an
+operating point. Row error did improve (`+7.819 -> +5.134`), which is the same fact: the read can no longer sit
+high as a whole. Next: put the **margin into the loss** - a declared within-board hinge on the gap between each
+board's lowest occupied and highest empty logit, on the unnormalised read so ranking is not damaged. Fit gate
+stays **FALSE** (0 of 28). V-129 records this pass's defect.
+
 Latest: **the shifted read's operating point is not recoverable from its own logit distribution by an
 imbalance-blind rule, so the offset's advantage is a threshold effect**
 ([M7_CALIBRATION.md](M7_CALIBRATION.md), `docs/evidence/m7-calibration-r1/scope.json`). Three arms were

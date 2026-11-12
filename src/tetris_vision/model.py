@@ -41,6 +41,7 @@ class ModelConfig:
     occupancy_lattice_free: int = 0
     occupancy_column: int = 0
     occupancy_offset_rows: int = 0
+    occupancy_normalise: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -100,6 +101,9 @@ class ModelConfig:
               "published sampling point")
         check(not self.occupancy_offset_rows or self.occupancy_detail == 1,
               "the sampling offset moves the detail tap's sample, so it needs that tap")
+        check(type(self.occupancy_normalise) is int and self.occupancy_normalise in (0, 1),
+              "occupancy normalise is 0 (published unnormalised logits) or 1 (declared per-board "
+              "normalised logits, so the 0.0 boundary is the operating point by construction)")
 
     @classmethod
     def pilot(cls):
@@ -155,6 +159,23 @@ def architecture_name(config):
     verified, so a widened configuration cannot be reported under the published name.
     """
     return ("TetrisStateNet-M3" if config.component_capacity else "TetrisStateNet-M2")+trunk_suffix(config)
+
+
+def normalise_board(logits, visible_rows):
+    """Per-board z-score of the occupancy read, from that board's own visible logits.
+
+    Declared output parameterisation, not a scoring rule: the tensor this returns is what the
+    objective differentiates *and* what every consumer thresholds at `0.0`, so the boundary is
+    placed by training instead of chosen afterwards. The statistics are the board's own visible
+    cells - no label, no prevalence, no other board - so an additive board-wide shift (the
+    registration error the declared row offset exposed) cancels exactly, and the head has to
+    separate occupied from empty by spread rather than by an unconstrained bias. A constant board
+    has no spread, so the clamped divisor maps it to zeros, where a `0.0` boundary decides nothing.
+    """
+    visible = logits[:, :visible_rows]
+    mean = visible.mean(dim=(1, 2), keepdim=True)
+    spread = visible.std(dim=(1, 2), unbiased=False, keepdim=True).clamp_min(1e-6)
+    return (logits-mean)/spread
 
 
 class Residual(nn.Module):
@@ -647,6 +668,11 @@ class TetrisStateNet(nn.Module):
                 gate = torch.tanh(self.occupancy_lattice_gate)
                 occupancy_logits = ((1-gate)*occupancy_logits+
                                     gate*self.occupancy_lattice_free(free).reshape(batch, rows, columns))
+            if self.config.occupancy_normalise:
+                # Declared parameterisation: the read the objective sees and the read a scorer sees
+                # are the same tensor, so the `0.0` boundary the loss optimises is the boundary every
+                # consumer applies, and a board-wide additive shift cancels exactly.
+                occupancy_logits = normalise_board(occupancy_logits, self.config.visible_rows)
             stages.append({"lattice": lattice, "occupancy": occupancy_logits,
                            "semantic": self.semantic(cells).reshape(batch, rows, columns, 8),
                            "observability": self.observability(cells).reshape(batch, rows, columns),
