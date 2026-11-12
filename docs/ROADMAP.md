@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **a one-row sampling offset recovers most of the best arm's gain, in the opposite direction to the
+one predicted** ([M6_ROW_OFFSET.md](M6_ROW_OFFSET.md), `docs/evidence/m6-row-offset-r1/scope.json`,
+diagnostic in `docs/evidence/m5-row-error-r1/`). A read-only diagnostic of the four frozen sweeps shows
+every arm deciding the stack **above** its label row - +7.819 rows for control at the standing boundary,
++5.872 for wide, still +0.716 to +2.886 at each arm's own best boundary - so the residual error is a
+sampling geometry, not a mis-specified label. A declared constant `--occupancy-offset-rows` (a
+non-persistent buffer: **no tensor, no state key**, step zero exactly the published function) was measured
+in both signs. The predicted sign (`+1`) **fails** (`-0.018076` best F1, boundary moves `0.282` rows away
+from the labels); the opposite sign **works**: `-1` reaches AUC **0.870729** (`+0.048086` over control,
+interval `+0.013560 .. +0.071269`, MDE `0.043683`) and best swept F1 **0.469259** (`+0.057225`, clearing
+the `0.05` attribution floor), with its boundary at `+1.342` rows against control's `+2.886`. So four
+fifths of wide's `+0.059619` AUC - previously read as a shifted-window exploit - is a **one-row
+registration error**. It is not calibration though: F1 at `0.0` is `-0.035767`, the best boundary moves
+from `0.90` to `2.70`, and out-of-fold F1 falls `0.031591`, leaving it `0.045562` best F1 behind wide.
+Declared reading `offset-class-fails` (on the predicted arm). Fit gate stays **FALSE** (0 of 28 exact
+boards). Next: the **operating point** - a declared, label-free calibration of the shifted read - not
+another offset. V-123 and V-124 record this pass's defects.
+
 Latest: **the column read-out is used heavily and still does not rank**
 ([M5_COLUMN_READOUT.md](M5_COLUMN_READOUT.md), `docs/evidence/m5-column-readout-r1/scope.json`). A
 fourth arm gives each cell its own column - the mean decoder feature strictly below and strictly above it,

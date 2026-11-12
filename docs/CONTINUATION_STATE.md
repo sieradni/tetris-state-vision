@@ -1,5 +1,45 @@
 # Contributor handoff — 2026-10-30
 
+## The row bias is real, and it was pointing the other way (2026-11-12)
+
+[M6_ROW_OFFSET.md](M6_ROW_OFFSET.md) was predeclared before any receipt of the block. It starts with a
+read-only diagnostic of the four frozen M5 sweeps (`docs/evidence/m5-row-error-r1/`): for every column of
+every deciding board, the top-most decided row against the top-most occupied row, in rows, bottom-first.
+
+| arm | mean row error at `0.0` | at own best boundary | exact on the label row |
+|---|---|---|---|
+| control | +7.819 | +2.886 | 0.013 |
+| wide | +5.872 | +0.716 | 0.094 |
+| de-meaned | +5.651 | +1.973 | 0.094 |
+| column | +6.832 | +1.081 | 0.067 |
+
+**Reading `systematic-row-offset`, positive**: every arm decides the stack above its label row, so the
+residual is sampling geometry, not a mis-specified label. The arm follows from that: a declared constant
+`--occupancy-offset-rows` (a non-persistent buffer, so no tensor and no state key; `0` is exactly the
+published function) measured in both signs, because a one-sign claim cannot distinguish a mechanism from a
+lucky direction.
+
+| quantity | control | wide | up (+1) | **down (-1)** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.814109 | **0.870729** |
+| best swept F1 | 0.412034 | **0.514821** | 0.393958 | **0.469259** |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.378286 | 0.345873 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.326910 | 0.368808 |
+| row error at own best | +2.886 | **+0.716** | +4.624 | **+1.342** |
+
+Control and wide reproduced `0.8226433610683003` and `0.8822623454135491` exactly. The **predicted** sign
+fails (`-0.018076` F1, `-0.008535` AUC, boundary `0.282` rows further from the labels); the **opposite**
+sign clears the attribution floor (`+0.057225` best F1) with a resolvable AUC gain (`+0.048086`, interval
+`+0.013560 .. +0.071269`, MDE `0.043683`) and removes more than half the row bias. So most of wide's
+`+0.059619` AUC is a one-row registration error, not a shifted-window exploit.
+
+**But it is not a better operating point yet**: F1 at `0.0` falls `0.035767`, the best boundary moves from
+`0.90` to `2.70`, and out-of-fold F1 falls `0.031591`; wide is still `+0.045562` F1 ahead. The next
+declared instrument is therefore the **operating point** - a label-free calibration of the shifted read on
+the same population - and only then a `-2` offset arm, because a shift that keeps moving its threshold is
+not yet a usable read. Fit gate stays **FALSE** (0 of 28 exact boards; per-cell F1 still far under `0.70`).
+V-123 and V-124 record this pass's defects; the refused receipts are under `runs/attempts/`.
+
 ## The column read-out: used heavily, ranks no better (2026-11-12)
 
 [M5_COLUMN_READOUT.md](M5_COLUMN_READOUT.md) was predeclared and committed before any receipt, amended

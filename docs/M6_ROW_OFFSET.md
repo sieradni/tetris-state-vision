@@ -108,6 +108,68 @@ diagnostic reads where decisions sit, not why; the arm changes a declared consta
 real-screenshot, complete-state, calibrated or quality claim is made, and no arm is declared better than
 another outside this population and budget.
 
-## Measured
+## Measured (2026-11-12) - the geometry hypothesis holds, and the declared sign was wrong
 
-*(appended after the receipts exist - see `docs/evidence/m6-row-offset-r1/`)*
+Four arms ran inside 1,792 MiB and completed 64 steps under one catalogue from the published checkpoint.
+Control and wide reproduced the previous record exactly (`0.8226433610683003`, `0.8822623454135491`).
+Evidence: `docs/evidence/m6-row-offset-r1/scope.json`, curated by `runs/m6-rowoffset-curation-r1-job.json`
+(passed, 9 work items).
+
+| quantity | control | wide | **up (+1)** | **down (-1)** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.814109 | **0.870729** |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.378286 | 0.345873 |
+| best swept F1 | 0.412034 @ `0.90` | **0.514821** @ `1.95` | 0.393958 @ `1.20` | **0.469259** @ `2.70` |
+| precision at `0.0` | 0.236325 | **0.240955** | 0.233675 | 0.209427 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.326910 | 0.368808 |
+| mean row error at `0.0` | +7.819 | +5.872 | +8.101 | +8.879 |
+| mean row error at own best | +2.886 | **+0.716** | +4.624 | **+1.342** |
+| exact on the label row | 0.013 | 0.094 | 0.007 | 0.000 |
+| study peak / wall | 1,021,194,240 B / 285.7 s | 1,047,932,928 B / 387.7 s | 1,020,035,072 B / 334.1 s | 1,054,584,832 B / 212.0 s |
+
+**Declared reading on the predicted direction: `offset-class-fails`.** Sampling one row *above* the cell
+does not correct the bias and does not help: `-0.018076` best F1 and `-0.008535` AUC against control, its
+boundary error **worsens** (`+8.101` against `+7.819`, a `-0.282`-row move away from zero), and it is
+`-0.120862` behind wide. The declared direction is falsified by its own arm.
+
+**The geometry hypothesis is confirmed in the opposite direction.**
+
+| contrast | best swept F1 | AUC | F1 at `0.0` | out-of-fold F1 | attribution |
+|---|---|---|---|---|---|
+| **down vs control** | **+0.057225** | **+0.048086** (+0.013560 .. +0.071269, MDE 0.043683) | -0.035767 | -0.031591 | **met** |
+| up vs control | -0.018076 | -0.008535 (-0.018244 .. +0.000396, MDE 0.013671) | -0.003354 | -0.073489 | not met |
+| up vs wide | -0.120862 | -0.068154 (-0.103914 .. -0.034951) | -0.007616 | -0.171503 | not met |
+| wide vs control | +0.102787 | +0.059619 (+0.029411 .. +0.094463) | +0.004262 | +0.098014 | met |
+
+Sampling one row **below** the decoded cell clears the `0.05` attribution floor (`+0.057225`), its AUC gain
+is **resolvable** (`+0.048086`, interval clear of zero), and the mechanism shows in the diagnostic: at its
+own best boundary the decision sits `+1.342` rows above the labels against control's `+2.886`, so more than
+half of the row bias is removed by a constant that adds **no tensor at all**. It recovers `+0.048086` of the
+wide arm's `+0.059619` AUC, i.e. **four fifths of the free field's gain is a one-row registration
+error**, not a shifted-window exploit.
+
+What it does not do, and the record says so: at the standing `0.0` boundary it is *worse* (`-0.035767` F1,
+`-0.027` precision), its best boundary is `2.70` rather than `0.90`, and the out-of-fold number - the only
+one that says a boundary chosen on other clusters transfers - falls `0.031591`. So the arm ranks better and
+pays for it in calibration: the shift moves the whole response, including its operating point. It is still
+`0.045562` best F1 and `0.011533` AUC behind wide, so the free field is not explained away.
+
+**Verdict `not-cleared`** (per-cell F1, ranking and attribution all short of their gates on the declared
+arm). **Fit gate: FALSE** - 0 of 28 exact boards on all four arms.
+
+### What this pass establishes, and what it leaves
+
+1. **The row bias is real and is a sampling geometry problem.** A constant, undeclared-in-weights one-row
+   shift reproduces most of the best arm's ranking gain, which no supervision or read-out change managed.
+2. **The direction is measurable, not guessable.** The diagnostic's sign was read as "decisions are too
+   high, so look higher"; the truth is the opposite, and only the paired sign arm found it. Any future
+   offset must be declared with both signs.
+3. **Ranking is not calibration.** The gain comes with a threshold that moves from `0.90` to `2.70` and a
+   transferred-boundary F1 below control's, so the next instrument is not another offset - it is the
+   **operating point**: a declared, label-free calibration of the shifted read (per-column offset removal
+   at scoring time, or training the boundary itself), measured on the same population. The offset trend
+   also suggests `-2` is worth one declared arm, but only after the calibration question is answered,
+   because a shift that keeps moving the threshold is not yet a usable read.
+
+The \(`-1`\) offset is now the engine's best non-field configuration: same tensors, same budget, AUC
+`0.822643 -> 0.870729` and best swept F1 `0.412034 -> 0.469259`.

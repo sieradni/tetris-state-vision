@@ -1,0 +1,871 @@
+{
+  "status": "passed",
+  "instrument": "m6-row-offset-r1",
+  "predeclaration": "docs/M6_ROW_OFFSET.md",
+  "scope": "Matched 64-step continuation of one published checkpoint by four arms differing only in the declared sampling geometry: the published sampling point, the four-cell registration field, and a constant one-row offset above and below the cell. Scored read-only on the widened deciding population with the standing gates and grid, with the row-error diagnostic recomputed on every arm from the same frozen sweep records. No threshold, population or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m6-rowoffset-curation-r1-job.json",
+  "declared_memory_bytes": 1992294400,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1879048192,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05,
+    "row_shift_floor_cells": 0.5
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_deform",
+      "occupancy_offset_rows"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_resolution": 0,
+      "occupancy_context": 0,
+      "occupancy_column": 0,
+      "occupancy_placed": 0
+    },
+    "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "up": {
+      "study": "m6-rowoffset-up-r1",
+      "sweep": "m6-rowoffset-up-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_offset_rows": 1,
+      "weights_sha256": "8914e22bec1483a7e956014e70ee3ec90fc5a2b87893231bbbb79f501a08418c",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 334.0653161999944,
+      "study_peak_commit_bytes": 1020035072,
+      "sweep_peak_commit_bytes": 562282496,
+      "auc": 0.8141087575004308,
+      "auc_interval": {
+        "auc": 0.814109,
+        "standard_error": 0.010327,
+        "low": 0.793868,
+        "high": 0.834349,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.378286,
+      "per_cell_gap": 0.321714,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2171,
+        "false_negative": 5
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 662,
+          "trials": 2833,
+          "estimate": 0.233675,
+          "low": 0.218459,
+          "high": 0.249611
+        },
+        "recall": {
+          "successes": 662,
+          "trials": 667,
+          "estimate": 0.992504,
+          "low": 0.982573,
+          "high": 0.996794
+        }
+      },
+      "best": {
+        "threshold": 1.2,
+        "true_positive": 626,
+        "false_positive": 1885,
+        "false_negative": 41,
+        "precision": 0.24930306650736758,
+        "recall": 0.9385307346326837,
+        "f1": 0.3939584644430459,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.306042,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.233675,
+      "components": {
+        "best_f1": 0.393958,
+        "best_threshold": 1.2,
+        "zero_f1": 0.378286,
+        "zero_cost": -0.015672,
+        "best_precision": 0.249303,
+        "out_of_fold_f1": 0.32691,
+        "transfer_cost": -0.051376,
+        "out_of_fold_thresholds": [
+          1.2,
+          1.2,
+          1.8,
+          1.2,
+          1.2,
+          2.55,
+          1.2,
+          1.2,
+          1.2,
+          1.2,
+          1.2,
+          1.8
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 475,
+          "false_positive": 1764,
+          "false_negative": 192
+        },
+        "groups": 12
+      }
+    },
+    "down": {
+      "study": "m6-rowoffset-down-r1",
+      "sweep": "m6-rowoffset-down-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_offset_rows": -1,
+      "weights_sha256": "501889cc467fd5a47263edf75ed1eb64e3a5fbbca8c05238b8b0d70c8890b236",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 211.99530889999733,
+      "study_peak_commit_bytes": 1054584832,
+      "sweep_peak_commit_bytes": 563654656,
+      "auc": 0.8707292410960544,
+      "auc_interval": {
+        "auc": 0.870729,
+        "standard_error": 0.00901,
+        "low": 0.853071,
+        "high": 0.888388,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.345873,
+      "per_cell_gap": 0.354127,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2499,
+        "false_negative": 5
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 662,
+          "trials": 3161,
+          "estimate": 0.209427,
+          "low": 0.1956,
+          "high": 0.223961
+        },
+        "recall": {
+          "successes": 662,
+          "trials": 667,
+          "estimate": 0.992504,
+          "low": 0.982573,
+          "high": 0.996794
+        }
+      },
+      "best": {
+        "threshold": 2.7,
+        "true_positive": 519,
+        "false_positive": 1026,
+        "false_negative": 148,
+        "precision": 0.3359223300970874,
+        "recall": 0.7781109445277361,
+        "f1": 0.46925858951175414,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.230741,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.209427,
+      "components": {
+        "best_f1": 0.469259,
+        "best_threshold": 2.7,
+        "zero_f1": 0.345873,
+        "zero_cost": -0.123386,
+        "best_precision": 0.335922,
+        "out_of_fold_f1": 0.368808,
+        "transfer_cost": 0.022935,
+        "out_of_fold_thresholds": [
+          2.7,
+          2.7,
+          2.7,
+          2.7,
+          2.55,
+          3.6,
+          2.7,
+          2.7,
+          3.15,
+          2.7,
+          2.7,
+          3.3
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 376,
+          "false_positive": 996,
+          "false_negative": 291
+        },
+        "groups": 12
+      }
+    },
+    "wide": {
+      "study": "m6-rowoffset-wide-r1",
+      "sweep": "m6-rowoffset-wide-r1-sweep-r1",
+      "occupancy_deform": 2,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "338c79c55608dc38cca13ea3d0ff37d9c31b699d33a70704511d849dde13a5b0",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 387.67377169999963,
+      "study_peak_commit_bytes": 1047932928,
+      "sweep_peak_commit_bytes": 567422976,
+      "auc": 0.8822623454135491,
+      "auc_interval": {
+        "auc": 0.882262,
+        "standard_error": 0.008673,
+        "low": 0.865263,
+        "high": 0.899262,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.385902,
+      "per_cell_gap": 0.314098,
+      "operating_counts": {
+        "true_positive": 646,
+        "false_positive": 2035,
+        "false_negative": 21
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 646,
+          "trials": 2681,
+          "estimate": 0.240955,
+          "low": 0.225145,
+          "high": 0.257506
+        },
+        "recall": {
+          "successes": 646,
+          "trials": 667,
+          "estimate": 0.968516,
+          "low": 0.952349,
+          "high": 0.979317
+        }
+      },
+      "best": {
+        "threshold": 1.95,
+        "true_positive": 495,
+        "false_positive": 761,
+        "false_negative": 172,
+        "precision": 0.39410828025477707,
+        "recall": 0.7421289355322339,
+        "f1": 0.514820592823713,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.185179,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.240955,
+      "components": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "best_precision": 0.394108,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 471,
+          "false_positive": 752,
+          "false_negative": 196
+        },
+        "groups": 12
+      }
+    },
+    "control": {
+      "study": "m6-rowoffset-control-r1",
+      "sweep": "m6-rowoffset-control-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 285.66344129999925,
+      "study_peak_commit_bytes": 1021194240,
+      "sweep_peak_commit_bytes": 554848256,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325,
+      "components": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "best_precision": 0.263488,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "groups": 12
+      }
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "contrasts": {
+    "up_control": {
+      "best_f1_delta": -0.018076,
+      "auc_delta": -0.008535,
+      "per_cell_f1_delta": -0.003354,
+      "precision_delta": -0.00265,
+      "out_of_fold_f1_delta": -0.073489,
+      "attribution_met": false,
+      "row_error_shift_toward_zero": -0.281879,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.006542,
+        "high": -0.000205,
+        "median": -0.003019,
+        "standard_error": 0.001637
+      },
+      "zero_boundary_minimum_detectable_effect": 0.004587,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.217127,
+        "high": 0.180397,
+        "median": -0.043953,
+        "standard_error": 0.096811
+      },
+      "out_of_fold_minimum_detectable_effect": 0.271264,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.018244,
+        "high": 0.000396,
+        "median": -0.008221,
+        "standard_error": 0.004879
+      },
+      "auc_minimum_detectable_effect": 0.013671,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.005996,
+        "high": -0.000238,
+        "median": -0.002396,
+        "standard_error": 0.001514
+      },
+      "precision_minimum_detectable_effect": 0.004242
+    },
+    "up_wide": {
+      "best_f1_delta": -0.120862,
+      "auc_delta": -0.068154,
+      "per_cell_f1_delta": -0.007616,
+      "precision_delta": -0.00728,
+      "out_of_fold_f1_delta": -0.171503,
+      "attribution_met": false,
+      "row_error_shift_toward_zero": -2.228188,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.015757,
+        "high": 0.004939,
+        "median": -0.007343,
+        "standard_error": 0.005519
+      },
+      "zero_boundary_minimum_detectable_effect": 0.015464,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.31087,
+        "high": -0.002142,
+        "median": -0.158173,
+        "standard_error": 0.086062
+      },
+      "out_of_fold_minimum_detectable_effect": 0.241146,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.103914,
+        "high": -0.034951,
+        "median": -0.065859,
+        "standard_error": 0.018384
+      },
+      "auc_minimum_detectable_effect": 0.051512,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.013107,
+        "high": 0.000616,
+        "median": -0.006755,
+        "standard_error": 0.003498
+      },
+      "precision_minimum_detectable_effect": 0.009801
+    },
+    "down_control": {
+      "best_f1_delta": 0.057225,
+      "auc_delta": 0.048086,
+      "per_cell_f1_delta": -0.035767,
+      "precision_delta": -0.026898,
+      "out_of_fold_f1_delta": -0.031591,
+      "attribution_met": true,
+      "row_error_shift_toward_zero": -1.060403,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.046502,
+        "high": -0.014584,
+        "median": -0.034896,
+        "standard_error": 0.008123
+      },
+      "zero_boundary_minimum_detectable_effect": 0.022761,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.100494,
+        "high": 0.288779,
+        "median": 0.006892,
+        "standard_error": 0.107403
+      },
+      "out_of_fold_minimum_detectable_effect": 0.300943,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": 0.01356,
+        "high": 0.071269,
+        "median": 0.045764,
+        "standard_error": 0.01559
+      },
+      "auc_minimum_detectable_effect": 0.043683,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.043551,
+        "high": -0.008382,
+        "median": -0.025912,
+        "standard_error": 0.009072
+      },
+      "precision_minimum_detectable_effect": 0.02542
+    },
+    "wide_control": {
+      "best_f1_delta": 0.102787,
+      "auc_delta": 0.059619,
+      "per_cell_f1_delta": 0.004262,
+      "precision_delta": 0.00463,
+      "out_of_fold_f1_delta": 0.098014,
+      "attribution_met": true,
+      "row_error_shift_toward_zero": 1.946309,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.010845,
+        "high": 0.014528,
+        "median": 0.004529,
+        "standard_error": 0.006598
+      },
+      "zero_boundary_minimum_detectable_effect": 0.018488,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.0197,
+        "high": 0.287658,
+        "median": 0.091121,
+        "standard_error": 0.090301
+      },
+      "out_of_fold_minimum_detectable_effect": 0.253023,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": 0.029411,
+        "high": 0.094463,
+        "median": 0.057148,
+        "standard_error": 0.017658
+      },
+      "auc_minimum_detectable_effect": 0.049478,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.005191,
+        "high": 0.011458,
+        "median": 0.00453,
+        "standard_error": 0.004134
+      },
+      "precision_minimum_detectable_effect": 0.011583
+    }
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "per_cell_f1": 0.38164,
+      "best_f1": 0.41203400915631133,
+      "prior_scope": "docs\\evidence\\m5-column-readout-r1\\scope.json"
+    },
+    "wide": {
+      "auc": 0.8822623454135491,
+      "per_cell_f1": 0.385902,
+      "best_f1": 0.514820592823713,
+      "prior_scope": "docs\\evidence\\m5-column-readout-r1\\scope.json"
+    }
+  },
+  "components": {
+    "note": "Reported, never read by the verdict: ranking at each arm's own best boundary, the cost of the fixed 0.0 boundary, and the cost of transferring a boundary chosen on the other eleven ancestry groups, each with the interval that resamples exactly it and a minimum detectable effect at 80% power.",
+    "arms": {
+      "up": {
+        "best_f1": 0.393958,
+        "best_threshold": 1.2,
+        "best_precision": 0.249303,
+        "zero_f1": 0.378286,
+        "zero_cost": -0.015672,
+        "out_of_fold_f1": 0.32691,
+        "transfer_cost": -0.051376,
+        "out_of_fold_thresholds": [
+          1.2,
+          1.2,
+          1.8,
+          1.2,
+          1.2,
+          2.55,
+          1.2,
+          1.2,
+          1.2,
+          1.2,
+          1.2,
+          1.8
+        ]
+      },
+      "down": {
+        "best_f1": 0.469259,
+        "best_threshold": 2.7,
+        "best_precision": 0.335922,
+        "zero_f1": 0.345873,
+        "zero_cost": -0.123386,
+        "out_of_fold_f1": 0.368808,
+        "transfer_cost": 0.022935,
+        "out_of_fold_thresholds": [
+          2.7,
+          2.7,
+          2.7,
+          2.7,
+          2.55,
+          3.6,
+          2.7,
+          2.7,
+          3.15,
+          2.7,
+          2.7,
+          3.3
+        ]
+      },
+      "wide": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "best_precision": 0.394108,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ]
+      },
+      "control": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "best_precision": 0.263488,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ]
+      }
+    },
+    "power": {
+      "z": 2.802,
+      "rule": "minimum detectable effect = 2.802 x cluster SE"
+    }
+  },
+  "offset": {
+    "question": "The diagnostic measured every arm's decision boundary above its label row. Does moving the sample by the declared one row in that direction correct the boundary and pay for it?",
+    "declared_direction": "up",
+    "declared_from": "the diagnostic's positive mean row error",
+    "reading": "offset-class-fails",
+    "reading_text": "The declared sampling offset moves neither the boundary far enough to count nor the ranking, so the measured row bias is not corrected by moving where this read looks.",
+    "boundary_shift_toward_labels_cells": -0.281879,
+    "thresholds": {
+      "attribution_floor": 0.05,
+      "row_shift_floor_cells": 0.5,
+      "auc_interval_rule": "clear of zero"
+    }
+  },
+  "row_error": {
+    "question": "Where does each arm's top-most decided row sit relative to the top-most occupied row, in rows, bottom-first?",
+    "arms": {
+      "up": {
+        "threshold": 0.0,
+        "mean": 8.100671,
+        "median": 7,
+        "exact_fraction": 0.006711,
+        "within_one_fraction": 0.020134,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 0,
+          "-2": 1,
+          "-1": 1,
+          "0": 1,
+          "1": 1,
+          "2": 1,
+          "3": 144
+        },
+        "at_best_threshold": {
+          "threshold": 1.2,
+          "mean": 4.624161,
+          "median": 7,
+          "exact_fraction": 0.302013,
+          "within_one_fraction": 0.42953
+        }
+      },
+      "down": {
+        "threshold": 0.0,
+        "mean": 8.879195,
+        "median": 8,
+        "exact_fraction": 0.0,
+        "within_one_fraction": 0.013423,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 0,
+          "-2": 0,
+          "-1": 0,
+          "0": 0,
+          "1": 2,
+          "2": 2,
+          "3": 145
+        },
+        "at_best_threshold": {
+          "threshold": 2.7,
+          "mean": 1.342282,
+          "median": 0,
+          "exact_fraction": 0.302013,
+          "within_one_fraction": 0.677852
+        }
+      },
+      "wide": {
+        "threshold": 0.0,
+        "mean": 5.872483,
+        "median": 7,
+        "exact_fraction": 0.09396,
+        "within_one_fraction": 0.194631,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 2,
+          "-2": 1,
+          "-1": 0,
+          "0": 14,
+          "1": 15,
+          "2": 11,
+          "3": 106
+        },
+        "at_best_threshold": {
+          "threshold": 1.95,
+          "mean": 0.716216,
+          "median": 0,
+          "exact_fraction": 0.513514,
+          "within_one_fraction": 0.817568
+        }
+      },
+      "control": {
+        "threshold": 0.0,
+        "mean": 7.818792,
+        "median": 7,
+        "exact_fraction": 0.013423,
+        "within_one_fraction": 0.040268,
+        "columns": {
+          "both": 149,
+          "label_only": 0,
+          "decided_only": 131,
+          "neither": 0
+        },
+        "error_counts": {
+          "-3": 0,
+          "-2": 2,
+          "-1": 1,
+          "0": 2,
+          "1": 3,
+          "2": 1,
+          "3": 140
+        },
+        "at_best_threshold": {
+          "threshold": 0.9,
+          "mean": 2.885906,
+          "median": 1,
+          "exact_fraction": 0.342282,
+          "within_one_fraction": 0.577181
+        }
+      }
+    },
+    "published_diagnostic": "runs\\m5-rowerror-r1\\result.json",
+    "reading": "Positive means the decision claims a taller stack than the label. The two arms shared with the previous block reproduce its published means exactly."
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "reproduced, not touched",
+    "frozen_manifest": "not touched"
+  }
+}
