@@ -175,9 +175,13 @@ def arguments(argv=None):
         parser.error("the registration lever moves the detail tap's sample; it requires --occupancy-detail 1")
     if args.occupancy_placed and args.occupancy_deform != 2:
         parser.error("the placed-target term supervises the widened field;1 requires --occupancy-deform 2")
-    if args.occupancy_column and (args.occupancy_detail or args.occupancy_detail_stencil or
-                                  args.occupancy_resolution or args.occupancy_context or
-                                  args.occupancy_deform or args.occupancy_placed):
+    if args.occupancy_column and (args.occupancy_detail_stencil or args.occupancy_resolution or
+                                  args.occupancy_context or args.occupancy_deform or
+                                  args.occupancy_placed):
+        # The column read-out adds context around the cell, so it may sit beside the detail tap that
+        # every arm of its family shares; it is refused with the levers that change *what* is read
+        # (stencil, resolution, neighborhood) or move it (deform, placed), because those would leave
+        # the read-out confounded with a sampling change.
         parser.error("the column read-out is declared on the published occupancy read-out")
     if args.init_weights_from is not None and args.resume_from is not None and not args.freeze_backbone:
         parser.error("initial weights define a fresh start; resume an existing run instead")

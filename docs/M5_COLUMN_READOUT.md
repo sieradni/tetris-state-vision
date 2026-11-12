@@ -32,6 +32,10 @@ losing arm of the last two passes changed. And because the projection is zero-in
 and deformation taps (`nn.init.zeros_` on weight and bias), step zero is exactly the published function and
 the paired control starts from the same tensors, so any difference after 64 steps is the read-out alone.
 
+The read-out is additive around the cell, not a change of sample, so the arm carries the detail tap the
+rest of its family shares (`--occupancy-detail 1`) and is refused only beside the levers that change *what*
+is read (stencil, resolution, neighborhood) or move it (a deformation field, a placed target).
+
 Rejected without surveying: a second strided tap or a second encoder pass (new sampling and new cost, and
 the position instrument says sampling location is exactly what is being exploited), and any change to the
 deformation field or its supervision (both already measured and both negative).
