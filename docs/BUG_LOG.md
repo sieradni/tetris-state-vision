@@ -19,19 +19,168 @@ the block lock, which is what every surviving cross-reference (CONTINUATION_STAT
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035, V-104, V-107 (14) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract; a selectable arm that adds no tensors must save exactly its parent's initial bytes, while distinct parameter sets must each save their own |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102, V-105, V-108 (23) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it; a reproduction join reads the block the curator derived, never a raw sweep block that omits the re-derived numbers |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035, V-104, V-107, V-112 (15) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract; a selectable arm that adds no tensors must save exactly its parent's initial bytes, while distinct parameter sets must each save their own |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102, V-105, V-108, V-109, V-117, V-118 (26) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it; a reproduction join reads the block the curator derived, never a raw sweep block that omits the re-derived numbers; a stage output added beside the detail tap must hold for every tap variant, including the stencil's several-samples-per-cell read, so the existing step-zero and paired-raster suite runs against each |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046, V-062 (7) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
-| launch-ownership | V-029, V-030, V-050, V-093 (4) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096, V-106 (15) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
+| launch-ownership | V-029, V-030, V-050, V-093, V-110, V-111, V-114 (7) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096, V-106, V-113, V-116 (17) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
 | interval-validity | V-056, V-066, V-091, V-095, V-103 (5) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
-| tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
+| tooling-harness | V-060, V-064, V-067, V-115 (4) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-118 — CLOSED: the new applied-offsets read broke the stencil tap
+
+- Symptom: five tests in `tests/test_detail_stencil.py` failed with "shape '[1, 260, 2]' is invalid for
+  input of size 2080" after the placed pass had already been curated.
+- **Root cause.** `occupancy_applied_offsets` was computed as `offsets + zeros(batch, cells, 1, 2)` and
+  reshaped to one vector per cell. That is exact for a single-sample tap, which is every arm this pass
+  ran, but the stencil tap carries four samples per cell, so the same expression was given
+  `260 x 4 x 2` elements and could not produce `260 x 2`.
+- **Change.** The read-out is reported only when the tap is single-sample; with the stencil there is no
+  single applied vector per cell to report, and the deformation field is carried separately by
+  `occupancy_deform_offsets`, which is unaffected. Stencil-free arms are byte-identical to before.
+- **Detection class.** test-instrument.
+- **Instrument.** The pre-existing step-zero, paired-raster and "shared tensors" cases for the stencil
+  arm, which caught the break in the full suite; the failed run is preserved at
+  `runs/attempts/tests-placed-r1-crashed/full-suite-stencil-job.json`.
+- **Named green run.** `runs/tests-full-m4-placed-r3-job.json` (passed, 997 tests).
+
+## V-117 — CLOSED: a new record test read gate constants it had not imported
+
+- Symptom: `tests/test_occupancy_deform.py` failed one of 65 tests with `NameError: name
+  'CELL_F1_THRESHOLD' is not defined`.
+- **Root cause.** The gate-binding case named the shared thresholds inside the assertion without the
+  local import the neighbouring record class uses (scripts/ is not on the path at module import).
+- **Change.** The import is local to the case, as in the other record class.
+- **Detection class.** test-instrument.
+- **Instrument.** The suite itself; the failed run is preserved at
+  `runs/attempts/tests-placed-r1-crashed/tests-record-r1-nameerror-job.json`.
+- **Named green run.** `runs/tests-placed-record-r2-job.json` (passed, 65 tests).
+
+## V-116 — CLOSED: the curator read a training flag out of a checkpoint config
+
+- Symptom: `scripts/record_placed_lever.py` exited 1 with "placed position measurement reports another
+  arm" after the position measurements had passed.
+- **Root cause.** The arm-identity guard compared `result["arm"]["occupancy_placed"]` to the declared arm.
+  The placed lever is a term in the training objective and is recorded in the run's `arguments` and
+  `recovery_contract`; it never appears in a checkpoint's config, so the field read `0` for the placed arm
+  and refused a correct measurement.
+- **Change.** The guard reads the model lever (`occupancy_deform`) from the instrument and takes the
+  declared placed flag from the verified study contract, recording it as `declared_occupancy_placed`. The
+  instrument now reads the flag from the run's own arguments rather than its config.
+- **Detection class.** evidence-reporting.
+- **Instrument.** Refusal before `mkdir`; the crashed curation receipt and log are preserved at
+  `runs/attempts/m4-occplaced-curation-r1-crashed/`.
+- **Named green run.** `runs/m4-occplaced-curation-r3-job.json` (passed) writing
+  `docs/evidence/m4-placed-supervision-r1/scope.json`.
+
+## V-115 — CLOSED: a resume re-ran passed stages and asked for a control field
+
+- Symptom: a resume of the four-arm block failed eight of nine stages within seconds, each with either
+  `FileExistsError` on its own receipt or "this instrument measures a declared deformation arm".
+- **Root cause.** The resume launcher ran every stage unconditionally, re-creating receipts that a killed
+  predecessor had already written, and asked the field instrument for the control arm, which has no field
+  by construction.
+- **Change.** The resume skips any stage whose receipt is `passed` and whose output exists, clears its own
+  stale receipt and output before running, and asks the field instrument only for the three deformation
+  arms.
+- **Detection class.** tooling-harness.
+- **Instrument.** The refusals are loud and cost seconds; each is preserved under
+  `runs/attempts/m4-occplaced-stale-resume/`.
+- **Named green run.** `runs/launch_placed_resume2.sh` completed wide and de-meaned to `passed` receipts.
+
+## V-114 — CLOSED: the runner restart left a `running` study receipt behind
+
+- Symptom: the outer launcher was killed by a runner restart while the wide study was at step 37; the
+  study's receipt said `running` and its output directory held a code archive and a progress file.
+- **Root cause.** The known V-093 class: a supervisor killed by its caller cannot write a final status.
+- **Change.** None in the engine - the retry preserves the running receipt and the partial output and
+  re-runs from the still-passed profile, exactly as the V-093 instrument requires.
+- **Detection class.** launch-ownership.
+- **Instrument.** `require_arm` refuses any study whose receipt is not `passed`, so a `running` receipt can
+  never be curated; the record is preserved at `runs/attempts/m4-occplaced-runner-killed/`.
+- **Named green run.** `runs/m4-occplaced-wide-r1-job.json` (passed, 64 steps, 317.0 s) on the retry.
+
+## V-113 — CLOSED: four arms captured under two source catalogues
+
+- Symptom: the curator exited 1 with "the arms were captured under different catalogues" although all
+  four arms had passed.
+- **Root cause.** The control, wide and de-meaned arms were captured before a driver fix (V-111) and the
+  placed arm after it, so their archived source catalogues differed. The numbers still reproduced exactly,
+  but a record cannot mix catalogues.
+- **Change.** The three shared arms were re-captured from their profiles under the current catalogue rather
+  than relaxing the guard. Their exact-reproduction numbers are preserved at
+  `runs/attempts/m4-occplaced-catalogue-mixed/`.
+- **Detection class.** evidence-reporting.
+- **Instrument.** The curator's cross-arm catalogue assertion, which is what caught it.
+- **Named green run.** `runs/m4-occplaced-curation-r3-job.json` (passed) with one catalogue hash.
+
+## V-112 — CLOSED: a profile is bound to the catalogue it was captured under
+
+- Symptom: the placed study was refused with "source/config/input/CPU/memory envelope differs from
+  resource admission" while its own lever check had just passed.
+- **Root cause.** The placed profile had been captured before the driver's admission fix, so its recorded
+  catalogue digest no longer matched the archived tree the study ran from. A profile is a
+  catalogue-bound admission record, not a durable permission.
+- **Change.** Any source edit re-runs the profile it admits; the launcher for this arm now starts at the
+  profile stage, and the stale profile, receipts and outputs are preserved.
+- **Detection class.** provenance.
+- **Instrument.** The trainer's own envelope check, which refused before any step ran; preserved at
+  `runs/attempts/m4-occplaced-placed-stale/`.
+- **Named green run.** `runs/m4-occplaced-placed-r1-profile-r1-job.json` (passed) and its study (passed,
+  382.9 s).
+
+## V-111 — CLOSED: the admission join did not forward the new lever
+
+- Symptom: the placed study was refused with "occupancy placed differs from resource admission" although
+  its profile had been captured with the same flag.
+- **Root cause.** `validate_admission` gained the `occupancy_placed` parameter and the matching
+  `require_occupancy_placed` call, but the driver never passed the parsed flag into it, so the check
+  compared the profile's `1` against a default `0`.
+- **Change.** The driver forwards `occupancy_placed` into `validate_admission` (and not into
+  `dataclasses.replace(ModelConfig, ...)`, where it does not belong - V-110).
+- **Detection class.** launch-ownership.
+- **Instrument.** A standing test now parses `validate_admission` and requires that every `require_*(lever,
+  summary)` call inside it reads a parameter that exists in its signature, so a lever that is checked but
+  never forwarded cannot ship again (`tests/test_occupancy_deform.py`, `PlacedAdmissionTests`).
+- **Named green run.** `runs/m4-occplaced-placed-r1-job.json` (passed, 64 steps, 382.9 s).
+
+## V-110 — CLOSED: a loss-side flag was passed to the model config
+
+- Symptom: all twenty jobs of the first four-arm block exited 1 within about three seconds with
+  "ModelConfig.__init__() got an unexpected keyword argument 'occupancy_placed'".
+- **Root cause.** The driver passed the new flag into `dataclasses.replace(ModelConfig, ...)`. The placed
+  lever is a term in the objective, not a model field, so the config constructor refused it before any
+  profile, study, sweep or instrument forward ran.
+- **Change.** The keyword is removed from the config replace and lives only in the recovery contract and
+  the objective call.
+- **Detection class.** launch-ownership.
+- **Instrument.** The constructor's own refusal, seconds after launch and before any allocation; the
+  receipts, logs and partial outputs are preserved at `runs/attempts/m4-occplaced-crashed-r1/`.
+- **Named green run.** `runs/m4-occplaced-control-r1-profile-r1-job.json` (passed) and the full four-arm
+  block's `passed` receipts.
+
+## V-109 — CLOSED: the placed-target displacement broadcast a singleton axis
+
+- Symptom: the first placed unit-test run produced a `[1, 200, 200, 2]` target displacement instead of
+  `[1, 200, 2]`, and after that was fixed the term read `0.75` for fields that should have cost `0.0`.
+- **Root cause.** Two faults in `placed_target_displacement`. (a) The along-axis projections kept a
+  trailing singleton that broadcast against the nominal-coordinate row, producing an N x N grid. (b) The
+  basis was then applied to the target-minus-predicted *difference* while the cell's own column and row
+  were still subtracted from it, so the displacement sawtoothed across the board and a field sitting on
+  the target did not read zero.
+- **Change.** The projections are squeezed before any arithmetic, and the difference is returned directly:
+  a difference vector already carries the displacement, unlike an absolute position.
+- **Detection class.** test-instrument.
+- **Instrument.** The shape guard in `placed_displacement_term` and the unit tests that assert a field on
+  the target costs exactly nothing and an unreachable target clips to the arm's own reach; the crashed
+  receipts are preserved at `runs/attempts/tests-placed-r1-crashed/`.
+- **Named green run.** `runs/tests-placed-r4-job.json` (passed, 55 tests).
 
 ## V-108 — CLOSED: the reproduction join compared a block that carries no per-cell F1
 

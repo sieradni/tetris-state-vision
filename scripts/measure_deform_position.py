@@ -212,7 +212,8 @@ def main():
         "config": config, "core_architecture": architecture, "forwards": len(cases),
         "job_ceiling_bytes": job["memory_bytes"],
         "arm": {"occupancy_deform": config["occupancy_deform"],
-                "occupancy_placed": config.get("occupancy_placed", 0),
+                # The placed lever lives in the training contract, never in a model config.
+                "occupancy_placed": summary.get("arguments", {}).get("occupancy_placed", 0),
                 "applied_offsets": "occupancy_applied_offsets, the tap's own tensor"},
         "positions": {
             "note": ("Where the displaced samples landed, not how far they moved. in_frame is the "

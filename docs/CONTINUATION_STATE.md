@@ -1,5 +1,48 @@
 # Contributor handoff — 2026-10-30
 
+## Placed-target supervision loses, and the samples were reading off the board all along (2026-11-12)
+
+[M4_OCCUPANCY_PLACED.md](M4_OCCUPANCY_PLACED.md) was predeclared and committed before any receipt, then
+run as four matched 64-step continuations of `runs/m3-percell-balance-r1` differing only in the
+registration lever: control, the widened field, the de-meaned field, and the widened field under a
+**placed-target term** that supervises the displacement against the cell each sample should have read
+(`smooth-L1` between the applied offsets and the target lattice's per-cell displacement, both latices
+detached, targets clipped to the arm's 4-cell reach, weight `0.25`, **no new tensors**). Control, wide and
+de-meaned reproduced the previous record exactly, so the block is one implementation.
+
+| quantity | control | wide | de-meaned | **placed** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.820429 | 0.762448 |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.376663 | 0.377663 |
+| best swept F1 | 0.412034 | **0.514821** | 0.427911 | 0.378316 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.427911 | 0.378316 |
+| study peak / wall | 1,047,506,944 B / 322.7 s | 1,059,835,904 B / 317.0 s | 1,083,195,392 B / 191.4 s | 1,038,139,392 B / 382.9 s |
+
+The placed arm is **`not-cleared` and worse than control**, with resolvable AUC losses against control
+(`-0.060196`, `-0.116936 .. -0.015133`) and wide (`-0.119815`, `-0.208163 .. -0.052118`). Its field tells
+the story: constant-share **0.892** (it did become a translation toward the right place) but mean
+`|offset|` only **0.462** cells against a target of about `2.6`. The same zero-initialised convolution,
+over the same 64 Adam steps at the same rate, was moved `3.760` cells by the occupancy gradient and
+`0.462` by the supervision. The auxiliary weight that keeps the term honest is also, in this budget, too
+small to express it - and the sixth of the way it did travel costs resolvable AUC.
+
+The new read-only **position instrument** settles the previous pass's open question. The wide arm's
+`5.128`-cell translation moves **5.0%** of samples out of the image frame and leaves **64.1%** outside the
+target board's own cell frame (control 29.0%). The de-meaned arm is the only arm that *improves* board
+coverage (**0.777** against control's 0.710) and it gains nothing. So the objective's preferred
+displacement is a **shifted-window read** in which the occupancy label tracks the stack below the cell,
+not the cell itself.
+
+**Answer: registration is not a lever this architecture carries through this read-out, and neither is its
+supervision.** Occupancy-only supervision (de-meaned) is per-cell and useless; displacement supervision
+(placed) is too weak to enforce itself and harmful where it lands. The next declared instrument is a
+**different read-out**: cell-relative vertical context - a per-column stack profile, or a tap that sees
+the column below the cell - so that the only displacement the objective rewards is not a shift off the
+board. A stronger placed term only becomes worth measuring after that, because the target displacement it
+enforces is the one the current objective pays to avoid. No reach or bound change can help. Fit gate stays
+**FALSE** (0 of 28 exact boards on all four arms); V-109 through V-116 record this pass's defects and the
+failed receipts are under `runs/attempts/`.
+
 ## The constant mode was the whole signal: per-cell registration is learnable and buys nothing (2026-11-12)
 
 [M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was extended with a fourth arm

@@ -119,6 +119,103 @@ Its job is to say whether the wide arm's `5.128`-cell translation is a decode of
 exploit at the frame edge, and whether the placed arm's displacement lands on real structure rather than
 outside the board.
 
+## Measured (2026-11-12) - placed supervision loses to the objective it competes with
+
+Four arms were admitted inside 1,792 MiB and completed 64 steps under one catalogue from the published
+checkpoint. **Reproduction held exactly**: control `0.8226433610683003`, wide `0.8822623454135491` and
+de-meaned `0.8204288287642111` AUC, with per-cell F1 at `0.0` and best swept F1 identical to
+`docs/evidence/m3-occupancy-deformation-r3/scope.json`. Evidence:
+`docs/evidence/m4-placed-supervision-r1/scope.json`, curated by `runs/m4-occplaced-curation-r3-job.json`
+(passed, 9 work items).
+
+| quantity | control | wide | de-meaned | **placed** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.820429 | 0.762448 |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.376663 | 0.377663 |
+| best swept F1 | 0.412034 @ `0.90` | **0.514821** @ `1.95` | 0.427911 @ `0.60` | 0.378316 @ `0.15` |
+| precision at `0.0` | 0.236325 | **0.240955** | 0.235895 | 0.233701 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.427911 | 0.378316 |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,047,506,944 B / 322.7 s | 1,059,835,904 B / 317.0 s | 1,083,195,392 B / 191.4 s | 1,038,139,392 B / 382.9 s |
+
+**Verdict `not-cleared` on all three conditions**, and the declared reading is **`objective-class-fails`**:
+placed is `-0.136505` best F1 against wide, nowhere near the `+0.05` floor.
+
+| contrast | best swept F1 | AUC | F1 at `0.0` | out-of-fold F1 | attribution |
+|---|---|---|---|---|---|
+| placed vs control | -0.033718 | **-0.060196** (-0.116936 .. -0.015133, MDE 0.076290) | -0.003977 | -0.022083 | not met |
+| placed vs wide | -0.136505 | **-0.119815** (-0.208163 .. -0.052118, MDE 0.115599) | -0.008239 | -0.120097 | not met |
+| placed vs de-meaned | -0.049595 | -0.057981 (-0.140698 .. +0.015318, MDE 0.110477) | +0.001000 | -0.049595 | not met |
+| wide vs control | +0.102787 | +0.059619 (+0.029411 .. +0.094463, MDE 0.049478) | +0.004262 | +0.098014 | met |
+
+Both of placed's AUC losses - against control and against wide - are **resolvable** (intervals clear of
+zero): supervision of the displacement did not merely fail to help, it made the occupancy decision
+significantly worse while the same field without supervision still reproduced its published gain.
+
+### What the supervision actually did
+
+| | wide | de-meaned | **placed** |
+|---|---|---|---|
+| mean `\|offset\|` cells | 3.760 | 0.541 | **0.462** |
+| constant-share | 0.978 | 0.000752 | **0.892** |
+| board mean of the applied field | (-3.488, -3.760) | (-0.001, +0.024) | **(-0.388, -0.384)** |
+| at or near the bound | 83.8% | 0.0% | 0.0% |
+| samples outside their own cell | 99.8% | 36.5% | 39.4% |
+
+The placed term engaged - the field became **89.2% one constant vector**, the only constant-shaped field
+in the family besides the free arm's - but it moved only **0.462** cells against a target displacement of
+about **2.6** cells, i.e. the field reached roughly a sixth of what it was told. Two things follow, and
+both matter for what comes next:
+
+1. **The supervision is weaker than the objective.** The same zero-initialised convolution, over the same
+   64 Adam steps at the same rate, was moved `3.760` cells by the occupancy gradient and `0.462` cells by
+   the placed term at its declared `0.25` weight. The auxiliary scale that keeps the term from dominating
+   is, in this budget, also too small to express the displacement it declares.
+2. **The displacement it did adopt hurt.** A `0.46`-cell constant push is neither the published sampling
+   nor the correction, and it costs `-0.060196` AUC against control with an interval clear of zero. Being
+   nudged a sixth of the way toward the right place is worse than not being nudged.
+
+### Where the samples land (the new instrument)
+
+| arm | in frame | in the target board | outside both | mean landing (column, row) cells | mean shift |
+|---|---|---|---|---|---|
+| control | 1.000 | 0.710 | 0.290 | (3.891, 9.518) | 0.000 |
+| **wide** | **0.950** | **0.359** | **0.641** | (-0.261, 5.496) | 3.760 |
+| de-meaned | 1.000 | 0.777 | 0.223 | (6.578, 8.081) | 0.541 |
+| placed | 1.000 | 0.612 | 0.388 | (3.377, 8.663) | 0.462 |
+
+This is the answer to the question the last pass left open. The wide arm's `5.128`-cell translation is
+**not a decode correction**: it moves **5.0% of samples out of the image frame** and leaves **64.1%** of
+them outside the target board's own cell frame, against 29.0% for control. The gain that made the wide arm
+the family's best is bought by reading off the board - a shifted window in which the occupancy label
+correlates with stack height rather than with the cell. The de-meaned arm, whose displacement is per-cell
+by construction, is the only arm that *improves* board coverage (0.710 -> 0.777) and it gains nothing,
+which is the same conclusion from the other side.
+
+### The verdict, stated plainly
+
+**Per-cell registration is not a lever this architecture carries through this occupancy read-out, and the
+reason is now measured rather than inferred.** Occupancy-only supervision finds a field that is per-cell
+and useless (de-meaned, `0.820429`). Supervising the displacement toward the correct cell finds a field
+that is constant and too weak, and pays `-0.060196` AUC for the part it does apply (placed, `0.762448`).
+The objective's own preference, worth `+0.059619` AUC with an interval clear of zero, puts 64.1% of the
+samples off the board. A single translated sample per cell cannot be both correctly placed and
+predictive, because the label it is scored against is dominated by how much material sits below it.
+
+**The structural change the evidence points to is the read-out, not the field.** The occupancy head needs
+cell-relative vertical context - a per-column stack profile, or a tap that sees the column below the cell
+rather than one point - so that the only displacement the objective can reward is not a shift off the
+board. That is a different read-out, and it is the next declared instrument. Two consequences are recorded
+for whoever declares it: a placed-target term at a weight that can actually move the field (the same
+`0.25` could not, by two orders of magnitude against the occupancy gradient) is worth measuring only after
+the read-out changes, because the target displacement it enforces is exactly the one the current objective
+pays to avoid; and no further reach or bound change can help, since the de-meaned arm already shows bound
+saturation is not the binding constraint.
+
+**Fit gate: FALSE, unchanged** - 0 of 28 exact boards on all four arms. No gate, threshold, population or
+memory ceiling was altered, and the `0.25` placed weight was published before the receipts and not moved
+after them.
+
 ## Limits, stated before the measurement
 
 - 64 further steps from a published checkpoint at a 36-image deciding population cannot establish a

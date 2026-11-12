@@ -23,6 +23,25 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **placed-target supervision loses to the objective, and the position instrument says why**
+([M4_OCCUPANCY_PLACED.md](M4_OCCUPANCY_PLACED.md),
+`docs/evidence/m4-placed-supervision-r1/scope.json`). A fourth arm adds a term that supervises the
+*displacement* - smooth-L1 between the offsets the detail tap applied and the per-cell displacement to the
+target lattice's own cell - on the unchanged widened field, so it adds no tensors and step zero stays the
+published function. Control, wide and de-meaned reproduced the previous record exactly (`0.822643...`,
+`0.882262...`, `0.820429...`). The placed arm is **worse**: AUC **0.762448**, best F1 **0.378316**, with
+**resolvable** AUC losses against both control (`-0.060196`, interval `-0.116936 .. -0.015133`) and wide
+(`-0.119815`, interval `-0.208163 .. -0.052118`). Its field engaged (constant-share **0.892**) but moved
+only **0.462** cells of an ~`2.6`-cell target: the `0.25` auxiliary weight that keeps the term from
+dominating is, in 64 Adam steps, also too weak to express what it declares. The new read-only position
+instrument answers the open question: the wide arm's `5.128`-cell translation leaves **5.0%** of samples
+outside the image frame and **64.1%** outside the target board (control 29.0%, de-meaned 22.3%), so it is
+a shifted-window read, not a decode correction. Declared reading: **`objective-class-fails`**. Per-cell
+registration is not a lever this architecture carries through this read-out, and the next structural
+change is the **read-out** - cell-relative vertical context, a per-column stack profile - not another
+reach, bound or supervision weight. Fit gate stays **FALSE** (0 of 28 exact boards on all four arms).
+V-109 through V-116 record this pass's own defects, preserved under `runs/attempts/`.
+
 Latest: **per-cell registration is learnable and buys nothing; the family's gain was the translation**
 ([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md),
 `docs/evidence/m3-occupancy-deformation-r3/scope.json`). A fourth arm de-means the applied field across

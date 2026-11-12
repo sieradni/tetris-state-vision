@@ -1,6 +1,8 @@
 """The declared registration lever: a bounded per-cell field moving the detail tap's sample."""
+import inspect
 import json
 from pathlib import Path
+import re
 import sys
 import unittest
 
@@ -634,6 +636,155 @@ class PlacedTargetTests(unittest.TestCase):
         flipped = {"lattice": right["lattice"],
                    "occupancy_deform_offsets": right["occupancy_deform_offsets"]}
         self.assertEqual(float(placed_displacement_term(flipped, target)), before)
+
+
+class PlacedAdmissionTests(unittest.TestCase):
+    """Standing instrument for the launch-ownership class (V-110, V-111)."""
+
+    @classmethod
+    def setUpClass(cls):
+        from train_m2_stream import validate_admission, main
+        cls.source = inspect.getsource(validate_admission)
+        cls.driver = inspect.getsource(main)
+        cls.signature = set(inspect.signature(validate_admission).parameters)
+
+    def test_every_lever_the_admission_checks_is_forwarded(self):
+        checked = {name for name in re.findall(r"require_\w+\((\w+), summary\)", self.source)}
+        self.assertTrue(checked)
+        missing = checked-self.signature
+        self.assertFalse(missing, f"admission checks a lever it never receives: {sorted(missing)}")
+        # The specific miss this instrument was built for: the placed lever is checked and must be
+        # forwarded from the driver, not left at its default.
+        self.assertIn("occupancy_placed", checked)
+        self.assertIn("occupancy_placed=args.occupancy_placed", self.driver)
+
+    def test_the_config_replace_only_passes_model_fields(self):
+        start = self.driver.index("replace(config,")
+        block = self.driver[start:self.driver.index("config_json", start)]
+        passed = set(re.findall(r"(\w+)=args\.", block))
+        fields = set(vars(ModelConfig()))
+        self.assertTrue(passed)
+        self.assertFalse(passed-fields, f"the model config was handed non-model flags: "
+                                        f"{sorted(passed-fields)}")
+
+
+class PlacedRecordTests(unittest.TestCase):
+    """The placed-target record: its verdict, its reproduction and what the document claims."""
+
+    @classmethod
+    def setUpClass(cls):
+        root = Path(__file__).resolve().parents[1]
+        cls.root = root
+        cls.scope = json.loads((root/"docs/evidence/m4-placed-supervision-r1/scope.json").read_text(
+            encoding="utf-8"))
+        cls.prior = json.loads((root/"docs/evidence/m3-occupancy-deformation-r3/scope.json").read_text(
+            encoding="utf-8"))
+        cls.text = " ".join((root/"docs/M4_OCCUPANCY_PLACED.md").read_text(
+            encoding="utf-8").split())
+
+    def test_the_four_arms_are_the_declared_levers(self):
+        self.assertEqual(sorted(self.scope["arms"]),
+                         ["control", "demean", "placed", "wide"])
+        self.assertEqual({name: arm["occupancy_deform"] for name, arm in self.scope["arms"].items()},
+                         {"control": 0, "wide": 2, "demean": 3, "placed": 2})
+        self.assertEqual({name: arm["occupancy_placed"] for name, arm in self.scope["arms"].items()},
+                         {"control": 0, "wide": 0, "demean": 0, "placed": 1})
+        self.assertEqual(self.scope["verdict"]["verdict"], "not-cleared")
+        self.assertEqual(self.scope["placed"]["reading"], "objective-class-fails")
+        self.assertEqual(self.scope["population"]["nonempty_boards"], 28)
+        self.assertEqual(self.scope["population"]["occupied_cells"], 667)
+        self.assertEqual(self.scope["population"]["contexts"], 12)
+        for arm in self.scope["arms"].values():
+            self.assertEqual(arm["best"]["exact_nonempty_boards"], 0)
+
+    def test_the_three_shared_arms_reproduce_the_previous_record_exactly(self):
+        for name in ("control", "wide", "demean"):
+            for key in ("auc", "per_cell_f1"):
+                self.assertEqual(self.scope["arms"][name][key], self.prior["arms"][name][key], key)
+            self.assertEqual(self.scope["arms"][name]["best"]["f1"],
+                             self.prior["arms"][name]["best"]["f1"])
+            self.assertEqual(self.scope["reproduction"][name]["auc"],
+                             self.prior["arms"][name]["auc"])
+
+    def test_the_verdict_follows_the_printed_deltas(self):
+        over_wide = self.scope["contrasts"]["placed_wide"]
+        over_control = self.scope["contrasts"]["placed_control"]
+        self.assertLess(over_wide["best_f1_delta"], self.scope["gates"]["attribution_floor"])
+        self.assertLess(over_wide["auc_interval"]["high"], 0.0)
+        self.assertLess(over_control["auc_interval"]["high"], 0.0)
+        self.assertEqual(self.scope["placed"]["reading"], "objective-class-fails")
+        self.assertFalse(self.scope["verdict"]["conditions"]["attribution"])
+
+    def test_the_supervision_engaged_but_lost_to_the_objective(self):
+        comparison = self.scope["placed"]["comparison"]
+        self.assertGreater(comparison["constant_share"]["placed"], .85)
+        self.assertLess(comparison["mean_abs_offset_cells"]["placed"], 1.0)
+        self.assertGreater(comparison["mean_abs_offset_cells"]["wide"], 3.0)
+        self.assertGreater(comparison["constant_share"]["wide"], .95)
+        self.assertLess(comparison["constant_share"]["demean"], .5)
+        self.assertGreater(comparison["best_f1"]["wide"], comparison["best_f1"]["placed"])
+
+    def test_position_fractions_and_their_moments_re_derive(self):
+        for name, block in self.scope["positions"]["arms"].items():
+            for key in ("in_frame_fraction", "in_board_fraction", "out_of_board_or_frame_fraction"):
+                self.assertGreaterEqual(block[key], 0.0, name)
+                self.assertLessEqual(block[key], 1.0, name)
+            mean_x, mean_y = block["mean_applied_vector_cells"]
+            square = block["mean_square_shift_cells"]
+            derived = ((mean_x*mean_x+mean_y*mean_y)/square) if square else 1.0
+            self.assertAlmostEqual(derived, block["shift_coherence"], places=5, msg=name)
+            measured = json.loads((self.root/"runs"/block["instrument"]/"result.json").read_text())
+            weighted = sum(case["mean_magnitude_cells"]*case["known_cells"]
+                           for case in measured["cases"])
+            self.assertAlmostEqual(weighted/measured["positions"]["samples"],
+                                   block["mean_shift_cells"], places=6, msg=name)
+
+    def test_the_wide_arm_reads_off_the_board_and_the_others_do_not(self):
+        positions = self.scope["positions"]["arms"]
+        self.assertEqual(positions["control"]["in_frame_fraction"], 1.0)
+        self.assertLess(positions["wide"]["in_frame_fraction"], 1.0)
+        self.assertGreater(positions["wide"]["out_of_board_or_frame_fraction"], .5)
+        self.assertGreater(positions["demean"]["in_board_fraction"],
+                           positions["control"]["in_board_fraction"])
+        self.assertGreater(positions["placed"]["in_board_fraction"],
+                           positions["wide"]["in_board_fraction"])
+
+    def test_no_gate_weight_or_ceiling_was_altered(self):
+        sys.path.insert(0, str(self.root/"scripts"))
+        from occupancy_sweep import AUC_THRESHOLD, F1_THRESHOLD
+        from percell_gate import CELL_F1_THRESHOLD
+        envelope = self.scope["envelope"]
+        self.assertEqual(envelope["ceiling_bytes"], 1792*1024**2)
+        self.assertEqual(envelope["sweep_ceiling_bytes"], 640*1024**2)
+        self.assertEqual(envelope["instrument_ceiling_bytes"], 640*1024**2)
+        self.assertEqual(envelope["placed_target_weight"], .25)
+        self.assertEqual(envelope["attribution_floor"], .05)
+        self.assertEqual(self.scope["gates"], {"per_cell_f1": CELL_F1_THRESHOLD,
+                                               "ranking_auc": AUC_THRESHOLD,
+                                               "ranking_f1": F1_THRESHOLD,
+                                               "attribution_floor": .05, "grid_points": 81})
+
+    def test_the_document_quotes_the_published_scope(self):
+        arms = self.scope["arms"]
+        contrasts = self.scope["contrasts"]
+        comparison = self.scope["placed"]["comparison"]
+        positions = self.scope["positions"]["arms"]
+        for name in ("control", "wide", "demean", "placed"):
+            for key in ("auc", "per_cell_f1", "precision"):
+                self.assertIn(f"{round(arms[name][key], 6):,.6f}", self.text, f"{name} {key}")
+            self.assertIn(f"{round(arms[name]['best']['f1'], 6):,.6f}", self.text, f"{name} best")
+            self.assertIn(f"{arms[name]['study_peak_commit_bytes']:,}", self.text, f"{name} peak")
+        for key, delta in contrasts.items():
+            self.assertIn(f"{round(delta['best_f1_delta'], 6):,.6f}", self.text, key)
+            self.assertIn(f"{round(delta['auc_delta'], 6):,.6f}", self.text, key)
+        for name in ("placed", "wide", "demean"):
+            self.assertIn(f"{comparison['mean_abs_offset_cells'][name]:.3f}", self.text, name)
+        self.assertIn(f"{comparison['constant_share']['placed']:.3f}", self.text)
+        self.assertIn(f"{comparison['constant_share']['demean']:.6f}", self.text)
+        for name, block in positions.items():
+            self.assertIn(f"{block['in_board_fraction']:.3f}", self.text, f"{name} board")
+        self.assertIn(f"{positions['wide']['in_frame_fraction']:.3f}", self.text)
+        self.assertIn(self.scope["placed"]["reading"], self.text)
 
 
 class DemeanedRecordTests(unittest.TestCase):

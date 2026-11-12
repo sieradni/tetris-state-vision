@@ -555,10 +555,13 @@ class TetrisStateNet(nn.Module):
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
                 sample = centers.flatten(2)
                 # The tap's offsets as applied, so a measurement can bind "what the arm wrote"
-                # to "what it sampled" instead of assuming them equal.
-                occupancy_applied_offsets = (offsets+torch.zeros(
-                    batch, rows*columns, 1, 2, device=pixels.device, dtype=pixels.dtype
-                )).reshape(batch, rows*columns, 2)
+                # to "what it sampled" instead of assuming them equal. Only a single-sample tap
+                # applies one vector per cell; the stencil reads several fixed samples around the
+                # cell, so a single applied vector does not exist and is not reported (V-118).
+                if not self.config.occupancy_detail_stencil:
+                    occupancy_applied_offsets = (offsets+torch.zeros(
+                        batch, rows*columns, 1, 2, device=pixels.device, dtype=pixels.dtype
+                    )).reshape(batch, rows*columns, 2)
                 if self.occupancy_resolution_branch is not None:
                     fine = self.occupancy_resolution_branch((2*pixels-1)*valid)
                     fine = sample_features(fine, lattice, self.coordinates, torch.zeros(

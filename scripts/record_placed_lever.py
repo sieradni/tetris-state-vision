@@ -168,8 +168,10 @@ def require_position(name):
             result["population"]["known_cells"] != DECIDING_IMAGES*200 or
             result["population"]["occupied_cells"] != 667 or len(result["cases"]) != DECIDING_IMAGES):
         raise ValueError(f"{name} position measurement decided another population")
-    if (result["arm"]["occupancy_deform"] != ARMS[name][0] or
-            result["arm"]["occupancy_placed"] != ARMS[name][1]):
+    # The placed lever is a training-objective flag, not a model field, so it cannot appear in a
+    # checkpoint's config; the measurement's arm identity is its deformation lever plus the weight
+    # digest asserted above, and the declared placed flag is carried from the verified study.
+    if result["arm"]["occupancy_deform"] != ARMS[name][0]:
         raise ValueError(f"{name} position measurement reports another arm")
     positions = result["positions"]
     if not POSITION <= set(positions):
@@ -379,7 +381,9 @@ def main():
     def position_block(name):
         result = positions[name][1]
         return {"instrument": positions[name][0], **result["positions"],
-                "arm": result["arm"]}
+                "arm": result["arm"],
+                "declared_occupancy_placed": ARMS[name][1],
+                "declared_from": "the study's admission contract"}
 
     scope = {
         "status": "passed",
