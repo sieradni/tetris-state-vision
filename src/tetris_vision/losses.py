@@ -177,6 +177,17 @@ def require_occupancy_placed(value, summary):
         raise ValueError("occupancy placed differs from resource admission")
 
 
+OCCUPANCY_COLUMN_ARMS = (0, 1)
+
+
+def require_occupancy_column(value, summary):
+    """One declaration of the admission join for the column read-out lever."""
+    if (type(value) is not int or value not in OCCUPANCY_COLUMN_ARMS or
+            summary.get("arguments", {}).get("occupancy_column", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_column", 0) != value):
+        raise ValueError("occupancy column differs from resource admission")
+
+
 def placed_target_displacement(lattice, target_lattice, rows, columns, reach):
     """Per-cell displacement, in cells, from where the tap samples to where it should sample.
 

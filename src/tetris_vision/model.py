@@ -39,6 +39,7 @@ class ModelConfig:
     lattice_board_refine: int = 0
     lattice_board_refine: int = 0
     occupancy_lattice_free: int = 0
+    occupancy_column: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -89,6 +90,9 @@ class ModelConfig:
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
         check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1),
               "occupancy lattice-free readout is 0 (published read-out) or 1 (declared gated channel)")
+        check(type(self.occupancy_column) is int and self.occupancy_column in (0, 1),
+              "occupancy column read-out is 0 (published read-out) or 1 (declared per-column "
+              "stack context)")
 
     @classmethod
     def pilot(cls):
@@ -101,6 +105,32 @@ PUBLISHED_WIDTHS = (48, 96, 192, 256)
 PUBLISHED_DIMENSION = 192
 PILOT_WIDTHS = (16, 32, 64, 96)
 PILOT_DIMENSION = 64
+
+
+def column_context(cells, rows, columns):
+    """Per-cell view of its own column: mean feature below and above, and the spans they cover.
+
+    Rows are bottom-first everywhere in this project, so "below" a cell is the strictly smaller row
+    index - the material an occupancy label at that cell is really reporting. Built from cumulative
+    sums, so it costs one [batch, cells, 2*dimension+2] intermediate and adds no learnable tensor of
+    its own; the projection that reads it is zero-initialized, which keeps step zero exactly the
+    published function.
+    """
+    batch, count, dimension = cells.shape
+    if count != rows*columns:
+        raise ValueError("column context requires exactly one feature per board cell")
+    grid = cells.reshape(batch, rows, columns, dimension)
+    cumulative = grid.cumsum(1)
+    below = cumulative-grid
+    above = grid.sum(1)[:, None]-cumulative
+    index = torch.arange(rows, device=cells.device, dtype=cells.dtype)
+    below_count = index.clamp_min(1).reshape(1, rows, 1, 1)
+    above_count = (rows-index-1).clamp_min(1).reshape(1, rows, 1, 1)
+    position = (index/(rows-1)).reshape(1, rows, 1, 1).expand(batch, rows, columns, 1)
+    context = torch.cat((below/below_count, above/above_count, position, 1-position), -1)
+    if context.shape[-1] != 2*dimension+2:
+        raise ValueError("column context has an unexpected width")
+    return context.reshape(batch, count, 2*dimension+2)
 
 
 def trunk_suffix(config):
@@ -461,6 +491,18 @@ class TetrisStateNet(nn.Module):
                 self.occupancy_deform_coarse = nn.Conv2d(config.widths[0], 2, 3, padding=1)
                 nn.init.zeros_(self.occupancy_deform_coarse.weight)
                 nn.init.zeros_(self.occupancy_deform_coarse.bias)
+        # Declared read-out lever: each cell's occupancy feature also sees the column it stands in,
+        # as the mean cell feature strictly below and strictly above it plus the spans they cover.
+        # The evidence that motivates it (M4_OCCUPANCY_PLACED.md) is that the objective's only
+        # profitable displacement was a read of the material below the cell; putting that material
+        # beside the cell means no displacement has to be bought at all. Zero-initialized, so step
+        # zero is exactly the published function and the paired control starts from the same
+        # tensors.
+        self.occupancy_column = None
+        if config.occupancy_column:
+            self.occupancy_column = nn.Linear(2*dimension+2, dimension)
+            nn.init.zeros_(self.occupancy_column.weight)
+            nn.init.zeros_(self.occupancy_column.bias)
 
     @staticmethod
     def support_moments(coarse):
@@ -568,6 +610,11 @@ class TetrisStateNet(nn.Module):
                         1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))[0]
                     sample = sample+fine.flatten(2)
                 occupancy_features = occupancy_features+self.occupancy_detail_tap(sample)
+            if self.occupancy_column is not None:
+                # Declared read-out: the cell's own column, summarised below and above it. It reads
+                # the decoder's cell features at the cell, so it never moves a sample.
+                occupancy_features = occupancy_features+self.occupancy_column(
+                    column_context(cells, rows, columns))
             if self.occupancy_neighborhood is not None:
                 neighborhood = cells.reshape(batch, rows, columns, self.config.dimension).permute(0, 3, 1, 2)
                 # Declared stacking lever: the two residuals are summed, so turning both taps on

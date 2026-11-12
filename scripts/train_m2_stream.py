@@ -77,6 +77,12 @@ def arguments(argv=None):
                              "the measured 2.57-cell placement residual;3 de-means that field across the "
                              "board, so its constant mode is exactly zero and only per-cell "
                              "displacement remains expressible; requires --occupancy-detail 1")
+    parser.add_argument("--occupancy-column", type=int, choices=(0, 1), default=0,
+                        help="declared read-out lever;1 adds the cell's own column, summarised below "
+                             "and above it from the decoder's cell features, through a "
+                             "zero-initialized projection - so step zero is the published function, "
+                             "no sample moves, and the material an occupancy label actually reports "
+                             "sits beside the cell instead of being bought as a displacement")
     parser.add_argument("--occupancy-placed", type=int, choices=OCCUPANCY_PLACED_WEIGHTS, default=0,
                         help="declared placed-target lever;1 adds a term that supervises the "
                              "displacement the detail tap applies against the displacement that would "
@@ -169,6 +175,10 @@ def arguments(argv=None):
         parser.error("the registration lever moves the detail tap's sample; it requires --occupancy-detail 1")
     if args.occupancy_placed and args.occupancy_deform != 2:
         parser.error("the placed-target term supervises the widened field;1 requires --occupancy-deform 2")
+    if args.occupancy_column and (args.occupancy_detail or args.occupancy_detail_stencil or
+                                  args.occupancy_resolution or args.occupancy_context or
+                                  args.occupancy_deform or args.occupancy_placed):
+        parser.error("the column read-out is declared on the published occupancy read-out")
     if args.init_weights_from is not None and args.resume_from is not None and not args.freeze_backbone:
         parser.error("initial weights define a fresh start; resume an existing run instead")
     if not math.isfinite(args.wall_seconds) or not 0 < args.wall_seconds <= 1800 or not math.isfinite(args.learning_rate) or not 0 < args.learning_rate <= .01:
@@ -250,7 +260,7 @@ INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_detail_ta
                                  "occupancy_resolution_branch.", "occupancy_deform.",
                                  "occupancy_deform_coarse.", "support_box.", "lattice_residual.",
                                  "occupancy_lattice_free.", "occupancy_lattice_gate",
-                                 "lattice_board_refine.")
+                                 "lattice_board_refine.", "occupancy_column.")
 
 
 def owned_initial_source(source, *, output):
@@ -268,7 +278,7 @@ def owned_initial_source(source, *, output):
 
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, lattice_board_refine=0,
-                   occupancy_placed=0):
+                   occupancy_placed=0, occupancy_column=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -294,7 +304,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
                                      require_occupancy_deform, require_positive_weight,
-                                     require_occupancy_placed)
+                                     require_occupancy_placed, require_occupancy_column)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -311,6 +321,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_resolution(occupancy_resolution, summary)
     require_occupancy_deform(occupancy_deform, summary)
     require_occupancy_placed(occupancy_placed, summary)
+    require_occupancy_column(occupancy_column, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -569,6 +580,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
                      occupancy_resolution=args.occupancy_resolution,
                      occupancy_deform=args.occupancy_deform,
+                     occupancy_column=args.occupancy_column,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
                      lattice_board_refine=args.lattice_board_refine,
@@ -594,6 +606,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_resolution=args.occupancy_resolution,
                            occupancy_deform=args.occupancy_deform,
                            occupancy_placed=args.occupancy_placed,
+                           occupancy_column=args.occupancy_column,
                            geometry_final_only=args.geometry_final_only,
                            lattice_support=args.lattice_support,
                            lattice_residual=args.lattice_residual,
@@ -618,7 +631,8 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "lattice_support",
                                                     "lattice_residual",
                                                     "occupancy_lattice_free",
-                                                    "lattice_board_refine")) or
+                                                    "lattice_board_refine",
+                                                    "occupancy_column")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -764,6 +778,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_resolution"] = args.occupancy_resolution
     recovery_contract["occupancy_deform"] = args.occupancy_deform
     recovery_contract["occupancy_placed"] = args.occupancy_placed
+    recovery_contract["occupancy_column"] = args.occupancy_column
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight
