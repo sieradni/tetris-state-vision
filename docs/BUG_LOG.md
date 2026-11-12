@@ -2674,3 +2674,26 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `tests.test_supervised_anchor` 16 tests OK before launch, then the eight block stages passed on
   the first attempt (`M10_BLOCK_DONE`), the curator passed at its 1,900 MiB ceiling
   (`runs/m10-anchor-curation-r1-job.json`, exit 0, `1.845 s`), and the full suite is green on the committed tree.
+
+## V-132 - CLOSED: a refusal test that would have passed on an unrelated exit
+
+- Symptom: the first draft of `tests/test_quantile_anchor.py` proved each declared refusal with
+  `assertRaises(SystemExit)` over `arguments([...])`, but the probe argv omitted `--steps`, so every case exited 2 from
+  argparse's own missing-required-argument check before the refusal was reached. The suite reported the guards as
+  working while they were never executed, and the accompanying "the arm alone is admitted" case failed for the same
+  reason.
+- Root cause: the test asserted *that* the parser exited, not *why*. Any later validation - a missing flag, the
+  warm-optimizer admission check, a profile-shape check - would have satisfied it. Same class as V-131's second half:
+  the assertion measured the wrong thing.
+- Detection class: test instrument, caught in the repo's working tree before launch; no receipt, study or sweep was
+  produced with a defect the tests were supposed to catch.
+- Instrument: the probe argv now carries a complete, admissible baseline (`--steps 2 --profile-square`) and each case
+  captures stderr and asserts the declared refusal's own wording (`quantile anchor supervises`) is what fired, so a
+  broken guard cannot pass and an unrelated validation cannot stand in for it. The admitted case asserts both
+  `--occupancy-quantile-anchor 1` and the default `0` parse cleanly. Also fixed in the same file: the identity test
+  for `0` was written against `stage_loss` without a full stage/target fixture and raised `KeyError: 'lattice'`; it is
+  now a source-level identity (default `0` on both entry points, the term assigned only inside the flag's guard, no
+  scaling anywhere) plus the suite's own training-path tests, which run the published `joint_loss` on every build.
+- Named green run: `tests.test_quantile_anchor` 20 tests OK before launch (1 skipped until the record existed), the
+  eight block stages passed first time (`M11_BLOCK_DONE`), curation passed at its 1,900 MiB ceiling
+  (`runs/m11-quantile-anchor-curation-r1-job.json`, exit 0, 2.177 s), and the full suite is green on the committed tree.

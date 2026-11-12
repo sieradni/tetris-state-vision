@@ -192,6 +192,14 @@ OCCUPANCY_ANCHOR_ARMS = (0, 1)
 # the read's own scale; it is not a threshold and does not move.
 ANCHOR_MARGIN = 1.0
 ANCHOR_WEIGHT = .5
+OCCUPANCY_QUANTILE_ANCHOR_ARMS = (0, 1)
+# Declared before any receipt (docs/M11_QUANTILE_ANCHOR.md) and not searched afterwards: the same margin, the
+# same weight and therefore the same scale as the M10 extremal anchor, with only the statistic changed from the
+# board's extreme cells to its within-class quantiles. `linear` is PyTorch's h=(n-1)q interpolation on the
+# sorted class logits, so the value is a real logit of that board and not an extrapolation.
+ANCHOR_OCCUPIED_QUANTILE = .10
+ANCHOR_EMPTY_QUANTILE = .90
+QUANTILE_INTERPOLATION = "linear"
 
 
 def require_occupancy_offset_rows(value, summary):
@@ -200,6 +208,14 @@ def require_occupancy_offset_rows(value, summary):
             summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
         raise ValueError("occupancy offset rows differs from resource admission")
+
+
+def require_occupancy_quantile_anchor(value, summary):
+    """One declaration of the admission join for the quantile-anchored margin."""
+    if (type(value) is not int or value not in OCCUPANCY_QUANTILE_ANCHOR_ARMS or
+            summary.get("arguments", {}).get("occupancy_quantile_anchor", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_quantile_anchor", 0) != value):
+        raise ValueError("occupancy quantile anchor differs from resource admission")
 
 
 def require_occupancy_anchor(value, summary):
@@ -515,8 +531,38 @@ def anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+def quantile_anchor_term(output, target):
+    """Declared supervision of the operating point against the board's *mass*, not two of its cells.
+
+    The extremal anchor bounds a board's lowest occupied and highest empty logit - two cells of two hundred - so
+    the other ``99%`` are free to sit anywhere and the empty mass drifts as a block (M10: `64.5%` of cells above
+    zero while the term was satisfied). This term replaces the extrema with within-class quantiles:
+    `max(0, margin - q10(occupied)) + max(0, margin + q90(empty))`, so at least `90%` of each class is required to
+    be on its side of the `0.0` boundary the consumer applies. It is supervision, not a boundary rule: it names no
+    threshold, adds no parameter, counts no cells - a *quantile* of a board's own logits, not a share of the
+    population - weights nothing by class frequency, and excludes `unknown` cells from both sides, so an invisible
+    cell is never treated as empty. The interpolation convention is fixed by the declaration
+    (`QUANTILE_INTERPOLATION`), so the value is always a real logit of the board being judged.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = logits[index][occupied[index]], logits[index][empty[index]]
+        if high.numel() and low.numel():
+            total = total+F.relu(ANCHOR_MARGIN-torch.quantile(
+                high, ANCHOR_OCCUPIED_QUANTILE, interpolation=QUANTILE_INTERPOLATION))
+            total = total+F.relu(ANCHOR_MARGIN+torch.quantile(
+                low, ANCHOR_EMPTY_QUANTILE, interpolation=QUANTILE_INTERPOLATION))
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0):
+               positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
+               occupancy_quantile_anchor=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -568,6 +614,13 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared operating-point supervision: the margin is anchored to the boundary a consumer applies,
         # so pinning the location is part of the objective rather than a choice made afterwards.
         result["anchor"] = anchor_term(output, target)
+    check(type(occupancy_quantile_anchor) is int and
+          occupancy_quantile_anchor in OCCUPANCY_QUANTILE_ANCHOR_ARMS,
+          "occupancy quantile anchor must be 0 (unsupervised boundary) or 1 (declared within-class quantiles)")
+    if occupancy_quantile_anchor:
+        # Declared mass supervision: the same anchored margin, paid by the classes' quantiles instead of their
+        # extreme cells, so the empty bulk cannot ride up while two bound cells satisfy the term.
+        result["quantile"] = quantile_anchor_term(output, target)
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -579,7 +632,7 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
-               occupancy_anchor=0):
+               occupancy_anchor=0, occupancy_quantile_anchor=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -587,7 +640,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     check(type(support_anchor_weight) is float and support_anchor_weight in SUPPORT_ANCHOR_WEIGHTS,
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
-                            positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor)
+                            positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
+                            occupancy_quantile_anchor)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -613,7 +667,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "support_anchor": support_anchor_weight,
                "placed": PLACED_TARGET_WEIGHT*occupancy_placed,
                "margin": MARGIN_HINGE_WEIGHT*occupancy_margin_hinge,
-               "anchor": ANCHOR_WEIGHT*occupancy_anchor}
+               "anchor": ANCHOR_WEIGHT*occupancy_anchor,
+               "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 

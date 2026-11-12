@@ -99,6 +99,13 @@ def arguments(argv=None):
                              "over the known visible cells of every board that carries both classes, at the "
                              "declared margin and weight. It names no threshold, reads no prevalence and "
                              "adds no parameter, and 0 is exactly the published objective")
+    parser.add_argument("--occupancy-quantile-anchor", type=int, choices=(0, 1), default=0,
+                        help="declared mass supervision of the operating point;1 adds the anchored margin "
+                             "max(0, margin - q10 of the board's occupied logits) + "
+                             "max(0, margin + q90 of its empty logits), averaged over the boards that carry "
+                             "both classes, at the same declared margin and weight as --occupancy-anchor. It "
+                             "names no threshold, counts no cells, reads no prevalence and adds no "
+                             "parameter, and 0 is exactly the published objective")
     parser.add_argument("--occupancy-normalise", type=int, choices=(0, 1), default=0,
                         help="declared output parameterisation;1 z-scores the occupancy logits over "
                              "each board's own visible cells (mean 0, unit spread, no label and no "
@@ -216,6 +223,18 @@ def arguments(argv=None):
                                      args.occupancy_offset_rows or args.occupancy_lattice_free):
         parser.error("the normalised output is declared on the published occupancy read-out, so no "
                      "lever that changes what is read or where it is sampled may sit beside it")
+    if args.occupancy_quantile_anchor and (args.occupancy_anchor or args.occupancy_margin_hinge or
+                                           args.occupancy_normalise or args.occupancy_context or
+                                           args.occupancy_detail_stencil or args.occupancy_resolution or
+                                           args.occupancy_deform or args.occupancy_placed or
+                                           args.occupancy_column or args.occupancy_offset_rows or
+                                           args.occupancy_lattice_free):
+        # Mass supervision of the same margin: it supersedes both extremal terms (stacking would train three
+        # statements about one boundary) and refuses every lever that changes what is read, where it is sampled
+        # or where zero sits, so the supervised bulk cannot be confounded with a moved read.
+        parser.error("the quantile anchor supervises the published occupancy read-out and supersedes the "
+                     "two-sided anchor and the one-sided hinge, so neither of them nor any lever that changes "
+                     "what is read, where it is sampled or where zero sits may sit beside it")
     if args.occupancy_anchor and (args.occupancy_margin_hinge or args.occupancy_normalise or
                                   args.occupancy_context or args.occupancy_detail_stencil or
                                   args.occupancy_resolution or args.occupancy_deform or
@@ -346,7 +365,8 @@ def owned_initial_source(source, *, output):
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, lattice_board_refine=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
-                   occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0):
+                   occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
+                   occupancy_quantile_anchor=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -374,7 +394,8 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_deform, require_positive_weight,
                                      require_occupancy_placed, require_occupancy_column,
                                      require_occupancy_offset_rows, require_occupancy_normalise,
-                                     require_occupancy_margin_hinge, require_occupancy_anchor)
+                                     require_occupancy_margin_hinge, require_occupancy_anchor,
+                                     require_occupancy_quantile_anchor)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -396,6 +417,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_normalise(occupancy_normalise, summary)
     require_occupancy_margin_hinge(occupancy_margin_hinge, summary)
     require_occupancy_anchor(occupancy_anchor, summary)
+    require_occupancy_quantile_anchor(occupancy_quantile_anchor, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -684,6 +706,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_placed=args.occupancy_placed,
                            occupancy_margin_hinge=args.occupancy_margin_hinge,
                            occupancy_anchor=args.occupancy_anchor,
+                           occupancy_quantile_anchor=args.occupancy_quantile_anchor,
                            occupancy_column=args.occupancy_column,
                            occupancy_offset_rows=args.occupancy_offset_rows,
                            occupancy_normalise=args.occupancy_normalise,
@@ -776,7 +799,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -865,6 +888,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_normalise"] = args.occupancy_normalise
     recovery_contract["occupancy_margin_hinge"] = args.occupancy_margin_hinge
     recovery_contract["occupancy_anchor"] = args.occupancy_anchor
+    recovery_contract["occupancy_quantile_anchor"] = args.occupancy_quantile_anchor
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight
@@ -927,7 +951,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -1016,7 +1040,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()

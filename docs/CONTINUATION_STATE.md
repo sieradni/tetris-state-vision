@@ -1,5 +1,44 @@
 # Contributor handoff — 2026-10-30
 
+## Bounding the mass fails too, and the drifting quantity is the read's level (2026-11-12)
+
+[M11_QUANTILE_ANCHOR.md](M11_QUANTILE_ANCHOR.md) was predeclared before any receipt: the class-quantile anchor
+`--occupancy-quantile-anchor 1`, i.e. per qualifying board
+`max(0, margin - q10(occupied)) + max(0, margin + q90(empty))` over known visible cells, at `ANCHOR_MARGIN = 1.0`,
+`ANCHOR_WEIGHT = 0.5`, quantiles `.10`/`.90`, `linear` interpolation - the same margin and weight as M10, so the only
+change is the statistic. Family `m11-quantile-anchor-`, new catalogue `cb8775b5`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | prec/rec at `0.0` | positive at `0.0` | out-of-fold | row error |
+|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.2363 / 0.9910 | 49.9% | 0.400399 | +7.819 |
+| class-quantile anchor | 0.815340 | **0.264308** | 0.404026 @ `2.25` | 0.1523 / 0.9970 | 78.0% | 0.379323 | +10.020 |
+| *M10 extremal anchor (reference)* | *0.885462* | *0.310966* | *0.540811* | — | *64.5%* | *0.540811* | *+9.779* |
+| *M9 hinge (reference)* | *0.864667* | *0.251701* | *0.474210* | — | — | *0.429457* | *+10.691* |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly. Reading `bulk-fails` (primary `-0.117332`), secondary
+`ranking-preserved` (`-0.007303`, inside the `-0.02` tolerance), verdict `not-cleared`, fit gate **FALSE** (0 of 28).
+
+**What the pass established.** The declaration predicted this term would be pointwise *no larger* than the extremal
+anchor (it is: paid mean `2.417` against `3.004`; the ordering is `q10 >= min`, `q90 <= max`, so the converse cannot
+occur) and hypothesised that pressure landing on the body would beat pressure landing on two cells. **That hypothesis
+is refuted.** Every supervised arm so far has *raised* the read instead of pinning it: `49.9%` of cells positive at
+control, `64.5%` after M10's anchor, `78.0%` here, and the swept optimum moved from `+0.90` to `+2.25`. A per-board
+statistic buys level: raising the occupied statistic is charged once per board while the cost of raising the whole
+read is spread across `4,933` cells the term never counts. So the problem was never which statistic - it is that **too
+few cells are charged**, and the read's free additive level absorbs the pressure.
+
+**Next arm, declared by the data rather than by the earlier fallback.** The predeclared mean anchor is *not* the next
+step and the record says why (same shape of instrument, and a class mean is dominated by confident cells, so the
+band that decides `0.0` barely registers). Instead: a class-balanced **dense** margin hinge,
+`mean over boards [0.5 mean_occ relu(margin - logit) + 0.5 mean_empty relu(margin + logit)]`, margin `1.0`, weight
+`0.5`, over known visible cells only - every cell charged, both classes equally weighted (never by frequency), and
+only the cells inside the declared band carry gradient, which is exactly where the operating point is decided. Its
+satisfaction implies a perfect `0.0` boundary on the published population, so the informative reading is how much of
+that is reached; margin, weight and bindings to be declared in its own document before its own receipt.
+
+Defect: V-132 (a refusal test that would have passed on an unrelated `SystemExit`; now asserts the refusal's own
+wording, so a broken guard cannot masquerade as a working one).
+
 ## The anchored margin is the best read yet and still not an operating point (2026-11-12)
 
 [M10_SUPERVISED_ANCHOR.md](M10_SUPERVISED_ANCHOR.md) was predeclared before any receipt. It adds the two-sided anchor

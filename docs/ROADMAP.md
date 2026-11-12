@@ -23,7 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the strongest occupancy result yet, and still no operating point** ([M10_SUPERVISED_ANCHOR.md](M10_SUPERVISED_ANCHOR.md),
+Latest: **bounding the mass also fails, and the level is the thing that drifts** ([M11_QUANTILE_ANCHOR.md](M11_QUANTILE_ANCHOR.md),
+`docs/evidence/m11-quantile-anchor-r1/scope.json`). The declared class-quantile anchor -
+`mean [max(0, margin - q10(occupied)) + max(0, margin + q90(empty))]`, margin `1.0`, weight `0.5`, quantiles `.10`/`.90`,
+linear interpolation over known cells - replaces the extrema with the classes' own percentiles. Family
+`m11-quantile-anchor-`, new catalogue `cb8775b5`; control reproduced `0.8226433610683003` and `0.381640` exactly. The
+arm came out **negative on every axis**: plain F1 at `0.0` **0.264308** (`-0.117332`), AUC `0.815340` (`-0.007303`),
+best swept `0.404026`, out-of-fold `0.379323`. Reading `bulk-fails`, secondary `ranking-preserved` (inside tolerance),
+fit gate **FALSE**. The cause is now measured, not guessed: control calls `49.9%` of cells positive and its best
+boundary is `+0.90`, the quantile arm calls `78.0%` and its best boundary `+2.25`, so supervising a **per-board
+statistic** buys a free upward shift of the read's level rather than pinning it - the charge falls from `3.004` to
+`2.417` while the level rises. Three summary statistics in a row (two cells, ten percent, one number per class) have
+now failed, so the declared next arm charges **every** cell instead: a class-balanced dense margin hinge
+`mean [0.5 mean_occ relu(margin - logit) + 0.5 mean_empty relu(margin + logit)]`, margin `1.0`, weight `0.5`, whose
+satisfaction implies a perfect `0.0` boundary and whose gradient falls exactly on the band that decides the operating
+point. The predeclared mean fallback is argued down in the record rather than taken.
+
+Previous: **the strongest occupancy result yet, and still no operating point** ([M10_SUPERVISED_ANCHOR.md](M10_SUPERVISED_ANCHOR.md),
 `docs/evidence/m10-supervised-anchor-r1/scope.json`). A declared **two-sided anchor** -
 `mean [max(0, margin - lowest_occupied) + max(0, margin + highest_empty)]`, margin `1.0`, weight `0.5`, known cells
 only, on the unnormalised read - names `0.0` in the objective on both sides instead of leaving the gap free. Family
