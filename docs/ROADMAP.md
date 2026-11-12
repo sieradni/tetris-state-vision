@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the shifted read's operating point is not recoverable from its own logit distribution by an
+imbalance-blind rule, so the offset's advantage is a threshold effect**
+([M7_CALIBRATION.md](M7_CALIBRATION.md), `docs/evidence/m7-calibration-r1/scope.json`). Three arms were
+re-captured in one catalogue and scored read-only at two rules; control and wide reproduced
+`0.8226433610683003` and `0.8822623454135491` exactly. A per-board threshold chosen from each board's own 200
+occupancy logits by Otsu's criterion - no labels, no swept F1, translation-equivariant by construction, so it
+absorbs exactly the `0.90 -> 2.70` boundary drift - puts the `-1` offset arm at F1 **0.380898**: `+0.035025`
+over its own `0.0` boundary, but `0.000742` **below** control and `-0.000219` against control at *its* label-free
+threshold. Declared reading `calibration-fails`, secondary `offset-advantage-was-a-threshold-effect`. The
+mechanism of the failure is diagnosable and is not the read's fault alone: cells are `11.9%` occupied and Otsu
+splits by between-class *variance*, so all three arms land at recall `0.99` / precision `0.24` - a saturated
+detector - and the rule hurts the best arm too (`-0.027668` F1 for wide). What survives is the ranking finding:
+`-1` buys `+0.048086` AUC (interval `+0.013560 .. +0.071269`) with no tensor added. Next: make the boundary a
+**learned** quantity rather than a post-hoc one - an occupancy logit trained in a per-board normalised
+parameterisation, so `0.0` is a supervised operating point and the drift cannot hide in an unconstrained scale -
+or, failing that, a label-free rule that models the occupied rate. Fit gate stays **FALSE** (0 of 28 exact
+boards). V-126 to V-128 record this pass's defects.
+
 Latest: **a one-row sampling offset recovers most of the best arm's gain, in the opposite direction to the
 one predicted** ([M6_ROW_OFFSET.md](M6_ROW_OFFSET.md), `docs/evidence/m6-row-offset-r1/scope.json`,
 diagnostic in `docs/evidence/m5-row-error-r1/`). A read-only diagnostic of the four frozen sweeps shows

@@ -1,5 +1,57 @@
 # Contributor handoff — 2026-10-30
 
+## The shifted read has no usable boundary it can find itself (2026-11-12)
+
+[M7_CALIBRATION.md](M7_CALIBRATION.md) was predeclared before any receipt of the block; the mechanism is a
+per-board threshold chosen from each board's own 200 occupancy logits by Otsu's criterion - no labels, no swept
+F1, no held-out boundary. It is translation-equivariant, so it absorbs an additive misregistration shift, which
+is what the `0.90 -> 2.70` boundary drift of the `-1` row offset looked like. Three arms were re-captured in one
+catalogue (`771d7fc8...`) and every read was taken read-only over the frozen sweeps.
+
+| arm | AUC | F1 at `0.0` | best swept F1 | F1 at its own label-free thresholds | threshold mean (sd) |
+|---|---|---|---|---|---|
+| control | 0.822643 | 0.381640 | 0.412034 @ `0.90` | **0.381117** | `-0.188` (0.140) |
+| wide | 0.882262 | 0.385902 | 0.514821 @ `1.95` | **0.358234** | `-0.362` (0.360) |
+| down (`-1`) | 0.870729 | 0.345873 | 0.469259 @ `2.70` | **0.380898** | `1.145` (0.252) |
+
+Control and wide reproduced `0.8226433610683003` and `0.8822623454135491` exactly, and `down` reproduced its M6
+record (`0.8707292410960544`, best `0.46925858951175414`).
+
+**Reading `calibration-fails`**: the label-free rule lifts the shifted read `+0.035025` off its own `0.0`
+boundary - most of the `0.087386` the label-chosen boundary found - but it lands `0.000742` **below** control and
+is `-0.000219` against control at control's own label-free threshold, so the secondary reading is
+`offset-advantage-was-a-threshold-effect`. At any boundary the read can supply itself, the offset is not ahead of
+control; the `+0.048086` AUC gain is real and threshold-free but does not become an operating point.
+
+**Why, and it matters for what comes next.** Cells are `11.9%` occupied and Otsu maximises *between-class
+variance*, which under that base rate cuts inside the empty mass: all three arms land at recall `0.99` and
+precision `0.24`, a saturated detector, and the rule costs the best arm `-0.027668` F1. So the finding is
+narrower than "no label-free statistic works" - it is that an imbalance-blind rule does not work, and the
+boundary has to come from somewhere else. Two candidates, in order of preference:
+
+1. **A learned operating point** - train the occupancy logit in a per-board normalised parameterisation (subtract
+the board's mean logit, divide by its spread, both label-free), so `0.0` *is* the operating point and training
+places it. This changes the objective's geometry, adds no per-cell parameter, and a 64-step study costs about
+four minutes, so it can be measured in the same harness as a single declared arm against control.
+2. **A prevalence-aware label-free rule** - a two-component Gaussian mixture crossing per board, which estimates
+the mixing weight instead of assuming a balanced split. This is re-scoring only, so it costs seconds, but it is
+still a post-hoc boundary and should be read as a diagnostic of candidate 1, not as the fix.
+
+Either way the `-2` offset arm stays unmeasured until a boundary exists that makes the `-1` arm operational;
+measuring a second sign at an operating point that saturates tells nothing.
+
+Fit gate stays **FALSE** (0 of 28 exact boards). Verdict `not-cleared` on per-cell F1, ranking AUC and
+attribution. Defects V-126 (the run family was not declared, so the read stages were refused after the studies
+had trained), V-127 (curator invocation) and V-128 (the weight-blob pruning below).
+
+**Disk policy, so this does not refill.** `runs/` had reached 69 GB, 66.8 GB of it `.pt` weight blobs, on a
+volume that was 96% full. After a sweep has been curated, its periodic `training-snapshots/*.pt` and resumable
+`checkpoint/*.pt` are dead weight: nothing in the measurement path reads them, because the sweep captures the
+logits into `result.json`. Keep the pinned init run (`runs/m3-percell-balance-r1`), the few runs a document
+names, and every JSON/log/receipt; prune the rest. 1,165 blobs (56.1 GiB) were pruned this pass, leaving 101 GB
+free. The cost is recorded in V-128: the M2/M3 replay analyses can no longer be re-run for pruned families,
+because their inputs are gone while their published receipts remain.
+
 ## The row bias is real, and it was pointing the other way (2026-11-12)
 
 [M6_ROW_OFFSET.md](M6_ROW_OFFSET.md) was predeclared before any receipt of the block. It starts with a

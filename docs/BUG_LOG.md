@@ -2555,3 +2555,59 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `tests/test_evidence_falsification.py` builds the corrupted and irrelevant copies and runs these checks.
 - Named green run: full suite green (`runs/suite-falsification-r2-job.json`), all three instrument receipts re-replayed after the last code
   change with published bytes unchanged.
+
+## V-126 - CLOSED: the new arm family was refused by the run gate after the studies had already trained
+
+- Symptom: the M7 launcher trained all three 64-step studies (`study_control=0`, `study_wide=0`, `study_down=0`)
+  and then every read stage failed in `0.24 s` with `ValueError: owned finite run name required` - six stages
+  (`sweep_profile_*`, `sweep_*` for three arms) and the calibration instrument. The studies were valid and
+  catalogued; only the read stages were refused.
+- Root cause: `record_stream_run.OWNED_RUN_PATTERN` is a positive whitelist of finite run families, deliberately
+  narrow, and the new `m7-calibration-` family was never added when the launcher was written. The gate did its
+  job - it refused an undeclared family - but nothing told the author before twenty minutes of training had run.
+- Detection class: harness declaration (launch-time gate), not model or training code.
+- Instrument: the family is declared (`m7-calibration-[a-z0-9-]{1,40}`) and `tests/test_calibration.py`'s
+  `CalibrationFamilyTests` now asserts that the family's study, sweep and profile names are owned and that
+  `m7-calibration-`, `m7-calibration` and `m7-calib-control-r1` are not - so the next rename fails in the suite
+  rather than in a launcher. The three studies were kept (they were the declared 64-step arms under the block
+  catalogue) and only the read stages were re-issued, at the declared envelopes: `sweep_profile_*=0`,
+  `sweep_*=0`, `calibration=0`. Refused receipts are archived under `runs/attempts/m7-calibration-stale/`.
+- Named green run: sweeps re-derived the published record before anything was read (control
+  `0.8226433610683003`, wide `0.8822623454135491`), the curator passed under its 1,900 MiB ceiling
+  (`runs/m7-calibration-curation-r4-job.json`), full suite green (see below).
+
+## V-127 - CLOSED: the curator was invoked three times before it would start, twice for argument errors
+
+- Symptom: `record_calibration.py` refused to start three times: (1) the bounded runner rejected
+  `.venv/Scripts/python.exe` because a relative child executable may not use forward slashes (V-030's rule);
+  (2) the curator exited 2 because its own `--receipt` was omitted (the wrapper's `--receipt` is a different
+  argument, and the predeclaration's example line named only the wrapper's); (3) the first wrapper receipt had
+  already been consumed, so the runner refused the name as stale.
+- Root cause: an invocation written from the previous pass's launcher habits rather than from the script's own
+  `--help`, and the two `--receipt` arguments in the documented command being easy to conflate.
+- Detection class: operator error at the declared boundary - every one of the three was caught by a guard
+  (V-030's separator rule, argparse, the exclusive-receipt rule) and none produced a partial receipt or a
+  half-written evidence directory.
+- Instrument: no code change; the invocations are archived as evidence
+  (`runs/attempts/m7-calibration-curation-r1-failed/`, `runs/attempts/m7-calibration-curation-r2-failed/`) and the
+  working invocation is recorded in `docs/M7_CALIBRATION.md`'s Measured section with its inner receipt name.
+- Named green run: `runs/m7-calibration-curation-r4-job.json` passed with exit 0 in `0.266 s`.
+
+## V-128 - CLOSED: `runs/` had grown to 69 GB and the development volume was 96% full
+
+- Symptom: `df` reported 45 GB free on a 931 GB volume; `runs/` held 69 GB, 66.8 GB of it in 1,361 `.pt` weight
+  blobs (775 periodic `training-snapshots/*.pt`, 285 `checkpoint/*.pt`, 221 copies of `initial-weights.pt`).
+  A 64-step study writes 8-12 snapshots and a resumable checkpoint, and every completed study kept all of them.
+- Root cause: snapshots and checkpoints are diagnostics for a study that is still running. Once a sweep has
+  captured the arm's logits into `result.json`, nothing in the measurement path reads weights again, so the blobs
+  are dead weight - and no pass had ever pruned them.
+- Detection class: repository hygiene (disk budget), not model, training or evidence code.
+- Instrument: a keep-list prune - the pinned init run `runs/m3-percell-balance-r1` (every arm continues from it),
+  the two M2 recovery-gate runs and `runs/m3-gpu-fit-r1-s` named by documents, and the whole M4-M7 families were
+  kept; 1,165 `.pt` files outside that list were deleted, freeing 56.1 GiB (45 GB -> 101 GB free). No JSON,
+  `.jsonl`, `.log` or `.png` artifact was touched: 271 `result.json` and 431 `summary.json` receipts survive, and
+  every run's `summary.json` carries the `config` its job receipt and catalogue digest re-derive from.
+- Residual cost, recorded rather than hidden: the M2/M3 replay analyses (`analyze_m2_pilot`,
+  `analyze_stream_learning`, `accumulate`-style diagnostics) can no longer be re-run for pruned families, because
+  their weight inputs are gone while their published receipts remain. The policy - prune a run's blobs once its
+  sweep is curated - is written into `docs/CONTINUATION_STATE.md` so the tree does not refill silently.

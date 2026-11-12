@@ -109,5 +109,17 @@ class CalibrationRecordTests(unittest.TestCase):
         self.assertIn(self.scope["secondary_reading"], self.text)
 
 
+class CalibrationFamilyTests(unittest.TestCase):
+    """V-126: the arm family must be owned by the run gate before the block is launched."""
+
+    def test_the_family_is_declared_and_narrow(self):
+        from record_stream_run import OWNED_RUN_PATTERN
+        for name in ("m7-calibration-control-r1", "m7-calibration-wide-r1-sweep-r1",
+                     "m7-calibration-down-r1-sweep-r1-profile-r1"):
+            self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
+        for name in ("m7-calibration-", "m7-calibration", "m7-calib-control-r1"):
+            self.assertFalse(OWNED_RUN_PATTERN.fullmatch(name), name)
+
+
 if __name__ == "__main__":
     unittest.main()

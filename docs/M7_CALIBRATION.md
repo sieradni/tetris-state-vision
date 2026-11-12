@@ -108,4 +108,73 @@ sense or quality claim.
 
 ## Measured
 
-*(appended after the receipts exist - see `docs/evidence/m7-calibration-r1/`)*
+Receipts: `docs/evidence/m7-calibration-r1/scope.json` (curation, 1,900 MiB, receipt
+`runs/m7-calibration-curation-inner-r2.json`), instrument `runs/m7-calibration-r1/result.json` (3 work items,
+640 MiB), sweeps `runs/m7-calibration-<arm>-r1-sweep-r1/` (54 forwards, 640 MiB), studies
+`runs/m7-calibration-<arm>-r1/` (64 steps, 1,792 MiB). One catalogue (`771d7fc8...`), one block.
+
+**Reproduction first.** Both published arms came back bit-identical, so the block is the frame the earlier
+numbers were measured in: control `0.8226433610683003` and best `0.41203400915631133`, wide
+`0.8822623454135491` and best `0.514820592823713`, and the offset arm reproduces its own M6 record exactly
+(`0.8707292410960544`, best `0.46925858951175414`).
+
+### The two operating rules, all three arms
+
+| arm | AUC | F1 at `0.0` | best swept F1 | F1 at its own label-free thresholds | threshold mean (sd) | out-of-fold F1 |
+|---|---|---|---|---|---|---|
+| `control` | 0.822643 | 0.381640 | 0.412034 @ `0.90` | **0.381117** | `-0.188` (0.140) | 0.400399 |
+| `wide` | 0.882262 | 0.385902 | 0.514821 @ `1.95` | **0.358234** | `-0.362` (0.360) | 0.498413 |
+| `down` (`-1`) | 0.870729 | 0.345873 | 0.469259 @ `2.70` | **0.380898** | `1.145` (0.252) | 0.368808 |
+
+AUC is the uncalibrated arm's by construction and is printed only so no reader mistakes a scoring rule for a
+ranking change. Row error is the diagnostic of `docs/evidence/m5-row-error-r1/`, recomputed at each rule: at
+`0.0` control reads `+7.819` rows above its label row, wide `+5.872`, `down` `+8.879`; at the label-free
+threshold control `+8.020`, wide `+6.624`, `down` `+5.523` (still above, never corrected).
+
+### Reading: `calibration-fails`, and `offset-advantage-was-a-threshold-effect`
+
+The declaration fixed the bar at `0.381640` (control's own `F1@0`) and, for full credit, `0.431640` with
+`0.398870` recovery. The shifted read reaches **0.380898** - it lifts itself `+0.035025` off its own `0.0`
+boundary, which is most of the `0.087386` the label-chosen boundary found, but it lands `0.000742` **below**
+control and so misses the bar. `down_cal - control_cal` is `-0.000219`, nowhere near the `0.05` attribution
+floor: at a boundary the read can supply, the offset is not ahead of control at all. Both clauses are computed
+by the curator from the printed counters, not asserted in prose.
+
+So on the predeclared rule: the operating point the offset needs is **not** delivered by the read's own
+statistics, and the `+0.048086` AUC gain does not survive the move from the label-chosen boundary to a
+label-free one. That is the answer to this pass's question as it was posed.
+
+### Why the rule failed - the honest part, and it is not the read's fault alone
+
+Every arm at its own label-free threshold sits at **recall `0.992504` (control) / `0.967016` (wide) /
+0.992504` (down) and precision `0.235839` / `0.219836` / `0.235671`** - the calibrated rule degenerates to
+"almost every cell is occupied", recovering 662 of 667 cells while admitting roughly 2,150 false positives out
+of 4,933 empty cells. The reason is structural: cells are `11.9%` occupied, and Otsu maximises *between-class
+variance*, which under that base rate is maximised by a cut that separates the bulk of the empty logits from a
+tail containing nearly all occupied ones - not by the cut that maximises F1. The evidence is the thresholds
+themselves: `-0.188` for control against its label-best `0.90`, `-0.362` for wide against `1.95`. The rule is
+translation-equivariant, as declared, and it did absorb the shift - `down`'s threshold sits at `1.145`, by far
+the highest of the three - but it absorbed it into a saturated detector.
+
+Consequence for how this result may be cited: **the offset's boundary is not recovered by an imbalance-blind
+label-free rule**, and the wide arm shows the rule is not free even for an arm that does not need it
+(`-0.027668` F1 against its own `0.0` boundary). It is *not* evidence that no label-free statistic of the read
+can carry the boundary; that would need a rule that is aware of the base rate, and this pass did not test one.
+
+### Where this leaves the engine
+
+The ranking finding survives untouched: the `-1` row offset buys `+0.048086` AUC (interval
+`+0.013560 .. +0.071269`, MDE `0.043683`) with no tensor added, and it is the only lever measured so far that
+moves deciding AUC on this population. What it does not buy is an *operating point*, and this pass shows the
+cheap post-hoc route to one does not work: the boundary has to come from something other than the read's own
+marginal distribution - either supervision inside training (a head trained in a normalised parameterisation,
+so the `0.0` boundary is a learned quantity) or a rule that models the occupied rate. Neither is measured
+here.
+
+Verdict `not-cleared` on every condition (per-cell F1 `0.70`, ranking AUC `0.90`, attribution `0.05`), fit gate
+**FALSE**, `0` of `28` exact non-empty boards.
+
+Defects of this pass: V-126 (the run family was not declared in `record_stream_run.OWNED_RUN_PATTERN`, so every
+sweep and the instrument were refused after the studies had already run), V-127 (the curator was invoked twice
+without its required `--receipt` and then with a forward-slash interpreter path, both refused), V-128 (the
+`-2` arm stays unmeasured and the frame is one seed, one 64-step budget, one architecture).

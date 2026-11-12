@@ -1,0 +1,1053 @@
+{
+  "status": "passed",
+  "instrument": "m7-calibration-r1",
+  "predeclaration": "docs/M7_CALIBRATION.md",
+  "scope": "Three re-captured 64-step arms - the published read-out, the four-cell registration field and the declared -1 row offset - scored read-only at two operating rules: the standing 0.0 boundary and a per-board threshold derived from the arm's own logits with no labels. The calibration adds no parameter, touches no weight and cannot change ranking, so every AUC printed here is the uncalibrated arm's. No threshold, population or gate change, and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m7-calibration-curation-inner-r2.json",
+  "declared_memory_bytes": 1992294400,
+  "rule": {
+    "name": "otsu-logits",
+    "label_free": true,
+    "applied_to": [
+      "control",
+      "wide",
+      "down"
+    ],
+    "candidates": "midpoints of consecutive distinct logits, ties to the lower candidate",
+    "constant_board": "chooses its own value, so nothing is decided",
+    "auc_effect": "none by construction - a scoring rule does not touch ranking"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "calibration": 3,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "recovery_fraction": 0.85
+  },
+  "reference": {
+    "control_f1_at_zero": 0.38164,
+    "label_chosen_best_f1": 0.469259,
+    "declared_before_receipts": true,
+    "source": "docs\\evidence\\m6-row-offset-r1\\scope.json"
+  },
+  "arms": {
+    "control": {
+      "study": "m7-calibration-control-r1",
+      "sweep": "m7-calibration-control-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 260.22212299999956,
+      "study_peak_commit_bytes": 1022066688,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "exact_boards": 0,
+      "out_of_fold_f1": 0.400399,
+      "calibrated": {
+        "rule": "otsu-logits",
+        "precision": 0.235839,
+        "recall": 0.992504,
+        "f1": 0.381117,
+        "true_positive": 662,
+        "false_positive": 2145,
+        "false_negative": 5,
+        "true_negative": 2788,
+        "threshold_mean": -0.188453,
+        "threshold_sd": 0.14048,
+        "threshold_min": -0.512825,
+        "threshold_max": 0.046297,
+        "thresholds": {
+          "mean": -0.188453,
+          "sd": 0.14048,
+          "min": -0.512825,
+          "max": 0.046297,
+          "boards": 28
+        },
+        "distance_to_label_best": {
+          "mean": 1.088453,
+          "within_half": 0.0
+        },
+        "f1_gain_over_zero": -0.000523,
+        "recovery_of_label_chosen_gain": -0.017207,
+        "label_free": true
+      },
+      "row_error": {
+        "zero": {
+          "mean": 7.818792,
+          "columns": 149
+        },
+        "calibrated": {
+          "mean": 8.020134,
+          "columns": 149
+        }
+      },
+      "boards": [
+        {
+          "sample_id": "training-20261026-v2",
+          "group_id": "ancestry-training-20261026",
+          "threshold": -0.080381,
+          "distance_to_label_best": 0.980382,
+          "f1": 0.019802,
+          "zero_f1": 0.019802,
+          "board_row_error_zero": 15.0
+        },
+        {
+          "sample_id": "training-20261027-v0",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.075507,
+          "distance_to_label_best": 0.975507,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 13.5
+        },
+        {
+          "sample_id": "training-20261027-v1",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.134697,
+          "distance_to_label_best": 1.034697,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 13.5
+        },
+        {
+          "sample_id": "training-20261027-v2",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.079714,
+          "distance_to_label_best": 0.979715,
+          "f1": 0.038835,
+          "zero_f1": 0.038835,
+          "board_row_error_zero": 8.666667
+        },
+        {
+          "sample_id": "training-20261028-v0",
+          "group_id": "ancestry-training-20261028",
+          "threshold": -0.176951,
+          "distance_to_label_best": 1.076951,
+          "f1": 0.688312,
+          "zero_f1": 0.69281,
+          "board_row_error_zero": 7.4
+        },
+        {
+          "sample_id": "training-20261028-v1",
+          "group_id": "ancestry-training-20261028",
+          "threshold": -0.263268,
+          "distance_to_label_best": 1.163268,
+          "f1": 0.688312,
+          "zero_f1": 0.69281,
+          "board_row_error_zero": 6.7
+        },
+        {
+          "sample_id": "training-20261028-v2",
+          "group_id": "ancestry-training-20261028",
+          "threshold": -0.169174,
+          "distance_to_label_best": 1.069173,
+          "f1": 0.683871,
+          "zero_f1": 0.688312,
+          "board_row_error_zero": 6.8
+        },
+        {
+          "sample_id": "training-20261029-v2",
+          "group_id": "ancestry-training-20261029",
+          "threshold": -0.194484,
+          "distance_to_label_best": 1.094483,
+          "f1": 0.0,
+          "zero_f1": 0.0,
+          "board_row_error_zero": 6.0
+        },
+        {
+          "sample_id": "training-20261030-v0",
+          "group_id": "ancestry-training-20261030",
+          "threshold": 0.046297,
+          "distance_to_label_best": 0.853703,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v1",
+          "group_id": "ancestry-training-20261030",
+          "threshold": -0.081057,
+          "distance_to_label_best": 0.981057,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v2",
+          "group_id": "ancestry-training-20261030",
+          "threshold": 0.038564,
+          "distance_to_label_best": 0.861436,
+          "f1": 0.019802,
+          "zero_f1": 0.019802,
+          "board_row_error_zero": 11.0
+        },
+        {
+          "sample_id": "training-20261031-v0",
+          "group_id": "ancestry-training-20261031",
+          "threshold": -0.211125,
+          "distance_to_label_best": 1.111125,
+          "f1": 0.709677,
+          "zero_f1": 0.709677,
+          "board_row_error_zero": 7.6
+        },
+        {
+          "sample_id": "training-20261031-v1",
+          "group_id": "ancestry-training-20261031",
+          "threshold": -0.236101,
+          "distance_to_label_best": 1.136101,
+          "f1": 0.709677,
+          "zero_f1": 0.714286,
+          "board_row_error_zero": 6.9
+        },
+        {
+          "sample_id": "training-20261031-v2",
+          "group_id": "ancestry-training-20261031",
+          "threshold": -0.226138,
+          "distance_to_label_best": 1.126138,
+          "f1": 0.701299,
+          "zero_f1": 0.701299,
+          "board_row_error_zero": 7.6
+        },
+        {
+          "sample_id": "training-20261032-v2",
+          "group_id": "ancestry-training-20261032",
+          "threshold": -0.29545,
+          "distance_to_label_best": 1.19545,
+          "f1": 0.019608,
+          "zero_f1": 0.0,
+          "board_row_error_zero": -2.0
+        },
+        {
+          "sample_id": "training-20261033-v0",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.073252,
+          "distance_to_label_best": 0.973253,
+          "f1": 0.058252,
+          "zero_f1": 0.058252,
+          "board_row_error_zero": 12.666667
+        },
+        {
+          "sample_id": "training-20261033-v1",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.091162,
+          "distance_to_label_best": 0.991162,
+          "f1": 0.058252,
+          "zero_f1": 0.058252,
+          "board_row_error_zero": 12.666667
+        },
+        {
+          "sample_id": "training-20261033-v2",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.099929,
+          "distance_to_label_best": 0.999929,
+          "f1": 0.057692,
+          "zero_f1": 0.057692,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261034-v0",
+          "group_id": "ancestry-training-20261034",
+          "threshold": -0.324123,
+          "distance_to_label_best": 1.224123,
+          "f1": 0.734177,
+          "zero_f1": 0.734177,
+          "board_row_error_zero": 7.3
+        },
+        {
+          "sample_id": "training-20261034-v1",
+          "group_id": "ancestry-training-20261034",
+          "threshold": -0.38734,
+          "distance_to_label_best": 1.28734,
+          "f1": 0.734177,
+          "zero_f1": 0.734177,
+          "board_row_error_zero": 7.3
+        },
+        {
+          "sample_id": "training-20261034-v2",
+          "group_id": "ancestry-training-20261034",
+          "threshold": -0.320995,
+          "distance_to_label_best": 1.220995,
+          "f1": 0.72956,
+          "zero_f1": 0.72956,
+          "board_row_error_zero": 6.3
+        },
+        {
+          "sample_id": "training-20261035-v2",
+          "group_id": "ancestry-training-20261035",
+          "threshold": -0.026462,
+          "distance_to_label_best": 0.926462,
+          "f1": 0.019802,
+          "zero_f1": 0.019802,
+          "board_row_error_zero": 12.0
+        },
+        {
+          "sample_id": "training-20261036-v0",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.144833,
+          "distance_to_label_best": 1.044833,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 12.0
+        },
+        {
+          "sample_id": "training-20261036-v1",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.141573,
+          "distance_to_label_best": 1.041573,
+          "f1": 0.039216,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 12.0
+        },
+        {
+          "sample_id": "training-20261036-v2",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.14892,
+          "distance_to_label_best": 1.04892,
+          "f1": 0.019802,
+          "zero_f1": 0.019802,
+          "board_row_error_zero": 9.0
+        },
+        {
+          "sample_id": "training-20261037-v0",
+          "group_id": "ancestry-training-20261037",
+          "threshold": -0.360332,
+          "distance_to_label_best": 1.260332,
+          "f1": 0.62585,
+          "zero_f1": 0.630137,
+          "board_row_error_zero": 7.5
+        },
+        {
+          "sample_id": "training-20261037-v1",
+          "group_id": "ancestry-training-20261037",
+          "threshold": -0.512825,
+          "distance_to_label_best": 1.412825,
+          "f1": 0.62585,
+          "zero_f1": 0.634483,
+          "board_row_error_zero": 6.8
+        },
+        {
+          "sample_id": "training-20261037-v2",
+          "group_id": "ancestry-training-20261037",
+          "threshold": -0.505763,
+          "distance_to_label_best": 1.405763,
+          "f1": 0.616438,
+          "zero_f1": 0.625,
+          "board_row_error_zero": 6.8
+        }
+      ]
+    },
+    "wide": {
+      "study": "m7-calibration-wide-r1",
+      "sweep": "m7-calibration-wide-r1-sweep-r1",
+      "occupancy_deform": 2,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "338c79c55608dc38cca13ea3d0ff37d9c31b699d33a70704511d849dde13a5b0",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 226.63323390000005,
+      "study_peak_commit_bytes": 1043755008,
+      "auc": 0.8822623454135491,
+      "f1_at_zero": 0.385902,
+      "best": {
+        "threshold": 1.95,
+        "f1": 0.514820592823713,
+        "precision": 0.39410828025477707
+      },
+      "exact_boards": 0,
+      "out_of_fold_f1": 0.498413,
+      "calibrated": {
+        "rule": "otsu-logits",
+        "precision": 0.219836,
+        "recall": 0.967016,
+        "f1": 0.358234,
+        "true_positive": 645,
+        "false_positive": 2289,
+        "false_negative": 22,
+        "true_negative": 2644,
+        "threshold_mean": -0.362129,
+        "threshold_sd": 0.360245,
+        "threshold_min": -0.911224,
+        "threshold_max": 0.282328,
+        "thresholds": {
+          "mean": -0.362129,
+          "sd": 0.360245,
+          "min": -0.911224,
+          "max": 0.282328,
+          "boards": 28
+        },
+        "distance_to_label_best": {
+          "mean": 2.312129,
+          "within_half": 0.0
+        },
+        "f1_gain_over_zero": -0.027668,
+        "recovery_of_label_chosen_gain": -0.214616,
+        "label_free": true
+      },
+      "row_error": {
+        "zero": {
+          "mean": 5.872483,
+          "columns": 149
+        },
+        "calibrated": {
+          "mean": 6.624161,
+          "columns": 149
+        }
+      },
+      "boards": [
+        {
+          "sample_id": "training-20261026-v2",
+          "group_id": "ancestry-training-20261026",
+          "threshold": -0.836572,
+          "distance_to_label_best": 2.786572,
+          "f1": 0.017241,
+          "zero_f1": 0.021277,
+          "board_row_error_zero": 8.0
+        },
+        {
+          "sample_id": "training-20261027-v0",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.539856,
+          "distance_to_label_best": 2.489856,
+          "f1": 0.034483,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 15.0
+        },
+        {
+          "sample_id": "training-20261027-v1",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.660572,
+          "distance_to_label_best": 2.610572,
+          "f1": 0.037037,
+          "zero_f1": 0.043478,
+          "board_row_error_zero": 6.5
+        },
+        {
+          "sample_id": "training-20261027-v2",
+          "group_id": "ancestry-training-20261027",
+          "threshold": -0.741328,
+          "distance_to_label_best": 2.691328,
+          "f1": 0.035088,
+          "zero_f1": 0.043956,
+          "board_row_error_zero": 4.0
+        },
+        {
+          "sample_id": "training-20261028-v0",
+          "group_id": "ancestry-training-20261028",
+          "threshold": 0.174008,
+          "distance_to_label_best": 1.775992,
+          "f1": 0.643836,
+          "zero_f1": 0.622517,
+          "board_row_error_zero": 6.1
+        },
+        {
+          "sample_id": "training-20261028-v1",
+          "group_id": "ancestry-training-20261028",
+          "threshold": -0.51693,
+          "distance_to_label_best": 2.466931,
+          "f1": 0.634731,
+          "zero_f1": 0.675159,
+          "board_row_error_zero": 4.0
+        },
+        {
+          "sample_id": "training-20261028-v2",
+          "group_id": "ancestry-training-20261028",
+          "threshold": 0.157386,
+          "distance_to_label_best": 1.792614,
+          "f1": 0.639456,
+          "zero_f1": 0.622517,
+          "board_row_error_zero": 5.5
+        },
+        {
+          "sample_id": "training-20261029-v2",
+          "group_id": "ancestry-training-20261029",
+          "threshold": -0.803724,
+          "distance_to_label_best": 2.753724,
+          "f1": 0.0,
+          "zero_f1": 0.0,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v0",
+          "group_id": "ancestry-training-20261030",
+          "threshold": -0.65351,
+          "distance_to_label_best": 2.603511,
+          "f1": 0.036036,
+          "zero_f1": 0.039604,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v1",
+          "group_id": "ancestry-training-20261030",
+          "threshold": -0.62919,
+          "distance_to_label_best": 2.57919,
+          "f1": 0.036364,
+          "zero_f1": 0.039216,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v2",
+          "group_id": "ancestry-training-20261030",
+          "threshold": -0.624225,
+          "distance_to_label_best": 2.574225,
+          "f1": 0.018349,
+          "zero_f1": 0.021277,
+          "board_row_error_zero": 11.0
+        },
+        {
+          "sample_id": "training-20261031-v0",
+          "group_id": "ancestry-training-20261031",
+          "threshold": 0.110754,
+          "distance_to_label_best": 1.839247,
+          "f1": 0.709677,
+          "zero_f1": 0.709677,
+          "board_row_error_zero": 7.1
+        },
+        {
+          "sample_id": "training-20261031-v1",
+          "group_id": "ancestry-training-20261031",
+          "threshold": -0.246156,
+          "distance_to_label_best": 2.196156,
+          "f1": 0.723684,
+          "zero_f1": 0.723684,
+          "board_row_error_zero": 5.5
+        },
+        {
+          "sample_id": "training-20261031-v2",
+          "group_id": "ancestry-training-20261031",
+          "threshold": -0.247892,
+          "distance_to_label_best": 2.197893,
+          "f1": 0.715232,
+          "zero_f1": 0.715232,
+          "board_row_error_zero": 5.5
+        },
+        {
+          "sample_id": "training-20261032-v2",
+          "group_id": "ancestry-training-20261032",
+          "threshold": -0.911224,
+          "distance_to_label_best": 2.861224,
+          "f1": 0.015873,
+          "zero_f1": 0.020408,
+          "board_row_error_zero": 0.0
+        },
+        {
+          "sample_id": "training-20261033-v0",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.135666,
+          "distance_to_label_best": 2.085666,
+          "f1": 0.06,
+          "zero_f1": 0.060606,
+          "board_row_error_zero": 10.333333
+        },
+        {
+          "sample_id": "training-20261033-v1",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.409548,
+          "distance_to_label_best": 2.359548,
+          "f1": 0.058824,
+          "zero_f1": 0.061856,
+          "board_row_error_zero": 10.333333
+        },
+        {
+          "sample_id": "training-20261033-v2",
+          "group_id": "ancestry-training-20261033",
+          "threshold": -0.410464,
+          "distance_to_label_best": 2.360464,
+          "f1": 0.058252,
+          "zero_f1": 0.061856,
+          "board_row_error_zero": 8.25
+        },
+        {
+          "sample_id": "training-20261034-v0",
+          "group_id": "ancestry-training-20261034",
+          "threshold": 0.282328,
+          "distance_to_label_best": 1.667672,
+          "f1": 0.738854,
+          "zero_f1": 0.734177,
+          "board_row_error_zero": 6.9
+        },
+        {
+          "sample_id": "training-20261034-v1",
+          "group_id": "ancestry-training-20261034",
+          "threshold": 0.168196,
+          "distance_to_label_best": 1.781804,
+          "f1": 0.748387,
+          "zero_f1": 0.748387,
+          "board_row_error_zero": 5.2
+        },
+        {
+          "sample_id": "training-20261034-v2",
+          "group_id": "ancestry-training-20261034",
+          "threshold": -0.052166,
+          "distance_to_label_best": 2.002166,
+          "f1": 0.725,
+          "zero_f1": 0.725,
+          "board_row_error_zero": 6.6
+        },
+        {
+          "sample_id": "training-20261035-v2",
+          "group_id": "ancestry-training-20261035",
+          "threshold": -0.693539,
+          "distance_to_label_best": 2.643539,
+          "f1": 0.017094,
+          "zero_f1": 0.020833,
+          "board_row_error_zero": 14.0
+        },
+        {
+          "sample_id": "training-20261036-v0",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.157743,
+          "distance_to_label_best": 2.107743,
+          "f1": 0.040816,
+          "zero_f1": 0.041667,
+          "board_row_error_zero": 14.0
+        },
+        {
+          "sample_id": "training-20261036-v1",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.297532,
+          "distance_to_label_best": 2.247532,
+          "f1": 0.041237,
+          "zero_f1": 0.044944,
+          "board_row_error_zero": 8.5
+        },
+        {
+          "sample_id": "training-20261036-v2",
+          "group_id": "ancestry-training-20261036",
+          "threshold": -0.28943,
+          "distance_to_label_best": 2.239429,
+          "f1": 0.020408,
+          "zero_f1": 0.021053,
+          "board_row_error_zero": 13.0
+        },
+        {
+          "sample_id": "training-20261037-v0",
+          "group_id": "ancestry-training-20261037",
+          "threshold": 0.229697,
+          "distance_to_label_best": 1.720303,
+          "f1": 0.607407,
+          "zero_f1": 0.608696,
+          "board_row_error_zero": 3.9
+        },
+        {
+          "sample_id": "training-20261037-v1",
+          "group_id": "ancestry-training-20261037",
+          "threshold": -0.70138,
+          "distance_to_label_best": 2.651381,
+          "f1": 0.554217,
+          "zero_f1": 0.634483,
+          "board_row_error_zero": 2.1
+        },
+        {
+          "sample_id": "training-20261037-v2",
+          "group_id": "ancestry-training-20261037",
+          "threshold": -0.703343,
+          "distance_to_label_best": 2.653343,
+          "f1": 0.545455,
+          "zero_f1": 0.629371,
+          "board_row_error_zero": 2.0
+        }
+      ]
+    },
+    "down": {
+      "study": "m7-calibration-down-r1",
+      "sweep": "m7-calibration-down-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_offset_rows": -1,
+      "weights_sha256": "501889cc467fd5a47263edf75ed1eb64e3a5fbbca8c05238b8b0d70c8890b236",
+      "catalogue_sha256": "771d7fc82904a44aeb79f4b1dc8275e5dadb26cb478ed8914517ba361586e51d",
+      "study_elapsed_seconds": 196.57917079999606,
+      "study_peak_commit_bytes": 1053011968,
+      "auc": 0.8707292410960544,
+      "f1_at_zero": 0.345873,
+      "best": {
+        "threshold": 2.7,
+        "f1": 0.46925858951175414,
+        "precision": 0.3359223300970874
+      },
+      "exact_boards": 0,
+      "out_of_fold_f1": 0.368808,
+      "calibrated": {
+        "rule": "otsu-logits",
+        "precision": 0.235671,
+        "recall": 0.992504,
+        "f1": 0.380898,
+        "true_positive": 662,
+        "false_positive": 2147,
+        "false_negative": 5,
+        "true_negative": 2786,
+        "threshold_mean": 1.144599,
+        "threshold_sd": 0.251627,
+        "threshold_min": 0.546619,
+        "threshold_max": 1.656566,
+        "thresholds": {
+          "mean": 1.144599,
+          "sd": 0.251627,
+          "min": 0.546619,
+          "max": 1.656566,
+          "boards": 28
+        },
+        "distance_to_label_best": {
+          "mean": 1.555401,
+          "within_half": 0.0
+        },
+        "f1_gain_over_zero": 0.035025,
+        "recovery_of_label_chosen_gain": 0.283866,
+        "label_free": true
+      },
+      "row_error": {
+        "zero": {
+          "mean": 8.879195,
+          "columns": 149
+        },
+        "calibrated": {
+          "mean": 5.52349,
+          "columns": 149
+        }
+      },
+      "boards": [
+        {
+          "sample_id": "training-20261026-v2",
+          "group_id": "ancestry-training-20261026",
+          "threshold": 1.124501,
+          "distance_to_label_best": 1.575499,
+          "f1": 0.019802,
+          "zero_f1": 0.017699,
+          "board_row_error_zero": 15.0
+        },
+        {
+          "sample_id": "training-20261027-v0",
+          "group_id": "ancestry-training-20261027",
+          "threshold": 1.239028,
+          "distance_to_label_best": 1.460972,
+          "f1": 0.039216,
+          "zero_f1": 0.033058,
+          "board_row_error_zero": 16.5
+        },
+        {
+          "sample_id": "training-20261027-v1",
+          "group_id": "ancestry-training-20261027",
+          "threshold": 0.798424,
+          "distance_to_label_best": 1.901577,
+          "f1": 0.039216,
+          "zero_f1": 0.036364,
+          "board_row_error_zero": 15.5
+        },
+        {
+          "sample_id": "training-20261027-v2",
+          "group_id": "ancestry-training-20261027",
+          "threshold": 0.948263,
+          "distance_to_label_best": 1.751738,
+          "f1": 0.038462,
+          "zero_f1": 0.035398,
+          "board_row_error_zero": 11.333333
+        },
+        {
+          "sample_id": "training-20261028-v0",
+          "group_id": "ancestry-training-20261028",
+          "threshold": 1.632694,
+          "distance_to_label_best": 1.067306,
+          "f1": 0.716216,
+          "zero_f1": 0.634731,
+          "board_row_error_zero": 8.3
+        },
+        {
+          "sample_id": "training-20261028-v1",
+          "group_id": "ancestry-training-20261028",
+          "threshold": 1.279043,
+          "distance_to_label_best": 1.420957,
+          "f1": 0.711409,
+          "zero_f1": 0.642424,
+          "board_row_error_zero": 8.1
+        },
+        {
+          "sample_id": "training-20261028-v2",
+          "group_id": "ancestry-training-20261028",
+          "threshold": 1.656566,
+          "distance_to_label_best": 1.043434,
+          "f1": 0.706667,
+          "zero_f1": 0.630952,
+          "board_row_error_zero": 7.7
+        },
+        {
+          "sample_id": "training-20261029-v2",
+          "group_id": "ancestry-training-20261029",
+          "threshold": 0.840253,
+          "distance_to_label_best": 1.859747,
+          "f1": 0.0,
+          "zero_f1": 0.0,
+          "board_row_error_zero": 6.0
+        },
+        {
+          "sample_id": "training-20261030-v0",
+          "group_id": "ancestry-training-20261030",
+          "threshold": 1.085788,
+          "distance_to_label_best": 1.614212,
+          "f1": 0.038095,
+          "zero_f1": 0.032258,
+          "board_row_error_zero": 14.0
+        },
+        {
+          "sample_id": "training-20261030-v1",
+          "group_id": "ancestry-training-20261030",
+          "threshold": 1.094313,
+          "distance_to_label_best": 1.605687,
+          "f1": 0.038095,
+          "zero_f1": 0.036697,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261030-v2",
+          "group_id": "ancestry-training-20261030",
+          "threshold": 1.134357,
+          "distance_to_label_best": 1.565643,
+          "f1": 0.019231,
+          "zero_f1": 0.01626,
+          "board_row_error_zero": 15.0
+        },
+        {
+          "sample_id": "training-20261031-v0",
+          "group_id": "ancestry-training-20261031",
+          "threshold": 1.338996,
+          "distance_to_label_best": 1.361005,
+          "f1": 0.709677,
+          "zero_f1": 0.621469,
+          "board_row_error_zero": 9.8
+        },
+        {
+          "sample_id": "training-20261031-v1",
+          "group_id": "ancestry-training-20261031",
+          "threshold": 1.185491,
+          "distance_to_label_best": 1.51451,
+          "f1": 0.718954,
+          "zero_f1": 0.696203,
+          "board_row_error_zero": 7.7
+        },
+        {
+          "sample_id": "training-20261031-v2",
+          "group_id": "ancestry-training-20261031",
+          "threshold": 1.185914,
+          "distance_to_label_best": 1.514087,
+          "f1": 0.710526,
+          "zero_f1": 0.687898,
+          "board_row_error_zero": 7.7
+        },
+        {
+          "sample_id": "training-20261032-v2",
+          "group_id": "ancestry-training-20261032",
+          "threshold": 0.986999,
+          "distance_to_label_best": 1.713001,
+          "f1": 0.019048,
+          "zero_f1": 0.016,
+          "board_row_error_zero": 1.0
+        },
+        {
+          "sample_id": "training-20261033-v0",
+          "group_id": "ancestry-training-20261033",
+          "threshold": 1.08191,
+          "distance_to_label_best": 1.61809,
+          "f1": 0.057143,
+          "zero_f1": 0.04918,
+          "board_row_error_zero": 16.0
+        },
+        {
+          "sample_id": "training-20261033-v1",
+          "group_id": "ancestry-training-20261033",
+          "threshold": 0.967708,
+          "distance_to_label_best": 1.732292,
+          "f1": 0.057143,
+          "zero_f1": 0.054054,
+          "board_row_error_zero": 12.666667
+        },
+        {
+          "sample_id": "training-20261033-v2",
+          "group_id": "ancestry-training-20261033",
+          "threshold": 0.988047,
+          "distance_to_label_best": 1.711954,
+          "f1": 0.056604,
+          "zero_f1": 0.052174,
+          "board_row_error_zero": 10.0
+        },
+        {
+          "sample_id": "training-20261034-v0",
+          "group_id": "ancestry-training-20261034",
+          "threshold": 1.378672,
+          "distance_to_label_best": 1.321328,
+          "f1": 0.748387,
+          "zero_f1": 0.70303,
+          "board_row_error_zero": 8.3
+        },
+        {
+          "sample_id": "training-20261034-v1",
+          "group_id": "ancestry-training-20261034",
+          "threshold": 1.484008,
+          "distance_to_label_best": 1.215992,
+          "f1": 0.75817,
+          "zero_f1": 0.711656,
+          "board_row_error_zero": 7.7
+        },
+        {
+          "sample_id": "training-20261034-v2",
+          "group_id": "ancestry-training-20261034",
+          "threshold": 1.541207,
+          "distance_to_label_best": 1.158793,
+          "f1": 0.738854,
+          "zero_f1": 0.686391,
+          "board_row_error_zero": 7.5
+        },
+        {
+          "sample_id": "training-20261035-v2",
+          "group_id": "ancestry-training-20261035",
+          "threshold": 0.833263,
+          "distance_to_label_best": 1.866737,
+          "f1": 0.018868,
+          "zero_f1": 0.017094,
+          "board_row_error_zero": 14.0
+        },
+        {
+          "sample_id": "training-20261036-v0",
+          "group_id": "ancestry-training-20261036",
+          "threshold": 1.017792,
+          "distance_to_label_best": 1.682208,
+          "f1": 0.038462,
+          "zero_f1": 0.033898,
+          "board_row_error_zero": 15.0
+        },
+        {
+          "sample_id": "training-20261036-v1",
+          "group_id": "ancestry-training-20261036",
+          "threshold": 0.546619,
+          "distance_to_label_best": 2.153381,
+          "f1": 0.037736,
+          "zero_f1": 0.037383,
+          "board_row_error_zero": 12.0
+        },
+        {
+          "sample_id": "training-20261036-v2",
+          "group_id": "ancestry-training-20261036",
+          "threshold": 1.018371,
+          "distance_to_label_best": 1.681629,
+          "f1": 0.019417,
+          "zero_f1": 0.017094,
+          "board_row_error_zero": 13.0
+        },
+        {
+          "sample_id": "training-20261037-v0",
+          "group_id": "ancestry-training-20261037",
+          "threshold": 1.36466,
+          "distance_to_label_best": 1.33534,
+          "f1": 0.630137,
+          "zero_f1": 0.554217,
+          "board_row_error_zero": 7.9
+        },
+        {
+          "sample_id": "training-20261037-v1",
+          "group_id": "ancestry-training-20261037",
+          "threshold": 1.146047,
+          "distance_to_label_best": 1.553953,
+          "f1": 0.62585,
+          "zero_f1": 0.575,
+          "board_row_error_zero": 7.5
+        },
+        {
+          "sample_id": "training-20261037-v2",
+          "group_id": "ancestry-training-20261037",
+          "threshold": 1.149834,
+          "distance_to_label_best": 1.550167,
+          "f1": 0.616438,
+          "zero_f1": 0.566038,
+          "board_row_error_zero": 7.5
+        }
+      ]
+    }
+  },
+  "contrasts": {
+    "down_calibrated_control_calibrated": {
+      "f1_delta": -0.000219,
+      "attribution_met": false
+    },
+    "down_control": {
+      "auc_delta": 0.048086,
+      "f1_at_zero_delta": -0.035767,
+      "calibrated_f1_delta": -0.000219
+    },
+    "down_wide": {
+      "auc_delta": -0.011533,
+      "best_f1_delta": -0.045562,
+      "calibrated_f1_delta": 0.022664
+    },
+    "wide_control": {
+      "auc_delta": 0.059619
+    }
+  },
+  "reading": "calibration-fails",
+  "reading_text": "A threshold chosen from each board's own logits does not put the shifted read above control's standing boundary at all, so the offset's boundary drift is not a property the read can supply and the offset stays a ranking fix that cannot be made operational at a fixed threshold.",
+  "secondary_reading": "offset-advantage-was-a-threshold-effect",
+  "secondary_text": "At their own label-free thresholds the offset arm and the control arm are compared directly, so a shifted-boundary effect that calibration removes cannot be mistaken for a ranking advantage.",
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "best_f1": 0.41203400915631133,
+      "prior_scope": "docs\\evidence\\m6-row-offset-r1\\scope.json"
+    },
+    "wide": {
+      "auc": 0.8822623454135491,
+      "f1_at_zero": 0.385902,
+      "best_f1": 0.514820592823713,
+      "prior_scope": "docs\\evidence\\m6-row-offset-r1\\scope.json"
+    },
+    "down": {
+      "auc": 0.8707292410960544,
+      "f1_at_zero": 0.345873,
+      "best_f1": 0.46925858951175414,
+      "prior_scope": "docs\\evidence\\m6-row-offset-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667
+  },
+  "omitted": {
+    "arm": "-2 row offset",
+    "reason": "requires a fourth 64-step training round, which this pass forbids; no receipt exists for an arm that was not run"
+  }
+}

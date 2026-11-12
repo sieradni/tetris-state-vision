@@ -29,7 +29,8 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m3-occscale-[a-z0-9-]{1,40}|m3-occgeom-[a-z0-9-]{1,40}"
                                r"|m3-occextent-[a-z0-9-]{1,40}"
                                r"|m3-occgeocap-[a-z0-9-]{1,40}|m3-occlatres-[a-z0-9-]{1,40}|m3-occlatfree-[a-z0-9-]{1,40}|m3-occbref-[a-z0-9-]{1,40}|m3-occfit-[a-z0-9-]{1,40}"
-                               r"|m3-occorigin-[a-z0-9-]{1,40}|m3-trunkwidth-[a-z0-9-]{1,40})")
+                               r"|m3-occorigin-[a-z0-9-]{1,40}|m3-trunkwidth-[a-z0-9-]{1,40}"
+                               r"|m7-calibration-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):
