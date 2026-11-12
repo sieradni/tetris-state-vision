@@ -10,7 +10,7 @@ a named green run. An unrun gate leaves the entry OPEN.
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092 (16) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098 (18) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -22,6 +22,42 @@ a named green run. An unrun gate leaves the entry OPEN.
 | interval-validity | V-056, V-066, V-091, V-095 (4) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-097 — CLOSED: the resolution pass's components were recomputed on a different population from its verdict
+
+- Symptom: the first canonical curation of `m3-occres2` published a `components` block reading
+  `best_f1 0.433133` and `zero_f1 0.34344` for the lever, while the same scope's deciding rows read
+  `best 0.472012` and `F1(0.0) 0.413858`. Two populations were quoted on one page, and the verdict
+  read the second.
+- Root cause: the components were recomputed from the sweep's 54 case records over all 36 training
+  images, while the sweep's `deciding` block excludes the eight empty training boards and their
+  1,600 empty known cells. One convention, two copies - the V-092 pattern, reintroduced by a new
+  instrument.
+- Detection class: test-instrument (evidence join).
+- Instrument: one `deciding_rows` helper feeds the components, the paired bootstrap and the
+  population guard; `main` refuses unless each arm's `zero_f1` and `best_f1` equal the sweep-derived
+  `per_cell_f1` and `best.f1` within `1e-6`; `tests/test_resolution_r2.py` requires an empty board to
+  leave a component unchanged.
+- Named green run: `runs/m3-occres2-curation-r3-job.json` writing
+  `docs/evidence/m3-occupancy-resolution-r2/scope.json`; the defective record is preserved with a
+  note under `runs/attempts/m3-occres2-curation-r1-defective/`.
+
+## V-098 — CLOSED: a bootstrap interval was printed beside a different delta
+
+- Symptom: the second curation of the same pass reported `operating_f1.delta = 0.059978` beside the
+  interval `+0.016476 .. +0.039566`, and that interval's median (`0.032206`) matched the
+  *fixed-boundary* delta instead. The interval did not belong to the number it was printed with.
+- Root cause: one key carried two statistics. The point estimate was read from the sweep's best row,
+  while the paired bootstrap resamples F1 at the declared `0.0` boundary; nothing required the two
+  to be the same quantity.
+- Detection class: test-instrument (statistic pairing).
+- Instrument: the delta block names one statistic per key - `best_f1` with **no** interval because
+  its boundary is fitted on the scored cells, `zero_boundary_f1` and `out_of_fold_f1` each with the
+  bootstrap that resamples them and their own minimum detectable effect - `main` refuses when the
+  resampled median and the printed fixed-boundary delta differ by more than `0.05`, and
+  `tests/test_resolution_r2.py` asserts the source carries both the `None` interval and that guard.
+- Named green run: `runs/m3-occres2-curation-r3-job.json`; the defective record is preserved with a
+  note under `runs/attempts/m3-occres2-curation-r2-defective/`.
 
 ## V-091 — CLOSED: the standing occupancy attribution was read at a threshold the levers move
 

@@ -1,0 +1,469 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-resolution-r2",
+  "predeclaration": "docs/M3_OCCUPANCY_RESOLUTION_R2.md",
+  "scope": "Matched 64-step continuation of one published checkpoint, both arms carrying the declared zero-initialized detail tap with a single center sample and differing only in its source resolution: lever samples a stride-1 convolution of the image, control the encoder's stride-2 first stage. Re-declared at an admitted 1,792 MiB envelope after the first declaration was refused 22.8 MiB short of 1,152 MiB. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occres2-curation-r3-job.json",
+  "declared_memory_bytes": 1073741824,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1879048192,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 4
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_resolution"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_context": 0
+    },
+    "catalogue_sha256": "a69d19a0ee83c9a3049f4475db1ad2f95787ea829873554429be445568d1ac79",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occres2-lever-r1",
+      "sweep": "m3-occres2-lever-r1-sweep-r1",
+      "occupancy_resolution": 1,
+      "weights_sha256": "35ae296eb668d7c7693567db4de83b27144e9736e5491e7c6f2dca5c95b12b48",
+      "catalogue_sha256": "a69d19a0ee83c9a3049f4475db1ad2f95787ea829873554429be445568d1ac79",
+      "study_elapsed_seconds": 217.58632489999945,
+      "study_peak_commit_bytes": 1500233728,
+      "sweep_peak_commit_bytes": 664211456,
+      "auc": 0.8686115081522688,
+      "auc_interval": {
+        "auc": 0.868612,
+        "standard_error": 0.009068,
+        "low": 0.850838,
+        "high": 0.886385,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.413858,
+      "per_cell_gap": 0.286142,
+      "operating_counts": {
+        "true_positive": 657,
+        "false_positive": 1851,
+        "false_negative": 10
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 657,
+          "trials": 2508,
+          "estimate": 0.261962,
+          "low": 0.245127,
+          "high": 0.279525
+        },
+        "recall": {
+          "successes": 657,
+          "trials": 667,
+          "estimate": 0.985007,
+          "low": 0.972624,
+          "high": 0.991836
+        }
+      },
+      "best": {
+        "threshold": 1.65,
+        "true_positive": 468,
+        "false_positive": 848,
+        "false_negative": 199,
+        "precision": 0.3556231003039514,
+        "recall": 0.7016491754122939,
+        "f1": 0.47201210287443274,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.227988,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.261962,
+      "components": {
+        "best_f1": 0.472012,
+        "best_threshold": 1.65,
+        "zero_f1": 0.413858,
+        "zero_cost": -0.058154,
+        "out_of_fold_f1": 0.460754,
+        "transfer_cost": 0.046896,
+        "out_of_fold_thresholds": [
+          1.65,
+          1.65,
+          1.8,
+          1.65,
+          1.65,
+          1.65,
+          1.65,
+          1.65,
+          1.8,
+          1.65,
+          1.65,
+          1.65
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 452,
+          "false_positive": 843,
+          "false_negative": 215
+        },
+        "groups": 12
+      }
+    },
+    "control": {
+      "study": "m3-occres2-control-r1",
+      "sweep": "m3-occres2-control-r1-sweep-r1",
+      "occupancy_resolution": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "a69d19a0ee83c9a3049f4475db1ad2f95787ea829873554429be445568d1ac79",
+      "study_elapsed_seconds": 122.703220899999,
+      "study_peak_commit_bytes": 1061023744,
+      "sweep_peak_commit_bytes": 565456896,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325,
+      "components": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "groups": 12
+      }
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "read": "best swept F1 delta at the arm's own boundary",
+    "best_f1_delta": 0.059978,
+    "auc_delta": 0.045968,
+    "per_cell_f1_delta": 0.032218,
+    "precision_delta": 0.025637,
+    "recall_delta": -0.005997,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.831896,
+        "high": 0.888071,
+        "median": 0.868159,
+        "standard_error": 0.014809
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.155116,
+        "high": 0.612867,
+        "median": 0.40491,
+        "standard_error": 0.117432
+      },
+      "cv_f1_lever": {
+        "valid_draws": 400,
+        "low": 0.083317,
+        "high": 0.611889,
+        "median": 0.399817,
+        "standard_error": 0.131497
+      },
+      "precision_lever": {
+        "valid_draws": 400,
+        "low": 0.084249,
+        "high": 0.444068,
+        "median": 0.254487,
+        "standard_error": 0.092381
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.791641,
+        "high": 0.845498,
+        "median": 0.822184,
+        "standard_error": 0.015182
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.138699,
+        "high": 0.5784,
+        "median": 0.371387,
+        "standard_error": 0.112459
+      },
+      "cv_f1_control": {
+        "valid_draws": 400,
+        "low": 0.106606,
+        "high": 0.606116,
+        "median": 0.381725,
+        "standard_error": 0.145667
+      },
+      "precision_control": {
+        "valid_draws": 400,
+        "low": 0.074651,
+        "high": 0.407424,
+        "median": 0.228588,
+        "standard_error": 0.085126
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": 0.016476,
+        "high": 0.039566,
+        "median": 0.031741,
+        "standard_error": 0.005791
+      },
+      "cv_f1_delta": {
+        "valid_draws": 400,
+        "low": -0.138621,
+        "high": 0.179634,
+        "median": 0.016444,
+        "standard_error": 0.079533
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": 0.024771,
+        "high": 0.07017,
+        "median": 0.04395,
+        "standard_error": 0.011841
+      },
+      "precision_delta": {
+        "valid_draws": 400,
+        "low": 0.009635,
+        "high": 0.038661,
+        "median": 0.025176,
+        "standard_error": 0.007507
+      }
+    }
+  },
+  "components": {
+    "note": "Reported, never read: ranking at the arm's own best boundary, the cost of the fixed 0.0 boundary, and the cost of transferring a boundary chosen on the other eleven ancestry groups. Each delta carries a whole-cluster interval and a minimum detectable effect at 80% power.",
+    "lever": {
+      "best_f1": 0.472012,
+      "best_threshold": 1.65,
+      "zero_f1": 0.413858,
+      "zero_cost": -0.058154,
+      "out_of_fold_f1": 0.460754,
+      "transfer_cost": 0.046896,
+      "out_of_fold_thresholds": [
+        1.65,
+        1.65,
+        1.8,
+        1.65,
+        1.65,
+        1.65,
+        1.65,
+        1.65,
+        1.8,
+        1.65,
+        1.65,
+        1.65
+      ]
+    },
+    "control": {
+      "best_f1": 0.412034,
+      "best_threshold": 0.9,
+      "zero_f1": 0.38164,
+      "zero_cost": -0.030394,
+      "out_of_fold_f1": 0.400399,
+      "transfer_cost": 0.018759,
+      "out_of_fold_thresholds": [
+        0.9,
+        0.9,
+        1.05,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        1.05
+      ]
+    },
+    "deltas": {
+      "best_f1": {
+        "delta": 0.059978,
+        "interval": null,
+        "note": "boundary fitted on the scored cells; reported, never read"
+      },
+      "zero_boundary_f1": {
+        "delta": 0.032218,
+        "interval": {
+          "valid_draws": 400,
+          "low": 0.016476,
+          "high": 0.039566,
+          "median": 0.031741,
+          "standard_error": 0.005791
+        },
+        "minimum_detectable_effect": 0.016226
+      },
+      "out_of_fold_f1": {
+        "delta": 0.060355,
+        "interval": {
+          "valid_draws": 400,
+          "low": -0.138621,
+          "high": 0.179634,
+          "median": 0.016444,
+          "standard_error": 0.079533
+        },
+        "minimum_detectable_effect": 0.222851
+      }
+    },
+    "power": {
+      "z": 2.802,
+      "rule": "minimum detectable effect = 2.802 x cluster SE"
+    }
+  },
+  "mechanism": {
+    "precision_improved": false,
+    "precision_delta": 0.025637,
+    "floor": 0.05,
+    "precision_delta_interval": {
+      "valid_draws": 400,
+      "low": 0.009635,
+      "high": 0.038661,
+      "median": 0.025176,
+      "standard_error": 0.007507
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": true
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "prior_refusal": {
+    "instrument": "m3-occupancy-resolution-r1",
+    "predeclaration": "docs/M3_OCCUPANCY_RESOLUTION.md",
+    "matched_to_this_pass": false,
+    "ceiling_bytes": 1207959552,
+    "lever_peak_bytes": 1231880192,
+    "control_peak_bytes": 1034313728,
+    "measured": {
+      "peak_delta_bytes": 197566464,
+      "ceiling_excess_bytes": 23920640,
+      "estimate_error_bytes": 147234816,
+      "estimate_understated_by": 3.9253
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}

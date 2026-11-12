@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the resolution lever is measured at last, and finer sampling buys ranking rather than fit**
+([M3_OCCUPANCY_RESOLUTION_R2.md](M3_OCCUPANCY_RESOLUTION_R2.md), predeclared before its receipts,
+`docs/evidence/m3-occupancy-resolution-r2/scope.json`). The first declaration was refused 22.8 MiB
+short of a self-imposed 1,152 MiB ceiling, so the stride-1 detail tap had never been measured; it is
+now re-declared at an admitted 1,792 MiB and run as a matched 64-step continuation of the published
+checkpoint. **It is the first read-out lever to clear the +0.05 attribution floor**: best swept F1
+**0.472012** against **0.412034** (**+0.059978**), AUC **0.868612** against **0.822643**, F1 at `0.0`
+**0.413858** against **0.381640**, both arms 0 of 28 exact boards, lever peak 1,500,233,728 B of
+1,879,048,192 B. The calibration-neutral decomposition says which part of that is real: the
+fixed-boundary delta **+0.032218** clears its own floor (interval **+0.016476 .. +0.039566**, MDE
+`0.016226`) while the out-of-fold delta **+0.060355** is **not resolvable** at twelve clusters
+(interval -0.138621 .. +0.179634, MDE `0.222851`), so part of the gain is an offset the lever shifts.
+Both absolute gates still fail - AUC `0.031388` short of 0.90, best F1 `0.227988` short of 0.70 - and
+the fit gate stays FALSE. The sampling family is now closed with a number instead of a refusal, and
+the residual the campaign has already attributed is registration, worth `+0.1352` F1 when corrected
+at 4x budget: three times this lever. V-097 and V-098 record two join defects this pass exposed in
+its own curation, both preserved under `runs/attempts/` and bound by tests.
+
 Latest: **every power figure is generated, suite-checked, and the guard is itself exercised by mutation**
 ([M3_MINIMUM_DETECTABLE_EFFECT.md](M3_MINIMUM_DETECTABLE_EFFECT.md),
 `docs/evidence/m3-power-mde-r3/result.json`). The detectable floor is `0.083151` for the

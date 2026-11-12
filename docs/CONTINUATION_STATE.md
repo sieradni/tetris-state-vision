@@ -1,5 +1,49 @@
 # Contributor handoff — 2026-10-30
 
+## The resolution lever is measured at last: it clears the attribution floor and still misses both gates (2026-11-12)
+
+[M3_OCCUPANCY_RESOLUTION_R2.md](M3_OCCUPANCY_RESOLUTION_R2.md) was predeclared before its first receipt
+and is bound by `tests/test_resolution_r2.py`. The first declaration of this lever was **refused**, not
+measured: its stride-1 branch cost 188.4 MiB against a 1,152 MiB ceiling it missed by 22.8 MiB, so the
+one information-changing read-out question in the campaign had no number. This pass re-declares the
+same single change at an admitted **1,792 MiB** envelope - the host allows `min(RAM/3, 8 GiB)` and
+the branch's own two-step profile reached 1,485,766,656 B, so the new ceiling is measured, not
+liberal - and nothing else: same checkpoint `9ae1fef9f649...`, same seed, curriculum, capture side,
+occupancy terms, 64 steps, gates, floor, population and grid.
+
+Both arms passed admission and completed 64 steps under one catalogue; both sweeps scored the
+widened deciding population (36 images, 28 nonempty boards, 667 occupied, 4,933 empty, 12 groups).
+
+| quantity | lever (stride-1) | control (stride-2) |
+|---|---|---|
+| deciding AUC | **0.868612** | 0.822643 |
+| F1 at `0.0` | **0.413858** | 0.381640 |
+| best swept F1 | **0.472012** at `1.65` | 0.412034 at `0.90` |
+| out-of-fold F1 | **0.460754** | 0.400399 |
+| exact nonempty boards | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,500,233,728 B / 217.6 s | 1,061,023,744 B / 122.7 s |
+
+**Verdict `not-cleared`** on the per-cell gate (`0.413858` < `0.70`) and the ranking gate (AUC
+`0.031388` short of `0.90`, best F1 `0.227988` short of `0.70`), with the attribution floor **met**:
+best F1 **+0.059978**, AUC **+0.045968**, fixed-boundary F1 **+0.032218**, precision **+0.025637**
+(below its `0.05` floor, so `precision_improved = false`). It is the first matched continuation in the
+read-out family to clear that floor.
+
+The calibration-neutral report is what keeps that honest, and this is its first use. The components
+separate: fixed-boundary **+0.032218** (whole-cluster interval **+0.016476 .. +0.039566**, MDE
+`0.016226`) is resolvable, out-of-fold **+0.060355** (interval -0.138621 .. +0.179634, MDE `0.222851`)
+is **not**. The lever also shifts its own zero-boundary cost (-0.058154 against -0.030394), so part of
+the fixed-boundary gain is offset, not separation. At twelve clusters this pass can say finer sampling
+helps and cannot say how much of it transfers - and neither reading is above the bar the fit gate
+needs. **Sampling is now closed with a number; registration remains the attributed residual**
+(+0.1352 F1 when model cells are paired with the cells they cover, at 4x budget).
+
+Two defects were found in this pass's own curation before anything was published, both preserved
+under `runs/attempts/` rather than deleted: V-097 (components recomputed over all 36 images while the
+verdict reads the 28 nonempty boards) and V-098 (a bootstrap interval printed beside a different
+delta). Both are now bound - one `deciding_rows` helper, an assertion that each arm's component
+matches the sweep-derived row, and a guard that a reported interval belongs to the statistic it names.
+
 ## The standing occupancy attribution is a boundary, not a model difference, and two compute refusals reverse (2026-11-11)
 
 [M3_OPERATING_POINT.md](M3_OPERATING_POINT.md) was predeclared before its receipt; it is read-only

@@ -179,7 +179,10 @@ cannot pay for it.
 
 Resolution stays open only as a *separately declared* configuration - a smaller branch, a reduced
 capture side, or a computed-at-the-cell formulation are three different instruments with their own
-predeclarations, and none of them is a substitution inside this one. The ranked next step is the
+predeclarations, and none of them is a substitution inside this one. (A fourth was declared the next
+day: [M3_OCCUPANCY_RESOLUTION_R2.md](M3_OCCUPANCY_RESOLUTION_R2.md) keeps this declaration intact and
+raises only the envelope, because this pass's 22.8 MiB shortfall was a limit it chose, not one the
+branch needed. This verdict stands as refused.) The ranked next step is the
 untested stacking of `occupancy_context` with `occupancy_detail`: the 8 x 8 context tap retains two
 2 x 2 48-channel maps (about 0.02 MiB), so it fits the declared envelope, and it is the last lever
 that changes the information the read-out sees rather than the sampling of it.
