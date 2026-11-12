@@ -1,5 +1,49 @@
 # Contributor handoff — 2026-10-30
 
+## The constant mode was the whole signal: per-cell registration is learnable and buys nothing (2026-11-12)
+
+[M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was extended with a fourth arm
+(`occupancy_deform=3`) whose applied field is **de-meaned across the board**, so the constant mode is
+exactly zero by construction, not by penalty: the same coarse-plus-fine field as the wide arm, then
+`shift = shift - shift.mean(dim=1, keepdim=True)`. It has an identical parameter set to the wide arm and
+is bounded at `2 x DEFORM_REACH = 8.0` cells, because clamping after de-meaning would reintroduce a
+mean; it never comes near that bound.
+
+Four matched 64-step continuations of `runs/m3-percell-balance-r1` differ only in that lever, and **all
+three shared arms reproduced the previous block exactly**: control `0.8226433610683003`, one cell
+`0.8665658048737642`, wide `0.8822623454135491` AUC, with per-cell F1 and best swept F1 identical to
+`docs/evidence/m3-occupancy-deformation-r2/scope.json`. The comparison is admitted.
+
+| quantity | control | one cell | wide | **demeaned** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | 0.866566 | **0.882262** | 0.820429 |
+| F1 at `0.0` | 0.381640 | 0.369420 | **0.385902** | 0.376663 |
+| best swept F1 | 0.412034 @ `0.90` | 0.490752 @ `3.15` | **0.514821** @ `1.95` | 0.427911 @ `0.60` |
+| out-of-fold F1 | 0.400399 | 0.456054 | **0.498413** | 0.427911 |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,053,507,584 B / 240.6 s | 1,064,845,312 B / 154.8 s | 1,042,235,392 B / 302.7 s | 1,041,952,768 B / 367.5 s |
+
+The de-meaned arm is **`not-cleared` on all three conditions**: +0.015877 best F1 against control
+(below the 0.05 floor), AUC `-0.002215` with an interval of `-0.037595 .. +0.033223` and MDE
+`0.050764`, so it is **indistinguishable from control**, not "slightly worse". Against the wide arm it
+loses **0.061834 AUC** with an interval clear of zero — resolvably worse.
+
+The field settles what happened. The de-meaned arm's constant share is **0.000752** (wide: 0.978), its
+board mean is `(-0.001, +0.024)` (wide: `-3.488, -3.760`), and it is genuinely per-cell rather than
+inert: mean `|offset|` **0.541** cells, **1.153** on occupied cells, p50 0.283, p90 1.358, max 3.387,
+**nothing at its bound**, 36.5% of samples outside their nominal cell. Declared reading:
+**`registration-without-signal`** — the displacement is expressible and the objective cannot use it.
+
+**Answer: per-cell registration is not a lever this architecture carries through the occupancy
+objective, and the family's entire gain was the translation.** A free field that can only shift the
+read-out gains `+0.061834` AUC over one that is forced to move per-cell; nothing in the loss prefers the
+correct cell. The translation it chose is **5.128** cells Euclidean — twice the 2.57-cell residual the
+oracle pairing measured — so the next pass should either **supervise the displacement** with a
+placed-target term (the only change that adds information) or **re-project the field into image space
+with an in-frame fraction** to tell a five-cell decode offset from a shifted-window exploit. Not
+another reach or bound change. Fix gate stays **FALSE** (0 of 28 exact boards on all four arms);
+V-107 and V-108 record this pass's own curation defects, preserved under `runs/attempts/`.
+
 ## The widened field answers the registration question: the bound capped it, and what it learned is a translation (2026-11-12)
 
 [M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was extended, predeclared before its

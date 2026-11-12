@@ -9,8 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
 import torch
 import tetris_vision.model as model_module
 from tetris_vision.losses import require_occupancy_deform
-from tetris_vision.model import (DEFORM_LIMIT, DEFORM_REACH, DEFORM_WIDE_LIMIT, ModelConfig,
-                                 TetrisStateNet, deform_offsets)
+from tetris_vision.model import (DEFORM_DEMEAN_REACH, DEFORM_LIMIT, DEFORM_REACH, DEFORM_WIDE_LIMIT,
+                                 ModelConfig, TetrisStateNet, deform_offsets)
 
 from record_registration_lever import mechanism_of
 from record_stream_run import OWNED_RUN_PATTERN
@@ -39,7 +39,7 @@ class FieldTests(unittest.TestCase):
         self.assertEqual(ModelConfig.pilot().occupancy_deform, 0)
 
     def test_an_undeclared_value_is_refused(self):
-        for value in (3, -1, True, 1.0):
+        for value in (4, -1, True, 1.0):
             with self.assertRaises(ValueError):
                 ModelConfig(occupancy_detail=1, occupancy_deform=value)
 
@@ -73,9 +73,11 @@ class FieldTests(unittest.TestCase):
         _, control = occupancy(pilot(occupancy_detail=1))
         _, lever = occupancy(pilot(occupancy_detail=1, occupancy_deform=1))
         _, wide = occupancy(pilot(occupancy_detail=1, occupancy_deform=2))
+        _, demeaned = occupancy(pilot(occupancy_detail=1, occupancy_deform=3))
         self.assertTrue(torch.equal(plain, control))
         self.assertTrue(torch.equal(plain, lever))
         self.assertTrue(torch.equal(plain, wide))
+        self.assertTrue(torch.equal(plain, demeaned))
 
     def test_the_arms_share_every_tensor_but_the_field(self):
         torch.manual_seed(20261026)
@@ -289,6 +291,104 @@ class WideFieldTests(unittest.TestCase):
             self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
 
 
+class DemeanedFieldTests(unittest.TestCase):
+    """The de-meaned arm: identical parameters to the widened one, constant mode barred."""
+
+    @staticmethod
+    def model(config, seed=20261026):
+        torch.manual_seed(seed)
+        return TetrisStateNet(config).eval()
+
+    @staticmethod
+    def offsets(model):
+        pixels, valid = inputs()
+        with torch.no_grad():
+            return model(pixels, valid)["final"]["occupancy_deform_offsets"]
+
+    def test_the_demeaned_arm_adds_no_parameters_and_shares_every_tensor_with_the_widened_arm(self):
+        torch.manual_seed(17)
+        wide = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2))
+        torch.manual_seed(17)
+        demeaned = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=3))
+        self.assertIsNotNone(demeaned.occupancy_deform_coarse)
+        self.assertEqual(set(wide.state_dict()), set(demeaned.state_dict()))
+        for name, value in wide.state_dict().items():
+            self.assertTrue(torch.equal(value, demeaned.state_dict()[name]), name)
+        self.assertFalse(bool(demeaned.occupancy_deform_coarse.weight.any()))
+
+    def test_the_board_mean_is_zero_by_construction_while_the_free_arm_carries_one(self):
+        means = {}
+        for deform in (2, 3):
+            model = self.model(pilot(occupancy_detail=1, occupancy_deform=deform))
+            with torch.no_grad():
+                model.occupancy_deform.weight.zero_()
+                model.occupancy_deform.bias.fill_(3.0)
+                model.occupancy_deform_coarse.weight.zero_()
+                model.occupancy_deform_coarse.bias.fill_(3.0)
+            means[deform] = float(self.offsets(model).mean(dim=1).abs().max())
+        self.assertGreater(means[2], 2.0)
+        self.assertLessEqual(means[3], 1e-6)
+
+    def test_the_demeaned_field_is_bounded_and_its_board_mean_is_zero(self):
+        model = self.model(pilot(occupancy_detail=1, occupancy_deform=3))
+        with torch.no_grad():
+            model.occupancy_deform.weight.normal_(0, 5.0)
+            model.occupancy_deform_coarse.weight.normal_(0, 5.0)
+        offsets = self.offsets(model)
+        self.assertLessEqual(float(offsets.abs().max()), DEFORM_DEMEAN_REACH)
+        self.assertGreater(float(offsets.abs().max()), .5)
+        self.assertLessEqual(float(offsets.mean(dim=1).abs().max()), 1e-6)
+        self.assertEqual(DEFORM_DEMEAN_REACH, 2*DEFORM_REACH)
+
+    def test_paired_raster_equivalence_holds_for_the_demeaned_arm(self):
+        first = self.model(pilot(occupancy_detail=1, occupancy_deform=3), seed=23)
+        second = self.model(pilot(occupancy_detail=1, occupancy_deform=3), seed=23)
+        with torch.no_grad():
+            first.occupancy_deform_coarse.weight.normal_(0, .9)
+            second.occupancy_deform_coarse.weight.normal_(0, .05)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            a = first(pixels, valid)["final"]["occupancy"]
+            b = second(pixels, valid)["final"]["occupancy"]
+        self.assertFalse(torch.equal(first.occupancy_deform_coarse.weight,
+                                    second.occupancy_deform_coarse.weight))
+        self.assertTrue(torch.equal(a, b))
+
+    def test_the_demeaned_field_changes_the_decision_only_through_the_projection(self):
+        demeaning = self.model(pilot(occupancy_detail=1, occupancy_deform=3), seed=29)
+        control = self.model(pilot(occupancy_detail=1), seed=29)
+        with torch.no_grad():
+            control.occupancy_detail_tap.weight.copy_(demeaning.occupancy_detail_tap.weight)
+            control.occupancy_detail_tap.bias.copy_(demeaning.occupancy_detail_tap.bias)
+            demeaning.occupancy_deform_coarse.weight.normal_(0, 2.0)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            inert = demeaning(pixels, valid)["final"]["occupancy"]
+            reference = control(pixels, valid)["final"]["occupancy"]
+            for model in (demeaning, control):
+                model.occupancy_detail_tap.weight.fill_(.5)
+                model.occupancy_detail_tap.bias.fill_(.1)
+            moved = demeaning(pixels, valid)["final"]["occupancy"]
+            reference_active = control(pixels, valid)["final"]["occupancy"]
+            demeaning.occupancy_deform_coarse.weight.zero_()
+            zeroed = demeaning(pixels, valid)["final"]["occupancy"]
+        self.assertTrue(torch.equal(inert, reference))
+        self.assertFalse(torch.equal(moved, reference_active))
+        self.assertTrue(torch.equal(zeroed, reference_active))
+
+    def test_the_admission_binds_the_demeaned_declaration(self):
+        summary = {"arguments": {"occupancy_deform": 3},
+                   "recovery_contract": {"occupancy_deform": 3}}
+        self.assertIsNone(require_occupancy_deform(3, summary))
+        with self.assertRaises(ValueError):
+            require_occupancy_deform(2, summary)
+
+    def test_the_owned_demeaned_family_is_declared(self):
+        for name in ("m3-occdeform3-demean-r1", "m3-occdeform3-control-r1",
+                     "m3-occdeform3-demean-r1-sweep-r1"):
+            self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
+
+
 class WidenedRecordTests(unittest.TestCase):
     """The three-arm record: what it published and what the document says about it."""
 
@@ -337,7 +437,7 @@ class WidenedRecordTests(unittest.TestCase):
         torch.manual_seed(4)
         control = TetrisStateNet(pilot(occupancy_detail=1))
         baseline = set(control.state_dict())
-        for deform in (1, 2):
+        for deform in (1, 2, 3):
             torch.manual_seed(4)
             arm = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=deform))
             added = set(arm.state_dict())-baseline
@@ -361,6 +461,113 @@ class WidenedRecordTests(unittest.TestCase):
         self.assertIn(f"{100*self.scope['reach']['field']['lever']['at_bound_fraction']:.1f}%", self.text)
         for arm in self.scope["arms"].values():
             self.assertIn(f"{arm['study_peak_commit_bytes']:,}", self.text)
+
+
+class DemeanedRecordTests(unittest.TestCase):
+    """The four-arm record: the constant-mode bar, its reproduction and what the documents claim."""
+
+    @classmethod
+    def setUpClass(cls):
+        root = Path(__file__).resolve().parents[1]
+        cls.root = root
+        cls.scope = json.loads((root/"docs/evidence/m3-occupancy-deformation-r3/scope.json").read_text(
+            encoding="utf-8"))
+        cls.prior = json.loads((root/"docs/evidence/m3-occupancy-deformation-r2/scope.json").read_text(
+            encoding="utf-8"))
+        cls.text = " ".join((root/"docs/M3_OCCUPANCY_REGISTRATION.md").read_text(
+            encoding="utf-8").split())
+
+    def test_the_four_arms_and_the_verdict_are_mechanical(self):
+        self.assertEqual(sorted(self.scope["arms"]), ["control", "demean", "lever", "wide"])
+        self.assertEqual({name: arm["occupancy_deform"] for name, arm in self.scope["arms"].items()},
+                         {"control": 0, "lever": 1, "wide": 2, "demean": 3})
+        self.assertEqual({name: arm["declared_bound_cells"]
+                          for name, arm in self.scope["arms"].items()},
+                         {"control": 0.0, "lever": 1.0, "wide": 4.0, "demean": 8.0})
+        self.assertEqual(self.scope["verdict"]["verdict"], "not-cleared")
+        self.assertFalse(self.scope["verdict"]["conditions"]["attribution"])
+        self.assertEqual(self.scope["population"]["nonempty_boards"], 28)
+        self.assertEqual(self.scope["population"]["occupied_cells"], 667)
+        self.assertEqual(self.scope["population"]["contexts"], 12)
+        for arm in self.scope["arms"].values():
+            self.assertEqual(arm["best"]["exact_nonempty_boards"], 0)
+
+    def test_control_wide_and_one_cell_reproduce_the_previous_block_exactly(self):
+        for name in ("control", "lever", "wide"):
+            for key in ("auc", "per_cell_f1"):
+                self.assertEqual(self.scope["arms"][name][key], self.prior["arms"][name][key], key)
+            self.assertEqual(self.scope["arms"][name]["best"]["f1"],
+                             self.prior["arms"][name]["best"]["f1"])
+            self.assertEqual(self.scope["reproduction"][name]["auc"], self.prior["arms"][name]["auc"])
+
+    def test_the_constant_mode_is_gone_and_per_cell_structure_remains(self):
+        comparison = self.scope["constant_mode"]["comparison"]
+        self.assertLess(comparison["constant_share"]["demean"], .5)
+        self.assertGreater(comparison["constant_share"]["wide"], .95)
+        self.assertGreater(comparison["mean_abs_offset_cells"]["demean"], .25)
+        self.assertGreater(comparison["occupied_mean_abs_offset_cells"]["demean"], 1.0)
+        self.assertEqual(comparison["at_bound_fraction"]["demean"], 0.0)
+        self.assertGreater(comparison["outside_own_cell_fraction"]["demean"], .25)
+        for axis in comparison["board_mean_of_applied_field"]["demean"]:
+            self.assertLessEqual(abs(axis), .05)
+        self.assertEqual(self.scope["constant_mode"]["reading"], "registration-without-signal")
+        self.assertTrue(self.scope["constant_mode"]["structure_found"])
+        self.assertFalse(self.scope["constant_mode"]["ranking_moves"])
+
+    def test_every_constant_share_re_derives_from_its_own_mean_vector(self):
+        """No vacuous formula can ship again: the share must follow from the stored moments."""
+        for name, field in self.scope["constant_mode"]["field"].items():
+            mean_x, mean_y = field["mean_vector_cells"]
+            derived = (mean_x*mean_x+mean_y*mean_y)/field["mean_square_cells"]
+            self.assertAlmostEqual(derived, field["constant_share"], places=5, msg=name)
+
+    def test_the_demeaned_field_is_its_own_study_and_never_reaches_its_bound(self):
+        field = self.scope["constant_mode"]["field"]["demean"]
+        self.assertEqual(field["arm"]["occupancy_deform"], 3)
+        self.assertEqual(field["arm"]["bound_cells"], DEFORM_DEMEAN_REACH)
+        self.assertEqual(DEFORM_DEMEAN_REACH, 2*DEFORM_REACH)
+        self.assertLess(field["magnitude_cells"]["max"], DEFORM_DEMEAN_REACH)
+
+    def test_no_gate_bound_ceiling_or_population_was_altered(self):
+        sys.path.insert(0, str(self.root/"scripts"))
+        from occupancy_sweep import AUC_THRESHOLD, F1_THRESHOLD
+        from percell_gate import CELL_F1_THRESHOLD
+        envelope = self.scope["envelope"]
+        self.assertEqual(envelope["ceiling_bytes"], 1792*1024**2)
+        self.assertEqual(envelope["sweep_ceiling_bytes"], 640*1024**2)
+        self.assertEqual(envelope["field_ceiling_bytes"], 640*1024**2)
+        self.assertEqual(envelope["reach_cells"], {"control": 0.0, "lever": 1.0, "wide": 4.0,
+                                                   "demean": 8.0})
+        self.assertEqual(envelope["attribution_floor"], .05)
+        self.assertEqual(self.scope["gates"], {"per_cell_f1": CELL_F1_THRESHOLD,
+                                               "ranking_auc": AUC_THRESHOLD,
+                                               "ranking_f1": F1_THRESHOLD,
+                                               "attribution_floor": .05, "grid_points": 81})
+        self.assertEqual(self.scope["unchanged"]["thresholds"],
+                         {"per_cell_f1": CELL_F1_THRESHOLD, "ranking_auc": AUC_THRESHOLD,
+                          "ranking_f1": F1_THRESHOLD})
+
+    def test_the_document_quotes_the_published_scope(self):
+        demean, wide = self.scope["arms"]["demean"], self.scope["arms"]["wide"]
+        comparison = self.scope["constant_mode"]["comparison"]
+        deltas = self.scope["contrasts"]
+        for value in (demean["auc"], wide["auc"], self.scope["arms"]["control"]["auc"],
+                      demean["per_cell_f1"], demean["best"]["f1"], demean["precision"],
+                      demean["components"]["out_of_fold_f1"],
+                      deltas["demean_control"]["best_f1_delta"],
+                      deltas["demean_control"]["auc_delta"],
+                      deltas["demean_wide"]["auc_delta"],
+                      deltas["wide_control"]["best_f1_delta"]):
+            self.assertIn(f"{round(value, 6):,.6f}", self.text)
+        self.assertIn(f"{comparison['constant_share']['demean']:.6f}", self.text)
+        self.assertIn(f"{comparison['constant_share']['wide']:.3f}", self.text)
+        self.assertIn(f"{comparison['mean_abs_offset_cells']['demean']:.3f}", self.text)
+        self.assertIn(f"{comparison['mean_abs_offset_cells']['wide']:.3f}", self.text)
+        self.assertIn(f"{comparison['occupied_mean_abs_offset_cells']['demean']:.3f}", self.text)
+        self.assertIn(f"{100*comparison['outside_own_cell_fraction']['demean']:.1f}%", self.text)
+        for arm in self.scope["arms"].values():
+            self.assertIn(f"{arm['study_peak_commit_bytes']:,}", self.text)
+        self.assertIn(self.scope["constant_mode"]["reading"], self.text)
 
 
 class MechanismTests(unittest.TestCase):

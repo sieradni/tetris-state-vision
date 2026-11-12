@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **per-cell registration is learnable and buys nothing; the family's gain was the translation**
+([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md),
+`docs/evidence/m3-occupancy-deformation-r3/scope.json`). A fourth arm de-means the applied field across
+the board, so its constant mode is exactly zero by construction rather than by penalty; the control,
+one-cell and wide arms reproduced the previous block's numbers exactly (`0.822643...`, `0.866566...`,
+`0.882262...`), so the comparison is admitted. The de-meaned field is genuinely per-cell: constant-share
+**0.000752** against the wide arm's **0.978**, mean `|offset|` **0.541** cells (**1.153** on occupied
+cells, p90 1.358, max 3.387, nothing at its bound, 36.5% of samples outside their own cell). It still
+buys nothing: AUC **0.820429** against control `0.822643` (interval -0.037595 .. +0.033223, MDE
+`0.050764`), best F1 `0.427911` (+0.015877, below the floor), and it is **0.061834 AUC behind** the free
+field with an interval clear of zero. Declared reading: **`registration-without-signal`**. So per-cell
+registration is expressible and useless to this objective, and the free field's entire gain came from a
+`5.128`-cell translation - twice the 2.57-cell residual the oracle pairing measured. The next step is
+supervision of the displacement (a placed-target term) or image-space re-projection of the field with an
+in-frame fraction to separate a decode offset from a shifted-window exploit - not another reach change.
+Fit gate stays **FALSE** (0 of 28 exact boards on all four arms). V-107 and V-108 record the defects this
+pass found in its own curation, preserved under `runs/attempts/`.
+
 Latest: **the widened registration field settles the question: the bound capped it, and what it applies
 is a translation** ([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md),
 `docs/evidence/m3-occupancy-deformation-r2/scope.json`). Three matched 64-step continuations differing

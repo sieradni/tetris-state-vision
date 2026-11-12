@@ -73,9 +73,10 @@ class ModelConfig:
               "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
-        check(type(self.occupancy_deform) is int and self.occupancy_deform in (0, 1, 2),
-              "occupancy deform is 0 (the tap samples at the decoded cell), 1 (one-cell field) or "
-              "2 (coarse-to-fine field reaching four cells)")
+        check(type(self.occupancy_deform) is int and self.occupancy_deform in (0, 1, 2, 3),
+              "occupancy deform is 0 (the tap samples at the decoded cell), 1 (one-cell field), "
+              "2 (coarse-to-fine field reaching four cells) or 3 (the same field de-meaned across "
+              "the board, so it cannot express a translation)")
         check(not self.occupancy_deform or self.occupancy_detail == 1,
               "the registration lever moves the detail tap's sample, so it needs that tap")
         check(type(self.lattice_support) is int and self.lattice_support in (0, 1),
@@ -220,6 +221,11 @@ DEFORM_LIMIT = 1.0
 # about a tenth of a cell: the wider reach has to come with a coarser context, not just a bigger bound.
 DEFORM_WIDE_LIMIT = 3.0
 DEFORM_REACH = 4.0
+# Declared de-meaned reach: subtracting the board's mean offset can move any single cell by as much
+# as the sum of the level bounds (one shifted endpoint plus the mean), so the structural bound of the
+# de-meaned arm is twice the free arm's. It is not a clamp: clamping after de-meaning would put the
+# mean back, so the arm's bound is declared to cover the de-meaned sum instead.
+DEFORM_DEMEAN_REACH = 2*DEFORM_REACH
 DEFORM_LIMITS = (DEFORM_LIMIT, DEFORM_WIDE_LIMIT)
 
 
@@ -447,7 +453,7 @@ class TetrisStateNet(nn.Module):
             self.occupancy_deform = nn.Conv2d(config.widths[0], 2, 3, padding=1)
             nn.init.zeros_(self.occupancy_deform.weight)
             nn.init.zeros_(self.occupancy_deform.bias)
-            if config.occupancy_deform == 2:
+            if config.occupancy_deform in (2, 3):
                 # Coarse level: predicted at the pooled resolution so its window covers a board
                 # neighbourhood, then upsampled to the fine map and sampled at the same cell
                 # centres. Zero-initialized like the fine level, so step zero is the published
@@ -536,6 +542,13 @@ class TetrisStateNet(nn.Module):
                             coarse, lattice, self.coordinates, zero
                         )[0].reshape(batch, rows*columns, 1, 2), DEFORM_WIDE_LIMIT)
                         shift = shift.clamp(-DEFORM_REACH, DEFORM_REACH)
+                    if self.config.occupancy_deform == 3:
+                        # Declared constant-mode bar: the field is de-meaned across the board before it
+                        # is applied, so the board-wide translation is exactly zero by construction and
+                        # only per-cell displacement remains expressible. Nothing in the objective can
+                        # buy a re-centred read-out through this arm, and step zero is still the
+                        # published function because a zero field has zero mean.
+                        shift = shift-shift.mean(dim=1, keepdim=True)
                     occupancy_deform_offsets = shift.reshape(batch, rows*columns, 2)
                     offsets = offsets+shift
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]

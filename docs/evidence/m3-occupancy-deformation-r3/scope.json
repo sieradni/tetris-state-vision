@@ -1,0 +1,1218 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-deformation-r3",
+  "predeclaration": "docs/M3_OCCUPANCY_REGISTRATION.md",
+  "scope": "Matched 64-step continuation of one published checkpoint by four arms differing only in the registration lever: detail control, the one-cell field, the four-cell coarse-to-fine field, and the same four-cell field de-meaned across the board so its constant mode is exactly zero by construction. Scored read-only on the widened deciding population with the standing gates and grid, with the applied offset field measured in cells from the frozen archive; no threshold, population or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occdeform3-curation-r3-job.json",
+  "declared_memory_bytes": 1992294400,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1879048192,
+    "sweep_ceiling_bytes": 671088640,
+    "field_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "field": 36,
+      "curation": 7
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05,
+    "constant_dominant_below": 0.5,
+    "structure_cells": 0.25,
+    "reach_cells": {
+      "demean": 8.0,
+      "wide": 4.0,
+      "lever": 1.0,
+      "control": 0.0
+    }
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_deform"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_resolution": 0,
+      "occupancy_context": 0
+    },
+    "catalogue_sha256": "4e0b8b97029096ff2002098566244d45bf9fd72e6fc5da32d329f680c94d1e4b",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "demean": {
+      "study": "m3-occdeform3-demean-r1",
+      "sweep": "m3-occdeform3-demean-r1-sweep-r1",
+      "occupancy_deform": 3,
+      "declared_bound_cells": 8.0,
+      "weights_sha256": "99954d8cacb8aeda30b762408e87f9696ed818e17dd9f4f42101b9ec2235545d",
+      "catalogue_sha256": "4e0b8b97029096ff2002098566244d45bf9fd72e6fc5da32d329f680c94d1e4b",
+      "study_elapsed_seconds": 367.47597880000103,
+      "study_peak_commit_bytes": 1041952768,
+      "sweep_peak_commit_bytes": 566898688,
+      "field": {
+        "instrument": "m3-occdeform3-demean-r1-field-r1",
+        "peak_commit_bytes": 561479680,
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 0.540519,
+          "p50": 0.283176,
+          "p90": 1.357714,
+          "p99": 2.453489,
+          "max": 3.386917,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 0.593888,
+          "p50": 0.30964,
+          "p90": 1.524122,
+          "p99": 2.795757,
+          "max": 3.776261,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          0.258815,
+          0.493241
+        ],
+        "mean_vector_cells": [
+          -0.001048,
+          0.02385
+        ],
+        "spread_cells": [
+          0.473843,
+          0.729695
+        ],
+        "mean_square_cells": 0.757552,
+        "constant_share": 0.000752,
+        "coherence": 0.044166,
+        "at_bound_fraction": 0.0,
+        "outside_own_cell_fraction": 0.364722,
+        "occupied_magnitude_cells": {
+          "mean": 1.153125,
+          "p50": 0.973035,
+          "p90": 2.098891,
+          "p99": 2.508868,
+          "max": 2.769271,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 1.285231,
+          "p50": 1.07395,
+          "p90": 2.4201,
+          "p99": 2.861795,
+          "max": 2.996089,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.907046,
+        "arm": {
+          "occupancy_deform": 3,
+          "bound_cells": 8.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 3.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      },
+      "auc": 0.8204288287642111,
+      "auc_interval": {
+        "auc": 0.820429,
+        "standard_error": 0.010203,
+        "low": 0.800431,
+        "high": 0.840427,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.376663,
+      "per_cell_gap": 0.323337,
+      "operating_counts": {
+        "true_positive": 623,
+        "false_positive": 2018,
+        "false_negative": 44
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 623,
+          "trials": 2641,
+          "estimate": 0.235895,
+          "low": 0.220094,
+          "high": 0.252464
+        },
+        "recall": {
+          "successes": 623,
+          "trials": 667,
+          "estimate": 0.934033,
+          "low": 0.9126,
+          "high": 0.950495
+        }
+      },
+      "best": {
+        "threshold": 0.6,
+        "true_positive": 463,
+        "false_positive": 1034,
+        "false_negative": 204,
+        "precision": 0.3092852371409486,
+        "recall": 0.6941529235382309,
+        "f1": 0.4279112754158966,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.272089,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.235895,
+      "components": {
+        "best_f1": 0.427911,
+        "best_threshold": 0.6,
+        "zero_f1": 0.376663,
+        "zero_cost": -0.051248,
+        "best_precision": 0.309285,
+        "out_of_fold_f1": 0.427911,
+        "transfer_cost": 0.051248,
+        "out_of_fold_thresholds": [
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 463,
+          "false_positive": 1034,
+          "false_negative": 204
+        },
+        "groups": 12
+      }
+    },
+    "wide": {
+      "study": "m3-occdeform3-wide-r1",
+      "sweep": "m3-occdeform3-wide-r1-sweep-r1",
+      "occupancy_deform": 2,
+      "declared_bound_cells": 4.0,
+      "weights_sha256": "338c79c55608dc38cca13ea3d0ff37d9c31b699d33a70704511d849dde13a5b0",
+      "catalogue_sha256": "4e0b8b97029096ff2002098566244d45bf9fd72e6fc5da32d329f680c94d1e4b",
+      "study_elapsed_seconds": 302.6622948000004,
+      "study_peak_commit_bytes": 1042235392,
+      "sweep_peak_commit_bytes": 557432832,
+      "field": {
+        "instrument": "m3-occdeform3-wide-r1-field-r1",
+        "peak_commit_bytes": 560807936,
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 3.760055,
+          "p50": 3.898947,
+          "p90": 3.961249,
+          "p99": 3.970079,
+          "max": 3.973248,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 5.131651,
+          "p50": 5.334243,
+          "p90": 5.491414,
+          "p99": 5.517264,
+          "max": 5.527936,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          3.489139,
+          3.759744
+        ],
+        "mean_vector_cells": [
+          -3.487921,
+          -3.759564
+        ],
+        "spread_cells": [
+          0.58807,
+          0.504869
+        ],
+        "mean_square_cells": 26.900634,
+        "constant_share": 0.977669,
+        "coherence": 1.363901,
+        "at_bound_fraction": 0.838056,
+        "outside_own_cell_fraction": 0.998194,
+        "occupied_magnitude_cells": {
+          "mean": 3.158956,
+          "p50": 3.735691,
+          "p90": 3.898947,
+          "p99": 3.931227,
+          "max": 3.965584,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 4.180768,
+          "p50": 4.979099,
+          "p90": 5.333081,
+          "p99": 5.40942,
+          "max": 5.504166,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.991004,
+        "arm": {
+          "occupancy_deform": 2,
+          "bound_cells": 4.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 3.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      },
+      "auc": 0.8822623454135491,
+      "auc_interval": {
+        "auc": 0.882262,
+        "standard_error": 0.008673,
+        "low": 0.865263,
+        "high": 0.899262,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.385902,
+      "per_cell_gap": 0.314098,
+      "operating_counts": {
+        "true_positive": 646,
+        "false_positive": 2035,
+        "false_negative": 21
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 646,
+          "trials": 2681,
+          "estimate": 0.240955,
+          "low": 0.225145,
+          "high": 0.257506
+        },
+        "recall": {
+          "successes": 646,
+          "trials": 667,
+          "estimate": 0.968516,
+          "low": 0.952349,
+          "high": 0.979317
+        }
+      },
+      "best": {
+        "threshold": 1.95,
+        "true_positive": 495,
+        "false_positive": 761,
+        "false_negative": 172,
+        "precision": 0.39410828025477707,
+        "recall": 0.7421289355322339,
+        "f1": 0.514820592823713,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.185179,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.240955,
+      "components": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "best_precision": 0.394108,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 471,
+          "false_positive": 752,
+          "false_negative": 196
+        },
+        "groups": 12
+      }
+    },
+    "lever": {
+      "study": "m3-occdeform3-lever-r1",
+      "sweep": "m3-occdeform3-lever-r1-sweep-r1",
+      "occupancy_deform": 1,
+      "declared_bound_cells": 1.0,
+      "weights_sha256": "26f1ba48debc29eeb34853ffe1398bb9ceb56ab1a2dc81814b6a9bea7ce7c446",
+      "catalogue_sha256": "4e0b8b97029096ff2002098566244d45bf9fd72e6fc5da32d329f680c94d1e4b",
+      "study_elapsed_seconds": 154.80981170000086,
+      "study_peak_commit_bytes": 1064845312,
+      "sweep_peak_commit_bytes": 563957760,
+      "field": {
+        "instrument": "m3-occdeform3-lever-r1-field-r1",
+        "peak_commit_bytes": 558563328,
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 0.909228,
+          "p50": 0.994197,
+          "p90": 0.999019,
+          "p99": 0.999443,
+          "max": 0.999449,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 1.273187,
+          "p50": 1.403942,
+          "p90": 1.412441,
+          "p99": 1.413206,
+          "max": 1.413215,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          0.906267,
+          0.89297
+        ],
+        "mean_vector_cells": [
+          -0.881647,
+          0.863391
+        ],
+        "spread_cells": [
+          0.298106,
+          0.316115
+        ],
+        "mean_square_cells": 1.711541,
+        "constant_share": 0.889692,
+        "coherence": 1.35719,
+        "at_bound_fraction": 0.704444,
+        "outside_own_cell_fraction": 0.918889,
+        "occupied_magnitude_cells": {
+          "mean": 0.728922,
+          "p50": 0.947617,
+          "p90": 0.994101,
+          "p99": 0.999221,
+          "max": 0.999301,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 1.008486,
+          "p50": 1.324108,
+          "p90": 1.404464,
+          "p99": 1.412826,
+          "max": 1.412955,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.70015,
+        "arm": {
+          "occupancy_deform": 1,
+          "bound_cells": 1.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 0.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      },
+      "auc": 0.8665658048737642,
+      "auc_interval": {
+        "auc": 0.866566,
+        "standard_error": 0.009125,
+        "low": 0.848682,
+        "high": 0.88445,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.36942,
+      "per_cell_gap": 0.33058,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2255,
+        "false_negative": 5
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 662,
+          "trials": 2917,
+          "estimate": 0.226945,
+          "low": 0.21211,
+          "high": 0.242499
+        },
+        "recall": {
+          "successes": 662,
+          "trials": 667,
+          "estimate": 0.992504,
+          "low": 0.982573,
+          "high": 0.996794
+        }
+      },
+      "best": {
+        "threshold": 3.15,
+        "true_positive": 398,
+        "false_positive": 557,
+        "false_negative": 269,
+        "precision": 0.4167539267015707,
+        "recall": 0.5967016491754122,
+        "f1": 0.49075215782983966,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.209248,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.226945,
+      "components": {
+        "best_f1": 0.490752,
+        "best_threshold": 3.15,
+        "zero_f1": 0.36942,
+        "zero_cost": -0.121332,
+        "best_precision": 0.416754,
+        "out_of_fold_f1": 0.456054,
+        "transfer_cost": 0.086634,
+        "out_of_fold_thresholds": [
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.0,
+          3.3,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 371,
+          "false_positive": 589,
+          "false_negative": 296
+        },
+        "groups": 12
+      }
+    },
+    "control": {
+      "study": "m3-occdeform3-control-r1",
+      "sweep": "m3-occdeform3-control-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "declared_bound_cells": 0.0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "4e0b8b97029096ff2002098566244d45bf9fd72e6fc5da32d329f680c94d1e4b",
+      "study_elapsed_seconds": 240.61733209999875,
+      "study_peak_commit_bytes": 1053507584,
+      "sweep_peak_commit_bytes": 560177152,
+      "field": null,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325,
+      "components": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "best_precision": 0.263488,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "groups": 12
+      }
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "contrasts": {
+    "demean_control": {
+      "best_f1_delta": 0.015877,
+      "auc_delta": -0.002215,
+      "per_cell_f1_delta": -0.004977,
+      "precision_delta": -0.00043,
+      "out_of_fold_f1_delta": 0.027512,
+      "attribution_met": false,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.037196,
+        "high": 0.020654,
+        "median": -0.004717,
+        "standard_error": 0.015227
+      },
+      "zero_boundary_minimum_detectable_effect": 0.042666,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.202267,
+        "high": 0.201845,
+        "median": 0.024101,
+        "standard_error": 0.100523
+      },
+      "out_of_fold_minimum_detectable_effect": 0.281665,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.037595,
+        "high": 0.033223,
+        "median": -0.001517,
+        "standard_error": 0.018117
+      },
+      "auc_minimum_detectable_effect": 0.050764,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.028618,
+        "high": 0.015562,
+        "median": -0.000487,
+        "standard_error": 0.010839
+      },
+      "precision_minimum_detectable_effect": 0.030371
+    },
+    "demean_wide": {
+      "best_f1_delta": -0.086909,
+      "auc_delta": -0.061834,
+      "per_cell_f1_delta": -0.009239,
+      "precision_delta": -0.00506,
+      "out_of_fold_f1_delta": -0.070502,
+      "attribution_met": false,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.036969,
+        "high": 0.011685,
+        "median": -0.008469,
+        "standard_error": 0.012354
+      },
+      "zero_boundary_minimum_detectable_effect": 0.034616,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.314733,
+        "high": 0.028693,
+        "median": -0.062435,
+        "standard_error": 0.077752
+      },
+      "out_of_fold_minimum_detectable_effect": 0.217861,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.084376,
+        "high": -0.036585,
+        "median": -0.059331,
+        "standard_error": 0.01216
+      },
+      "auc_minimum_detectable_effect": 0.034072,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.032691,
+        "high": 0.00956,
+        "median": -0.004667,
+        "standard_error": 0.0101
+      },
+      "precision_minimum_detectable_effect": 0.0283
+    },
+    "wide_control": {
+      "best_f1_delta": 0.102787,
+      "auc_delta": 0.059619,
+      "per_cell_f1_delta": 0.004262,
+      "precision_delta": 0.00463,
+      "out_of_fold_f1_delta": 0.098014,
+      "attribution_met": true,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.010845,
+        "high": 0.014528,
+        "median": 0.004529,
+        "standard_error": 0.006598
+      },
+      "zero_boundary_minimum_detectable_effect": 0.018488,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.0197,
+        "high": 0.287658,
+        "median": 0.091121,
+        "standard_error": 0.090301
+      },
+      "out_of_fold_minimum_detectable_effect": 0.253023,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": 0.029411,
+        "high": 0.094463,
+        "median": 0.057148,
+        "standard_error": 0.017658
+      },
+      "auc_minimum_detectable_effect": 0.049478,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.005191,
+        "high": 0.011458,
+        "median": 0.00453,
+        "standard_error": 0.004134
+      },
+      "precision_minimum_detectable_effect": 0.011583
+    },
+    "lever_control": {
+      "best_f1_delta": 0.078718,
+      "auc_delta": 0.043922,
+      "per_cell_f1_delta": -0.01222,
+      "precision_delta": -0.00938,
+      "out_of_fold_f1_delta": 0.055655,
+      "attribution_met": true,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.021661,
+        "high": -0.003297,
+        "median": -0.011704,
+        "standard_error": 0.004875
+      },
+      "zero_boundary_minimum_detectable_effect": 0.01366,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.105165,
+        "high": 0.290645,
+        "median": 0.044328,
+        "standard_error": 0.112472
+      },
+      "out_of_fold_minimum_detectable_effect": 0.315147,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": 0.017963,
+        "high": 0.063903,
+        "median": 0.044093,
+        "standard_error": 0.011512
+      },
+      "auc_minimum_detectable_effect": 0.032257,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.020459,
+        "high": -0.001968,
+        "median": -0.00908,
+        "standard_error": 0.004833
+      },
+      "precision_minimum_detectable_effect": 0.013542
+    }
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "per_cell_f1": 0.38164,
+      "best_f1": 0.41203400915631133,
+      "prior_scope": "docs\\evidence\\m3-occupancy-deformation-r2\\scope.json"
+    },
+    "wide": {
+      "auc": 0.8822623454135491,
+      "per_cell_f1": 0.385902,
+      "best_f1": 0.514820592823713,
+      "prior_scope": "docs\\evidence\\m3-occupancy-deformation-r2\\scope.json"
+    },
+    "lever": {
+      "auc": 0.8665658048737642,
+      "per_cell_f1": 0.36942,
+      "best_f1": 0.49075215782983966,
+      "prior_scope": "docs\\evidence\\m3-occupancy-deformation-r2\\scope.json"
+    }
+  },
+  "components": {
+    "note": "Reported, never read by the verdict: ranking at each arm's own best boundary, the cost of the fixed 0.0 boundary, and the cost of transferring a boundary chosen on the other eleven ancestry groups. Each delta carries the interval that resamples exactly it and a minimum detectable effect at 80% power.",
+    "arms": {
+      "demean": {
+        "best_f1": 0.427911,
+        "best_threshold": 0.6,
+        "best_precision": 0.309285,
+        "zero_f1": 0.376663,
+        "zero_cost": -0.051248,
+        "out_of_fold_f1": 0.427911,
+        "transfer_cost": 0.051248,
+        "out_of_fold_thresholds": [
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "wide": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "best_precision": 0.394108,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ]
+      },
+      "lever": {
+        "best_f1": 0.490752,
+        "best_threshold": 3.15,
+        "best_precision": 0.416754,
+        "zero_f1": 0.36942,
+        "zero_cost": -0.121332,
+        "out_of_fold_f1": 0.456054,
+        "transfer_cost": 0.086634,
+        "out_of_fold_thresholds": [
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.0,
+          3.3,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15
+        ]
+      },
+      "control": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "best_precision": 0.263488,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ]
+      }
+    },
+    "power": {
+      "z": 2.802,
+      "rule": "minimum detectable effect = 2.802 x cluster SE"
+    }
+  },
+  "constant_mode": {
+    "question": "Is per-cell registration learnable once the constant mode is removed from the space of functions? The free field put 97.8% of its displaced energy into one vector, so the objective only had to find a translation.",
+    "reading": "registration-without-signal",
+    "reading_text": "The field is per-cell dominant but ranking does not move, so registration is learnable and is not the signal this objective can use.",
+    "structure_found": true,
+    "ranking_moves": false,
+    "thresholds": {
+      "constant_dominant_below": 0.5,
+      "structure_cells": 0.25,
+      "attribution_floor": 0.05
+    },
+    "comparison": {
+      "constant_share": {
+        "demean": 0.000752,
+        "wide": 0.977669
+      },
+      "mean_abs_offset_cells": {
+        "demean": 0.540519,
+        "wide": 3.760055
+      },
+      "occupied_mean_abs_offset_cells": {
+        "demean": 1.153125,
+        "wide": 3.158956
+      },
+      "outside_own_cell_fraction": {
+        "demean": 0.364722,
+        "wide": 0.998194
+      },
+      "at_bound_fraction": {
+        "demean": 0.0,
+        "wide": 0.838056
+      },
+      "board_mean_of_applied_field": {
+        "demean": [
+          -0.001048,
+          0.02385
+        ],
+        "wide": [
+          -3.487921,
+          -3.759564
+        ]
+      },
+      "ranking": {
+        "demean_best_f1": 0.4279112754158966,
+        "wide_best_f1": 0.514820592823713,
+        "demean_auc": 0.8204288287642111,
+        "wide_auc": 0.8822623454135491
+      }
+    },
+    "field": {
+      "demean": {
+        "instrument": "m3-occdeform3-demean-r1-field-r1",
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 0.540519,
+          "p50": 0.283176,
+          "p90": 1.357714,
+          "p99": 2.453489,
+          "max": 3.386917,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 0.593888,
+          "p50": 0.30964,
+          "p90": 1.524122,
+          "p99": 2.795757,
+          "max": 3.776261,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          0.258815,
+          0.493241
+        ],
+        "mean_vector_cells": [
+          -0.001048,
+          0.02385
+        ],
+        "spread_cells": [
+          0.473843,
+          0.729695
+        ],
+        "mean_square_cells": 0.757552,
+        "constant_share": 0.000752,
+        "coherence": 0.044166,
+        "at_bound_fraction": 0.0,
+        "outside_own_cell_fraction": 0.364722,
+        "occupied_magnitude_cells": {
+          "mean": 1.153125,
+          "p50": 0.973035,
+          "p90": 2.098891,
+          "p99": 2.508868,
+          "max": 2.769271,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 1.285231,
+          "p50": 1.07395,
+          "p90": 2.4201,
+          "p99": 2.861795,
+          "max": 2.996089,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.907046,
+        "arm": {
+          "occupancy_deform": 3,
+          "bound_cells": 8.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 3.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      },
+      "wide": {
+        "instrument": "m3-occdeform3-wide-r1-field-r1",
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 3.760055,
+          "p50": 3.898947,
+          "p90": 3.961249,
+          "p99": 3.970079,
+          "max": 3.973248,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 5.131651,
+          "p50": 5.334243,
+          "p90": 5.491414,
+          "p99": 5.517264,
+          "max": 5.527936,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          3.489139,
+          3.759744
+        ],
+        "mean_vector_cells": [
+          -3.487921,
+          -3.759564
+        ],
+        "spread_cells": [
+          0.58807,
+          0.504869
+        ],
+        "mean_square_cells": 26.900634,
+        "constant_share": 0.977669,
+        "coherence": 1.363901,
+        "at_bound_fraction": 0.838056,
+        "outside_own_cell_fraction": 0.998194,
+        "occupied_magnitude_cells": {
+          "mean": 3.158956,
+          "p50": 3.735691,
+          "p90": 3.898947,
+          "p99": 3.931227,
+          "max": 3.965584,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 4.180768,
+          "p50": 4.979099,
+          "p90": 5.333081,
+          "p99": 5.40942,
+          "max": 5.504166,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.991004,
+        "arm": {
+          "occupancy_deform": 2,
+          "bound_cells": 4.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 3.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      },
+      "lever": {
+        "instrument": "m3-occdeform3-lever-r1-field-r1",
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 0.909228,
+          "p50": 0.994197,
+          "p90": 0.999019,
+          "p99": 0.999443,
+          "max": 0.999449,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 1.273187,
+          "p50": 1.403942,
+          "p90": 1.412441,
+          "p99": 1.413206,
+          "max": 1.413215,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          0.906267,
+          0.89297
+        ],
+        "mean_vector_cells": [
+          -0.881647,
+          0.863391
+        ],
+        "spread_cells": [
+          0.298106,
+          0.316115
+        ],
+        "mean_square_cells": 1.711541,
+        "constant_share": 0.889692,
+        "coherence": 1.35719,
+        "at_bound_fraction": 0.704444,
+        "outside_own_cell_fraction": 0.918889,
+        "occupied_magnitude_cells": {
+          "mean": 0.728922,
+          "p50": 0.947617,
+          "p90": 0.994101,
+          "p99": 0.999221,
+          "max": 0.999301,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 1.008486,
+          "p50": 1.324108,
+          "p90": 1.404464,
+          "p99": 1.412826,
+          "max": 1.412955,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.70015,
+        "arm": {
+          "occupancy_deform": 1,
+          "bound_cells": 1.0,
+          "fine_limit_cells": 1.0,
+          "coarse_limit_cells": 0.0,
+          "deform_reach_cells": 4.0
+        },
+        "reference": {
+          "mean_placement_offset_cells": 2.57,
+          "wrong_target_cell_fraction": 0.483,
+          "source": "M3_OCCUPANCY_SCALED.md, oracle registration at 4x budget"
+        }
+      }
+    },
+    "oracle_statistic": {
+      "mean_placement_offset_cells": 2.57,
+      "wrong_target_cell_fraction": 0.483
+    }
+  },
+  "mechanism": {
+    "field_active": true,
+    "read": "precision at each arm's own best boundary",
+    "best_precision_delta": 0.045797,
+    "best_precision_improved": false,
+    "floor": 0.05,
+    "zero_boundary_precision_delta": {
+      "delta": -0.00043,
+      "interval": {
+        "valid_draws": 400,
+        "low": -0.028618,
+        "high": 0.015562,
+        "median": -0.000487,
+        "standard_error": 0.010839
+      },
+      "minimum_detectable_effect": 0.030371,
+      "note": "fixed 0.0 boundary, which a re-scaled head moves; a replay cost, not a mechanism verdict"
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "reproduced, not touched",
+    "frozen_manifest": "not touched"
+  }
+}

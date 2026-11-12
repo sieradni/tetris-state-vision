@@ -19,8 +19,8 @@ the block lock, which is what every surviving cross-reference (CONTINUATION_STAT
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
-| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035, V-104 (13) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102, V-105 (22) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it |
+| provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035, V-104, V-107 (14) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract; a selectable arm that adds no tensors must save exactly its parent's initial bytes, while distinct parameter sets must each save their own |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102, V-105, V-108 (23) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it; a reproduction join reads the block the curator derived, never a raw sweep block that omits the re-derived numbers |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -32,6 +32,40 @@ the block lock, which is what every surviving cross-reference (CONTINUATION_STAT
 | interval-validity | V-056, V-066, V-091, V-095, V-103 (5) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-108 — CLOSED: the reproduction join compared a block that carries no per-cell F1
+
+- Symptom: `scripts/record_demean_lever.py` exited 1 after 0.26 s with `KeyError: 'per_cell_f1'` and
+  wrote no evidence directory.
+- **Root cause.** The join compared `arms[name]["result"]["deciding"]` — the sweep's raw deciding block,
+  which carries AUC, the swept best point and percentiles but **not** the per-cell F1, because that
+  number is re-derived from the case rows by the curator. The published scope stores the re-derived
+  value, so the two were never comparable.
+- **Change.** The join compares the curator's own re-derived arm blocks (`measured`), which are built
+  from the same case rows through the same helper the verdict reads, against the published scope.
+- **Detection class.** test-instrument.
+- **Instrument.** The refusal is loud and early: the recorder raises before `mkdir`, so no evidence
+  directory is half-written; the refused receipt and log are preserved at
+  `runs/attempts/m3-occdeform3-curation-r1-crashed/curation-r2-job.json`.
+- **Named green run.** `runs/m3-occdeform3-curation-r3-job.json` (passed, 7 work items, 20.4 s) writing
+  `docs/evidence/m3-occupancy-deformation-r3/scope.json`, whose reproduction block quotes the exact
+  published numbers.
+
+## V-107 — CLOSED: the guard required four distinct initial files from three parameter sets
+
+- Symptom: the same curator exited 1 after 0.23 s with "each arm must save its own initial tensor
+  file", refusing a set of four runs that were all correct.
+- **Root cause.** The guard required four distinct initial-weight digests as a proxy for four distinct
+  parameter sets. The de-meaned arm adds **no tensors** to the widened arm, so the two save the same
+  initial weights (`b7e3d438...` for both) by construction: identical parameters, identical archive.
+  The guard conflated "distinct parameter set" with "distinct bytes".
+- **Change.** The guard now requires `demean == wide` exactly — the structural claim that de-meaning
+  adds no parameters — and three distinct sets across control, one-cell and wide.
+- **Detection class.** provenance.
+- **Instrument.** The curator refuses before `mkdir`; the refused receipt and log are preserved at
+  `runs/attempts/m3-occdeform3-curation-r1-crashed/`.
+- **Named green run.** `runs/m3-occdeform3-curation-r3-job.json` (passed), and the scope's `arms`
+  block carries both arms' identical `initial_weights_from` digest beside their distinct swept numbers.
 
 ## V-106 — CLOSED: the constant-share statistic compared a variance to itself and always read zero
 

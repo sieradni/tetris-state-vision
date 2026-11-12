@@ -442,3 +442,178 @@ indicated: the widened field already saturates at four cells.
   limit from unrelated applications, and one retry collided with the runner's exclusive receipt. Both are
   under `runs/attempts/m3-occdeform2-pressure-refused/` with a note; the declared ceiling was never
   lowered and no guard was disabled.
+
+## Constant-mode bar: predeclaration (2026-11-12, before any receipt of this block)
+
+**Question.** Is per-cell registration learnable in this read-out at all? The last block answered that
+reach was not the limit: the four-cell field put **97.8%** of its displaced energy into one constant
+vector, saturated at **83.8%** of its bound and moved every sample out of its nominal cell on **99.8%**
+of decisions. A field that *can* be a translation *will* be one, because the occupancy objective has no
+term that prefers the correct per-cell displacement to a re-centred read-out. So the next arm removes
+the translation from the space of functions, rather than asking for it to be avoided.
+
+**The single change.** `occupancy_deform=3` computes exactly the four-cell field of arm `2` and then
+subtracts its own board-mean before applying it:
+
+```
+shift = fine(1 cell) + coarse(3 cells), clamped to 4 cells
+shift = shift - shift.mean(dim=cells)        # constant mode exactly zero, by construction
+centres = sample(first, cell centre + shift)
+```
+
+No penalty, no weight decay and no threshold is involved: the constant component is **identically
+zero** for every weight setting, so the arm cannot express a translation at any point in training. The
+bound is declared as the sum of the levels and the mean - **8.0 cells per axis** (`DEFORM_DEMEAN_REACH`)
+- because clamping *after* de-meaning would put the mean back; a wider declared bound is the price of
+exactness. Zero initialization still gives a zero field, whose mean is zero, so step zero is the
+published function byte-for-byte and the arm's parameters are identical to arm `2`'s.
+
+**Four arms, one lineage, one budget.** All continuations of `runs/m3-percell-balance-r1`, same seed,
+curriculum, capture side, terms, 64 steps, gates, floor, grid and population:
+
+| arm | `occupancy_deform` | field | bound |
+|---|---|---|---|
+| control | `0` | none | - |
+| one cell | `1` | fine only | 1.0 cell |
+| wide | `2` | coarse + fine | 4.0 cells |
+| demeaned | `3` | coarse + fine, board-mean removed | 8.0 cells (structural) |
+
+**Reproduction requirement, declared before the numbers.** Control and wide must return the committed
+`m3-occupancy-deformation-r2` scope's own values (AUC `0.822643...`, `0.882262...`, and their F1
+figures) exactly, since the recipe is identical. The curator compares them to that scope and **refuses
+to publish** on any difference; a difference would be the finding and would be chased before anything
+is written.
+
+**Envelope.** 1,792 MiB per study, 640 MiB per sweep and per field measurement, one heavy job at a
+time. Refusals under host pressure are preserved under `runs/attempts/` and retried; the ceiling is not
+lowered and no guard is disabled.
+
+**Work items.** profile 2, study 64, sweep profile 2, sweep 54, field 36, curation 7 receipts.
+
+**Field measurement.** The same statistics as last block, with `mean_square_cells` added so the curator
+can re-derive `constant_share = |mean vector|^2 / mean squared offset length` from stored numbers
+instead of trusting a single computed field (the V-106 guard).
+
+**Declared readings, with thresholds fixed now.** *Constant mode dominant* iff `constant_share < 0.5`.
+*Structure found* iff mean `|offset| >= 0.25` cells. *Ranking moves* iff best swept F1 exceeds control
+by `>= 0.05`.
+
+| observation | reading |
+|---|---|
+| `constant_share < 0.5`, mean `\|offset\| >= 0.25`, ranking moves | **per-cell registration is learnable**: the displacement becomes the dominant mode and the head uses it |
+| `constant_share < 0.5`, mean `\|offset\| >= 0.25`, ranking does not move | registration is learnable but is not the signal this objective can use |
+| mean `\|offset\| < 0.25` (structure not found) | **the translation was the only signal available**: removing it leaves nothing the occupancy loss can exploit |
+| the arm refuses admission | recorded with its peak, comparison stays pairwise |
+
+A clean negative publishes as such. No gate, bound, threshold, population or ceiling is altered by
+whatever this block measures, and the fit gate is unaffected unless 3 of 28 exact boards appear.
+
+## Constant-mode bar: outcome (2026-11-12) - per-cell registration is learnable and buys nothing
+
+Four arms were admitted inside 1,792 MiB and completed 64 steps under one catalogue from the published
+checkpoint. **The reproduction requirement held exactly**: control `0.8226433610683003`, one-cell
+`0.8665658048737642` and wide `0.8822623454135491` AUC, with their per-cell F1 at `0.0` and best swept
+F1 identical to `docs/evidence/m3-occupancy-deformation-r2/scope.json`, so the block is comparable and
+nothing moved under the two new arms. Evidence: `docs/evidence/m3-occupancy-deformation-r3/scope.json`,
+curated by `runs/m3-occdeform3-curation-r3-job.json` (passed, 20.4 s, peak 40,140,800 B).
+
+| quantity | control | one cell | wide | **demeaned** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | 0.866566 | **0.882262** | 0.820429 |
+| F1 at `0.0` | 0.381640 | 0.369420 | **0.385902** | 0.376663 |
+| best swept F1 | 0.412034 @ `0.90` | 0.490752 @ `3.15` | **0.514821** @ `1.95` | 0.427911 @ `0.60` |
+| precision at `0.0` | 0.236325 | 0.226945 | **0.240955** | 0.235895 |
+| out-of-fold F1 | 0.400399 | 0.456054 | **0.498413** | 0.427911 |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,053,507,584 B / 240.6 s | 1,064,845,312 B / 154.8 s | 1,042,235,392 B / 302.7 s | 1,041,952,768 B / 367.5 s |
+
+**Verdict `not-cleared` on all three conditions**, including the attribution floor: demeaned vs control
+is **+0.015877** best F1, below the `0.05` floor.
+
+| contrast | best swept F1 | AUC | F1 at `0.0` | out-of-fold F1 | attribution |
+|---|---|---|---|---|---|
+| demeaned vs control | +0.015877 | -0.002215 (-0.037595 .. +0.033223, MDE 0.050764) | -0.004977 (-0.037196 .. +0.020654, MDE 0.042666) | +0.027512 (-0.202267 .. +0.201845, MDE 0.281665) | not met |
+| demeaned vs wide | -0.086909 | **-0.061834** (-0.084376 .. -0.036585, MDE 0.034072) | -0.009239 (-0.036969 .. +0.011685, MDE 0.034616) | -0.070502 (-0.314733 .. +0.028693, MDE 0.217861) | not met |
+| wide vs control | +0.102787 | +0.059619 (+0.029411 .. +0.094463, MDE 0.049478) | +0.004262 | +0.098014 | met |
+| one cell vs control | +0.078718 | +0.043922 (+0.017963 .. +0.063903, MDE 0.032257) | -0.012220 | +0.055655 | met |
+
+**What this design resolves:** the demeaned-vs-wide AUC loss (`-0.061834`, interval clear of zero) is
+resolvable, and so is the wide-vs-control gain. The demeaned-vs-control deltas are **not** resolvable
+- its AUC interval spans zero and its MDE (`0.050764`) is larger than the measured delta - so the arm
+is statistically indistinguishable from control, not "slightly worse". Every out-of-fold delta is
+unresolvable at twelve clusters.
+
+### The applied field, after the constant mode is removed
+
+| | wide | **demeaned** |
+|---|---|---|
+| constant-share of displaced energy | 0.978 | **0.000752** |
+| mean `\|offset\|` (L-inf, cells) | 3.760 | **0.541** |
+| p50 / p90 / max | 3.899 / 3.961 / 3.973 | 0.283 / 1.358 / 3.387 |
+| at or near the bound | 83.8% | **0.0%** |
+| samples outside their own cell | 99.8% | 36.5% |
+| board mean of the applied field | (-3.488, -3.760) | **(-0.001, +0.024)** |
+| occupied-cell mean | 3.159 | 1.153 |
+| oracle reference | - | 2.57 cells / 48.3% wrong cell |
+
+Instruments: `runs/m3-occdeform3-{demean,wide,lever}-r1-field-r1` (640 MiB, 36 forwards each, passed),
+joined to their own studies by checkpoint digest, with `constant_share` re-derived from the stored mean
+vector and mean square on every arm.
+
+### Reading, by the thresholds fixed before the numbers
+
+`constant_share = 0.000752 < 0.5` -> the field is **per-cell dominant**, exactly as its construction
+requires. `mean |offset| = 0.541 >= 0.25` -> it **found structure**: it moves occupied cells by 1.153
+cells on average, 36.5% of samples leave their nominal cell, and nothing pins at the bound. Ranking
+does **not** move (`+0.015877 < 0.05`, AUC indistinguishable from control). That is the declared
+**`registration-without-signal`** case: the displacement is per-cell, and this objective cannot use it.
+
+So the family's whole measured gain was the translation. Removing it removes the gain: the wide arm is
+`0.061834` AUC **ahead** of the demeaned arm with an interval clear of zero. Per-cell registration is
+therefore **learnable but not a lever this architecture carries through the occupancy objective** - not
+because the field cannot express it (it does, on a third of cells) but because nothing in the loss
+prefers the correct displacement to any other.
+
+A second measurement falls out of this and matters for what comes next: the translation the free arm
+chose is `5.128` cells in Euclidean length, **twice** the `2.57`-cell displacement the oracle pairing
+measured. Either the decoded lattice is offset by roughly that much relative to the target board, or the
+read-out is exploiting a shifted window. This block cannot separate those two, and that is now the
+first question a placement pass should answer. The measured box-origin residual makes the first
+explanation harder to hold: [M3_OCCUPANCY_TRANSLATION.md](M3_OCCUPANCY_TRANSLATION.md) put the baseline
+signed origin offsets at `+1.3830` columns and `-2.1914` rows, a **2.59**-cell magnitude, and the lever
+that moved the origin there was `not-cleared` with the offsets moving *outward* - so the read-out's
+`5.128`-cell translation is more than twice the known origin bias and cannot be read as an origin
+correction. Something else is being bought, and the field instrument as it stands cannot say what,
+because it records magnitudes but not **where** the samples land.
+
+**Fit gate: FALSE, unchanged** - 0 of 28 exact boards on all four arms, identity heads untouched, no
+real-image, complete-state or quality claim.
+
+### Next step, named from the evidence
+
+Per-cell registration cannot be obtained by asking the occupancy term for it. The evidence points to
+**supervision of the displacement**, in one of two concrete forms:
+
+- a **placed-target term**: build the target board under the oracle-style pairing and score the tap's
+  sample against the target cell it should have read, which creates the per-cell gradient the occupancy
+  loss lacks; or
+- **image-space re-projection of the field** with an in-frame fraction, which measures whether the
+  ~5-cell translation is a decode offset or a shifted-window exploit before any further training.
+
+The first is the only change that adds information; the second is the cheapest measurement that tells
+us whether the geometry itself is wrong by five cells. Neither is another bound or reach change, and
+the field's bound stays where it is.
+
+### Defects found in this pass's own record
+
+- **V-107**: the curator required four distinct initial-weight digests as a proxy for four distinct
+  parameter sets, but the de-meaned arm adds no tensors to the widened one, so their saved initial
+  weights are the same bytes. Preserved under `runs/attempts/m3-occdeform3-curation-r1-crashed/`; the
+  guard now requires `demean == wide` and three distinct sets elsewhere.
+- **V-108**: the reproduction join read the sweep's raw deciding block, which carries no per-cell F1,
+  and raised `KeyError` before writing. Preserved in the same directory; it now compares the curator's
+  own re-derived arm blocks against the published scope.
+- **Two of my own new assertions were wrong before any run**: `3` was still listed as an undeclared
+  deform value, and a bias-only field was assumed constant under zero-padded sampling at the border.
+  Both were replaced by the structural property (board mean against the free arm's) rather than a
+  convenient example.

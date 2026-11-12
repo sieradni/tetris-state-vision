@@ -73,7 +73,7 @@ def main():
             manifest["config"] != summary["config"]):
         raise ValueError("measured checkpoint identity differs")
     config = manifest["config"]
-    if config.get("occupancy_detail") != 1 or config.get("occupancy_deform") not in (1, 2):
+    if config.get("occupancy_detail") != 1 or config.get("occupancy_deform") not in (1, 2, 3):
         raise ValueError("this instrument measures a declared deformation arm with the detail tap")
     job = json.loads((ROOT/"runs"/(args.output.name+"-job.json")).read_text())
     if job["memory_bytes"] != CEILING_BYTES:
@@ -129,7 +129,8 @@ def main():
         raise ValueError("field measurement requires exactly the 36 deciding images")
     rows = config["visible_rows"]+config["spawn_rows"]
     columns = config["columns"]
-    bound = float(model_module.DEFORM_REACH if config["occupancy_deform"] == 2
+    bound = float(model_module.DEFORM_DEMEAN_REACH if config["occupancy_deform"] == 3
+                  else model_module.DEFORM_REACH if config["occupancy_deform"] == 2
                   else model_module.DEFORM_LIMIT)
     magnitudes, norms, axes = [], [], ([], [])
     signed = ([], [])
@@ -200,7 +201,7 @@ def main():
         "arm": {"occupancy_deform": config["occupancy_deform"], "bound_cells": bound,
                 "fine_limit_cells": float(model_module.DEFORM_LIMIT),
                 "coarse_limit_cells": (float(model_module.DEFORM_WIDE_LIMIT)
-                                       if config["occupancy_deform"] == 2 else 0.0),
+                                       if config["occupancy_deform"] in (2, 3) else 0.0),
                 "deform_reach_cells": float(model_module.DEFORM_REACH)},
         "field": {
             "note": ("Offsets are the ones the tap applied, in cell units, L-infinity per cell. The "
@@ -214,6 +215,7 @@ def main():
             "mean_vector_cells": [round(mean_dx, 6), round(mean_dy, 6)],
             "spread_cells": [round(spread(signed[0], mean_dx), 6),
                              round(spread(signed[1], mean_dy), 6)],
+            "mean_square_cells": round(mean_square, 6),
             "constant_share": round(constant_share, 6),
             "coherence": round(((mean_dx**2+mean_dy**2)**.5)/mean_magnitude, 6),
             "at_bound_fraction": round(at_bound, 6),

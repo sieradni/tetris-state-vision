@@ -66,13 +66,15 @@ def arguments(argv=None):
                         help="declared resolution lever;1 adds a stride-1 conv of the image whose "
                              "cell-center sample joins the same zero-initialized detail projection, "
                              "so the tap reads pixel resolution; requires --occupancy-detail 1")
-    parser.add_argument("--occupancy-deform", type=int, choices=(0, 1, 2), default=0,
+    parser.add_argument("--occupancy-deform", type=int, choices=(0, 1, 2, 3), default=0,
                         help="declared registration lever;1 adds a zero-initialized per-cell field, "
                              "predicted from the feature the detail tap reads, that moves that cell's "
                              "sample by at most one cell, so local misalignment is corrected without "
                              "moving the decoded lattice;2 adds a coarse level predicted from an "
                              "eight-times pooled map (up to three cells) on top so the reach covers "
-                             "the measured 2.57-cell placement residual; requires --occupancy-detail 1")
+                             "the measured 2.57-cell placement residual;3 de-means that field across the "
+                             "board, so its constant mode is exactly zero and only per-cell "
+                             "displacement remains expressible; requires --occupancy-detail 1")
     parser.add_argument("--geometry-final-only", type=int, choices=(0, 1), default=0,
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
