@@ -1,0 +1,181 @@
+{
+  "status": "passed",
+  "instrument": "m10-supervised-anchor-r1",
+  "predeclaration": "docs/M10_SUPERVISED_ANCHOR.md",
+  "scope": "Two 64-step arms - the published read-out and the same read-out with the declared two-sided anchor added to the occupancy objective - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The anchor is supervision: it names no threshold, counts no cells, reads no prevalence and adds no parameter, and 0 is exactly the published objective. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m10-anchor-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "two-sided-supervised-anchor",
+    "flag": "--occupancy-anchor 1",
+    "definition": "max(0, margin - lowest_occupied_logit) + max(0, margin + highest_empty_logit), mean over boards carrying both classes among their known visible cells",
+    "margin": 1.0,
+    "weight": 0.5,
+    "declared_before_receipts": true,
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "unknown_cells": "excluded from both sides, so an invisible cell is never read as empty",
+    "identity_at_zero": "occupancy_anchor 0 is exactly the published objective",
+    "supersedes": "the M9 one-sided hinge; the trainer refuses the two together"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m10-anchor-control-r1",
+      "sweep": "m10-anchor-control-r1-sweep-r1",
+      "occupancy_anchor": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "6e207218b5d77e20c7ed7e99ccfa3779ca4ffdbc8d800be3c309cd308969ce82",
+      "study_elapsed_seconds": 157.09012490000168,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_anchor": null,
+      "verdict": "uninformative"
+    },
+    "anchor": {
+      "study": "m10-anchor-two-sided-r1",
+      "sweep": "m10-anchor-two-sided-r1-sweep-r1",
+      "occupancy_anchor": 1,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "149e930feaaec994abd86dfa37a0483569eb4b4bbed8cbbe8155d12d41d150d5",
+      "catalogue_sha256": "6e207218b5d77e20c7ed7e99ccfa3779ca4ffdbc8d800be3c309cd308969ce82",
+      "study_elapsed_seconds": 152.62158559999807,
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "operating_counts": {
+        "true_positive": 665,
+        "false_positive": 2945,
+        "false_negative": 2
+      },
+      "precision": 0.184211,
+      "recall": 0.997001,
+      "best": {
+        "threshold": 2.25,
+        "f1": 0.5408112168252378,
+        "precision": 0.40601503759398494
+      },
+      "out_of_fold_f1": 0.540811,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 9.778523,
+        "columns": 149
+      },
+      "training_anchor": {
+        "steps": 64,
+        "first": 0.0,
+        "last_step": 64,
+        "last": 0.0,
+        "mean": 3.003759,
+        "fraction_satisfied": 0.25,
+        "source": "runs\\m10-anchor-two-sided-r1-study.log",
+        "in_sample": true,
+        "reading": "the anchor the objective paid on its own training batch; it constrains both the separation and the location of the boundary at 0.0"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "anchor_control": {
+      "f1_at_zero_delta": -0.070674,
+      "auc_delta": 0.062819,
+      "best_f1_delta": 0.128777,
+      "out_of_fold_delta": 0.140412,
+      "row_error_delta": 1.959731
+    }
+  },
+  "reference": {
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "gates_at_zero": {
+        "true_positive": 666,
+        "false_positive": 3959,
+        "false_negative": 1
+      },
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M9 one-sided hinge, measured in its own catalogue and not re-measured or re-verdicted here, so a reader can see whether pinning the location cost the ranking the hinge found or bought the operating point it lacked"
+  },
+  "reading": "anchor-fails",
+  "reading_text": "Naming `0.0` in the objective on both sides of the margin does not put the plain-binary boundary above control's, so a per-board margin cannot place the operating point at all and the next term has to be a learned boundary parameter fitted by the loss.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC is reported beside the primary metric with M8/M9's declared tolerance of -0.02 so the passes are comparable: an anchored margin cannot add information, so a gain is a change in what was learned and a loss is a real cost.",
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "prior_scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "prevalence": 0.119107
+  }
+}

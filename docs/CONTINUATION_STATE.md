@@ -1,5 +1,42 @@
 # Contributor handoff — 2026-10-30
 
+## The anchored margin is the best read yet and still not an operating point (2026-11-12)
+
+[M10_SUPERVISED_ANCHOR.md](M10_SUPERVISED_ANCHOR.md) was predeclared before any receipt. It adds the two-sided anchor
+the M9 record named - `--occupancy-anchor 1`: for every board carrying both occupied and empty *known* visible
+cells, `max(0, margin - lowest_occupied) + max(0, margin + highest_empty)`, averaged over qualifying boards, pooled
+at `ANCHOR_MARGIN = 1.0` / `ANCHOR_WEIGHT = 0.5` beside the occupancy term. Family `m10-anchor-`, its own catalogue.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | precision / recall at `0.0` | out-of-fold F1 | row error |
+|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.2363 / 0.9910 | 0.400399 | +7.819 |
+| two-sided anchor | **0.885462** | **0.310966** | **0.540811** @ `2.25` | 0.1842 / 0.9970 | **0.540811** | +9.779 |
+| *M9 hinge (reference, own catalogue)* | *0.864667* | *0.251701* | *0.474210* | — | *0.429457* | *+10.691* |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly in catalogue `6e207218`. Reading `anchor-fails`
+(primary `-0.070674`), secondary `ranking-preserved` (`+0.062819`), verdict `not-cleared`, fit gate **FALSE**.
+
+**What this pass actually bought.** `0.885462` AUC and `0.540811` best F1 are the strongest occupancy numbers in the
+project - above the widened-field arm (`0.882262` / `0.514820`) with no deformation field, no sampling change, no
+parameter and no tensor - and the gain transfers: all twelve leave-one-group-out folds chose the *same* boundary
+`2.25`, so out-of-fold F1 equals the swept best to six decimals. The anchor also beats the one-sided hinge on both
+axes (`0.885462` / `0.310966` vs `0.864667` / `0.251701`). What it did not do is make `0.0` an operating point:
+`64.5%` of cells sit above zero (`3,610 / 5,600`), so precision at `0.0` is `0.1842` even at recall `0.9970`.
+
+**Diagnosis, and the next arm.** Both supervised terms are *extremal* - two cells of two hundred - so the empty
+**mass** is unconstrained and rides upward; the term reached `0.0` on the final step while `99%` of cells were free
+to sit anywhere. Next: the **class-quantile anchor**,
+`mean [max(0, margin - q10(occupied)) + max(0, margin + q90(empty))]`, same family, same wiring pattern, margin /
+weight / quantiles declared before its receipt. Its ceiling is declarable in advance (if `90%` of empty cells sit
+below `-1` and `90%` of occupied above `+1`, precision at `0.0` is at least `0.55` at recall `0.90`, F1 near `0.68`),
+and its likely cost to the `0.540811` ranking must be watched - mass constraints are strong, which is what M8 showed
+with a far blunter instrument. The predeclared learned-bias fallback is argued down in the record: a single bias
+shifts both modes and cannot move `90%` of empty cells without dragging the occupied mode with it.
+
+Defect: V-131 (two defects in the previous turn's test instrument - a zero floor that made "clean" arithmetic cases
+fail, and a refusal assertion aimed at `main` instead of `arguments` - both repaired before launch; the engine and
+read path needed nothing, all eight stages passed first time and the family was registered before training).
+
 ## Supervising the margin buys ranking and still not a boundary (2026-11-12)
 
 [M9_SUPERVISED_MARGIN.md](M9_SUPERVISED_MARGIN.md) was predeclared before any receipt. It is the first pass that

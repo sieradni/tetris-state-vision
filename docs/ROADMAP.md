@@ -23,6 +23,21 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the strongest occupancy result yet, and still no operating point** ([M10_SUPERVISED_ANCHOR.md](M10_SUPERVISED_ANCHOR.md),
+`docs/evidence/m10-supervised-anchor-r1/scope.json`). A declared **two-sided anchor** -
+`mean [max(0, margin - lowest_occupied) + max(0, margin + highest_empty)]`, margin `1.0`, weight `0.5`, known cells
+only, on the unnormalised read - names `0.0` in the objective on both sides instead of leaving the gap free. Family
+`m10-anchor-`, new catalogue `6e207218`; control reproduced `0.8226433610683003` and `0.381640` exactly. The anchor
+arm reached AUC **0.885462** (`+0.062819`), best swept F1 **0.540811** (`+0.128777`), out-of-fold **0.540811**
+(`+0.140412`, all twelve folds selecting the same boundary) - **above the widened-field arm on both axes with no
+deformation field, no sampling change, no parameter and no tensor** - while plain F1 at `0.0` fell to **0.310966**
+(`-0.070674`). Declared reading `anchor-fails`, secondary `ranking-preserved`; fit gate **FALSE** (0 of 28). Both
+supervision terms so far are *extremal* (2 cells of 200), so the empty mass is unconstrained and rides up: `64.5%` of
+cells sit above zero. Next: the **class-quantile anchor** -
+`mean [max(0, margin - q10(occupied)) + max(0, margin + q90(empty))]` - which speaks about mass, with a declarable
+ceiling (precision `>= 0.55`, F1 near `0.68`) and a declared cost to ranking; the learned-bias fallback is argued
+down in the record because the failure is mass, not a scalar offset.
+
 Latest: **supervising the margin buys ranking and still not a boundary** ([M9_SUPERVISED_MARGIN.md](M9_SUPERVISED_MARGIN.md),
 `docs/evidence/m9-supervised-margin-r1/scope.json`). The occupancy objective now carries a declared within-board
 hinge - `mean over boards max(0, margin - (lowest occupied logit - highest empty logit))`, margin `1.0`, weight

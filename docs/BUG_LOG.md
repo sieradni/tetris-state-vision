@@ -2651,3 +2651,26 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: curator passed at its declared 1,900 MiB ceiling (exit 0, `1.855 s`) with
   `training_margin = {steps 64, first 0.0, last 0.0, mean 2.402828, fraction_satisfied 0.25}`; full suite green
   (see the commit that carries this entry).
+
+## V-131 - CLOSED: two defects in the anchor test instrument, both caught before the block ran
+
+- Symptom: `tests/test_supervised_anchor.py` failed six of its first sixteen cases before launch. (1) Five
+  arithmetic cases expected the anchor to be free on a "clean" synthetic board, but the helper filled every other
+  visible cell with `0.0` while marking it known, so the board's highest empty logit was `0.0` and the second half
+  of the anchor charged `margin + 0 = 1.0` on a board that was supposed to cost nothing. (2) The stacking-refusal
+  assertion searched `main` for the parser's refusal text, but the refusals live in `arguments`, so a real guard
+  read as missing.
+- Root cause: a synthetic fixture built from zeros rather than from a declared floor, and a source-level assertion
+  pointed at the wrong function - both the same class of defect as V-012/V-125: the test measured its own fixture
+  rather than the behaviour it named.
+- Detection class: test instrument. Caught by the suite in this repo's own working tree, before any receipt, study
+  or sweep existed; nothing was measured with the wrong fixture and no evidence was rewritten.
+- Instrument: the fixture now starts from a declared `-4.0` floor so "highest empty" means the named cell and not
+  the background, the expected values are written as closed-form expressions rather than by re-deriving the
+  implementation, and the refusal tests read `inspect.getsource(arguments)` for the parser's own text (both the
+  anchor/hinge stacking refusal and the `normalise`/offset refusals). The hinge and anchor are also checked against
+  each other on the same board: a separated-but-shifted board costs the hinge `0.0` and the anchor `2.0`, which is
+  the exact difference the two terms are supposed to have.
+- Named green run: `tests.test_supervised_anchor` 16 tests OK before launch, then the eight block stages passed on
+  the first attempt (`M10_BLOCK_DONE`), the curator passed at its 1,900 MiB ceiling
+  (`runs/m10-anchor-curation-r1-job.json`, exit 0, `1.845 s`), and the full suite is green on the committed tree.
