@@ -178,6 +178,15 @@ def require_occupancy_placed(value, summary):
 
 
 OCCUPANCY_COLUMN_ARMS = (0, 1)
+OCCUPANCY_OFFSET_ROWS = (-2, -1, 0, 1, 2)
+
+
+def require_occupancy_offset_rows(value, summary):
+    """One declaration of the admission join for the declared sampling offset."""
+    if (type(value) is not int or value not in OCCUPANCY_OFFSET_ROWS or
+            summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
+        raise ValueError("occupancy offset rows differs from resource admission")
 
 
 def require_occupancy_column(value, summary):

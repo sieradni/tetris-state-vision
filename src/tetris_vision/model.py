@@ -40,6 +40,7 @@ class ModelConfig:
     lattice_board_refine: int = 0
     occupancy_lattice_free: int = 0
     occupancy_column: int = 0
+    occupancy_offset_rows: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -93,6 +94,12 @@ class ModelConfig:
         check(type(self.occupancy_column) is int and self.occupancy_column in (0, 1),
               "occupancy column read-out is 0 (published read-out) or 1 (declared per-column "
               "stack context)")
+        check(type(self.occupancy_offset_rows) is int and
+              -2 <= self.occupancy_offset_rows <= 2,
+              "occupancy offset rows is a declared constant in [-2, 2] cell rows, 0 being the "
+              "published sampling point")
+        check(not self.occupancy_offset_rows or self.occupancy_detail == 1,
+              "the sampling offset moves the detail tap's sample, so it needs that tap")
 
     @classmethod
     def pilot(cls):
@@ -417,6 +424,13 @@ class TetrisStateNet(nn.Module):
             self.occupancy_detail_tap = nn.Linear(config.widths[0]*samples, dimension)
             nn.init.zeros_(self.occupancy_detail_tap.weight)
             nn.init.zeros_(self.occupancy_detail_tap.bias)
+        # Declared sampling geometry: a constant shift of every tap sample, in cell units, rows
+        # bottom-first. Unlike the deformation field this is not learned - it is a declaration about
+        # where the read looks - so it is a non-persistent buffer and the state dict is unchanged;
+        # at 0 the added constant is exactly zero and the arm is the published function.
+        self.register_buffer("tap_offset",
+                             torch.tensor([[[[0.0, float(config.occupancy_offset_rows)]]]]),
+                             persistent=False)
         self.occupancy_resolution_branch = None
         if config.occupancy_resolution:
             # Declared resolution lever: a stride-1 source for the same zero-initialized
@@ -594,6 +608,9 @@ class TetrisStateNet(nn.Module):
                         shift = shift-shift.mean(dim=1, keepdim=True)
                     occupancy_deform_offsets = shift.reshape(batch, rows*columns, 2)
                     offsets = offsets+shift
+                # The declared constant geometry, added after any learned field so the field keeps
+                # meaning "what was learned" and this keeps meaning "what was declared".
+                offsets = offsets+self.tap_offset
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
                 sample = centers.flatten(2)
                 # The tap's offsets as applied, so a measurement can bind "what the arm wrote"
