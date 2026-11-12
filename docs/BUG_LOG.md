@@ -6,11 +6,21 @@ constraints in ROADMAP.md, not fixes claimed by this repository.
 Every new fix entry needs symptom, root cause, detection class, instrument and
 a named green run. An unrun gate leaves the entry OPEN.
 
+**Ledger disambiguation (2026-11-12).** V-091, V-092 and V-093 were each used twice by
+accident: three historical entries from the 2026-11-11 test-instrument review took the numbers
+before the operating-point audit, the audit-join fix and the block lock were recorded under the
+same three. Neither record is destroyed: the three historical entries are renumbered **V-100**
+(was V-091, module purge), **V-101** (was V-092, replay "empty difference"), **V-102** (was V-093,
+first differ) with their original ids kept as aliases in their headings, and their text is
+unchanged. From here V-091/V-092/V-093 refer only to the operating-point audit, the audit join and
+the block lock, which is what every surviving cross-reference (CONTINUATION_STATE, and the
+"V-093" operations note in M3_COMPUTE_REPLICATION.md about the interrupted runner) already means.
+
 | Detection class | Entries | Standing instrument |
 |---|---|---|
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035 (12) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract |
-| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098 (18) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it |
+| test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102 (21) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -19,9 +29,30 @@ a named green run. An unrun gate leaves the entry OPEN.
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
 | launch-ownership | V-029, V-030, V-050, V-093 (4) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
 | evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096 (14) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
-| interval-validity | V-056, V-066, V-091, V-095 (4) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
+| interval-validity | V-056, V-066, V-091, V-095, V-103 (5) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067 (3) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-103 — CLOSED: the registration pass read its mechanism at a boundary its own lever moves
+
+- Symptom: the first canonical curation of `m3-occdeform` published
+  `mechanism.precision_improved = false` from a `-0.009380` precision delta, while the same arm's best
+  boundary had moved `0.90 -> 3.15` and its best-boundary precision had risen `+0.153266`. On one page,
+  one arm was reported as not improving what it decides and as deciding it much better.
+- Root cause: the mechanism block reused `record_precision_lever.mechanism`, which reads precision at
+  the fixed `0.0` replay boundary. That helper was written for levers that leave the logit scale alone;
+  this one re-scales it by construction, so the fixed-boundary delta measures the replay point, not the
+  mechanism. The same class as V-091, reintroduced a third time by a helper whose contract did not say
+  which boundary it assumes.
+- Detection class: interval-validity. Instrument: `mechanism_of()` reads the mechanism at each arm's own
+  best boundary with no interval (that boundary is fitted on the cells it scores), keeps the
+  fixed-boundary delta beside it as an explicitly labelled replay cost with the interval that resamples
+  exactly that statistic, and refuses a precision interval whose median is not the delta it is printed
+  with (the V-098 guard, extended to this statistic).
+- Preserved: `runs/attempts/m3-occdeform-curation-r1-defective/{scope.json,job.json,note.txt}`.
+- Named green runs: `tests/test_occupancy_deform.py` (15 tests, OK) and the corrected curation
+  `runs/m3-occdeform-curation-r2-job.json` (passed, 11.1 s, peak 38,891,520 B), whose scope is
+  `docs/evidence/m3-occupancy-deformation-r1/scope.json`.
 
 ## V-097 — CLOSED: the resolution pass's components were recomputed on a different population from its verdict
 
@@ -2115,7 +2146,7 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `docs/evidence/m3-deciding-headroom-rerun-r1/scope.json`, identical to the historical
   receipt, under `runs/m3-deciding-headroom-rerun-r1-job.json`.
 
-## V-091 - CLOSED: an in-process module purge in a new test corrupted VisionState identity downstream
+## V-100 (was V-091) - CLOSED: an in-process module purge in a new test corrupted VisionState identity downstream
 
 - Symptom: the first full suite containing `tests/test_identity_import_order.py` failed three tests in
   `test_layer_evidence` and `test_model_capture` with `TypeError: validated VisionState required`, while each of
@@ -2129,7 +2160,7 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `tests/test_identity_import_order.py` (3 tests OK, `runs/identity-order-tests-r2-job.json`)
   and the full suite at 852 tests OK (`runs/suite-falsification-r2-job.json`).
 
-## V-092 - CLOSED: the replay "empty difference" compared projections and could not fail per field
+## V-101 (was V-092) - CLOSED: the replay "empty difference" compared projections and could not fail per field
 
 - Symptom: every replay was declared identical because an ad-hoc comparison printed `differing keys []`. That
   output was not evidence each protected field had been compared: the headroom comparison read only
@@ -2152,7 +2183,7 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   (`docs/evidence/m3-deciding-headroom-rerun-r3`, `runs/m3-sweep-obcref-rerun-r3`,
   `docs/evidence/m3-fit-occupancy-r1-errors-r4`).
 
-## V-093 - CLOSED: the first differ was strict about values but tolerant about types, sections and absence
+## V-102 (was V-093) - CLOSED: the first differ was strict about values but tolerant about types, sections and absence
 
 - Symptom: the differ rejected one large perturbation per field, so an empty difference looked decisive. Near
   misses were not: `1 == 1.0` and `0 == False` compared equal, so a type drift in any numeric or boolean carrier

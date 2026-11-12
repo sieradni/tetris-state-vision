@@ -1,5 +1,53 @@
 # Contributor handoff — 2026-10-30
 
+## Registration is a real mechanism now: it closes half the oracle gap in ranking and the replay point can no longer read it (2026-11-12)
+
+[M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was predeclared before its first receipt and
+is bound by `tests/test_occupancy_deform.py`. The campaign's largest attributed residual is **placement**:
+per-cell F1 `0.4390 -> 0.5742` when model cells are paired with the cells they cover, 48.3% of cells on the
+wrong target cell. Every earlier geometry lever corrected the **lattice** globally (origin, extent, stage
+residual, board-conditioned four-vector, boundary anchors); this pass corrects **each cell locally**: a
+zero-initialized `Conv2d(48 -> 2, 3x3)` over the tap's own feature predicts a per-cell shift, clamped to one
+cell, added to that cell's sample offset before bilinear sampling. 866 added weights, trained by the
+existing occupancy term, no new supervision. Identity at step zero by construction, so both arms compute
+the published function before training and every shared tensor is byte-identical.
+
+| quantity | lever (field) | control (detail) |
+|---|---|---|
+| deciding AUC | **0.866566** | 0.822643 |
+| F1 at `0.0` | 0.369420 | **0.381640** |
+| best swept F1 | **0.490752** at `3.15` | 0.412034 at `0.90` |
+| best-boundary precision | **0.416754** | 0.263488 |
+| out-of-fold F1 | **0.456054** | 0.400399 |
+| zero-boundary cost | -0.121332 | -0.030394 |
+| exact nonempty boards | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,090,600,960 B / 142.5 s | 1,058,295,808 B / 246.7 s |
+
+**`not-cleared`** on the per-cell gate (`0.369420` < `0.70`) and the ranking gate (AUC `0.033434` short of
+`0.90`, best F1 `0.209248` short of `0.70`), with the attribution floor **met**: best F1 **+0.078718**,
+AUC **+0.043922**. That is **48.5%** of the control's `0.162166` distance to the oracle-registration level
+at the same 64-step budget, from 866 weights - the largest attribution measured in this read-out family.
+
+What resolves and what does not, before any interpretation: the AUC delta **+0.043922** (interval
++0.017963 .. +0.063903, MDE `0.032257`) and the fixed-boundary deltas (F1 **-0.012220**, precision
+**-0.009380**, both intervals clear of zero) are **resolvable**; the out-of-fold F1 delta **+0.044328**
+is **not** (interval -0.105165 .. +0.290645, MDE `0.315147`). Best swept F1 and best-boundary precision
+carry no interval because their boundaries are fitted on the cells they score.
+
+The mechanism works and the decision boundary no longer reads it: the field's own logit scale moved the
+best threshold `0.90 -> 3.15` (and the leave-one-group-out thresholds sit at `3.15` in ten of twelve
+groups), so the fixed `0.0` replay point now leaves `0.121332` F1 on the table against the control's
+`0.030394`. **Next strongest lever: read this arm at a calibrated boundary, then repeat this exact
+matched pair at a matched multiple of budget** - not a wider trunk, which nothing here indicates. The
+fit gate stays **FALSE** (0 of 28 exact boards on both arms).
+
+One defect in this pass's own curation, preserved rather than overwritten: **V-103** (the first
+curation read mechanism precision at the fixed `0.0` boundary the lever moves, the V-091 pattern),
+with its scope and receipt under `runs/attempts/m3-occdeform-curation-r1-defective/`. The control
+study's first launch was also killed with its shell at the host's 295 s command cap; that `running`
+receipt and partial output are preserved under `runs/attempts/m3-occdeform-control-killed-r1/` and the
+arm was re-run under the declared name.
+
 ## The resolution lever is measured at last: it clears the attribution floor and still misses both gates (2026-11-12)
 
 [M3_OCCUPANCY_RESOLUTION_R2.md](M3_OCCUPANCY_RESOLUTION_R2.md) was predeclared before its first receipt

@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the registration residual is attacked with a real mechanism, and it is the largest attribution
+this family has measured** ([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md), predeclared
+before its receipts, `docs/evidence/m3-occupancy-deformation-r1/scope.json`). A bounded per-cell
+deformation field - a zero-initialized convolution over the tap's own feature, sampled at each decoded
+cell centre and added to that cell's sample offset, clamped to one cell - was trained as a matched
+64-step continuation against a control differing only in that field. **Attribution floor met: best
+swept F1 0.490752 against 0.412034 (+0.078718), AUC 0.866566 against 0.822643 (+0.043922, interval
++0.017963 .. +0.063903, MDE 0.032257)**; the field costs 32.3 MB and was admitted at 1,090,600,960 B of
+1,792 MiB. It closes **48.5%** of the control's distance to the oracle-registration level (0.5742) at
+the same budget. The calibration-neutral decomposition keeps that honest: the ranking gain is
+resolvable, the out-of-fold F1 gain (+0.044328) is **not** at twelve clusters (interval -0.105165 ..
++0.290645, MDE 0.315147), and the lever's own logit scale moved the best boundary from 0.90 to 3.15 so
+its **zero-boundary cost quadrupled** (-0.030394 -> -0.121332) and F1 at `0.0` fell -0.012220
+(resolvable). Both absolute gates still fail, 0 of 28 boards are exact and the fit gate is **FALSE**.
+The next lever is a calibrated boundary for the arms that move the scale, then this same pair at a
+matched multiple of budget. V-103 records a defect this pass's own curation exposed, preserved under
+`runs/attempts/` and bound by tests.
+
 Latest: **the resolution lever is measured at last, and finer sampling buys ranking rather than fit**
 ([M3_OCCUPANCY_RESOLUTION_R2.md](M3_OCCUPANCY_RESOLUTION_R2.md), predeclared before its receipts,
 `docs/evidence/m3-occupancy-resolution-r2/scope.json`). The first declaration was refused 22.8 MiB

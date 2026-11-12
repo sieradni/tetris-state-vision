@@ -33,6 +33,7 @@ class ModelConfig:
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
     occupancy_resolution: int = 0
+    occupancy_deform: int = 0
     lattice_support: int = 0
     lattice_residual: int = 0
     lattice_board_refine: int = 0
@@ -72,6 +73,10 @@ class ModelConfig:
               "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
+        check(type(self.occupancy_deform) is int and self.occupancy_deform in (0, 1),
+              "occupancy deform is 0 (the tap samples at the decoded cell) or 1 (declared per-cell field)")
+        check(not self.occupancy_deform or self.occupancy_detail == 1,
+              "the registration lever moves the detail tap's sample, so it needs that tap")
         check(type(self.lattice_support) is int and self.lattice_support in (0, 1),
               "lattice support is 0 (published box head) or 1 (declared support-moment residual)")
         check(type(self.lattice_residual) is int and self.lattice_residual in (0, 1),
@@ -202,6 +207,17 @@ def decode_lattice(raw, columns=10, rows=20):
 
 
 LATTICE_RESIDUAL_SCALE = .25
+# Declared registration lever: a per-cell field may move its sample by at most one cell in each
+# axis. That is larger than any sub-cell correction and still local, so the field can follow
+# misalignment the global box would have to move for, without letting a cell sample a different cell.
+DEFORM_LIMIT = 1.0
+
+
+def deform_offsets(samples, limit=DEFORM_LIMIT):
+    """Bounded per-cell sample offset in cell units; exactly zero for a zero field."""
+    if limit != DEFORM_LIMIT:
+        raise ValueError("the declared deformation limit is fixed")
+    return torch.tanh(samples)*limit
 
 
 def apply_lattice_residual(lattice, residual):
@@ -409,6 +425,17 @@ class TetrisStateNet(nn.Module):
             for layer in (self.lattice_board_refine[0], self.lattice_board_refine[2]):
                 nn.init.zeros_(layer.weight)
                 nn.init.zeros_(layer.bias)
+        # Declared registration lever: a per-cell deformation field, predicted from the same
+        # first-stage feature the tap reads and sampled at the decoded cell centres, moves each
+        # tap sample by at most one cell. The field's own convolution is zero-initialized, so step
+        # zero samples exactly where the published function samples and the paired control starts
+        # from identical tensors; unlike a box or lattice correction it is local, so it can follow
+        # per-cell misalignment without moving the placement the geometry term is judged on.
+        self.occupancy_deform = None
+        if config.occupancy_deform:
+            self.occupancy_deform = nn.Conv2d(config.widths[0], 2, 3, padding=1)
+            nn.init.zeros_(self.occupancy_deform.weight)
+            nn.init.zeros_(self.occupancy_deform.bias)
 
     @staticmethod
     def support_moments(coarse):
@@ -475,6 +502,11 @@ class TetrisStateNet(nn.Module):
             if self.occupancy_detail_tap is not None:
                 offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
                            torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
+                if self.occupancy_deform is not None:
+                    zero = torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype)
+                    field = sample_features(self.occupancy_deform(first), lattice,
+                                            self.coordinates, zero)[0]
+                    offsets = offsets+deform_offsets(field.reshape(batch, rows*columns, 1, 2))
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
                 sample = centers.flatten(2)
                 if self.occupancy_resolution_branch is not None:

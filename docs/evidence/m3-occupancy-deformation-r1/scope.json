@@ -1,0 +1,511 @@
+{
+  "status": "passed",
+  "instrument": "m3-occupancy-deformation-r1",
+  "predeclaration": "docs/M3_OCCUPANCY_REGISTRATION.md",
+  "scope": "Matched 64-step continuation of one published checkpoint, both arms carrying the declared zero-initialized detail tap with a single center sample and differing only in whether a bounded per-cell field moves that sample: the lever samples at the decoded cell centre plus a field of at most one cell, the control at the centre. Scored read-only on the widened deciding population with the standing gates and grid; no threshold, population or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m3-occdeform-curation-r2-job.json",
+  "declared_memory_bytes": 1992294400,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1879048192,
+    "sweep_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "curation": 4
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05,
+    "deform_limit_cells": 1.0
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_deform"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_resolution": 0,
+      "occupancy_context": 0
+    },
+    "catalogue_sha256": "e8e701e937798e423505eca34712e56239f614c4369cbae038423c31cc297e0d",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "lever": {
+      "study": "m3-occdeform-lever-r1",
+      "sweep": "m3-occdeform-lever-r1-sweep-r1",
+      "occupancy_deform": 1,
+      "weights_sha256": "26f1ba48debc29eeb34853ffe1398bb9ceb56ab1a2dc81814b6a9bea7ce7c446",
+      "catalogue_sha256": "e8e701e937798e423505eca34712e56239f614c4369cbae038423c31cc297e0d",
+      "study_elapsed_seconds": 142.47537679999732,
+      "study_peak_commit_bytes": 1090600960,
+      "sweep_peak_commit_bytes": 563838976,
+      "auc": 0.8665658048737642,
+      "auc_interval": {
+        "auc": 0.866566,
+        "standard_error": 0.009125,
+        "low": 0.848682,
+        "high": 0.88445,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.36942,
+      "per_cell_gap": 0.33058,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2255,
+        "false_negative": 5
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 662,
+          "trials": 2917,
+          "estimate": 0.226945,
+          "low": 0.21211,
+          "high": 0.242499
+        },
+        "recall": {
+          "successes": 662,
+          "trials": 667,
+          "estimate": 0.992504,
+          "low": 0.982573,
+          "high": 0.996794
+        }
+      },
+      "best": {
+        "threshold": 3.15,
+        "true_positive": 398,
+        "false_positive": 557,
+        "false_negative": 269,
+        "precision": 0.4167539267015707,
+        "recall": 0.5967016491754122,
+        "f1": 0.49075215782983966,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.209248,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.226945,
+      "components": {
+        "best_f1": 0.490752,
+        "best_threshold": 3.15,
+        "zero_f1": 0.36942,
+        "zero_cost": -0.121332,
+        "out_of_fold_f1": 0.456054,
+        "transfer_cost": 0.086634,
+        "out_of_fold_thresholds": [
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.0,
+          3.3,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15,
+          3.15
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 371,
+          "false_positive": 589,
+          "false_negative": 296
+        },
+        "groups": 12
+      }
+    },
+    "control": {
+      "study": "m3-occdeform-control-r1",
+      "sweep": "m3-occdeform-control-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "e8e701e937798e423505eca34712e56239f614c4369cbae038423c31cc297e0d",
+      "study_elapsed_seconds": 246.67221620000055,
+      "study_peak_commit_bytes": 1058295808,
+      "sweep_peak_commit_bytes": 562388992,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325,
+      "components": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "groups": 12
+      }
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "attribution": {
+    "read": "best swept F1 delta at the arm's own boundary",
+    "best_f1_delta": 0.078718,
+    "auc_delta": 0.043922,
+    "per_cell_f1_delta": -0.01222,
+    "precision_delta": -0.00938,
+    "recall_delta": 0.0015,
+    "cluster_bootstrap": {
+      "draws": 400,
+      "seed": 20261026,
+      "clusters": 12,
+      "auc_lever": {
+        "valid_draws": 400,
+        "low": 0.840468,
+        "high": 0.877651,
+        "median": 0.865225,
+        "standard_error": 0.012873
+      },
+      "f1_lever": {
+        "valid_draws": 400,
+        "low": 0.134941,
+        "high": 0.558894,
+        "median": 0.358722,
+        "standard_error": 0.108412
+      },
+      "cv_f1_lever": {
+        "valid_draws": 400,
+        "low": 0.262739,
+        "high": 0.572408,
+        "median": 0.427335,
+        "standard_error": 0.078323
+      },
+      "precision_lever": {
+        "valid_draws": 400,
+        "low": 0.072453,
+        "high": 0.388346,
+        "median": 0.218886,
+        "standard_error": 0.080826
+      },
+      "auc_control": {
+        "valid_draws": 400,
+        "low": 0.791641,
+        "high": 0.845498,
+        "median": 0.822184,
+        "standard_error": 0.015182
+      },
+      "f1_control": {
+        "valid_draws": 400,
+        "low": 0.138699,
+        "high": 0.5784,
+        "median": 0.371387,
+        "standard_error": 0.112459
+      },
+      "cv_f1_control": {
+        "valid_draws": 400,
+        "low": 0.106606,
+        "high": 0.606116,
+        "median": 0.381725,
+        "standard_error": 0.145667
+      },
+      "precision_control": {
+        "valid_draws": 400,
+        "low": 0.074651,
+        "high": 0.407424,
+        "median": 0.228588,
+        "standard_error": 0.085126
+      },
+      "f1_delta": {
+        "valid_draws": 400,
+        "low": -0.021661,
+        "high": -0.003297,
+        "median": -0.011704,
+        "standard_error": 0.004875
+      },
+      "cv_f1_delta": {
+        "valid_draws": 400,
+        "low": -0.105165,
+        "high": 0.290645,
+        "median": 0.044328,
+        "standard_error": 0.112472
+      },
+      "auc_delta": {
+        "valid_draws": 400,
+        "low": 0.017963,
+        "high": 0.063903,
+        "median": 0.044093,
+        "standard_error": 0.011512
+      },
+      "precision_delta": {
+        "valid_draws": 400,
+        "low": -0.020459,
+        "high": -0.001968,
+        "median": -0.00908,
+        "standard_error": 0.004833
+      }
+    }
+  },
+  "components": {
+    "note": "Reported, never read: ranking at the arm's own best boundary, the cost of the fixed 0.0 boundary, and the cost of transferring a boundary chosen on the other eleven ancestry groups. Each delta carries the interval that resamples it and a minimum detectable effect at 80% power.",
+    "lever": {
+      "best_f1": 0.490752,
+      "best_threshold": 3.15,
+      "zero_f1": 0.36942,
+      "zero_cost": -0.121332,
+      "out_of_fold_f1": 0.456054,
+      "transfer_cost": 0.086634,
+      "out_of_fold_thresholds": [
+        3.15,
+        3.15,
+        3.15,
+        3.15,
+        3.0,
+        3.3,
+        3.15,
+        3.15,
+        3.15,
+        3.15,
+        3.15,
+        3.15
+      ]
+    },
+    "control": {
+      "best_f1": 0.412034,
+      "best_threshold": 0.9,
+      "zero_f1": 0.38164,
+      "zero_cost": -0.030394,
+      "out_of_fold_f1": 0.400399,
+      "transfer_cost": 0.018759,
+      "out_of_fold_thresholds": [
+        0.9,
+        0.9,
+        1.05,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        1.05
+      ]
+    },
+    "deltas": {
+      "best_f1": {
+        "delta": 0.078718,
+        "interval": null,
+        "note": "boundary fitted on the scored cells; reported, never read"
+      },
+      "zero_boundary_f1": {
+        "delta": -0.01222,
+        "interval": {
+          "valid_draws": 400,
+          "low": -0.021661,
+          "high": -0.003297,
+          "median": -0.011704,
+          "standard_error": 0.004875
+        },
+        "minimum_detectable_effect": 0.01366
+      },
+      "out_of_fold_f1": {
+        "delta": 0.055655,
+        "interval": {
+          "valid_draws": 400,
+          "low": -0.105165,
+          "high": 0.290645,
+          "median": 0.044328,
+          "standard_error": 0.112472
+        },
+        "minimum_detectable_effect": 0.315147
+      }
+    },
+    "power": {
+      "z": 2.802,
+      "rule": "minimum detectable effect = 2.802 x cluster SE"
+    }
+  },
+  "mechanism": {
+    "field_active": true,
+    "read": "precision at the arm's own best boundary",
+    "best_precision_delta": 0.153266,
+    "best_precision_improved": true,
+    "floor": 0.05,
+    "zero_boundary_precision_delta": {
+      "delta": -0.00938,
+      "interval": {
+        "valid_draws": 400,
+        "low": -0.020459,
+        "high": -0.001968,
+        "median": -0.00908,
+        "standard_error": 0.004833
+      },
+      "minimum_detectable_effect": 0.013542,
+      "note": "fixed 0.0 boundary, which this lever's own logit scale moves; a replay cost, not a mechanism verdict"
+    }
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": true
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "unmatched_reference": {
+    "instrument": "m3-occupancy-resolution-r2",
+    "predeclaration": "docs/M3_OCCUPANCY_RESOLUTION_R2.md",
+    "matched_to_this_pass": false,
+    "arm": {
+      "auc": 0.8686115081522688,
+      "per_cell_f1": 0.413858,
+      "best": {
+        "threshold": 1.65,
+        "true_positive": 468,
+        "false_positive": 848,
+        "false_negative": 199,
+        "precision": 0.3556231003039514,
+        "recall": 0.7016491754122939,
+        "f1": 0.47201210287443274,
+        "exact_nonempty_boards": 0
+      },
+      "components": {
+        "best_f1": 0.472012,
+        "best_threshold": 1.65,
+        "zero_f1": 0.413858,
+        "zero_cost": -0.058154,
+        "out_of_fold_f1": 0.460754,
+        "transfer_cost": 0.046896,
+        "out_of_fold_thresholds": [
+          1.65,
+          1.65,
+          1.8,
+          1.65,
+          1.65,
+          1.65,
+          1.65,
+          1.65,
+          1.8,
+          1.65,
+          1.65,
+          1.65
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 452,
+          "false_positive": 843,
+          "false_negative": 215
+        },
+        "groups": 12
+      }
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "not touched",
+    "frozen_manifest": "not touched"
+  }
+}
