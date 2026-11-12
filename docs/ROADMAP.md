@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the widened registration field settles the question: the bound capped it, and what it applies
+is a translation** ([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md),
+`docs/evidence/m3-occupancy-deformation-r2/scope.json`). Three matched 64-step continuations differing
+only in the registration lever - detail control, the one-cell field, and a coarse-to-fine field reaching
+four cells - were scored on the same deciding population. The wide arm is the largest attribution in
+this family (**+0.102787** best F1, AUC **0.882262** against 0.822643, **+0.059619** with interval
++0.029411 .. +0.094463) and it restores the fixed-boundary F1 the fine field cost (**+0.016482** over
+the one-cell arm, resolvable). But the measured field explains why that is not registration: the
+one-cell field sat at 70.4% of its bound, the wide field saturates at **83.8%** of four cells, its mean
+displacement is **3.760** cells (**5.128** Euclidean, twice the 2.57-cell residual it aimed at), and
+**97.8% of its displaced energy is one constant vector** - a read-out translation, with 99.8% of samples
+leaving their nominal cell. Per the predeclared rule the reading is **`reach-exceeded`**; per-cell
+registration is **not a lever this design can resolve**, because nothing in the loss distinguishes the
+right cell from a re-centred read-out. Both gates still fail, 0 of 28 boards are exact and the fit gate
+stays **FALSE**. The next lever is supervision that can tell the correct displacement from a constant
+one - a zero-mean constraint or a placed-target term - not more reach. V-104, V-105 and V-106 record the
+defects this pass found in its own work, all preserved under `runs/attempts/`.
+
 Latest: **the registration residual is attacked with a real mechanism, and it is the largest attribution
 this family has measured** ([M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md), predeclared
 before its receipts, `docs/evidence/m3-occupancy-deformation-r1/scope.json`). A bounded per-cell

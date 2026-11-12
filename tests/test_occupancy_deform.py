@@ -9,7 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
 import torch
 import tetris_vision.model as model_module
 from tetris_vision.losses import require_occupancy_deform
-from tetris_vision.model import DEFORM_LIMIT, ModelConfig, TetrisStateNet, deform_offsets
+from tetris_vision.model import (DEFORM_LIMIT, DEFORM_REACH, DEFORM_WIDE_LIMIT, ModelConfig,
+                                 TetrisStateNet, deform_offsets)
 
 from record_registration_lever import mechanism_of
 from record_stream_run import OWNED_RUN_PATTERN
@@ -38,7 +39,7 @@ class FieldTests(unittest.TestCase):
         self.assertEqual(ModelConfig.pilot().occupancy_deform, 0)
 
     def test_an_undeclared_value_is_refused(self):
-        for value in (2, -1, True, 1.0):
+        for value in (3, -1, True, 1.0):
             with self.assertRaises(ValueError):
                 ModelConfig(occupancy_detail=1, occupancy_deform=value)
 
@@ -67,12 +68,14 @@ class FieldTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             deform_offsets(samples, limit=2.0)
 
-    def test_both_arms_are_exactly_the_published_function_at_step_zero(self):
+    def test_every_arm_is_exactly_the_published_function_at_step_zero(self):
         _, plain = occupancy(pilot())
         _, control = occupancy(pilot(occupancy_detail=1))
         _, lever = occupancy(pilot(occupancy_detail=1, occupancy_deform=1))
+        _, wide = occupancy(pilot(occupancy_detail=1, occupancy_deform=2))
         self.assertTrue(torch.equal(plain, control))
         self.assertTrue(torch.equal(plain, lever))
+        self.assertTrue(torch.equal(plain, wide))
 
     def test_the_arms_share_every_tensor_but_the_field(self):
         torch.manual_seed(20261026)
@@ -145,6 +148,219 @@ class FieldTests(unittest.TestCase):
                      "m3-occdeform-lever-r1-sweep-r1", "m3-occdeform-control-r1-sweep-profile-r1"):
             self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
         self.assertFalse(OWNED_RUN_PATTERN.fullmatch("m3-occdeform-"))
+
+
+class WideFieldTests(unittest.TestCase):
+    """The coarse-to-fine arm: the same fine level plus a wider-reach coarse one."""
+
+    CELLS = (ModelConfig.pilot().visible_rows+ModelConfig.pilot().spawn_rows)*ModelConfig.pilot().columns
+
+    @staticmethod
+    def final(config, seed=20261026):
+        torch.manual_seed(seed)
+        model = TetrisStateNet(config).eval()
+        pixels, valid = inputs()
+        with torch.no_grad():
+            return model, model(pixels, valid)["final"]
+
+    def test_the_widened_arm_adds_one_coarse_level_over_the_fine_one(self):
+        torch.manual_seed(3)
+        wide = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2))
+        self.assertIsNotNone(wide.occupancy_deform)
+        self.assertIsNotNone(wide.occupancy_deform_coarse)
+        self.assertEqual((wide.occupancy_deform_coarse.in_channels,
+                          wide.occupancy_deform_coarse.out_channels), (pilot().widths[0], 2))
+        self.assertEqual((wide.occupancy_deform_coarse.kernel_size,
+                          wide.occupancy_deform_coarse.padding), ((3, 3), (1, 1)))
+        self.assertFalse(bool(wide.occupancy_deform_coarse.weight.any()))
+        self.assertFalse(bool(wide.occupancy_deform_coarse.bias.any()))
+        torch.manual_seed(3)
+        fine = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=1))
+        self.assertIsNone(fine.occupancy_deform_coarse)
+        for name, value in fine.state_dict().items():
+            self.assertTrue(torch.equal(value, wide.state_dict()[name]), name)
+
+    def test_each_level_keeps_its_declared_bound(self):
+        self.assertEqual((DEFORM_LIMIT, DEFORM_WIDE_LIMIT, DEFORM_REACH), (1.0, 3.0, 4.0))
+        sample = torch.tensor([[[40.0, -40.0]]])
+        self.assertTrue(torch.allclose(deform_offsets(sample, DEFORM_WIDE_LIMIT),
+                                       torch.tensor([[[3.0, -3.0]]])))
+        self.assertTrue(torch.allclose(deform_offsets(sample), torch.tensor([[[1.0, -1.0]]])))
+        with self.assertRaises(ValueError):
+            deform_offsets(sample, 2.0)
+
+    def test_the_widened_field_reaches_past_one_cell_and_stays_inside_its_reach(self):
+        model, _ = self.final(pilot(occupancy_detail=1, occupancy_deform=2))
+        with torch.no_grad():
+            model.occupancy_deform.weight.zero_()
+            model.occupancy_deform.bias.zero_()
+            model.occupancy_deform_coarse.weight.fill_(1e3)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            offsets = model(pixels, valid)["final"]["occupancy_deform_offsets"]
+        self.assertEqual(tuple(offsets.shape), (1, self.CELLS, 2))
+        reach = float(offsets.abs().max())
+        self.assertGreater(reach, 2.9)
+        self.assertLessEqual(reach, DEFORM_REACH)
+        self.assertGreater(reach, DEFORM_LIMIT)
+
+    def test_the_one_cell_arm_cannot_reach_past_its_own_bound(self):
+        model, _ = self.final(pilot(occupancy_detail=1, occupancy_deform=1))
+        with torch.no_grad():
+            model.occupancy_deform.weight.fill_(1e3)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            offsets = model(pixels, valid)["final"]["occupancy_deform_offsets"]
+        self.assertLessEqual(float(offsets.abs().max()), DEFORM_LIMIT)
+        self.assertGreater(float(offsets.abs().max()), .9)
+
+    def test_the_applied_offsets_are_exposed_and_exactly_zero_at_step_zero(self):
+        for deform in (0, 1, 2):
+            _, final = self.final(pilot(occupancy_detail=1, occupancy_deform=deform))
+            if deform == 0:
+                self.assertNotIn("occupancy_deform_offsets", final)
+            else:
+                offsets = final["occupancy_deform_offsets"]
+                self.assertEqual(tuple(offsets.shape), (1, self.CELLS, 2))
+                self.assertFalse(bool(offsets.any()))
+
+    def test_the_widened_arm_shares_every_published_tensor(self):
+        torch.manual_seed(9)
+        control = TetrisStateNet(pilot(occupancy_detail=1))
+        torch.manual_seed(9)
+        wide = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2))
+        added = set(wide.state_dict())-set(control.state_dict())
+        self.assertEqual(len(added), 4)
+        self.assertTrue(all(name.startswith(("occupancy_deform.", "occupancy_deform_coarse."))
+                            for name in added))
+        for name, value in control.state_dict().items():
+            self.assertTrue(torch.equal(value, wide.state_dict()[name]), name)
+
+    def test_paired_raster_equivalence_holds_for_the_widened_arm(self):
+        torch.manual_seed(13)
+        first = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2)).eval()
+        torch.manual_seed(13)
+        second = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2)).eval()
+        with torch.no_grad():
+            first.occupancy_deform_coarse.weight.normal_(0, .9)
+            second.occupancy_deform_coarse.weight.normal_(0, .05)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            a = first(pixels, valid)["final"]["occupancy"]
+            b = second(pixels, valid)["final"]["occupancy"]
+        self.assertFalse(torch.equal(first.occupancy_deform_coarse.weight,
+                                    second.occupancy_deform_coarse.weight))
+        self.assertTrue(torch.equal(a, b))
+
+    def test_the_widened_field_changes_the_decision_only_through_the_projection(self):
+        torch.manual_seed(21)
+        wide = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=2)).eval()
+        torch.manual_seed(21)
+        control = TetrisStateNet(pilot(occupancy_detail=1)).eval()
+        with torch.no_grad():
+            control.occupancy_detail_tap.weight.copy_(wide.occupancy_detail_tap.weight)
+            control.occupancy_detail_tap.bias.copy_(wide.occupancy_detail_tap.bias)
+            wide.occupancy_deform_coarse.weight.normal_(0, 1.5)
+        pixels, valid = inputs()
+        with torch.no_grad():
+            inert = wide(pixels, valid)["final"]["occupancy"]
+            reference = control(pixels, valid)["final"]["occupancy"]
+            for model in (wide, control):
+                model.occupancy_detail_tap.weight.fill_(.5)
+                model.occupancy_detail_tap.bias.fill_(.1)
+            moved = wide(pixels, valid)["final"]["occupancy"]
+            reference_active = control(pixels, valid)["final"]["occupancy"]
+            wide.occupancy_deform_coarse.weight.zero_()
+            zeroed = wide(pixels, valid)["final"]["occupancy"]
+        self.assertTrue(torch.equal(inert, reference))
+        self.assertFalse(torch.equal(moved, reference_active))
+        self.assertTrue(torch.equal(zeroed, reference_active))
+
+    def test_the_admission_binds_the_widened_declaration(self):
+        summary = {"arguments": {"occupancy_deform": 2},
+                   "recovery_contract": {"occupancy_deform": 2}}
+        self.assertIsNone(require_occupancy_deform(2, summary))
+        with self.assertRaises(ValueError):
+            require_occupancy_deform(1, summary)
+
+    def test_the_owned_widened_family_is_declared(self):
+        for name in ("m3-occdeform2-wide-r1", "m3-occdeform2-control-r1",
+                     "m3-occdeform2-wide-r1-sweep-r1"):
+            self.assertTrue(OWNED_RUN_PATTERN.fullmatch(name), name)
+
+
+class WidenedRecordTests(unittest.TestCase):
+    """The three-arm record: what it published and what the document says about it."""
+
+    @classmethod
+    def setUpClass(cls):
+        root = Path(__file__).resolve().parents[1]
+        cls.scope = json.loads((root/"docs/evidence/m3-occupancy-deformation-r2/scope.json").read_text(
+            encoding="utf-8"))
+        cls.prior = json.loads((root/"docs/evidence/m3-occupancy-deformation-r1/scope.json").read_text(
+            encoding="utf-8"))
+        cls.text = " ".join((root/"docs/M3_OCCUPANCY_REGISTRATION.md").read_text(
+            encoding="utf-8").split())
+
+    def test_the_three_arms_and_the_primary_verdict_are_mechanical(self):
+        self.assertEqual(sorted(self.scope["arms"]), ["control", "lever", "wide"])
+        self.assertEqual({name: arm["occupancy_deform"] for name, arm in self.scope["arms"].items()},
+                         {"control": 0, "lever": 1, "wide": 2})
+        self.assertEqual({name: arm["reach_cells"] for name, arm in self.scope["arms"].items()},
+                         {"control": 0.0, "lever": 1.0, "wide": 4.0})
+        self.assertEqual(self.scope["verdict"]["verdict"], "not-cleared")
+        self.assertTrue(self.scope["verdict"]["conditions"]["attribution"])
+        self.assertEqual(self.scope["population"]["nonempty_boards"], 28)
+        self.assertEqual(self.scope["population"]["occupied_cells"], 667)
+
+    def test_the_one_cell_arm_reproduces_the_previous_pass_exactly(self):
+        for key in ("auc", "per_cell_f1", "precision"):
+            self.assertEqual(self.scope["arms"]["lever"][key], self.prior["arms"]["lever"][key])
+        self.assertEqual(self.scope["arms"]["lever"]["best"]["f1"],
+                         self.prior["arms"]["lever"]["best"]["f1"])
+
+    def test_the_measured_field_is_mostly_one_constant_vector_and_the_reading_says_so(self):
+        wide, lever = self.scope["reach"]["field"]["wide"], self.scope["reach"]["field"]["lever"]
+        self.assertGreater(wide["constant_share"], .95)
+        self.assertGreater(lever["constant_share"], .85)
+        self.assertGreater(wide["magnitude_cells"]["mean"], 3.0)
+        self.assertLessEqual(lever["magnitude_cells"]["mean"], 1.0)
+        self.assertGreaterEqual(wide["at_bound_fraction"], self.scope["reach"]["saturation_floor"])
+        self.assertEqual(self.scope["reach"]["reading"], "reach-exceeded")
+        self.assertEqual(self.scope["reach"]["oracle_statistic"]["mean_placement_offset_cells"], 2.57)
+        self.assertEqual(wide["arm"]["bound_cells"], 4.0)
+        self.assertEqual(lever["arm"]["bound_cells"], 1.0)
+
+    def test_every_added_tensor_of_every_arm_is_on_the_declared_allowlist(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"scripts"))
+        from train_m2_stream import INITIAL_SOURCE_ADDED_PREFIXES
+        torch.manual_seed(4)
+        control = TetrisStateNet(pilot(occupancy_detail=1))
+        baseline = set(control.state_dict())
+        for deform in (1, 2):
+            torch.manual_seed(4)
+            arm = TetrisStateNet(pilot(occupancy_detail=1, occupancy_deform=deform))
+            added = set(arm.state_dict())-baseline
+            self.assertTrue(added)
+            for name in added:
+                self.assertTrue(name.startswith(INITIAL_SOURCE_ADDED_PREFIXES), name)
+
+    def test_the_document_quotes_the_published_scope(self):
+        wide, control = self.scope["arms"]["wide"], self.scope["arms"]["control"]
+        lever = self.scope["arms"]["lever"]
+        field = self.scope["reach"]["field"]["wide"]
+        for value in (wide["auc"], control["auc"], wide["per_cell_f1"], control["per_cell_f1"],
+                      wide["best"]["f1"], lever["best"]["f1"],
+                      self.scope["contrasts"]["wide_control"]["best_f1_delta"],
+                      self.scope["contrasts"]["wide_control"]["auc_delta"],
+                      self.scope["contrasts"]["wide_lever"]["per_cell_f1_delta"]):
+            self.assertIn(f"{round(value, 6):,.6f}", self.text)
+        self.assertIn(f"{field['constant_share']:.3f}", self.text)
+        self.assertIn(f"{field['magnitude_cells']['mean']:.3f}", self.text)
+        self.assertIn(f"{100*field['at_bound_fraction']:.1f}%", self.text)
+        self.assertIn(f"{100*self.scope['reach']['field']['lever']['at_bound_fraction']:.1f}%", self.text)
+        for arm in self.scope["arms"].values():
+            self.assertIn(f"{arm['study_peak_commit_bytes']:,}", self.text)
 
 
 class MechanismTests(unittest.TestCase):

@@ -73,8 +73,9 @@ class ModelConfig:
               "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
               "the resolution lever is a declared form of the detail tap, not a separate read-out")
-        check(type(self.occupancy_deform) is int and self.occupancy_deform in (0, 1),
-              "occupancy deform is 0 (the tap samples at the decoded cell) or 1 (declared per-cell field)")
+        check(type(self.occupancy_deform) is int and self.occupancy_deform in (0, 1, 2),
+              "occupancy deform is 0 (the tap samples at the decoded cell), 1 (one-cell field) or "
+              "2 (coarse-to-fine field reaching four cells)")
         check(not self.occupancy_deform or self.occupancy_detail == 1,
               "the registration lever moves the detail tap's sample, so it needs that tap")
         check(type(self.lattice_support) is int and self.lattice_support in (0, 1),
@@ -211,12 +212,21 @@ LATTICE_RESIDUAL_SCALE = .25
 # axis. That is larger than any sub-cell correction and still local, so the field can follow
 # misalignment the global box would have to move for, without letting a cell sample a different cell.
 DEFORM_LIMIT = 1.0
+# Declared widened reach: the measured placement residual is 2.57 cells on average, which the one-cell
+# field cannot express by construction. A coarse level predicted from a pooled map - eight times the
+# feature stride, so its 3x3 window sees roughly eight cells instead of one - may move the sample by
+# up to three cells, and the fine level adds one more, so the pair covers the measured residual while
+# neither level alone can wander. `first` is stride 2, so a 3x3 convolution at that resolution sees
+# about a tenth of a cell: the wider reach has to come with a coarser context, not just a bigger bound.
+DEFORM_WIDE_LIMIT = 3.0
+DEFORM_REACH = 4.0
+DEFORM_LIMITS = (DEFORM_LIMIT, DEFORM_WIDE_LIMIT)
 
 
 def deform_offsets(samples, limit=DEFORM_LIMIT):
     """Bounded per-cell sample offset in cell units; exactly zero for a zero field."""
-    if limit != DEFORM_LIMIT:
-        raise ValueError("the declared deformation limit is fixed")
+    if limit not in DEFORM_LIMITS:
+        raise ValueError("only the declared deformation limits are available")
     return torch.tanh(samples)*limit
 
 
@@ -432,10 +442,19 @@ class TetrisStateNet(nn.Module):
         # from identical tensors; unlike a box or lattice correction it is local, so it can follow
         # per-cell misalignment without moving the placement the geometry term is judged on.
         self.occupancy_deform = None
+        self.occupancy_deform_coarse = None
         if config.occupancy_deform:
             self.occupancy_deform = nn.Conv2d(config.widths[0], 2, 3, padding=1)
             nn.init.zeros_(self.occupancy_deform.weight)
             nn.init.zeros_(self.occupancy_deform.bias)
+            if config.occupancy_deform == 2:
+                # Coarse level: predicted at the pooled resolution so its window covers a board
+                # neighbourhood, then upsampled to the fine map and sampled at the same cell
+                # centres. Zero-initialized like the fine level, so step zero is the published
+                # function and the fine arm is a strict prefix of this one.
+                self.occupancy_deform_coarse = nn.Conv2d(config.widths[0], 2, 3, padding=1)
+                nn.init.zeros_(self.occupancy_deform_coarse.weight)
+                nn.init.zeros_(self.occupancy_deform_coarse.bias)
 
     @staticmethod
     def support_moments(coarse):
@@ -499,14 +518,26 @@ class TetrisStateNet(nn.Module):
                 layers = layers+local_layers
             rows, columns = self.config.visible_rows+self.config.spawn_rows, self.config.columns
             occupancy_features = cells
+            occupancy_deform_offsets = None
             if self.occupancy_detail_tap is not None:
                 offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
                            torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
                 if self.occupancy_deform is not None:
                     zero = torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype)
-                    field = sample_features(self.occupancy_deform(first), lattice,
-                                            self.coordinates, zero)[0]
-                    offsets = offsets+deform_offsets(field.reshape(batch, rows*columns, 1, 2))
+                    shift = deform_offsets(sample_features(
+                        self.occupancy_deform(first), lattice, self.coordinates, zero
+                    )[0].reshape(batch, rows*columns, 1, 2))
+                    if self.occupancy_deform_coarse is not None:
+                        pooled = F.avg_pool2d(first, 8, ceil_mode=True)
+                        coarse = F.interpolate(self.occupancy_deform_coarse(pooled),
+                                               size=first.shape[-2:], mode="bilinear",
+                                               align_corners=False)
+                        shift = shift+deform_offsets(sample_features(
+                            coarse, lattice, self.coordinates, zero
+                        )[0].reshape(batch, rows*columns, 1, 2), DEFORM_WIDE_LIMIT)
+                        shift = shift.clamp(-DEFORM_REACH, DEFORM_REACH)
+                    occupancy_deform_offsets = shift.reshape(batch, rows*columns, 2)
+                    offsets = offsets+shift
                 centers = sample_features(first, lattice, self.coordinates, offsets)[0]
                 sample = centers.flatten(2)
                 if self.occupancy_resolution_branch is not None:
@@ -537,6 +568,8 @@ class TetrisStateNet(nn.Module):
                            "layer_type": self.layer_type(layers), "layer_known": self.layer_known(layers).squeeze(-1),
                            "pose_rotation": self.pose_rotation(layers), "pose_column": self.pose_column(layers),
                            "pose_row": self.pose_row(layers), "sample_points": points, "sample_offsets": offsets})
+            if occupancy_deform_offsets is not None:
+                stages[-1]["occupancy_deform_offsets"] = occupancy_deform_offsets
             if layer_cells is not None:
                 stages[-1]["layer_cells"] = layer_cells
             if self.components is not None:

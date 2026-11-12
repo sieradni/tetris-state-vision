@@ -1,5 +1,49 @@
 # Contributor handoff — 2026-10-30
 
+## The widened field answers the registration question: the bound capped it, and what it learned is a translation (2026-11-12)
+
+[M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was extended, predeclared before its
+receipts, with a **coarse-to-fine field that reaches four cells** (`occupancy_deform=2`: the existing
+one-cell fine level plus a coarse level predicted from an eight-times pooled map at three cells),
+because the measured placement residual is 2.57 cells and a one-cell bound cannot express it. Three
+matched 64-step continuations of `runs/m3-percell-balance-r1` differ only in that lever, and the third
+arm keeps the one-cell field selectable. The one-cell arm **reproduced the previous pass exactly**
+(AUC 0.866566, best F1 0.490752 at 3.15), so the block is one implementation.
+
+| quantity | control | one cell | wide (4 cells) |
+|---|---|---|---|
+| deciding AUC | 0.822643 | 0.866566 | **0.882262** |
+| F1 at `0.0` | 0.381640 | 0.369420 | **0.385902** |
+| best swept F1 | 0.412034 @ `0.90` | 0.490752 @ `3.15` | **0.514821** @ `1.95` |
+| out-of-fold F1 | 0.400399 | 0.456054 | **0.498413** |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,044,045,824 B / 150.6 s | 1,065,558,016 B / 196.1 s | 1,045,843,968 B / 232.6 s |
+
+Wide vs control is the family's largest attribution (**+0.102787** best F1, **+0.059619** AUC with
+interval +0.029411 .. +0.094463, MDE 0.049478) and it recovers the fixed-boundary F1 the fine field
+cost (**+0.016482** over the one-cell arm, resolvable). The wide-vs-one-cell AUC increment (+0.015697)
+and every out-of-fold delta here are **not resolvable** at twelve clusters.
+
+What settles the question is the field itself. The one-cell field sat at `>= 0.95` of its bound on
+**70.4%** of cells (mean 0.909, mean vector 1.23 cells) - it wanted to move further. The wide field
+saturates harder (**83.8%** at four cells) and applies a mean **3.760** cells (**5.128** Euclidean),
+which is twice the 2.57-cell residual, with **97.8% of its displaced energy in one constant vector**
+(-3.488, -3.760) and 99.8% of samples leaving their nominal cell. A near-uniform offset field is a
+lattice shift, so the trained mechanism is a read-out **translation**, not per-cell registration. Per
+the predeclared rule the reading is **`reach-exceeded`**.
+
+**Answer: per-cell registration is not a lever this design can resolve.** Releasing the bound did raise
+ranking and restore the fixed boundary, but it let the field express a constant translation; nothing in
+the occupancy objective distinguishes the correct cell from a re-centred read-out. The next lever is
+supervision that can tell them apart - a zero-mean constraint on the field, or a placed-target term
+that scores the displacement - **not** more reach, since the wide field already saturates. The fit gate
+stays **FALSE** (0 of 28 exact boards on all three arms).
+
+V-104 (the widened arm's module missed the initial-weight allowlist), V-105 (the curator passed tuple
+counts to a mapping helper) and V-106 (a vacuous constant-share statistic) are logged with their
+records preserved under `runs/attempts/`; two admission refusals from host commit pressure are
+preserved there too.
+
 ## Registration is a real mechanism now: it closes half the oracle gap in ranking and the replay point can no longer read it (2026-11-12)
 
 [M3_OCCUPANCY_REGISTRATION.md](M3_OCCUPANCY_REGISTRATION.md) was predeclared before its first receipt and

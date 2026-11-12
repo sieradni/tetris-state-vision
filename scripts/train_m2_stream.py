@@ -66,11 +66,13 @@ def arguments(argv=None):
                         help="declared resolution lever;1 adds a stride-1 conv of the image whose "
                              "cell-center sample joins the same zero-initialized detail projection, "
                              "so the tap reads pixel resolution; requires --occupancy-detail 1")
-    parser.add_argument("--occupancy-deform", type=int, choices=(0, 1), default=0,
+    parser.add_argument("--occupancy-deform", type=int, choices=(0, 1, 2), default=0,
                         help="declared registration lever;1 adds a zero-initialized per-cell field, "
                              "predicted from the feature the detail tap reads, that moves that cell's "
                              "sample by at most one cell, so local misalignment is corrected without "
-                             "moving the decoded lattice; requires --occupancy-detail 1")
+                             "moving the decoded lattice;2 adds a coarse level predicted from an "
+                             "eight-times pooled map (up to three cells) on top so the reach covers "
+                             "the measured 2.57-cell placement residual; requires --occupancy-detail 1")
     parser.add_argument("--geometry-final-only", type=int, choices=(0, 1), default=0,
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
@@ -226,6 +228,16 @@ def staged_mode(summary, *, freeze_backbone, init_weights_from):
     if (source is None) is not (init_weights_from is None):
         return False
     return source is None or str(source) == str(init_weights_from)
+
+
+# Declared prefix list of tensors a continuation may add over the published checkpoint. It is one
+# constant rather than a literal inside the check so a new declared module cannot be refused for
+# matching its parent's name only up to the first underscore (V-104).
+INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_detail_tap.",
+                                 "occupancy_resolution_branch.", "occupancy_deform.",
+                                 "occupancy_deform_coarse.", "support_box.", "lattice_residual.",
+                                 "occupancy_lattice_free.", "occupancy_lattice_gate",
+                                 "lattice_board_refine.")
 
 
 def owned_initial_source(source, *, output):
@@ -598,12 +610,7 @@ def main(argv=None, *, _archive=None, _started=None):
         source_state = source_model.state_dict()
         missing = sorted(set(model.state_dict())-set(source_state))
         if set(source_state)-set(model.state_dict()) or any(
-                not key.startswith(("occupancy_neighborhood.", "occupancy_detail_tap.",
-                                    "occupancy_resolution_branch.", "occupancy_deform.",
-                                    "support_box.",
-                                    "lattice_residual.",
-                                    "occupancy_lattice_free.", "occupancy_lattice_gate",
-                                    "lattice_board_refine."))
+                not key.startswith(INITIAL_SOURCE_ADDED_PREFIXES)
                 for key in missing):
             raise ValueError("initial-weight source tensors differ from the declared representation")
         model.load_state_dict(source_state, strict=False)

@@ -263,3 +263,182 @@ fit.
   the host's 295 s command cap, leaving a `running` receipt and a partial output. Both are preserved
   under `runs/attempts/m3-occdeform-control-killed-r1/` and the arm was re-run under the declared name;
   the published control receipt is the re-run.
+
+## Widened reach: predeclaration (2026-11-12, before any receipt of this block)
+
+**Question.** The measured placement residual is a mean of **2.57 cells** with **48.3% of model cells
+covering the wrong target cell**. The one-cell field is bounded by construction below that residual,
+and last pass never measured the field's applied offset magnitude at all, so "it helped a little"
+cannot distinguish a mechanism that is capped from one that found nothing to correct. This block
+settles which, by making the mechanism able to reach the residual and by measuring the field itself.
+
+**The single change.** `occupancy_deform=2` keeps the one-cell fine level unchanged and adds one
+**coarse level**: average-pool `first` by 8, a zero-initialized `Conv2d(widths[0] -> 2, 3x3)` at that
+resolution, bilinear upsample to the fine map, sampled at the same cell centres, `tanh`-bounded to
+**3.0 cells**; the fine level adds **1.0**, so the pair reaches **4.0 cells** per axis. *Why*
+coarse-to-fine rather than a larger bound on the same convolution: `first` is stride-2, so a 3x3 window
+there covers about a tenth of a cell and cannot commit to a multi-cell shift; the coarse level's window
+covers roughly eight cells, and the fine level keeps the local correction on top. Both levels are
+zero-initialized, so step zero is the published function exactly and the one-cell arm is a strict
+prefix of the widened one.
+
+**Three arms, one lineage, one budget.** All continuations of `runs/m3-percell-balance-r1`
+(`9ae1fef9f649...`), same seed `20261026`, curriculum, capture side, occupancy terms, 64 steps, gates,
+floor, grid and population. They differ only in the registration lever:
+
+| arm | `occupancy_detail` | `occupancy_deform` | reach |
+|---|---|---|---|
+| control | `1` | `0` | none |
+| lever (one cell, last pass's arm) | `1` | `1` | 1.0 cell |
+| wide (coarse-to-fine) | `1` | `2` | 4.0 cells |
+
+**Envelope, declared before admission.** 1,879,048,192 B (1,792 MiB) per study arm, 640 MiB per sweep
+and per field measurement, one heavy job at a time. Last pass measured 1,090,600,960 B (one-cell) and
+1,058,295,808 B (control); the coarse level is one convolution at 1/64 of the fine map's pixels, so the
+widened arm is expected inside the same envelope. If any arm cannot be admitted at 1,792 MiB the
+outcome is NOT ADMISSIBLE AS DECLARED for that arm, recorded with its peak, and the remaining
+comparison stays pairwise - the third arm is never silently dropped.
+
+**Work items.** profile 2, study 64, sweep profile 2, sweep 54 (36 deciding + 18 development), field
+measurement **36** forwards, curation 6 receipts. The curator refuses any other arithmetic.
+
+**The field measurement, declared.** Per deformation arm, out of the committed checkpoint and over the
+same 36 deciding images: mean, p50, p90, p99 and max of the per-cell `L-infinity` offset in cells, the
+mean absolute offset per axis, the fraction of cells at or near the bound (`>= 0.95 x bound`), and the
+fraction whose deformed sample leaves its nominal cell (`L-infinity > 0.5`, the sampling-side analogue
+of the oracle's wrong-target-cell coverage). Reported over all known cells and over occupied cells,
+beside the oracle statistic of 2.57 cells mean and 48.3% wrong-cell coverage.
+
+**Declared readings, before the numbers exist.**
+
+- Wide field **saturated** (`>= 50%` at or near the bound) -> the residual is larger than this read-out
+  can reach; the near-bound fraction is the measured statement, and the family closes at 4 cells.
+- Wide field **not saturated**, ranking above the one-cell arm -> the bound was the cap, and the wide
+  reach is the new floor for this mechanism.
+- Wide field **not saturated**, ranking at or below the one-cell arm -> the cap was not the bound; a
+  larger reach does not buy placement here, and the residual needs supervision rather than capacity.
+- The primary contrast is **wide vs control**; one-cell vs control replicates last pass and wide vs
+  one-cell isolates the reach. All three are reported with paired whole-cluster intervals.
+
+**Scoring unchanged.** Same three gates (per-cell F1 at `0.0` `>= 0.70`, ranking `informative`,
+attribution floor `>= 0.05`), same calibration-neutral components, same statement of what resolves.
+The out-of-fold boundary statistics are additionally reported as **fitted** context, never as the
+primary contract, because a re-scaled head is exactly what made the hard `0.0` point unreadable.
+
+## Widened reach: outcome (2026-11-12) - the bound capped the displacement, and the displacement is a translation
+
+All three arms were admitted inside 1,792 MiB, completed 64 steps under one catalogue from the
+published checkpoint bytes, and were scored read-only on the same widened deciding population (36
+images, 28 nonempty boards, 667 occupied, 4,933 empty known cells, twelve ancestry clusters). Evidence:
+`docs/evidence/m3-occupancy-deformation-r2/scope.json`, curated by
+`runs/m3-occdeform2-curation-r3-job.json` (passed, 15 s, peak 39,927,808 B). The one-cell arm
+**reproduced the previous pass exactly** (AUC `0.866566`, best F1 `0.490752` at `3.15`, F1 at `0.0`
+`0.369420`), which is the internal check that the three-arm block is one implementation.
+
+| quantity | control | one cell | wide (4 cells) |
+|---|---|---|---|
+| deciding AUC | 0.822643 | 0.866566 | **0.882262** |
+| F1 at `0.0` | 0.381640 | 0.369420 | **0.385902** |
+| best swept F1 | 0.412034 @ `0.90` | 0.490752 @ `3.15` | **0.514821** @ `1.95` |
+| precision at `0.0` | 0.236325 | 0.226945 | **0.240955** |
+| best-boundary precision | 0.263488 | **0.416754** | 0.394108 |
+| out-of-fold F1 | 0.400399 | 0.456054 | **0.498413** |
+| zero-boundary cost | -0.030394 | -0.121332 | -0.128919 |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,044,045,824 B / 150.6 s | 1,065,558,016 B / 196.1 s | 1,045,843,968 B / 232.6 s |
+
+**Verdict on the primary contrast `not-cleared`**: per-cell gate (`0.385902` < `0.70`) and ranking
+gate (AUC `0.882262` < `0.90`, best F1 `0.514821` < `0.70`) fail; attribution floor **met** at
+**+0.102787** over control. The three declarations this block could make:
+
+| contrast | best swept F1 | AUC | F1 at `0.0` | out-of-fold F1 | attribution floor |
+|---|---|---|---|---|---|
+| wide vs control | **+0.102787** | **+0.059619** (+0.029411 .. +0.094463, MDE 0.049478) | +0.004262 (-0.010845 .. +0.014528, MDE 0.018488) | +0.098014 (-0.0197 .. +0.287658, MDE 0.253023) | **met** |
+| one cell vs control | +0.078718 | +0.043922 (+0.017963 .. +0.063903, MDE 0.032257) | -0.012220 (-0.021661 .. -0.003297, MDE 0.013660) | +0.055655 (-0.105165 .. +0.290645, MDE 0.315147) | **met** |
+| wide vs one cell | +0.024068 | +0.015697 (-0.010176 .. +0.040592, MDE 0.036485) | **+0.016482** (+0.004684 .. +0.024977, MDE 0.014343) | +0.042359 (-0.109556 .. +0.180680, MDE 0.216754) | not met |
+
+**Which components this design resolves, stated before interpretation:** the wide-vs-control AUC gain
+and its best-F1 attribution are resolvable, and so is the wide-vs-one-cell recovery at the fixed
+boundary (+0.016482). The wide-vs-one-cell AUC increment, and every out-of-fold delta in this block,
+are **not** resolvable at twelve clusters - the out-of-fold intervals span roughly 0.2-0.3 F1 around
+their medians, which is wider than any contrast here.
+
+### The applied field, in cells
+
+| | one-cell field | wide field | oracle reference |
+|---|---|---|---|
+| mean `\|offset\|` (L-inf) | 0.909 | **3.760** | 2.57 |
+| p50 / p90 / p99 | 0.994 / 0.999 / 0.999 | 3.899 / 3.961 / 3.970 | - |
+| max | 0.9994 | 3.9732 | - |
+| at or near the bound (`>= 0.95 x bound`) | **70.4%** | **83.8%** | - |
+| sample outside its own cell (`L-inf > 0.5`) | 91.9% | 99.8% | 48.3% wrong target cell |
+| mean absolute shift per axis | 0.906 / 0.893 | 3.489 / 3.760 | - |
+| mean offset vector (cells) | (-0.882, +0.863) | (-3.488, -3.760) | - |
+| per-cell spread (sd) | 0.298 / 0.316 | 0.588 / 0.505 | - |
+| **share of displaced energy in one constant vector** | **0.890** | **0.978** | - |
+| occupied-cell mean | 0.729 | 3.159 | - |
+| occupied cells outside their own cell | 70.0% | 99.1% | - |
+
+Instruments: `runs/m3-occdeform2-{wide,lever}-r1-field-r3` (640 MiB, 36 forwards each, passed). The
+field is measured on the applied offsets, not on predictions: the model exposes
+`occupancy_deform_offsets` and the instrument reads the same 36 deciding images the sweep scores.
+
+### What the measurement settles
+
+1. **The one-cell bound did cap the displacement.** The one-cell field sits at `>= 0.95` of its bound
+   on **70.4%** of cells with a mean of `0.909`, and its mean offset vector is `1.23` cells long - it
+   wanted to move further than one cell and could not.
+2. **Opening the reach raised the numbers.** Wide vs control is the largest attribution in this family:
+   **+0.102787** best F1, **+0.059619** AUC, and it restores the fixed-boundary F1 the fine field had
+   cost (**+0.016482** over the one-cell arm, resolvable).
+3. **But the widened field saturates too, and what it applies is a translation.** `83.8%` of cells sit
+   at or near the 4-cell bound; the mean displacement is `3.760` cells (`5.128` in Euclidean length);
+   and **97.8% of the displaced energy is a single constant vector** (-3.488, -3.760) with a per-cell
+   spread of only half a cell. Its samples leave their nominal cell on **99.8%** of decisions.
+4. **So the per-cell registration hypothesis is not supported by the trained field.** Both arms are
+   dominated by a constant component (0.890 and 0.978); the widened arm translates the read-out by
+   `5.13` cells, which is **twice** the `2.57`-cell residual it was aimed at and is clipped by the
+   bound. A nearly uniform offset field *is* a lattice shift, which is the lever the geometry canon
+   already measured as buying occupancy at a placement cost - here it buys ranking and gives back the
+   fixed-boundary loss, and it still leaves 0 of 28 boards exact.
+5. **Per the predeclared rule, the reading is `reach-exceeded`** (`83.8%` at bound `>=` the `50%`
+   floor), so the residual is larger than this read-out can reach. The ranking gain and the saturation
+   are both true at once, and the honest summary is that more reach would translate further rather
+   than converge: the mechanism has no term that prefers the *correct* per-cell displacement.
+
+**Answer to the question this block was declared for:** the one-cell bound was capping the mechanism,
+but releasing it did not recover per-cell registration - it let the field express a large constant
+translation, which is what the occupancy term finds useful. Registration, in the sense the oracle
+measures it, is **not a lever this design can resolve**, because nothing in the objective distinguishes
+the right cell from a re-centred read-out.
+
+### Where that leaves the fit gate and the next lever
+
+**Fit gate: FALSE, unchanged** - 0 of 28 exact nonempty boards on all three arms, identity heads
+untouched, no real-image, complete-state, calibrated or quality claim.
+
+**Next strongest lever, from the measurement rather than from preference:** the field needs supervision
+that can tell the correct displacement from a constant one. Two cheap, attributable forms exist: remove
+the field's constant component (zero-mean constraint) so only per-cell alignment is expressible, or add
+a placed-target term to the existing occupancy supervision that scores the displacement itself. The
+first is a mechanism change that tests the per-cell hypothesis in isolation; the second is the only one
+that can create per-cell information the occupancy loss cannot supply. A larger reach is **not**
+indicated: the widened field already saturates at four cells.
+
+### Defects found in this pass's own record
+
+- **V-104**: the widened arm's second module (`occupancy_deform_coarse.*`) did not match the
+  initial-weight allowlist prefix `occupancy_deform.`, so the arm was refused before training. The
+  allowlist is now one declared constant, and a test binds every added tensor of every arm to it.
+- **V-105**: the three-arm curator passed the tuple `counts_at_curves` returns to a helper that expects a
+  mapping, so the first curation crashed before writing. Preserved under
+  `runs/attempts/m3-occdeform2-curation-r1-crashed/`; the precision is now computed inline from the same
+  counts.
+- **V-106**: the first `constant_share` compared a variance to itself and always read `0.0`, which would
+  have published "0% of the field is constant" beside a saturated field. Preserved under
+  `runs/attempts/m3-occdeform2-curation-r2-superseded/`; the statistic is now the share of displaced
+  energy one constant vector accounts for, and the field was re-measured under `r3`.
+- **Two admission refusals, preserved**: the first triple was launched while the host sat near its commit
+  limit from unrelated applications, and one retry collided with the runner's exclusive receipt. Both are
+  under `runs/attempts/m3-occdeform2-pressure-refused/` with a note; the declared ceiling was never
+  lowered and no guard was disabled.

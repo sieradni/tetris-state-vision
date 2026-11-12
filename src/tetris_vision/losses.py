@@ -154,7 +154,7 @@ def require_occupancy_detail_stencil(stencil, summary):
 
 def require_occupancy_deform(deform, summary):
     """One declaration of the admission join for the per-cell registration lever."""
-    if (type(deform) is not int or deform not in (0, 1) or
+    if (type(deform) is not int or deform not in (0, 1, 2) or
             summary.get("arguments", {}).get("occupancy_deform", 0) != deform or
             summary.get("recovery_contract", {}).get("occupancy_deform", 0) != deform):
         raise ValueError("occupancy deform differs from resource admission")
