@@ -135,6 +135,78 @@ is a real-screenshot, complete-state, calibrated or quality claim, and no arm's 
 than another's outside this population and budget. The ablation measures the read-out's contribution at the
 checkpoint, not why training moved it there.
 
-## Measured
+## Measured (2026-11-12) - the read-out is used, and it buys recall instead of rank
 
-*(appended after the receipts exist - see the record under `docs/evidence/m5-column-readout-r1/`)*
+Four arms ran inside 1,792 MiB and completed 64 steps under one catalogue from the published checkpoint.
+**All three prior arms reproduced exactly**: control `0.8226433610683003`, wide `0.8822623454135491`,
+de-meaned `0.8204288287642111` AUC, with per-cell F1 at `0.0` and best swept F1 identical to the placed
+block's record. Evidence: `docs/evidence/m5-column-readout-r1/scope.json`, curated by
+`runs/m5-colread-curation-r3-job.json` (passed, 9 work items).
+
+| quantity | control | wide | de-meaned | **column** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.820429 | 0.832796 |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.376663 | 0.384302 |
+| best swept F1 | 0.412034 @ `0.90` | **0.514821** @ `1.95` | 0.427911 @ `0.60` | 0.432650 @ `1.35` |
+| precision at `0.0` | 0.236325 | **0.240955** | 0.235895 | 0.238370 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.427911 | 0.381790 |
+| exact nonempty boards | 0 of 28 | 0 of 28 | 0 of 28 | 0 of 28 |
+| study peak / wall | 1,019,527,168 B / 246.3 s | 1,093,607,424 B / 249.2 s | 1,043,214,336 B / 246.2 s | 1,024,061,440 B / 215.7 s |
+
+**Verdict `not-cleared` on all three conditions**, and the declared reading is
+**`readout-moves-without-ranking`**. It is the third branch for a real reason: the arm gains on every
+deciding number, and none of the gains is resolvable at twelve clusters.
+
+| contrast | best swept F1 | AUC | F1 at `0.0` | out-of-fold F1 | attribution |
+|---|---|---|---|---|---|
+| column vs control | +0.020616 | +0.010152 (-0.030013 .. +0.062077, MDE 0.061504) | +0.002662 | **-0.018609** | not met |
+| column vs wide | -0.082171 | -0.049467 (-0.122459 .. +0.015537, MDE 0.096249) | -0.001600 | -0.116623 | not met |
+| column vs de-meaned | +0.004739 | +0.012367 (-0.048049 .. +0.078105, MDE 0.089678) | +0.007639 | -0.046121 | not met |
+| wide vs control | +0.102787 | +0.059619 (+0.029411 .. +0.094463, MDE 0.049478) | +0.004262 | +0.098014 | met |
+
+The movement is real but small: `+0.020616` best F1 is two fifths of the declared attribution floor, its
+interval comfortably straddles zero, and the out-of-fold number - the only one that says the gain
+*transfers* to a boundary chosen without the cluster - goes **down** by `0.018609`. The wide arm still
+beats it by `0.082171`, so making the column visible at the cell does not recover what the off-board read
+was buying.
+
+### The ablation says the read-out was used
+
+Same frozen weights, same cells, the column projection zeroed:
+
+| | AUC | F1 at `0.0` | precision | true positive | false positive | false negative |
+|---|---|---|---|---|---|---|
+| with the read-out | **0.882162** | 0.312087 | 0.185206 | **661** | 2908 | **6** |
+| projection zeroed | 0.865114 | **0.331402** | **0.205386** | 572 | 2213 | 95 |
+
+The read-out changes a cell's occupancy logit by `0.933284` on average - **42.3%** of the mean absolute
+logit `2.207107` - so there is no question whether training used it: it accounts for nearly half of the
+decision's magnitude. What it does with that influence is the finding. It raises true positives by **89**
+and false negatives fall by **89**, while false positives rise by **695**: the column context makes the head
+report a stack where one is present and also where one is not. AUC rises by `0.017048`, F1 and precision
+fall. That is the signature of a read-out that has learned "this column has material in it" and not "this
+cell is this filled", which is exactly what a summary of the column can express.
+
+### What this pass establishes
+
+**The vertical structure was not the missing information.** M4 measured that the objective's only profitable
+displacement was a read of the material below the cell; this pass put that material beside the cell, and the
+head used it heavily (42% of its logit) without recovering the gain. The remaining gap between the
+de-meaned/control band (`0.820429`-`0.822643`) and the wide arm (`0.882262`) is therefore not a lack of
+information at the cell. It is the objective's own preference, and the ablation explains its shape: the
+shifted read is *more precise*, because moving the sample down-and-left picks a position whose occupancy
+label is decided by a stack that is already there, while a column summary is an average and cannot say
+*which* row is filled.
+
+The concrete, measurable hypothesis this leaves is a **vertical label offset**: the column read-out raised
+recall by 89 cells and cost 695 false positives, which is what a head does when its boundary sits about one
+row from where the labels sit. Two passes have now shown that moving samples and adding context each fail;
+the next declared instrument should measure the **signed row error** of each arm's decision boundary on the
+existing frozen sweeps - read-only, no new training - before any further structural change is declared. If
+that offset is there, the correction is a declared half- or full-cell sampling offset, which is geometry
+rather than tuning; if it is not, the label-objective class is what fails and should be named as such.
+
+**Fit gate: FALSE** - 0 of 28 exact boards on all four arms. No gate, threshold, population, ceiling,
+weight or floor was altered after a receipt existed; the one thing that did change before the receipts - the
+shared `--occupancy-detail` setting - is recorded as an amendment above and as V-119, and no reading below
+depends on it being anything other than the setting the published arms were measured under.

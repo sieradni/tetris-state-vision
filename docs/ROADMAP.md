@@ -23,6 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **the column read-out is used heavily and still does not rank**
+([M5_COLUMN_READOUT.md](M5_COLUMN_READOUT.md), `docs/evidence/m5-column-readout-r1/scope.json`). A
+fourth arm gives each cell its own column - the mean decoder feature strictly below and strictly above it,
+plus the spans, through a zero-initialised `2*dimension+2 -> dimension` projection - so the vertical
+structure the shifted window was buying is available where the cell is and no sample moves. Control, wide
+and de-meaned reproduced the previous record exactly (`0.822643...`, `0.882262...`, `0.820429...`). The
+column arm moves every deciding number and none of it resolves: AUC **0.832796** (`+0.010152` over
+control, interval `-0.030013 .. +0.062077`, MDE `0.061504`), best F1 **0.432650** (`+0.020616`, two fifths
+of the `0.05` floor), out-of-fold F1 **`-0.018609`**, and it is still `-0.082171` behind wide. The new
+read-only **ablation** settles the mechanism: zeroing the projection on the same weights costs `0.017048`
+AUC and moves **42.3%** of each cell's logit magnitude, with true positives up `89` and false positives up
+`695` - the read-out is genuinely used, it reports *that a column has material*, not *which row is filled*.
+Declared reading **`readout-moves-without-ranking`**. So the vertical information was never the missing
+piece; the next declared instrument is a **signed row error of the decision boundary** on the existing
+frozen sweeps - if the boundary sits about a row off the labels, the correction is a declared sampling
+offset (geometry, not tuning), and if it does not, the label-objective class is what fails. Fit gate stays
+**FALSE** (0 of 28 exact boards on all four arms). V-119 through V-122 record this pass's defects.
+
 Latest: **placed-target supervision loses to the objective, and the position instrument says why**
 ([M4_OCCUPANCY_PLACED.md](M4_OCCUPANCY_PLACED.md),
 `docs/evidence/m4-placed-supervision-r1/scope.json`). A fourth arm adds a term that supervises the

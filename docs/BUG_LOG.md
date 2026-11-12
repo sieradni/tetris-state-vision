@@ -27,11 +27,40 @@ the block lock, which is what every surviving cross-reference (CONTINUATION_STAT
 | resource-profile | V-013, V-039, V-040, V-043, V-045, V-046, V-062 (7) | Shape-diverse native memory trajectory, bounded native cache and resumable finite runs; a declared read-out mode must not carry trainable heads it never uses; a page-file host's steady-state commit charge is not this job's risk. Standing instrument: `PressureDecisionTests` plus the synthetic-exhaustion cases in `test_pressure_guard.py`. |
 | windows-persistence | V-015 (1) | Bounded sharing-error retry, prior-pointer preservation and fail-closed launch |
 | objective-provenance | V-051, V-055 (2) | The probe and curator bind the objective from `arguments` and reproduce saved losses; a regression test asserts the objective's branches are charged and refuse a mismatched join |
-| launch-ownership | V-029, V-030, V-050, V-093, V-110, V-111, V-114 (7) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
-| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096, V-106, V-113, V-116, V-119, V-120 (19) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
+| launch-ownership | V-029, V-030, V-050, V-093, V-110, V-111, V-114, V-120 (8) | Preflight output, receipt and both log paths before detached launch; verify the child executable path resolves before arming the Job; a supervisor killed by its caller leaves a `running` receipt, so the retry preserves it and the partial output before re-running; one block per seed holds a pid lock, so a live holder refuses a second chain against the same outputs and a dead holder is replaced rather than trusted |
+| evidence-reporting | V-032, V-033, V-036, V-038, V-041, V-042, V-044, V-047, V-048, V-053, V-054, V-065, V-068, V-096, V-106, V-113, V-116, V-119, V-121, V-122 (20) | Evidence-folder audit instrument that re-derives every published number from the committed bytes and fails on any disagreement; a correctness count is reported next to the classes the head actually emits, so a constant predictor cannot read as identity reading; the ordinary replay completes deterministic development evidence to the canonical group set and the curator re-derives that extension; the replay scores the objective the run actually recorded and the curator binds that identity; an evidence directory is an atomic record keyed by name, so a frozen run's directory cannot gain files; a re-derivation reconstructs labels in the observer's own cell order from the committed bytes instead of inferring an order from counts; a document's figure block is generated from the analysis result and compared by the suite, with mutation tests that perturb a figure, a table row and an evidence number and require rejection, and those negative tests are themselves checked by disabling the comparison, so neither a hand edit nor a vacuous guard passes |
 | interval-validity | V-056, V-066, V-091, V-095, V-103 (5) | Measure the ICC and design effect of the deciding cells and report a whole-cluster resampling interval beside every cell-level interval, so a nested population cannot be reported with an independent-sample width; a leave-one-group-out score's ranking statistic is the mean per-fold AUC, never a pooled AUC that can order fold frequency, and a continuous score is fitted with a bounded link before any fixed threshold grid is read; an attribution is never read at a fixed threshold the lever itself moves, but at a boundary chosen on the other groups and reported with a paired whole-group interval; before a block is declared, its minimum detectable effect is computed from the committed clusters (bootstrap and delta-method agreeing) and stated beside its floor, so an underpowered block cannot report "no effect" where it could only not resolve one |
 | tooling-harness | V-060, V-064, V-067, V-115 (4) | Long authoring payloads go through a file, not a shell heredoc: the command transport caps a single command's length and a payload past it is cut mid-string, so the patch script is written to disk, run, and removed; launch argv is read from the receipt as data, script path preserved and interpreter quoted, never rebuilt by slicing and `eval`; the supervisor consumes a run name only after argv resolves, and a refused launch is preserved under `runs/attempts/` with a note and re-recorded under a fresh number |
 | tap-composition | V-063 (1) | A composition of two declared residual taps is tested both-on, not only one at a time: the stack is their sum, it differs from each half once trained, zeroing one projection reproduces that half's arm exactly, and the single-tap arms keep the published composition |
+
+## V-122 — CLOSED: the initial-weights guard asserted the placed block's provenance
+
+- Symptom: curation r2 exited 1 with "the field arms add no tensors, so they must save the same initial
+  weights" after every arm and instrument had passed.
+- **Root cause.** The guard asserted that control, wide and de-meaned save the same initial bytes. That was
+  true of the placed block, where all four arms carried the detail tap and the two field arms' tensors were
+  the common set; in this family the control carries the tap but no deformation field, so it differs from
+  wide by construction. Only the two deformation arms share initial bytes.
+- **Change.** The guard asserts `wide == demean`, that the column arm differs from control (it adds a
+  zero-initialized projection), and that control differs from wide.
+- **Detection class.** evidence-reporting.
+- **Instrument.** The curator's own provenance assertion; the refused run is preserved at
+  `runs/attempts/m5-colread-curation-refused/curation-r2-job.json`.
+- **Named green run.** `runs/m5-colread-curation-r3-job.json` (passed) writing
+  `docs/evidence/m5-column-readout-r1/scope.json`.
+
+## V-121 — CLOSED: the curator still required the pre-amendment sampling point
+
+- Symptom: curation r1 exited 1 with "column study did not run the declared lever at the declared budget"
+  although the study's own record showed the lever set correctly.
+- **Root cause.** `require_arm` still demanded `occupancy_detail == 0`, the setting V-119 retracted; the
+  column study was captured under the amended shared tap (`1`), so a correct arm was refused.
+- **Change.** The shared sampling point is one named constant (`DETAIL = 1`) read by both the check and the
+  scope's `matched.shared` block, so the record and its guard cannot disagree again.
+- **Detection class.** evidence-reporting.
+- **Instrument.** The curator's arm-identity guard; the refused receipt and log are preserved at
+  `runs/attempts/m5-colread-curation-refused/curation-r1-job.json`.
+- **Named green run.** `runs/m5-colread-curation-r3-job.json` (passed, 9 work items).
 
 ## V-120 — CLOSED: the column arm's own validation refused the tap every arm shares
 

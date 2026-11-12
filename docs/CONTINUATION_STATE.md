@@ -1,5 +1,44 @@
 # Contributor handoff — 2026-10-30
 
+## The column read-out: used heavily, ranks no better (2026-11-12)
+
+[M5_COLUMN_READOUT.md](M5_COLUMN_READOUT.md) was predeclared and committed before any receipt, amended
+once before any admissible receipt (V-119: the first version fixed `--occupancy-detail 0` for the whole
+family, which the engine refuses for a deformation arm), and then run as four matched 64-step
+continuations of `runs/m3-percell-balance-r1` differing only in the deformation lever and the declared
+read-out. Control, wide and de-meaned reproduced the previous record exactly, so the block is one
+implementation.
+
+| quantity | control | wide | de-meaned | **column** |
+|---|---|---|---|---|
+| deciding AUC | 0.822643 | **0.882262** | 0.820429 | 0.832796 |
+| F1 at `0.0` | 0.381640 | **0.385902** | 0.376663 | 0.384302 |
+| best swept F1 | 0.412034 | **0.514821** | 0.427911 | 0.432650 |
+| out-of-fold F1 | 0.400399 | **0.498413** | 0.427911 | 0.381790 |
+| study peak / wall | 1,019,527,168 B / 246.3 s | 1,093,607,424 B / 249.2 s | 1,043,214,336 B / 246.2 s | 1,024,061,440 B / 215.7 s |
+
+**Verdict `not-cleared`; reading `readout-moves-without-ranking`.** The arm gains `+0.020616` best F1 and
+`+0.010152` AUC over control, with an interval `-0.030013 .. +0.062077` that straddles zero at twelve
+clusters, and its out-of-fold number (the only one that says a gain transfers) falls by `0.018609`. It
+remains `0.082171` behind the wide arm.
+
+The instrument that makes this a result rather than a null: the new read-only **ablation** reloads the
+frozen checkpoint, runs the deciding population with the projection as trained and with it zeroed, and
+scores both sides on the same cells. Zeroing costs `0.017048` AUC and moves `0.933284` logit on average -
+`42.3%` of the mean absolute logit - so the read-out is not idle. What it does is raise true positives by
+`89` while raising false positives by `695`: a summary of a column can say *this column has material* and
+cannot say *this row is filled*.
+
+**Answer: the vertical information was never the missing piece.** Moving the sample to it (wide, M3),
+supervising that move (placed, M4), and putting it beside the cell (column, M5) have now all been measured;
+only the one that takes the sample off the board gains, and it does so by being *more precise* at the price
+of reading the wrong place. The next declared instrument is cheap and read-only: measure the **signed row
+error** of each arm's decision boundary on the frozen sweeps. If the boundary sits about one row from the
+labels, the fix is a declared sampling offset - geometry, not tuning - and if it does not, the
+label-objective class is what fails and should be named as such rather than tuned around. Fit gate stays
+**FALSE** (0 of 28 exact boards on all four arms); V-119 to V-122 record this pass's defects and the
+refused receipts are under `runs/attempts/`.
+
 ## Placed-target supervision loses, and the samples were reading off the board all along (2026-11-12)
 
 [M4_OCCUPANCY_PLACED.md](M4_OCCUPANCY_PLACED.md) was predeclared and committed before any receipt, then

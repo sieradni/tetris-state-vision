@@ -1,0 +1,1137 @@
+{
+  "status": "passed",
+  "instrument": "m5-column-readout-r1",
+  "predeclaration": "docs/M5_COLUMN_READOUT.md",
+  "scope": "Matched 64-step continuation of one published checkpoint by four arms differing only in the read-out: the published read-out, the four-cell coarse-to-fine registration field, the same field de-meaned across the board, and the declared per-column stack read-out that sees its own column below and above the cell through a zero-initialised projection. Scored read-only on the widened deciding population with the standing gates and grid; the column arm is also ablated at its own checkpoint, and the two deformation arms keep their applied field and image-space landing points. No threshold, population or gate changes, and no real-image, complete-state, calibrated or quality claim.",
+  "declared_receipt": "runs/m5-colread-curation-r3-job.json",
+  "declared_memory_bytes": 1992294400,
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 1879048192,
+    "sweep_ceiling_bytes": 671088640,
+    "instrument_ceiling_bytes": 671088640,
+    "work_items": {
+      "profile": 2,
+      "study": 64,
+      "sweep_profile": 2,
+      "sweep": 54,
+      "field": 36,
+      "position": 36,
+      "ablation": 72,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "precision_floor": 0.05,
+    "reach_cells": {
+      "column": 0.0,
+      "wide": 4.0,
+      "demean": 8.0,
+      "control": 0.0
+    },
+    "column_context_width": 386
+  },
+  "source": {
+    "run": "m3-percell-balance-r1",
+    "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "steps": 128
+  },
+  "matched": {
+    "seed": 20261026,
+    "learning_rate": 0.001,
+    "capture_max_side": 512,
+    "curriculum": "stream-v1",
+    "config_difference": [
+      "occupancy_deform",
+      "occupancy_column"
+    ],
+    "shared": {
+      "occupancy_detail": 1,
+      "occupancy_detail_stencil": 0,
+      "occupancy_resolution": 0,
+      "occupancy_context": 0
+    },
+    "catalogue_sha256": "d30fa05489026b09acca1d783edfee54a2048e670ea5e9d3f29d7a83a1dc4e48",
+    "initial_weights": {
+      "run": "C:\\Users\\micha\\Code\\tetris-state-vision\\runs\\m3-percell-balance-r1",
+      "catalogue_sha256": "d87836fdbbeb13c6c89d12ca878441907498e02d9c69658685fc0b8a2fde955e",
+      "weights_sha256": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+      "steps": 128,
+      "curriculum": "stream-v1",
+      "seed": 20261026
+    }
+  },
+  "arms": {
+    "column": {
+      "study": "m5-colread-column-r1",
+      "sweep": "m5-colread-column-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_column": 1,
+      "declared_bound_cells": 0.0,
+      "weights_sha256": "02d8917299630e968c13dab8b1dd236e1aed00906a1cc299d52805cc82bf9a3f",
+      "catalogue_sha256": "d30fa05489026b09acca1d783edfee54a2048e670ea5e9d3f29d7a83a1dc4e48",
+      "study_elapsed_seconds": 215.67583670000022,
+      "study_peak_commit_bytes": 1024061440,
+      "sweep_peak_commit_bytes": 565989376,
+      "field": null,
+      "positions": null,
+      "auc": 0.8327955928786063,
+      "auc_interval": {
+        "auc": 0.832796,
+        "standard_error": 0.009946,
+        "low": 0.813302,
+        "high": 0.852289,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.384302,
+      "per_cell_gap": 0.315698,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2112,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2773,
+          "estimate": 0.23837,
+          "low": 0.22288,
+          "high": 0.254584
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 1.35,
+        "true_positive": 591,
+        "false_positive": 1474,
+        "false_negative": 76,
+        "precision": 0.28619854721549637,
+        "recall": 0.8860569715142429,
+        "f1": 0.4326500732064422,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.26735,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.23837,
+      "components": {
+        "best_f1": 0.43265,
+        "best_threshold": 1.35,
+        "zero_f1": 0.384302,
+        "zero_cost": -0.048348,
+        "best_precision": 0.286199,
+        "out_of_fold_f1": 0.38179,
+        "transfer_cost": -0.002512,
+        "out_of_fold_thresholds": [
+          1.35,
+          1.35,
+          1.2,
+          1.35,
+          1.2,
+          1.35,
+          1.35,
+          1.35,
+          2.55,
+          1.35,
+          1.35,
+          1.2
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 499,
+          "false_positive": 1448,
+          "false_negative": 168
+        },
+        "groups": 12
+      }
+    },
+    "wide": {
+      "study": "m5-colread-wide-r1",
+      "sweep": "m5-colread-wide-r1-sweep-r1",
+      "occupancy_deform": 2,
+      "occupancy_column": 0,
+      "declared_bound_cells": 4.0,
+      "weights_sha256": "338c79c55608dc38cca13ea3d0ff37d9c31b699d33a70704511d849dde13a5b0",
+      "catalogue_sha256": "d30fa05489026b09acca1d783edfee54a2048e670ea5e9d3f29d7a83a1dc4e48",
+      "study_elapsed_seconds": 249.15107269999862,
+      "study_peak_commit_bytes": 1093607424,
+      "sweep_peak_commit_bytes": 568840192,
+      "field": {
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 3.760055,
+          "p50": 3.898947,
+          "p90": 3.961249,
+          "p99": 3.970079,
+          "max": 3.973248,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 5.131651,
+          "p50": 5.334243,
+          "p90": 5.491414,
+          "p99": 5.517264,
+          "max": 5.527936,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          3.489139,
+          3.759744
+        ],
+        "mean_vector_cells": [
+          -3.487921,
+          -3.759564
+        ],
+        "spread_cells": [
+          0.58807,
+          0.504869
+        ],
+        "mean_square_cells": 26.900634,
+        "constant_share": 0.977669,
+        "coherence": 1.363901,
+        "at_bound_fraction": 0.838056,
+        "outside_own_cell_fraction": 0.998194,
+        "occupied_magnitude_cells": {
+          "mean": 3.158956,
+          "p50": 3.735691,
+          "p90": 3.898947,
+          "p99": 3.931227,
+          "max": 3.965584,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 4.180768,
+          "p50": 4.979099,
+          "p90": 5.333081,
+          "p99": 5.40942,
+          "max": 5.504166,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.991004
+      },
+      "positions": {
+        "instrument": "m5-colread-wide-r1-position-r1",
+        "note": "Where the displaced samples landed, not how far they moved. in_frame is the source image; in_board is the target lattice's own 0..columns x 0..rows frame, so a shifted-window exploit at the edge shows up as a drop in one or both.",
+        "samples": 7200,
+        "in_frame_fraction": 0.950139,
+        "in_board_fraction": 0.359444,
+        "out_of_board_or_frame_fraction": 0.640556,
+        "mean_landing_cells": [
+          -0.260659,
+          5.495824
+        ],
+        "landing_column_cells": {
+          "mean": -0.260659,
+          "p50": -0.216355,
+          "p90": 5.012073,
+          "min": -9.128344,
+          "max": 11.976535,
+          "cells": 7200
+        },
+        "landing_row_cells": {
+          "mean": 5.495824,
+          "p50": 5.567605,
+          "p90": 15.304555,
+          "min": -12.882854,
+          "max": 18.387495,
+          "cells": 7200
+        },
+        "mean_shift_cells": 3.760055,
+        "mean_norm_cells": 5.131651,
+        "mean_applied_vector_cells": [
+          -3.487921,
+          -3.759564
+        ],
+        "mean_square_shift_cells": 26.900634,
+        "shift_coherence": 0.977669,
+        "magnitude_cells": {
+          "mean": 3.760055,
+          "p50": 3.898947,
+          "p90": 3.961249,
+          "min": 0.217896,
+          "max": 3.973248,
+          "cells": 7200
+        },
+        "outside_own_cell_fraction": 0.998194,
+        "arm": {
+          "occupancy_deform": 2,
+          "occupancy_placed": 0,
+          "applied_offsets": "occupancy_applied_offsets, the tap's own tensor"
+        }
+      },
+      "auc": 0.8822623454135491,
+      "auc_interval": {
+        "auc": 0.882262,
+        "standard_error": 0.008673,
+        "low": 0.865263,
+        "high": 0.899262,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.385902,
+      "per_cell_gap": 0.314098,
+      "operating_counts": {
+        "true_positive": 646,
+        "false_positive": 2035,
+        "false_negative": 21
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 646,
+          "trials": 2681,
+          "estimate": 0.240955,
+          "low": 0.225145,
+          "high": 0.257506
+        },
+        "recall": {
+          "successes": 646,
+          "trials": 667,
+          "estimate": 0.968516,
+          "low": 0.952349,
+          "high": 0.979317
+        }
+      },
+      "best": {
+        "threshold": 1.95,
+        "true_positive": 495,
+        "false_positive": 761,
+        "false_negative": 172,
+        "precision": 0.39410828025477707,
+        "recall": 0.7421289355322339,
+        "f1": 0.514820592823713,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.185179,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.240955,
+      "components": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "best_precision": 0.394108,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 471,
+          "false_positive": 752,
+          "false_negative": 196
+        },
+        "groups": 12
+      }
+    },
+    "demean": {
+      "study": "m5-colread-demean-r1",
+      "sweep": "m5-colread-demean-r1-sweep-r1",
+      "occupancy_deform": 3,
+      "occupancy_column": 0,
+      "declared_bound_cells": 8.0,
+      "weights_sha256": "99954d8cacb8aeda30b762408e87f9696ed818e17dd9f4f42101b9ec2235545d",
+      "catalogue_sha256": "d30fa05489026b09acca1d783edfee54a2048e670ea5e9d3f29d7a83a1dc4e48",
+      "study_elapsed_seconds": 246.2276079000003,
+      "study_peak_commit_bytes": 1043214336,
+      "sweep_peak_commit_bytes": 566738944,
+      "field": {
+        "note": "Offsets are the ones the tap applied, in cell units, L-infinity per cell. The fraction outside its own cell is the sampling-side analogue of the oracle's wrong-target-cell coverage; a field working correctly moves samples off their nominal cell when the lattice is misplaced.",
+        "magnitude_cells": {
+          "mean": 0.540519,
+          "p50": 0.283176,
+          "p90": 1.357714,
+          "p99": 2.453489,
+          "max": 3.386917,
+          "cells": 7200
+        },
+        "norm_cells": {
+          "mean": 0.593888,
+          "p50": 0.30964,
+          "p90": 1.524122,
+          "p99": 2.795757,
+          "max": 3.776261,
+          "cells": 7200
+        },
+        "axis_mean_abs_cells": [
+          0.258815,
+          0.493241
+        ],
+        "mean_vector_cells": [
+          -0.001048,
+          0.02385
+        ],
+        "spread_cells": [
+          0.473843,
+          0.729695
+        ],
+        "mean_square_cells": 0.757552,
+        "constant_share": 0.000752,
+        "coherence": 0.044166,
+        "at_bound_fraction": 0.0,
+        "outside_own_cell_fraction": 0.364722,
+        "occupied_magnitude_cells": {
+          "mean": 1.153125,
+          "p50": 0.973035,
+          "p90": 2.098891,
+          "p99": 2.508868,
+          "max": 2.769271,
+          "cells": 667
+        },
+        "occupied_norm_cells": {
+          "mean": 1.285231,
+          "p50": 1.07395,
+          "p90": 2.4201,
+          "p99": 2.861795,
+          "max": 2.996089,
+          "cells": 667
+        },
+        "occupied_outside_own_cell_fraction": 0.907046
+      },
+      "positions": {
+        "instrument": "m5-colread-demean-r1-position-r1",
+        "note": "Where the displaced samples landed, not how far they moved. in_frame is the source image; in_board is the target lattice's own 0..columns x 0..rows frame, so a shifted-window exploit at the edge shows up as a drop in one or both.",
+        "samples": 7200,
+        "in_frame_fraction": 1.0,
+        "in_board_fraction": 0.776944,
+        "out_of_board_or_frame_fraction": 0.223056,
+        "mean_landing_cells": [
+          6.577734,
+          8.081382
+        ],
+        "landing_column_cells": {
+          "mean": 6.577734,
+          "p50": 6.386858,
+          "p90": 11.605425,
+          "min": -2.00845,
+          "max": 18.370913,
+          "cells": 7200
+        },
+        "landing_row_cells": {
+          "mean": 8.081382,
+          "p50": 8.174033,
+          "p90": 14.094372,
+          "min": -3.649333,
+          "max": 17.677343,
+          "cells": 7200
+        },
+        "mean_shift_cells": 0.540519,
+        "mean_norm_cells": 0.593888,
+        "mean_applied_vector_cells": [
+          -0.001048,
+          0.02385
+        ],
+        "mean_square_shift_cells": 0.757552,
+        "shift_coherence": 0.000752,
+        "magnitude_cells": {
+          "mean": 0.540519,
+          "p50": 0.283176,
+          "p90": 1.357714,
+          "min": 0.003253,
+          "max": 3.386917,
+          "cells": 7200
+        },
+        "outside_own_cell_fraction": 0.364722,
+        "arm": {
+          "occupancy_deform": 3,
+          "occupancy_placed": 0,
+          "applied_offsets": "occupancy_applied_offsets, the tap's own tensor"
+        }
+      },
+      "auc": 0.8204288287642111,
+      "auc_interval": {
+        "auc": 0.820429,
+        "standard_error": 0.010203,
+        "low": 0.800431,
+        "high": 0.840427,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.376663,
+      "per_cell_gap": 0.323337,
+      "operating_counts": {
+        "true_positive": 623,
+        "false_positive": 2018,
+        "false_negative": 44
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 623,
+          "trials": 2641,
+          "estimate": 0.235895,
+          "low": 0.220094,
+          "high": 0.252464
+        },
+        "recall": {
+          "successes": 623,
+          "trials": 667,
+          "estimate": 0.934033,
+          "low": 0.9126,
+          "high": 0.950495
+        }
+      },
+      "best": {
+        "threshold": 0.6,
+        "true_positive": 463,
+        "false_positive": 1034,
+        "false_negative": 204,
+        "precision": 0.3092852371409486,
+        "recall": 0.6941529235382309,
+        "f1": 0.4279112754158966,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.272089,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.235895,
+      "components": {
+        "best_f1": 0.427911,
+        "best_threshold": 0.6,
+        "zero_f1": 0.376663,
+        "zero_cost": -0.051248,
+        "best_precision": 0.309285,
+        "out_of_fold_f1": 0.427911,
+        "transfer_cost": 0.051248,
+        "out_of_fold_thresholds": [
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 463,
+          "false_positive": 1034,
+          "false_negative": 204
+        },
+        "groups": 12
+      }
+    },
+    "control": {
+      "study": "m5-colread-control-r1",
+      "sweep": "m5-colread-control-r1-sweep-r1",
+      "occupancy_deform": 0,
+      "occupancy_column": 0,
+      "declared_bound_cells": 0.0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "d30fa05489026b09acca1d783edfee54a2048e670ea5e9d3f29d7a83a1dc4e48",
+      "study_elapsed_seconds": 246.3271311999997,
+      "study_peak_commit_bytes": 1019527168,
+      "sweep_peak_commit_bytes": 566784000,
+      "field": null,
+      "positions": null,
+      "auc": 0.8226433610683003,
+      "auc_interval": {
+        "auc": 0.822643,
+        "standard_error": 0.010159,
+        "low": 0.802732,
+        "high": 0.842554,
+        "positives": 667,
+        "negatives": 4933
+      },
+      "per_cell_f1": 0.38164,
+      "per_cell_gap": 0.31836,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "operating_intervals": {
+        "precision": {
+          "successes": 661,
+          "trials": 2797,
+          "estimate": 0.236325,
+          "low": 0.220949,
+          "high": 0.252423
+        },
+        "recall": {
+          "successes": 661,
+          "trials": 667,
+          "estimate": 0.991004,
+          "low": 0.980515,
+          "high": 0.995871
+        }
+      },
+      "best": {
+        "threshold": 0.9,
+        "true_positive": 630,
+        "false_positive": 1761,
+        "false_negative": 37,
+        "precision": 0.26348808030112925,
+        "recall": 0.9445277361319341,
+        "f1": 0.41203400915631133,
+        "exact_nonempty_boards": 0
+      },
+      "best_gap": 0.287966,
+      "exact_boards_at_best": {
+        "nonempty": 0,
+        "empty": 0
+      },
+      "verdict": "uninformative",
+      "precision": 0.236325,
+      "components": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "best_precision": 0.263488,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ],
+        "out_of_fold_counts": {
+          "true_positive": 602,
+          "false_positive": 1738,
+          "false_negative": 65
+        },
+        "groups": 12
+      }
+    }
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "contrasts": {
+    "column_control": {
+      "best_f1_delta": 0.020616,
+      "auc_delta": 0.010152,
+      "per_cell_f1_delta": 0.002662,
+      "precision_delta": 0.002045,
+      "out_of_fold_f1_delta": -0.018609,
+      "attribution_met": false,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": 0.000288,
+        "high": 0.005059,
+        "median": 0.002378,
+        "standard_error": 0.00123
+      },
+      "zero_boundary_minimum_detectable_effect": 0.003446,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.234694,
+        "high": 0.178061,
+        "median": -0.000904,
+        "standard_error": 0.101378
+      },
+      "out_of_fold_minimum_detectable_effect": 0.284061,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.030013,
+        "high": 0.062077,
+        "median": 0.007966,
+        "standard_error": 0.02195
+      },
+      "auc_minimum_detectable_effect": 0.061504,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": 0.000237,
+        "high": 0.004514,
+        "median": 0.001874,
+        "standard_error": 0.001103
+      },
+      "precision_minimum_detectable_effect": 0.003091
+    },
+    "column_wide": {
+      "best_f1_delta": -0.082171,
+      "auc_delta": -0.049467,
+      "per_cell_f1_delta": -0.0016,
+      "precision_delta": -0.002585,
+      "out_of_fold_f1_delta": -0.116623,
+      "attribution_met": false,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.013283,
+        "high": 0.01482,
+        "median": -0.002271,
+        "standard_error": 0.007316
+      },
+      "zero_boundary_minimum_detectable_effect": 0.020499,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.370602,
+        "high": 0.050842,
+        "median": -0.097795,
+        "standard_error": 0.096927
+      },
+      "out_of_fold_minimum_detectable_effect": 0.271589,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.122459,
+        "high": 0.015537,
+        "median": -0.047428,
+        "standard_error": 0.03435
+      },
+      "auc_minimum_detectable_effect": 0.096249,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.010234,
+        "high": 0.008872,
+        "median": -0.002874,
+        "standard_error": 0.004729
+      },
+      "precision_minimum_detectable_effect": 0.013251
+    },
+    "column_demean": {
+      "best_f1_delta": 0.004739,
+      "auc_delta": 0.012367,
+      "per_cell_f1_delta": 0.007639,
+      "precision_delta": 0.002475,
+      "out_of_fold_f1_delta": -0.046121,
+      "attribution_met": false,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.019186,
+        "high": 0.041742,
+        "median": 0.007299,
+        "standard_error": 0.016032
+      },
+      "zero_boundary_minimum_detectable_effect": 0.044922,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.185611,
+        "high": 0.122587,
+        "median": -0.029764,
+        "standard_error": 0.08115
+      },
+      "out_of_fold_minimum_detectable_effect": 0.227382,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": -0.048049,
+        "high": 0.078105,
+        "median": 0.010761,
+        "standard_error": 0.032005
+      },
+      "auc_minimum_detectable_effect": 0.089678,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.014987,
+        "high": 0.032703,
+        "median": 0.002518,
+        "standard_error": 0.011626
+      },
+      "precision_minimum_detectable_effect": 0.032576
+    },
+    "wide_control": {
+      "best_f1_delta": 0.102787,
+      "auc_delta": 0.059619,
+      "per_cell_f1_delta": 0.004262,
+      "precision_delta": 0.00463,
+      "out_of_fold_f1_delta": 0.098014,
+      "attribution_met": true,
+      "zero_boundary_interval": {
+        "valid_draws": 400,
+        "low": -0.010845,
+        "high": 0.014528,
+        "median": 0.004529,
+        "standard_error": 0.006598
+      },
+      "zero_boundary_minimum_detectable_effect": 0.018488,
+      "out_of_fold_interval": {
+        "valid_draws": 400,
+        "low": -0.0197,
+        "high": 0.287658,
+        "median": 0.091121,
+        "standard_error": 0.090301
+      },
+      "out_of_fold_minimum_detectable_effect": 0.253023,
+      "auc_interval": {
+        "valid_draws": 400,
+        "low": 0.029411,
+        "high": 0.094463,
+        "median": 0.057148,
+        "standard_error": 0.017658
+      },
+      "auc_minimum_detectable_effect": 0.049478,
+      "precision_interval": {
+        "valid_draws": 400,
+        "low": -0.005191,
+        "high": 0.011458,
+        "median": 0.00453,
+        "standard_error": 0.004134
+      },
+      "precision_minimum_detectable_effect": 0.011583
+    }
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "per_cell_f1": 0.38164,
+      "best_f1": 0.41203400915631133,
+      "prior_scope": "docs\\evidence\\m4-placed-supervision-r1\\scope.json"
+    },
+    "wide": {
+      "auc": 0.8822623454135491,
+      "per_cell_f1": 0.385902,
+      "best_f1": 0.514820592823713,
+      "prior_scope": "docs\\evidence\\m4-placed-supervision-r1\\scope.json"
+    },
+    "demean": {
+      "auc": 0.8204288287642111,
+      "per_cell_f1": 0.376663,
+      "best_f1": 0.4279112754158966,
+      "prior_scope": "docs\\evidence\\m4-placed-supervision-r1\\scope.json"
+    }
+  },
+  "components": {
+    "note": "Reported, never read by the verdict: ranking at each arm's own best boundary, the cost of the fixed 0.0 boundary, and the cost of transferring a boundary chosen on the other eleven ancestry groups, each with the interval that resamples exactly it and a minimum detectable effect at 80% power.",
+    "arms": {
+      "column": {
+        "best_f1": 0.43265,
+        "best_threshold": 1.35,
+        "best_precision": 0.286199,
+        "zero_f1": 0.384302,
+        "zero_cost": -0.048348,
+        "out_of_fold_f1": 0.38179,
+        "transfer_cost": -0.002512,
+        "out_of_fold_thresholds": [
+          1.35,
+          1.35,
+          1.2,
+          1.35,
+          1.2,
+          1.35,
+          1.35,
+          1.35,
+          2.55,
+          1.35,
+          1.35,
+          1.2
+        ]
+      },
+      "wide": {
+        "best_f1": 0.514821,
+        "best_threshold": 1.95,
+        "best_precision": 0.394108,
+        "zero_f1": 0.385902,
+        "zero_cost": -0.128919,
+        "out_of_fold_f1": 0.498413,
+        "transfer_cost": 0.112511,
+        "out_of_fold_thresholds": [
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          1.95,
+          2.1,
+          1.95,
+          1.95,
+          1.95
+        ]
+      },
+      "demean": {
+        "best_f1": 0.427911,
+        "best_threshold": 0.6,
+        "best_precision": 0.309285,
+        "zero_f1": 0.376663,
+        "zero_cost": -0.051248,
+        "out_of_fold_f1": 0.427911,
+        "transfer_cost": 0.051248,
+        "out_of_fold_thresholds": [
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6,
+          0.6
+        ]
+      },
+      "control": {
+        "best_f1": 0.412034,
+        "best_threshold": 0.9,
+        "best_precision": 0.263488,
+        "zero_f1": 0.38164,
+        "zero_cost": -0.030394,
+        "out_of_fold_f1": 0.400399,
+        "transfer_cost": 0.018759,
+        "out_of_fold_thresholds": [
+          0.9,
+          0.9,
+          1.05,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          0.9,
+          1.05
+        ]
+      }
+    },
+    "power": {
+      "z": 2.802,
+      "rule": "minimum detectable effect = 2.802 x cluster SE"
+    }
+  },
+  "column": {
+    "question": "Does making a cell's own column visible to the occupancy read-out - the material below and above it - pay where buying a displacement to reach that material did not?",
+    "reading": "readout-moves-without-ranking",
+    "reading_text": "The per-column read-out moves the deciding numbers without a resolvable ranking gain at twelve clusters.",
+    "thresholds": {
+      "attribution_floor": 0.05,
+      "auc_interval_rule": "clear of zero"
+    },
+    "comparison": {
+      "best_f1": {
+        "column": 0.4326500732064422,
+        "wide": 0.514820592823713,
+        "demean": 0.4279112754158966,
+        "control": 0.41203400915631133
+      },
+      "auc": {
+        "column": 0.8327955928786063,
+        "wide": 0.8822623454135491,
+        "demean": 0.8204288287642111,
+        "control": 0.8226433610683003
+      },
+      "per_cell_f1": {
+        "column": 0.384302,
+        "wide": 0.385902,
+        "demean": 0.376663,
+        "control": 0.38164
+      },
+      "out_of_fold_f1": {
+        "column": 0.38179,
+        "wide": 0.498413,
+        "demean": 0.427911,
+        "control": 0.400399
+      }
+    },
+    "ablation": {
+      "instrument": "m5-colread-column-r1-ablation-r1",
+      "with": {
+        "auc": 0.882162,
+        "f1": 0.312087,
+        "precision": 0.185206,
+        "true_positive": 661,
+        "false_positive": 2908,
+        "false_negative": 6
+      },
+      "without": {
+        "auc": 0.865114,
+        "f1": 0.331402,
+        "precision": 0.205386,
+        "true_positive": 572,
+        "false_positive": 2213,
+        "false_negative": 95
+      },
+      "delta": {
+        "auc": 0.017048,
+        "f1": -0.019315,
+        "precision": -0.02018
+      },
+      "contribution": {
+        "mean_logit": 0.933284,
+        "mean_abs_logit": 2.207107,
+        "share": 0.422854,
+        "max_logit": 2.775022
+      },
+      "arm": {
+        "occupancy_column": 1,
+        "occupancy_deform": 0,
+        "projection_in_features": 386,
+        "projection_out_features": 192
+      },
+      "reading": "The same weights scored with the column projection zeroed: a read-out the objective used shows a ranking cost when it is removed, and one it ignored does not."
+    }
+  },
+  "positions": {
+    "question": "Where did the deformation arms' samples land? Reported for the two arms that carry a field; the control and column arms have none and are not measured by this instrument.",
+    "arms": {
+      "wide": {
+        "instrument": "m5-colread-wide-r1-position-r1",
+        "note": "Where the displaced samples landed, not how far they moved. in_frame is the source image; in_board is the target lattice's own 0..columns x 0..rows frame, so a shifted-window exploit at the edge shows up as a drop in one or both.",
+        "samples": 7200,
+        "in_frame_fraction": 0.950139,
+        "in_board_fraction": 0.359444,
+        "out_of_board_or_frame_fraction": 0.640556,
+        "mean_landing_cells": [
+          -0.260659,
+          5.495824
+        ],
+        "landing_column_cells": {
+          "mean": -0.260659,
+          "p50": -0.216355,
+          "p90": 5.012073,
+          "min": -9.128344,
+          "max": 11.976535,
+          "cells": 7200
+        },
+        "landing_row_cells": {
+          "mean": 5.495824,
+          "p50": 5.567605,
+          "p90": 15.304555,
+          "min": -12.882854,
+          "max": 18.387495,
+          "cells": 7200
+        },
+        "mean_shift_cells": 3.760055,
+        "mean_norm_cells": 5.131651,
+        "mean_applied_vector_cells": [
+          -3.487921,
+          -3.759564
+        ],
+        "mean_square_shift_cells": 26.900634,
+        "shift_coherence": 0.977669,
+        "magnitude_cells": {
+          "mean": 3.760055,
+          "p50": 3.898947,
+          "p90": 3.961249,
+          "min": 0.217896,
+          "max": 3.973248,
+          "cells": 7200
+        },
+        "outside_own_cell_fraction": 0.998194,
+        "arm": {
+          "occupancy_deform": 2,
+          "occupancy_placed": 0,
+          "applied_offsets": "occupancy_applied_offsets, the tap's own tensor"
+        }
+      },
+      "demean": {
+        "instrument": "m5-colread-demean-r1-position-r1",
+        "note": "Where the displaced samples landed, not how far they moved. in_frame is the source image; in_board is the target lattice's own 0..columns x 0..rows frame, so a shifted-window exploit at the edge shows up as a drop in one or both.",
+        "samples": 7200,
+        "in_frame_fraction": 1.0,
+        "in_board_fraction": 0.776944,
+        "out_of_board_or_frame_fraction": 0.223056,
+        "mean_landing_cells": [
+          6.577734,
+          8.081382
+        ],
+        "landing_column_cells": {
+          "mean": 6.577734,
+          "p50": 6.386858,
+          "p90": 11.605425,
+          "min": -2.00845,
+          "max": 18.370913,
+          "cells": 7200
+        },
+        "landing_row_cells": {
+          "mean": 8.081382,
+          "p50": 8.174033,
+          "p90": 14.094372,
+          "min": -3.649333,
+          "max": 17.677343,
+          "cells": 7200
+        },
+        "mean_shift_cells": 0.540519,
+        "mean_norm_cells": 0.593888,
+        "mean_applied_vector_cells": [
+          -0.001048,
+          0.02385
+        ],
+        "mean_square_shift_cells": 0.757552,
+        "shift_coherence": 0.000752,
+        "magnitude_cells": {
+          "mean": 0.540519,
+          "p50": 0.283176,
+          "p90": 1.357714,
+          "min": 0.003253,
+          "max": 3.386917,
+          "cells": 7200
+        },
+        "outside_own_cell_fraction": 0.364722,
+        "arm": {
+          "occupancy_deform": 3,
+          "occupancy_placed": 0,
+          "applied_offsets": "occupancy_applied_offsets, the tap's own tensor"
+        }
+      }
+    },
+    "reading": "Each arm's in-frame and in-board fractions are reported beside its mean landing point, with shift coherence re-derived from the stored moments."
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "contexts": 12
+  },
+  "unchanged": {
+    "thresholds": {
+      "per_cell_f1": 0.7,
+      "ranking_auc": 0.9,
+      "ranking_f1": 0.7
+    },
+    "population": "widened deciding population, twelve groups",
+    "source_checkpoint": "9ae1fef9f649fae5c79643061fe04d592b2798692fe103ad23d15f9e497d4b4d",
+    "prior_evidence": "reproduced, not touched",
+    "frozen_manifest": "not touched"
+  }
+}

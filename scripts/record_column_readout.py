@@ -26,6 +26,9 @@ SWEEP_CEILING_BYTES = 640*1024**2
 INSTRUMENT_CEILING_BYTES = 640*1024**2
 CURATION_CEILING_BYTES = 1900*1024**2
 STEPS = 64
+# The amended declaration's shared sampling point: every arm carries the detail tap, so the only
+# differences in the family are the deformation field and the column read-out.
+DETAIL = 1
 DECIDING_IMAGES = 36
 FORWARDS = 54
 INSTRUMENT_FORWARDS = 36
@@ -76,7 +79,7 @@ def require_arm(name):
             job.get("work_items") != STEPS or job.get("memory_bytes") != CEILING_BYTES):
         raise ValueError(f"{name} study is not a complete 64-step run inside 1,792 MiB")
     arguments = summary["arguments"]
-    if (arguments.get("occupancy_detail") != 0 or arguments.get("occupancy_detail_stencil") != 0 or
+    if (arguments.get("occupancy_detail") != DETAIL or arguments.get("occupancy_detail_stencil") != 0 or
             arguments.get("occupancy_resolution") != 0 or arguments.get("occupancy_context") != 0 or
             arguments.get("occupancy_deform") != deform or
             arguments.get("occupancy_column") != column or arguments.get("steps") != STEPS or
@@ -315,10 +318,15 @@ def main():
     if len({arms[name]["summary"]["catalogue_sha256"] for name in ARMS}) != 1:
         raise ValueError("the arms were captured under different catalogues")
     initial = {name: arms[name]["summary"]["initial_weights_sha256"] for name in ARMS}
-    if not (initial["control"] == initial["wide"] == initial["demean"]):
-        raise ValueError("the field arms add no tensors, so they must save the same initial weights")
+    # The two deformation arms carry the same zero-initialized field tensors, so they must save the
+    # same initial bytes; the read-out arm adds a zero-initialized projection, so it cannot, and the
+    # control adds nothing at all.
+    if initial["wide"] != initial["demean"]:
+        raise ValueError("the two deformation arms must save the same initial weights")
     if initial["column"] == initial["control"]:
         raise ValueError("the column arm adds a tensor, so it cannot save its parent's initial bytes")
+    if initial["control"] == initial["wide"]:
+        raise ValueError("the control and the widened arm must save different parameter sets")
 
     for name in FIELD_ARMS:
         fields[name] = require_field(name)
@@ -449,7 +457,7 @@ def main():
         "matched": {"seed": 20261026, "learning_rate": .001, "capture_max_side": 512,
                     "curriculum": "stream-v1",
                     "config_difference": ["occupancy_deform", "occupancy_column"],
-                    "shared": {"occupancy_detail": 0, "occupancy_detail_stencil": 0,
+                    "shared": {"occupancy_detail": DETAIL, "occupancy_detail_stencil": 0,
                                "occupancy_resolution": 0, "occupancy_context": 0},
                     "catalogue_sha256": arms["column"]["summary"]["catalogue_sha256"],
                     "initial_weights": arms["column"]["summary"]["initial_weights_from"]},
