@@ -39,7 +39,8 @@ deformation field or its supervision (both already measured and both negative).
 ## Arms - one catalogue, one budget, one population
 
 Four 64-step continuations of the published `runs/m3-percell-balance-r1` checkpoint, differing only in the
-declared lever, all captured under **one** source catalogue:
+declared lever, all captured under **one** source catalogue and the same detail tap (see the amendment
+below):
 
 | arm | `occupancy_deform` | `occupancy_column` | role |
 |---|---|---|---|
@@ -55,10 +56,23 @@ identical** to `docs/evidence/m3-occupancy-deformation-r3/scope.json`; any diffe
 stops the pass.
 
 Shared and unchanged: seed `20261026`, learning rate `.001`, `capture_max_side 512`, curriculum
-`stream-v1`, 6 development groups, evaluation and checkpoint every 64/32, `--occupancy-detail 0`,
+`stream-v1`, 6 development groups, evaluation and checkpoint every 64/32, `--occupancy-detail 1`,
 `--occupancy-detail-stencil 0`, `--occupancy-resolution 0`, `--occupancy-context 0`, `--occupancy-factor 4`,
 `--occupancy-positive-weight 4`, `--component-capacity 64`, positional identity read-out, length endpoint
 term, 12 training groups for the sweeps.
+
+### Amendment before any admissible receipt
+
+This declaration first said `--occupancy-detail 0`. That is refused by the engine itself - a deformation
+field moves the detail tap's sample, so `--occupancy-deform` requires `--occupancy-detail 1` - and the two
+deformation arms therefore never ran: their profiles and studies exited 2 in seconds, before any forward.
+The setting is amended to `--occupancy-detail 1` for **all four arms**, which is also the setting the three
+reproduced arms were published under, so the family can exist and the only differences remain the
+deformation lever and the column read-out. The control and column arms did complete under the refused
+setting; those receipts are preserved but superseded, because no matched family can exist without the tap.
+Full record: `runs/attempts/m5-colread-detail0/`, ledger entry V-119. No gate, threshold, population,
+ceiling, weight or floor is touched by this amendment, and it is committed before any receipt that this
+record curates.
 
 Declared envelope, unchanged from the last block: study **1,792 MiB** / 64 work items / 900 s wall; sweep
 profile **640 MiB** / 2 items; sweep **640 MiB** / 54 forwards; instrument **640 MiB** / 36 forwards;
