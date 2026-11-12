@@ -23,6 +23,21 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
+Latest: **supervising the margin buys ranking and still not a boundary** ([M9_SUPERVISED_MARGIN.md](M9_SUPERVISED_MARGIN.md),
+`docs/evidence/m9-supervised-margin-r1/scope.json`). The occupancy objective now carries a declared within-board
+hinge - `mean over boards max(0, margin - (lowest occupied logit - highest empty logit))`, margin `1.0`, weight
+`0.5`, over known cells only, fixed in the predeclaration - so the read is finally *told* that its modes must be
+separated instead of being thresholded afterwards. Control reproduced `0.8226433610683003` and `0.381640` exactly
+in the new catalogue (`eae71837`). The hinge arm: AUC **0.864667** (`+0.042024`), best swept F1 **0.474210**
+(`+0.062176`, clearing the `0.05` attribution floor), out-of-fold **`+0.029058`** - the strongest occupancy
+ranking result in the project with **no sampling change** - but plain F1 at `0.0` **0.251701** (`-0.129939`), so
+the declared reading is `margin-fails` and the boundary drifted *up* (`0.90 -> 2.70`; `4,625` of `5,600` cells
+called occupied; row error `+10.691`). The paid hinge reached `0.0` on the final training step: separation was
+achieved and location was not controlled, exactly as declared. Next: the **two-sided anchor** -
+`max(0, margin - lowest_occupied) + max(0, margin + highest_empty)` - which keeps the `+0.042024` separation and
+pins the empty mode below zero, so `0.0` becomes a supervised boundary. The `-1` offset's `+0.048086` must now be
+re-measured against the hinge baseline (`0.864667`), not against control. Fit gate **FALSE** (0 of 28).
+
 Latest: **training the read in per-board normalised space cannot place the boundary either - the ceiling is
 geometric** ([M8_NORMALISED_BOUNDARY.md](M8_NORMALISED_BOUNDARY.md),
 `docs/evidence/m8-normalised-boundary-r1/scope.json`). A declared output parameterisation

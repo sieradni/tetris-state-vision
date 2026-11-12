@@ -2630,3 +2630,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: curator passed at its declared 1,900 MiB ceiling (`runs/m8-normbound-curation-r1-job.json`,
   exit 0, `0.311 s`), producing `docs/evidence/m8-normalised-boundary-r1/scope.json` with scalar precision and
   recall per arm; full suite green (see the commit that carries this entry).
+
+## V-130 - CLOSED: the first scope omitted the paid hinge the predeclaration promised to report
+
+- Symptom: `docs/M9_SUPERVISED_MARGIN.md` declared it would report "the operative hinge value at the end of
+  training if the study records it", and the study's own log does record it on every one of the 64 steps. The
+  first curated scope (`runs/attempts/m9-supervision-evidence-v1/m9-supervised-margin-r1/scope.json`) carried the
+  sweep, the readings and the verdict but no hinge value at all, so the one quantity that distinguishes "the term
+  was satisfied" from "the term was paid forever" was left to prose.
+- Root cause: the curator was written from the sweep artefacts alone, and the step log - a run artefact that was
+  already on disk - was never read; the predeclaration's conditional ("if the study records it") was checked
+  against the curator's inputs instead of against the run.
+- Detection class: evidence instrument (a promised field missing from a complete-looking record), caught by
+  reading the predeclaration against the produced scope after the receipt existed.
+- Instrument: `record_supervised_margin.training_margin` parses all 64 logged steps, requires one value per
+  declared step, and records first, last, mean, step index, the fraction of steps already satisfied, the source
+  path and `in_sample: true` - so the record states what the objective paid rather than implying it. The first
+  evidence directory is archived, not deleted, and the repair used fresh receipts
+  (`runs/m9-margin-curation-r2-job.json`, inner `runs/m9-margin-curation-inner-r2.json`).
+- Named green run: curator passed at its declared 1,900 MiB ceiling (exit 0, `1.855 s`) with
+  `training_margin = {steps 64, first 0.0, last 0.0, mean 2.402828, fraction_satisfied 0.25}`; full suite green
+  (see the commit that carries this entry).

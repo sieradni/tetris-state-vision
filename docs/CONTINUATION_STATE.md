@@ -1,5 +1,42 @@
 # Contributor handoff — 2026-10-30
 
+## Supervising the margin buys ranking and still not a boundary (2026-11-12)
+
+[M9_SUPERVISED_MARGIN.md](M9_SUPERVISED_MARGIN.md) was predeclared before any receipt. It is the first pass that
+*supplies* the boundary in the objective instead of choosing one afterwards: a declared within-board hinge over the
+known visible cells of every board that carries both classes,
+`mean max(0, margin - (lowest_occupied - highest_empty))`, with margin `1.0` and weight `0.5` fixed in the doc
+before any receipt, no parameter, no threshold, no prevalence term, and `0` exactly the published objective.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | precision / recall at `0.0` | out-of-fold F1 | row error |
+|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.2363 / 0.9910 | 0.400399 | +7.819 |
+| margin hinge | 0.864667 | **0.251701** | 0.474210 @ `2.70` | 0.1440 / 0.9985 | 0.429457 | +10.691 |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly in catalogue `eae71837`. Reading `margin-fails`
+(primary `-0.129939`), secondary `ranking-preserved` (`+0.042024`), verdict `not-cleared`, fit gate **FALSE**.
+
+**The split is the result.** The hinge is a real *ranking* lever - `+0.042024` AUC, `+0.062176` best swept F1
+(clears the attribution floor on its own), `+0.029058` out-of-fold, all with no sampling change and no tensor - and
+a negative *operating point*: the boundary drifted up to `2.70`, `4,625` of `5,600` cells are called occupied at
+`0.0`, and the row error worsens to `+10.691`. The paid hinge reached `0.0` on the final step, so separation was
+achieved; location was never in the objective, which is exactly what the predeclaration warned.
+
+**Next arm, specified and supported by the data.** Two-sided anchor:
+`mean [max(0, margin - lowest_occupied) + max(0, margin + highest_empty)]`. It keeps what the hinge found and pins
+the empty mode at least `margin` below zero, so `0.0` is a supervised boundary. Declare its margin and weight
+before its receipt, measure control plus anchor in one catalogue, same envelope, same primary metric and reading
+vocabulary. Do not re-tune the one-sided margin/weight; it stays at `0` in every other arm as a measured ranking
+result.
+
+**Consequence for the row offsets.** The `-1` offset's `+0.048086` AUC was measured against control `0.822643`;
+the hinge now sits at `0.864667` and reaches `0.474210` best F1, so that gain is no longer additive-by-default -
+re-measure it on top of a supervised boundary, and only beside it (offsets are never scored at a boundary chosen
+for them after the fact).
+
+Defect: V-130 (the first scope omitted the paid hinge the predeclaration promised to report; repaired and the
+superseded evidence directory kept under `runs/attempts/m9-supervision-evidence-v1/`).
+
 ## Normalising the read makes zero a median, not an operating point (2026-11-12)
 
 [M8_NORMALISED_BOUNDARY.md](M8_NORMALISED_BOUNDARY.md) was predeclared before any receipt. It follows M7's

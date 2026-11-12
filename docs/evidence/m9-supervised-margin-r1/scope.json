@@ -1,0 +1,166 @@
+{
+  "status": "passed",
+  "instrument": "m9-supervised-margin-r1",
+  "predeclaration": "docs/M9_SUPERVISED_MARGIN.md",
+  "scope": "Two 64-step arms - the published read-out and the same read-out with a declared within-board margin hinge added to the occupancy objective - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The hinge is supervision: it names no threshold, counts no cells, reads no prevalence and adds no parameter, and 0 is exactly the published objective. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m9-margin-curation-inner-r2.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "within-board-margin-hinge",
+    "flag": "--occupancy-margin-hinge 1",
+    "definition": "max(0, margin - (lowest_occupied_logit - highest_empty_logit)), mean over boards carrying both classes among their known visible cells",
+    "margin": 1.0,
+    "weight": 0.5,
+    "declared_before_receipts": true,
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "unknown_cells": "excluded from both sides, so an invisible cell is never read as empty",
+    "identity_at_zero": "occupancy_margin_hinge 0 is exactly the published objective",
+    "boundary_policy": "the operating point is a supervised quantity from this pass on; an offset arm may only be admitted beside the hinge, never re-scored at a boundary chosen for it after the fact"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m9-margin-control-r1",
+      "sweep": "m9-margin-control-r1-sweep-r1",
+      "occupancy_margin_hinge": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "eae71837b7fd1cfa302e68cd034ec496207f3b9eeadc4c574fc3e0032371a5fe",
+      "study_elapsed_seconds": 164.69840909999766,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_margin": null,
+      "verdict": "uninformative"
+    },
+    "hinge": {
+      "study": "m9-margin-hinge-r1",
+      "sweep": "m9-margin-hinge-r1-sweep-r1",
+      "occupancy_margin_hinge": 1,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "24274c7b96931bb1dce786b404526af97127ed163982442d7c492d7c2819be1a",
+      "catalogue_sha256": "eae71837b7fd1cfa302e68cd034ec496207f3b9eeadc4c574fc3e0032371a5fe",
+      "study_elapsed_seconds": 158.17242950000218,
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "operating_counts": {
+        "true_positive": 666,
+        "false_positive": 3959,
+        "false_negative": 1
+      },
+      "precision": 0.144,
+      "recall": 0.998501,
+      "best": {
+        "threshold": 2.7,
+        "f1": 0.4742096505823627,
+        "precision": 0.5327102803738317
+      },
+      "out_of_fold_f1": 0.429457,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 10.691275,
+        "columns": 149
+      },
+      "training_margin": {
+        "steps": 64,
+        "first": 0.0,
+        "last_step": 64,
+        "last": 0.0,
+        "mean": 2.402828,
+        "fraction_satisfied": 0.25,
+        "source": "runs\\m9-margin-hinge-r1-study.log",
+        "in_sample": true,
+        "reading": "the hinge the objective paid on its own training batch; it constrains separation, not the location of the boundary"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "hinge_control": {
+      "f1_at_zero_delta": -0.129939,
+      "auc_delta": 0.042024,
+      "best_f1_delta": 0.062176,
+      "out_of_fold_delta": 0.029058,
+      "row_error_delta": 2.872483
+    }
+  },
+  "reading": "margin-fails",
+  "reading_text": "Telling the read to separate its modes does not put the plain-binary boundary above control's, so supervising separation alone cannot place the operating point and the next term has to anchor the margin to zero on both sides.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC is reported beside the primary metric with M8's declared tolerance of -0.02 so the passes are comparable: a margin cannot add information, so a gain is a change in what was learned and a loss is a real cost.",
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m8-normalised-boundary-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "prior_scope": "docs\\evidence\\m8-normalised-boundary-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "prevalence": 0.119107
+  }
+}

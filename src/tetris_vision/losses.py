@@ -180,6 +180,12 @@ def require_occupancy_placed(value, summary):
 OCCUPANCY_COLUMN_ARMS = (0, 1)
 OCCUPANCY_OFFSET_ROWS = (-2, -1, 0, 1, 2)
 OCCUPANCY_NORMALISE_ARMS = (0, 1)
+OCCUPANCY_MARGIN_HINGE_ARMS = (0, 1)
+# Declared before any receipt (docs/M9_SUPERVISED_MARGIN.md), and not searched afterwards: one logit of
+# separation between the board's lowest occupied cell and its highest empty cell, at half the weight of
+# the occupancy likelihood term (factor 4), so the term shapes the boundary without dominating the fit.
+MARGIN_HINGE_MARGIN = 1.0
+MARGIN_HINGE_WEIGHT = .5
 
 
 def require_occupancy_offset_rows(value, summary):
@@ -188,6 +194,14 @@ def require_occupancy_offset_rows(value, summary):
             summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
         raise ValueError("occupancy offset rows differs from resource admission")
+
+
+def require_occupancy_margin_hinge(value, summary):
+    """One declaration of the admission join for the supervised margin."""
+    if (type(value) is not int or value not in OCCUPANCY_MARGIN_HINGE_ARMS or
+            summary.get("arguments", {}).get("occupancy_margin_hinge", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_margin_hinge", 0) != value):
+        raise ValueError("occupancy margin hinge differs from resource admission")
 
 
 def require_occupancy_normalise(value, summary):
@@ -438,8 +452,32 @@ def visible_window(tensor, target, name):
     return tensor[:, :rows]
 
 
+def margin_hinge_term(output, target):
+    """Declared supervision of the decision boundary: per board, the separation that thresholding needs.
+
+    For every board carrying both occupied and empty *known* cells, the hinge is
+    `max(0, margin - (lowest_occupied_logit - highest_empty_logit))`: it asks that the two modes not overlap
+    by more than the declared margin, and nothing else. It is supervision, not a boundary rule - it never
+    names a threshold, never touches the ranking of cells within a mode, and reads only the labels the
+    occupancy term already uses (`unknown` cells are excluded from both sides, so an invisible cell is
+    never treated as empty). Boards where one side is absent contribute nothing and are not counted, so a
+    batch of empty boards has an exactly-zero hinge rather than an undefined one.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = logits[index][occupied[index]], logits[index][empty[index]]
+        if high.numel() and low.numel():
+            total = total+F.relu(MARGIN_HINGE_MARGIN-(high.min()-low.max()))
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
-               positive_weight=1, occupancy_placed=0):
+               positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -479,6 +517,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared placed-target lever: the term names the cell each sample should have read, which
         # the occupancy label alone cannot express, and it moves only the field.
         result["placed"] = placed_displacement_term(output, target)
+    check(type(occupancy_margin_hinge) is int and occupancy_margin_hinge in OCCUPANCY_MARGIN_HINGE_ARMS,
+          "occupancy margin hinge must be 0 (unsupervised boundary) or 1 (declared within-board margin)")
+    if occupancy_margin_hinge:
+        # Declared boundary supervision: the read has never been told where its decision boundary should
+        # be, so this asks for the separation a threshold needs without naming the threshold.
+        result["margin"] = margin_hinge_term(output, target)
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -489,7 +533,7 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
-               support_anchor_weight=0.0, occupancy_placed=0):
+               support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -497,7 +541,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     check(type(support_anchor_weight) is float and support_anchor_weight in SUPPORT_ANCHOR_WEIGHTS,
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
-                            positive_weight, occupancy_placed)
+                            positive_weight, occupancy_placed, occupancy_margin_hinge)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -521,7 +565,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "registration": .25, "layers": .5, "layer_visibility": .25, "pose": .25,
                "components": .5, "layer_cells": .5, "box_extent": box_extent_weight,
                "support_anchor": support_anchor_weight,
-               "placed": PLACED_TARGET_WEIGHT*occupancy_placed}
+               "placed": PLACED_TARGET_WEIGHT*occupancy_placed,
+               "margin": MARGIN_HINGE_WEIGHT*occupancy_margin_hinge}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
