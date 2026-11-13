@@ -23,7 +23,19 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **a scale-invariant local-contrast read is invariant by construction and still does not meet the bar**
+Latest: **the exactness barrier is ordering, not level, and it is now measured rather than guessed**
+([M24_EXACTNESS_BARRIER.md](M24_EXACTNESS_BARRIER.md), `docs/evidence/m24-exactness-r1/scope.json`). Taking the
+record's six strongest arms apart board by board and row by row: **no level makes any board exact** - searching every
+distinct level the read can be cut at, not the 81-point grid, gives `0 of 28` in every arm, and the best board in the
+record still has exactly `1` wrong cell at its best level - and **no projection does either** (`monotone` `0 of 28`,
+`monotone` then the crossing rule `0 of 28`). The miss is ordering: the best arm's within-board AUC is `0.818993`, an
+inversion rate of `18.95%` of all occupied/empty pairs, and exactness needs `0.0`. At the `0.0` boundary the read
+over-declares (`48.86` false positives against `0.82` false negatives on `stencil`), which is why every level mechanism in
+M14-M23 could move the number without ever reaching a single exact board. No mechanism was invented to move it: the
+decomposition rules out the level family, and the only lever it leaves standing - an explicit within-board pairwise
+ranking objective - is named as unmeasured rather than claimed.
+
+Previous: **a scale-invariant local-contrast read is invariant by construction and still does not meet the bar**
 ([M23_CONTRAST_READ.md](M23_CONTRAST_READ.md), `docs/evidence/m23-contrast-r1/scope.json`). Mode 3 of
 `--occupancy-free-stencil` reads the same five taps on a field where every coarse box is divided by the spread of its own
 5x5 neighbourhood, so an offset or a rescaling of the coarse values cancels before the head sees anything - proved

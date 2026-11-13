@@ -1,5 +1,30 @@
 # Contributor handoff — 2026-10-30
 
+## The exactness barrier is ordering, and no level or projection reaches it (2026-11-13, M24)
+
+[M24_EXACTNESS_BARRIER.md](M24_EXACTNESS_BARRIER.md) decomposes why the record's best arms produce no strict exact board,
+per board and per row, from the frozen sweeps (`docs/evidence/m24-exactness-r1/scope.json`). Six arms: `stencil`,
+`centred`, `norm`, `norm-cross`, `envelope`, `control`.
+
+- **No level works.** Searching every distinct level the read can be cut at - the complete set of cut points, not the
+  81-point grid - gives `0 of 28` boards exact in every arm. The fewest wrong cells achievable at any level is `1` on the
+  best board in the record and the median board needs about `16`.
+- **No projection works.** The record's own consistency projections (`stack_contiguous`, then `otsu_board`) each leave
+  `0 of 28` boards exact at their best level: a projection can move a cell across a level but cannot invent separation.
+- **It is ordering.** Within-board AUC is `0.818993` for `stencil` and `0.753676`-`0.806938` for the rest, i.e. an
+  inversion rate of `18.95%` and `21.2%`-`26.3%` of all occupied/empty pairs, against the `0.0` exactness requires. The
+  median board carries `151.5` inverted pairs (`stencil`) up to `252.5` (`envelope`).
+- **The direction explains every earlier result.** At `0.0` the read over-declares massively - `48.86` false positives
+  against `0.82` false negatives on the best arm - so the boundary always looked like a level problem, and every level
+  mechanism M14-M23 built moved it without ever touching the inversions underneath.
+
+The instrument is controlled in `tests/test_exactness_barrier.py`: a separable synthetic board is reported exact, the same
+board with one inverted pair is not exact at any level, a constant offset changes no verdict, and the search length equals
+the number of distinct values plus one (so it is complete). The record claim is then held to those numbers.
+
+Not built, and named as unmeasured: an explicit within-board pairwise ranking objective, which is the only lever the
+decomposition leaves standing because it is the only one that acts on the quantity that is wrong.
+
 ## The scale-invariant contrast read: invariant by construction, still short of the bar (2026-11-13, M23)
 
 [M23_CONTRAST_READ.md](M23_CONTRAST_READ.md) declared the mechanism and its two arms before they ran.
