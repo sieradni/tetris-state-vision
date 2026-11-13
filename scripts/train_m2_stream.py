@@ -67,6 +67,11 @@ def arguments(argv=None):
                         help="declared stencil form of the cell-precision tap;1 reads the four "
                              "quarter-cell samples of a 2x2 in-cell grid instead of the single center "
                              "sample through the same zero-initialized projection; requires --occupancy-detail 1")
+    parser.add_argument("--occupancy-tap-span", type=int, choices=(0, 1), default=0,
+                        help="declared span form of the cell-precision tap;1 reads three samples along the "
+                             "board's row axis - the cell's own row and the rows immediately above and below "
+                             "it - through the same zero-initialized projection, so the read can express the "
+                             "row-to-row change that marks a stack boundary; requires --occupancy-detail 1")
     parser.add_argument("--occupancy-resolution", type=int, choices=(0, 1), default=0,
                         help="declared resolution lever;1 adds a stride-1 conv of the image whose "
                              "cell-center sample joins the same zero-initialized detail projection, "
@@ -249,6 +254,23 @@ def arguments(argv=None):
         parser.error("the registration lever moves the detail tap's sample; it requires --occupancy-detail 1")
     if args.occupancy_placed and args.occupancy_deform != 2:
         parser.error("the placed-target term supervises the widened field;1 requires --occupancy-deform 2")
+    if args.occupancy_tap_span and not args.occupancy_detail:
+        parser.error("the tap span is a form of the detail tap's geometry; it requires --occupancy-detail 1")
+    if args.occupancy_tap_span and (args.occupancy_detail_stencil or args.occupancy_resolution or
+                                    args.occupancy_deform or args.occupancy_offset_rows or
+                                    args.occupancy_placed or args.occupancy_context or args.occupancy_column or
+                                    args.occupancy_lattice_free or args.occupancy_normalise or
+                                    args.occupancy_dense_hinge or args.occupancy_quantile_anchor or
+                                    args.occupancy_anchor or args.occupancy_margin_hinge or
+                                    args.occupancy_midpoint or args.occupancy_centre or
+                                    args.occupancy_stack_monotone or args.occupancy_crossing_threshold or
+                                    args.occupancy_skyline_recovery):
+        # The span is one declared reading geometry: another form of the same tap, a lever that moves the sample
+        # or changes where zero sits, or a supervised read-out would all leave the row-neighbourhood read
+        # confounded with a second change, so the arm is measured as the only declared difference.
+        parser.error("the tap span is one declared reading geometry, so it is refused beside every other form "
+                     "of the tap, every lever that moves the sample or changes where zero sits, and every "
+                     "supervised read-out")
     if args.occupancy_offset_rows and not args.occupancy_detail:
         parser.error("the sampling offset moves the detail tap's sample; it requires --occupancy-detail 1")
     if args.occupancy_offset_rows and (args.occupancy_detail_stencil or args.occupancy_resolution or
@@ -485,7 +507,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                    occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                    occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
                    occupancy_centre=0, occupancy_stack_monotone=0, occupancy_crossing_threshold=0,
-                   occupancy_skyline_recovery=0):
+                   occupancy_skyline_recovery=0, occupancy_tap_span=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -518,7 +540,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_midpoint, require_occupancy_centre,
                                      require_occupancy_stack_monotone,
                                      require_occupancy_crossing_threshold,
-                                     require_occupancy_skyline_recovery)
+                                     require_occupancy_skyline_recovery, require_occupancy_tap_span)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -547,6 +569,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_stack_monotone(occupancy_stack_monotone, summary)
     require_occupancy_crossing_threshold(occupancy_crossing_threshold, summary)
     require_occupancy_skyline_recovery(occupancy_skyline_recovery, summary)
+    require_occupancy_tap_span(occupancy_tap_span, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -812,6 +835,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_stack_monotone=args.occupancy_stack_monotone,
                      occupancy_crossing_threshold=args.occupancy_crossing_threshold,
                      occupancy_skyline_recovery=args.occupancy_skyline_recovery,
+                     occupancy_tap_span=args.occupancy_tap_span,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
                      lattice_board_refine=args.lattice_board_refine,
@@ -846,6 +870,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_stack_monotone=args.occupancy_stack_monotone,
                      occupancy_crossing_threshold=args.occupancy_crossing_threshold,
                      occupancy_skyline_recovery=args.occupancy_skyline_recovery,
+                     occupancy_tap_span=args.occupancy_tap_span,
                            occupancy_column=args.occupancy_column,
                            occupancy_offset_rows=args.occupancy_offset_rows,
                            occupancy_normalise=args.occupancy_normalise,
@@ -883,7 +908,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "occupancy_centre",
                                                     "occupancy_stack_monotone",
                                                     "occupancy_crossing_threshold",
-                                                    "occupancy_skyline_recovery")) or
+                                                    "occupancy_skyline_recovery", "occupancy_tap_span")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -1041,6 +1066,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_stack_monotone"] = args.occupancy_stack_monotone
     recovery_contract["occupancy_crossing_threshold"] = args.occupancy_crossing_threshold
     recovery_contract["occupancy_skyline_recovery"] = args.occupancy_skyline_recovery
+    recovery_contract["occupancy_tap_span"] = args.occupancy_tap_span
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight

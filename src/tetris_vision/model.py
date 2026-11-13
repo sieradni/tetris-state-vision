@@ -32,6 +32,7 @@ class ModelConfig:
     occupancy_context: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
+    occupancy_tap_span: int = 0
     occupancy_resolution: int = 0
     occupancy_deform: int = 0
     lattice_support: int = 0
@@ -76,6 +77,13 @@ class ModelConfig:
               "occupancy detail stencil is0 (single center sample) or1 (declared 2x2 in-cell stencil)")
         check(not self.occupancy_detail_stencil or self.occupancy_detail == 1,
               "the detail stencil is a declared form of the detail tap, not a separate read-out")
+        check(type(self.occupancy_tap_span) is int and self.occupancy_tap_span in (0, 1),
+              "occupancy tap span is 0 (the published point sample) or 1 (declared three-row span across the "
+              "cell and its immediate row neighbours)")
+        check(not self.occupancy_tap_span or self.occupancy_detail == 1,
+              "the tap span is a declared form of the detail tap, not a separate read-out")
+        check(not (self.occupancy_tap_span and self.occupancy_detail_stencil),
+              "the tap reads one declared geometry per arm; a row span and an in-cell stencil cannot both be set")
         check(type(self.occupancy_resolution) is int and self.occupancy_resolution in (0, 1),
               "occupancy resolution is 0 (stride-2 sample) or 1 (declared stride-1 sample)")
         check(not self.occupancy_resolution or self.occupancy_detail == 1,
@@ -461,6 +469,11 @@ DEFORM_REACH = 4.0
 # mean back, so the arm's bound is declared to cover the de-meaned sum instead.
 DEFORM_DEMEAN_REACH = 2*DEFORM_REACH
 DEFORM_LIMITS = (DEFORM_LIMIT, DEFORM_WIDE_LIMIT)
+# Declared row-span geometry: three tap samples along the board's row axis, in cell units and bottom-first rows -
+# the cell's own row, the row immediately above it and the row immediately below it. It is a declaration about
+# where the read looks, not a learned quantity: one fixed triple, no free parameter, and the centre sample is the
+# published point sample itself, so at zero weights the arm is exactly the published function.
+TAP_SPAN = ((0.0, 1.0), (0.0, 0.0), (0.0, -1.0))
 
 
 def deform_offsets(samples, limit=DEFORM_LIMIT):
@@ -611,13 +624,16 @@ class TetrisStateNet(nn.Module):
         self.register_buffer("detail_stencil", torch.tensor([[-.25, -.25], [.25, -.25],
                                                              [-.25, .25], [.25, .25]]).reshape(1, 1, 4, 2),
                              persistent=False)
+        # Declared span form: the same three offsets the tap uses when the row-span arm is on, kept out of
+        # the state dict so both arms carry identical keys except the projection itself.
+        self.register_buffer("tap_span", torch.tensor(TAP_SPAN).reshape(1, 1, 3, 2), persistent=False)
         if config.occupancy_detail:
             # Declared precision lever: the occupancy read-out also sees the stride-2
-            # first-stage feature at the cell center (or, in the declared stencil form,
-            # its four quarter-cell samples), a sharper sample than the decoder latent.
+            # first-stage feature at the cell center (or, in the declared stencil or row-span form,
+            # its four in-cell samples or its three row samples), a sharper sample than the decoder latent.
             # The projection is zero-initialized, so step zero is exactly the published
             # function and the paired control starts from the same tensors.
-            samples = 4 if config.occupancy_detail_stencil else 1
+            samples = 4 if config.occupancy_detail_stencil else 3 if config.occupancy_tap_span else 1
             self.occupancy_detail_tap = nn.Linear(config.widths[0]*samples, dimension)
             nn.init.zeros_(self.occupancy_detail_tap.weight)
             nn.init.zeros_(self.occupancy_detail_tap.bias)
@@ -781,6 +797,7 @@ class TetrisStateNet(nn.Module):
             occupancy_applied_offsets = None
             if self.occupancy_detail_tap is not None:
                 offsets = (self.detail_stencil if self.config.occupancy_detail_stencil else
+                           self.tap_span if self.config.occupancy_tap_span else
                            torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype))
                 if self.occupancy_deform is not None:
                     zero = torch.zeros(1, 1, 1, 2, device=pixels.device, dtype=pixels.dtype)
@@ -814,7 +831,7 @@ class TetrisStateNet(nn.Module):
                 # to "what it sampled" instead of assuming them equal. Only a single-sample tap
                 # applies one vector per cell; the stencil reads several fixed samples around the
                 # cell, so a single applied vector does not exist and is not reported (V-118).
-                if not self.config.occupancy_detail_stencil:
+                if not self.config.occupancy_detail_stencil and not self.config.occupancy_tap_span:
                     occupancy_applied_offsets = (offsets+torch.zeros(
                         batch, rows*columns, 1, 2, device=pixels.device, dtype=pixels.dtype
                     )).reshape(batch, rows*columns, 2)

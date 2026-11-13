@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## The row-span tap: separation without a level (2026-11-12, M18)
+
+[M18_TAP_SPAN.md](M18_TAP_SPAN.md) was predeclared with measured justification: over the 84 retained sweeps the wrong
+cells are 2.2x denser in the four rows at the top of each stack (0.419 / 0.407 / 0.428 at distances 0, 1, 2-3 against
+0.188 far below), and every cell logit was a function of one interior sample. `--occupancy-tap-span 1` gives the detail
+tap three row-aligned samples (the cell, one row above, one row below in cell units) through one zero-initialized
+projection. Family `m18-span-`, control reproduced `0.8226433610683003` / `0.381640` exactly. One whole-block rerun was
+needed (V-141), so both arms are one catalogue and every stage is `passed 0`.
+
+| arm | AUC | plain F1 at `0.0` | best swept | out-of-fold | TP/FN | positive at `0.0` | strict exact | boundary-exact | row error | occ. loss |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control (point tap) | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.400399 | 661/6 | 49.95% | 0/28 | 0/28 | +7.819 | 0.7684 |
+| row-span tap | 0.795536 | **0.244496** | **0.443255** @ `2.55` | **0.429607** | 633/34 | 80.55% | 0/28 | 0/28 | +9.409 | 0.9289 |
+
+Reading **`span-fails`**, secondary `ranking-degraded`. **Both declared falsifications fired**: the primary is `-0.137144`
+and the gate stays `0 of 28` under both strict definitions, so nothing moved and there is no V-139-class artefact to audit.
+
+**The failure is a level, not an absence of signal.** The arm's best separation and its out-of-fold F1 both beat the point
+tap's (`+0.031221` and `+0.029208`), while it decides `80.55%` of cells positive at `0.0` and places stacks `1.59` rows
+too high. Three samples spanning a whole cell give the projection two neighbours nearly anti-correlated with the cell, and
+the arm spends them pushing the level rather than separating rows. No span width, sample count or projection size is
+offered - each would be a change to the statistic being read.
+
+**Read or population?** Settled by the block: 28 boards would show two or three exact boards at a tenth-per-board
+exactness and nineteen arms show none, so per-cell read precision is the binding constraint; the population becomes the
+constraint only after a read produces exact boards at all. **Named next candidate**: the row-span tap *composed* with the
+already-validated structural level transforms (M14 centring, M16's crossing rule), as its own declared arm with its own
+falsification - the span supplies separation, the level transforms supply where zero sits.
+
 ## The joint skyline is falsified; the gate is a per-cell read limit (2026-11-12, M17)
 
 [M17_SKYLINE_RECOVERY.md](M17_SKYLINE_RECOVERY.md) was predeclared with its falsification before any receipt:

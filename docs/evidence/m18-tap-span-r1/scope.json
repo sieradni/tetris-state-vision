@@ -1,0 +1,333 @@
+{
+  "status": "passed",
+  "instrument": "m18-tap-span-r1",
+  "predeclaration": "docs/M18_TAP_SPAN.md",
+  "scope": "The published read's own 64-step control against a 64-step arm whose only declared difference is the tap geometry - three row samples instead of one, through the same zero-initialized projection - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The option is structural geometry: no label, no threshold, no fitted parameter, no prevalence, no statistic of the population. 0 is exactly the published function. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m18-span-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "row-span-tap",
+    "flag": "--occupancy-tap-span 1 (a declared form of --occupancy-detail 1)",
+    "definition": "the detail tap samples three points along the board's row axis - the cell's own row, the row immediately above and the row immediately below, in cell units, bottom-first - and feeds all three to the same zero-initialized projection",
+    "where": "model head, in the occupancy tap, before the read-out and before every consumer",
+    "sample_count": 3,
+    "offsets": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        -1.0
+      ]
+    ],
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "loss_terms_added": 0,
+    "projection": "one Linear(widths[0]*3 -> dimension), zero-initialized, replacing the point tap's Linear(widths[0] -> dimension) under the same name",
+    "weight": null,
+    "margin": null,
+    "statistic": "none: the three offsets are the board's own row geometry, so nothing about the population is read",
+    "justification": "the measured error density is 2.2x higher in the four rows at the top of each stack (0.419, 0.407 and 0.428 of cells wrong at distance 0, 1 and 2-3 from the stack's top row) than far below it (0.188), over the 3,522 retained nonempty boards of the 84 retained sweeps, and every cell's logit was a function of one interior sample, so a cell could not express that its own row differs from the row below it",
+    "declared_before_receipts": true,
+    "unknown_cells": "spawn rows are outside the visible window and pass through untouched",
+    "identity_at_zero": "occupancy_tap_span 0 is exactly the published function",
+    "composition": "refused beside every other tap geometry, every lever that moves the sample or changes where zero sits, and every supervised read-out, so this arm's only declared difference is the geometry itself",
+    "expected_reading": "span-moves-without-clearing",
+    "label_free": true,
+    "label_free_proof": "the geometry is a constant, the projection is a function of the sampled features, and the option is applied before any loss is evaluated; tests permute the labels and require bit-identical output and scan the executable body for any label, target, occupancy-mask, prevalence or threshold reference",
+    "falsification": "falsified if the primary at 0.0 does not exceed the published read's own primary at the same step budget, and separately recorded if the strict exact-board gate stays at zero",
+    "failure_mode": "three samples a full cell apart cannot see a step that falls between two cell centres, so the arm buys boundary evidence only where the misalignment is within half a cell"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m18-span-control-r1",
+      "sweep": "m18-span-control-r1-sweep-r1",
+      "occupancy_tap_span": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "config": {
+        "occupancy_tap_span": 0,
+        "occupancy_detail": 1,
+        "occupancy_normalise": 0,
+        "occupancy_centre": 0,
+        "occupancy_stack_monotone": 0,
+        "occupancy_crossing_threshold": 0,
+        "occupancy_skyline_recovery": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "tap_in_features": 48,
+      "catalogue_sha256": "33f8adb4e964d17c23bf91f5ddb997e615c7474a1e7ed911cc76c151eed6158f",
+      "study_elapsed_seconds": 337.4925902000032,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.613554,
+        "last_step": 64,
+        "last": 1.526806,
+        "mean": 0.768358,
+        "source": "runs\\m18-span-control-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the tap geometry changes what one projection reads"
+      },
+      "verdict": "uninformative"
+    },
+    "tap": {
+      "study": "m18-span-tap-r1",
+      "sweep": "m18-span-tap-r1-sweep-r1",
+      "occupancy_tap_span": 1,
+      "weights_sha256": "4f91f882ce064cb8d791fa3dfd391c36f25564aa1b764a10de76c6c0ca395eb2",
+      "config": {
+        "occupancy_tap_span": 1,
+        "occupancy_detail": 1,
+        "occupancy_normalise": 0,
+        "occupancy_centre": 0,
+        "occupancy_stack_monotone": 0,
+        "occupancy_crossing_threshold": 0,
+        "occupancy_skyline_recovery": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "tap_in_features": 144,
+      "catalogue_sha256": "33f8adb4e964d17c23bf91f5ddb997e615c7474a1e7ed911cc76c151eed6158f",
+      "study_elapsed_seconds": 338.78381909999734,
+      "auc": 0.7955363489955812,
+      "f1_at_zero": 0.244496,
+      "operating_counts": {
+        "true_positive": 633,
+        "false_positive": 3878,
+        "false_negative": 34
+      },
+      "positives_at_zero": 4511,
+      "positive_share_at_zero": 0.805536,
+      "precision": 0.140324,
+      "recall": 0.949025,
+      "best": {
+        "threshold": 2.55,
+        "f1": 0.443254817987152,
+        "precision": 0.3447127393838468
+      },
+      "out_of_fold_f1": 0.429607,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 9.409396,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.613554,
+        "last_step": 64,
+        "last": 1.075084,
+        "mean": 0.928871,
+        "source": "runs\\m18-span-tap-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the tap geometry changes what one projection reads"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "span_control": {
+      "f1_at_zero_delta": -0.137144,
+      "auc_delta": -0.027107,
+      "precision_delta": -0.096001,
+      "best_f1_delta": 0.031221,
+      "best_threshold_delta": 1.65,
+      "out_of_fold_delta": 0.029208,
+      "positive_share_delta": 0.306072,
+      "row_error_delta": 1.590604,
+      "occupancy_loss_delta": 0.160513
+    }
+  },
+  "aliasing_guard": {
+    "arms_differ_in": [
+      "occupancy_tap_span"
+    ],
+    "weights_differ": true,
+    "not_the_previous_block": true,
+    "rule": "a tap geometry changes what each cell reads, so the block proves it measured its own checkpoint: each sweep's weights equal its own study's checkpoint, the arms' weights differ, the previous block's checkpoint is excluded by name, and the configs differ in exactly the declared field"
+  },
+  "reference": {
+    "skyline_recovery": {
+      "auc": 0.6206635178255187,
+      "f1_at_zero": 0.308333,
+      "best_f1": 0.33025692192566725,
+      "out_of_fold_f1": 0.30789,
+      "scope": "docs\\evidence\\m17-skyline-recovery-r1\\scope.json"
+    },
+    "crossing_rule": {
+      "auc": 0.835241410310454,
+      "f1_at_zero": 0.405439,
+      "best_f1": 0.428087986463621,
+      "out_of_fold_f1": 0.423254,
+      "scope": "docs\\evidence\\m16-crossing-threshold-r1\\scope.json"
+    },
+    "combined_read": {
+      "auc": 0.8889123247012213,
+      "f1_at_zero": 0.390805,
+      "best_f1": 0.5026861089792786,
+      "out_of_fold_f1": 0.392122,
+      "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+    },
+    "envelope": {
+      "auc": 0.8459483009356866,
+      "f1_at_zero": 0.409161,
+      "best_f1": 0.4426362896663954,
+      "out_of_fold_f1": 0.409639,
+      "scope": "docs\\evidence\\m15-stack-contiguity-r1\\scope.json"
+    },
+    "centring": {
+      "auc": 0.8153954139897414,
+      "f1_at_zero": 0.374142,
+      "best_f1": 0.3932304629168741,
+      "out_of_fold_f1": 0.378651,
+      "scope": "docs\\evidence\\m14-read-centring-r1\\scope.json"
+    },
+    "midpoint_anchor": {
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.4014084507042254,
+      "out_of_fold_f1": 0.348472,
+      "scope": "docs\\evidence\\m13-midpoint-r1\\scope.json"
+    },
+    "dense_hinge": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "best_f1": 0.4655819774718398,
+      "out_of_fold_f1": 0.465582,
+      "scope": "docs\\evidence\\m12-dense-hinge-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M17 skyline arm, the M16 crossing rule, the M15 combined read, the M15 envelope arm, the M14 centred read, the M13 midpoint anchor, the M12 dense hinge, the M11 quantile anchor, the M10 extremal anchor and the M9 hinge, each measured in its own catalogue and none re-measured or re-verdicted here"
+  },
+  "reading": "span-fails",
+  "reading_text": "Reading the row neighbourhood does not beat the published point read at the same budget. The row-span hypothesis is falsified on this population: the remaining errors are not a missing neighbour comparison in the tap, and no span width, sample count or projection size is offered in its place.",
+  "secondary_reading": "ranking-degraded",
+  "secondary_text": "Deciding AUC with the standing -0.02 tolerance. A tap that reads its row neighbourhood can only change the ranking by changing what it sees, so a ranking change here is the read's own doing and is reported as the measured price or gain.",
+  "fixed_threshold_ceiling": {
+    "arm": "control",
+    "scope": "this block's reproduced published read",
+    "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json",
+    "f1_at_zero": 0.38164,
+    "span_primary": 0.244496
+  },
+  "ceiling_broken": false,
+  "gate_moved": false,
+  "neighbour_excluded": {
+    "arm": "combined",
+    "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boundary_exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "tap"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "tap": {
+      "auc": 0.7955363489955812,
+      "f1_at_zero": 0.244496,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}

@@ -23,7 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the joint skyline decision is falsified, and with it the idea that the columns' independence was the
+Latest: **the row-span tap is falsified at the boundary but is the first read-side lever to improve both the swept
+optimum and the out-of-fold figure** ([M18_TAP_SPAN.md](M18_TAP_SPAN.md),
+`docs/evidence/m18-tap-span-r1/scope.json`). `--occupancy-tap-span 1` makes the detail tap read three row-aligned samples
+- the cell and the rows immediately above and below it in cell units - through one zero-initialized projection, chosen
+because the measured error density is 2.2x higher in the four rows at the top of each stack than below it and no arm had
+ever given a cell its row neighbour. Family `m18-span-`, control reproduced `0.8226433610683003` / `0.381640` exactly,
+every stage `passed 0` after one whole-block rerun (V-141). Reading **`span-fails`**, secondary **`ranking-degraded`**:
+plain F1 at `0.0` **0.244496** (`-0.137144`), AUC **0.795536** (`-0.027107`), TP/FN `633/34`, `80.55%` of cells positive
+(`49.95%`), row error `+9.409` (`+7.819`) - but best swept F1 **0.443255** at `2.55` against the control's `0.412034` at
+`0.90`, and out-of-fold **0.429607** against `0.400399`. So the geometry carries separation and loses the level: the
+declared falsification fired, no span width or projection size is offered, and the gate stays **0 of 28 under both strict
+definitions**. Not a record - four swept arms are higher (`0.540811`, `0.502686`, `0.474210`, `0.465582`). The receipts
+also settle read-versus-population: 28 boards would show two or three exact boards at a tenth-per-board exactness and
+nineteen arms show none, so the constraint is per-cell read precision, not population size. Named next candidate: the
+span beneath the validated structural level transforms (M14 centring, M16 rule) as its own declared arm.
+
+Previous: **the joint skyline decision is falsified, and with it the idea that the columns' independence was the
 problem** ([M17_SKYLINE_RECOVERY.md](M17_SKYLINE_RECOVERY.md), `docs/evidence/m17-skyline-recovery-r1/scope.json`).
 `--occupancy-skyline-recovery 1` recovers each board's whole skyline with a dynamic programme over per-column heights
 (emission = signed mass on each side of a split, penalty `1.0` logit, deterministic), applied last after the envelope,

@@ -300,6 +300,15 @@ def require_occupancy_skyline_recovery(value, summary):
         raise ValueError("occupancy skyline recovery differs from resource admission")
 
 
+def require_occupancy_tap_span(value, summary):
+    """One declaration of the admission join for the declared row-span tap geometry."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_tap_span", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_tap_span", 0) != value or
+            summary.get("config", {}).get("occupancy_tap_span", 0) != value):
+        raise ValueError("occupancy tap span differs from resource admission")
+
+
 def require_occupancy_normalise(value, summary):
     """One declaration of the admission join for the declared output parameterisation."""
     if (type(value) is not int or value not in OCCUPANCY_NORMALISE_ARMS or

@@ -2851,3 +2851,21 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   any replacement emission must be a new declared arm with its own falsification, never a penalty sweep.
 - Named green run: the block's eight stage receipts `passed 0`, curation `passed 0`, and the full suite green through the
   bounded runner on the committed tree.
+
+## V-141 - CLOSED: the admission join defaulted the new declaration to 0 at one call site
+
+- Symptom: the M18 tap arm's study exited 1 at launch with `ValueError: occupancy tap span differs from resource
+  admission`, after its profile had recorded `occupancy_tap_span = 1` in `arguments`, `recovery_contract` and `config`;
+  the block's sweep then failed downstream with a missing `summary.json`.
+- Root cause: the driver's `validate_admission` call site did not pass the new option, so the join received its default
+  `0`. Because the control arm's declaration is also `0`, the omission is invisible until a levered arm is admitted: the
+  join compares the summary against the keyword, and a missing keyword agrees with the control forever.
+- Detection class: plumbing (a declaration propagated into the config, the arguments and the recovery contract but not
+  into the admission call). Detected by the join at study launch, before any step ran, and at zero cost to evidence - the
+  first attempt was archived to `runs/attempts/m18-span-stale` and the block was rerun whole so both arms share one
+  catalogue.
+- Instrument: `tests/test_tap_span.py` now asserts that every option written into the config is also passed to the
+  admission call it validates against, so a future lever cannot repeat the omission silently. One defect in this class, so
+  no standing instrument beyond that test is required.
+- Named green run: the rerun's eight stage receipts `passed 0`, curation `passed 0`, and the full suite green through the
+  bounded runner on the committed tree.
