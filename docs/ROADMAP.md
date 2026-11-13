@@ -23,7 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **removing the level pins it at the mean, which is the wrong level** ([M14_READ_CENTRING.md](M14_READ_CENTRING.md),
+Latest: **the stack's own shape places the crossing, and it is the first real gain** ([M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md),
+`docs/evidence/m15-stack-contiguity-r1/scope.json`). `--occupancy-stack-monotone 1` replaces each column of the
+occupancy logits with its monotone envelope from the floor up (suffix maximum in bottom-first order) inside the head, so
+a column crosses `0.0` at most once and that crossing is its height - no statistic, no label, no threshold, no parameter.
+Family `m15-stack-`, catalogue `d9d867a6`; control reproduced `0.8226433610683003` and `0.381640` exactly. Reading
+**`stack-moves-without-clearing`**: plain F1 at `0.0` **0.409161** (`+0.027521`, the first arm ever to move the primary
+in the right direction), AUC **0.845948** (`+0.023305`, a ranking gain), best swept **0.442636** at `2.85` - the first
+treated swept maximum above the `0.431640` bar - out-of-fold `0.409639`, cells positive `-4.16` points, and row error
+**`+1.255` rows from `+7.819`**, a factor of six, with identical recall (`661` TP, `6` FN) and `233` fewer false
+positives. Fit gate still 0 of `28`. Both declared falsifications were checked: the optimum did *not* move to `0.0` (it
+moved to `2.85`, so the envelope places the crossing's shape but not its level, exactly as its equivariance requires),
+while row error fell rather than rose. Seventh arm: structure *can* place the crossing, the placement ceiling is not
+absolute, and the one remaining degree of freedom is the level of a monotone read - the declared follow-on is contiguity
+plus centring.
+
+Previous: **removing the level pins it at the mean, which is the wrong level** ([M14_READ_CENTRING.md](M14_READ_CENTRING.md),
 `docs/evidence/m14-read-centring-r1/scope.json`). The declared structural option `--occupancy-centre 1` subtracts each
 board's own visible-window mean from its occupancy logits inside the head, before any loss or scorer sees them - no
 label, no threshold, no parameter, spread untouched. Family `m14-centre-`, new catalogue `c9544334`; control reproduced

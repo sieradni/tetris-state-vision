@@ -43,6 +43,7 @@ class ModelConfig:
     occupancy_offset_rows: int = 0
     occupancy_normalise: int = 0
     occupancy_centre: int = 0
+    occupancy_stack_monotone: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -111,6 +112,12 @@ class ModelConfig:
         check(not (self.occupancy_centre and self.occupancy_normalise),
               "centring and normalising both remove the board's level; a read cannot be both a "
               "de-meaned and a z-scored tensor")
+        check(type(self.occupancy_stack_monotone) is int and self.occupancy_stack_monotone in (0, 1),
+              "occupancy stack monotone is 0 (published unconstrained read) or 1 (declared per-column "
+              "monotone envelope, so each column crosses zero at most once)")
+        check(not (self.occupancy_stack_monotone and self.occupancy_normalise),
+              "the monotonised read is declared on the published output parameterisation; z-scoring it "
+              "would replace the crossing the envelope places with a standard deviation")
 
     @classmethod
     def pilot(cls):
@@ -183,6 +190,31 @@ def centre_board(logits, visible_rows):
     """
     visible = logits[:, :visible_rows]
     return logits-visible.mean(dim=(1, 2), keepdim=True)
+
+
+def stack_contiguous(logits, visible_rows):
+    """Per-column monotone envelope of the occupancy read: one crossing per column, at its height.
+
+    Six arms failed to place the `0.0` boundary, the last of them by pinning the level to a statistic that is not the
+    operating point. This asks the opposite question: stop placing a level and let the read's own *structure* place the
+    crossing. A locked stack rests on the floor, so a column's occupancy is one contiguous run from row zero upward -
+    a step, not an arbitrary profile - and the only free quantity left is where that step falls.
+
+    The envelope is the suffix maximum in the project's bottom-first row order (equivalently, a cumulative maximum read
+    from the top of the window down to the floor). Every cell below a high read is raised to it, every cell above a low
+    read stays low, and the result is non-increasing upward, so the column crosses `0.0` at most once and that crossing
+    is the column's height. No label, threshold, fitted parameter or prevalence is read: monotonicity is the domain's
+    own constraint. Spawn rows are outside the visible window and pass through untouched.
+
+    The declared failure mode follows from the same shape: a monotone column cannot represent a floating overhang, so
+    material read above empty space is projected *downward* onto it. That is expected behaviour of this transform, and
+    the arm's declared falsification.
+    """
+    visible = logits[:, :visible_rows]
+    envelope = torch.cummax(visible.flip(1), 1).values.flip(1)
+    if not bool(torch.all(envelope >= visible)):
+        raise ValueError("the monotone envelope must never lower a read")
+    return torch.cat((envelope, logits[:, visible_rows:]), 1)
 
 
 def normalise_board(logits, visible_rows):
@@ -692,6 +724,10 @@ class TetrisStateNet(nn.Module):
                 gate = torch.tanh(self.occupancy_lattice_gate)
                 occupancy_logits = ((1-gate)*occupancy_logits+
                                     gate*self.occupancy_lattice_free(free).reshape(batch, rows, columns))
+            if self.config.occupancy_stack_monotone:
+                # Declared structural option: the read loses the freedom to scatter its per-column profile, so the
+                # crossing of `0.0` is the column's height rather than a level a term has to place.
+                occupancy_logits = stack_contiguous(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_centre:
                 # Declared structural centring: the read loses its additive mode inside the head, before
                 # the objective or any scorer sees it, so no supervision has to charge a shift that can

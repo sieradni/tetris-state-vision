@@ -1,5 +1,43 @@
 # Contributor handoff — 2026-10-30
 
+## Structure places the crossing; only its level is still free (2026-11-12)
+
+[M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md) was predeclared before any receipt: `--occupancy-stack-monotone 1`
+replaces each column of the occupancy logits with its monotone envelope (suffix maximum in bottom-first order) inside the
+head, so a column crosses `0.0` at most once and that crossing is its height. No label, threshold, fitted parameter or
+prevalence; spawn rows pass through untouched; `0` is the published function; family `m15-stack-`, catalogue `d9d867a6`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.95% | 0/28 | 0.400399 | +7.819 | 0.7684 |
+| monotone envelope | 0.845948 | **0.409161** | 0.442636 @ `2.85` | 45.79% | 0/28 | 0.409639 | **+1.255** | 0.8494 |
+| *M14 centred (reference)* | *0.815395* | *0.374142* | *0.393230* @ *`1.95`* | *50.52%* | *0/28* | *0.378651* | *+8.007* | *0.6166* |
+| *M13 midpoint (reference)* | *0.830500* | *0.310966* | *0.401408* @ *`3.00`* | *64.5%* | *1/28* | *0.348472* | *+9.779* | — |
+| *M12 dense hinge (reference)* | *0.862838* | *0.354770* | *0.465582* @ *`3.15`* | *54.7%* | *1/28* | *0.465582* | *+8.544* | — |
+| *M11 quantile (reference)* | *0.815340* | *0.264308* | *0.404026* | *78.0%* | — | *0.379323* | *+10.020* | — |
+| *M10 extremal (reference)* | *0.885462* | *0.310966* | *0.540811* | *64.5%* | — | *0.540811* | *+9.779* | — |
+| *M9 hinge (reference)* | *0.864667* | *0.251701* | *0.474210* | — | — | *0.429457* | *+10.691* | — |
+
+Reading **`stack-moves-without-clearing`** (primary `+0.027521`), secondary `ranking-preserved` (AUC `+0.023305`),
+verdict `not-cleared`, fit gate FALSE (0 of 28). Control reproduced `0.8226433610683003` / `0.381640` exactly; aliasing
+guard passed (configs differ in exactly `occupancy_stack_monotone`, `5976d8fa…` vs `bf1ca813…`, M14's checkpoint
+excluded by name).
+
+**The result.** This is the first arm to move the primary at all, and the first whose swept maximum beats the standing bar
+(`0.442636` vs `0.431640`). Structural placement is real: row error fell from `7.819` rows to `1.255` with identical
+recall (`661` TP / `6` FN) and `233` fewer false positives at `0.0`, and AUC improved, which a monotone projection can
+only do by suppressing isolated high reads that were never stack.
+
+**What it did not do, and why that is the next question.** The swept optimum moved to `2.85` rather than to `0.0`, so the
+envelope places the crossing's shape but not its level - exactly what its equivariance requires, since
+`envelope(L + c) = envelope(L) + c`. The level of a monotone read is the single remaining degree of freedom.
+
+**Declared follow-on (predeclared in the M15 document before its own receipt):** `--occupancy-stack-monotone 1
+--occupancy-centre 1` - envelope first, centring after it, so the crossing is placed by structure and its level is the
+board's mean instead of a free parameter. Declared readings `stack-clears-the-crossing` / `stack-moves-without-clearing`;
+declared failure mode is that the mean is not the operating point on a `12%`-occupied board (M14 measured that as
+`+1.95`), so either direction is possible and both are reported.
+
 ## The level is now pinned, and the pin is at the wrong place (2026-11-12)
 
 [M14_READ_CENTRING.md](M14_READ_CENTRING.md) was predeclared before any receipt: `--occupancy-centre 1` subtracts each

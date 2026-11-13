@@ -125,6 +125,12 @@ def arguments(argv=None):
                              "any scorer sees them, so the read has no additive mode left to drift. No label, no "
                              "threshold, no fitted parameter and no prevalence is read, the spread is untouched "
                              "so relative cell structure is unchanged, and 0 is exactly the published function")
+    parser.add_argument("--occupancy-stack-monotone", type=int, choices=(0, 1), default=0,
+                        help="declared structural option;1 replaces each column of the occupancy logits with its "
+                             "monotone envelope from the floor upward (suffix maximum in bottom-first order), so the "
+                             "column crosses 0.0 at most once and that crossing is its height. No label, threshold, "
+                             "fitted parameter or prevalence is read, monotonicity is the domain's own constraint on a "
+                             "locked stack, spawn rows pass through untouched, and 0 is exactly the published function")
     parser.add_argument("--occupancy-normalise", type=int, choices=(0, 1), default=0,
                         help="declared output parameterisation;1 z-scores the occupancy logits over "
                              "each board's own visible cells (mean 0, unit spread, no label and no "
@@ -236,6 +242,20 @@ def arguments(argv=None):
                                        args.occupancy_context or args.occupancy_deform or
                                        args.occupancy_placed or args.occupancy_column):
         parser.error("the declared sampling offset is a single geometry, not a form of another lever")
+    if args.occupancy_stack_monotone and (args.occupancy_normalise or args.occupancy_dense_hinge or
+                                         args.occupancy_quantile_anchor or args.occupancy_anchor or
+                                         args.occupancy_margin_hinge or args.occupancy_midpoint or
+                                         args.occupancy_context or args.occupancy_detail_stencil or
+                                         args.occupancy_resolution or args.occupancy_deform or
+                                         args.occupancy_placed or args.occupancy_column or
+                                         args.occupancy_offset_rows or args.occupancy_lattice_free):
+        # The monotone read places the crossing by structure, so every term that charges a shift or a margin is moot
+        # on it, the normalised output would replace that crossing with a standard deviation, and every read-moving
+        # lever would leave the envelope confounded with a changed sample. It is the only structural option that
+        # composes with nothing declared: centring beside it is admitted deliberately, as the declared follow-on arm.
+        parser.error("the stack-contiguous read places the crossing by column structure, so the normalised output, "
+                     "the five supervision terms and every lever that changes what is read, where it is sampled or "
+                     "where zero sits are all refused beside it")
     if args.occupancy_normalise and (args.occupancy_context or args.occupancy_detail_stencil or
                                      args.occupancy_resolution or args.occupancy_deform or
                                      args.occupancy_placed or args.occupancy_column or
@@ -424,7 +444,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
                    occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                    occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-                   occupancy_centre=0):
+                   occupancy_centre=0, occupancy_stack_monotone=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -454,7 +474,8 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_offset_rows, require_occupancy_normalise,
                                      require_occupancy_margin_hinge, require_occupancy_anchor,
                                      require_occupancy_quantile_anchor, require_occupancy_dense_hinge,
-                                     require_occupancy_midpoint, require_occupancy_centre)
+                                     require_occupancy_midpoint, require_occupancy_centre,
+                                     require_occupancy_stack_monotone)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -480,6 +501,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_dense_hinge(occupancy_dense_hinge, summary)
     require_occupancy_midpoint(occupancy_midpoint, summary)
     require_occupancy_centre(occupancy_centre, summary)
+    require_occupancy_stack_monotone(occupancy_stack_monotone, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -742,6 +764,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_offset_rows=args.occupancy_offset_rows,
                      occupancy_normalise=args.occupancy_normalise,
                      occupancy_centre=args.occupancy_centre,
+                     occupancy_stack_monotone=args.occupancy_stack_monotone,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
                      lattice_board_refine=args.lattice_board_refine,
@@ -773,6 +796,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_dense_hinge=args.occupancy_dense_hinge,
                            occupancy_midpoint=args.occupancy_midpoint,
                            occupancy_centre=args.occupancy_centre,
+                     occupancy_stack_monotone=args.occupancy_stack_monotone,
                            occupancy_column=args.occupancy_column,
                            occupancy_offset_rows=args.occupancy_offset_rows,
                            occupancy_normalise=args.occupancy_normalise,
@@ -807,7 +831,8 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     # M14: a default-0 structural option adds no parameter, so a
                                                     # source checkpoint that predates the field is the same
                                                     # function and a legitimate initial state for either arm.
-                                                    "occupancy_centre")) or
+                                                    "occupancy_centre",
+                                                    "occupancy_stack_monotone")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -962,6 +987,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_dense_hinge"] = args.occupancy_dense_hinge
     recovery_contract["occupancy_midpoint"] = args.occupancy_midpoint
     recovery_contract["occupancy_centre"] = args.occupancy_centre
+    recovery_contract["occupancy_stack_monotone"] = args.occupancy_stack_monotone
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight

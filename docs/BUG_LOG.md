@@ -2773,3 +2773,20 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   checkpoint excluded) all ran and passed on the successful curation.
 - Named green run: `runs/m14-centre-curation-r1-job.json` `passed 0`, the record's tests green, and the full suite green
   on the committed tree.
+
+## V-137 - CLOSED: two test-side errors in the M15 instrument, caught before any receipt
+
+- Symptom: the first run of `tests/test_stack_contiguity.py` failed three assertions of which two were the test's own
+  fault: expected envelope values assumed a prefix maximum (`[3,3,3,3]`) while the declared transform is a suffix
+  maximum (`[3,2,2,-3]`), and the overhang test sliced `envelope[0, 10:, 0]`, which runs into the six spawn rows; the
+  third asserted argparse's `invalid choice` wording when an `int` parser says `invalid int value`.
+- Root cause: test-side transcription, not engine behaviour. The engine's envelope was correct in both cases and the
+  assertions encoded the wrong expectation.
+- Detection class: test instrument, caught locally in the same session by the failing assertions themselves, before any
+  block, receipt or evidence existed; no measurement was affected and nothing outside the test file changed.
+- Instrument: expectations replaced with the declared suffix-maximum values, the overhang slice bounded at `visible_rows`,
+  and the refusal assertion widened to the parser's `invalid` wording. The engine's own guard (`the monotone envelope
+  must never lower a read`) plus the identity test on an already-monotone column pin the declared direction, so a future
+  orientation change cannot pass silently.
+- Named green run: `tests.test_stack_contiguity` 25 tests green (1 skip before curation); both block receipts `passed 0`;
+  curation `runs/m15-stack-curation-r1-job.json` `passed 0`; full suite green on the committed tree.

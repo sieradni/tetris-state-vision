@@ -1,0 +1,270 @@
+{
+  "status": "passed",
+  "instrument": "m15-stack-contiguity-r1",
+  "predeclaration": "docs/M15_STACK_CONTIGUITY.md",
+  "scope": "Two 64-step arms - the published read-out and the same read-out replaced by its per-column monotone envelope inside the head before the objective sees it - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The option is structural: no label, no threshold, no fitted parameter, no prevalence, no statistic of the population. 0 is exactly the published function. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m15-stack-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "stack-contiguous-read",
+    "flag": "--occupancy-stack-monotone 1",
+    "definition": "per column, the suffix maximum of the visible logits in bottom-first row order (equivalently a cumulative maximum from the top of the window down to the floor), applied inside the head before the objective or any scorer sees the tensor",
+    "where": "model head, before the loss and before every consumer",
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "loss_terms_added": 0,
+    "weight": null,
+    "margin": null,
+    "statistic": "none: monotonicity is the domain's own constraint on a locked stack, so nothing about the population is read",
+    "orientation": "non-increasing upward, because material rests on the floor",
+    "crossings_per_column": "at most one, and the crossing is the column's height",
+    "invariance": "equivariant to a board-wide shift (envelope(L + c) == envelope(L) + c), so unlike centring this transform leaves the level free and places the crossing instead",
+    "declared_before_receipts": true,
+    "unknown_cells": "spawn rows are outside the visible window and pass through untouched",
+    "identity_at_zero": "occupancy_stack_monotone 0 is exactly the published function",
+    "supersedes": "nothing: it is an option on the read, refused beside every supervision term, the normalised output and every read-moving lever; centring is admitted beside it as the declared follow-on",
+    "expected_reading": "stack-fails",
+    "placement_ceiling": 0.412034,
+    "placement_ceiling_note": "control's own swept maximum over the standing 81-point grid is 0.412034, 0.0196 below the 0.431640 bar, so no placement-only transform can clear the primary; the informative readings are placement, row error and exact boards",
+    "failure_mode": "a monotone column cannot represent a floating overhang, so material above empty space is projected downward onto it and real boards with holes gain false positives"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m15-stack-control-r1",
+      "sweep": "m15-stack-control-r1-sweep-r1",
+      "occupancy_stack_monotone": 0,
+      "occupancy_centre": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "config": {
+        "occupancy_stack_monotone": 0,
+        "occupancy_centre": 0,
+        "occupancy_normalise": 0,
+        "occupancy_detail": 1,
+        "occupancy_offset_rows": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "d9d867a6daed11773172bd278d799cb6c790884014976fd7b0a6fae060792063",
+      "study_elapsed_seconds": 342.1486674000007,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.613554,
+        "last_step": 64,
+        "last": 1.526806,
+        "mean": 0.768358,
+        "source": "runs\\m15-stack-control-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the structural option removes the level instead of charging it"
+      },
+      "verdict": "uninformative"
+    },
+    "contiguous": {
+      "study": "m15-stack-contiguous-r1",
+      "sweep": "m15-stack-contiguous-r1-sweep-r1",
+      "occupancy_stack_monotone": 1,
+      "occupancy_centre": 0,
+      "weights_sha256": "5976d8fabbbb3ab9e6fc6970b7817bd9b1665c0e7598f237c9328c6698ecdcd4",
+      "config": {
+        "occupancy_stack_monotone": 1,
+        "occupancy_centre": 0,
+        "occupancy_normalise": 0,
+        "occupancy_detail": 1,
+        "occupancy_offset_rows": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "d9d867a6daed11773172bd278d799cb6c790884014976fd7b0a6fae060792063",
+      "study_elapsed_seconds": 338.49578760000077,
+      "auc": 0.8459483009356866,
+      "f1_at_zero": 0.409161,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 1903,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2564,
+      "positive_share_at_zero": 0.457857,
+      "precision": 0.2578,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 2.85,
+        "f1": 0.4426362896663954,
+        "precision": 0.3037409268565047
+      },
+      "out_of_fold_f1": 0.409639,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 1.255034,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 1.364917,
+        "last_step": 64,
+        "last": 1.828928,
+        "mean": 0.849383,
+        "source": "runs\\m15-stack-contiguous-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the structural option removes the level instead of charging it"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "centre_control": {
+      "f1_at_zero_delta": 0.027521,
+      "auc_delta": 0.023305,
+      "best_f1_delta": 0.030602,
+      "best_threshold_delta": 1.95,
+      "out_of_fold_delta": 0.00924,
+      "positive_share_delta": -0.041607,
+      "row_error_delta": -6.563758,
+      "occupancy_loss_delta": 0.081025
+    }
+  },
+  "aliasing_guard": {
+    "arms_differ_in": [
+      "occupancy_stack_monotone"
+    ],
+    "weights_differ": true,
+    "not_the_previous_block": true,
+    "rule": "a structural option changes the read globally, so the block proves it measured its own checkpoint: each sweep's weights equal its own study's checkpoint, the arms' weights differ, the previous block's checkpoint is excluded by name, and the configs differ in exactly the declared field"
+  },
+  "reference": {
+    "centring": {
+      "auc": 0.8153954139897414,
+      "f1_at_zero": 0.374142,
+      "best_f1": 0.3932304629168741,
+      "out_of_fold_f1": 0.378651,
+      "scope": "docs\\evidence\\m14-read-centring-r1\\scope.json"
+    },
+    "midpoint_anchor": {
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.4014084507042254,
+      "out_of_fold_f1": 0.348472,
+      "scope": "docs\\evidence\\m13-midpoint-r1\\scope.json"
+    },
+    "dense_hinge": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "best_f1": 0.4655819774718398,
+      "out_of_fold_f1": 0.465582,
+      "scope": "docs\\evidence\\m12-dense-hinge-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M14 centred read, the M13 midpoint anchor, the M12 dense hinge, the M11 quantile anchor, the M10 extremal anchor and the M9 hinge, each measured in its own catalogue and none re-measured or re-verdicted here"
+  },
+  "reading": "stack-moves-without-clearing",
+  "reading_text": "The monotone envelope moves the plain-binary boundary in the right direction but short of the attribution floor: the column structure carries real placement information without carrying enough of it to clear the standing bar.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC with the standing -0.02 tolerance. A maximum can only raise cells, so a ranking change here is the training's response to a constrained read, not the transform's own doing, and it is reported as the measured price.",
+  "overshot_below_zero": false,
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "contiguous"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "contiguous": {
+      "auc": 0.8459483009356866,
+      "f1_at_zero": 0.409161,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}
