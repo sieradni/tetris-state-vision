@@ -262,15 +262,21 @@ def arguments(argv=None):
                                     args.occupancy_lattice_free or args.occupancy_normalise or
                                     args.occupancy_dense_hinge or args.occupancy_quantile_anchor or
                                     args.occupancy_anchor or args.occupancy_margin_hinge or
-                                    args.occupancy_midpoint or args.occupancy_centre or
-                                    args.occupancy_stack_monotone or args.occupancy_crossing_threshold or
+                                    args.occupancy_midpoint or
+                                    args.occupancy_stack_monotone or
                                     args.occupancy_skyline_recovery):
-        # The span is one declared reading geometry: another form of the same tap, a lever that moves the sample
-        # or changes where zero sits, or a supervised read-out would all leave the row-neighbourhood read
-        # confounded with a second change, so the arm is measured as the only declared difference.
+        # The span is one declared reading geometry: another form of the same tap, a lever that moves the sample, a
+        # decision that replaces the read's structure, or a supervised read-out would all leave the
+        # row-neighbourhood read confounded with a second change. The two level transforms are the one declared
+        # composition (M19), admitted together and only together by the check below.
         parser.error("the tap span is one declared reading geometry, so it is refused beside every other form "
-                     "of the tap, every lever that moves the sample or changes where zero sits, and every "
-                     "supervised read-out")
+                     "of the tap, every lever that moves the sample, every decision that replaces the read's "
+                     "structure, and every supervised read-out")
+    if args.occupancy_tap_span and args.occupancy_centre != args.occupancy_crossing_threshold:
+        # M19 declares the span under the level transforms: a half composition (one transform without the
+        # other) is not a declared arm and would not answer the question that arm exists to answer.
+        parser.error("the span's level transforms are declared together: the composition requires both "
+                     "--occupancy-centre 1 and --occupancy-crossing-threshold 1, or neither")
     if args.occupancy_offset_rows and not args.occupancy_detail:
         parser.error("the sampling offset moves the detail tap's sample; it requires --occupancy-detail 1")
     if args.occupancy_offset_rows and (args.occupancy_detail_stencil or args.occupancy_resolution or

@@ -223,13 +223,28 @@ class SpanPlumbingTests(unittest.TestCase):
                       ["--occupancy-context", "1"], ["--occupancy-column", "1"],
                       ["--occupancy-lattice-free", "1"], ["--occupancy-normalise", "1"],
                       ["--occupancy-margin-hinge", "1"], ["--occupancy-anchor", "1"],
-                      ["--occupancy-centre", "1"], ["--occupancy-stack-monotone", "1"],
-                      ["--occupancy-crossing-threshold", "1"], ["--occupancy-skyline-recovery", "1"]):
+                      ["--occupancy-stack-monotone", "1"], ["--occupancy-skyline-recovery", "1"]):
             stream = io.StringIO()
             with self.subTest(lever=lever), contextlib.redirect_stderr(stream):
                 with self.assertRaises(SystemExit):
                     self.arguments(self.base+["--occupancy-detail", "1", "--occupancy-tap-span", "1"]+lever)
             self.assertIn("the tap span is one declared reading geometry", stream.getvalue(), lever)
+
+    def test_a_half_level_composition_is_refused_with_its_own_stderr(self):
+        """M19 admits centring and the crossing rule together and only together."""
+        for half in (["--occupancy-centre", "1"], ["--occupancy-crossing-threshold", "1"]):
+            stream = io.StringIO()
+            with self.subTest(half=half), contextlib.redirect_stderr(stream):
+                with self.assertRaises(SystemExit):
+                    self.arguments(self.base+["--occupancy-detail", "1", "--occupancy-tap-span", "1"]+half)
+            self.assertIn("declared together", stream.getvalue(), half)
+
+    def test_the_declared_composition_is_admitted(self):
+        parsed = self.arguments(self.base+["--profile-square", "--occupancy-detail", "1",
+                                           "--occupancy-tap-span", "1", "--occupancy-centre", "1",
+                                           "--occupancy-crossing-threshold", "1"])
+        self.assertEqual((parsed.occupancy_tap_span, parsed.occupancy_centre,
+                          parsed.occupancy_crossing_threshold), (1, 1, 1))
 
     def test_an_undeclared_value_is_refused_by_the_parser(self):
         for value in ("2", "-1", "true"):

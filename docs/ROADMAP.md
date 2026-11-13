@@ -23,7 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the row-span tap is falsified at the boundary but is the first read-side lever to improve both the swept
+Latest: **the span under the level transforms repairs the level and still loses - so M18's separation gain was a level
+artefact** ([M19_SPAN_LEVEL.md](M19_SPAN_LEVEL.md), `docs/evidence/m19-span-level-r1/scope.json`). The declared
+composition (`--occupancy-tap-span 1` **with** `--occupancy-centre 1 --occupancy-crossing-threshold 1`, admitted together
+and only together) ran against the reproduced control in one catalogue; control reproduced `0.8226433610683003` /
+`0.381640` exactly and every stage is `passed 0`. Reading **`span-level-fails`**, secondary `ranking-degraded`, with
+`level_repaired = true`: plain F1 at `0.0` **0.350613** (`-0.031027`), AUC **0.789794** (`-0.032849`), TP/FN `629/38`,
+positive `52.16%` (M18's `80.55%`, control's `49.95%`), row error **`+6.993`** - better than the control's `+7.819` - but
+best swept F1 `0.364139` and out-of-fold `0.328718`, both **below** the control's `0.412034` / `0.400399`. The transforms
+did exactly what they were declared to do and the primary still fell: M18's swept and out-of-fold gains were properties of
+its displaced level, not of separable cell evidence, and the row-neighbour tap carries no recoverable per-cell
+information. The M18 record now carries that correction. Nineteen read-side arms have left the strict gate at **0 of 28**
+under both definitions; the standing bests are disjoint - M15 combined holds the best ranking (`0.888912`) and placement
+(`1.189` rows), and the only 2-wrong-cell board ever produced came from the lattice-free read (`0.840147`). Named next
+candidate: a **two-path read** summing the lattice-free channel's evidence with the lattice-sampled envelope's - the one
+combination the receipts point at that has never been measured.
+
+Previous: **the row-span tap is falsified at the boundary but is the first read-side lever to improve both the swept
 optimum and the out-of-fold figure** ([M18_TAP_SPAN.md](M18_TAP_SPAN.md),
 `docs/evidence/m18-tap-span-r1/scope.json`). `--occupancy-tap-span 1` makes the detail tap read three row-aligned samples
 - the cell and the rows immediately above and below it in cell units - through one zero-initialized projection, chosen

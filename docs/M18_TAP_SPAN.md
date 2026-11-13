@@ -170,7 +170,19 @@ out: the row-span tap beneath the already-validated structural level transforms 
 declared as its own arm with its own falsification. That is the pair the receipts ask for: the span supplies separation,
 the level transforms supply where zero sits.
 
-### Limits
+### Correction from M19 (2026-11-12)
+
+The reading above keeps one piece of optimism: that the span's swept optimum (`0.443255`) and out-of-fold F1
+(`0.429607`) beating the point tap's meant the geometry carried real separation and only lacked a level. **M19 tested that
+directly and it did not survive.** Under the validated level transforms (M14 centring, M16 rule) the same geometry's swept
+optimum falls to `0.364139` and its out-of-fold F1 to `0.328718`, both below the control's, with the primary at `0.350613`
+against `0.381640` - while the level itself was repaired exactly as expected (positive share `80.55%` -> `52.16%`, row
+error `9.409` -> `6.993`, better than the control's `7.819`). So the M18 gain was a property of the displaced level, not of
+separable cell evidence: a read that sits high scores best at a high threshold. The row-neighbour tap carries no recoverable
+per-cell information on this population, and that line is closed by measurement
+([M19_SPAN_LEVEL.md](M19_SPAN_LEVEL.md)).
+
+## Limits
 
 Twenty-eight boards, twelve images, one catalogue, one block, one seed, one launch; synthetic label-integrity
 populations - not photographed boards, not complete states, not image quality. Three samples one cell apart cannot see a

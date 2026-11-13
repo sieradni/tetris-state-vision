@@ -1,6 +1,39 @@
 # Contributor handoff — 2026-10-30
 
+## The span under the level transforms: the level was repaired and the signal was not there (2026-11-12, M19)
+
+[M19_SPAN_LEVEL.md](M19_SPAN_LEVEL.md) declared the composition the M18 record named: the row-span tap with M14 centring
+and M16's crossing rule, admitted together and only together, measured against the reproduced control in one catalogue.
+
+| arm | AUC | plain F1 at `0.0` | best swept | out-of-fold | TP/FN | positive at `0.0` | strict exact | boundary | row error | occ. loss |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 | 0.400399 | 661/6 | 49.95% | 0/28 | 0/28 | +7.819 | 0.7684 |
+| span + centring + rule | 0.789794 | **0.350613** | 0.364139 | 0.328718 | 629/38 | 52.16% | 0/28 | 0/28 | **+6.993** | 0.6925 |
+
+Reading **`span-level-fails`**, `level_repaired = true`. The transforms did exactly what they were declared to do - the
+positive share fell from `80.55%` to `52.16%`, the row error from `9.409` to `6.993` (better than the control's `7.819`) -
+and the primary still fell by `0.031027`. **This reverses the M18 reading**: under a repaired level the span's swept
+optimum (`0.364139`) and out-of-fold F1 (`0.328718`) are both *below* the control's, so M18's apparent separation gain was a
+property of its displaced level. The row-neighbour tap carries no recoverable per-cell information on this population and
+that line is closed by measurement. The M18 document carries the correction.
+
+**Where the programme stands.** Nineteen read-side arms, strict gate still `0 of 28` under both definitions. The best
+ranking (`0.888912`) and the best placement (`1.189` rows) both belong to the M15 combined read (monotone envelope +
+centring); the only board ever within 2 cells came from the lattice-free read (`0.840147`), which does not consume the
+predicted lattice. Those two bests are disjoint and no arm has combined them.
+
+**Read or population?** Not population: 28 boards would show two or three exact boards at a tenth-per-board exactness and
+nineteen arms show none, so per-cell read precision binds first. Judge future arms on exact-board counts and near misses,
+not on clearing 28 in one block.
+
+**Named next candidate.** A **two-path read**: sum the lattice-free channel's evidence (the only 2-cell board) with the
+lattice-sampled envelope's (best ranking and placement) in the read-out, so the read gets placement-independent evidence
+and the best-separating evidence at once. Structural, label-free, and never measured.
+
 ## The row-span tap: separation without a level (2026-11-12, M18)
+
+> Superseded in part by M19: the span's swept and out-of-fold gains did not survive a repaired level, so "separation
+> without a level" is not what M18 measured. The numbers below remain accurate.
 
 [M18_TAP_SPAN.md](M18_TAP_SPAN.md) was predeclared with measured justification: over the 84 retained sweeps the wrong
 cells are 2.2x denser in the four rows at the top of each stack (0.419 / 0.407 / 0.428 at distances 0, 1, 2-3 against
