@@ -23,7 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **deciding at each board's own crossing breaks the fixed-threshold ceiling, and not the bar**
+Latest: **the fit gate's `1 of 28` was a metric artefact - the true figure is `0 of 28` for all 79 arms** (V-139).
+The obstacle was audited before anything was built: every curator's exactness test compared column boundaries and
+silently dropped any column whose decision or label was empty, so a board that filled genuinely empty columns could be
+scored exact. Recomputed from the retained per-case logits of **every arm sweep in `runs/`** - no block run, no receipt
+rewritten - the strict definitions give **0 of 28 for all 79 arms**: cell-exact (every visible cell right at `0.0`, the
+sweep's own flag) and boundary-exact (every column's decided top equals its occupied top, an empty column compared as a
+value). The lenient rule showed `1 of 28` for 26 arms and `2 of 28` for 5 - all phantom, including the boards credited to
+M12 and M13, whose figures are withdrawn in the record rather than rewritten. The gate is therefore explained rather than
+approached: the closest any arm has come is **2 wrong cells** on its best board (`m3-occlatfree-lever`, AUC `0.840147`),
+three boards within ten wrong cells, while no structural arm (`M15`/`M16`) is below eight. Metric corrected in all six
+curators (cell-exact and boundary-exact both required, empty columns compared as values), pinned by
+`tests/test_exact_state_metric.py` (8 tests, including a walk over every retained receipt asserting `0 of 28` under both
+definitions). The sequence-level recovery that was conditional on the metric being sound was therefore not built: its
+premise did not hold, and its target - exact boards - is now known to be an unapproached `0 of 28` rather than a gate one
+board from moving.
+
+Previous: **deciding at each board's own crossing breaks the fixed-threshold ceiling, and not the bar**
 ([M16_CROSSING_THRESHOLD.md](M16_CROSSING_THRESHOLD.md), `docs/evidence/m16-crossing-threshold-r1/scope.json`).
 `--occupancy-crossing-threshold 1` subtracts, per board, the exact Otsu level of that board's own visible occupancy
 logits inside the head (after the envelope and centring), so every consumer still thresholds `0.0` and `0.0` *is* that

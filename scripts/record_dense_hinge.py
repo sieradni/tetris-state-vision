@@ -145,11 +145,10 @@ def exact_boards_at_zero(result):
         if case["split"] != "training" or not any(case["occupied"]):
             continue
         decided, occupied = boundaries(case["logits"], case["occupied"], rows, columns, 0.0)
-        pairs = [(got, want) for got, want in zip(decided, occupied) if got is not None and want is not None]
-        if not pairs:
-            continue
         total += 1
-        exact += all(got == want for got, want in pairs)
+        # V-139: an empty column is compared as a value, and one filled but truly empty cell makes a board inexact.
+        cells = [(value > 0.0) == bool(label) for value, label in zip(case["logits"], case["occupied"])]
+        exact += all(cells) and all(got == want for got, want in zip(decided, occupied))
     if not total:
         raise ValueError("the fit gate carried no board")
     return {"boards": total, "exact": exact}

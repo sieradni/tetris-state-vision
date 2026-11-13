@@ -196,3 +196,9 @@ for, and the numbers above are measurements on that population only.
 Twenty-eight boards, twelve images, one catalogue, one block, one seed, one launch. Synthetic label-integrity
 populations: this is not a photographed-board, complete-state or quality claim, and a per-board rule selected from the
 read is still a decision about synthetic labels.
+
+## Correction (V-139, 2026-11-12)
+
+The fit gate quoted in this document as `0 of 28` is right, but it is right by accident: the curator that produced it
+dropped any column whose decision or label was empty. Under the corrected strict definition the figure is `0 of 28` for
+every arm in the program (79 of them), and the `1 of 28` credited to M12/M13 elsewhere is withdrawn.

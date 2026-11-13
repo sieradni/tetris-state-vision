@@ -1,5 +1,43 @@
 # Contributor handoff — 2026-10-30
 
+## The fit gate was mis-measured: `1 of 28` is `0 of 28` (2026-11-12, V-139)
+
+Before building anything for the gate, the metric was audited end to end, and the audit found the defect.
+
+**The defect.** Every curator's `exact_boards_at_zero` compared *column boundaries* with `if got is not None and want is
+not None`, dropping any column whose decision or label was empty. A board that filled genuinely empty columns had those
+columns removed from the comparison and could be scored exact while its decided state was wrong. The sweep's own
+cell-exact flag (`_counts(...)[4]`, `right`) never had this hole; only the curators did.
+
+**The corrected history.** Recomputed from the retained per-case logits of every arm sweep in `runs/` (79 arms; no block
+run, no receipt rewritten):
+
+| definition | arms at 1/28 | arms at 2/28 | arms at 0/28 |
+|---|---|---|---|
+| strict cell-exact (sweep's own flag) | 0 | 0 | **79** |
+| strict boundary-exact (empty column compared as a value) | 0 | 0 | **79** |
+| the previous lenient rule | 26 | 5 | 48 |
+
+So the fit gate has been **0 of 28 for every arm in the program's history**. The `1 of 28` credited to M12's dense hinge
+and M13's midpoint anchor - and to 24 further M3/M4/M5/M6/M7/M8 levers - is withdrawn here; those scopes are immutable
+evidence and are not rewritten.
+
+**How close anything got.** The best board any arm ever produced has **2 wrong cells** (`m3-occlatfree-lever`, AUC
+`0.840147`), with three of its 28 boards within ten wrong cells. No structural arm is below eight wrong cells
+(`M15` envelope `1.19` rows of row error, `M16` ruled arm `1.19`). The gate requires 0 on all 28, so it is not one board
+from moving; it is four to twenty cells per board away on the best arms.
+
+**What was changed.** `exact_boards_at_zero` in all six curators now requires every visible cell to agree *and* compares
+every column with an empty column as a value, returning `boundary_exact` beside `exact`. `tests/test_exact_state_metric.py`
+pins the behaviour on synthetic boards (perfect board, one wrong cell, the V-139 stray cell in a truly empty column, a
+correctly empty column, agreement with the sweep's flag, refusal when no board is present) and walks every retained
+receipt asserting `0 of 28` under both strict definitions.
+
+**What was deliberately not built.** The sequence-level joint recovery was conditional on the metric being sound. That
+premise did not hold, and its target is now known to be an unapproached `0 of 28`. It remains the right next structural
+candidate if anyone wants the gate anyway - a board-level decision over the monotone skyline is available without labels -
+but it must be declared and measured against the corrected metric, not against a phantom.
+
 ## The label-free decision rule works and is not enough (2026-11-12)
 
 [M16_CROSSING_THRESHOLD.md](M16_CROSSING_THRESHOLD.md) was predeclared before any receipt, including its falsification.

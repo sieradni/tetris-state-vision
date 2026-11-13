@@ -253,3 +253,9 @@ re-measured, and the curator asserts the shared catalogue. No real-image, comple
 Twenty-eight boards, twelve images, one catalogue, one block, one seed, one launch. Two arms. The placement gain is
 measured on synthetic label-integrity populations; it is not a real-image, complete-state or quality claim, and the
 `1.26`-row row error is a diagnostic of the decided stack height, not a claim about a photographed board.
+
+## Correction (V-139, 2026-11-12)
+
+The fit gate quoted in this document as `0 of 28` is right, but it is right by accident: the curator that produced it
+dropped any column whose decision or label was empty. Under the corrected strict definition the figure is `0 of 28` for
+every arm in the program (79 of them), and the `1 of 28` credited to M12/M13 elsewhere is withdrawn.

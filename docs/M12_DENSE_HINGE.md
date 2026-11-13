@@ -214,3 +214,10 @@ and readings must be declared in its own document before its own receipt.
 Twenty-eight boards, twelve images, one catalogue, one block, one seed, one launch. This measures whether dense
 class-balanced supervision of the declared margin moves the plain-binary operating point on the published read-out; it
 is not a real-image, complete-state or quality claim.
+
+## Correction (V-139, 2026-11-12)
+
+The exact-board figure quoted above was produced by a curator rule that dropped any column whose decision or label was
+empty, so a board that filled genuinely empty columns could be scored exact. Recomputed strictly from the same retained
+sweep (`runs/m12-dense-hinge-banded-r1-sweep-r1/result.json`), this arm has **0 of 28** exact non-empty boards, not the number printed above.
+The scope file is left as published: it is immutable evidence of what the instrument said at the time.

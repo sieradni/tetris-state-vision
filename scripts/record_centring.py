@@ -126,21 +126,28 @@ def row_error_at_zero(result):
 
 
 def exact_boards_at_zero(result):
+    """A board is exact only when every visible cell is decided right, and its skyline is right column by column.
+
+    Two definitions, both strict (V-139). The cell definition is the sweep's own: every known visible cell must agree
+    with its label at `0.0`, so one filled but truly empty cell makes a board inexact. The boundary definition compares
+    every column's top-most decided row with its top-most occupied row **with an empty column compared as a value** - an
+    earlier version dropped columns whose decision or truth was empty, which counted a board that filled empty columns
+    as exact and produced the phantom `1 of 28` in the M12 and M13 records.
+    """
     config = result["config"]
     rows, columns = config["visible_rows"], config["columns"]
-    exact = total = 0
+    exact = boundary = total = 0
     for case in result["cases"]:
         if case["split"] != "training" or not any(case["occupied"]):
             continue
         decided, occupied = boundaries(case["logits"], case["occupied"], rows, columns, 0.0)
-        pairs = [(got, want) for got, want in zip(decided, occupied) if got is not None and want is not None]
-        if not pairs:
-            continue
         total += 1
-        exact += all(got == want for got, want in pairs)
+        cells = [(value > 0.0) == bool(label) for value, label in zip(case["logits"], case["occupied"])]
+        exact += all(cells)
+        boundary += all(got == want for got, want in zip(decided, occupied))
     if not total:
         raise ValueError("the fit gate carried no board")
-    return {"boards": total, "exact": exact}
+    return {"boards": total, "exact": exact, "boundary_exact": boundary}
 
 
 def reference(path, name):

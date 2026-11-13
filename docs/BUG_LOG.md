@@ -2805,3 +2805,30 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   so a future field cannot be curated while invisible to the alias check.
 - Named green run: `runs/m16-crossing-curation-r2-job.json` `passed 0`; `tests.test_crossing_threshold` green; full
   suite green on the committed tree.
+
+## V-139 - CLOSED: the exact-state metric counted a filled empty column as an exact board
+
+- Symptom: the fit gate has read `0 of 28` for most arms but `1 of 28` for M12's dense hinge and M13's midpoint anchor (and
+  for many M3 levers). A gate that sits at 0 or 1 across seventeen arms, at a row error of 1.19 rows, is as consistent
+  with a measurement defect as with a modelling limit.
+- Root cause: every curator's `exact_boards_at_zero` compared column *boundaries* with
+  `if got is not None and want is not None` - a column whose decision or truth was empty was dropped from the comparison.
+  A board that filled genuinely empty columns therefore had those columns removed from the test and could be scored
+  `exact` while its decided state was wrong. The sweep's own cell-exact flag never had this hole; only the curators did.
+- Detection class: evidence instrument (the gate metric itself). Detected by an end-to-end audit that recomputed three
+  definitions of "exact" from the retained per-case logits of **all 79 arm sweeps** in `runs/*-sweep-r1/result.json`,
+  with no block run and no receipt rewritten.
+  - strict cell-exact (every visible cell right at `0.0`, the sweep's own definition): **0 of 28 for all 79 arms**;
+  - strict boundary-exact (every column's top-most decided row equals its top-most occupied row, an empty column
+    compared as a value): **0 of 28 for all 79 arms**;
+  - the previous lenient rule: 26 arms showed `1 of 28` and 5 showed `2 of 28` - every one of them a phantom.
+  The corrected figure for the fit gate is **0 of 28 everywhere**, so the "1 of 28" quoted in the M12 and M13 records is
+  withdrawn here rather than rewritten in those immutable scopes.
+- Instrument: `exact_boards_at_zero` in all six curators now requires every visible cell to agree with its label *and*
+  compares every column with an empty column as a value; it returns `boundary_exact` beside `exact` so the two questions
+  can no longer be conflated. `tests/test_exact_state_metric.py` pins the behaviour on synthetic boards - a perfect
+  board, one wrong cell, one stray cell in a truly empty column (the V-139 shape), a column correctly left empty, the
+  sweep's own flag, and a refusal when the population carries no board - and then walks every retained receipt asserting
+  `0 of 28` under both strict definitions.
+- Named green run: `tests.test_exact_state_metric` 8 tests green; full suite green through the bounded runner on the
+  committed tree.
