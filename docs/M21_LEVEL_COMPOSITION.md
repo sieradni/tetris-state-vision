@@ -174,9 +174,18 @@ no transform to raise it, so the movement belongs to the transform and not to th
 
 Note the direction the probe could not see: trained *with* the rule in the loop, the read's raw sum starts far higher
 (`77.08%` positive after the envelope, AUC `0.860251`) and the crossing rule pulls it all the way back to
-`36.46%`. The rule works when it is part of what the read learns; applied afterwards to a read
-trained without it, it re-decides the same place. That is the structural answer to "why does the level repair not survive
-composition": it does survive, but only if the composition is trained as one.
+`36.46%`.
+
+**Corrected by M22's controlled ablation** (`docs/M22_STENCIL_READ.md`, same seed, same population, one block): applied
+post-hoc to the `envelope` arm's own weights, the rule reaches F1@0 `0.341542` and AUC `0.868019` at `42.63%` positive,
+against the same arm trained without it at `0.350636` / `0.898066` and the arm trained with it in the loop at `0.402187` /
+`0.823601`. So "it re-decides the same place" was wrong in both directions: post-hoc application decides a *different and
+worse* place on the primary (`-0.009094` against its own arm) while ranking *better* (`-0.030047` AUC for the arm it was
+applied to, and `+0.044418` over the in-loop arm). In-loop training is what makes the rule work on the primary - it is
+worth `+0.060645` F1@0 over post-hoc application, and it pays `0.074465` AUC against the arm it starts from to buy it.
+The structural answer to "why does the level repair not survive composition" is therefore narrower than this document
+first stated: the rule survives composition only when it is trained as part of the composition, and it buys that survival
+with ranking.
 
 ### The channel split, per arm
 

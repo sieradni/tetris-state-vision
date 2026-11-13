@@ -2967,3 +2967,36 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Instrument: `stage` now exits the block with 125 the moment a window is missing, and `runs/wait_and_launch.sh` retries
   the whole block when that happens; the block's own `passed` guards make the retry resume rather than redo.
 - Named green run: the retrying launch completed all eight stage receipts `passed 0`.
+
+## V-147 - CLOSED: a declared lever reached the model, the parser and the arguments but not the recovery contract
+
+- Symptom: both M22 stencil arms were refused by their own admission - `sweep_stencil=1` with
+  `ValueError: occupancy free-channel stencil differs from resource admission` - while the same run's
+  `summary.json` carried `occupancy_free_stencil: 1` in `arguments` and in `config`.
+- Root cause: the recovery contract is a hand-written list of assignments, so a field added to `ModelConfig`, the parser
+  and the argument dump was simply not copied into it. The admission join reads the contract, so the arm that declared
+  the field failed the gate that exists to catch a *different* value.
+- Detection class: declaration propagation - the third member after V-141/V-142/V-145, and the first one where the value
+  reached every consumer except one hand-maintained dict.
+- Instrument: `complete_recovery_contract` fills every `occupancy_*` field the config carries and the contract lacks, so
+  the dict is complete by construction rather than by remembering; `tests/test_declaration_propagation.py` asserts that
+  every occupancy field of the model reaches the contract, that an explicit value is never overwritten, and that `main`
+  completes the contract it writes.
+- Named green run: the M22 block's six arms and eighteen stage receipts `passed 0`, the standing instrument green, and
+  the full suite green through the bounded runner.
+
+## V-148 - CLOSED: the de-meaned stencil removed its own level, not the level the scorer reads
+
+- Symptom: both `occupancy_free_stencil 2` arms were trained claiming a constant-mode bar, and the curator's
+  `constant_mode_removed` guard refused the record: `largest_level_ratio` was `0.3997` on one arm and `0.0821` on the
+  other, against `0.70`-`0.84` for the plain form - a level was still inside the scored window.
+- Root cause: the model de-meaned the whole `(rows+spawn_rows)` read, while every measurement scores the visible board
+  only (`sweep_logits` crops to `20` of `24` rows). Removing the mean of a wider tensor does not remove the mean of the
+  window cut out of it.
+- Detection class: measurement formulation - a declared property that does not hold in the population it is scored on.
+  Caught by a curator guard before any number was published, and the arms were re-measured rather than relaxed.
+- Instrument: the guard itself (`constant_mode_removed` at `LEVEL_RATIO_REMOVED = 0.15` with the plain form required
+  above `LEVEL_RATIO_PRESENT = 0.40`, thresholds sitting in the measured gap), plus
+  `tests/test_stencil_read.py::test_the_de_meaned_mode_carries_no_board_level`, which asserts the bar on the visible
+  window rather than on the whole tensor.
+- Named green run: the M22 curation `passed 0` over all eight arms and the full suite green through the bounded runner.

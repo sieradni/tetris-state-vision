@@ -23,7 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the level repair works, and the decomposition says where the level comes from**
+Latest: **the free channel's local stencil is the strongest read measured, and it does not meet the bar**
+([M22_STENCIL_READ.md](M22_STENCIL_READ.md), `docs/evidence/m22-stencil-r1/scope.json`). Eight arms in one catalogue -
+the published read, the M20 two-path read, the M21 composition, the sum without the envelope, and the same two
+compositions with `--occupancy-free-stencil` on - control reproducing `0.8226433610683003` / `0.381640` exactly, the
+envelope reproducing M20 bit-for-bit and the crossing arm reproducing M21. The stencil arm reaches **0.917020** AUC and
+**0.480776** F1 at `0.0` (`+0.099136` primary, `+0.094377` AUC, row error **+0.404**, best F1 `0.605314`), the best primary
+and the best ranking in the record - and **0 of 28** strict exact, so the standing bar is **not cleared**:
+`stencil-moves-without-clearing`. Composed with the crossing rule it collapses (`stencil-crossing` `-0.069945`).
+The channel split says why: the local stencil alone ranks `0.634832` against the pooled channel's `0.781555`, adding it
+*lowers* the free channel, and `82%` of its own magnitude is a board-wide level. The de-meaned form
+(`--occupancy-free-stencil 2`) removes the level exactly and the gain falls to `+0.033170`: **the primary gain was the
+level, not the locality**. The in-loop versus post-hoc ablation is measured: in-loop `0.402187` against post-hoc
+`0.341542` (`+0.060645` primary, `-0.044418` AUC), so in-loop training is what makes the rule work on the primary while
+post-hoc application ranks better - M21's "re-decides the same place" is corrected to those numbers.
+
+Previous: **the level repair works, and the decomposition says where the level comes from**
 ([M21_LEVEL_COMPOSITION.md](M21_LEVEL_COMPOSITION.md), `docs/evidence/m21-level-r1/scope.json`). Four arms in one
 catalogue, control reproducing `0.8226433610683003` / `0.381640` exactly, and the M20 arm reproducing the M20 checkpoint
 bit-for-bit. The requested composition

@@ -497,6 +497,18 @@ def require_occupancy_lattice_free(value, summary):
         raise ValueError("occupancy lattice-free readout differs from resource admission")
 
 
+# 0 pooled context only, 1 plus the coarse local stencil on the fixed lattice, 2 the same stencil de-meaned (M22)
+OCCUPANCY_FREE_STENCIL_LEVERS = (0, 1, 2)
+
+
+def require_occupancy_free_stencil(value, summary):
+    """One declaration of the admission join for the free channel's local stencil."""
+    if (type(value) is not int or value not in OCCUPANCY_FREE_STENCIL_LEVERS or
+            summary.get("arguments", {}).get("occupancy_free_stencil", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_free_stencil", 0) != value):
+        raise ValueError("occupancy free-channel stencil differs from resource admission")
+
+
 def require_lattice_board_refine(value, summary):
     """One declaration of the admission join for the per-board refinement capacity lever."""
     if (type(value) is not int or value not in LATTICE_BOARD_REFINE_LEVERS or

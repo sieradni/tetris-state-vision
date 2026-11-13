@@ -40,6 +40,7 @@ class ModelConfig:
     lattice_board_refine: int = 0
     lattice_board_refine: int = 0
     occupancy_lattice_free: int = 0
+    occupancy_free_stencil: int = 0
     occupancy_column: int = 0
     occupancy_offset_rows: int = 0
     occupancy_normalise: int = 0
@@ -102,6 +103,13 @@ class ModelConfig:
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
         check(type(self.lattice_board_refine) is int and self.lattice_board_refine in (0, 1),
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
+        check(type(self.occupancy_free_stencil) is int and self.occupancy_free_stencil in (0, 1, 2),
+              "occupancy free-channel stencil is 0 (the free channel reads pooled context and fixed "
+              "coordinates only), 1 (a coarse local stencil on the fixed lattice) or 2 (the same stencil "
+              "with its board-wide mean removed, so it carries only relative structure)")
+        check(not self.occupancy_free_stencil or self.occupancy_lattice_free == 2,
+              "the local stencil is detail for the lattice-free channel, so it is declared only beside "
+              "occupancy_lattice_free 2")
         check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1, 2),
               "occupancy lattice-free readout is 0 (published read-out), 1 (declared gated channel) or 2 "
               "(declared two-path read, summed with the lattice-sampled read)")
@@ -684,6 +692,17 @@ class TetrisStateNet(nn.Module):
             # unused parameter would carry no optimizer state (V-143), so it is not built at all.
             self.occupancy_lattice_gate = (nn.Parameter(torch.zeros(1))
                                            if config.occupancy_lattice_free == 1 else None)
+        # Declared detail for the free channel: a coarse local stencil sampled on the *fixed* lattice, so it
+        # carries locality without the predicted lattice's registration error. Five taps - the cell's own coarse
+        # box and its four neighbours - read from the dimension-wide coarse feature map at equal divisions of
+        # the capture, plus the cell's own row and column embeddings so it knows where it is. Only the output
+        # projection is zeroed (V-143), and it is built last so arms without it draw identical values.
+        self.occupancy_free_stencil = None
+        if config.occupancy_free_stencil:
+            self.occupancy_free_stencil = nn.Sequential(
+                nn.Linear(6*dimension, dimension), nn.SiLU(), nn.Linear(dimension, 1))
+            nn.init.zeros_(self.occupancy_free_stencil[2].weight)
+            nn.init.zeros_(self.occupancy_free_stencil[2].bias)
         # Declared capacity lever: one correction of the decoded lattice per board, predicted from
         # the board token and applied identically at every stage - origin offset in cells along the
         # decoded axes plus a log-scale per axis. It is board-conditioned rather than per-stage, so
@@ -860,14 +879,43 @@ class TetrisStateNet(nn.Module):
                 free = ((self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None]
                         +pooled[:, None])
                 channel = self.occupancy_lattice_free(free).reshape(batch, rows, columns)
+                local_read = None
+                if self.occupancy_free_stencil is not None:
+                    # The coarse map is divided into equal boxes over the capture - a fixed lattice, never the
+                    # decoded one - and each cell reads its own box plus its four neighbours. Coarse because a
+                    # box average is insensitive to the sub-cell misplacement that made pixel-local features
+                    # fail, and fixed because nothing here depends on where the decoder put the board.
+                    grid = F.adaptive_avg_pool2d(coarse, (rows+2, columns+2))
+                    taps = (grid[:, :, 1:-1, 1:-1], grid[:, :, :-2, 1:-1], grid[:, :, 2:, 1:-1],
+                            grid[:, :, 1:-1, :-2], grid[:, :, 1:-1, 2:])
+                    stencil = torch.cat([tap.permute(0, 2, 3, 1).reshape(batch, rows*columns, -1)
+                                         for tap in taps], -1)
+                    where = (self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None]
+                    local_read = self.occupancy_free_stencil(torch.cat(
+                        (stencil, where.expand(batch, rows*columns, -1)), -1)).reshape(batch, rows, columns)
+                    if self.config.occupancy_free_stencil == 2:
+                        # Declared constant-mode bar (M22): the local read is de-meaned across the board before it
+                        # reaches the sum, so it can only say what is local - a board-wide level is not expressible
+                        # in it and cannot be bought through it. Measured need: the un-de-meaned form moved the
+                        # summed read's level (its F1@0 came from the operating point, not from local detail) and the
+                        # crossing rule, which derives a per-board level, could not use it.
+                        # the mean is taken over the visible board, which is the population every measurement scores,
+                        # not over the spawn rows above it - de-meaning the wider tensor leaves a level inside the
+                        # window that is actually read.
+                        visible = self.config.visible_rows
+                        local_read = local_read-local_read[:, :visible].mean(dim=(1, 2), keepdim=True)
                 if self.config.occupancy_lattice_free == 2:
                     # Declared two-path read: the lattice-free channel is one more piece of evidence for the same
                     # per-cell score, so it is summed with the lattice-sampled read instead of replacing it. The
                     # sum is ungated on purpose: a scale of zero would sit at a fixed point of training - the
                     # head's output and the gate's gradient are both zero there, so neither could ever move
                     # (V-143). The head's own zero-initialized output carries the identity at step zero instead.
-                    free_read = channel
+                    free_read = channel if local_read is None else channel+local_read
                     occupancy_parts = {"lattice": occupancy_logits, "free": free_read}
+                    if local_read is not None:
+                        # Kept beside the sum so a measurement can score the local detail alone, and score the
+                        # free channel with the stencil removed, exactly.
+                        occupancy_parts["local"] = local_read
                     occupancy_logits = occupancy_logits+free_read
                 else:
                     gate = torch.tanh(self.occupancy_lattice_gate)

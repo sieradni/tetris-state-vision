@@ -173,6 +173,12 @@ def arguments(argv=None):
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
                              "only, the one the occupancy read-out reads")
+    parser.add_argument("--occupancy-free-stencil", type=int, choices=(0, 1, 2), default=0,
+                        help="declared detail lever on the free channel;0 reads image-level context and "
+                             "fixed cell coordinates only;1 adds a coarse five-tap stencil sampled on the "
+                             "fixed lattice, so a cell sees its own coarse box and its four neighbours "
+                             "without touching the predicted lattice;2 is the same stencil de-meaned "
+                             "across the board, so it carries only relative structure")
     parser.add_argument("--occupancy-lattice-free", type=int, choices=(0, 1, 2), default=0,
                         help="declared read-out lever;0 is the published lattice-sampled occupancy "
                              "read-out;1 adds a gated channel that reads image-level context and fixed "
@@ -442,6 +448,9 @@ def arguments(argv=None):
         # the summed form (2) is the one that may carry the envelope, and it is measurable with or without it.
         parser.error("the single lattice-free channel replaces the lattice-sampled read, so it is not declared "
                      "beside --occupancy-stack-monotone 1; the summed form is --occupancy-lattice-free 2")
+    if args.occupancy_free_stencil and args.occupancy_lattice_free != 2:
+        parser.error("the local stencil is detail for the free channel, so it is declared only beside "
+                     "--occupancy-lattice-free 2")
     if args.occupancy_lattice_free and (args.lattice_residual or args.lattice_support or
                                        args.geometry_final_only or args.box_extent_weight or
                                        args.support_anchor_weight):
@@ -498,7 +507,25 @@ INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_detail_ta
                                  "occupancy_resolution_branch.", "occupancy_deform.",
                                  "occupancy_deform_coarse.", "support_box.", "lattice_residual.",
                                  "occupancy_lattice_free.", "occupancy_lattice_gate",
+                                 # M22: the stencil head is declared by the arm that carries it, and
+                                 # an arm without it is the same function, so a source checkpoint
+                                 # that predates the field is a legitimate start.
+                                 "occupancy_free_stencil.",
                                  "lattice_board_refine.", "occupancy_column.")
+
+
+def complete_recovery_contract(contract, config):
+    """Every declared occupancy lever the config carries must reach the contract.
+
+    The assignments above are hand-maintained, and V-147 found the failure mode: a field can be added to the model and
+    the parser, be recorded in the arguments, and still be absent from the contract, which the admission join reads - so
+    the arm that declares it is refused by its own admission. Filling from the config makes the contract complete by
+    construction rather than by remembering.
+    """
+    for name in sorted(config):
+        if name.startswith("occupancy_") and name not in contract:
+            contract[name] = config[name]
+    return contract
 
 
 def owned_initial_source(source, *, output):
@@ -515,7 +542,8 @@ def owned_initial_source(source, *, output):
 
 
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
-                   lattice_residual=0, occupancy_lattice_free=0, lattice_board_refine=0,
+                   lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
+                   lattice_board_refine=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
                    occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                    occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
@@ -540,7 +568,8 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     from tetris_vision.components import require_endpoint_term
     from tetris_vision.losses import (require_box_extent_weight, require_geometry_final_only,
                                      require_lattice_support, require_lattice_residual,
-                                     require_occupancy_lattice_free, require_support_anchor_weight,
+                                     require_occupancy_lattice_free, require_occupancy_free_stencil,
+                                     require_support_anchor_weight,
                                      require_lattice_board_refine,
                                      require_occupancy_context,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
@@ -554,6 +583,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_stack_monotone,
                                      require_occupancy_crossing_threshold,
                                      require_occupancy_skyline_recovery, require_occupancy_tap_span)
+    require_occupancy_free_stencil(occupancy_free_stencil, summary)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -851,6 +881,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_tap_span=args.occupancy_tap_span,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
+                     occupancy_free_stencil=args.occupancy_free_stencil,
                      lattice_board_refine=args.lattice_board_refine,
                      dimension=args.trunk_dimension)
     config_json = json.loads(json.dumps(asdict(config)))
@@ -891,6 +922,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            lattice_support=args.lattice_support,
                            lattice_residual=args.lattice_residual,
                            occupancy_lattice_free=args.occupancy_lattice_free,
+                           occupancy_free_stencil=args.occupancy_free_stencil,
                            lattice_board_refine=args.lattice_board_refine,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
@@ -911,6 +943,10 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "lattice_support",
                                                     "lattice_residual",
                                                     "occupancy_lattice_free",
+                                                    # M22: default 0 constructs no stencil head, so a
+                                                    # source checkpoint that predates the field is the
+                                                    # same function and a legitimate initial state.
+                                                    "occupancy_free_stencil",
                                                     "lattice_board_refine",
                                                     "occupancy_column",
                                                     "occupancy_offset_rows",
@@ -1086,7 +1122,9 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["support_anchor_weight"] = args.support_anchor_weight
     recovery_contract["lattice_residual"] = args.lattice_residual
     recovery_contract["occupancy_lattice_free"] = args.occupancy_lattice_free
+    recovery_contract["occupancy_free_stencil"] = args.occupancy_free_stencil
     recovery_contract["lattice_board_refine"] = args.lattice_board_refine
+    complete_recovery_contract(recovery_contract, json.loads(json.dumps(asdict(config))))
     recovery_contract["freeze_backbone"] = args.freeze_backbone
     recovery_contract["initial_weights_from"] = initial_origin["run"] if initial_origin else None
     if args.accumulation_policy is not None:

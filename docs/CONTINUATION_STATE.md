@@ -1,5 +1,39 @@
 # Contributor handoff — 2026-10-30
 
+## The free channel's local stencil: best read, no exact board, and the gain is a level (2026-11-13, M22)
+
+[M22_STENCIL_READ.md](M22_STENCIL_READ.md) declared eight arms before any receipt and a controlled ablation: the
+published read, the M20 two-path read, the M21 composition, the sum without the envelope, and the same two compositions
+with a coarse local stencil on the fixed lattice (plain, and de-meaned over the visible board). Control reproduced
+`0.8226433610683003` / `0.381640` exactly; `envelope` reproduced the M20 checkpoint bit-for-bit and `crossing` the M21
+one.
+
+| arm | AUC | F1@0 | share at 0.0 | exact | row error | reading |
+|---|---|---|---|---|---|---|
+| control | 0.822643 | 0.381640 | 49.95% | 0/28 | +7.819 | — |
+| envelope | 0.898066 | 0.350636 | 55.52% | 0/28 | +3.322 | level-fails |
+| crossing | 0.823601 | 0.402187 | 46.88% | 0/28 | +1.289 | level-passes |
+| bare | 0.883359 | 0.365342 | 52.80% | 0/28 | +7.128 | level-fails |
+| stencil | 0.917020 | 0.480776 | 35.93% | 0/28 | +0.404 | stencil-moves-without-clearing |
+| stencil-crossing | 0.782265 | 0.311695 | 61.54% | 0/28 | +3.855 | stencil-fails |
+| centred | 0.859823 | 0.414810 | 45.00% | 0/28 | +1.007 | stencil-moves-without-clearing |
+| centred-crossing | 0.736989 | 0.261500 | 66.89% | 0/28 | +3.278 | stencil-fails |
+
+The verdict is plain: `+0.099136` primary clears the `+0.05` floor, no strict exact board means the bar is **not met**.
+Where it lives: the `monotone` stage (share `+0.178888`), and the channel split shows the local read is weaker than the
+pooled one (`0.634832` vs `0.781555`), lowers the free channel, and carries `82%` of its magnitude as a board-wide level.
+The de-meaned re-measurement is the controlled test - `+0.033170` primary, level ratio `1e-06` - so the appearance of a
+large gain was the level. Composed with the crossing rule the stencil loses against the control in both formulations.
+
+Ablation, same seed, same population: `crossing` `0.402187` / `0.823601` against the rule applied post-hoc to
+`envelope`'s own weights `0.341542` / `0.868019`. In-loop minus post-hoc `+0.060645` F1@0, `-0.044418` AUC. The rule's
+operating-point benefit needs in-loop training; its ranking benefit does not. M21's wording is corrected in place.
+
+Also closed: V-147 (a declared lever missing from the hand-written recovery contract; the contract is now completed from
+the config and the standing instrument covers it). Next lever named: the stencil's detail is compensating a level, so the
+honest next question is whether *normalised* local contrast - a stencil that reads the box against its neighbourhood
+rather than raw feature magnitude - adds ranking where this one added level.
+
 ## The level repair composed and decomposed: `level-passes`, decoupling `decoupling-fails` (2026-11-13, M21)
 
 [M21_LEVEL_COMPOSITION.md](M21_LEVEL_COMPOSITION.md) declared four arms and each one's bar before any receipt. Control
