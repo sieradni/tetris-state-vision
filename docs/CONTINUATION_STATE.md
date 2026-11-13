@@ -1,5 +1,37 @@
 # Contributor handoff — 2026-10-30
 
+## The joint skyline is falsified; the gate is a per-cell read limit (2026-11-12, M17)
+
+[M17_SKYLINE_RECOVERY.md](M17_SKYLINE_RECOVERY.md) was predeclared with its falsification before any receipt:
+`--occupancy-skyline-recovery 1` recovers the board's whole skyline with a dynamic programme over per-column heights
+(emission = signed mass on each side of the split, penalty `1.0` logit, deterministic, label-free by signature and by
+test), applied last after the envelope, centring and the crossing rule. Family `m17-skyline-`, catalogue `5c02208e`, all
+receipts `passed 0`.
+
+| arm | AUC | plain F1 at `0.0` | TP/FN | positive at `0.0` | strict exact | boundary-exact | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 661/6 | 49.95% | 0/28 | 0/28 | +7.819 | 0.7684 |
+| envelope + centring + rule + skyline | 0.620664 | **0.308333** | 592/75 | 56.66% | **0/28** | **0/28** | +3.993 | 0.5988 |
+
+Reading **`skyline-fails`**, secondary `ranking-degraded` (AUC `-0.201979`). **Both declared falsifications fired**: the
+recovery does not beat the per-column rule (`0.308333` vs `0.405439`) and the gate stays `0 of 28` under both strict
+definitions - nothing moved, so there is no artefact of the V-139 kind to audit.
+
+**Why it failed, as mechanism.** The emission is a *volume* score, so it prefers heights that accumulate positive read
+rather than the level at which the column steps: `56.66%` of cells positive against control's `49.95%`, recall `0.8876`
+against `0.9910`, and a row error *worse* than the read it was applied to (`3.993` against `1.189`). Putting every cell
+on its side of the recovered height then destroyed the cross-board ordering, hence AUC `0.62`. A softer penalty or a
+different emission is a variant of this arm, not a new one; none was run, because that is the per-arm tuning the
+declaration forbids.
+
+**What seventeen arms now say about the gate.** Decision-side arms (`M16` rule, `M17` skyline) cannot get below the
+read's own row error and the skyline prior hurts; read-side arms hold every best placement (`M15` envelope, `1.189` rows)
+and ranking (`M15` combined, `0.888912`); the closest board ever produced is **2 wrong cells**, from a cell-read lever
+(`m3-occlatfree-lever`, AUC `0.840147`). A 200-cell board at AUC `0.89` implies ten to twenty expected cell errors and the
+gate asks for zero on all 28, so the remaining distance is a **per-cell read limit**, not a decision or structure limit.
+That is the structural diagnosis to carry forward: work on the read's per-cell precision (what the tap samples, at what
+resolution, with what registration), not on more decision layers.
+
 ## The fit gate was mis-measured: `1 of 28` is `0 of 28` (2026-11-12, V-139)
 
 Before building anything for the gate, the metric was audited end to end, and the audit found the defect.

@@ -1,0 +1,323 @@
+{
+  "status": "passed",
+  "instrument": "m17-skyline-recovery-r1",
+  "predeclaration": "docs/M17_SKYLINE_RECOVERY.md",
+  "scope": "The M15 block's own 64-step control against a 64-step arm carrying the per-column monotone monotone envelope inside the head before the objective sees it - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The option is structural: no label, no threshold, no fitted parameter, no prevalence, no statistic of the population. 0 is exactly the published function. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m17-skyline-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "joint-skyline-recovery",
+    "flag": "--occupancy-skyline-recovery 1 (after envelope, centring and the crossing rule)",
+    "definition": "per column, the suffix maximum of the visible logits in bottom-first row order (equivalently a cumulative maximum from the top of the window down to the floor), applied inside the head before the objective or any scorer sees the tensor",
+    "where": "model head, before the loss and before every consumer",
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "loss_terms_added": 0,
+    "weight": null,
+    "margin": null,
+    "statistic": "none: monotonicity is the domain's own constraint on a locked stack, so nothing about the population is read",
+    "orientation": "non-increasing upward, because material rests on the floor",
+    "crossings_per_column": "at most one, and the crossing is the column's height",
+    "invariance": "equivariant to a board-wide shift (envelope(L + c) == envelope(L) + c), so unlike centring this transform leaves the level free and places the crossing instead",
+    "declared_before_receipts": true,
+    "unknown_cells": "spawn rows are outside the visible window and pass through untouched",
+    "identity_at_zero": "occupancy_stack_monotone 0 is exactly the published function",
+    "composition": "the envelope places the crossing, then centring sets its level to the board's own visible mean; the declared order is fixed in the head and asserted in the tests",
+    "supersedes": "nothing: two structural options on the read, still refused beside every supervision term, the normalised output and every read-moving lever",
+    "expected_reading": "skyline-moves-without-clearing",
+    "penalty": 1.0,
+    "states": "0..visible_rows per column, dynamic programme over the ten columns",
+    "label_free": true,
+    "label_free_proof": "the rule is a function of (logits, visible_rows) only, applied before any loss is evaluated; tests permute, invert and zero the labels and require bit-identical output, and scan the executable body for any label reference",
+    "selection": "argmax over skylines of sum_c [sum below h - sum at/above h] - 1.0 * sum_c |h_c - h_{c-1}|",
+    "falsification": "falsified if the primary does not exceed the per-column rule's own reading, and separately recorded if the strict exact-board gate stays at zero",
+    "placement_ceiling": 0.412034,
+    "placement_ceiling_note": "control's own swept maximum over the standing 81-point grid is 0.412034, 0.0196 below the 0.431640 bar, so no placement-only transform can clear the primary; the informative readings are placement, row error and exact boards",
+    "failure_mode": "the rule cannot see prevalence, so on a 12%-occupied population its split can sit above or below the F1-optimal level; it is declared falsified if it fails to beat the same read at the fixed boundary"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m17-skyline-control-r1",
+      "sweep": "m17-skyline-control-r1-sweep-r1",
+      "occupancy_stack_monotone": 0,
+      "occupancy_crossing_threshold": 0,
+      "occupancy_skyline_recovery": 0,
+      "occupancy_centre": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "config": {
+        "occupancy_stack_monotone": 0,
+        "occupancy_centre": 0,
+        "occupancy_crossing_threshold": 0,
+        "occupancy_skyline_recovery": 0,
+        "occupancy_normalise": 0,
+        "occupancy_detail": 1,
+        "occupancy_offset_rows": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "5c02208e3eb6b4292424263a4835c3501901833271140642a164630a2d78f991",
+      "study_elapsed_seconds": 342.99934999999823,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.613554,
+        "last_step": 64,
+        "last": 1.526806,
+        "mean": 0.768358,
+        "source": "runs\\m17-skyline-control-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the structural option removes the level instead of charging it"
+      },
+      "verdict": "uninformative"
+    },
+    "recovered": {
+      "study": "m17-skyline-recovered-r1",
+      "sweep": "m17-skyline-recovered-r1-sweep-r1",
+      "occupancy_stack_monotone": 1,
+      "occupancy_crossing_threshold": 1,
+      "occupancy_skyline_recovery": 1,
+      "occupancy_centre": 1,
+      "weights_sha256": "3767ef9e149c3b4f75984a9a6815f33b15f5c7cd042529c494dbf5886efd5930",
+      "config": {
+        "occupancy_stack_monotone": 1,
+        "occupancy_centre": 1,
+        "occupancy_crossing_threshold": 1,
+        "occupancy_skyline_recovery": 1,
+        "occupancy_normalise": 0,
+        "occupancy_detail": 1,
+        "occupancy_offset_rows": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "5c02208e3eb6b4292424263a4835c3501901833271140642a164630a2d78f991",
+      "study_elapsed_seconds": 335.03267439999763,
+      "auc": 0.6206635178255187,
+      "f1_at_zero": 0.308333,
+      "operating_counts": {
+        "true_positive": 592,
+        "false_positive": 2581,
+        "false_negative": 75
+      },
+      "positives_at_zero": 3173,
+      "positive_share_at_zero": 0.566607,
+      "precision": 0.186574,
+      "recall": 0.887556,
+      "best": {
+        "threshold": -0.15,
+        "f1": 0.33025692192566725,
+        "precision": 0.1980849790544584
+      },
+      "out_of_fold_f1": 0.30789,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 3.992593,
+        "columns": 135
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.970563,
+        "last_step": 64,
+        "last": 0.986049,
+        "mean": 0.59881,
+        "source": "runs\\m17-skyline-recovered-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; this arm adds no term of its own, so there is no separate charge to report - the structural option removes the level instead of charging it"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "centre_control": {
+      "f1_at_zero_delta": -0.073307,
+      "auc_delta": -0.20198,
+      "best_f1_delta": -0.081777,
+      "best_threshold_delta": -1.05,
+      "out_of_fold_delta": -0.092509,
+      "positive_share_delta": 0.067143,
+      "row_error_delta": -3.826199,
+      "occupancy_loss_delta": -0.169548
+    }
+  },
+  "aliasing_guard": {
+    "arms_differ_in": [
+      "occupancy_centre",
+      "occupancy_crossing_threshold",
+      "occupancy_skyline_recovery",
+      "occupancy_stack_monotone"
+    ],
+    "weights_differ": true,
+    "not_the_previous_block": true,
+    "rule": "a structural option changes the read globally, so the block proves it measured its own checkpoint: each sweep's weights equal its own study's checkpoint, the arms' weights differ, the previous block's checkpoint is excluded by name, and the configs differ in exactly the declared field"
+  },
+  "reference": {
+    "combined_read": {
+      "auc": 0.8889123247012213,
+      "f1_at_zero": 0.390805,
+      "best_f1": 0.5026861089792786,
+      "out_of_fold_f1": 0.392122,
+      "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+    },
+    "crossing_rule": {
+      "auc": 0.835241410310454,
+      "f1_at_zero": 0.405439,
+      "best_f1": 0.428087986463621,
+      "out_of_fold_f1": 0.423254,
+      "scope": "docs\\evidence\\m16-crossing-threshold-r1\\scope.json"
+    },
+    "envelope": {
+      "auc": 0.8459483009356866,
+      "f1_at_zero": 0.409161,
+      "best_f1": 0.4426362896663954,
+      "out_of_fold_f1": 0.409639,
+      "scope": "docs\\evidence\\m15-stack-contiguity-r1\\scope.json"
+    },
+    "centring": {
+      "auc": 0.8153954139897414,
+      "f1_at_zero": 0.374142,
+      "best_f1": 0.3932304629168741,
+      "out_of_fold_f1": 0.378651,
+      "scope": "docs\\evidence\\m14-read-centring-r1\\scope.json"
+    },
+    "midpoint_anchor": {
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.4014084507042254,
+      "out_of_fold_f1": 0.348472,
+      "scope": "docs\\evidence\\m13-midpoint-r1\\scope.json"
+    },
+    "dense_hinge": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "best_f1": 0.4655819774718398,
+      "out_of_fold_f1": 0.465582,
+      "scope": "docs\\evidence\\m12-dense-hinge-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M15 combined read, the M16 crossing rule, the M15 envelope arm, the M14 centred read, the M13 midpoint anchor, the M12 dense hinge, the M11 quantile anchor, the M10 extremal anchor and the M9 hinge, each measured in its own catalogue and none re-measured or re-verdicted here"
+  },
+  "reading": "skyline-fails",
+  "reading_text": "Deciding the board as one skyline does not beat the per-column rule at the same read. The recovery hypothesis is falsified on this population: the columns' independence was not what the remaining errors were made of, and no penalty or grid is offered in its place.",
+  "secondary_reading": "ranking-degraded",
+  "secondary_text": "Deciding AUC with the standing -0.02 tolerance. A maximum can only raise cells, so a ranking change here is the training's response to a constrained read, not the transform's own doing, and it is reported as the measured price.",
+  "fixed_threshold_ceiling": {
+    "arm": "ruled",
+    "scope": "docs\\evidence\\m16-crossing-threshold-r1\\scope.json",
+    "f1_at_zero": 0.405439,
+    "recovery_primary": 0.308333
+  },
+  "ceiling_broken": false,
+  "gate_moved": false,
+  "neighbour_excluded": {
+    "arm": "combined",
+    "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boundary_exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "recovered"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "recovered": {
+      "auc": 0.6206635178255187,
+      "f1_at_zero": 0.308333,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}

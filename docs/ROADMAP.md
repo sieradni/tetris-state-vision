@@ -23,7 +23,24 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the fit gate's `1 of 28` was a metric artefact - the true figure is `0 of 28` for all 79 arms** (V-139).
+Latest: **the joint skyline decision is falsified, and with it the idea that the columns' independence was the
+problem** ([M17_SKYLINE_RECOVERY.md](M17_SKYLINE_RECOVERY.md), `docs/evidence/m17-skyline-recovery-r1/scope.json`).
+`--occupancy-skyline-recovery 1` recovers each board's whole skyline with a dynamic programme over per-column heights
+(emission = signed mass on each side of a split, penalty `1.0` logit, deterministic), applied last after the envelope,
+centring and the crossing rule. Family `m17-skyline-`, catalogue `5c02208e`; control reproduced `0.8226433610683003` /
+`0.381640` exactly and every stage receipt `passed 0`. Reading **`skyline-fails`**, secondary **`ranking-degraded`**:
+plain F1 at `0.0` **0.308333** (`-0.073307` against control, `-0.097106` against the per-column rule), AUC **0.620664**
+(`-0.201979`, the worst in the program), TP/FN `592/75` against control's `661/6`, cells positive `56.66%` (control
+`49.95%`), row error `+3.993` - worse than the read it was applied to (`1.189`) - occupancy loss `0.5988`, and the gate
+**0 of 28 under both strict definitions**, so nothing newly fits and there is no V-139 class of artefact to audit. Both
+declared falsifications fired. The mechanism of the failure is on the record: a *volume* emission prefers heights that
+accumulate positive read rather than the level the column steps at, and replacing cell magnitudes with their side of the
+recovered height destroyed the cross-board ranking. No penalty sweep or alternate emission is offered - that would be the
+per-arm tuning the declaration forbids. Seventeen arms now separate by where they act: decision-side arms cannot beat the
+read's row error, read-side arms hold every best placement and ranking, and the closest board ever produced is 2 wrong
+cells from a cell-read lever - so the remaining distance is a per-cell read limit, not a decision or structure limit.
+
+Previous: **the fit gate's `1 of 28` was a metric artefact - the true figure is `0 of 28` for all 79 arms** (V-139).
 The obstacle was audited before anything was built: every curator's exactness test compared column boundaries and
 silently dropped any column whose decision or label was empty, so a board that filled genuinely empty columns could be
 scored exact. Recomputed from the retained per-case logits of **every arm sweep in `runs/`** - no block run, no receipt

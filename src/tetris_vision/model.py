@@ -45,6 +45,7 @@ class ModelConfig:
     occupancy_centre: int = 0
     occupancy_stack_monotone: int = 0
     occupancy_crossing_threshold: int = 0
+    occupancy_skyline_recovery: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -125,6 +126,12 @@ class ModelConfig:
         check(not (self.occupancy_crossing_threshold and self.occupancy_normalise),
               "the crossing rule is declared on the published output parameterisation; z-scoring inside it "
               "would mix the board's spread into the level the rule selects")
+        check(type(self.occupancy_skyline_recovery) is int and self.occupancy_skyline_recovery in (0, 1),
+              "occupancy skyline recovery is 0 (every column decided on its own) or 1 (declared joint decision "
+              "over the board's whole skyline)")
+        check(not (self.occupancy_skyline_recovery and self.occupancy_normalise),
+              "the skyline recovery decides the board's structure; z-scoring the read would redefine the "
+              "emission it maximises")
 
     @classmethod
     def pilot(cls):
@@ -235,6 +242,74 @@ def otsu_board(logits, visible_rows):
     if level.shape != (batch,):
         raise ValueError("the crossing level must be one number per board")
     return logits-level[:, None, None]
+
+
+SKYLINE_PENALTY = 1.0
+SKYLINE_EPSILON = 1e-4
+
+
+def skyline_shift(logits, visible_rows, penalty=SKYLINE_PENALTY):
+    """Decide the whole board as one skyline instead of ten independent columns.
+
+    Sixteen arms decided each column on its own. Under the monotone read a column is a step, so a board's state is a
+    *skyline* - one height per column - and nothing in the per-column rule enforces that those ten decisions form one
+    coherent state. The fitted boards all sit within a row or two of the truth, which is exactly where independent
+    decisions jitter: a column can flip one row because its own evidence is marginal while its neighbours' is not.
+
+    This recovers the skyline jointly: a dynamic programme over states `0..visible_rows` maximises, per board,
+
+        sum_c emission_c(height_c) - penalty * sum_c |height_c - height_(c-1)|
+
+    with `emission_c(h) = sum(logits below h) - sum(logits at or above h)` - the signed mass the column's own read puts
+    on each side of the split, which is maximised exactly at the boundary of a monotone column and is sharp in the split
+    row rather than flat the way a difference of means is - and a fixed penalty of one logit, the same unit the declared
+    margin uses elsewhere in this repository, which is small beside a board-column's mass, so it only decides near-ties.
+    It reads no label, no target and no prevalence: the emission is a function of the logits, the penalty is a declared
+    constant, and the DP is deterministic (ties resolve to the lower height).
+
+    The emitted tensor keeps the read's own magnitudes but puts every cell on the side of its recovered height, so every
+    consumer that thresholds at `0.0` sees exactly the recovered skyline. Spawn rows are outside the board and untouched.
+    """
+    batch, rows, columns = logits.shape
+    if rows < visible_rows or columns < 1:
+        raise ValueError("the skyline recovery needs a board tensor")
+    visible = logits[:, :visible_rows]
+    device, dtype = visible.device, visible.dtype
+    states = torch.arange(visible_rows+1, device=device, dtype=dtype)
+    index = torch.arange(visible_rows, device=device, dtype=dtype)
+    cumulative = visible.cumsum(dim=1)
+    total = cumulative[:, -1]
+    emission = torch.empty(batch, visible_rows+1, columns, device=device, dtype=dtype)
+    emission[:, 0] = -total
+    for height in range(1, visible_rows+1):
+        below = cumulative[:, height-1]
+        emission[:, height] = below-(total-below)
+    score = emission[:, :, 0]
+    back = []
+    for column in range(1, columns):
+        cost = score[:, :, None]-penalty*(states[:, None]-states[None, :]).abs()
+        best, chosen = cost.max(dim=1)
+        back.append(chosen)
+        score = best+emission[:, :, column]
+    height = score.argmax(dim=1)
+    heights = torch.empty(batch, columns, device=device, dtype=dtype)
+    heights[:, -1] = height.to(dtype)
+    for column in range(columns-1, 0, -1):
+        height = back[column-1].gather(1, height.unsqueeze(1)).squeeze(1)
+        heights[:, column-1] = height.to(dtype)
+    if not bool(torch.all((heights >= 0) & (heights <= visible_rows))):
+        raise ValueError("the recovered skyline left the board")
+    bottom = visible[:, 0]
+    top = visible[:, visible_rows-1]
+    lower = torch.gather(visible, 1, (heights.long()-1).clamp_min(0).unsqueeze(1)).squeeze(1)
+    upper = torch.gather(visible, 1, heights.long().clamp_max(visible_rows-1).unsqueeze(1)).squeeze(1)
+    level = torch.where(heights <= 0, bottom,
+                        torch.where(heights >= visible_rows, top-SKYLINE_EPSILON, (lower+upper)/2.0))
+    # Every cell is put on the side of its recovered height, keeping the read's own magnitude within that side.
+    magnitude = (visible-level[:, None, :]).abs().clamp_min(SKYLINE_EPSILON)
+    inside = index[None, :, None] < heights[:, None, :]
+    decided = torch.where(inside, magnitude, -magnitude)
+    return torch.cat((decided, logits[:, visible_rows:]), 1)
 
 
 def stack_contiguous(logits, visible_rows):
@@ -782,6 +857,10 @@ class TetrisStateNet(nn.Module):
                 # Declared decision rule, applied last: the board decides at the level its own read puts between its two
                 # groups, so `0.0` downstream is that board's crossing rather than a fixed number no read chose.
                 occupancy_logits = otsu_board(occupancy_logits, self.config.visible_rows)
+            if self.config.occupancy_skyline_recovery:
+                # Declared joint decision, applied last: the board's ten heights are chosen as one skyline rather than
+                # ten independent crossings, so `0.0` downstream is a coherent state instead of ten coincidences.
+                occupancy_logits = skyline_shift(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_normalise:
                 # Declared parameterisation: the read the objective sees and the read a scorer sees
                 # are the same tensor, so the `0.0` boundary the loss optimises is the boundary every

@@ -2832,3 +2832,22 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `0 of 28` under both strict definitions.
 - Named green run: `tests.test_exact_state_metric` 8 tests green; full suite green through the bounded runner on the
   committed tree.
+
+## V-140 - CLOSED: the skyline emission was a volume score, not a crossing score
+
+- Symptom: the first (and only) skyline block returned AUC `0.620664` and plain F1 `0.308333`, with `56.66%` of cells
+  decided positive and `75` false negatives, and a row error (`3.993`) worse than the read it was applied to (`1.189`).
+- Root cause: the declared emission `sum(below h) - sum(at or above h)` maximises accumulated positive read rather than
+  the level at which a monotone column steps, so the recovered heights drift upward whenever a column carries broad
+  positive mass; the `1.0` logit penalty is negligible beside that mass, so the programme behaved close to an `argmax` of
+  a volume score. Replacing cell magnitudes with their side of the recovered height then removed the cross-board ordering
+  the AUC measures.
+- Detection class: model design (an arm whose declared statistic was wrong for its stated purpose). Detected by the
+  pre-declared readings on the block's own receipts: primary below the per-column rule and AUC degraded beyond the `-0.02`
+  tolerance, both recorded as falsification rather than repaired by re-tuning.
+- Instrument: none added, by declaration - the arm is recorded as falsified, and its falsification is the instrument.
+  `tests/test_skyline_recovery.py` keeps the recovery's behaviour pinned (clean board exact, marginal-column repair,
+  determinism, one-skyline, composition order, leakage guard) so a future arm that reuses it starts from a known state;
+  any replacement emission must be a new declared arm with its own falsification, never a penalty sweep.
+- Named green run: the block's eight stage receipts `passed 0`, curation `passed 0`, and the full suite green through the
+  bounded runner on the committed tree.
