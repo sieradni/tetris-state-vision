@@ -1,5 +1,47 @@
 # Contributor handoff — 2026-10-30
 
+## Supervising the location fails; the shift itself has to go (2026-11-12)
+
+[M13_MIDPOINT_ANCHOR.md](M13_MIDPOINT_ANCHOR.md) was predeclared before any receipt: `--occupancy-midpoint 1`, i.e. per
+qualifying board `|0.5*mean_occupied + 0.5*mean_empty - 0.0|` over known visible cells, pooled at `ANCHOR_WEIGHT = 0.5`,
+no margin, equal class weight. Family `m13-midpoint-`, new catalogue `19077be4`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error |
+|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.9% | 0/28 | 0.400399 | +7.819 |
+| midpoint anchor | 0.830500 | **0.310966** | 0.401408 @ `3.00` | 64.5% | 1/28 | 0.348472 | +9.779 |
+| *M12 dense hinge (reference)* | *0.862838* | *0.354770* | *0.465582* | *54.7%* | *1/28* | *0.465582* | *+8.544* |
+| *M10 extremal anchor (reference)* | *0.885462* | *0.310966* | *0.540811* | *64.5%* | — | *0.540811* | *+9.779* |
+| *M11 quantile anchor (reference)* | *0.815340* | *0.264308* | *0.404026* | *78.0%* | — | *0.379323* | *+10.020* |
+| *M9 hinge (reference)* | *0.864667* | *0.251701* | *0.474210* | — | — | *0.429457* | *+10.691* |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly. Reading `midpoint-fails` (primary `-0.070674`),
+secondary `ranking-preserved` (`+0.007857`, inside tolerance, so the declared collapse override did not fire), verdict
+`not-cleared`, fit gate **FALSE** (1 of 28). Paid charge mean `0.923`, at `0.0` on only 16 of 64 steps.
+
+**Note for the next reader:** this arm's `0.0` counts (`665/2945/2`), F1 (`0.310966`) and row diagnostic (`9.779`) are
+identical to M10's extremal anchor. That is a coincidence of where the two reads sit, not a duplicated measurement -
+different catalogue, different checkpoint, different AUC (`0.830500` against `0.885462`), and the curator refuses a
+sweep whose weights differ from its own run's checkpoint.
+
+**What the pass established.** A per-board *location* is no easier to buy than a per-board *shape*: the midpoint can be
+driven to zero from either side, so the likelihood's own pull (which raises the occupied class) wins the trade and the
+equilibrium still sits above the boundary. The positive share rose another `14.5` points to `64.5%`, the swept optimum
+stayed at `3.00` and the primary fell `0.071` - the fifth negation out of five supervision arms. The two arms that came
+closest (M12: best swept `+0.054`, out-of-fold `+0.065`) did so on shape, not placement. What no arm did is remove the
+shift.
+
+**Next arm, declared.** *Structural centring of the read*: `--occupancy-centre 1` subtracts each board's own mean over
+its visible cell window from the occupancy logits inside the head, before the objective or any scorer sees them - no
+labels, no thresholds, no parameters, no prevalence. It differs from M8's `normalise` by removing only the additive
+mode, so it cannot be paid off by a level shift because the level is gone. Its failure mode is declared with it: the
+mean of all cells is not the F1-optimal level on a `12%`-occupied population, so it can overshoot below zero, and if the
+swept optimum moves below zero the honest reading is `centre-fails`. Standing bars `+0.05` primary and `-0.02` AUC, to
+be restated in its own document before its own receipt.
+
+Defect: none new in the engine or the instrument this pass; the two failures in this pass's test file were expectation
+errors caught before launch and are covered by the standing independent-reference instrument added with V-133.
+
 ## Charging every cell fixes the shape and leaves only the placement (2026-11-12)
 
 [M12_DENSE_HINGE.md](M12_DENSE_HINGE.md) was predeclared before any receipt: `--occupancy-dense-hinge 1`, i.e. per

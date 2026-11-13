@@ -207,6 +207,13 @@ OCCUPANCY_DENSE_HINGE_ARMS = (0, 1)
 # outvoting the 667 occupied ones inside a term that charges every cell.
 DENSE_OCCUPIED_BALANCE = .5
 DENSE_EMPTY_BALANCE = .5
+OCCUPANCY_MIDPOINT_ARMS = (0, 1)
+# Declared before any receipt (docs/M13_MIDPOINT_ANCHOR.md) and not searched afterwards: the target location is the
+# boundary a consumer applies, so it has no margin to tune - a nonzero target would be a separation claim, and
+# separation is the published objective's job. The class balance is equal class weight, never a cell count.
+MIDPOINT_TARGET = 0.0
+MIDPOINT_OCCUPIED_BALANCE = .5
+MIDPOINT_EMPTY_BALANCE = .5
 
 
 def require_occupancy_offset_rows(value, summary):
@@ -215,6 +222,14 @@ def require_occupancy_offset_rows(value, summary):
             summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
         raise ValueError("occupancy offset rows differs from resource admission")
+
+
+def require_occupancy_midpoint(value, summary):
+    """One declaration of the admission join for the midpoint anchor."""
+    if (type(value) is not int or value not in OCCUPANCY_MIDPOINT_ARMS or
+            summary.get("arguments", {}).get("occupancy_midpoint", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_midpoint", 0) != value):
+        raise ValueError("occupancy midpoint differs from resource admission")
 
 
 def require_occupancy_dense_hinge(value, summary):
@@ -546,6 +561,41 @@ def anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+def midpoint_term(output, target):
+    """Declared supervision of *where the boundary sits*, with no separation claim at all.
+
+    Every arm before this one charged a quantity that a global shift of the read could pay off: a summary statistic
+    because raising the occupied side was charged once per board, and even the dense band because a wide band is
+    indifferent to sliding inside itself. The measured consequence is a read whose optimum sits about three logits
+    above the boundary the consumer applies (`+0.90` at control, `2.25`, `2.25`, `3.15` after the supervised arms).
+
+    This term is a location instrument and nothing else. For every qualifying board, with `m_occupied` and `m_empty`
+    the means of its known occupied and empty logits, it charges the distance of their midpoint from the declared
+    target (the boundary itself):
+
+        mean over qualifying boards [ |(m_occupied + m_empty)/2 - MIDPOINT_TARGET| ]
+
+    A shift `+delta` moves both means by `delta`, so this charge grows linearly and unconditionally on drift and - 
+    unlike every earlier term - it cannot be reduced by raising the occupied class. Equal class weight, known cells
+    only, `unknown` never counted as empty, no parameters, no threshold, nothing read about prevalence. It is not a
+    separation term: the published objective supplies separation, and a collapse of the two means is exactly what
+    the declared AUC tolerance watches for.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = occupied[index], empty[index]
+        if high.any() and low.any():
+            midpoint = (MIDPOINT_OCCUPIED_BALANCE*logits[index][high].mean()
+                        + MIDPOINT_EMPTY_BALANCE*logits[index][low].mean())
+            total = total+(midpoint-MIDPOINT_TARGET).abs()
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def dense_hinge_term(output, target):
     """Declared supervision of the operating point at *every* cell, class-balanced.
 
@@ -612,7 +662,7 @@ def quantile_anchor_term(output, target):
 
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
-               occupancy_quantile_anchor=0, occupancy_dense_hinge=0):
+               occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -677,6 +727,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared dense supervision: every known cell is charged inside the margin band, both classes equally, so
         # the read's free additive level cannot absorb the pressure it is under.
         result["dense"] = dense_hinge_term(output, target)
+    check(type(occupancy_midpoint) is int and occupancy_midpoint in OCCUPANCY_MIDPOINT_ARMS,
+          "occupancy midpoint must be 0 (unconstrained location) or 1 (declared midpoint at the boundary)")
+    if occupancy_midpoint:
+        # Declared location supervision: the midpoint of the two class means is charged against the boundary itself,
+        # so a global shift of the read is paid for immediately instead of absorbed by the level.
+        result["midpoint"] = midpoint_term(output, target)
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -688,7 +744,7 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
-               occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0):
+               occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -697,7 +753,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
-                            occupancy_quantile_anchor, occupancy_dense_hinge)
+                            occupancy_quantile_anchor, occupancy_dense_hinge, occupancy_midpoint)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -725,7 +781,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "margin": MARGIN_HINGE_WEIGHT*occupancy_margin_hinge,
                "anchor": ANCHOR_WEIGHT*occupancy_anchor,
                "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor,
-               "dense": ANCHOR_WEIGHT*occupancy_dense_hinge}
+               "dense": ANCHOR_WEIGHT*occupancy_dense_hinge,
+               "midpoint": ANCHOR_WEIGHT*occupancy_midpoint}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 

@@ -2720,3 +2720,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `tests.test_dense_hinge` 21 tests OK before launch (1 skipped until the record existed), the eight
   block stages passed first time (`M12_BLOCK_DONE`, every receipt `passed 0`), curation passed at its 1,900 MiB ceiling
   (`runs/m12-dense-hinge-curation-r1-job.json`, exit 0, 3.777 s), and the full suite is green on the committed tree.
+
+## V-134 - CLOSED: an expected gradient direction that was backwards, and a refusal string split across a line
+
+- Symptom: the first run of `tests/test_midpoint_anchor.py` failed two cases before launch. (1) The gradient test
+  asserted that a board with both class means at `+2` pushes the occupied logits *up*; a location term pushes both
+  classes the same way, and above the target that way is down, so the assertion was backwards about correct code.
+  (2) The no-stacking assertion looked for `dense hinge, the quantile anchor, ...`, which the refusal source splits
+  across two string literals, so a present guard read as missing.
+- Root cause: the expectation was written from intuition about what an anchor "should" do rather than from the term's
+  own sign algebra (`d(|midpair|)/d(m) = sign(mid)`), and the string check spanned a literal boundary again - the same
+  two shapes as V-131/V-132/V-133, already covered by the standing independent-reference instrument, so no new
+  standing instrument is added: the fixed test now asserts the property that actually distinguishes a location term
+  from a separation term (both classes share the gradient's sign, and the sign flips with the midpoint's side).
+- Detection class: test instrument, caught in this working tree before launch; no receipt or measurement was produced
+  from a run whose guard was unverified.
+- Instrument: the gradient case iterates both sides of the target (`+2` and `-2`) and asserts the shared sign each way;
+  the refusal case asserts a single-literal fragment of the message. Every other assertion in the file is the
+  independent-reference or equal-weight property added under V-133.
+- Named green run: `tests.test_midpoint_anchor` 20 tests OK before launch (1 skipped until the record existed), all
+  eight block stages passed first time (`M13_BLOCK_DONE`, every receipt `passed 0`), curation passed at its 1,900 MiB
+  ceiling (`runs/m13-midpoint-curation-r1-job.json`, exit 0, 2.077 s), and the full suite is green on the committed tree.

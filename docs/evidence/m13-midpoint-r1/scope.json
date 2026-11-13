@@ -1,0 +1,230 @@
+{
+  "status": "passed",
+  "instrument": "m13-midpoint-r1",
+  "predeclaration": "docs/M13_MIDPOINT_ANCHOR.md",
+  "scope": "Two 64-step arms - the published read-out and the same read-out with the declared midpoint anchor added to the occupancy objective - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The anchor is supervision of one location per board: no margin, equal class weight (never a count), no threshold, no prevalence and no parameter, and 0 is exactly the published objective. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m13-midpoint-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "midpoint-anchored-boundary",
+    "flag": "--occupancy-midpoint 1",
+    "definition": "mean over qualifying boards of |0.5*mean_occupied + 0.5*mean_empty - MIDPOINT_TARGET| over known visible occupancy logits",
+    "weight": 0.5,
+    "target": 0.0,
+    "margin": null,
+    "occupied_balance": 0.5,
+    "empty_balance": 0.5,
+    "balance_is": "equal class weight, never a cell count or a population statistic",
+    "declared_before_receipts": true,
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "unknown_cells": "excluded from both sides, so an invisible cell is never read as empty",
+    "identity_at_zero": "occupancy_midpoint 0 is exactly the published objective",
+    "supersedes": "the M12 dense hinge, the M11 quantile anchor, the M10 two-sided anchor and the M9 one-sided hinge; the trainer refuses all five together",
+    "expected_reading": "midpoint-clears-the-boundary",
+    "expected_f1_at_zero_hint": 0.465582,
+    "failure_mode": "satisfiable by pulling the occupied mean down to meet the empty mean; the declared AUC tolerance overrides the primary if that happens"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m13-midpoint-control-r1",
+      "sweep": "m13-midpoint-control-r1-sweep-r1",
+      "occupancy_midpoint": 0,
+      "occupancy_dense_hinge": 0,
+      "occupancy_quantile_anchor": 0,
+      "occupancy_anchor": 0,
+      "occupancy_margin_hinge": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "19077be4f479c114a7c7c24ba6c5e1634c0a78dae5bdab3e457074bd40f65e66",
+      "study_elapsed_seconds": 344.38099019999936,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0
+      },
+      "training_midpoint": null,
+      "verdict": "uninformative"
+    },
+    "level": {
+      "study": "m13-midpoint-level-r1",
+      "sweep": "m13-midpoint-level-r1-sweep-r1",
+      "occupancy_midpoint": 1,
+      "occupancy_dense_hinge": 0,
+      "occupancy_quantile_anchor": 0,
+      "occupancy_anchor": 0,
+      "occupancy_margin_hinge": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "970a56097263a9b356d0029ca35ae29523900df98c5be801251b14cef7e643bb",
+      "catalogue_sha256": "19077be4f479c114a7c7c24ba6c5e1634c0a78dae5bdab3e457074bd40f65e66",
+      "study_elapsed_seconds": 339.8155181999973,
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "operating_counts": {
+        "true_positive": 665,
+        "false_positive": 2945,
+        "false_negative": 2
+      },
+      "positives_at_zero": 3610,
+      "positive_share_at_zero": 0.644643,
+      "precision": 0.184211,
+      "recall": 0.997001,
+      "best": {
+        "threshold": 3.0,
+        "f1": 0.4014084507042254,
+        "precision": 0.3020439061317184
+      },
+      "out_of_fold_f1": 0.348472,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 9.778523,
+        "columns": 149
+      },
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 1
+      },
+      "training_midpoint": {
+        "steps": 64,
+        "first": 0.0,
+        "last_step": 64,
+        "last": 0.0,
+        "mean": 0.922754,
+        "fraction_satisfied": 0.25,
+        "source": "runs\\m13-midpoint-level-r1-study.log",
+        "in_sample": true,
+        "reading": "the location charge the objective paid on its own training batch; it is zero only when a board's two class means straddle the boundary symmetrically"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "midpoint_control": {
+      "f1_at_zero_delta": -0.070674,
+      "auc_delta": 0.007857,
+      "best_f1_delta": -0.010626,
+      "out_of_fold_delta": -0.051927,
+      "positive_share_delta": 0.145179,
+      "row_error_delta": 1.959731
+    }
+  },
+  "reference": {
+    "dense_hinge": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "best_f1": 0.4655819774718398,
+      "out_of_fold_f1": 0.465582,
+      "scope": "docs\\evidence\\m12-dense-hinge-r1\\scope.json"
+    },
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M12 dense class-balanced hinge, the M10 two-sided extremal anchor, the M11 class-quantile anchor and the M9 one-sided hinge, each measured in its own catalogue and none re-measured or re-verdicted here, so a reader can see the whole progression from two cells, to a tenth of each class, to every cell, to one location"
+  },
+  "reading": "midpoint-fails",
+  "reading_text": "Charging the midpoint of the two class means does not put the plain-binary boundary above control's, so supervising the location of the published read-out cannot place `0.0` on this data and the next arm has to remove the additive degree of freedom by construction instead.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC is reported beside the primary metric with the standing -0.02 tolerance, and it is an override rather than a footnote: this term carries no separation pressure of its own and can be satisfied by collapsing the two class means together, so a ranking loss outside the tolerance forces the reading to midpoint-fails.",
+  "reading_override": null,
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 1,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "level",
+    "expectation": "placement was the only remaining obstacle after M12 reached 1 of 28, so this is the count the location term is expected to move"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "level": {
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}

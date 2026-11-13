@@ -23,7 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **charging every cell fixes everything but the placement** ([M12_DENSE_HINGE.md](M12_DENSE_HINGE.md),
+Latest: **supervising the location also fails, and the shift itself is what must go** ([M13_MIDPOINT_ANCHOR.md](M13_MIDPOINT_ANCHOR.md),
+`docs/evidence/m13-midpoint-r1/scope.json`). The declared midpoint anchor -
+`mean over qualifying boards of |(m_occupied + m_empty)/2|`, target `0.0`, no margin, weight `0.5`, equal class
+weight - is a pure location instrument: a shift of the read moves both means, so unlike every earlier term it cannot
+be paid off by raising the occupied class. Family `m13-midpoint-`, new catalogue `19077be4`; control reproduced
+`0.8226433610683003` and `0.381640` exactly. It failed: AUC `0.830500` (`+0.007857`), plain F1 at `0.0` **0.310966**
+(`-0.070674`), best swept `0.401408`, out-of-fold `0.348472`, cells positive `+14.52` points to `64.5%`, swept optimum
+`3.00`, fit gate **FALSE** at `1` of `28`; paid charge mean `0.923`, never held. Reading `midpoint-fails`, secondary
+`ranking-preserved`, override rule not triggered (AUC inside tolerance, so not the collapse mode). The level moved the
+wrong way a fifth time, which closes off **adding supervision a shift can partially satisfy**. Declared next:
+**structural centring of the read** - subtract each board's own window mean from the occupancy logits inside the head,
+no labels, no parameters, removing only the additive mode that M8's `normalise` also removed spread from - with its
+failure mode (overshoot below zero on a `12%`-occupied population) and the standing `+0.05` / `-0.02` bars to be
+restated in its own document before its own receipt.
+
+Previous: **charging every cell fixes everything but the placement** ([M12_DENSE_HINGE.md](M12_DENSE_HINGE.md),
 `docs/evidence/m12-dense-hinge-r1/scope.json`). The declared dense class-balanced hinge -
 `mean per qualifying board [0.5 mean_occ relu(margin - logit) + 0.5 mean_empty relu(margin + logit)]`, margin `1.0`,
 weight `0.5`, balance `.5/.5` over known cells - supersedes the three per-board summaries. Family `m12-dense-hinge-`,
