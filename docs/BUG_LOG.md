@@ -2924,3 +2924,46 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   is **retracted**: measured alive in M20, the channel alone reads `0.607085` AUC.
 - Named green run: the block's eight stage receipts `passed 0` on the fourth attempt, curation `passed 0`,
   `tests/test_residual_head_liveness.py` green, and the full suite green through the bounded runner on the committed tree.
+
+## V-144 - CLOSED: a declared coupling forbade the measurement that could separate two mechanisms
+
+- Symptom: M21 could not run the sum without the envelope at all. `ModelConfig` raised `the two-path read sums the
+  lattice-free channel with the lattice-sampled envelope ...` and the parser refused the same combination with its own
+  stderr, so the only arm in which the envelope's effect on the level could be separated from the summed read's was
+  undeclarable. The M16 crossing rule carried the same exclusion, so the requested composition was refused as well.
+- Root cause: the M20 declaration ("the two channels are declared together or not at all") was written before any
+  measurement of what the envelope does to the level and was enforced in three places at once - config validation, the
+  parser and the M20 test suite - so an unmeasured assumption became a structural blocker.
+- Detection class: declaration (a rule with no evidence behind it, enforced where it cannot be questioned). Detected while
+  writing the M21 predeclaration: the arm could not be launched, only reasoned about.
+- Instrument: the relaxation is itself measured - `bare` and `envelope` are both in the M21 block, so the coupling's cost is
+  a recorded contrast - and `tests/test_level_composition.py` asserts all four arms reach the real parser while the single
+  free channel stays refused beside the envelope.
+- Named green run: all four M21 arms `passed 0`, curation `passed 0`, and the full suite green through the bounded runner.
+
+## V-145 - CLOSED: the new run family was not an owned name, so a passing study could not be swept
+
+- Symptom: the M21 block's sweeps exited 1 with `ValueError: owned finite run name required` after their studies had
+  passed; the curator then had no `result.json` to read.
+- Root cause: `OWNED_RUN_PATTERN` in `record_stream_run.py` enumerates every run family the sweep is allowed to touch, and
+  the new `m21-level-` family was not added. Third defect of this shape in the programme - V-141 omitted a keyword at an
+  admission call site, V-142 left a mode out of `OCCUPANCY_LATTICE_FREE_LEVERS`, V-145 left a family out of the pattern -
+  so the class now has its standing instrument.
+- Detection class: declaration propagation (a declared value has to be carried by every gate that enumerates the field).
+- Instrument: `tests/test_declaration_propagation.py` cross-checks the gates against each other rather than against a hand
+  list: every mode the model accepts must be accepted by the parser and by the join, and every run family that committed
+  evidence actually used must satisfy `require_owned_run`. It would have caught V-142 and V-145.
+- Named green run: the M21 block's eight stage receipts `passed 0`, the standing instrument green, and the full suite green
+  through the bounded runner.
+
+## V-146 - CLOSED: the launcher skipped a stage when the host had no admission window
+
+- Symptom: the first M21 launch reported `study_control=125`, `sweep_control=1` and then continued to the next arm, leaving
+  a block that looked finished with only two of its eight stages run.
+- Root cause: `stage` returned 125 when `wait_window` exhausted its attempts, and the caller only echoed the code and moved
+  on. A missing window is a *host* condition, not a stage result, so treating it as a result turned a temporary resource
+  shortage into a silently partial block.
+- Detection class: orchestration. Detected by reading the stage lines rather than the final marker.
+- Instrument: `stage` now exits the block with 125 the moment a window is missing, and `runs/wait_and_launch.sh` retries
+  the whole block when that happens; the block's own `passed` guards make the retry resume rather than redo.
+- Named green run: the retrying launch completed all eight stage receipts `passed 0`.

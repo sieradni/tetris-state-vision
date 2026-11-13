@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## The level repair composed and decomposed: `level-passes`, decoupling `decoupling-fails` (2026-11-13, M21)
+
+[M21_LEVEL_COMPOSITION.md](M21_LEVEL_COMPOSITION.md) declared four arms and each one's bar before any receipt. Control
+reproduced `0.8226433610683003` / `0.381640` exactly; the `envelope` arm reproduced the M20 checkpoint bit-for-bit; all
+four checkpoints are distinct.
+
+| arm | AUC | plain F1 at `0.0` | positive | row error | out-of-fold |
+|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 49.95% | +7.819 | 0.400399 |
+| envelope (M20) | 0.898066 | 0.350636 | 55.52% | +3.322 | 0.459725 |
+| crossing (requested) | 0.823601 | **0.402187** | 46.88% | +1.289 | 0.447280 |
+| bare (no envelope) | 0.883359 | 0.365342 | 52.80% | +7.128 | 0.397204 |
+
+The composition clears the bar: `+0.020547` primary over the control with AUC
+`+0.000957`, positive share `46.88%` (the control's
+`49.95%`) and the second-lowest row error on record (`+1.289`, against the
+control's `+7.819`; M16's envelope + centring + crossing arm holds the lowest at `+1.189`).
+Strict exact stays 0 of 28. The sum alone (`bare`) fails the primary (`-0.016298`) with a better
+ranking (`+0.060716`), so the envelope carries the boundary and the M20 coupling had hidden it.
+
+The stage that raises the positive share in the requested arm is `monotone` (`+0.220416` share points); the crossing stage moves the share by `-0.406250` against the monotone stage and its F1 at `0.0` by `+0.187614`. The envelope arm reproduces the same raising stage (`monotone`), and the published read carries no transform, so it has no stage to raise it; the level movement therefore belongs to the transform rather than to the added channel.
+
+Two things a future arm must not redo: the crossing rule has to be trained in the loop (applied afterwards to a read
+trained without it, it moves the share `-0.406` but leaves F1 at `0.0` worse than the M20 arm), and M16's envelope +
+centring + crossing arm still holds the best primary (`0.405439`).
+
+**Next candidate:** the coarse local stencil for the free channel (it reads
+`0.497469` alone here), then re-test the composition with that channel.
+
 ## The two-path read: the best ranking and placement measured, failing only at the boundary (2026-11-13, M20)
 
 [M20_TWO_PATH_READ.md](M20_TWO_PATH_READ.md) declared the sum of the two reads that each held a best result: the

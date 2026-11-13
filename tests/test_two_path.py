@@ -137,9 +137,10 @@ class TwoPathConfigTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 ModelConfig(occupancy_stack_monotone=1, occupancy_lattice_free=value)
 
-    def test_the_two_channels_are_declared_together_or_not_at_all(self):
-        with self.assertRaises(ValueError):
-            ModelConfig(occupancy_lattice_free=2)
+    def test_the_sum_is_declared_on_its_own_since_m21(self):
+        """M20 coupled the sum to the envelope; the M21 decomposition separated them, so the sum stands alone."""
+        alone = ModelConfig(occupancy_lattice_free=2)
+        self.assertEqual((alone.occupancy_lattice_free, alone.occupancy_stack_monotone), (2, 0))
         self.assertEqual(arm().occupancy_lattice_free, 2)
 
     def test_the_admission_join_admits_the_sum_mode(self):
@@ -172,12 +173,14 @@ class TwoPathPlumbingTests(unittest.TestCase):
                                            "--occupancy-lattice-free", "2"])
         self.assertEqual((parsed.occupancy_stack_monotone, parsed.occupancy_lattice_free), (1, 2))
 
-    def test_the_sum_without_the_envelope_is_refused_with_its_own_stderr(self):
-        stream = io.StringIO()
-        with contextlib.redirect_stderr(stream):
-            with self.assertRaises(SystemExit):
-                self.arguments(self.base+["--occupancy-detail", "1", "--occupancy-lattice-free", "2"])
-        self.assertIn("requires --occupancy-stack-monotone 1", stream.getvalue())
+    def test_the_sum_is_admitted_without_the_envelope_since_m21(self):
+        """M21: the envelope is a separate mechanism, so the sum must be measurable on its own."""
+        parsed = self.arguments(self.base+["--occupancy-detail", "1", "--occupancy-lattice-free", "2"])
+        self.assertEqual((parsed.occupancy_stack_monotone, parsed.occupancy_lattice_free), (0, 2))
+        parsed = self.arguments(self.base+["--occupancy-detail", "1", "--occupancy-lattice-free", "2",
+                                          "--occupancy-stack-monotone", "1", "--occupancy-crossing-threshold", "1"])
+        self.assertEqual((parsed.occupancy_stack_monotone, parsed.occupancy_lattice_free,
+                         parsed.occupancy_crossing_threshold), (1, 2, 1))
 
     def test_the_single_channel_beside_the_envelope_stays_refused(self):
         stream = io.StringIO()
@@ -189,7 +192,9 @@ class TwoPathPlumbingTests(unittest.TestCase):
 
     def test_every_other_lever_is_refused_beside_the_two_path_read(self):
         composed = ["--occupancy-detail", "1", "--occupancy-stack-monotone", "1", "--occupancy-lattice-free", "2"]
-        for lever in (["--occupancy-centre", "1"], ["--occupancy-crossing-threshold", "1"],
+        # The crossing rule left this list in M21: it composes with the sum by declaration, because it decides the
+        # score the sum forms rather than changing what is read or where zero sits.
+        for lever in (["--occupancy-centre", "1"],
                       ["--occupancy-normalise", "1"], ["--occupancy-skyline-recovery", "1"],
                       ["--occupancy-tap-span", "1"], ["--occupancy-context", "1"], ["--occupancy-column", "1"],
                       ["--occupancy-margin-hinge", "1"], ["--occupancy-anchor", "1"],

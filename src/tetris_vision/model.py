@@ -105,9 +105,9 @@ class ModelConfig:
         check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1, 2),
               "occupancy lattice-free readout is 0 (published read-out), 1 (declared gated channel) or 2 "
               "(declared two-path read, summed with the lattice-sampled read)")
-        check(self.occupancy_lattice_free != 2 or self.occupancy_stack_monotone == 1,
-              "the two-path read sums the lattice-free channel with the lattice-sampled envelope, so it is only "
-              "declared on that envelope: occupancy_stack_monotone must be 1 beside occupancy_lattice_free 2")
+        # M21: the sum is declared on its own. M20 required the envelope beside it, but the stage decomposition
+        # showed the envelope is itself the transform that raises the positive share (a suffix maximum can only
+        # raise cells), so coupling the two forbade the comparison that separates them. See docs/M21_LEVEL_COMPOSITION.md.
         check(type(self.occupancy_column) is int and self.occupancy_column in (0, 1),
               "occupancy column read-out is 0 (published read-out) or 1 (declared per-column "
               "stack context)")

@@ -23,7 +23,33 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the summed two-path read is the best-ranking and best-placing read this programme has measured, and it
+Latest: **the level repair works, and the decomposition says where the level comes from**
+([M21_LEVEL_COMPOSITION.md](M21_LEVEL_COMPOSITION.md), `docs/evidence/m21-level-r1/scope.json`). Four arms in one
+catalogue, control reproducing `0.8226433610683003` / `0.381640` exactly, and the M20 arm reproducing the M20 checkpoint
+bit-for-bit. The requested composition
+`--occupancy-lattice-free 2 --occupancy-stack-monotone 1 --occupancy-crossing-threshold 1` is **`level-passes`**: plain F1 at
+`0.0` **0.402187** (`+0.020547`), AUC **0.823601**
+(`+0.000957`), positive share `46.88%` against the
+control's `49.95%`, row error **+1.289**
+against `+7.819`, out-of-fold `0.447280`, swept
+`0.447280 @ 0.90`,
+**0 of 28** strict exact. The sum without the envelope is
+**`decoupling-fails`** (`-0.016298` primary, `+0.060716` AUC), so the envelope
+carries the boundary and the M20 coupling was the thing that hid it; the coupling is now an option. The stage
+decomposition names `monotone` as the stage that raises the positive share
+(`+0.220416`) and shows the crossing stage taking it back by
+`-0.406250` share points once the rule is trained in the loop. M16's recorded
+envelope + centring + crossing arm remains the best primary at `0.405439` /
+`0.835241`, so the free channel still costs this composition
+`-0.003252` primary.
+
+**Next candidate, named:** give the free channel a coarse local stencil on the fixed lattice. It is the limiter in every
+arm - alone `0.497469` in the composition, `0.607085`
+in the M20 arm - because it consumes pooled context plus fixed coordinates and nothing local, so a coarse stencil adds
+detail without inheriting the decoded lattice's registration error. Bar unchanged: `+0.05` over the reproduced control and
+at least one strict exact board.
+
+Previous: **the summed two-path read is the best-ranking and best-placing read this programme has measured, and it
 still fails the fixed boundary - with the channel split naming why**
 ([M20_TWO_PATH_READ.md](M20_TWO_PATH_READ.md), `docs/evidence/m20-two-path-r1/scope.json`). `--occupancy-lattice-free 2`
 adds the lattice-free channel to the lattice-sampled read under the M15 envelope; the sum is ungated, its head zeroes only
