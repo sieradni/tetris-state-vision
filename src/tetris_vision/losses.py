@@ -264,6 +264,15 @@ def require_occupancy_margin_hinge(value, summary):
         raise ValueError("occupancy margin hinge differs from resource admission")
 
 
+def require_occupancy_centre(value, summary):
+    """One declaration of the admission join for the structurally centred read."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_centre", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_centre", 0) != value or
+            summary.get("config", {}).get("occupancy_centre", 0) != value):
+        raise ValueError("occupancy centre differs from resource admission")
+
+
 def require_occupancy_normalise(value, summary):
     """One declaration of the admission join for the declared output parameterisation."""
     if (type(value) is not int or value not in OCCUPANCY_NORMALISE_ARMS or

@@ -1,5 +1,48 @@
 # Contributor handoff — 2026-10-30
 
+## The level is now pinned, and the pin is at the wrong place (2026-11-12)
+
+[M14_READ_CENTRING.md](M14_READ_CENTRING.md) was predeclared before any receipt: `--occupancy-centre 1` subtracts each
+board's own mean over its visible window from that board's occupancy logits inside the head, before the objective or any
+scorer sees them. No added term, no weight, no margin, no parameter; the spread is untouched, so alignment invariance is
+exact. Family `m14-centre-`, new catalogue `c9544334`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.95% | 0/28 | 0.400399 | +7.819 | 0.7684 |
+| centred in the head | 0.815395 | **0.374142** | 0.393230 @ `1.95` | 50.52% | 0/28 | 0.378651 | +8.007 | 0.6166 |
+| *M13 midpoint (reference)* | *0.830500* | *0.310966* | *0.401408* @ *`3.00`* | *64.5%* | *1/28* | *0.348472* | *+9.779* | — |
+| *M12 dense hinge (reference)* | *0.862838* | *0.354770* | *0.465582* @ *`3.15`* | *54.7%* | *1/28* | *0.465582* | *+8.544* | — |
+| *M11 quantile (reference)* | *0.815340* | *0.264308* | *0.404026* | *78.0%* | — | *0.379323* | *+10.020* | — |
+| *M10 extremal (reference)* | *0.885462* | *0.310966* | *0.540811* | *64.5%* | — | *0.540811* | *+9.779* | — |
+| *M9 hinge (reference)* | *0.864667* | *0.251701* | *0.474210* | — | — | *0.429457* | *+10.691* | — |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly. Reading **`centre-fails`** (primary `-0.007498`),
+secondary `ranking-preserved` (`-0.007248`), verdict `not-cleared`, fit gate **FALSE** (0 of 28), overshoot flag false.
+The block proves its own identity: configs differ in exactly `occupancy_centre`, each sweep carries its own checkpoint,
+the two weights differ, and M13's checkpoint is excluded by name.
+
+**What the pass established.** The transform does exactly what it claims: the level drift collapsed from `+14.5` points
+to `+0.57` (49.95% -> 50.52% positive at `0.0`), the read fits its labels better (occupancy loss `-0.152`), and the
+primary delta `-0.0075` is seven times smaller than the next-best arm. But the pinned level is the board's *mean*, and on
+a `12%`-occupied population the swept optimum sits `1.95` logits above `0.0` - the pin is in the wrong place, so `0.0`
+still cuts through the middle of the population. The declaration named this mechanism and expected it in the other
+direction (an overshoot below zero); the observed failure is a pin at the mean, and the record says which was observed.
+
+**What it rules out.** Adding supervision cannot place the boundary (M9-M13) and removing the level cannot either (M14):
+the only label-free level the read owns is its own mean, and the mean is not the operating point. What is left is where
+the read's *structure* puts the crossing.
+
+**Next arm, declared.** *Per-column stack-contiguity*: `--occupancy-stack-monotone 1` parameterises the occupancy read
+as a per-column cumulative maximum from the floor, so each column crosses `0.0` at most once and that crossing is the
+column's height - no prevalence, no threshold, no margin, no weight, no parameter. Declared failure mode: holes and
+overhangs cannot be expressed by a monotone column, so it may trade per-cell accuracy for placement; standing bars
+`+0.05` primary and `-0.02` AUC, restated in its own document before its own receipt.
+
+Defects: V-135 (the initial-weights config comparison rejected a source checkpoint that predates a default-0 structural
+field; fixed through the declared `allow_absent` mechanism) and V-136 (a path constant used as a dict in the curator,
+caught by its own failing receipt and repaired before any record existed).
+
 ## Supervising the location fails; the shift itself has to go (2026-11-12)
 
 [M13_MIDPOINT_ANCHOR.md](M13_MIDPOINT_ANCHOR.md) was predeclared before any receipt: `--occupancy-midpoint 1`, i.e. per

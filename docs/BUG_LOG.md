@@ -2741,3 +2741,35 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `tests.test_midpoint_anchor` 20 tests OK before launch (1 skipped until the record existed), all
   eight block stages passed first time (`M13_BLOCK_DONE`, every receipt `passed 0`), curation passed at its 1,900 MiB
   ceiling (`runs/m13-midpoint-curation-r1-job.json`, exit 0, 2.077 s), and the full suite is green on the committed tree.
+
+## V-135 - CLOSED: a default-0 structural field made the initial-weights gate reject a valid source
+
+- Symptom: the first M14 block failed every stage instantly (`exit 1`) with `initial-weight source
+  architecture/config/curriculum/seed differs`. The source run predates the new `occupancy_centre` field, so its archived
+  config lacks the key while the new config carries it at `0`, and `compatible_config` compares key sets.
+- Root cause: a new config field that adds no parameter still changed the *identity comparison* rather than the
+  function. The gate has a declared mechanism for exactly this (`allow_absent`, the tuple of fields a source may
+  predate), and the field was not added to it.
+- Detection class: engine/admission gate, caught by the block's own refusal before any training step ran; no measurement
+  came from a mis-admitted run and no evidence was rewritten.
+- Instrument: `occupancy_centre` added to the declared `allow_absent` tuple, with a comment stating why a default-0
+  structural option is safe to inherit (it adds no parameter, so the source checkpoint is the same function). The gate
+  still refuses any *shared* key whose value differs, which the existing `compatible_config` tests cover.
+- Named green run: the relaunched block passed all eight stages (`M14_BLOCK_DONE`, every receipt `passed 0`), curation
+  passed at its 1,900 MiB ceiling (`runs/m14-centre-curation-r1-job.json`, exit 0), and the full suite is green.
+
+## V-136 - CLOSED: the centring curator used a path constant as a dictionary
+
+- Symptom: the first curation attempt exited 1 with `TypeError: 'WindowsPath' object is not subscriptable` at the line
+  that excludes the previous block's checkpoint by name.
+- Root cause: `MIDPOINT` is the *path* to the M13 scope; the new curator read every other reference through `read(...)`
+  but used `MIDPOINT["arms"]` directly. The receipt reported `failed` with the traceback and the evidence directory was
+  never created.
+- Detection class: instrument (curator). Caught by the curator's own failing receipt; the failed receipts were archived
+  to `runs/attempts/m14-curation/` and the block re-curated into a fresh directory, so the published record comes from
+  one clean curation of one block.
+- Instrument: the scope is read once into `midpoint_scope` and the aliasing guards reference that object; the guard's
+  assertions (configs differ only in `occupancy_centre`, sweeps carry their own checkpoints, weights differ, M13's
+  checkpoint excluded) all ran and passed on the successful curation.
+- Named green run: `runs/m14-centre-curation-r1-job.json` `passed 0`, the record's tests green, and the full suite green
+  on the committed tree.

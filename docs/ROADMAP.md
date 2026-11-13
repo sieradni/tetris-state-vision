@@ -23,7 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **supervising the location also fails, and the shift itself is what must go** ([M13_MIDPOINT_ANCHOR.md](M13_MIDPOINT_ANCHOR.md),
+Latest: **removing the level pins it at the mean, which is the wrong level** ([M14_READ_CENTRING.md](M14_READ_CENTRING.md),
+`docs/evidence/m14-read-centring-r1/scope.json`). The declared structural option `--occupancy-centre 1` subtracts each
+board's own visible-window mean from its occupancy logits inside the head, before any loss or scorer sees them - no
+label, no threshold, no parameter, spread untouched. Family `m14-centre-`, new catalogue `c9544334`; control reproduced
+`0.8226433610683003` and `0.381640` exactly, and the block asserts its own identity (configs differ in exactly
+`occupancy_centre`, both sweeps carry their own checkpoints, the previous block's checkpoint excluded by name). Reading
+**`centre-fails`** at the narrowest margin yet: plain F1 at `0.0` **0.374142** (`-0.007498`), AUC `0.815395`
+(`-0.007248`), best swept `0.393230` at `1.95` (`-0.019`), out-of-fold `0.378651`, row error `+0.188`, cells positive
+`+0.57` points (49.95% -> 50.52%), occupancy loss `-0.152` better, fit gate FALSE at `0` of `28`, no overshoot below
+zero. The transform does exactly what it claims - the drift collapsed from `+14.5` to `+0.6` points - but the pinned
+level is the board mean, and on a `12%`-occupied board the F1-optimal boundary sits `1.95` above it. Sixth negation:
+adding supervision cannot place the boundary and removing the level cannot either. Declared next: **per-column
+stack-contiguity of the read** (cumulative max from the floor, so a column crosses `0.0` at most once and the crossing
+is its height) - label-free, no constants, with holes/overhangs as its declared failure mode.
+
+Previous: **supervising the location also fails, and the shift itself is what must go** ([M13_MIDPOINT_ANCHOR.md](M13_MIDPOINT_ANCHOR.md),
 `docs/evidence/m13-midpoint-r1/scope.json`). The declared midpoint anchor -
 `mean over qualifying boards of |(m_occupied + m_empty)/2|`, target `0.0`, no margin, weight `0.5`, equal class
 weight - is a pure location instrument: a shift of the read moves both means, so unlike every earlier term it cannot

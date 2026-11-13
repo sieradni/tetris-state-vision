@@ -42,6 +42,7 @@ class ModelConfig:
     occupancy_column: int = 0
     occupancy_offset_rows: int = 0
     occupancy_normalise: int = 0
+    occupancy_centre: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -104,6 +105,12 @@ class ModelConfig:
         check(type(self.occupancy_normalise) is int and self.occupancy_normalise in (0, 1),
               "occupancy normalise is 0 (published unnormalised logits) or 1 (declared per-board "
               "normalised logits, so the 0.0 boundary is the operating point by construction)")
+        check(type(self.occupancy_centre) is int and self.occupancy_centre in (0, 1),
+              "occupancy centre is 0 (published unnormalised logits) or 1 (declared per-board "
+              "centred logits, which removes only the additive mode)")
+        check(not (self.occupancy_centre and self.occupancy_normalise),
+              "centring and normalising both remove the board's level; a read cannot be both a "
+              "de-meaned and a z-scored tensor")
 
     @classmethod
     def pilot(cls):
@@ -159,6 +166,23 @@ def architecture_name(config):
     verified, so a widened configuration cannot be reported under the published name.
     """
     return ("TetrisStateNet-M3" if config.component_capacity else "TetrisStateNet-M2")+trunk_suffix(config)
+
+
+def centre_board(logits, visible_rows):
+    """Per-board removal of the occupancy read's additive mode, and nothing else.
+
+    Five supervision terms were falsified because a global shift of the read could partially satisfy them, so this
+    removes the shift instead of charging around it: the tensor the objective differentiates and the tensor every
+    consumer thresholds at `0.0` are the same one, and that tensor has no board-wide offset left to drift.
+
+    The statistic is the board's own mean over its *visible* cells - no label, no threshold, no fitted parameter, no
+    other board, nothing read about prevalence. Cells outside that window (the spawn rows above the visible board)
+    never enter the mean. Unlike `normalise_board`, the spread is untouched: dividing by a board statistic would
+    rescale the relative structure the read has learned, while subtracting a constant cannot change any difference
+    between two cells, so alignment invariance is exact for any constant added to a whole board.
+    """
+    visible = logits[:, :visible_rows]
+    return logits-visible.mean(dim=(1, 2), keepdim=True)
 
 
 def normalise_board(logits, visible_rows):
@@ -668,6 +692,11 @@ class TetrisStateNet(nn.Module):
                 gate = torch.tanh(self.occupancy_lattice_gate)
                 occupancy_logits = ((1-gate)*occupancy_logits+
                                     gate*self.occupancy_lattice_free(free).reshape(batch, rows, columns))
+            if self.config.occupancy_centre:
+                # Declared structural centring: the read loses its additive mode inside the head, before
+                # the objective or any scorer sees it, so no supervision has to charge a shift that can
+                # no longer exist. Relative cell structure is untouched.
+                occupancy_logits = centre_board(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_normalise:
                 # Declared parameterisation: the read the objective sees and the read a scorer sees
                 # are the same tensor, so the `0.0` boundary the loss optimises is the boundary every
