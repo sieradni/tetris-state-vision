@@ -426,7 +426,9 @@ def require_positive_weight(weight, summary):
 GEOMETRY_STAGE_POLICIES = (0, 1)
 LATTICE_SUPPORT_LEVERS = (0, 1)
 LATTICE_RESIDUAL_LEVERS = (0, 1)
-OCCUPANCY_LATTICE_FREE_LEVERS = (0, 1)
+# 0 published, 1 the gated single channel, 2 the summed two-path read (M20: the free channel added to the
+# lattice-sampled read under the declared envelope)
+OCCUPANCY_LATTICE_FREE_LEVERS = (0, 1, 2)
 LATTICE_BOARD_REFINE_LEVERS = (0, 1)
 LATTICE_BOARD_REFINE_LEVERS = (0, 1)
 

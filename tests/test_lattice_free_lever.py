@@ -50,7 +50,8 @@ def paired_models():
 
 class LatticeFreeContractTests(unittest.TestCase):
     def test_the_flag_is_a_two_value_join(self):
-        self.assertEqual(OCCUPANCY_LATTICE_FREE_LEVERS, (0, 1))
+        # The constant grew with M20: 2 is the summed two-path read, and 0/1 keep their meanings.
+        self.assertEqual(OCCUPANCY_LATTICE_FREE_LEVERS, (0, 1, 2))
         summary = {"arguments": {"occupancy_lattice_free": 1},
                    "recovery_contract": {"occupancy_lattice_free": 1}}
         self.assertIsNone(require_occupancy_lattice_free(1, summary))
@@ -65,7 +66,13 @@ class LatticeFreeContractTests(unittest.TestCase):
         model = TetrisStateNet(tiny_config(occupancy_lattice_free=1))
         added = set(model.state_dict())-set(published)
         self.assertEqual(added, set(ADDED_TENSORS))
-        self.assertTrue(all(int(torch.count_nonzero(model.state_dict()[name])) == 0 for name in added))
+        # Only the output projection and the gate are zeroed (V-143): the hidden layer keeps its random
+        # initialization, because a zeroed hidden layer can only ever learn a constant. Identity at step
+        # zero therefore comes from the output projection, which the next test checks on the read-out.
+        zeroed = ("occupancy_lattice_free.2.weight", "occupancy_lattice_free.2.bias", "occupancy_lattice_gate")
+        self.assertTrue(all(int(torch.count_nonzero(model.state_dict()[name])) == 0 for name in zeroed))
+        self.assertGreater(int(torch.count_nonzero(
+            model.state_dict()["occupancy_lattice_free.0.weight"])), 0)
         tiny = sum(model.state_dict()[name].numel() for name in added)
         self.assertEqual(tiny, 16*16+16+16+1+1)  # tiny config: dimension 16
         full_added = set(TetrisStateNet(ModelConfig(occupancy_lattice_free=1)).state_dict())-set(

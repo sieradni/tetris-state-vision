@@ -69,7 +69,12 @@ class BoardRefineContractTests(unittest.TestCase):
         model = TetrisStateNet(tiny_config(lattice_board_refine=1))
         added = set(model.state_dict())-set(published)
         self.assertEqual(added, set(ADDED_TENSORS))
-        self.assertTrue(all(int(torch.count_nonzero(model.state_dict()[name])) == 0 for name in added))
+        # V-143: only the output projection is zeroed. A zeroed hidden layer as well would leave the
+        # correction a constant 4-vector for every board, so the declared capacity would never be read;
+        # the exact value at step zero is carried by the zeroed output and checked on the decode below.
+        zeroed = ("lattice_board_refine.2.weight", "lattice_board_refine.2.bias")
+        self.assertTrue(all(int(torch.count_nonzero(model.state_dict()[name])) == 0 for name in zeroed))
+        self.assertGreater(int(torch.count_nonzero(model.state_dict()["lattice_board_refine.0.weight"])), 0)
         tiny = sum(model.state_dict()[name].numel() for name in added)
         self.assertEqual(tiny, 16*64+64+64*4+4)
         full = TetrisStateNet(ModelConfig(lattice_board_refine=1))

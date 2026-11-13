@@ -173,7 +173,7 @@ def arguments(argv=None):
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
                              "only, the one the occupancy read-out reads")
-    parser.add_argument("--occupancy-lattice-free", type=int, choices=(0, 1), default=0,
+    parser.add_argument("--occupancy-lattice-free", type=int, choices=(0, 1, 2), default=0,
                         help="declared read-out lever;0 is the published lattice-sampled occupancy "
                              "read-out;1 adds a gated channel that reads image-level context and fixed "
                              "cell coordinates only, so it never samples the predicted lattice")
@@ -316,11 +316,12 @@ def arguments(argv=None):
                                          args.occupancy_context or args.occupancy_detail_stencil or
                                          args.occupancy_resolution or args.occupancy_deform or
                                          args.occupancy_placed or args.occupancy_column or
-                                         args.occupancy_offset_rows or args.occupancy_lattice_free):
+                                         args.occupancy_offset_rows or args.occupancy_lattice_free == 1):
         # The monotone read places the crossing by structure, so every term that charges a shift or a margin is moot
         # on it, the normalised output would replace that crossing with a standard deviation, and every read-moving
-        # lever would leave the envelope confounded with a changed sample. It is the only structural option that
-        # composes with nothing declared: centring beside it is admitted deliberately, as the declared follow-on arm.
+        # lever would leave the envelope confounded with a changed sample. Two compositions are declared on it:
+        # centring (M14's follow-on) and the summed two-path read (M20, occupancy_lattice_free 2); the single free
+        # channel (1) stays its own arm and is refused here.
         parser.error("the stack-contiguous read places the crossing by column structure, so the normalised output, "
                      "the five supervision terms and every lever that changes what is read, where it is sampled or "
                      "where zero sits are all refused beside it")
@@ -435,6 +436,11 @@ def arguments(argv=None):
                                   args.box_extent_weight or args.support_anchor_weight):
         parser.error("the lattice-residual lever is declared on the published box head, objective "
                      "and geometry stage policy")
+    if args.occupancy_lattice_free == 2 and not args.occupancy_stack_monotone:
+        # The two-path read is the sum of the lattice-free channel and the lattice-sampled envelope: one channel
+        # alone is a different declared arm (M15's envelope, the single-channel free read), never this one.
+        parser.error("the two-path read sums the lattice-free channel with the lattice-sampled envelope, so it "
+                     "requires --occupancy-stack-monotone 1; the single-channel forms stay their own arms")
     if args.occupancy_lattice_free and (args.lattice_residual or args.lattice_support or
                                        args.geometry_final_only or args.box_extent_weight or
                                        args.support_anchor_weight):

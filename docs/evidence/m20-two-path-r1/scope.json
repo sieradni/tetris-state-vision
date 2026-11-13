@@ -1,0 +1,395 @@
+{
+  "status": "passed",
+  "instrument": "m20-two-path-read-r1",
+  "predeclaration": "docs/M20_TWO_PATH_READ.md",
+  "scope": "The published read's own 64-step control against a 64-step arm whose only declared difference is the summed two-path read - the lattice-free channel added to the lattice-sampled read, under the M15 monotone envelope - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. Both parts are structural and label-free: no threshold, no fitted parameter, no prevalence, no statistic of the population, and no swept constant. With both fields at 0 the model is exactly the published function. No population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m20-two-path-curation-inner-r1-7.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "two-path-read",
+    "flag": "--occupancy-detail 1 --occupancy-stack-monotone 1 --occupancy-lattice-free 2",
+    "definition": "one per-cell score is the sum of the lattice-sampled read and the gated lattice-free channel, then the M15 monotone envelope places the crossing",
+    "where": "model head, before the read-out's transforms and before every consumer",
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "loss_terms_added": 0,
+    "weight": null,
+    "margin": null,
+    "statistic": "none: both channels read the image and the board's own fixed coordinates; nothing about the population is read",
+    "gate": "one learned scalar, tanh(gate), starting at exactly zero so step zero is the published function; never swept and never set by hand",
+    "error_axes": {
+      "lattice_path": "per-cell sampling error inherited from a misplaced decoded lattice (placement error 1.189 rows even in its best arm)",
+      "free_channel": "global registration error and lost local detail, with no dependence on the predicted lattice - the only read that has produced a 2-wrong-cell board"
+    },
+    "declared_before_receipts": true,
+    "identity_at_zero": "both fields 0 is exactly the published function; the gate at zero makes the sum reduce exactly to the lattice-sampled envelope arm",
+    "composition": "the two channels are declared together or not at all: lattice_free 2 requires the envelope in config validation and in the parser, and the single-channel forms remain their own arms",
+    "non_degeneracy": "tests assert each channel moves the summed read, that a zeroed gate reduces the sum exactly to the lattice-sampled read, and that zeroing the read-out reduces it exactly to the free channel - so the two channels are not mutually inert and the arm's readings cannot be produced by the control's geometry",
+    "expected_reading": "two-path-moves-without-clearing",
+    "label_free": true,
+    "label_free_proof": "both channels are functions of the image, the board's fixed coordinates and the gate scalar; tests permute the labels and require bit-identical output and scan the executable body for any label, target, occupancy-mask, prevalence or threshold reference",
+    "falsification": "the arm is falsified if the primary does not exceed the control's or no strict exact board appears; the mechanism is falsified if the channel split is not `complementary`",
+    "failure_mode": "recorded as a channel verdict, never as a number that merely went down"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m20-two-path-control-r1",
+      "sweep": "m20-two-path-control-r1-sweep-r1",
+      "occupancy_lattice_free": 0,
+      "occupancy_stack_monotone": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "config": {
+        "occupancy_lattice_free": 0,
+        "occupancy_stack_monotone": 0,
+        "occupancy_detail": 1,
+        "occupancy_normalise": 0,
+        "occupancy_centre": 0,
+        "occupancy_crossing_threshold": 0,
+        "occupancy_skyline_recovery": 0,
+        "occupancy_tap_span": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "8aeffe5f59847f21a3264a4e7298b2890ec8bc4bfda4fe2419bda3375516f3b5",
+      "study_elapsed_seconds": 338.1959390000047,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 0.613554,
+        "last_step": 64,
+        "last": 1.526806,
+        "mean": 0.768358,
+        "source": "runs\\m20-two-path-control-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; the read adds no term of its own - one score is formed from two channels of evidence"
+      },
+      "verdict": "uninformative"
+    },
+    "two-path": {
+      "study": "m20-two-path-two-path-r1",
+      "sweep": "m20-two-path-two-path-r1-sweep-r1",
+      "occupancy_lattice_free": 2,
+      "occupancy_stack_monotone": 1,
+      "weights_sha256": "46bca3328023944b909add4b44ffa4cb75cecf38f71b516d3b7b133339d16d3d",
+      "config": {
+        "occupancy_lattice_free": 2,
+        "occupancy_stack_monotone": 1,
+        "occupancy_detail": 1,
+        "occupancy_normalise": 0,
+        "occupancy_centre": 0,
+        "occupancy_crossing_threshold": 0,
+        "occupancy_skyline_recovery": 0,
+        "occupancy_tap_span": 0,
+        "dimension": 192,
+        "component_capacity": 64
+      },
+      "catalogue_sha256": "8aeffe5f59847f21a3264a4e7298b2890ec8bc4bfda4fe2419bda3375516f3b5",
+      "study_elapsed_seconds": 336.4732484000051,
+      "auc": 0.8980661706446594,
+      "f1_at_zero": 0.350636,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2447,
+        "false_negative": 5
+      },
+      "positives_at_zero": 3109,
+      "positive_share_at_zero": 0.555179,
+      "precision": 0.21293,
+      "recall": 0.992504,
+      "best": {
+        "threshold": 3.3,
+        "f1": 0.6001167542323409,
+        "precision": 0.491395793499044
+      },
+      "out_of_fold_f1": 0.459725,
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0,
+        "boundary_exact": 0
+      },
+      "row_error_at_zero": {
+        "mean": 3.322148,
+        "columns": 149
+      },
+      "training_occupancy": {
+        "steps": 64,
+        "first": 1.364917,
+        "last_step": 64,
+        "last": 1.553182,
+        "mean": 0.831428,
+        "source": "runs\\m20-two-path-two-path-r1-study.log",
+        "in_sample": true,
+        "reading": "the occupancy loss the arm paid; the read adds no term of its own - one score is formed from two channels of evidence"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "channels": {
+    "summed": {
+      "auc": 0.8980661706446594,
+      "f1_at_zero": 0.35063559322033894,
+      "best_f1": 0.6001167542323409,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2447,
+        "false_negative": 5
+      },
+      "precision": 0.212930202637504,
+      "recall": 0.992503748125937,
+      "positives_at_zero": 3109
+    },
+    "lattice_only": {
+      "auc": 0.8962107229377405,
+      "f1_at_zero": 0.3502645502645502,
+      "best_f1": 0.5969474279253816,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2451,
+        "false_negative": 5
+      },
+      "precision": 0.21265660134918085,
+      "recall": 0.992503748125937,
+      "positives_at_zero": 3113
+    },
+    "free_only": {
+      "auc": 0.6070854700361151,
+      "f1_at_zero": 0.24918977313647822,
+      "best_f1": 0.24918977313647822,
+      "operating_counts": {
+        "true_positive": 346,
+        "false_positive": 1764,
+        "false_negative": 321
+      },
+      "precision": 0.16398104265402844,
+      "recall": 0.5187406296851574,
+      "positives_at_zero": 2110
+    },
+    "verdict": "one-channel-noise-dominates",
+    "verdict_text": "The free channel is the weaker read on its own and adding it did not lift the sum above the lattice-sampled read: the weaker channel's noise is diluting the sum. The next lever is to condition that channel - a registration-aware gate - rather than to add more evidence to it.",
+    "gain_over_lattice_auc": 0.001855,
+    "lattice_minus_free_auc": 0.289125,
+    "declared_bar": {
+      "channel_gain": 0.005,
+      "channel_gap": 0.01
+    },
+    "fold": "the arm's own training fold, its own weights, the standing 81-point grid"
+  },
+  "contrasts": {
+    "two_path_control": {
+      "f1_at_zero_delta": -0.031004,
+      "auc_delta": 0.075423,
+      "precision_delta": -0.023395,
+      "best_f1_delta": 0.188083,
+      "best_threshold_delta": 2.4,
+      "out_of_fold_delta": 0.059326,
+      "positive_share_delta": 0.055715,
+      "row_error_delta": -4.496644,
+      "occupancy_loss_delta": 0.06307
+    },
+    "incremental_over_envelope": {
+      "f1_at_zero_delta": -0.058525,
+      "envelope_primary": 0.409161,
+      "scope": "docs\\evidence\\m15-stack-contiguity-r1\\scope.json"
+    }
+  },
+  "aliasing_guard": {
+    "arms_differ_in": [
+      "occupancy_lattice_free",
+      "occupancy_stack_monotone"
+    ],
+    "weights_differ": true,
+    "not_the_previous_block": true,
+    "not_the_span_only_arm": true,
+    "not_the_span_under_level_arm": true,
+    "rule": "the read is formed from two channels, so the block proves it measured its own checkpoint: each sweep's weights equal its own study's checkpoint, the arms' weights differ, the neighbour, span-only and span-under-level checkpoints are excluded by name, and the configs differ in exactly the declared fields"
+  },
+  "reference": {
+    "span_under_level": {
+      "auc": 0.789794338589878,
+      "f1_at_zero": 0.350613,
+      "best_f1": 0.36413902053712477,
+      "out_of_fold_f1": 0.328718,
+      "scope": "docs\\evidence\\m19-span-level-r1\\scope.json"
+    },
+    "span_only": {
+      "auc": 0.7955363489955812,
+      "f1_at_zero": 0.244496,
+      "best_f1": 0.443254817987152,
+      "out_of_fold_f1": 0.429607,
+      "scope": "docs\\evidence\\m18-tap-span-r1\\scope.json"
+    },
+    "skyline_recovery": {
+      "auc": 0.6206635178255187,
+      "f1_at_zero": 0.308333,
+      "best_f1": 0.33025692192566725,
+      "out_of_fold_f1": 0.30789,
+      "scope": "docs\\evidence\\m17-skyline-recovery-r1\\scope.json"
+    },
+    "crossing_rule": {
+      "auc": 0.835241410310454,
+      "f1_at_zero": 0.405439,
+      "best_f1": 0.428087986463621,
+      "out_of_fold_f1": 0.423254,
+      "scope": "docs\\evidence\\m16-crossing-threshold-r1\\scope.json"
+    },
+    "combined_read": {
+      "auc": 0.8889123247012213,
+      "f1_at_zero": 0.390805,
+      "best_f1": 0.5026861089792786,
+      "out_of_fold_f1": 0.392122,
+      "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+    },
+    "envelope": {
+      "auc": 0.8459483009356866,
+      "f1_at_zero": 0.409161,
+      "best_f1": 0.4426362896663954,
+      "out_of_fold_f1": 0.409639,
+      "scope": "docs\\evidence\\m15-stack-contiguity-r1\\scope.json"
+    },
+    "centring": {
+      "auc": 0.8153954139897414,
+      "f1_at_zero": 0.374142,
+      "best_f1": 0.3932304629168741,
+      "out_of_fold_f1": 0.378651,
+      "scope": "docs\\evidence\\m14-read-centring-r1\\scope.json"
+    },
+    "midpoint_anchor": {
+      "auc": 0.830500217152725,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.4014084507042254,
+      "out_of_fold_f1": 0.348472,
+      "scope": "docs\\evidence\\m13-midpoint-r1\\scope.json"
+    },
+    "dense_hinge": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "best_f1": 0.4655819774718398,
+      "out_of_fold_f1": 0.465582,
+      "scope": "docs\\evidence\\m12-dense-hinge-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M19 span-under-level arm, the M18 span-only arm, the M17 skyline arm, the M16 crossing rule, the M15 combined read, the M15 envelope arm, the M14 centred read, the M13 midpoint anchor, the M12 dense hinge, the M11 quantile anchor, the M10 extremal anchor and the M9 hinge, each measured in its own catalogue and none re-measured or re-verdicted here"
+  },
+  "reading": "two-path-fails",
+  "reading_text": "The two-path read does not beat the published read at the declared boundary. The sum hypothesis is falsified on this population, and the channel split says which part of it failed; no gate weight, envelope variant or summing coefficient is offered in its place.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC with the standing -0.02 tolerance. A read formed from two channels can change the ranking, so a ranking change here is the read's own doing and is reported as the measured price or gain.",
+  "fixed_threshold_ceiling": {
+    "arm": "control",
+    "scope": "this block's reproduced published read",
+    "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json",
+    "f1_at_zero": 0.38164,
+    "two_path_primary": 0.350636
+  },
+  "ceiling_broken": false,
+  "gate_moved": false,
+  "neighbour_excluded": {
+    "arm": "combined",
+    "scope": "docs\\evidence\\m15-stack-combined-r1\\scope.json"
+  },
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 0,
+    "boundary_exact_nonempty_boards": 0,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "two-path"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "two-path": {
+      "auc": 0.8980661706446594,
+      "f1_at_zero": 0.350636,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}

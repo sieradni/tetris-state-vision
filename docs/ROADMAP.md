@@ -23,7 +23,36 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the span under the level transforms repairs the level and still loses - so M18's separation gain was a level
+Latest: **the summed two-path read is the best-ranking and best-placing read this programme has measured, and it
+still fails the fixed boundary - with the channel split naming why**
+([M20_TWO_PATH_READ.md](M20_TWO_PATH_READ.md), `docs/evidence/m20-two-path-r1/scope.json`). `--occupancy-lattice-free 2`
+adds the lattice-free channel to the lattice-sampled read under the M15 envelope; the sum is ungated, its head zeroes only
+its output projection, and it is refused without the envelope in both config validation and the parser. Family
+`m20-two-path-`, control reproduced `0.8226433610683003` / `0.381640` exactly, every stage `passed 0` on the fourth attempt
+(three void attempts archived; V-142, V-143). AUC **0.898066** (`+0.075423`, the best ever here,
+above the M15 combined `0.888912`), swept optimum **0.600117 @ 3.30**
+(`+0.188083`, best ever), out-of-fold **0.459725** (best ever), row error
+**+3.322** against the control's `+7.819` - and plain
+F1 at `0.0` **0.350636** (`-0.031004`) with
+`55.52%` of cells positive against `49.95%`, so the
+failure is the read's *level*, not its signal. TP/FN `662/5`,
+**0 of 28** strict exact boards. Channel split: sum `0.898066`,
+lattice part alone `0.896211` (`+0.001855`), free channel alone
+`0.607085` AUC -> **`one-channel-noise-dominates`**: the declared mechanism (added evidence) is falsified, while the
+lattice channel in *this* arm's weights reaches `0.896211` against the envelope arm's
+`0.845948`, so the gain is a training-time effect of the added channel, not added cell evidence. Against
+the M15 envelope arm the primary is `-0.058525`. V-143 also retracts the M3 lattice-free
+claim: alive, that channel alone reads `0.607085` AUC.
+
+**Next candidate, named:** the same read with the measured structural level repair -
+`occupancy_lattice_free 2` + `occupancy_stack_monotone 1` + `occupancy_crossing_threshold 1`. This arm's failure is
+exactly the level failure the crossing rule repaired in M19 (positive share `80.55%` -> `52.16%`, row error `9.409` ->
+`6.993`, `level_repaired = true`), and here the level is off in the same direction (`55.52%` positive, best threshold
+`3.30`), so the composition is the smallest declared change that can put the boundary where the read's own groups meet. The
+bar stays the declared one: primary at least `0.05` above the reproduced control (`0.381640`) and at least one strict exact
+board.
+
+Previous: **the span under the level transforms repairs the level and still loses - so M18's separation gain was a level
 artefact** ([M19_SPAN_LEVEL.md](M19_SPAN_LEVEL.md), `docs/evidence/m19-span-level-r1/scope.json`). The declared
 composition (`--occupancy-tap-span 1` **with** `--occupancy-centre 1 --occupancy-crossing-threshold 1`, admitted together
 and only together) ran against the reproduced control in one catalogue; control reproduced `0.8226433610683003` /

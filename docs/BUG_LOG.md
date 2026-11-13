@@ -2869,3 +2869,58 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   no standing instrument beyond that test is required.
 - Named green run: the rerun's eight stage receipts `passed 0`, curation `passed 0`, and the full suite green through the
   bounded runner on the committed tree.
+
+## V-142 - CLOSED: the admission join's declared value set did not carry the new mode
+
+- Symptom: the M20 two-path arm's study exited 1 at launch with `ValueError: occupancy lattice-free readout differs from
+  resource admission`, after its profile had recorded `occupancy_lattice_free = 2` in `arguments`, `recovery_contract` and
+  `config`; the block's sweeps then failed downstream on a missing `summary.json`.
+- Root cause: `require_occupancy_lattice_free` gates on the module constant `OCCUPANCY_LATTICE_FREE_LEVERS`, which still
+  enumerated `(0, 1)`. The arm's value `2` failed the join at the *value set* rather than at the declaration, so the
+  message pointed at the run's honesty while the defect was the join's own enumeration. Same class as V-141: a new
+  declared value has to be carried by every gate that enumerates the field, not only by the model, the parser and the
+  contract.
+- Detection class: plumbing (declaration propagation). Detected by the join at study launch, before a step ran.
+- Instrument: `OCCUPANCY_LATTICE_FREE_LEVERS` now carries `2` with its meaning, `tests/test_two_path.py` asserts the join
+  admits the arm's value and still refuses an undeclared one, and `tests/test_lattice_free_lever.py` pins the value set.
+  Two defects in this class (V-141, V-142), one short of the standing-instrument rule; the two tests stand in for now.
+- Named green run: the block's eight stage receipts `passed 0` on the fourth attempt, curation `passed 0`, and the full
+  suite green through the bounded runner on the committed tree.
+
+## V-143 - CLOSED: a zero-initialized two-layer head could not read its input, and a zero gate could not open
+
+- Symptom: the M20 two-path arm's first completed block produced a curated `summed` read *identical to the last digit* to
+  its own lattice-only channel, and a `free_only` read with AUC exactly `0.5` and no positive decision at `0.0`. The
+  retained checkpoint showed `occupancy_lattice_free.0.weight`, `.2.weight`, `.2.bias` all exactly `0.000e+00` and
+  `tanh(gate) = 0.000000` after 64 steps: the declared channel had never moved. That measurement was void - it scored the
+  M15 envelope arm - and it is archived, unrewritten, under `runs/attempts/m20-two-path-void/`.
+- Root cause, two fixed points of training, both created by zero initialization:
+  1. **The head.** Both layers of the two-layer MLP were zeroed (weights and biases). Every activation is then exactly
+     zero, so the output projection's gradient `delta * activation` is exactly zero and the hidden layer's gradient flows
+     back through an output weight of zero. Only the biases can move, which can express a constant per output and nothing
+     else. The same construction sat in `lattice_board_refine`, which was additionally **constructed twice in a row** (the
+     second assignment silently owned the first, wasting its RNG draws).
+  2. **The gate.** `free_read = tanh(gate) * channel` with `gate` starting at zero: the gradient into the channel is
+     `tanh(0) = 0` and the gradient into the gate is the channel's output, itself zero. A scale that starts at zero is not
+     an identity element, it is a fixed point. Fixing the head alone left the arm inert, which the second attempt showed.
+  A third, smaller defect the trainer's own resource profile caught: the summed form still *built* the gate while nothing
+  trained it, and an unused parameter never receives Adam state (`resource profile requires resident Adam state for every
+  trainable parameter`). The guard was right.
+- Correction: zero only the **output** projection of each residual head (identity at step zero is carried by that output,
+  which stays bitwise the published function), the summed form is ungated and builds no gate at all, and the duplicate
+  construction is collapsed.
+- Detection class: initialization (a declared mechanism frozen at its starting point). Detected by the curator's channel
+  split - not by the primary, which merely looked like a failure - then confirmed by reading the checkpoint's tensors.
+- Instrument: `tests/test_residual_head_liveness.py` is the standing instrument. It proves each declared head acquires an
+  input-dependent output through its own training, that identity at step zero is exact, that the summed form carries
+  gradient into the hidden layer, that the summed form builds no gate, and that no head is constructed twice; it also
+  carries a **negative control** that runs the same probe on the old construction and requires it to be reported as dead
+  (constant output, hidden weights frozen). Third defect in a plumbing-adjacent class in this programme's history, so the
+  standing instrument is in place rather than two tests standing in for it.
+- Scope of the correction, stated where it bites: every earlier arm whose declared lever was one of these heads - the
+  single lattice-free channel (`m3-occlatfree-*`) and the per-board lattice refinement - measured a head that could not
+  read its input, so their published numbers describe the published function plus at most a constant. Their documents are
+  not rewritten; this entry is the correction of record. The M3 claim of "`0.840147` AUC and the only 2-wrong-cell board"
+  is **retracted**: measured alive in M20, the channel alone reads `0.607085` AUC.
+- Named green run: the block's eight stage receipts `passed 0` on the fourth attempt, curation `passed 0`,
+  `tests/test_residual_head_liveness.py` green, and the full suite green through the bounded runner on the committed tree.

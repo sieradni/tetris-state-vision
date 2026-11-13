@@ -1,5 +1,36 @@
 # Contributor handoff — 2026-10-30
 
+## The two-path read: the best ranking and placement measured, failing only at the boundary (2026-11-13, M20)
+
+[M20_TWO_PATH_READ.md](M20_TWO_PATH_READ.md) declared the sum of the two reads that each held a best result: the
+lattice-sampled envelope (best ranking `0.888912`, best placement `1.189` rows) and the lattice-free channel (the only
+2-wrong-cell board - a claim V-143 retracts). `--occupancy-lattice-free 2` adds them. The sum is ungated and its head
+zeroes only its output projection: a zero scale and a fully zeroed two-layer head are both training fixed points, so the
+first two attempts measured a channel that never moved (V-143, archived void).
+
+| arm | AUC | plain F1 at `0.0` | best swept | out-of-fold | TP/FN | positive | strict exact | boundary | row error | occ. loss |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 | 0.400399 | 661/6 | 49.95% | 0/28 | 0/28 | +7.819 | 0.7684 |
+| two-path read | 0.898066 | **0.350636** | 0.600117 | 0.459725 | 662/5 | 55.52% | 0/28 | 0/28 | +3.322 | 0.8314 |
+
+Reading **`two-path-fails`**, secondary `ranking-preserved`, delta `-0.031004`;
+gate `0 of 28` under both strict definitions. But the same fold gives the programme's
+best ranking (`+0.075423` AUC over the control, above the M15 combined `0.888912`), best swept placement
+(`+0.188083`, out-of-fold `+0.059326` above the control) and less than
+half the control's row error (`-4.497`). The failure is the read's *level*: positive share
+`55.52%` against `49.95%`, best threshold
+`3.30` against `0.90`.
+
+Channel split on the arm's own fold: sum `0.898066`, lattice part alone `0.896211`
+(`+0.001855`, under the `0.005` bar), free channel alone
+`0.607085` -> **`one-channel-noise-dominates`**. So the declared mechanism is falsified while the useful finding is
+another one: the lattice channel inside this arm's weights reaches `0.896211`, against
+`0.845948` in the envelope arm - the added channel acted on training, not on cell evidence.
+
+**Next candidate:** `--occupancy-lattice-free 2 --occupancy-stack-monotone 1 --occupancy-crossing-threshold 1` - the
+across-the-board measured level repair (M19: `80.55%` -> `52.16%` positive, `level_repaired = true`) applied to the read
+that now ranks best. Bar unchanged: `+0.05` over the reproduced control and at least one strict exact board.
+
 ## The span under the level transforms: the level was repaired and the signal was not there (2026-11-12, M19)
 
 [M19_SPAN_LEVEL.md](M19_SPAN_LEVEL.md) declared the composition the M18 record named: the row-span tap with M14 centring

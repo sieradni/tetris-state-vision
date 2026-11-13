@@ -102,8 +102,12 @@ class ModelConfig:
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
         check(type(self.lattice_board_refine) is int and self.lattice_board_refine in (0, 1),
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
-        check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1),
-              "occupancy lattice-free readout is 0 (published read-out) or 1 (declared gated channel)")
+        check(type(self.occupancy_lattice_free) is int and self.occupancy_lattice_free in (0, 1, 2),
+              "occupancy lattice-free readout is 0 (published read-out), 1 (declared gated channel) or 2 "
+              "(declared two-path read, summed with the lattice-sampled read)")
+        check(self.occupancy_lattice_free != 2 or self.occupancy_stack_monotone == 1,
+              "the two-path read sums the lattice-free channel with the lattice-sampled envelope, so it is only "
+              "declared on that envelope: occupancy_stack_monotone must be 1 beside occupancy_lattice_free 2")
         check(type(self.occupancy_column) is int and self.occupancy_column in (0, 1),
               "occupancy column read-out is 0 (published read-out) or 1 (declared per-column "
               "stack context)")
@@ -668,12 +672,18 @@ class TetrisStateNet(nn.Module):
         self.occupancy_lattice_free = None
         self.occupancy_lattice_gate = None
         if config.occupancy_lattice_free:
+            # Only the output projection is zeroed: zeroing the hidden layer too leaves every
+            # activation at exactly zero and every gradient at exactly zero, so the head could
+            # only ever learn a constant - a declared channel that never reads its input
+            # (V-143). Zeroing the output keeps step zero bitwise identical either way.
             self.occupancy_lattice_free = nn.Sequential(nn.Linear(dimension, dimension), nn.SiLU(),
                                                         nn.Linear(dimension, 1))
-            for layer in (self.occupancy_lattice_free[0], self.occupancy_lattice_free[2]):
-                nn.init.zeros_(layer.weight)
-                nn.init.zeros_(layer.bias)
-            self.occupancy_lattice_gate = nn.Parameter(torch.zeros(1))
+            nn.init.zeros_(self.occupancy_lattice_free[2].weight)
+            nn.init.zeros_(self.occupancy_lattice_free[2].bias)
+            # The gate belongs to the replacement form; the summed form has no scale to learn, and an
+            # unused parameter would carry no optimizer state (V-143), so it is not built at all.
+            self.occupancy_lattice_gate = (nn.Parameter(torch.zeros(1))
+                                           if config.occupancy_lattice_free == 1 else None)
         # Declared capacity lever: one correction of the decoded lattice per board, predicted from
         # the board token and applied identically at every stage - origin offset in cells along the
         # decoded axes plus a log-scale per axis. It is board-conditioned rather than per-stage, so
@@ -681,23 +691,13 @@ class TetrisStateNet(nn.Module):
         # bitwise the published function; constructed last so published tensors keep their seeds.
         self.lattice_board_refine = None
         if config.lattice_board_refine:
+            # Output projection only, for the same reason as the lattice-free channel: zeroing the
+            # hidden layer as well leaves the correction a constant 4-vector for every board, so the
+            # declared per-board capacity was never read (V-143).
             self.lattice_board_refine = nn.Sequential(nn.Linear(dimension, 64), nn.SiLU(),
                                                       nn.Linear(64, 4))
-            for layer in (self.lattice_board_refine[0], self.lattice_board_refine[2]):
-                nn.init.zeros_(layer.weight)
-                nn.init.zeros_(layer.bias)
-        # Declared capacity lever: one correction of the decoded lattice per board, predicted from
-        # the board token and applied identically at every stage - origin offset in cells along the
-        # decoded axes plus a log-scale per axis. It is board-conditioned rather than per-stage, so
-        # the stages share one correction. Every tensor starts at exactly zero, which keeps step zero
-        # bitwise the published function; constructed last so published tensors keep their seeds.
-        self.lattice_board_refine = None
-        if config.lattice_board_refine:
-            self.lattice_board_refine = nn.Sequential(nn.Linear(dimension, 64), nn.SiLU(),
-                                                      nn.Linear(64, 4))
-            for layer in (self.lattice_board_refine[0], self.lattice_board_refine[2]):
-                nn.init.zeros_(layer.weight)
-                nn.init.zeros_(layer.bias)
+            nn.init.zeros_(self.lattice_board_refine[2].weight)
+            nn.init.zeros_(self.lattice_board_refine[2].bias)
         # Declared registration lever: a per-cell deformation field, predicted from the same
         # first-stage feature the tap reads and sampled at the decoded cell centres, moves each
         # tap sample by at most one cell. The field's own convolution is zero-initialized, so step
@@ -853,14 +853,26 @@ class TetrisStateNet(nn.Module):
                 # tap. With either tap alone this is byte-identical to the published composition.
                 occupancy_features = occupancy_features+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
             occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
+            occupancy_parts = None
             if self.occupancy_lattice_free is not None:
                 weight = context_valid.float()[:, :, None]
                 pooled = (context*weight).sum(1)/weight.sum(1).clamp_min(1)
                 free = ((self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None]
                         +pooled[:, None])
-                gate = torch.tanh(self.occupancy_lattice_gate)
-                occupancy_logits = ((1-gate)*occupancy_logits+
-                                    gate*self.occupancy_lattice_free(free).reshape(batch, rows, columns))
+                channel = self.occupancy_lattice_free(free).reshape(batch, rows, columns)
+                if self.config.occupancy_lattice_free == 2:
+                    # Declared two-path read: the lattice-free channel is one more piece of evidence for the same
+                    # per-cell score, so it is summed with the lattice-sampled read instead of replacing it. The
+                    # sum is ungated on purpose: a scale of zero would sit at a fixed point of training - the
+                    # head's output and the gate's gradient are both zero there, so neither could ever move
+                    # (V-143). The head's own zero-initialized output carries the identity at step zero instead.
+                    free_read = channel
+                    occupancy_parts = {"lattice": occupancy_logits, "free": free_read}
+                    occupancy_logits = occupancy_logits+free_read
+                else:
+                    gate = torch.tanh(self.occupancy_lattice_gate)
+                    free_read = gate*channel
+                    occupancy_logits = ((1-gate)*occupancy_logits+free_read)
             if self.config.occupancy_stack_monotone:
                 # Declared structural option: the read loses the freedom to scatter its per-column profile, so the
                 # crossing of `0.0` is the column's height rather than a level a term has to place.
@@ -890,6 +902,8 @@ class TetrisStateNet(nn.Module):
                            "layer_type": self.layer_type(layers), "layer_known": self.layer_known(layers).squeeze(-1),
                            "pose_rotation": self.pose_rotation(layers), "pose_column": self.pose_column(layers),
                            "pose_row": self.pose_row(layers), "sample_points": points, "sample_offsets": offsets})
+            if occupancy_parts is not None:
+                stages[-1]["occupancy_parts"] = occupancy_parts
             if occupancy_deform_offsets is not None:
                 stages[-1]["occupancy_deform_offsets"] = occupancy_deform_offsets
             if occupancy_applied_offsets is not None:

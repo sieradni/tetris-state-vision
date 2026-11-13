@@ -163,10 +163,19 @@ def main():
         logits = sweep_logits(output["final"]["occupancy"], manifest["config"])
         known = target["known"][0].flatten().bool()
         occupied = target["occupied"][0].flatten().bool()
-        return {"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
-                "view": recipe["view"], "known_cells": int(known.sum()),
-                "logits": [round(float(value), 6) for value in logits[known]],
-                "occupied": [int(value) for value in occupied[known]]}
+        row = {"split": split, "sample_id": recipe["sample_id"], "group_id": recipe["group_id"],
+               "view": recipe["view"], "known_cells": int(known.sum()),
+               "logits": [round(float(value), 6) for value in logits[known]],
+               "occupied": [int(value) for value in occupied[known]]}
+        # Declared two-path read (M20): the sum keeps its two parts beside it so a measurement can score each
+        # channel alone on the same fold and say whether the sum beats its own parts. Recorded raw (only the
+        # visible-board window is applied), because each channel's own transforms are the curator's to apply.
+        parts = output["final"].get("occupancy_parts")
+        if parts is not None:
+            row["logits_parts"] = {name: [round(float(value), 6)
+                                          for value in sweep_logits(part, manifest["config"])[known]]
+                                   for name, part in sorted(parts.items())}
+        return row
 
     if args.profile:
         profile_cases = [sweep_case(recipes["training"][0], "training"),
