@@ -1,5 +1,33 @@
 # Contributor handoff — 2026-10-30
 
+## The label-free decision rule works and is not enough (2026-11-12)
+
+[M16_CROSSING_THRESHOLD.md](M16_CROSSING_THRESHOLD.md) was predeclared before any receipt, including its falsification.
+`--occupancy-crossing-threshold 1` subtracts each board's own exact Otsu level (over every gap between consecutive sorted
+visible logits) inside the head, after the envelope and after centring, so downstream `0.0` is that board's crossing. No
+label, prevalence, threshold grid or parameter; family `m16-crossing-`, catalogue `ad204845`, all receipts `passed 0`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.95% | 0/28 | 0.400399 | +7.819 | 0.7684 |
+| envelope + centring + own crossing | 0.835241 | **0.405439** | 0.428088 @ `1.35` | 45.87% | 0/28 | 0.423254 | +1.189 | 0.6550 |
+
+Reading `crossing-moves-without-clearing` (`+0.023799` vs control, `+0.014634` **over the same read's fixed-`0.0`
+ceiling**), secondary `ranking-preserved` (`+0.012598`), verdict `not-cleared`, fit gate FALSE (0/28). Aliasing: the arms
+differ in exactly the three declared fields, `bf1ca813…` vs `7cd49078…`, and M15's combined checkpoint is excluded by
+name. Leakage guard green: the rule's output is bit-identical under five different label arrays and its body contains no
+label reference.
+
+**Result.** The decision-rule hypothesis is **not falsified and not sufficient**. Breaking the ceiling by `+0.0146` proves
+the fixed `0.0` boundary was costing F1; landing `0.0227` below the read's own swept optimum, and raising false negatives
+from `4` to `11`, proves a per-board rule that cannot see prevalence cannot recover the population optimum. The bar
+(`0.431640`) is `0.0262` away and the gap is a recall/precision trade, not a threshold problem.
+
+**Next, named by the evidence.** The fit gate: `0` of `28` exact boards across sixteen arms, at a row error of `1.19`
+rows. Everything else is at or near its best; exact-state is the quantity no arm has moved, and the next arm should
+attack it directly rather than another decision level. Any further threshold search is tuning and must not be presented
+as a structural arm.
+
 ## Structure plus a centred level: best ranking, still not `0.0` (2026-11-12)
 
 The follow-on declared in [M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md) before its own receipt ran as

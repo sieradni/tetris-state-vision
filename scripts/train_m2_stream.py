@@ -131,6 +131,13 @@ def arguments(argv=None):
                              "column crosses 0.0 at most once and that crossing is its height. No label, threshold, "
                              "fitted parameter or prevalence is read, monotonicity is the domain's own constraint on a "
                              "locked stack, spawn rows pass through untouched, and 0 is exactly the published function")
+    parser.add_argument("--occupancy-crossing-threshold", type=int, choices=(0, 1), default=0,
+                        help="declared label-free decision rule;1 subtracts, per board, the exact Otsu level of that "
+                             "board's own visible occupancy logits inside the head, so every downstream consumer "
+                             "thresholding at 0.0 decides at the board's own crossing instead of a fixed number. It "
+                             "reads no label, no prevalence, no threshold grid and no fitted parameter, is applied "
+                             "after the envelope and after centring when they are on, and 0 is exactly the published "
+                             "function")
     parser.add_argument("--occupancy-normalise", type=int, choices=(0, 1), default=0,
                         help="declared output parameterisation;1 z-scores the occupancy logits over "
                              "each board's own visible cells (mean 0, unit spread, no label and no "
@@ -242,6 +249,20 @@ def arguments(argv=None):
                                        args.occupancy_context or args.occupancy_deform or
                                        args.occupancy_placed or args.occupancy_column):
         parser.error("the declared sampling offset is a single geometry, not a form of another lever")
+    if args.occupancy_crossing_threshold and (args.occupancy_normalise or args.occupancy_dense_hinge or
+                                              args.occupancy_quantile_anchor or args.occupancy_anchor or
+                                              args.occupancy_margin_hinge or args.occupancy_midpoint or
+                                              args.occupancy_context or args.occupancy_detail_stencil or
+                                              args.occupancy_resolution or args.occupancy_deform or
+                                              args.occupancy_placed or args.occupancy_column or
+                                              args.occupancy_offset_rows or args.occupancy_lattice_free):
+        # The rule decides where the read already separates, so every term that charges a shift or a margin is moot,
+        # the normalised output would fold the board's spread into the level, and every read-moving lever would leave
+        # the selected crossing confounded with a changed sample. The structural read options compose with it by
+        # declaration: the envelope places the crossing's shape and centring its level before the rule decides.
+        parser.error("the crossing threshold decides at the read's own Otsu split, so the normalised output, the five "
+                     "supervision terms and every lever that changes what is read, where it is sampled or where zero "
+                     "sits are all refused beside it")
     if args.occupancy_stack_monotone and (args.occupancy_normalise or args.occupancy_dense_hinge or
                                          args.occupancy_quantile_anchor or args.occupancy_anchor or
                                          args.occupancy_margin_hinge or args.occupancy_midpoint or
@@ -444,7 +465,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
                    occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                    occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-                   occupancy_centre=0, occupancy_stack_monotone=0):
+                   occupancy_centre=0, occupancy_stack_monotone=0, occupancy_crossing_threshold=0):
     if (type(curriculum) is not str or curriculum not in ("stream-v1", "all-class-fit-v1", "all-class-interleaved-v1") or
             summary.get("curriculum", "stream-v1") != curriculum):
         raise ValueError("curriculum differs from resource admission")
@@ -475,7 +496,8 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_margin_hinge, require_occupancy_anchor,
                                      require_occupancy_quantile_anchor, require_occupancy_dense_hinge,
                                      require_occupancy_midpoint, require_occupancy_centre,
-                                     require_occupancy_stack_monotone)
+                                     require_occupancy_stack_monotone,
+                                     require_occupancy_crossing_threshold)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -502,6 +524,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_midpoint(occupancy_midpoint, summary)
     require_occupancy_centre(occupancy_centre, summary)
     require_occupancy_stack_monotone(occupancy_stack_monotone, summary)
+    require_occupancy_crossing_threshold(occupancy_crossing_threshold, summary)
     warm = summary.get("warm_optimizer_backward", {})
     if accumulation_policy is not None and (
             summary.get("accumulation_policy") != accumulation_policy or
@@ -765,6 +788,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_normalise=args.occupancy_normalise,
                      occupancy_centre=args.occupancy_centre,
                      occupancy_stack_monotone=args.occupancy_stack_monotone,
+                     occupancy_crossing_threshold=args.occupancy_crossing_threshold,
                      lattice_support=args.lattice_support, lattice_residual=args.lattice_residual,
                      occupancy_lattice_free=args.occupancy_lattice_free,
                      lattice_board_refine=args.lattice_board_refine,
@@ -797,6 +821,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_midpoint=args.occupancy_midpoint,
                            occupancy_centre=args.occupancy_centre,
                      occupancy_stack_monotone=args.occupancy_stack_monotone,
+                     occupancy_crossing_threshold=args.occupancy_crossing_threshold,
                            occupancy_column=args.occupancy_column,
                            occupancy_offset_rows=args.occupancy_offset_rows,
                            occupancy_normalise=args.occupancy_normalise,
@@ -832,7 +857,8 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     # source checkpoint that predates the field is the same
                                                     # function and a legitimate initial state for either arm.
                                                     "occupancy_centre",
-                                                    "occupancy_stack_monotone")) or
+                                                    "occupancy_stack_monotone",
+                                                    "occupancy_crossing_threshold")) or
                 source_summary["checkpoint_sha256"] != source_manifest["weights_sha256"] or
                 source_summary.get("curriculum") != args.curriculum or
                 source_summary["arguments"].get("seed") != args.seed or
@@ -988,6 +1014,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_midpoint"] = args.occupancy_midpoint
     recovery_contract["occupancy_centre"] = args.occupancy_centre
     recovery_contract["occupancy_stack_monotone"] = args.occupancy_stack_monotone
+    recovery_contract["occupancy_crossing_threshold"] = args.occupancy_crossing_threshold
     recovery_contract["geometry_final_only"] = args.geometry_final_only
     recovery_contract["lattice_support"] = args.lattice_support
     recovery_contract["box_extent_weight"] = args.box_extent_weight

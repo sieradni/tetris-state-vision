@@ -44,6 +44,7 @@ class ModelConfig:
     occupancy_normalise: int = 0
     occupancy_centre: int = 0
     occupancy_stack_monotone: int = 0
+    occupancy_crossing_threshold: int = 0
 
     def __post_init__(self):
         check(type(self.heads) is int and 1 <= self.heads <= 8, "invalid attention head count")
@@ -118,6 +119,12 @@ class ModelConfig:
         check(not (self.occupancy_stack_monotone and self.occupancy_normalise),
               "the monotonised read is declared on the published output parameterisation; z-scoring it "
               "would replace the crossing the envelope places with a standard deviation")
+        check(type(self.occupancy_crossing_threshold) is int and self.occupancy_crossing_threshold in (0, 1),
+              "occupancy crossing threshold is 0 (the published fixed 0.0 decision) or 1 (declared per-board "
+              "decision at the read's own Otsu split, chosen from the logits alone)")
+        check(not (self.occupancy_crossing_threshold and self.occupancy_normalise),
+              "the crossing rule is declared on the published output parameterisation; z-scoring inside it "
+              "would mix the board's spread into the level the rule selects")
 
     @classmethod
     def pilot(cls):
@@ -190,6 +197,44 @@ def centre_board(logits, visible_rows):
     """
     visible = logits[:, :visible_rows]
     return logits-visible.mean(dim=(1, 2), keepdim=True)
+
+
+def otsu_board(logits, visible_rows):
+    """Decide each board at its own read, not at a fixed `0.0` no read ever chose.
+
+    Fifteen arms measured the same wall: the plain-binary boundary is `0.0` by fiat, the read's positives sit at ~50% of
+    the population while occupancy is ~12%, and every structural or supervised mechanism that tried to move `0.0` to the
+    operating point failed. The read itself separates (`0.888912` AUC, `0.502686` at its own optimum). So this stops
+    moving the read and moves the *decision*: each board is decoded at the level its own logits put between their two
+    groups.
+
+    The split is the exact Otsu threshold over the board's visible logits - the level that maximises the between-group
+    variance of the read, scanned over every distinct gap between consecutive sorted values. It is deterministic, reads
+    only the logits, takes no label, no prevalence, no threshold grid, no fitted weight and no parameter at all (two
+    groups is what "occupied or not" means, not a knob), and a constant board collapses to the degenerate split, where
+    the rule subtracts the constant the board already is. Subtracting it inside the head keeps every downstream consumer
+    untouched: the tensor the objective differentiates and the tensor every scorer thresholds at `0.0` is already
+    decided at the board's own crossing.
+    """
+    batch = logits.shape[0]
+    visible = logits[:, :visible_rows].reshape(batch, -1)
+    count = visible.shape[1]
+    if count < 2:
+        return logits
+    ordered, _ = visible.sort(dim=1)
+    index = torch.arange(1, count, device=logits.device, dtype=ordered.dtype)
+    cumulative = ordered.cumsum(dim=1)
+    total = cumulative[:, -1:]
+    below = cumulative[:, :-1]
+    left = below/index
+    right = (total-below)/(count-index)
+    between = (index*(count-index))*(left-right)**2
+    position = torch.argmax(between, dim=1)
+    midpoints = (ordered[:, :-1]+ordered[:, 1:])/2.0
+    level = midpoints.gather(1, position[:, None]).squeeze(1)
+    if level.shape != (batch,):
+        raise ValueError("the crossing level must be one number per board")
+    return logits-level[:, None, None]
 
 
 def stack_contiguous(logits, visible_rows):
@@ -733,6 +778,10 @@ class TetrisStateNet(nn.Module):
                 # the objective or any scorer sees it, so no supervision has to charge a shift that can
                 # no longer exist. Relative cell structure is untouched.
                 occupancy_logits = centre_board(occupancy_logits, self.config.visible_rows)
+            if self.config.occupancy_crossing_threshold:
+                # Declared decision rule, applied last: the board decides at the level its own read puts between its two
+                # groups, so `0.0` downstream is that board's crossing rather than a fixed number no read chose.
+                occupancy_logits = otsu_board(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_normalise:
                 # Declared parameterisation: the read the objective sees and the read a scorer sees
                 # are the same tensor, so the `0.0` boundary the loss optimises is the boundary every

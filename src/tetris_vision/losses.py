@@ -282,6 +282,15 @@ def require_occupancy_stack_monotone(value, summary):
         raise ValueError("occupancy stack monotone differs from resource admission")
 
 
+def require_occupancy_crossing_threshold(value, summary):
+    """One declaration of the admission join for the per-board crossing decision rule."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_crossing_threshold", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_crossing_threshold", 0) != value or
+            summary.get("config", {}).get("occupancy_crossing_threshold", 0) != value):
+        raise ValueError("occupancy crossing threshold differs from resource admission")
+
+
 def require_occupancy_normalise(value, summary):
     """One declaration of the admission join for the declared output parameterisation."""
     if (type(value) is not int or value not in OCCUPANCY_NORMALISE_ARMS or

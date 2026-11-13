@@ -2790,3 +2790,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   orientation change cannot pass silently.
 - Named green run: `tests.test_stack_contiguity` 25 tests green (1 skip before curation); both block receipts `passed 0`;
   curation `runs/m15-stack-curation-r1-job.json` `passed 0`; full suite green on the committed tree.
+
+## V-138 - CLOSED: the crossing curator's arm projection omitted the field it was curating
+
+- Symptom: the first M16 curation exited 1 with `the arms differ in more than the declared field: ['occupancy_centre',
+  'occupancy_stack_monotone']` - the treated arm's three declared fields were reported as two.
+- Root cause: the arm record builds its `config` projection from an explicit key tuple inherited from the previous
+  curator, and `occupancy_crossing_threshold` was not added to it, so the comparison could not see the field it had just
+  declared.
+- Detection class: instrument (curator). Caught by the curator's own failing receipt before any scope existed; the
+  receipts were archived to `runs/attempts/m16-curation/` and the block re-curated into a fresh directory.
+- Instrument: the field added to both the recorded arm dictionary and the config projection tuple. The guard now derives
+  `arms_differ_in` from the declared tuple itself (`DECLARED`), and the record tests assert the three-field difference,
+  so a future field cannot be curated while invisible to the alias check.
+- Named green run: `runs/m16-crossing-curation-r2-job.json` `passed 0`; `tests.test_crossing_threshold` green; full
+  suite green on the committed tree.

@@ -23,7 +23,23 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **stack structure plus a centred level buys the best ranking in the program, but not `0.0`**
+Latest: **deciding at each board's own crossing breaks the fixed-threshold ceiling, and not the bar**
+([M16_CROSSING_THRESHOLD.md](M16_CROSSING_THRESHOLD.md), `docs/evidence/m16-crossing-threshold-r1/scope.json`).
+`--occupancy-crossing-threshold 1` subtracts, per board, the exact Otsu level of that board's own visible occupancy
+logits inside the head (after the envelope and centring), so every consumer still thresholds `0.0` and `0.0` *is* that
+board's crossing. It is label-free by assertion, not by claim: the tests permute, invert and zero the labels and require
+bit-identical output, and scan the executable body for any label reference. Family `m16-crossing-`, catalogue
+`ad204845`; control reproduced `0.8226433610683003` / `0.381640` exactly. Reading
+**`crossing-moves-without-clearing`**: plain F1 at the rule's crossing **0.405439** (`+0.023799` against control, and
+**`+0.014634` against the same read's fixed-`0.0` ceiling of `0.390805`** - the declared falsification did not fire),
+AUC `0.835241` (`+0.012598`), best swept `0.428088 @ 1.35`, out-of-fold `+0.022855`, row error `+1.189`, occupancy loss
+`-0.113`, cells positive `-4.07` points, fit gate still `0` of `28`. Two declared expectations were falsified: the rule
+lands `0.0227` below its own swept maximum, so per-board selection is only partly aligned with each board's optimum, and
+it bought precision with recall (`4` -> `11` false negatives). Verdict: the decision-rule hypothesis is **not falsified
+and not sufficient** - the fixed `0.0` was costing real F1, the bar was never reachable this way, and the next candidate
+the evidence names is the fit gate (`0` of `28` exact boards across sixteen arms).
+
+Previous: **stack structure plus a centred level buys the best ranking in the program, but not `0.0`**
 ([M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md), `docs/evidence/m15-stack-combined-r1/scope.json`). The declared
 follow-on block ran: `--occupancy-stack-monotone 1 --occupancy-centre 1` (envelope first, centring after it) against the
 M15 block's own control in the same catalogue `d9d867a6`. Reading **`stack-moves-without-clearing`**: plain F1 at `0.0`
