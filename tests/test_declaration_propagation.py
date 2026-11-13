@@ -93,7 +93,7 @@ class RunFamilyPropagationTests(unittest.TestCase):
 def accepted_stencil_modes():
     """Every value the model admits for the stencil, read from the model rather than restated here."""
     modes = []
-    for value in range(3):
+    for value in range(4):
         try:
             ModelConfig(occupancy_lattice_free=2, occupancy_free_stencil=value)
         except (ValueError, TypeError):
@@ -108,7 +108,7 @@ class FreeStencilPropagationTests(unittest.TestCase):
     def test_the_join_enumerates_every_mode_the_model_accepts(self):
         from tetris_vision.losses import OCCUPANCY_FREE_STENCIL_LEVERS, require_occupancy_free_stencil
         modes = accepted_stencil_modes()
-        self.assertEqual(modes, (0, 1, 2))
+        self.assertEqual(modes, (0, 1, 2, 3))
         self.assertEqual(tuple(sorted(OCCUPANCY_FREE_STENCIL_LEVERS)), tuple(sorted(modes)))
         for value in modes:
             summary = {"arguments": {"occupancy_free_stencil": value},

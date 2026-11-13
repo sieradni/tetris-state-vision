@@ -19,13 +19,16 @@ for entry in (ROOT/"src", ROOT/"scripts"):
     if str(entry) not in sys.path:
         sys.path.insert(0, str(entry))
 
-from tetris_vision.model import ModelConfig, TetrisStateNet
+from tetris_vision.model import CONTRAST_LIMIT, ModelConfig, TetrisStateNet, stencil_contrast
 
-SCOPE = ROOT/"docs/evidence/m22-stencil-r1/scope.json"
+SCOPE = ROOT/"docs/evidence/m23-contrast-r1/scope.json"
 DOC = ROOT/"docs/M22_STENCIL_READ.md"
+DOC_CONTRAST = ROOT/"docs/M23_CONTRAST_READ.md"
+EARLIER = {"control", "envelope", "crossing", "bare", "stencil", "stencil-crossing", "centred", "centred-crossing"}
 ARMS = {"control": (0, 0, 0, 0), "envelope": (2, 1, 0, 0), "crossing": (2, 1, 1, 0),
         "bare": (2, 0, 0, 0), "stencil": (2, 1, 0, 1), "stencil-crossing": (2, 1, 1, 1),
-        "centred": (2, 1, 0, 2), "centred-crossing": (2, 1, 1, 2)}
+        "centred": (2, 1, 0, 2), "centred-crossing": (2, 1, 1, 2),
+        "norm": (2, 1, 0, 3), "norm-cross": (2, 1, 1, 3)}
 
 
 def config(**overrides):
@@ -80,7 +83,7 @@ class DeclarationTest(unittest.TestCase):
             config(occupancy_lattice_free=value, occupancy_free_stencil=0)
 
     def test_the_stencil_is_a_declared_mode(self):
-        for value in (-1, 3, True, 1.0, None):
+        for value in (-1, 4, True, 1.0, None):
             with self.assertRaises((ValueError, TypeError)):
                 config(occupancy_lattice_free=2, occupancy_free_stencil=value)
 
@@ -95,7 +98,7 @@ class DeclarationTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             arguments(base+["--occupancy-free-stencil", "1"])
         with self.assertRaises(SystemExit):
-            arguments(base+["--occupancy-lattice-free", "2", "--occupancy-free-stencil", "3"])
+            arguments(base+["--occupancy-lattice-free", "2", "--occupancy-free-stencil", "5"])
 
     def test_the_admission_join_enumerates_both_modes(self):
         from tetris_vision.losses import require_occupancy_free_stencil
@@ -247,6 +250,96 @@ class MechanismTest(unittest.TestCase):
             self.assertTrue(torch.equal(left, right))
 
 
+class ContrastReadTest(unittest.TestCase):
+    """M23: the scale-invariant contrast read is invariant by construction, and proved so here.
+
+    The property is a statement about the *coarse map* the read consumes, not about pixels: an encoder is non-linear, so
+    a brightness change in the capture is not an affine change in the map, and claiming otherwise would be false. What the
+    read declares - and what these tests hold it to - is that any affine change *of the coarse values* leaves it unchanged
+    while a genuine local change moves it.
+    """
+
+    def coarse(self, seed=3, shape=(1, 4, 26, 12)):
+        generator = torch.Generator().manual_seed(seed)
+        return torch.rand(*shape, generator=generator)
+
+    def test_an_offset_of_every_coarse_value_leaves_the_contrast_unchanged(self):
+        grid = self.coarse()
+        base = stencil_contrast(grid)
+        for offset in (.4, -3.0, 12.5):
+            self.assertLess(float((base-stencil_contrast(grid+offset)).abs().max()), 1e-4, offset)
+
+    def test_rescaling_every_coarse_value_leaves_the_contrast_unchanged(self):
+        grid = self.coarse()
+        base = stencil_contrast(grid)
+        for factor in (2.5, .01, 40.0):
+            self.assertLess(float((base-stencil_contrast(grid*factor)).abs().max()), 1e-3, factor)
+
+    def test_a_genuine_local_change_does_move_it(self):
+        """The invariance must not be vacuity: a real local difference has to survive it."""
+        grid = self.coarse()
+        base = stencil_contrast(grid)
+        moved = grid.clone()
+        moved[:, :, 3:6, 2:5] += .5
+        self.assertGreater(float((base-stencil_contrast(moved)).abs().max()), 1e-2)
+        self.assertGreater(float((base-stencil_contrast(grid.roll(2, dims=-1))).abs().max()), 1e-2)
+
+    def test_a_uniform_board_has_exactly_no_contrast(self):
+        grid = self.coarse()
+        for value in (0.0, 3.0, -7.5):
+            self.assertEqual(float(stencil_contrast(torch.full_like(grid, value)).abs().max()), 0.0, value)
+
+    def test_the_declared_limit_is_inactive_on_this_population(self):
+        """The clamp is a numerical guard, not the mechanism; if it bit, the read would stop being invariant."""
+        largest = float(stencil_contrast(self.coarse(seed=5, shape=(1, 8, 26, 12))).abs().max())
+        self.assertLess(largest, CONTRAST_LIMIT/4)
+
+    def test_the_read_through_the_head_is_invariant_too(self):
+        base = {"occupancy_lattice_free": 2, "occupancy_stack_monotone": 1}
+        torch.manual_seed(7)
+        model = TetrisStateNet(config(**base, occupancy_free_stencil=3))
+        fill_stencil(model)
+        dimension = ModelConfig.pilot().dimension
+        grid = self.coarse(shape=(1, dimension, 26, 12))
+        rows, columns = grid.shape[-2]-2, grid.shape[-1]-2
+
+        def read(values):
+            taps = (values[:, :, 1:-1, 1:-1], values[:, :, :-2, 1:-1], values[:, :, 2:, 1:-1],
+                    values[:, :, 1:-1, :-2], values[:, :, 1:-1, 2:])
+            stencil = torch.cat([tap.permute(0, 2, 3, 1).reshape(1, rows*columns, -1) for tap in taps], -1)
+            row_ids = torch.arange(rows)
+            column_ids = torch.arange(columns)
+            where = (model.row_embedding(row_ids)[:, None, :]
+                     + model.column_embedding(column_ids)[None, :, :]).reshape(1, rows*columns, -1)
+            with torch.no_grad():
+                return model.occupancy_free_stencil(torch.cat((stencil, where), -1)).reshape(1, rows, columns)
+
+        base_read = read(stencil_contrast(grid))
+        for changed in (grid+.7, grid*3.0, grid*3.0+.7):
+            self.assertLess(float((base_read-read(stencil_contrast(changed))).abs().max()), 1e-6)
+
+    def test_the_declared_mode_carries_no_level_in_the_scored_window(self):
+        base = {"occupancy_lattice_free": 2, "occupancy_stack_monotone": 1}
+        torch.manual_seed(7)
+        model = TetrisStateNet(config(**base, occupancy_free_stencil=3))
+        fill_stencil(model)
+        generator = torch.Generator().manual_seed(11)
+        pixels = torch.rand(1, 3, 96, 96, generator=generator)
+        valid = torch.ones(1, 1, 96, 96, dtype=torch.bool)
+        with torch.no_grad():
+            local = model(pixels, valid)["final"]["occupancy_parts"]["local"]
+        visible = ModelConfig.pilot().visible_rows
+        window = local[:, :visible]
+        self.assertLess(abs(float(window.mean()))/max(1e-9, float(window.abs().mean())), 1e-6)
+
+    def test_the_mode_is_a_declared_value(self):
+        for value in (0, 1, 2, 3):
+            config(occupancy_lattice_free=2, occupancy_free_stencil=value)
+        for value in (-1, 4, 3.0, True):
+            with self.assertRaises((ValueError, TypeError)):
+                config(occupancy_lattice_free=2, occupancy_free_stencil=value)
+
+
 @unittest.skipUnless(SCOPE.exists(), "the M22 curation has not run yet")
 class RecordTest(unittest.TestCase):
     @classmethod
@@ -292,11 +385,15 @@ class RecordTest(unittest.TestCase):
                                             "post-hoc-application-matches-the-rule"))
 
     def test_the_doc_carries_the_measured_numbers(self):
+        """Each arm's numbers appear in the document that owns that arm, never moved to fit a narrative."""
+        contrast = DOC_CONTRAST.read_text(encoding="utf-8")
         for name, arm in self.scope["arms"].items():
-            self.assertIn(f"{arm['auc']:.6f}", self.doc, name)
-            self.assertIn(f"{arm['f1_at_zero']:.6f}", self.doc, name)
+            text = self.doc if name in EARLIER else contrast
+            self.assertIn(f"{arm['auc']:.6f}", text, name)
+            self.assertIn(f"{arm['f1_at_zero']:.6f}", text, name)
         for name, reading in self.scope["readings"].items():
-            self.assertIn(reading["reading"], self.doc, name)
+            text = self.doc if name in EARLIER else contrast
+            self.assertIn(reading["reading"], text, name)
 
 
 if __name__ == "__main__":

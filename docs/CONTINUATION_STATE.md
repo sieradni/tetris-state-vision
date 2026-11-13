@@ -1,5 +1,29 @@
 # Contributor handoff — 2026-10-30
 
+## The scale-invariant contrast read: invariant by construction, still short of the bar (2026-11-13, M23)
+
+[M23_CONTRAST_READ.md](M23_CONTRAST_READ.md) declared the mechanism and its two arms before they ran.
+`--occupancy-free-stencil 3` reads the five taps on a field where each coarse box is divided by the spread of its own
+5x5 neighbourhood (conditioned by the map's global mean first; no additive epsilon, which would break exact rescaling
+invariance - measured `1.3e-2` drift with a floor against `1.2e-6` without; a `+/-20` clamp that is inactive at a
+measured maximum of `2.403`). Proved mechanically: zero read at step zero, leaves the zero fixed point inside the real
+training path, `abs(mean)/mean(abs(read)) = 0.0` over the visible rows, `<= 3.9e-6` drift under board-wide offsets and
+`<= 1.2e-6` under rescaling of coarse values, `>= 1e-2` under a genuine local change, exactly `0.0` on a uniform board,
+and the same invariance through the head.
+
+Ten arms, same catalogue and protocol as M22, control `0.8226433610683003` / `0.381640` exactly, M20/M21 checkpoints
+reproduced. `norm` `0.856281` AUC / `0.414810` F1@0 (`+0.033170`, `0 of 28` exact) is `stencil-moves-without-clearing`;
+`norm-cross` `0.835742` / `0.377106` is `stencil-fails`. The primary is identical to the M22 de-meaned arm and the AUC
+`0.003542` lower, so the level the M22 stencil produced was not reclaimable capacity - it was the gain. What the contrast
+read does buy: the first `complementary` channel verdict in the record (`+0.027048` AUC over its own lattice part), a
+`local_only` that beats the pooled channel (`0.742764` vs `0.654209`), and a local read the crossing rule survives
+(`0.835742` / `0.377106` against `0.782265` / `0.311695` for the M22 stencil and `0.736989` / `0.261500` for the
+de-meaned one).
+
+Still open: no strict exact board in any arm of either catalogue. The named next question is no longer "what local
+detail" - three formulations agree the local detail is worth `~0.03` primary - but where the remaining `0.05` could come
+from, since the best primary in the record (`0.480776`) is bought with a board-wide level that no composition keeps.
+
 ## The free channel's local stencil: best read, no exact board, and the gain is a level (2026-11-13, M22)
 
 [M22_STENCIL_READ.md](M22_STENCIL_READ.md) declared eight arms before any receipt and a controlled ablation: the

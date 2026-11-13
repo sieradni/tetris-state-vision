@@ -103,10 +103,11 @@ class ModelConfig:
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
         check(type(self.lattice_board_refine) is int and self.lattice_board_refine in (0, 1),
               "lattice board refinement is 0 (published shared decode) or 1 (declared per-board capacity)")
-        check(type(self.occupancy_free_stencil) is int and self.occupancy_free_stencil in (0, 1, 2),
+        check(type(self.occupancy_free_stencil) is int and self.occupancy_free_stencil in (0, 1, 2, 3),
               "occupancy free-channel stencil is 0 (the free channel reads pooled context and fixed "
-              "coordinates only), 1 (a coarse local stencil on the fixed lattice) or 2 (the same stencil "
-              "with its board-wide mean removed, so it carries only relative structure)")
+              "coordinates only), 1 (a coarse local stencil on the fixed lattice), 2 (the same stencil "
+              "with its board-wide mean removed) or 3 (the same five taps read on the locally normalised "
+              "field, so the channel is invariant to a board-wide offset and to rescaling)")
         check(not self.occupancy_free_stencil or self.occupancy_lattice_free == 2,
               "the local stencil is detail for the lattice-free channel, so it is declared only beside "
               "occupancy_lattice_free 2")
@@ -444,6 +445,30 @@ class ImageEncoder(nn.Module):
         return detail, context, weight[:, 0] > 0, first
 
 
+def stencil_contrast(grid):
+    """The declared M23 read: every coarse box against the mean and spread of its own 5x5 neighbourhood.
+
+    Invariance is the point of the form, and it is exact by construction: adding a constant ``b`` to every coarse value
+    cancels in ``grid - mean``, and multiplying every value by ``a > 0`` cancels between the numerator and the spread.
+    A flat neighbourhood divides by the declared floor and reads as exactly zero contrast, so a uniform board has no
+    level to give. Measured against the M22 form, which carried `82%` of its magnitude as a board-wide level, this one
+    has no level to remove.
+    """
+    # Condition the statistic by the map's own global mean first. That shift cancels exactly in every difference below, so
+    # it changes nothing mathematically, and it keeps the two-pass variance away from the catastrophic cancellation that
+    # an unshifted board with a large offset suffers (measured: 1.6e-3 of read drift at an offset of 12.5 without it).
+    shifted = grid-grid.mean()
+    padded = F.pad(shifted, (2, 2, 2, 2), mode="replicate")
+    mean = F.avg_pool2d(padded, 5, stride=1)
+    square = F.avg_pool2d(padded*padded, 5, stride=1)
+    spread = (square-mean*mean).clamp_min(0.0).sqrt()
+    delta = shifted-mean
+    # a flat neighbourhood has zero contrast, not an undefined one; every other neighbourhood divides by its own spread,
+    # which is what makes the statistic invariant rather than merely centred
+    denominator = torch.where(spread > 0, spread, torch.ones_like(spread))
+    return (delta/denominator).clamp(-CONTRAST_LIMIT, CONTRAST_LIMIT)
+
+
 def spatial_encoding(height, width, dimension, device, dtype):
     y, x = torch.meshgrid(torch.arange(height, device=device, dtype=dtype)+.5,
                           torch.arange(width, device=device, dtype=dtype)+.5, indexing="ij")
@@ -475,6 +500,12 @@ DEFORM_LIMIT = 1.0
 # about a tenth of a cell: the wider reach has to come with a coarser context, not just a bigger bound.
 DEFORM_WIDE_LIMIT = 3.0
 DEFORM_REACH = 4.0
+# Declared numerical guard for the scale-invariant contrast read (M23). A perfectly flat neighbourhood has zero contrast
+# by definition, so its denominator is replaced by one rather than by a floor that would depend on the board's own scale;
+# a floor of that kind breaks exact invariance under rescaling, which is the property the read exists for. The limit only
+# bites on a neighbourhood whose spread is numerically zero, and it is scale and offset invariant, so it cannot reintroduce
+# a level. Measured on this catalogue the largest pre-clamp contrast is far below it.
+CONTRAST_LIMIT = 20.0
 # Declared de-meaned reach: subtracting the board's mean offset can move any single cell by as much
 # as the sum of the level bounds (one shifted endpoint plus the mean), so the structural bound of the
 # de-meaned arm is twice the free arm's. It is not a clamp: clamping after de-meaning would put the
@@ -886,6 +917,14 @@ class TetrisStateNet(nn.Module):
                     # box average is insensitive to the sub-cell misplacement that made pixel-local features
                     # fail, and fixed because nothing here depends on where the decoder put the board.
                     grid = F.adaptive_avg_pool2d(coarse, (rows+2, columns+2))
+                    if self.config.occupancy_free_stencil == 3:
+                        # Declared scale-invariant contrast (M23): each box is expressed against the mean and spread of
+                        # its own 5x5 coarse neighbourhood before the taps are taken, so a board-wide offset cancels in
+                        # the difference and a board-wide rescaling cancels in the ratio - by construction, not by a
+                        # post-hoc subtraction. The M22 form carried 82% of its magnitude as a board-wide level; this
+                        # one cannot carry any. The neighbourhood is pooled from the fixed lattice only, so the
+                        # statistic never touches the decoded board.
+                        grid = stencil_contrast(grid)
                     taps = (grid[:, :, 1:-1, 1:-1], grid[:, :, :-2, 1:-1], grid[:, :, 2:, 1:-1],
                             grid[:, :, 1:-1, :-2], grid[:, :, 1:-1, 2:])
                     stencil = torch.cat([tap.permute(0, 2, 3, 1).reshape(batch, rows*columns, -1)
@@ -893,7 +932,7 @@ class TetrisStateNet(nn.Module):
                     where = (self.row_embedding(self.row_ids)+self.column_embedding(self.column_ids))[None]
                     local_read = self.occupancy_free_stencil(torch.cat(
                         (stencil, where.expand(batch, rows*columns, -1)), -1)).reshape(batch, rows, columns)
-                    if self.config.occupancy_free_stencil == 2:
+                    if self.config.occupancy_free_stencil in (2, 3):
                         # Declared constant-mode bar (M22): the local read is de-meaned across the board before it
                         # reaches the sum, so it can only say what is local - a board-wide level is not expressible
                         # in it and cannot be bought through it. Measured need: the un-de-meaned form moved the

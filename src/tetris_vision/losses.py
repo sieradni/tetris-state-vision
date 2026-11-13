@@ -497,8 +497,9 @@ def require_occupancy_lattice_free(value, summary):
         raise ValueError("occupancy lattice-free readout differs from resource admission")
 
 
-# 0 pooled context only, 1 plus the coarse local stencil on the fixed lattice, 2 the same stencil de-meaned (M22)
-OCCUPANCY_FREE_STENCIL_LEVERS = (0, 1, 2)
+# 0 pooled context only, 1 the coarse local stencil on the fixed lattice, 2 the same stencil de-meaned (M22),
+# 3 the same five taps read on the locally normalised field, so the channel is scale invariant (M23)
+OCCUPANCY_FREE_STENCIL_LEVERS = (0, 1, 2, 3)
 
 
 def require_occupancy_free_stencil(value, summary):

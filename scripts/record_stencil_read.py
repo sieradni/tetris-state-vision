@@ -42,6 +42,7 @@ FAMILY = "m22-stencil"
 INSTRUMENT = "m22-stencil-read-r1"
 PREDECLARATION = "docs/M22_STENCIL_READ.md"
 INERTNESS = ROOT/"docs/evidence/m22-stencil-r1-inertness.json"
+INERTNESS_CONTRAST = ROOT/"docs/evidence/m23-contrast-r1-inertness.json"
 PRIOR = ROOT/"docs/evidence/m10-supervised-anchor-r1/scope.json"
 TWO_PATH = ROOT/"docs/evidence/m20-two-path-r1/scope.json"
 LEVEL_BLOCK = ROOT/"docs/evidence/m21-level-r1/scope.json"
@@ -62,6 +63,8 @@ ARMS = {
     "stencil-crossing": (2, 1, 1, 1),
     "centred": (2, 1, 0, 2),
     "centred-crossing": (2, 1, 1, 2),
+    "norm": (2, 1, 0, 3),
+    "norm-cross": (2, 1, 1, 3),
 }
 CONTROL = "control"
 LEVEL_READINGS = ("level-passes", "level-without-ranking", "level-fails")
@@ -82,8 +85,13 @@ def declared_of(name):
     return dict(zip(DECLARED, ARMS[name]))
 
 
+def family_of(name):
+    """Each arm belongs to the family that launched it; the M23 arms declare the contrast mode."""
+    return "m23-contrast" if ARMS[name][3] == 3 else FAMILY
+
+
 def study_of(name):
-    return f"{FAMILY}-{name}-r1"
+    return f"{family_of(name)}-{name}-r1"
 
 
 def require_sweep(name):
@@ -306,7 +314,7 @@ def channels_of(result, grid):
     if "local" in parts[0]:
         out["local_minus_pooled_auc"] = round(out["local_only"]["auc"]-out["free_without_local"]["auc"], 6)
         declared = config.get("occupancy_free_stencil", 0)
-        if declared == 2 and not out["constant_mode_removed"]:
+        if declared in (2, 3) and not out["constant_mode_removed"]:
             raise ValueError("the de-meaned arm's local read still carries a board-wide level")
         if declared == 1 and out["largest_level_ratio"] < LEVEL_RATIO_PRESENT:
             raise ValueError("the un-de-meaned arm's local read has no board-wide level, so the two modes are aliases")
@@ -338,6 +346,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt", required=True)
+    parser.add_argument("--inertness", type=Path, default=INERTNESS,
+                        help="the frozen-source proof for the modes the arm families do not share")
+    parser.add_argument("--predeclaration", default=PREDECLARATION)
+    parser.add_argument("--instrument", default=INSTRUMENT)
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError("an evidence directory already exists")
@@ -385,12 +397,13 @@ def main():
     # arms and the last two. Two fingerprints are therefore admissible, but only with a bit-for-bit proof that the
     # branch is inert for the modes the earlier arms use - which is stronger evidence than one shared hash.
     fingerprints = {arms[name]["catalogue_sha256"] for name in arms}
-    inertness = read(INERTNESS)
+    inertness = read(args.inertness)
     if not inertness.get("inert") or any(not inertness["modes"][mode]["occupancy_identical"] or
                                          not all(inertness["modes"][mode]["parts_identical"].values())
-                                         for mode in ("0", "1")):
+                                         for mode in inertness["modes"]):
         raise ValueError("the added stencil mode is not inert for the modes the earlier arms use")
-    if not {arm["declared"]["occupancy_free_stencil"] for arm in arms.values() if arm["declared"]["occupancy_free_stencil"] != 2} <= {0, 1}:
+    covered = {int(mode) for mode in inertness["modes"]}
+    if not {arm["declared"]["occupancy_free_stencil"] for arm in arms.values()} - {max(covered)+1} <= covered:
         raise ValueError("an arm declares a mode the proof does not cover")
     control = arms[CONTROL]
     if control["auc"] != expected_auc or control["f1_at_zero"] != expected_f1:
@@ -450,8 +463,8 @@ def main():
                        key=lambda name: readings[name][1])
     scope = {
         "status": "passed",
-        "instrument": INSTRUMENT,
-        "predeclaration": PREDECLARATION,
+        "instrument": args.instrument,
+        "predeclaration": args.predeclaration,
         "scope": ("Six 64-step arms in one catalogue: the published read, the M20 two-path read, the M21 level "
                   "composition, the sum without the envelope, and the two free-channel compositions with a coarse "
                   "local stencil on the fixed lattice. Every arm is scored read-only at the standing 0.0 boundary and "
@@ -482,7 +495,7 @@ def main():
         "ablation": ablation,
         "reproduction": reproduction,
         "source_fingerprints": {"distinct": len(fingerprints), "values": sorted(fingerprints),
-                               "inertness_proof": str(INERTNESS.relative_to(ROOT)),
+                               "inertness_proof": str(args.inertness.resolve().relative_to(ROOT)),
                                "reading": ("the eight arms run under two source fingerprints that differ only by the "
                                            "added de-mean branch; the proof compares the archived and current sources "
                                            "on one checkpoint and finds the read and every recorded part "

@@ -173,12 +173,13 @@ def arguments(argv=None):
                         help="declared geometry lever;0 averages every decoder stage's lattice error "
                              "(published objective);1 spends the geometry term on the final lattice "
                              "only, the one the occupancy read-out reads")
-    parser.add_argument("--occupancy-free-stencil", type=int, choices=(0, 1, 2), default=0,
+    parser.add_argument("--occupancy-free-stencil", type=int, choices=(0, 1, 2, 3), default=0,
                         help="declared detail lever on the free channel;0 reads image-level context and "
                              "fixed cell coordinates only;1 adds a coarse five-tap stencil sampled on the "
                              "fixed lattice, so a cell sees its own coarse box and its four neighbours "
                              "without touching the predicted lattice;2 is the same stencil de-meaned "
-                             "across the board, so it carries only relative structure")
+                             "across the board;3 reads the same five taps on the locally normalised "
+                             "field, so a board-wide offset or rescaling leaves it unchanged")
     parser.add_argument("--occupancy-lattice-free", type=int, choices=(0, 1, 2), default=0,
                         help="declared read-out lever;0 is the published lattice-sampled occupancy "
                              "read-out;1 adds a gated channel that reads image-level context and fixed "

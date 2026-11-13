@@ -23,7 +23,21 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the free channel's local stencil is the strongest read measured, and it does not meet the bar**
+Latest: **a scale-invariant local-contrast read is invariant by construction and still does not meet the bar**
+([M23_CONTRAST_READ.md](M23_CONTRAST_READ.md), `docs/evidence/m23-contrast-r1/scope.json`). Mode 3 of
+`--occupancy-free-stencil` reads the same five taps on a field where every coarse box is divided by the spread of its own
+5x5 neighbourhood, so an offset or a rescaling of the coarse values cancels before the head sees anything - proved
+bit-stable (`<= 3.9e-6`) under offsets `+0.4/-3/+12.5` and rescaling `x0.01/x2.5/x40`, with a local change moving it
+(`>= 1e-2`) and a uniform board reading exactly zero. Ten arms in one catalogue, control reproducing
+`0.8226433610683003` / `0.381640` exactly and the M20/M21 arms reproducing their checkpoints. `norm` measures **0.856281**
+AUC / **0.414810** F1@0 (`+0.033170` primary, below the `+0.05` floor) with **0 of 28** strict exact boards, so it is
+`stencil-moves-without-clearing`; `norm-cross` is `stencil-fails` at `-0.004534`. The primary is unchanged from the M22
+de-meaned arm (`0.414810`) and AUC `0.003542` lower, so **the M22 gain was the level and not capacity a better operation
+could reclaim**. What the contrast read does buy is the first `complementary` channel verdict in the record
+(`norm-cross` sums `+0.027048` AUC over its own lattice part, and its `local_only` `0.742764` beats the pooled `0.654209`)
+and a stencil that survives the crossing rule instead of collapsing under it.
+
+Previous: **the free channel's local stencil is the strongest read measured, and it does not meet the bar**
 ([M22_STENCIL_READ.md](M22_STENCIL_READ.md), `docs/evidence/m22-stencil-r1/scope.json`). Eight arms in one catalogue -
 the published read, the M20 two-path read, the M21 composition, the sum without the envelope, and the same two
 compositions with `--occupancy-free-stencil` on - control reproducing `0.8226433610683003` / `0.381640` exactly, the

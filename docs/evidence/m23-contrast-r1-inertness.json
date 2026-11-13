@@ -1,0 +1,46 @@
+{
+  "archived": "runs\\m22-stencil-stencil-r1\\code",
+  "current": ".",
+  "run": "runs\\m22-stencil-stencil-r1",
+  "modes": {
+    "0": {
+      "occupancy_identical": true,
+      "parts_identical": {
+        "free": true,
+        "lattice": true
+      },
+      "parts": [
+        "free",
+        "lattice"
+      ]
+    },
+    "1": {
+      "occupancy_identical": true,
+      "parts_identical": {
+        "free": true,
+        "lattice": true,
+        "local": true
+      },
+      "parts": [
+        "free",
+        "lattice",
+        "local"
+      ]
+    },
+    "2": {
+      "occupancy_identical": true,
+      "parts_identical": {
+        "free": true,
+        "lattice": true,
+        "local": true
+      },
+      "parts": [
+        "free",
+        "lattice",
+        "local"
+      ]
+    }
+  },
+  "inert": true,
+  "archived_fingerprint": "code"
+}
