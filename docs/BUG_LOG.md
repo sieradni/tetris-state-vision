@@ -2697,3 +2697,26 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `tests.test_quantile_anchor` 20 tests OK before launch (1 skipped until the record existed), the
   eight block stages passed first time (`M11_BLOCK_DONE`), curation passed at its 1,900 MiB ceiling
   (`runs/m11-quantile-anchor-curation-r1-job.json`, exit 0, 2.177 s), and the full suite is green on the committed tree.
+
+## V-133 - CLOSED: two wrong expectations written as sums where the term is a mean (standing instrument added)
+
+- Symptom: the first run of `tests/test_dense_hinge.py` failed two arithmetic cases: one asserted the dense band cost
+  `0.25` on a board where both classes were shifted (only the occupied half), and one asserted `4.0` where the right
+  answer is `0.4` because a single banded cell out of ten contributes a tenth of the class mean. The engine was right
+  in both cases; the expectations were written from hand algebra rather than from the declaration's own wording.
+- Root cause: the expectations were derived by rearranging the implementation's expression instead of evaluating the
+  declared formula (per-class *mean*, multiplied by the declared balance), so a divisor could be dropped without the
+  test noticing. Same detection class as V-131 and V-132 - a test asserting the wrong thing about correct code - and
+  the third in that class, which by AGENTS.md requires a standing instrument rather than another one-off fix.
+- Detection class: test instrument, caught by the suite in this working tree before launch; no receipt or measurement
+  was produced from a run whose guard was unverified.
+- Instrument: (1) every expectation in the file is now written in the declared units and cross-checked against a second
+  closed form where one exists (both classes charged == the sum of the two single-class cases; balanced counts == skewed
+  counts); (2) **standing instrument**: `test_the_term_matches_an_independent_reference` recomputes the declared formula
+  in plain Python - explicit sums over the two class lists divided by their own counts, then the declared `0.5/0.5`
+  balance - on six random boards and compares against the term, so a missing divisor or a wrong balance fails on
+  random data instead of on one hand-picked case. This is the standing check for every future supervision term of the
+  same shape, and it is cheap because it needs no model.
+- Named green run: `tests.test_dense_hinge` 21 tests OK before launch (1 skipped until the record existed), the eight
+  block stages passed first time (`M12_BLOCK_DONE`, every receipt `passed 0`), curation passed at its 1,900 MiB ceiling
+  (`runs/m12-dense-hinge-curation-r1-job.json`, exit 0, 3.777 s), and the full suite is green on the committed tree.

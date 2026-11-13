@@ -23,7 +23,22 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **bounding the mass also fails, and the level is the thing that drifts** ([M11_QUANTILE_ANCHOR.md](M11_QUANTILE_ANCHOR.md),
+Latest: **charging every cell fixes everything but the placement** ([M12_DENSE_HINGE.md](M12_DENSE_HINGE.md),
+`docs/evidence/m12-dense-hinge-r1/scope.json`). The declared dense class-balanced hinge -
+`mean per qualifying board [0.5 mean_occ relu(margin - logit) + 0.5 mean_empty relu(margin + logit)]`, margin `1.0`,
+weight `0.5`, balance `.5/.5` over known cells - supersedes the three per-board summaries. Family `m12-dense-hinge-`,
+new catalogue `24c76620`; control reproduced `0.8226433610683003` and `0.381640` exactly. The arm is the closest yet:
+AUC **0.862838** (`+0.040195`, a gain), best swept F1 **0.465582** (`+0.053548`), out-of-fold **0.465582**
+(`+0.065183`) - **the first arm to beat control on either** - row error better by `+0.725`, the paid charge `3.6x`
+lower at `0.670`, the level drift cut from `+28.0` to `+4.8` points of the population, and the **first exact board at
+`0.0`** (`1` of `28`). Plain F1 at `0.0` still fell to **0.354770** (`-0.026870`), reading `dense-fails`, secondary
+`ranking-preserved`, fit gate **FALSE**. So the shape is solved and the placement is not: the swept optimum moved
+*up* to `3.15`, i.e. the read separates well and sits about three logits high, which is the free additive level.
+Declared next: **midpoint anchoring**, `mean over boards [ |(m_occupied + m_empty) / 2| ]` at weight `0.5`, no margin
+- a location instrument that grows on any drift and cannot be satisfied by raising the occupied class - with its
+constants to be declared before its own receipt.
+
+Previous: **bounding the mass also fails, and the level is the thing that drifts** ([M11_QUANTILE_ANCHOR.md](M11_QUANTILE_ANCHOR.md),
 `docs/evidence/m11-quantile-anchor-r1/scope.json`). The declared class-quantile anchor -
 `mean [max(0, margin - q10(occupied)) + max(0, margin + q90(empty))]`, margin `1.0`, weight `0.5`, quantiles `.10`/`.90`,
 linear interpolation over known cells - replaces the extrema with the classes' own percentiles. Family

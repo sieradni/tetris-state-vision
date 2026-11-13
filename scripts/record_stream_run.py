@@ -34,7 +34,8 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m8-normbound-[a-z0-9-]{1,40}"
                                r"|m9-margin-[a-z0-9-]{1,40}"
                                r"|m10-anchor-[a-z0-9-]{1,40}"
-                               r"|m11-quantile-anchor-[a-z0-9-]{1,40})")
+                               r"|m11-quantile-anchor-[a-z0-9-]{1,40}"
+                               r"|m12-dense-hinge-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):

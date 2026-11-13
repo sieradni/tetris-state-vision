@@ -1,0 +1,218 @@
+{
+  "status": "passed",
+  "instrument": "m12-dense-hinge-r1",
+  "predeclaration": "docs/M12_DENSE_HINGE.md",
+  "scope": "Two 64-step arms - the published read-out and the same read-out with the declared dense class-balanced hinge added to the occupancy objective - captured in one catalogue and scored read-only at the standing 0.0 boundary and over the standing 81-point grid. The hinge is supervision: it names no threshold, counts no class frequency (0.5/0.5 is equal class weight), reads no prevalence and adds no parameter, and 0 is exactly the published objective. No threshold change, no population change and no real-image, complete-state or quality claim.",
+  "declared_receipt": "runs/m12-dense-hinge-curation-inner-r1.json",
+  "declared_memory_bytes": 1992294400,
+  "mechanism": {
+    "name": "dense-class-balanced-hinge",
+    "flag": "--occupancy-dense-hinge 1",
+    "definition": "per qualifying board 0.5*mean_occupied relu(margin - logit) + 0.5*mean_empty relu(margin + logit) over known visible cells, mean over boards carrying both classes",
+    "margin": 1.0,
+    "weight": 0.5,
+    "occupied_balance": 0.5,
+    "empty_balance": 0.5,
+    "balance_is": "equal class weight, never a cell count or a population statistic",
+    "declared_before_receipts": true,
+    "parameters_added": 0,
+    "tensors_added": 0,
+    "unknown_cells": "excluded from both sides, so an invisible cell is never read as empty",
+    "identity_at_zero": "occupancy_dense_hinge 0 is exactly the published objective",
+    "supersedes": "the M11 quantile anchor, the M10 two-sided anchor and the M9 one-sided hinge; the trainer refuses all four together",
+    "expected_reading": "dense-clears-the-boundary",
+    "fit_gate_implication": "every known cell a full margin from 0.0 on its correct side implies the 0.0 decision reproduces the label on every board"
+  },
+  "envelope": {
+    "steps": 64,
+    "ceiling_bytes": 671088640,
+    "work_items": {
+      "sweep": 54,
+      "curation": 9
+    },
+    "attribution_floor": 0.05,
+    "auc_tolerance": 0.02
+  },
+  "arms": {
+    "control": {
+      "study": "m12-dense-hinge-control-r1",
+      "sweep": "m12-dense-hinge-control-r1-sweep-r1",
+      "occupancy_dense_hinge": 0,
+      "occupancy_quantile_anchor": 0,
+      "occupancy_anchor": 0,
+      "occupancy_margin_hinge": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "bf1ca8136a831d352b4f06ac461be7049dbd9594b7f6ac4228f0bf2371b32271",
+      "catalogue_sha256": "24c76620d3a24ab5cb2ceba6913987326f1fb69d258b7664239ec718694005f1",
+      "study_elapsed_seconds": 150.97234140000364,
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "operating_counts": {
+        "true_positive": 661,
+        "false_positive": 2136,
+        "false_negative": 6
+      },
+      "positives_at_zero": 2797,
+      "positive_share_at_zero": 0.499464,
+      "precision": 0.236325,
+      "recall": 0.991004,
+      "best": {
+        "threshold": 0.9,
+        "f1": 0.41203400915631133,
+        "precision": 0.26348808030112925
+      },
+      "out_of_fold_f1": 0.400399,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 7.818792,
+        "columns": 149
+      },
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 0
+      },
+      "training_dense": null,
+      "verdict": "uninformative"
+    },
+    "banded": {
+      "study": "m12-dense-hinge-banded-r1",
+      "sweep": "m12-dense-hinge-banded-r1-sweep-r1",
+      "occupancy_dense_hinge": 1,
+      "occupancy_quantile_anchor": 0,
+      "occupancy_anchor": 0,
+      "occupancy_margin_hinge": 0,
+      "occupancy_detail": 1,
+      "occupancy_offset_rows": 0,
+      "weights_sha256": "62dbd59445f8a4d6210591d4e107cf6ca42425a08ceb98d765a6e3f9f54bc62c",
+      "catalogue_sha256": "24c76620d3a24ab5cb2ceba6913987326f1fb69d258b7664239ec718694005f1",
+      "study_elapsed_seconds": 153.1356328999973,
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "operating_counts": {
+        "true_positive": 662,
+        "false_positive": 2403,
+        "false_negative": 5
+      },
+      "positives_at_zero": 3065,
+      "positive_share_at_zero": 0.547321,
+      "precision": 0.215987,
+      "recall": 0.992504,
+      "best": {
+        "threshold": 3.15,
+        "f1": 0.4655819774718398,
+        "precision": 0.3995703544575725
+      },
+      "out_of_fold_f1": 0.465582,
+      "exact_boards": 0,
+      "row_error_at_zero": {
+        "mean": 8.543624,
+        "columns": 149
+      },
+      "exact_boards_at_zero": {
+        "boards": 28,
+        "exact": 1
+      },
+      "training_dense": {
+        "steps": 64,
+        "first": 0.0,
+        "last_step": 64,
+        "last": 0.0,
+        "mean": 0.670231,
+        "fraction_satisfied": 0.25,
+        "source": "runs\\m12-dense-hinge-banded-r1-study.log",
+        "in_sample": true,
+        "reading": "the band charge the objective paid on its own training batch; it is zero only when every known cell is a full margin from the boundary a consumer applies"
+      },
+      "verdict": "uninformative"
+    }
+  },
+  "contrasts": {
+    "dense_control": {
+      "f1_at_zero_delta": -0.02687,
+      "auc_delta": 0.040195,
+      "best_f1_delta": 0.053548,
+      "out_of_fold_delta": 0.065183,
+      "positive_share_delta": 0.047857,
+      "row_error_delta": 0.724832
+    }
+  },
+  "reference": {
+    "extremal_anchor": {
+      "auc": 0.8854618909884202,
+      "f1_at_zero": 0.310966,
+      "best_f1": 0.5408112168252378,
+      "out_of_fold_f1": 0.540811,
+      "scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "quantile_anchor": {
+      "auc": 0.8153404039922062,
+      "f1_at_zero": 0.264308,
+      "best_f1": 0.4040263797292607,
+      "out_of_fold_f1": 0.379323,
+      "scope": "docs\\evidence\\m11-quantile-anchor-r1\\scope.json"
+    },
+    "hinge": {
+      "auc": 0.8646668962295662,
+      "f1_at_zero": 0.251701,
+      "best_f1": 0.4742096505823627,
+      "out_of_fold_f1": 0.429457,
+      "scope": "docs\\evidence\\m9-supervised-margin-r1\\scope.json"
+    },
+    "role": "reference-only: the M10 two-sided extremal anchor, the M11 class-quantile anchor and the M9 one-sided hinge, each measured in its own catalogue and none re-measured or re-verdicted here, so a reader can see the whole progression from two cells, to a tenth of each class, to every cell"
+  },
+  "reading": "dense-fails",
+  "reading_text": "Charging every known cell does not put the plain-binary boundary above control's, so no supervision of the read's shape places `0.0` on this data and the next arm has to remove the read's free additive level itself instead of charging around it.",
+  "secondary_reading": "ranking-preserved",
+  "secondary_text": "Deciding AUC is reported beside the primary metric with M8/M9/M10/M11's declared tolerance of -0.02 so the passes are comparable: this is the strongest constraint tried so far, so a ranking loss here is the measured price of buying the operating point rather than a surprise.",
+  "verdict": {
+    "verdict": "not-cleared",
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "failing": [
+      "per_cell_f1",
+      "ranking",
+      "attribution"
+    ],
+    "cell_bar": 0.7,
+    "attribution_floor": 0.05
+  },
+  "gates": {
+    "per_cell_f1": 0.7,
+    "ranking_auc": 0.9,
+    "ranking_f1": 0.7,
+    "attribution_floor": 0.05,
+    "grid_points": 81
+  },
+  "fit_gate": {
+    "exact_nonempty_boards": 1,
+    "boards": 28,
+    "cleared": false,
+    "boundary": 0.0,
+    "measured_on": "banded",
+    "implication": "satisfaction of the band forces every known cell a full margin from 0.0 on its correct side, so it implies an exact 0.0 boundary on every board"
+  },
+  "reproduction": {
+    "control": {
+      "auc": 0.8226433610683003,
+      "f1_at_zero": 0.38164,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    },
+    "banded": {
+      "auc": 0.8628378897921808,
+      "f1_at_zero": 0.35477,
+      "prior_scope": "docs\\evidence\\m10-supervised-anchor-r1\\scope.json"
+    }
+  },
+  "population": {
+    "split": "training",
+    "images": 36,
+    "boards": 28,
+    "occupied_cells": 667,
+    "known_cells": 5600,
+    "prevalence": 0.119107
+  }
+}

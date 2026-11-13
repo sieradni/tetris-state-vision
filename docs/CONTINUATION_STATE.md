@@ -1,5 +1,44 @@
 # Contributor handoff — 2026-10-30
 
+## Charging every cell fixes the shape and leaves only the placement (2026-11-12)
+
+[M12_DENSE_HINGE.md](M12_DENSE_HINGE.md) was predeclared before any receipt: `--occupancy-dense-hinge 1`, i.e. per
+qualifying board `0.5 mean_occ relu(margin - logit) + 0.5 mean_empty relu(margin + logit)` over known visible cells, at
+`ANCHOR_MARGIN = 1.0`, `ANCHOR_WEIGHT = 0.5`, balance `.5/.5` (equal class weight, never a count). Family
+`m12-dense-hinge-`, new catalogue `24c76620`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error |
+|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.9% | 0/28 | 0.400399 | +7.819 |
+| dense class-balanced hinge | 0.862838 | **0.354770** | **0.465582** @ `3.15` | 54.7% | **1/28** | **0.465582** | **+8.544** |
+| *M10 extremal anchor (reference)* | *0.885462* | *0.310966* | *0.540811* | *64.5%* | — | *0.540811* | *+9.779* |
+| *M11 quantile anchor (reference)* | *0.815340* | *0.264308* | *0.404026* | *78.0%* | — | *0.379323* | *+10.020* |
+| *M9 hinge (reference)* | *0.864667* | *0.251701* | *0.474210* | — | — | *0.429457* | *+10.691* |
+
+Control reproduced `0.8226433610683003` and `0.381640` exactly. Reading `dense-fails` (primary `-0.026870`), secondary
+`ranking-preserved` (`+0.040195`, a gain), verdict `not-cleared`, fit gate **FALSE** (1 of 28 - the first exact board
+at `0.0` any arm has produced). Paid charge mean `0.670`, `3.6x` below the extremal anchor's `3.004`.
+
+**What the pass established.** Density was the right lever for everything except the placement. This is the first arm
+to beat control on the swept best F1 (`+0.053548`) and on out-of-fold (`+0.065183`), the first to improve the row
+diagnostic, and it cut the level drift from `+28.0` to `+4.8` points of the population while quadrupling nothing. Its
+primary delta (`-0.026870`) is the smallest any supervised arm has had, an order below M11's `-0.117332`. What it
+could not do is put `0.0` where the decisions are: the swept optimum moved **up** to `3.15`, so the read separates well
+and sits about three logits high. A per-cell band is indifferent to a translation it can slide inside, which is exactly
+the free additive level M11 diagnosed.
+
+**Next arm, declared by the data.** *Midpoint anchoring*: `mean over qualifying boards [ |(m_occupied + m_empty)/2| ]`
+over known visible cells, pooled at `ANCHOR_WEIGHT = 0.5`, no margin (target location is exactly `0.0`), equal class
+weight, no parameters and nothing read about prevalence. It is a location instrument rather than a shape: a shift
+`+delta` moves both class means by `delta`, so the term grows linearly and unconditionally on drift and cannot be paid
+off by raising the occupied class - the trick every earlier term allowed. Its failure mode is collapse of the two
+means onto each other, which the published BCE punishes, so its declared reading keeps the `-0.02` AUC tolerance; its
+constants, metric and readings belong in their own document before their own receipt.
+
+Defect: V-133 (two hand-derived expectations in this pass's test file written as sums where the declared term is a
+mean; the third defect in the test-instrument class, so per AGENTS.md the class now carries a standing instrument - a
+plain-Python reimplementation of the declared formula compared against the term on random boards).
+
 ## Bounding the mass fails too, and the drifting quantity is the read's level (2026-11-12)
 
 [M11_QUANTILE_ANCHOR.md](M11_QUANTILE_ANCHOR.md) was predeclared before any receipt: the class-quantile anchor

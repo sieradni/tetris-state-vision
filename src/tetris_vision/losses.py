@@ -200,6 +200,13 @@ OCCUPANCY_QUANTILE_ANCHOR_ARMS = (0, 1)
 ANCHOR_OCCUPIED_QUANTILE = .10
 ANCHOR_EMPTY_QUANTILE = .90
 QUANTILE_INTERPOLATION = "linear"
+OCCUPANCY_DENSE_HINGE_ARMS = (0, 1)
+# Declared before any receipt (docs/M12_DENSE_HINGE.md) and not searched afterwards: the same margin and weight as
+# M9/M10/M11, with the class balance fixed at one half each. The balance is a *class* weight, not a frequency
+# weight - it reads nothing about how many cells carry each label, and it is what stops the 4,933 empty cells from
+# outvoting the 667 occupied ones inside a term that charges every cell.
+DENSE_OCCUPIED_BALANCE = .5
+DENSE_EMPTY_BALANCE = .5
 
 
 def require_occupancy_offset_rows(value, summary):
@@ -208,6 +215,14 @@ def require_occupancy_offset_rows(value, summary):
             summary.get("arguments", {}).get("occupancy_offset_rows", 0) != value or
             summary.get("recovery_contract", {}).get("occupancy_offset_rows", 0) != value):
         raise ValueError("occupancy offset rows differs from resource admission")
+
+
+def require_occupancy_dense_hinge(value, summary):
+    """One declaration of the admission join for the dense class-balanced hinge."""
+    if (type(value) is not int or value not in OCCUPANCY_DENSE_HINGE_ARMS or
+            summary.get("arguments", {}).get("occupancy_dense_hinge", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_dense_hinge", 0) != value):
+        raise ValueError("occupancy dense hinge differs from resource admission")
 
 
 def require_occupancy_quantile_anchor(value, summary):
@@ -531,6 +546,41 @@ def anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+def dense_hinge_term(output, target):
+    """Declared supervision of the operating point at *every* cell, class-balanced.
+
+    Three per-board summaries have now failed to place the `0.0` boundary and each one raised the read instead
+    (M9 hinge, M10 extrema, M11 quantiles: `49.9%` -> `64.5%` -> `78.0%` of cells positive at `0.0`). The diagnosis is
+    that a summary charges one number per board, so raising the occupied summary is cheap while raising the whole
+    read is paid across thousands of cells the summary never counts - the read's free additive level absorbs the
+    pressure. This term charges every known visible cell and gives the two classes opposing forces inside the same
+    band, so a global level shift is paid for on the empty side at the same time it is credited on the occupied
+    side:
+
+        per board:  0.5 * mean over known occupied cells of relu(margin - logit)
+                  + 0.5 * mean over known empty cells    of relu(margin + logit)
+
+    then averaged over boards carrying both classes. Every constant is fixed by the declaration; the class balance
+    is equal class weight, not a cell count, so nothing is weighted by prevalence. If the term is satisfied on every
+    known cell, every cell is a full margin away from `0.0` on its correct side, which makes `0.0` an exact boundary
+    on the published population - that implication is the arm's fit gate.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    occupied_charge = F.relu(ANCHOR_MARGIN-logits)*occupied
+    empty_charge = F.relu(ANCHOR_MARGIN+logits)*empty
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = occupied[index], empty[index]
+        if high.any() and low.any():
+            total = total+DENSE_OCCUPIED_BALANCE*occupied_charge[index].sum()/high.sum()
+            total = total+DENSE_EMPTY_BALANCE*empty_charge[index].sum()/low.sum()
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def quantile_anchor_term(output, target):
     """Declared supervision of the operating point against the board's *mass*, not two of its cells.
 
@@ -562,7 +612,7 @@ def quantile_anchor_term(output, target):
 
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
-               occupancy_quantile_anchor=0):
+               occupancy_quantile_anchor=0, occupancy_dense_hinge=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -621,6 +671,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared mass supervision: the same anchored margin, paid by the classes' quantiles instead of their
         # extreme cells, so the empty bulk cannot ride up while two bound cells satisfy the term.
         result["quantile"] = quantile_anchor_term(output, target)
+    check(type(occupancy_dense_hinge) is int and occupancy_dense_hinge in OCCUPANCY_DENSE_HINGE_ARMS,
+          "occupancy dense hinge must be 0 (unsupervised boundary) or 1 (declared per-cell class-balanced band)")
+    if occupancy_dense_hinge:
+        # Declared dense supervision: every known cell is charged inside the margin band, both classes equally, so
+        # the read's free additive level cannot absorb the pressure it is under.
+        result["dense"] = dense_hinge_term(output, target)
     check(("components" in output) == ("components" in target), "joint component outputs/targets must match")
     if "components" in output:
         from .components import component_loss
@@ -632,7 +688,7 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
-               occupancy_anchor=0, occupancy_quantile_anchor=0):
+               occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -641,7 +697,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
-                            occupancy_quantile_anchor)
+                            occupancy_quantile_anchor, occupancy_dense_hinge)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -668,7 +724,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "placed": PLACED_TARGET_WEIGHT*occupancy_placed,
                "margin": MARGIN_HINGE_WEIGHT*occupancy_margin_hinge,
                "anchor": ANCHOR_WEIGHT*occupancy_anchor,
-               "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor}
+               "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor,
+               "dense": ANCHOR_WEIGHT*occupancy_dense_hinge}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
