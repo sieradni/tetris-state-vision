@@ -23,7 +23,21 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the stack's own shape places the crossing, and it is the first real gain** ([M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md),
+Latest: **stack structure plus a centred level buys the best ranking in the program, but not `0.0`**
+([M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md), `docs/evidence/m15-stack-combined-r1/scope.json`). The declared
+follow-on block ran: `--occupancy-stack-monotone 1 --occupancy-centre 1` (envelope first, centring after it) against the
+M15 block's own control in the same catalogue `d9d867a6`. Reading **`stack-moves-without-clearing`**: plain F1 at `0.0`
+**0.390805** (`+0.009165`), AUC **0.888912** (`+0.066269`, the highest of any arm, above M10's `0.885462`), best swept
+**0.502686** at `1.20` (`+0.091`, the first arm to clear the `0.431640` bar by a wide margin), out-of-fold `0.392122`,
+`4` false negatives against control's `6` and `73` fewer false positives, row error `+1.846`, occupancy loss `0.5987`
+(lowest measured), fit gate still `0` of `28`. Two declared expectations held (`0.0` sits at the mean, `48.68%`
+positive; row error near the envelope's) and one was falsified on its face: the mean is still not the operating point
+(the optimum sits at `1.20`). State of the program after fifteen arms: no mechanism clears the bar at a fixed `0.0`,
+while the same read reaches `0.502686` at its own optimum - so the remaining obstacle is the fixed-`0.0` decision rule,
+not the read, and the direction the numbers point at is a declared, label-free rule that follows the crossing the
+monotone structure already shows.
+
+Previous: **the stack's own shape places the crossing, and it is the first real gain** ([M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md),
 `docs/evidence/m15-stack-contiguity-r1/scope.json`). `--occupancy-stack-monotone 1` replaces each column of the
 occupancy logits with its monotone envelope from the floor up (suffix maximum in bottom-first order) inside the head, so
 a column crosses `0.0` at most once and that crossing is its height - no statistic, no label, no threshold, no parameter.

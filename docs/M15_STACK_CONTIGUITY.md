@@ -194,6 +194,59 @@ board's own mean instead of a free parameter. Its declared reading: **`stack-cle
 `+0.05`, **`stack-moves-without-clearing`** if it moves again without clearing; its declared failure mode: centring moves
 the crossing to the mean, which is not the operating point on a `12%`-occupied board (M14 measured exactly that as
 `+1.95`), so the combination can move the primary in either direction and both are reported.
+Its declared numbers, fixed before its own receipt: the primary needs `>= 0.431640` (control `0.381640` + `0.05`), which
+is `+0.022479` above the envelope arm's `0.409161`, and the envelope arm's own swept maximum `0.442636 @ 2.85` says the
+curve already reaches it, so the question is only whether centring moves `0.0` onto that curve. Declared expectations:
+`0.0` sits at the board mean (`~50%` positive, like M14's `50.52%`), the row error stays near the envelope's `1.255`
+rows (the crossing's *shape* is structural and centring cannot change a within-column difference), AUC stays within the
+`-0.02` tolerance of `0.845948`, and the fit gate stays `0` of `28` unless the mean happens to coincide with the stack.
+
+
+## Follow-on: the two structural options together (the declared combination)
+
+Predeclared above before its own receipt; the treated arm `m15-stack-combined-r1` carries `--occupancy-stack-monotone 1
+--occupancy-centre 1`, envelope first and centring after it, and is curated against the M15 block's own control in the
+same catalogue `d9d867a6`. Receipts: `docs/evidence/m15-stack-combined-r1/scope.json`,
+`runs/m15-stack-combined-r1/` (64 steps, `1,792 MiB`), `runs/m15-stack-combined-r1-sweep-r1/` (54 forwards, `640 MiB`),
+curation at `1,900 MiB`; all `passed 0`. Control is the published `0.8226433610683003` / `0.381640` unchanged.
+
+| arm | AUC | plain-binary F1 at `0.0` | best swept F1 | precision / recall at `0.0` | cells positive at `0.0` | exact boards at `0.0` | out-of-fold F1 | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 0.2363 / 0.9910 | 2,797 (49.95%) | 0 of 28 | 0.400399 | +7.819 | 0.7684 |
+| envelope only | 0.845948 | **0.409161** | 0.442636 @ `2.85` | 0.2578 / 0.9910 | 2,564 (45.79%) | 0 of 28 | 0.409639 | +1.255 | 0.8494 |
+| envelope + centring | 0.888912 | **0.390805** | **0.502686** @ `1.20` | 0.2433 / 0.9940 | 2,726 (48.68%) | 0 of 28 | 0.392122 | +1.846 | 0.5987 |
+
+Reading **`stack-moves-without-clearing`** (primary `+0.009165`), secondary `ranking-preserved` (AUC **`+0.066269`**),
+verdict `not-cleared`, fit gate FALSE at `0` of `28`. Against the envelope arm alone: primary `-0.018356`, AUC
+`+0.042964`, swept maximum `+0.060050`, row error `+0.591`.
+
+**What the combination established.** Centring does supply the level the monotone read was missing, and the level is
+worth a great deal on the parts of the curve that are allowed to move: deciding AUC `0.888912` is the highest any arm in
+this program has measured (above M10's `0.885462`), the swept maximum `0.502686 @ 1.20` is `+0.091` over control and the
+first that clears the `0.431640` bar by a wide margin, and the read now misses fewer occupied cells than control (`4`
+false negatives against `6`) while costing `73` fewer false positives at `0.0`. The paid occupancy loss fell to `0.5987`,
+the lowest of any arm.
+
+**What it did not do.** The plain-binary primary at the standing `0.0` moved `+0.009165` - positive, but a third of what
+the envelope alone achieved, and `0.018` below it. Two of the declared expectations were met and one was falsified on its
+face: `0.0` sits at the mean (`48.68%` positive, as declared) and the row error stayed near the envelope's (`1.846`
+against `1.255`, declared "near"), but the mean is *not* the operating point - the swept optimum sits at `1.20`, so
+centring moved the crossing `1.65` logits closer to zero without landing on it. The declared failure mode was exactly
+this, and it happened: on a `12%`-occupied board the board mean is still the wrong level, just a better one than a free
+parameter left to the training.
+
+**The honest state of the program after fifteen arms.** The bar cannot be cleared at a fixed `0.0` by any of the seven
+mechanisms tried (five supervised terms, a level statistic, a monotone envelope, and the two together), while the same
+read now reaches `0.502686` F1 at its own optimum - above the bar, above every earlier arm, and with the best ranking in
+the program. So the remaining obstacle is no longer the read: it is the rule that the operating point is `0.0`
+regardless of what the read's distribution looks like. A future arm that keeps the read and lets the *decision rule*
+follow the crossing it can see from the structure (a column's decided height under a monotone read) would no longer be a
+tuning change - it would be a declared, label-free decision rule - and it is the one direction the numbers now point at.
+
+### Limits of the follow-on
+
+Same population, same catalogue, same seed; the control is re-used (same catalogue, same envelope) rather than
+re-measured, and the curator asserts the shared catalogue. No real-image, complete-state or quality claim.
 
 ### Limits
 

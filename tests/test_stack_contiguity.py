@@ -308,5 +308,63 @@ class ContiguityRecordTests(unittest.TestCase):
                          self.scope["arms"]["contiguous"]["exact_boards_at_zero"]["exact"])
 
 
+class CombinedRecordTests(unittest.TestCase):
+    """The declared follow-on: two structural fields, one control, its own checkpoint."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        scope = ROOT/"docs/evidence/m15-stack-combined-r1/scope.json"
+        if not scope.exists():
+            raise unittest.SkipTest("the combined record has not been curated yet")
+        cls.scope = json.loads(scope.read_text(encoding="utf-8"))
+        cls.envelope = json.loads((ROOT/"docs/evidence/m15-stack-contiguity-r1/scope.json")
+                                  .read_text(encoding="utf-8"))
+        cls.text = " ".join((ROOT/"docs/M15_STACK_CONTIGUITY.md").read_text(encoding="utf-8").split())
+
+    def test_the_arms_differ_in_exactly_the_two_declared_fields(self):
+        self.assertEqual(sorted(self.scope["arms"]), ["combined", "control"])
+        self.assertEqual(self.scope["aliasing_guard"]["arms_differ_in"],
+                         ["occupancy_centre", "occupancy_stack_monotone"])
+        self.assertEqual({name: (arm["occupancy_stack_monotone"], arm["occupancy_centre"])
+                          for name, arm in self.scope["arms"].items()},
+                         {"control": (0, 0), "combined": (1, 1)})
+        self.assertTrue(self.scope["aliasing_guard"]["weights_differ"])
+        self.assertTrue(self.scope["aliasing_guard"]["not_the_previous_block"])
+
+    def test_the_control_is_the_shared_one_and_the_envelope_arm_is_excluded_by_name(self):
+        self.assertEqual(self.scope["arms"]["control"]["weights_sha256"],
+                         self.envelope["arms"]["control"]["weights_sha256"])
+        self.assertNotEqual(self.scope["arms"]["combined"]["weights_sha256"],
+                            self.envelope["arms"]["contiguous"]["weights_sha256"])
+
+    def test_the_readings_follow_the_printed_numbers(self):
+        arm, control = self.scope["arms"]["combined"], self.scope["arms"]["control"]
+        delta = round(arm["f1_at_zero"]-control["f1_at_zero"], 6)
+        expected = ("stack-clears-the-crossing" if delta >= .05 else
+                    "stack-moves-without-clearing" if delta > 0 else "stack-fails")
+        self.assertEqual(self.scope["reading"], expected)
+        self.assertEqual(self.scope["secondary_reading"],
+                         "ranking-preserved" if round(arm["auc"]-control["auc"], 6) >= -.02 else "ranking-degraded")
+
+    def test_the_document_quotes_the_combined_scope(self):
+        for name, arm in self.scope["arms"].items():
+            self.assertIn(f"{round(arm['auc'], 6):,.6f}", self.text, name)
+            self.assertIn(f"{round(arm['f1_at_zero'], 6):,.6f}", self.text, name)
+        rows = {name: arm for name, arm in self.scope["reference"].items() if isinstance(arm, dict)}
+        # envelope arm plus the five supervised references; the M14 centring row belongs to the M15
+        # block's own scope and is quoted in the earlier table of the same document.
+        self.assertEqual(len(rows), 6)
+        for name, arm in rows.items():
+            self.assertIn(f"{round(arm['auc'], 6):,.6f}", self.text, name)
+        self.assertIn(self.scope["reading"], self.text)
+
+    def test_the_fit_gate_is_reported_from_the_combined_arm(self):
+        gate = self.scope["fit_gate"]
+        self.assertEqual(gate["boards"], 28)
+        self.assertEqual(gate["exact_nonempty_boards"],
+                         self.scope["arms"]["combined"]["exact_boards_at_zero"]["exact"])
+
+
 if __name__ == "__main__":
     unittest.main()

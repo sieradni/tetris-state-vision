@@ -1,5 +1,35 @@
 # Contributor handoff — 2026-10-30
 
+## Structure plus a centred level: best ranking, still not `0.0` (2026-11-12)
+
+The follow-on declared in [M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md) before its own receipt ran as
+`m15-stack-combined-r1` (`--occupancy-stack-monotone 1 --occupancy-centre 1`, envelope first then centring), curated
+against the M15 block's own control in the same catalogue `d9d867a6`. All receipts `passed 0`.
+
+| arm | AUC | plain F1 at `0.0` | best swept F1 | positive at `0.0` | exact at `0.0` | out-of-fold | row error | occupancy loss |
+|---|---|---|---|---|---|---|---|---|
+| control | 0.822643 | **0.381640** | 0.412034 @ `0.90` | 49.95% | 0/28 | 0.400399 | +7.819 | 0.7684 |
+| envelope only | 0.845948 | **0.409161** | 0.442636 @ `2.85` | 45.79% | 0/28 | 0.409639 | +1.255 | 0.8494 |
+| envelope + centring | 0.888912 | **0.390805** | **0.502686** @ `1.20` | 48.68% | 0/28 | 0.392122 | +1.846 | 0.5987 |
+
+Reading `stack-moves-without-clearing` (`+0.009165`), secondary `ranking-preserved` (`+0.066269`), verdict
+`not-cleared`, fit gate FALSE (0/28). Aliasing guard: the arms differ in exactly `occupancy_centre` and
+`occupancy_stack_monotone`, `ba369e92…` vs `bf1ca813…`, and the envelope arm's checkpoint is excluded by name.
+
+**Where the program stands after fifteen arms.** Five supervised terms, a level statistic, a monotone structural
+envelope and now the envelope plus centring have each been measured: none clears the standing `+0.05` bar at a fixed
+`0.0`. The same read, however, reaches `0.502686` at its own optimum with the best AUC (`0.888912`) and the fewest missed
+occupied cells (`4` false negatives) yet measured. The blocker is therefore the fixed-`0.0` decision rule, not the read's
+quality.
+
+**Next, declared by the numbers rather than by preference.** A label-free decision rule that follows the crossing the
+monotone structure already exposes - a column's decided height under the envelope - so the operating point is the
+structure's own crossing rather than `0.0` by fiat. It must be predeclared with its constants (there are none to tune),
+its readings against the standing bars, and its failure mode (the crossing is a *per-column* object, so a board-level
+scorer may still be wrong where columns disagree with the labels), and compared against the same M15 control in one
+catalogue. That is the only direction the measurements now support; any further threshold or level search is tuning and
+must not be presented as a structural arm.
+
 ## Structure places the crossing; only its level is still free (2026-11-12)
 
 [M15_STACK_CONTIGUITY.md](M15_STACK_CONTIGUITY.md) was predeclared before any receipt: `--occupancy-stack-monotone 1`
