@@ -1469,3 +1469,64 @@ same inputs, so at a fixed 64-step budget the width is not the binding constrain
 winner `0.372881` / `0.954529` / `0.689775`; every support-lattice arm below it on all three. The recorded
 next step is a read that samples each cell at **both** placements (predicted lattice and support lattice,
 `60` inputs) so the placement-consistency difference is available to the read.
+
+## M39 - both placements in one read, and the campaign's central question answered
+
+[M39_DUAL_PLACEMENT.md](M39_DUAL_PLACEMENT.md) predeclared and measured form 13: the `30` statistics at the
+model's own predicted lattice beside the same `30` at the support lattice, `60` inputs, one head. Measured
+`docs/evidence/m39-dual-placement-r1/scope.json`: F1 at `0.0` `0.246228`, AUC
+`0.836907`, best swept `0.351779` - the weakest arm yet, gate per-cell/ranking false,
+attribution true, bar missed. The placement-consistency signal is **present and swamped**: false positives
+rise to `1239` at median margin `2.316557`, rows 15-19 alone
+`283` against M35's `144`.
+[ladder](M34_SUPPORT_LATTICE.md) - see the maintained regression set below. The evidence now supports one
+structural reading: the winner's geometry is *endogenous* (it samples the lattice it predicts, so its
+features and its placement are trained together), and every support-lattice arm replaces that with an
+exogenous prior. The next declared step keeps the geometry endogenous and uses the support only as an
+alignment applied to the predicted lattice.
+
+## The measured regression set (maintained)
+
+The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M39 has overtaken it. Every row
+below is the same fixed 2,986 cells, both fixed label vectors, the same seed, the same 64-step protocol and
+the fixed global `0.0` boundary; the numbers are the receipts' own fields.
+
+| arm | what it changes (one thing) | F1 at `0.0` | AUC | best swept | gate |
+|---|---|---|---|---|---|
+| **`m30-level-calibrate-r5` (winner)** | calibration of the published read | **`0.372881`** | **`0.954529`** | **`0.689775`** | per-cell / ranking / attribution all pass on its own arm |
+| M34 `m34-support` | sample lattice = raster's valid support | `0.274869` | `0.883260` | `0.385925` | fail |
+| M35 `m35-contrast` | + sample-mean deviations (60 inputs) | `0.277778` | `0.945596` | `0.570048` | fail |
+| M36 `m36-monotone` | + one crossing per column | `0.313667` | `0.886350` | `0.420935` | fail |
+| M37 `m37-stencil` | + coarse `stencil_contrast` summary (40 inputs) | `0.270096` | `0.919512` | `0.589286` | fail |
+| M38 `m38-capacity` | hidden width 64 -> 128 | `0.273082` | `0.895041` | `0.463551` | fail |
+| M39 `m39-dual` | both placements in one read (60 inputs) | `0.246228` | `0.836907` | `0.351779` | fail |
+
+Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
+M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
+M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
+M39 `-0.126653` / `-0.117621` / `-0.337996`.
+
+## What the evidence settles
+
+**Arms that read a fixed support lattice rank below the arm that samples its own predicted lattice because
+in the winner the sampling geometry is endogenous: the lattice the read samples is the lattice the network
+predicts, so the gradients that shape the features also shape where they are read, and the read is trained
+to correct its own placement. A support lattice is exogenous - it is computed from the raster's valid-pixel
+bounding box before the forward pass and is not a function of anything the read predicts. Replacing the
+endogenous geometry with an exogenous one removes the only channel through which this arm class corrects
+placement, and the measured signature of that loss is the same in every one of the six arms: confident false
+positives in the dense upper bands (`1,088`-`1,239` at median margins `1.35`-`2.32`, always above the
+weakest true positive), with AUC falling from `0.954529` to `0.836907`-`0.945596`. M39 shows that handing
+the read *both* geometries does not repair it: an exogenous half does not become a correction just by being
+placed beside an endogenous one.**
+
+## The next structural step, and why it is structurally different
+
+Make the support informative but keep the geometry endogenous: sample at the **predicted lattice composed
+with the support's alignment** - a declared per-board affine transform that maps the predicted board box
+onto the valid-support box, applied to the predicted lattice for sampling while the predicted lattice
+itself stays the differentiable geometry the read is trained through. Nothing is fitted, nothing is
+sampled from a fixed grid, and the read keeps the gradient path to its own placement while gaining the
+raster's correction. It is structurally different from M34-M39 in the one respect the evidence names: the
+sampling geometry remains a function of what the network predicts, instead of being replaced by, or
+duplicated beside, a label-free prior.

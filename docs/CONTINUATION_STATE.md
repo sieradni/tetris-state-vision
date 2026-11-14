@@ -3612,3 +3612,21 @@ fixed 64-step budget is refused too. Ladder: winner `m30-level-calibrate-r5` `0.
 `0.895041` / `0.463551`. Recorded next step: sample each cell at both placements in one read (predicted
 lattice + support lattice, `60` inputs) to expose the placement-consistency difference the winner's arm
 class alone has.
+
+M39 ran the recorded dual-placement read (form 13, `60` inputs: the `30` statistics at the predicted lattice
+beside the same `30` at the support lattice): F1 at `0.0` `0.246228`, AUC
+`0.836907`, best swept `0.351779` - refused, and the weakest arm measured. The
+placement-consistency signal is present and **swamped** (false positives `1239` at
+median margin `2.316557`, upper bands `939`, rows
+15-19 `283`).
+
+Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775`. Regression set (F1 at
+`0.0` / AUC / best swept): M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` /
+`0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
+`0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`. All fail the gate; all sit
+below the winner. Settlement: the winner's sampling geometry is endogenous (it samples the lattice it
+predicts, so placement is trained with the features), and a support lattice is an exogenous prior that
+removes that channel - which is why every support-lattice arm shows the same signature (confident false
+positives in the dense upper bands, AUC down `0.009`-`0.118`). Recorded next step: keep the predicted lattice
+as the sampled geometry and apply the support only as a per-board alignment composed with it - structurally
+different because the geometry stays a function of what the network predicts.

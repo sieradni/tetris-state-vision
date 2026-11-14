@@ -73,3 +73,70 @@ geometry, not of which features it sees.
 
 `runs/m39-dual-{profile,study,probe}` and `docs/evidence/m39-dual-placement-r1/{scope,diagnosis}.json`.
 Refused attempts keep their receipts; only completed runs are quoted.
+
+## Measured
+
+Study `m39-dual` (probe `-registration`), form 13 with `60`
+declared inputs, the unchanged 64-step protocol, peak `1,053,429,760` bytes. Scored by
+`scripts/m37_stencil_read.py` (`docs/evidence/m39-dual-placement-r1/scope.json`, diagnosis in
+`diagnosis.json`), the winner re-scored in the same pass.
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| dual-placement, identity vector | `0.246228` | `0.836907` | `0.351779` (at `3.0`) |
+| delta | -0.126653 | -0.117621 | -0.337996 |
+| dual-placement, anchored vector | `0.260274` | `0.714055` | `0.342205` |
+
+Gate block: per-cell `false`, ranking
+`false`, attribution `true`
+(+0.132152 over the unchanged control). **Bar missed on both comparisons: the arm is
+refused, and it is the weakest arm the campaign has measured.**
+
+## The placement-consistency signal was present, and it was swamped
+
+The hypothesis was not that the two halves would be identical - they are not, by construction
+(`test_the_two_halves_are_different_placements_of_the_same_cells`) - but that a read holding both would
+recover part of the winner's ranking. The measured answer distinguishes the three predeclared outcomes
+cleanly:
+
+| measurement | M35 (single placement) | M37 (fused coarse) | this arm (both placements) |
+|---|---|---|---|
+| AUC | `0.945596` | `0.919512` | `0.836907` |
+| best swept | `0.570048` | `0.589286` | `0.351779` |
+| false positives at `0.0` | `1088` | `1131` | `1239` |
+| false-positive median margin | `1.352717` | `1.558202` | `2.316557` |
+| weakest true-positive margin | `0.936171` | `0.804033` | `0.24666` |
+| upper-band false positives (rows 0-9) | `933` | `932` | `939` |
+
+- **Not absent**: the halves differ, and the arm's error structure moves substantially (AUC
+  -0.117621 against the winner, `1239` false positives against
+  `1088`, median margin `2.316557` against `1.352717`).
+- **Not present-but-insufficient**: an insufficient signal would leave the arm near M35's or M37's numbers
+  with a modest gain. This arm is *worse on every measure* than every arm that read one placement - AUC
+  `0.836907` is the campaign's lowest, best swept `0.351779` is the lowest, and the
+  false positives are both more numerous and more confident.
+- **Swamped** is the measured description: the second half gives the read another way to be confidently
+  positive in the textured-empty bands. Rows 15-19 alone carry `283`
+  false positives against M35's `144`, at a median margin
+  (`2.316557`) that sits far above the weakest true positive
+  (`0.24666`). The disagreement between the two placements is exactly what
+  the read is *not* able to exploit at this budget: it learns a larger positive region rather than a
+  placement correction.
+
+Per the predeclaration, capacity is not the explanation and is not offered as one: M38 refused the `128`-wide
+version of the same read at the same inputs, and this arm is `64` wide like its best-ranked siblings.
+
+## The span split
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | -0.192195 | -0.433649 |
+| placement | -0.009573 | -0.021600 |
+| representation | +0.644974 | 1.455249 |
+
+Sums asserted in code; `short_stage: closure`.
+
+## Receipts
+
+`runs/m39-dual-job.json` (study, peak `1,053,429,760`), `runs/m39-dual-registration-job.json` (probe), `runs/m39-dual-profile-r3-job.json` (admission; `-r2` was refused by the host's commit pressure and is kept as such), and `runs/m39-dual-placement-r1-job.json` (this score, 128 MiB).

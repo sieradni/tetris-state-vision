@@ -1,0 +1,122 @@
+{
+  "cells": 2986,
+  "boards": 28,
+  "errors_at_zero": {
+    "true_positive": {
+      "count": 204,
+      "margin_low": 0.24666,
+      "margin_median": 2.845455,
+      "margin_high": 6.288607
+    },
+    "false_positive": {
+      "count": 1239,
+      "margin_low": 0.007599,
+      "margin_median": 2.316557,
+      "margin_high": 5.925171
+    },
+    "false_negative": {
+      "count": 10,
+      "margin_low": -2.146561,
+      "margin_median": -0.994105,
+      "margin_high": -0.075132
+    },
+    "true_negative": {
+      "count": 1533,
+      "margin_low": -3.34435,
+      "margin_median": -1.262082,
+      "margin_high": -0.000931
+    }
+  },
+  "false_positive_bands": {
+    "rows_0_4": {
+      "false_positives": 405,
+      "occupied_cells": 70,
+      "false_positives_per_occupied": 5.785714
+    },
+    "rows_5_9": {
+      "false_positives": 534,
+      "occupied_cells": 141,
+      "false_positives_per_occupied": 3.787234
+    },
+    "rows_10_14": {
+      "false_positives": 17,
+      "occupied_cells": 2,
+      "false_positives_per_occupied": 8.5
+    },
+    "rows_15_19": {
+      "false_positives": 283,
+      "occupied_cells": 1,
+      "false_positives_per_occupied": 283.0
+    }
+  },
+  "false_positives_by_column": {
+    "0": 118,
+    "1": 211,
+    "2": 190,
+    "3": 188,
+    "4": 163,
+    "5": 132,
+    "6": 116,
+    "7": 64,
+    "8": 57,
+    "9": 0
+  },
+  "precision_at_zero": 0.141372,
+  "recall_at_zero": 0.953271,
+  "occupied_cells": 214,
+  "worst_false_positive": [
+    [
+      3,
+      2,
+      5.986203
+    ],
+    [
+      3,
+      2,
+      5.925171
+    ],
+    [
+      6,
+      3,
+      5.593262
+    ],
+    [
+      4,
+      2,
+      5.517914
+    ],
+    [
+      4,
+      2,
+      5.515149
+    ]
+  ],
+  "closest_false_negative": [
+    [
+      9,
+      3,
+      -0.075132
+    ],
+    [
+      17,
+      2,
+      -0.356224
+    ],
+    [
+      13,
+      2,
+      -0.586591
+    ],
+    [
+      2,
+      0,
+      -0.917322
+    ],
+    [
+      2,
+      0,
+      -0.994105
+    ]
+  ],
+  "note": "Margins are the read's own logits at the scored cell, so they show whether the error is a boundary placement (large but wrong-signed margins) or a ranking overlap (errors packed near zero). Truth here is the fixed identity vector used for the per-cell condition."
+}
