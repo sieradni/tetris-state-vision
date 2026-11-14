@@ -211,6 +211,10 @@ OCCUPANCY_DENSE_HINGE_ARMS = (0, 1)
 DENSE_OCCUPIED_BALANCE = .5
 DENSE_EMPTY_BALANCE = .5
 OCCUPANCY_MIDPOINT_ARMS = (0, 1)
+# Declared distribution-shaping weight (M32): the occupancy term's own scale is ~0.5, so a unit
+# weight on the per-board mass charge is comparable to it and is fixed rather than tuned.
+MASS_WEIGHT = 1.0
+OCCUPANCY_MASS_ARMS = (0, 1)
 # Declared before any receipt (docs/M13_MIDPOINT_ANCHOR.md) and not searched afterwards: the target location is the
 # boundary a consumer applies, so it has no margin to tune - a nonzero target would be a separation claim, and
 # separation is the published objective's job. The class balance is equal class weight, never a cell count.
@@ -408,6 +412,14 @@ def require_pixel_query_level(level, summary):
             summary.get("arguments", {}).get("pixel_query_level", 0) != level or
             summary.get("recovery_contract", {}).get("pixel_query_level", 0) != level):
         raise ValueError("pixel query level differs from resource admission")
+
+
+def require_occupancy_mass(value, summary):
+    """One declaration of the admission join for the per-board mass match."""
+    if (type(value) is not int or value not in OCCUPANCY_MASS_ARMS or
+            summary.get("arguments", {}).get("occupancy_mass", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_mass", 0) != value):
+        raise ValueError("occupancy mass differs from resource admission")
 
 
 def require_occupancy_read_level(value, summary):
@@ -690,6 +702,31 @@ def anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+def mass_match_term(output, target):
+    """Declared distribution shaping: each board's predicted positive mass meets its own occupancy.
+
+    The M31 receipt shows the read ranks well enough for the per-cell gate under a label-fitted
+    boundary (`0.763916`) while no label-free boundary finds the split (`0.278699`). The score mass
+    sits in the wrong place, so this charges the read for where its mass is rather than for which
+    cell is right:
+
+        mean over boards [ (mean known sigmoid - mean known occupancy)^2 ]
+
+    Known cells only, `unknown` never counted as empty, no parameter, no threshold, and nothing fitted
+    at inference: the term exists only in the objective, and the boundary a consumer applies is still
+    the fixed `0.0`.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied, known = target["occupied"], target["known"]
+    if tuple(logits.shape) != tuple(occupied.shape):
+        raise ValueError("the mass term needs one score per labelled cell")
+    weight = known.float()
+    count = weight.sum((1, 2)).clamp_min(1)
+    predicted = (torch.sigmoid(logits)*weight).sum((1, 2))/count
+    observed = (occupied.float()*weight).sum((1, 2))/count
+    return masked_mean((predicted-observed)**2, weight.any((1, 2)))
+
+
 def midpoint_term(output, target):
     """Declared supervision of *where the boundary sits*, with no separation claim at all.
 
@@ -870,7 +907,7 @@ def pair_rank_term(output, target):
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-               occupancy_pair_rank=0, occupancy_pair_gap=0):
+               occupancy_pair_rank=0, occupancy_pair_gap=0, occupancy_mass=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -948,6 +985,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared symmetric ordering supervision: the pair is charged by whichever of its two directional violations is
         # closer, so the two modes cannot be collapsed into each other to lower the charge.
         result["gap"] = pair_gap_term(output, target)
+    check(type(occupancy_mass) is int and occupancy_mass in OCCUPANCY_MASS_ARMS,
+          "occupancy mass must be 0 (unconstrained distribution) or 1 (declared per-board mass match)")
+    if occupancy_mass:
+        # Declared distribution shaping: the read is charged for the mass it puts above the boundary,
+        # not only for which cells it gets right, so no label-free rule has to hunt for the split.
+        result["mass"] = mass_match_term(output, target)
     check(type(occupancy_midpoint) is int and occupancy_midpoint in OCCUPANCY_MIDPOINT_ARMS,
           "occupancy midpoint must be 0 (unconstrained location) or 1 (declared midpoint at the boundary)")
     if occupancy_midpoint:
@@ -966,7 +1009,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
                occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-               occupancy_pair_rank=0, occupancy_pair_gap=0):
+               occupancy_pair_rank=0, occupancy_pair_gap=0, occupancy_mass=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -976,7 +1019,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
                             occupancy_quantile_anchor, occupancy_dense_hinge, occupancy_midpoint,
-                            occupancy_pair_rank=occupancy_pair_rank, occupancy_pair_gap=occupancy_pair_gap)
+                            occupancy_pair_rank=occupancy_pair_rank, occupancy_pair_gap=occupancy_pair_gap,
+                            occupancy_mass=occupancy_mass)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -1007,7 +1051,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "dense": ANCHOR_WEIGHT*occupancy_dense_hinge,
                "midpoint": ANCHOR_WEIGHT*occupancy_midpoint,
                "pair": PAIR_RANK_WEIGHT*occupancy_pair_rank,
-               "gap": PAIR_GAP_WEIGHT*occupancy_pair_gap}
+               "gap": PAIR_GAP_WEIGHT*occupancy_pair_gap,
+               "mass": MASS_WEIGHT*occupancy_mass}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
