@@ -111,6 +111,9 @@ def balanced_occupancy(logits, target, mask, positive_weight=1):
     errors = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
     positive, negative = mask & (target == 1), mask & (target == 0)
     positive_count, negative_count = positive.sum((1, 2)), negative.sum((1, 2))
+    if positive_weight == -1:
+        positive_weight = (negative_count.float()/positive_count.clamp_min(1).float()
+                           ).clamp(.1, 10.)
     per_image = ((positive_weight*(errors*positive).sum((1, 2))/positive_count.clamp_min(1))+
                  (errors*negative).sum((1, 2))/negative_count.clamp_min(1))
     per_image = per_image/(positive_weight*(positive_count > 0).float()+
@@ -399,6 +402,30 @@ def require_occupancy_context(context, summary):
         raise ValueError("occupancy context differs from resource admission")
 
 
+def require_pixel_query_level(level, summary):
+    """One declaration of the admission join for the pixel-query level freedom."""
+    if (type(level) is not int or level not in (0, 1) or
+            summary.get("arguments", {}).get("pixel_query_level", 0) != level or
+            summary.get("recovery_contract", {}).get("pixel_query_level", 0) != level):
+        raise ValueError("pixel query level differs from resource admission")
+
+
+def require_occupancy_read_standardise(value, summary):
+    """One declaration of the admission join for the label-free read standardisation."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_read_standardise", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_read_standardise", 0) != value):
+        raise ValueError("occupancy read standardise differs from resource admission")
+
+
+def require_occupancy_balance(value, summary):
+    """One declaration of the admission join for the data-derived class balance."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_balance", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_balance", 0) != value):
+        raise ValueError("occupancy balance differs from resource admission")
+
+
 def require_occupancy_pixel_query(query, summary):
     """One declaration of the admission join for the per-cell pixel-statistics read-out."""
     if (type(query) is not int or query not in (0, 1, 2, 3, 4) or
@@ -418,7 +445,9 @@ def require_occupancy_factor(factor, summary):
 # Declared class budget on occupied cells inside the balanced per-cell term, and its
 # admission join. Unlike OCCUPANCY_FACTORS this changes the split between classes, not
 # the term's total weight: the closed scale lever is never re-run through this name.
-POSITIVE_CELL_WEIGHTS = (1, 4)
+# -1 is the declared data-derived budget: each image's own prevalence ratio, clamped, so the
+# level comes from the labels' mass rather than a chosen constant.
+POSITIVE_CELL_WEIGHTS = (1, 4, -1)
 
 
 def require_positive_weight(weight, summary):

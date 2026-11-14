@@ -31,6 +31,9 @@ class ModelConfig:
     layer_evidence: bool = False
     occupancy_context: int = 0
     occupancy_pixel_query: int = 0
+    pixel_query_level: int = 0
+    occupancy_read_standardise: int = 0
+    occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
     occupancy_tap_span: int = 0
@@ -76,6 +79,14 @@ class ModelConfig:
         check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
+        for name, value in (("pixel_query_level", self.pixel_query_level),
+                            ("occupancy_read_standardise", self.occupancy_read_standardise),
+                            ("occupancy_balance", self.occupancy_balance)):
+            check(type(value) is int and value in (0, 1),
+                  f"{name} is 0 (off) or 1 (declared level mechanism)")
+        if self.pixel_query_level or self.occupancy_read_standardise:
+            check(self.occupancy_pixel_query != 0,
+                  "the level mechanisms are declared on the pixel read, not the published read-out")
         check(type(self.occupancy_detail) is int and self.occupancy_detail in (0, 1),
               "occupancy detail is0 (published read-out) or1 (declared high-resolution detail tap)")
         check(type(self.occupancy_detail_stencil) is int and self.occupancy_detail_stencil in (0, 1),
@@ -569,6 +580,20 @@ def pixel_query_centre(statistics):
                       2*statistics[..., PIXEL_QUERY_SAMPLES*3:]), dim=-1)
 
 
+def standardise_board(logits, visible, weight):
+    """Board-standardised read gated to exactly the published logits at zero.
+
+    The map is `logits + weight*(standardised-logits)`, so the gate starts at exactly zero and
+    step zero is bit-identical to the arm without it. For `weight >= 0` the slope
+    `1-weight+weight/spread` is positive, so the ordering inside a board is monotone; a receipt
+    reports the learned gate and flags it if it turns negative.
+    """
+    board = logits[:, :visible]
+    mean = board.mean(dim=(1, 2), keepdim=True)
+    spread = board.std(dim=(1, 2), unbiased=False, keepdim=True).clamp_min(1e-6)
+    return logits+weight*(((logits-mean)/spread)-logits)
+
+
 def pixel_query_neighbours(statistics, rows, columns):
     """Each cell's statistics beside the mean of its four in-board neighbours.
 
@@ -849,6 +874,17 @@ class TetrisStateNet(nn.Module):
             self.register_buffer("pixel_query_offsets",
                                  torch.stack((x, y), -1).reshape(1, 1, PIXEL_QUERY_SAMPLES, 2),
                                  persistent=False)
+        # Declared level freedom (M30): a strictly positive scale (1+tanh) and a bias on the
+        # declared projection, both exactly identity at step zero, so step zero stays bit-identical
+        # and the ordering can only change if the scale crossed zero, which the form precludes.
+        self.pixel_query_level = None
+        if config.pixel_query_level:
+            self.pixel_query_level = nn.Parameter(torch.zeros(2))
+        # Declared label-free read standardisation (M30): a gated board standardisation, exactly the
+        # published logits at step zero, whose gate is learned through the same loss.
+        self.read_calibration = None
+        if config.occupancy_read_standardise:
+            self.read_calibration = nn.Parameter(torch.zeros(1))
         self.occupancy_column = None
         if config.occupancy_column:
             self.occupancy_column = nn.Linear(2*dimension+2, dimension)
@@ -987,8 +1023,15 @@ class TetrisStateNet(nn.Module):
                 elif self.config.occupancy_pixel_query == 4:
                     statistics = torch.cat((statistics, pixel_query_neighbours(
                         statistics, rows, columns)), dim=-1)
-                occupancy_features = occupancy_features+self.occupancy_pixel_query(statistics)
+                projected = self.occupancy_pixel_query(statistics)
+                if self.pixel_query_level is not None:
+                    projected = ((1+torch.tanh(self.pixel_query_level[0]))*projected
+                                 +self.pixel_query_level[1])
+                occupancy_features = occupancy_features+projected
             occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
+            if self.read_calibration is not None:
+                occupancy_logits = standardise_board(occupancy_logits, self.config.visible_rows,
+                                                     torch.tanh(self.read_calibration))
             occupancy_parts = None
             if self.occupancy_lattice_free is not None:
                 weight = context_valid.float()[:, :, None]
