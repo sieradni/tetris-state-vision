@@ -56,6 +56,9 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-positive-weight", type=int, choices=POSITIVE_CELL_WEIGHTS, default=1,
                         help="declared class budget on occupied cells inside the balanced occupancy term;"
                              "1 is published and leaves the term magnitude unchanged")
+    parser.add_argument("--occupancy-pixel-query", type=int, choices=(0, 1), default=0,
+                        help="declared per-cell pixel-statistics read-out (M28): deterministic colour/contrast"
+                             " features at the model's own lattice through a zero-initialized projection")
     parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
                         help="declared occupancy representation lever;1 gives the read-out its eight "
                              "lattice neighbors through a zero-initialized residual block;0 is published")
@@ -337,6 +340,16 @@ def arguments(argv=None):
         parser.error("the stack-contiguous read places the crossing by column structure, so the normalised output, "
                      "the five supervision terms and every lever that changes what is read, where it is sampled or "
                      "where zero sits are all refused beside it")
+    if args.occupancy_pixel_query and (args.occupancy_context or args.occupancy_detail or
+                                       args.occupancy_detail_stencil or args.occupancy_resolution or
+                                       args.occupancy_deform or args.occupancy_column or
+                                       args.occupancy_lattice_free or args.occupancy_offset_rows or
+                                       args.occupancy_normalise or args.occupancy_centre or
+                                       args.occupancy_stack_monotone or args.occupancy_crossing_threshold or
+                                       args.occupancy_skyline_recovery or args.occupancy_tap_span or
+                                       args.occupancy_placed):
+        parser.error("the pixel-statistics read-out is a standalone lever: it is declared alone, so no other "
+                     "occupancy read-out selector is set beside it")
     if args.occupancy_normalise and (args.occupancy_context or args.occupancy_detail_stencil or
                                      args.occupancy_resolution or args.occupancy_deform or
                                      args.occupancy_placed or args.occupancy_column or
@@ -534,7 +547,8 @@ def staged_mode(summary, *, freeze_backbone, init_weights_from):
 # Declared prefix list of tensors a continuation may add over the published checkpoint. It is one
 # constant rather than a literal inside the check so a new declared module cannot be refused for
 # matching its parent's name only up to the first underscore (V-104).
-INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_detail_tap.",
+INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_pixel_query.",
+                                 "occupancy_detail_tap.",
                                  "occupancy_resolution_branch.", "occupancy_deform.",
                                  "occupancy_deform_coarse.", "support_box.", "lattice_residual.",
                                  "occupancy_lattice_free.", "occupancy_lattice_gate",
@@ -572,7 +586,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
                    lattice_board_refine=0, occupancy_pair_rank=0, occupancy_pair_gap=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
@@ -603,7 +617,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_support_anchor_weight,
                                      require_lattice_board_refine, require_occupancy_pair_rank,
                                      require_occupancy_pair_gap,
-                                     require_occupancy_context,
+                                     require_occupancy_context, require_occupancy_pixel_query,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
                                      require_occupancy_deform, require_positive_weight,
@@ -624,6 +638,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_factor(occupancy_factor, summary)
     require_positive_weight(positive_weight, summary)
     require_occupancy_context(occupancy_context, summary)
+    require_occupancy_pixel_query(occupancy_pixel_query, summary)
     require_occupancy_detail(occupancy_detail, summary)
     require_occupancy_detail_stencil(occupancy_detail_stencil, summary)
     require_box_extent_weight(box_extent_weight, summary)
@@ -901,6 +916,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      component_identity_readout=args.component_identity_readout,
                      component_endpoint_term=args.component_endpoint_term,
                      occupancy_context=args.occupancy_context,
+                     occupancy_pixel_query=args.occupancy_pixel_query,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
                      occupancy_resolution=args.occupancy_resolution,
@@ -934,6 +950,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            positive_weight=args.occupancy_positive_weight, box_extent_weight=args.box_extent_weight,
                            support_anchor_weight=args.support_anchor_weight,
                            occupancy_context=args.occupancy_context,
+                           occupancy_pixel_query=args.occupancy_pixel_query,
                            occupancy_detail=args.occupancy_detail,
                            occupancy_detail_stencil=args.occupancy_detail_stencil,
                            occupancy_resolution=args.occupancy_resolution,
@@ -973,7 +990,8 @@ def main(argv=None, *, _archive=None, _started=None):
         source_model, source_manifest = load_checkpoint(source/"checkpoint")
         if (source_manifest["architecture"] != architecture_name(config) or
                 not compatible_config(source_manifest["config"], config_json,
-                                      allow_absent=("occupancy_context", "occupancy_detail",
+                                      allow_absent=(                                                    "occupancy_context", "occupancy_pixel_query",
+                                                    "occupancy_detail",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
                                                     "lattice_support",
@@ -1134,6 +1152,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_factor"] = args.occupancy_factor
     recovery_contract["occupancy_positive_weight"] = args.occupancy_positive_weight
     recovery_contract["occupancy_context"] = args.occupancy_context
+    recovery_contract["occupancy_pixel_query"] = args.occupancy_pixel_query
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil
     recovery_contract["occupancy_resolution"] = args.occupancy_resolution

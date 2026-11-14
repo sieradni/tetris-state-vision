@@ -27,6 +27,7 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m4-occplaced-[a-z0-9-]{1,40}|m5-colread-[a-z0-9-]{1,40}|m6-rowoffset-[a-z0-9-]{1,40}"
                                r"|m3-occstack-[a-z0-9-]{1,40}|m3-occpix-[a-z0-9-]{1,40}"
                                r"|m3-occscale-[a-z0-9-]{1,40}|m3-occgeom-[a-z0-9-]{1,40}"
+                               r"|m28-pixelread-[a-z0-9-]{1,40}"
                                r"|m3-occextent-[a-z0-9-]{1,40}"
                                r"|m3-occgeocap-[a-z0-9-]{1,40}|m3-occlatres-[a-z0-9-]{1,40}|m3-occlatfree-[a-z0-9-]{1,40}|m3-occbref-[a-z0-9-]{1,40}|m3-occfit-[a-z0-9-]{1,40}"
                                r"|m3-occorigin-[a-z0-9-]{1,40}|m3-trunkwidth-[a-z0-9-]{1,40}"

@@ -30,6 +30,7 @@ class ModelConfig:
     component_endpoint_term: str = "joint"
     layer_evidence: bool = False
     occupancy_context: int = 0
+    occupancy_pixel_query: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
     occupancy_tap_span: int = 0
@@ -72,6 +73,8 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1),
+              "occupancy pixel query is 0 (published read-out) or 1 (declared per-cell pixel statistics)")
         check(type(self.occupancy_detail) is int and self.occupancy_detail in (0, 1),
               "occupancy detail is0 (published read-out) or1 (declared high-resolution detail tap)")
         check(type(self.occupancy_detail_stencil) is int and self.occupancy_detail_stencil in (0, 1),
@@ -549,6 +552,25 @@ def sample_features(features, lattice, coordinates, offsets):
     return samples.permute(0, 2, 3, 1), points
 
 
+PIXEL_QUERY_EXTENT = .3
+PIXEL_QUERY_SAMPLES = 9
+PIXEL_QUERY_FEATURES = PIXEL_QUERY_SAMPLES*3+3
+
+
+def cell_pixel_statistics(pixels, lattice, coordinates, offsets):
+    """Deterministic per-cell colour and contrast statistics at a lattice.
+
+    Nine sub-cell samples over the declared interior extent give twenty-seven channel values and
+    three per-channel spreads - the feature class the committed pixel-ceiling read-out measured at
+    0.9872 F1 on the deciding cells. It reads the raster and the lattice only: no label, no target
+    lattice, no decoded state, no threshold. Sampling through the model's own lattice is what makes
+    this a measurement of the representation rather than of registration.
+    """
+    samples = sample_features(pixels, lattice, coordinates, offsets)[0]
+    spread = samples.std(dim=2, unbiased=False)
+    return torch.cat((samples.reshape(samples.shape[0], samples.shape[1], -1), spread), dim=-1)
+
+
 class AxialDecoder(nn.Module):
     def __init__(self, config):
         super().__init__()
@@ -775,6 +797,21 @@ class TetrisStateNet(nn.Module):
         # beside the cell means no displacement has to be bought at all. Zero-initialized, so step
         # zero is exactly the published function and the paired control starts from the same
         # tensors.
+        self.occupancy_pixel_query = None
+        if config.occupancy_pixel_query:
+            # Declared representation lever: deterministic per-cell colour and contrast statistics,
+            # computed at the model's own predicted lattice from the prepared raster only. The
+            # projection is zero-initialised, so step zero is bit-identical to the published
+            # function and the arm is strictly additive against its matched control.
+            self.occupancy_pixel_query = nn.Linear(PIXEL_QUERY_FEATURES, dimension)
+            nn.init.zeros_(self.occupancy_pixel_query.weight)
+            nn.init.zeros_(self.occupancy_pixel_query.bias)
+            x, y = torch.meshgrid(torch.tensor([-PIXEL_QUERY_EXTENT, 0., PIXEL_QUERY_EXTENT]),
+                                  torch.tensor([-PIXEL_QUERY_EXTENT, 0., PIXEL_QUERY_EXTENT]),
+                                  indexing="ij")
+            self.register_buffer("pixel_query_offsets",
+                                 torch.stack((x, y), -1).reshape(1, 1, PIXEL_QUERY_SAMPLES, 2),
+                                 persistent=False)
         self.occupancy_column = None
         if config.occupancy_column:
             self.occupancy_column = nn.Linear(2*dimension+2, dimension)
@@ -902,6 +939,13 @@ class TetrisStateNet(nn.Module):
                 # adds their information instead of letting the context block overwrite the detail
                 # tap. With either tap alone this is byte-identical to the published composition.
                 occupancy_features = occupancy_features+self.occupancy_neighborhood(neighborhood).permute(0, 2, 3, 1).reshape(batch, rows*columns, self.config.dimension)
+            if self.occupancy_pixel_query is not None:
+                # Declared representation lever: the read-out is given the raster at this stage's
+                # own placement, so the features exist exactly where the model believes the cell
+                # is. The projection is zero-initialized, so at step zero this adds exactly zero.
+                occupancy_features = occupancy_features+self.occupancy_pixel_query(
+                    cell_pixel_statistics(pixels, lattice, self.coordinates,
+                                          self.pixel_query_offsets))
             occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
             occupancy_parts = None
             if self.occupancy_lattice_free is not None:

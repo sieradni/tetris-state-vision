@@ -399,6 +399,14 @@ def require_occupancy_context(context, summary):
         raise ValueError("occupancy context differs from resource admission")
 
 
+def require_occupancy_pixel_query(query, summary):
+    """One declaration of the admission join for the per-cell pixel-statistics read-out."""
+    if (type(query) is not int or query not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_pixel_query", 0) != query or
+            summary.get("recovery_contract", {}).get("occupancy_pixel_query", 0) != query):
+        raise ValueError("occupancy pixel query differs from resource admission")
+
+
 def require_occupancy_factor(factor, summary):
     """One declaration of the admission join for the occupancy scale."""
     if (type(factor) is not int or factor not in OCCUPANCY_FACTORS or
