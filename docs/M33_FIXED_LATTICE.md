@@ -123,3 +123,15 @@ pass; it is not run in this one.
   recipe addresses.
 - Not shown: whether support-derived placement recovers the term; whether the placement residual is
   reducible at all at this budget. One seed, 64 steps, training-fit boards, synthetic gates only.
+
+## M34 update: the recorded step was run, and placement is reducible
+
+The support-derived lattice this receipt asked for was measured
+(`docs/M34_SUPPORT_LATTICE.md`, `docs/evidence/m34-support-lattice-r1/scope.json`). It does what the step
+predicted: the placement term falls from this arm's `-0.118649` to
+`-0.004778`, `-0.010780` of span, and clears the predeclared
+reducibility bar (`-0.083647`). So the constant lattice was refused for
+the reason recorded here - padding - and the sampled-at-prediction recipes were paying the same padding
+cost without naming it. The cost of the fix shows up in closure (-0.158049, short stage
+`closure`), which is where the next declared step goes.
+

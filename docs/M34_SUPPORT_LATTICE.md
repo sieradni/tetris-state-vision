@@ -75,3 +75,95 @@ best previously measured placement (`-0.103647`) by at least the declared floor 
 
 `runs/m34-support-{profile,study,probe}` receipts and `docs/evidence/m34-support-lattice-r1/scope.json`.
 Refused attempts keep their receipts; only completed runs are quoted.
+
+## Measured
+
+Study `m34-support` (probe `-registration`) on the M30/M31 winner's arm with form 7,
+the unchanged 64-step protocol, peak `1,057,873,920` bytes. Scored by
+`scripts/m34_support_lattice_read.py` on the fixed 2,986 cells and both label vectors
+(`docs/evidence/m34-support-lattice-r1/scope.json`), the winner anchor re-scored in the same pass, the
+placement comparison joined by the recorded fields of the three earlier receipts. No oracle, no
+per-board rule, no fitted threshold.
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (anchor, re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| support-lattice form, identity vector | `0.274869` | `0.883260` | `0.385925` |
+| delta | -0.098012 | -0.071268 | -0.303850 |
+| support-lattice form, anchored vector | `0.277264` | `0.756305` | `0.381148` |
+
+Gate block, unchanged thresholds: identity per-cell `false`, ranking
+`false`, attribution `true`
+(+0.166299 over the unchanged control `0.219626`); anchored per-cell
+`false`, ranking
+`false`, attribution
+`true`. `cleared: false`.
+
+**The gate branch is fail, and the placement question is answered yes.** The support-derived lattice
+does what it was declared to test - it removes the placement term - but it does so at a cost the gate
+sees: F1 at `0.0` fell -0.098012 and best swept fell
+-0.303850 against the winner, with AUC -0.071268.
+
+## The placement term across every recipe the campaign has measured
+
+| recipe | placement points | fraction of span | receipt |
+|---|---|---|---|
+| sampled at the predicted lattice (winner arm) | `-0.114151` | `-0.257557` | `m30-operating-point-r1` |
+| sampled at the predicted lattice (mass arm) | `-0.103647` | `-0.233858` | `m32-mass-match-r1` |
+| constant lattice over the full capture | `-0.118649` | `-0.267707` | `m33-fixed-lattice-r1` |
+| **support-derived lattice (this arm)** | **`-0.004778`** | **`-0.010780`** | `m34-support-lattice-r1` |
+
+The rule fixed before scoring: placement counts as reducible only if it reaches the best previous value
+(`-0.103647`) plus the declared floor
+(`0.020000`), i.e. `-0.083647`.
+This arm reaches `-0.004778`, so **`placement_reducible: true`** - and the margin is not
+marginal: the term shrinks from -0.118649 to -0.004778, a
+0.113871 improvement, and the placement residual is now
+`0.004778` points, which is `0.010781` of the span.
+
+**What the support-extent statistics imply.** The three earlier recipes all sampled inside the *padded*
+capture, and each paid a placement cost of `0.10`-`0.12` points; the one recipe that uses the raster's own
+valid extent pays `0.004778`. So the placement error measured in M30-M33 was
+padding-driven, exactly as the M33 receipt's recorded step supposed - a padded capture puts the board
+somewhere inside the frame, and a sample grid that assumes the frame is the board misreads where the
+cells are. That is a reducible error, and it is now reduced.
+
+## The span split: placement leaves the negative side, closure becomes the short stage
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | -0.158049 | -0.356605 |
+| placement | -0.004778 | -0.010780 |
+| representation | +0.606031 | 1.367384 |
+
+The split sums to the span in points and to one in fractions, asserted in code. `short_stage:
+closure`. Placement is no longer the short stage - it is now the *smallest* term in the split,
+`0.010780` of a span where it used to be `0.23`-`0.27`. The cost moved into
+closure: the same 64-step protocol trained on support-lattice statistics reaches
+`0.385925` best swept F1 against the winner's `0.689775`, so correcting where the
+read looks left the per-cell decision itself under-fitted, and representation carries
+`1.367384` of the span.
+
+## The concrete next structural step this stage implies
+
+Closure, at the placement that is now correct: the read's decision needs the statistics' *within-sample
+contrast* rather than their absolute level. Declared step for the next pass: keep form 7's support
+lattice and the same nine-sample statistics, and give the hidden projection both the `31` absolute
+statistics and their deviation from the sample's own mean along the lattice axes (`31` more) - computed
+from the sample itself, no fitted constant, no label, no scored cell, and no additional output parameter.
+The winner's absolute-level read then has to compete with the same information expressed relative to the
+board it is reading.
+
+## What this establishes, and what it does not
+
+- Placement is reducible at this capacity, by a mechanism that reads only the raster: `-0.103647` to
+  `-0.004778`. The campaign's placement error was padding-driven, and the campaign does not need to stop
+  spending passes on placement - it needs to stop spending them on *sampling recipes*.
+- The winner is still the M30/M31 arm: this pass buys the placement term at `0.303850`
+  best swept F1, which no gate accepts, so it is a diagnostic arm, not a new operating point.
+- Not shown: whether the contrast read recovers closure; whether closure at a correct placement is
+  reachable at this capacity at all. One seed, 64 steps, training-fit boards, synthetic gates only.
+
+## Receipts
+
+`runs/m34-support-{profile,study,probe}` receipts and `docs/evidence/m34-support-lattice-r1/scope.json`. Refused attempts keep their receipts; only completed runs are quoted.

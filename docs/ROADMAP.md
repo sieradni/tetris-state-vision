@@ -1420,3 +1420,18 @@ attribution +0.412701 - and the split leaves placement the only negative term at
 `+0.473501` (`1.068357`). So the placement question is
 not answered by removing the decoder from the sample: the next declared step is a lattice derived from
 the capture's valid support (mask centroid and extents), which reads the raster only and fits nothing.
+
+## M34 - placement is reducible, and the support lattice proves it
+
+The M33 receipt's recorded step was measured ([M34_SUPPORT_LATTICE.md](M34_SUPPORT_LATTICE.md),
+`docs/evidence/m34-support-lattice-r1/scope.json`): form 7 maps the board onto the bounding box of the
+capture's valid pixels. The gate is still **not cleared** - F1 at `0.0` `0.274869`
+(-0.098012), AUC `0.883260` (-0.071268), best swept
+`0.385925` (-0.303850), attribution +0.166299 - but the
+placement question is settled: the placement term drops from `-0.103647` to `-0.004778`
+against a predeclared bar of `-0.083647`
+(`placement_reducible: true`). Placement was padding-driven all along. The split now reads closure
+`-0.158049` (`-0.356605`), placement
+`-0.004778` (`-0.010780`), representation
+`+0.606031` (`1.367384`), so the short stage is **closure**
+and the recorded next step is a contrast read at the support lattice.

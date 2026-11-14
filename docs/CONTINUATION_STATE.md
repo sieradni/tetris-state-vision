@@ -3576,3 +3576,16 @@ M33 ran M32's recorded step: the pixel statistics sampled at a constant lattice 
 (`-0.267707` of span) and still the only negative term while representation carries
 `1.068357`. The recorded next step is a lattice derived from the capture's
 valid support (mask centroid and extents), reading the raster only and fitting nothing.
+
+M34 measured the support-derived lattice (`docs/evidence/m34-support-lattice-r1/scope.json`,
+M34_SUPPORT_LATTICE.md, ROADMAP M34): the gate still does not clear - F1 at `0.0`
+`0.274869` (-0.098012), AUC `0.883260`
+(-0.071268), best swept `0.385925` (-0.303850),
+attribution +0.166299 - but placement is **reducible and reduced**: the term falls to
+`-0.004778` from `-0.103647` against the predeclared bar
+`-0.083647`, because the earlier recipes sampled inside the padded capture.
+The split is closure `-0.158049` (`-0.356605`), placement
+`-0.004778` (`-0.010780`), representation `+0.606031`
+(`1.367384`), so `short_stage: closure` and the winner remains
+`m30-level-calibrate-r5`. Recorded next step: keep form 7 and give the hidden projection the statistics'
+within-sample contrast along the lattice axes alongside their absolute values.
