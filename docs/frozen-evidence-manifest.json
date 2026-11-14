@@ -4466,6 +4466,13 @@
         "scope.json": "376ce801c07d3b1c1756a81dd3e6a52310cf3a4ecd799bf35c40c7540becf260"
       }
     },
+    "m39-dual-placement-r1": {
+      "record_commit": "d0772a971441a96fab153c877dffb5207de4d79b",
+      "files": {
+        "diagnosis.json": "4279fa99e5ea67576ed0057e2fdb08f83a2d30bad65b9ba0cd3f1d46106362cb",
+        "scope.json": "b5593d66df18315c09b6f3481c89f02591a88cda7c6d08ff3378f37e93a8d8c6"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5091,7 +5098,7 @@
     }
   },
   "totals": {
-    "directories": 284,
-    "files": 3659
+    "directories": 285,
+    "files": 3661
   }
 }
