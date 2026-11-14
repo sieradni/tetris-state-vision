@@ -4402,6 +4402,24 @@
         "scope.json": "95bff1227d8d0f73a3ce8a4f5807e3d8b0cd05a15b5954dd73ceacda6b35ddbf"
       }
     },
+    "m31-decision-rule-r1": {
+      "record_commit": "1a2bcf0a584bd0c43a23173a8785baf532307d54",
+      "files": {
+        "scope.json": "0cf91611ead370137ea5b5f4c76bc21ef9eef8ce671516b87d2b61cc33d926d1"
+      }
+    },
+    "m31-decision-rule-r2": {
+      "record_commit": "1a2bcf0a584bd0c43a23173a8785baf532307d54",
+      "files": {
+        "scope.json": "f6d02b53437575da6c31b73969cf9d52784a76c17f229a310778e7bf7f1bc465"
+      }
+    },
+    "m31-followup-r1": {
+      "record_commit": "1a2bcf0a584bd0c43a23173a8785baf532307d54",
+      "files": {
+        "scope.json": "e4ba8a35fb2cee3ba13901f65efbc84a527ca1f09823f3d4f8bd9202a4427026"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5027,7 +5045,7 @@
     }
   },
   "totals": {
-    "directories": 274,
-    "files": 3645
+    "directories": 277,
+    "files": 3648
   }
 }
