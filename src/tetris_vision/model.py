@@ -1087,8 +1087,8 @@ class TetrisStateNet(nn.Module):
                     # lattice-free arm declares it (a fixed coarse box lattice, each box against the mean and
                     # spread of its own 5x5 neighbourhood, so a board-wide gain or offset cancels), then
                     # summarised per cell by channel mean and channel spread over the five taps. it reads the
-                    # encoder's coarse map and the raster-derived lattice; nothing is fitted here and no label
-                    # or prevalence is involved.
+                    # encoder's coarse map and the raster-derived lattice; nothing is fitted here, and
+                    # nothing about the scene is read.
                     grid = F.adaptive_avg_pool2d(coarse, (rows+2, columns+2))
                     grid = stencil_contrast(grid)
                     taps = (grid[:, :, 1:-1, 1:-1], grid[:, :, :-2, 1:-1], grid[:, :, 2:, 1:-1],

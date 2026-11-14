@@ -3316,3 +3316,20 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m38-capacity-r2-registration/result.json`), compared field by field before either is quoted.
 - Named green runs: `runs/m38-capacity-job.json` (peak `1,026,883,584`), `runs/m38-capacity-r2-job.json`
   (peak `1,029,341,184`), `runs/m38-capacity-r1-job.json` (score, 128 MiB).
+
+## V-164 - CLOSED: form 11's comment put a guarded word back into the scanned source slice
+
+- Symptom: three leakage tests failed again - `'label' unexpectedly found in ...` - with the offending text
+  being form 11's own comment "nothing is fitted here and no label or prevalence is involved".
+- Root cause: identical to V-157: the guard scans from the image encoder's `forward` to the end of the
+  module, so a comment beside a new form is inside its slice. The guard was right; the comment was written
+  as if the slice were the model's forward only.
+- Change: the comment now reads "nothing is fitted here, and nothing about the scene is read". No guard,
+  token list, slice boundary or threshold was touched.
+- Detection class: source-text leakage guard - **second occurrence**, so this defect class now carries a
+  standing instrument.
+- Instrument: `tests.test_m37_fusion.SourceScanTest.test_no_guarded_word_enters_the_reads_source_slice`
+  scans the same slice for the same tokens and names the token in its own failure message, so a new arm
+  fails in its own test file before the suite does. The three original guard tests remain the authority.
+- Named green runs: `tests.test_span_level tests.test_tap_span tests.test_two_path tests.test_m37_fusion`
+  (83 tests, OK).

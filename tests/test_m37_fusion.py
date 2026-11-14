@@ -92,5 +92,24 @@ class CoarseHalfTest(unittest.TestCase):
         self.assertEqual(tuple(summary.shape), (1, 4, 10, PIXEL_QUERY_STENCIL_FEATURES))
 
 
+class SourceScanTest(unittest.TestCase):
+    """Standing instrument for the leakage guard's slice, so a new form fails in its own file.
+
+    The guard in `test_span_level`, `test_tap_span` and `test_two_path` scans the module source from the
+    first `forward(self, pixels, valid)` to the end of the module. Twice now a new arm's comment has been
+    written as if that slice were only the model's own forward, and the guard has - correctly - refused it.
+    This test says which word and where, before the suite does.
+    """
+
+    def test_no_guarded_word_enters_the_reads_source_slice(self):
+        import inspect
+        from tetris_vision import model as module
+        source = inspect.getsource(module)
+        body = source[source.index("def forward(self, pixels, valid):"):]
+        for token in ("label", "target", "occupied", "prevalence", "thresholds"):
+            self.assertNotIn(token, body.lower(),
+                             f"'{token}' sits in the slice the leakage guard scans; word it otherwise")
+
+
 if __name__ == "__main__":
     unittest.main()
