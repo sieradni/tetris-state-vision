@@ -23,7 +23,20 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the exactness barrier is ordering, not level, and it is now measured rather than guessed**
+Latest: **the pair-order lever fails: exact stays 0, the ordering barely moves and the boundary pays for it**
+([M25_PAIR_ORDER.md](M25_PAIR_ORDER.md), `docs/evidence/m25-rank-r1/scope.json`). The one lever M24's decomposition left
+standing - a declared within-board pairwise ordering term, `mean(relu(1 - (occupied - empty)))` over the complete
+cross-class product, weight `.5`, both constants fixed before the receipt - was built, proved and measured under the
+unchanged protocol. Verdict `pair-order-fails`: strict exact is **0 / 28 in every arm**. On the record-best read the
+composition scores `0.918588` AUC against stencil's `0.9170200020605955` (+0.001568, inside the 0.02 attribution
+tolerance) and cuts the inversion rate only from `0.189525` to `0.183009` (-0.006516, under the declared 0.01 bar for a
+move), while F1@0 falls `0.480776` -> `0.430619` and row error rises +0.404 -> +1.443. On the bare read it is worse than
+the control (`0.786891` against `0.8226433610683003`) and the inversion rate *rises* to `0.246080`. The failure mode is
+mechanical and named: the term is invariant to a board's level and its hinge is one-sided, so the cheapest way to lower its
+charge is to lift empty cells toward the occupied mode - which is why the positive share at the boundary jumped to 42.91%
+and 99.93%. The record-best arm stays `stencil` (`0.9170200020605955` / `0.480776`).
+
+Previous: **the exactness barrier is ordering, not level, and it is now measured rather than guessed**
 ([M24_EXACTNESS_BARRIER.md](M24_EXACTNESS_BARRIER.md), `docs/evidence/m24-exactness-r1/scope.json`). Taking the
 record's six strongest arms apart board by board and row by row: **no level makes any board exact** - searching every
 distinct level the read can be cut at, not the 81-point grid, gives `0 of 28` in every arm, and the best board in the

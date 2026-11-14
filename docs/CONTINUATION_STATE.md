@@ -1,5 +1,31 @@
 # Contributor handoff — 2026-10-30
 
+## The pair-order lever fails, and its failure mode is mechanical (2026-11-13, M25)
+
+[M25_PAIR_ORDER.md](M25_PAIR_ORDER.md) builds the lever M24 left standing: `pair_rank_term`, the complete cross-class
+`mean(relu(1 - (occupied - empty)))` per board over known visible cells. Constants (`PAIR_RANK_MARGIN = 1.0`,
+`PAIR_RANK_WEIGHT = .5`) were declared before any receipt; the lever adds no tensor, so parameter identity and construction
+order are uninfluenced by it, and it is refused without the free channel (`occupancy_lattice_free 2`) and beside the five
+boundary/margin terms and structural centring, which supervise a level the term is invariant to.
+
+Measured on the unchanged protocol (same seed, 64 steps, 54 forwards, standing grid and `0.0` boundary, curator at
+1900 MiB; `runs/m25-curate-r1-job.json`):
+
+| arm | AUC | F1@0 | exact | row error | within-board AUC | inversion rate |
+|---|---|---|---|---|---|---|
+| repro (published control) | 0.822643 | 0.381640 | 0 / 28 | +7.819 | 0.775698 | 0.224302 |
+| rank (free + pair) | 0.786891 | 0.212997 | 0 / 28 | +12.007 | 0.753922 | 0.246080 |
+| rank-stencil (free + envelope + stencil + pair) | 0.918588 | 0.430619 | 0 / 28 | +1.443 | 0.828472 | 0.183009 |
+
+Verdict `pair-order-fails`. The composition's AUC gain is inside the 0.02 tolerance and its inversion fall is under the
+declared 0.01 bar, while F1@0 loses 0.050157 and row error triples-ish; the bare arm is worse than the control on both AUC
+and inversions. The mechanism is right in principle and too weak in practice at this budget, and the reason is structural:
+a shift-invariant one-sided hinge is paid most cheaply by lifting empties, which is exactly the precision collapse observed
+(positive share 49.95% -> 42.91% on the composition, 99.93% on the bare arm). Record-best remains `stencil`.
+Mechanical proofs live in `tests/test_pair_order.py` (20 tests): exact zero on a margin-separated board, exact charge on an
+inverted pair, complete/permutation-free pairs, shift invariance, unknown-and-spawn blindness, non-zero gradient at the
+zero read with one step moving it, no parameter and a bitwise-identical forward, and gradient reaching the real head.
+
 ## The exactness barrier is ordering, and no level or projection reaches it (2026-11-13, M24)
 
 [M24_EXACTNESS_BARRIER.md](M24_EXACTNESS_BARRIER.md) decomposes why the record's best arms produce no strict exact board,

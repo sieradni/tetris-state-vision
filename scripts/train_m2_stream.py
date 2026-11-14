@@ -180,6 +180,8 @@ def arguments(argv=None):
                              "without touching the predicted lattice;2 is the same stencil de-meaned "
                              "across the board;3 reads the same five taps on the locally normalised "
                              "field, so a board-wide offset or rescaling leaves it unchanged")
+    parser.add_argument("--occupancy-pair-rank", type=int, choices=(0, 1), default=0,
+                        help="declare the within-board pair-order term (M25); 1 requires --occupancy-lattice-free 2")
     parser.add_argument("--occupancy-lattice-free", type=int, choices=(0, 1, 2), default=0,
                         help="declared read-out lever;0 is the published lattice-sampled occupancy "
                              "read-out;1 adds a gated channel that reads image-level context and fixed "
@@ -452,6 +454,20 @@ def arguments(argv=None):
     if args.occupancy_free_stencil and args.occupancy_lattice_free != 2:
         parser.error("the local stencil is detail for the free channel, so it is declared only beside "
                      "--occupancy-lattice-free 2")
+    if args.occupancy_pair_rank and args.occupancy_lattice_free != 2:
+        parser.error("the pair-order term supervises the free channel's own read, so it is declared only beside "
+                     "--occupancy-lattice-free 2")
+    if args.occupancy_pair_rank and (args.occupancy_midpoint or args.occupancy_anchor or
+                                     args.occupancy_quantile_anchor or args.occupancy_dense_hinge or
+                                     args.occupancy_margin_hinge or args.occupancy_centre):
+        # The pair term is a statement about the read's ordering; the five boundary/margin terms and structural centring
+        # are statements about where the read sits. The pair term is invariant to a board's common shift, so a level term
+        # beside it would be supervised on a quantity this term does not constrain, and an arm carrying both could not
+        # attribute a change to either. The structural transforms (envelope, crossing rule) compose by declaration: they
+        # decide at the read's own split rather than moving it, which is exactly the composition M25 asks about.
+        parser.error("the pair-order term supervises the read's ordering and is invariant to its level, so the five "
+                     "boundary/margin terms and structural centring are refused beside it; the envelope and the "
+                     "crossing rule compose with it by declaration")
     if args.occupancy_lattice_free and (args.lattice_residual or args.lattice_support or
                                        args.geometry_final_only or args.box_extent_weight or
                                        args.support_anchor_weight):
@@ -544,7 +560,7 @@ def owned_initial_source(source, *, output):
 
 def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
-                   lattice_board_refine=0,
+                   lattice_board_refine=0, occupancy_pair_rank=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
                    occupancy_normalise=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                    occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
@@ -571,7 +587,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_lattice_support, require_lattice_residual,
                                      require_occupancy_lattice_free, require_occupancy_free_stencil,
                                      require_support_anchor_weight,
-                                     require_lattice_board_refine,
+                                     require_lattice_board_refine, require_occupancy_pair_rank,
                                      require_occupancy_context,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
@@ -585,6 +601,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_crossing_threshold,
                                      require_occupancy_skyline_recovery, require_occupancy_tap_span)
     require_occupancy_free_stencil(occupancy_free_stencil, summary)
+    require_occupancy_pair_rank(occupancy_pair_rank, summary)
     require_geometry_final_only(geometry_final_only, summary)
     require_lattice_support(lattice_support, summary)
     require_endpoint_term(endpoint_term, summary)
@@ -924,6 +941,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            lattice_residual=args.lattice_residual,
                            occupancy_lattice_free=args.occupancy_lattice_free,
                            occupancy_free_stencil=args.occupancy_free_stencil,
+                           occupancy_pair_rank=args.occupancy_pair_rank,
                            lattice_board_refine=args.lattice_board_refine,
                            accumulation_policy=args.accumulation_policy,
                            freeze_backbone=args.freeze_backbone, init_weights_from=args.init_weights_from,
@@ -1020,7 +1038,7 @@ def main(argv=None, *, _archive=None, _started=None):
             case = sample(group, view, split)
             prepared, target = prepare(case)
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint)
+            loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint, occupancy_pair_rank=args.occupancy_pair_rank)
             layers_right = layers_known = 0
             fit_roles = {}
             for layer, role in enumerate(("active", "ghost")):
@@ -1124,6 +1142,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["lattice_residual"] = args.lattice_residual
     recovery_contract["occupancy_lattice_free"] = args.occupancy_lattice_free
     recovery_contract["occupancy_free_stencil"] = args.occupancy_free_stencil
+    recovery_contract["occupancy_pair_rank"] = args.occupancy_pair_rank
     recovery_contract["lattice_board_refine"] = args.lattice_board_refine
     complete_recovery_contract(recovery_contract, json.loads(json.dumps(asdict(config))))
     recovery_contract["freeze_backbone"] = args.freeze_backbone
@@ -1181,7 +1200,7 @@ def main(argv=None, *, _archive=None, _started=None):
                 prepared, target = prepare(case)
                 model.train()
                 output = model(prepared.pixels[None], prepared.valid[None])
-                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint)
+                loss, _ = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint, occupancy_pair_rank=args.occupancy_pair_rank)
                 if not bool(torch.isfinite(loss)):
                     raise RuntimeError("nonfinite accumulated loss")
                 return loss
@@ -1270,7 +1289,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                        for value in state.values() if torch.is_tensor(value)),
                     "backward_completed": False}
             output = model(prepared.pixels[None], prepared.valid[None])
-            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint)
+            loss, terms = joint_loss(output, target, identity_factor=args.component_identity_factor, endpoint_term=args.component_endpoint_term, occupancy_factor=args.occupancy_factor, positive_weight=args.occupancy_positive_weight, geometry_final_only=args.geometry_final_only, box_extent_weight=args.box_extent_weight, support_anchor_weight=args.support_anchor_weight, occupancy_placed=args.occupancy_placed, occupancy_margin_hinge=args.occupancy_margin_hinge, occupancy_anchor=args.occupancy_anchor, occupancy_quantile_anchor=args.occupancy_quantile_anchor, occupancy_dense_hinge=args.occupancy_dense_hinge, occupancy_midpoint=args.occupancy_midpoint, occupancy_pair_rank=args.occupancy_pair_rank)
             if not bool(torch.isfinite(loss)):
                 raise RuntimeError("nonfinite curriculum loss")
             loss.backward()

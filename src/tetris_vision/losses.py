@@ -510,6 +510,23 @@ def require_occupancy_free_stencil(value, summary):
         raise ValueError("occupancy free-channel stencil differs from resource admission")
 
 
+# Declared ordering lever (M25): exactness needs every occupied cell on a board to outrank every empty one, and M24
+# measured an 18.95% inversion rate on the record-best arm, so this term charges the pairs themselves. Both constants are
+# fixed here, before any receipt: the margin is the record's declared unit separation (the same 1.0 the M9-M11 terms use)
+# and the weight is the half-occupancy weight every auxiliary statement on this read has carried since M4.
+OCCUPANCY_PAIR_RANK_ARMS = (0, 1)
+PAIR_RANK_MARGIN = 1.0
+PAIR_RANK_WEIGHT = .5
+
+
+def require_occupancy_pair_rank(value, summary):
+    """One declaration of the admission join for the within-board pair-order term."""
+    if (type(value) is not int or value not in OCCUPANCY_PAIR_RANK_ARMS or
+            summary.get("arguments", {}).get("occupancy_pair_rank", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_pair_rank", 0) != value):
+        raise ValueError("occupancy pair rank differs from resource admission")
+
+
 def require_lattice_board_refine(value, summary):
     """One declaration of the admission join for the per-board refinement capacity lever."""
     if (type(value) is not int or value not in LATTICE_BOARD_REFINE_LEVERS or
@@ -720,9 +737,36 @@ def quantile_anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+def pair_rank_term(output, target):
+    """Declared ordering supervision: every occupied/empty pair on a board, one direction each.
+
+    M24 showed exactness is not reachable by a level: a board is exact only when all of its occupied cells outrank all of
+    its empty ones, and no level in the complete decision set repaired a board that does not. A term that charges the
+    boundary cannot reach that; this one charges the pairs. For every board carrying both classes among its *known*
+    visible cells it computes `mean(relu(margin - (occupied - empty)))` over the complete cross-class product - no
+    sampling, no ordering of the pairs, no weight by class frequency - so it is exactly zero when the read separates the
+    two classes by the declared margin and positive otherwise. It reads only differences inside a board, so it has no
+    board-level component at all: a constant added to every cell of a board leaves it unchanged, which is why it cannot
+    buy its way out of an inversion by moving the level. `unknown` cells are excluded from both sides, and the window is
+    the labelled visible board, so a spawn row is never scored.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = logits[index][occupied[index]], logits[index][empty[index]]
+        if high.numel() and low.numel():
+            total = total+F.relu(PAIR_RANK_MARGIN-(high[:, None]-low[None, :])).mean()
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
-               occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0):
+               occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
+               occupancy_pair_rank=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -787,6 +831,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared dense supervision: every known cell is charged inside the margin band, both classes equally, so
         # the read's free additive level cannot absorb the pressure it is under.
         result["dense"] = dense_hinge_term(output, target)
+    check(type(occupancy_pair_rank) is int and occupancy_pair_rank in OCCUPANCY_PAIR_RANK_ARMS,
+          "occupancy pair rank must be 0 (unsupervised order) or 1 (declared within-board pair order)")
+    if occupancy_pair_rank:
+        # Declared ordering supervision: exactness is a property of the pairs, not of the boundary, so the read is told
+        # about the pairs themselves.
+        result["pair"] = pair_rank_term(output, target)
     check(type(occupancy_midpoint) is int and occupancy_midpoint in OCCUPANCY_MIDPOINT_ARMS,
           "occupancy midpoint must be 0 (unconstrained location) or 1 (declared midpoint at the boundary)")
     if occupancy_midpoint:
@@ -804,7 +854,8 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
 def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
-               occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0):
+               occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
+               occupancy_pair_rank=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -813,7 +864,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
           "support anchor weight must be0 or1")
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
-                            occupancy_quantile_anchor, occupancy_dense_hinge, occupancy_midpoint)
+                            occupancy_quantile_anchor, occupancy_dense_hinge, occupancy_midpoint,
+                            occupancy_pair_rank=occupancy_pair_rank)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -842,7 +894,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "anchor": ANCHOR_WEIGHT*occupancy_anchor,
                "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor,
                "dense": ANCHOR_WEIGHT*occupancy_dense_hinge,
-               "midpoint": ANCHOR_WEIGHT*occupancy_midpoint}
+               "midpoint": ANCHOR_WEIGHT*occupancy_midpoint,
+               "pair": PAIR_RANK_WEIGHT*occupancy_pair_rank}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 
