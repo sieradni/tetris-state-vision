@@ -137,3 +137,83 @@ Receipts this pass must produce:
   next lever is a read-out that sees what that 30-feature read-out sees.
 - **`single-deficit`** - none of the three terms is first-order at this population; the residual is
   not decomposable this way and the next step is a larger, group-diverse population.
+
+## Measured result: `two-factor-first-order`, and the gate a single lever could not reach
+
+Receipt `runs/m27-three-factor-r3-job.json` (passed, 3 work items, 0.39 s, peak 38,686,720 B of the
+declared 128 MiB, kernel Job guard). Every one of the four join conditions held before the evidence
+directory was written: the two receipts agree on the 28 nonempty boards and the 36 sample ids, the
+matched population is exactly `2,986` cells, and the recomputations reproduce
+`0.439024 / 0.933138` (model as-is matched), `0.574181 / 0.970233` (model oracle),
+`0.379147 / 0.800604` (model as-is full) and `0.978006 / 0.998765` (pixel full).
+
+| read | population | AUC | F1 at `0.0` | best swept F1 (threshold) |
+|---|---|---|---|---|
+| model, as-is | 5,600 deciding cells | 0.800604 | 0.379147 | 0.392496 (`0.60`) |
+| model, as-is | 2,986 matched cells | 0.933138 | 0.439024 | 0.543974 (`2.10`) |
+| model, oracle | 2,986 matched cells | 0.970233 | 0.574181 | **0.762590** (`2.25`) |
+| pixel, same cells | 2,986 matched cells | 0.999195 | 0.974763 | **0.987179** (`1.05`) |
+| pixel, full | 5,600 deciding cells | 0.998765 | 0.978006 | 0.985936 (`1.05`) |
+
+**Verdict `two-factor-first-order`.** On identical cells:
+
+- **registration `+0.218616`** best swept F1 (`0.543974 -> 0.762590`), with AUC `0.933138 -> 0.970233`:
+  granting the correspondence the model's own cells need is worth more than any single lever this
+  campaign has measured;
+- **representation `+0.224590`** (`0.762590 -> 0.987179`, AUC `0.970233 -> 0.999195`): even correctly
+  registered, the learned read is a fifth of F1 short of a 30-feature colour read-out on the same
+  cells;
+- **boundary `+0.188409`** for the model's own oracle read (`0.574181` at `0.0` against `0.762590` at
+  `2.25`), reported and inert, because the level family is closed.
+
+The three terms are measured on one population and each is threshold-free except the boundary term;
+**they are not claimed to be additive**, and the matched population is not the deciding population.
+
+### What this explains, and what it licenses
+
+The standing gate is occupied-cell F1 `>= 0.70` at `0.0`, from a published `0.379147`. The
+representation term alone is `0.224590` - so **no read-side lever of any kind could have cleared
+that gate**, even one that perfectly closed the representation gap, because the gate is also paying
+registration and level. That is the structural reason the twenty-three single-lever arms all
+returned a number between `0.40` and `0.48` at `0.0`: each was moving one of three first-order
+terms while the gate was the sum.
+
+The measured consequences, in the order the numbers rank them:
+
+1. **Registration is not a settled question.** It is worth `+0.219` best swept F1 on identical cells,
+   and the geometry family never moved placement by its own declared `25%` floor. A read-out that is
+   *tolerant* of a `2.575`-cell mean offset is a lever with a measured prize, and it has not been
+   built in the form this decomposition asks for (the free channel reads `0.607085` alone).
+2. **The representation has a proven-sufficient target.** The pixel read-out reaches `0.987179` on the
+   same cells, so the missing information is in the raster at the cell and not in the label policy -
+   the label hypothesis is refuted twice now. A read-out that sees what that 30-feature read sees, at
+   the model's own lattice, is a declared representation lever with `0.224590` of measured headroom.
+3. **The boundary is the smallest term and stays closed.** `0.188409` at the model's own optimum is
+   real, but `0.0` is where the standing gate lives and three prior passes measured the level family
+   out; this pass does not re-open it.
+
+No lever is ranked by preference here: the numbers say registration and representation are equal
+first-order terms, so the honest next move is to build the representation lever (it is additive,
+zero-initialized, needs no new data and is measurable at the standing `64`-step protocol) and to
+carry a registration-robust read as its separately declared sibling rather than a composition.
+
+## Receipt note
+
+Three launches preceded the canonical one and none is evidence. `runs/m27-three-factor-r1-job.json`
+and `-r2-job.json` failed inside the instrument (the first read its own durable receipt before argv
+had finished, the second restricted `as_is` to all known cells instead of the matched population),
+and both are preserved with their logs; the canonical run is `runs/m27-three-factor-r3-job.json`
+writing `docs/evidence/m27-three-factor-r3/scope.json`. The instrument tests are
+`runs/m27-tests-r4-job.json` (19 tests, passed); the two failures before them are preserved as
+`runs/m27-tests-r1..r3-job.json` and recorded as V-149.
+
+## Limits
+
+- The matched population is `53.3%` of the deciding cells and is biased away from the board edge,
+  which is exactly where a `2.575`-cell offset spills. Every matched number is reported beside the
+  full-population number and is never substituted for it.
+- The pixel read-out is arm-independent (raster plus committed labels); the model side is the
+  `4x`-budget arm whose mapping is committed. The two are therefore not two arms of one experiment.
+- The pixel read-out is granted the target lattice and is a ceiling, not a model or a decoder.
+- One seed, one synthetic population, training-fit boards; the fit gate stays `FALSE` at `0 / 28`
+  and no accuracy, real-image, calibration or complete-state claim follows.

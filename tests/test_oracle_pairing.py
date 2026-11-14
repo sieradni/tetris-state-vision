@@ -14,8 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"scripts"))
 
-from oracle_pairing_read import (CELLS, counts_at, decomposition, matched_rows,  # noqa: E402
-                                 pairs, require_close, score)
+from oracle_pairing_read import (CELLS, counts_at, decomposition, matched_reads,  # noqa: E402
+                                 pairs, pixel_pairs, require_close, score)
 
 GROUPS = ("a", "b")
 
@@ -32,9 +32,9 @@ def board(sample_id, labels, *, logits=None, mapping=None, known=None):
             "known_cells": CELLS}
 
 
-def pixel_board(sample_id, labels, logits):
+def pixel_board(sample_id, occupied, logits):
     return {"sample_id": sample_id, "group_id": GROUPS[0], "known_cells": CELLS,
-            "occupied": [int(value) for value in labels], "pixel_logits": list(logits)}
+            "occupied": int(occupied), "pixel_logits": list(logits)}
 
 
 def labels_with(first, count=CELLS):
@@ -86,19 +86,36 @@ class PairingTest(unittest.TestCase):
         self.assertEqual(len(pairs([empty, board("t", labels_with((0,)))], pairing="as_is")),
                          CELLS)
 
-    def test_pixel_pairing_reads_the_pixel_logits_at_the_target_cell(self):
+    def test_pixel_pairs_join_labels_by_sample_id(self):
+        labels = labels_with((4,))
+        model = board("s", labels)
+        values = [0.0]*CELLS
+        values[4] = 5.0
+        pixel = pixel_board("s", 1, values)
+        rows = pixel_pairs([model], [pixel])
+        self.assertEqual(len(rows), CELLS)
+        self.assertEqual(rows[4], (5.0, True))
+        self.assertAlmostEqual(sum(1 for _, label in rows if label), 1)
+
+    def test_pixel_pairs_refuse_a_different_board(self):
+        with self.assertRaises(ValueError):
+            pixel_pairs([board("s", labels_with((0,)))],
+                        [pixel_board("other", 1, [0.0]*CELLS)])
+
+    def test_matched_reads_share_one_population(self):
         labels = labels_with((4,))
         mapping = [None]*CELLS
         mapping[9] = 4
         model = board("s", labels, mapping=mapping)
         values = [0.0]*CELLS
         values[4] = 5.0
-        pixel = pixel_board("s", labels, values)
-        rows = pairs([pixel], pairing="as_is", pixel=True)
-        self.assertEqual(rows[4], (5.0, True))
-        model_rows, pixel_rows = matched_rows([model], [pixel], pairing="oracle")
-        self.assertEqual(model_rows, [(0.0, True)])
-        self.assertEqual(pixel_rows, [(5.0, True)])
+        pixel = pixel_board("s", 1, values)
+        reads = matched_reads([model], [pixel])
+        self.assertEqual(len(reads["as_is"]), 1)
+        self.assertEqual(reads["oracle"], [(0.0, True)])
+        self.assertEqual(reads["pixel"], [(5.0, True)])
+        # the as-is read is the standing pairing restricted to the same cell
+        self.assertEqual(reads["as_is"], [(0.0, False)])
 
 
 class ScoreTest(unittest.TestCase):

@@ -23,7 +23,18 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the symmetric pair margin avoids the collapse, improves the bare read, regresses the record-best read, and
+Latest: **the occupancy deficit is two first-order factors plus a boundary term, so no single lever could have reached the gate**
+([M27_THREE_FACTOR.md](M27_THREE_FACTOR.md), `docs/evidence/m27-three-factor-r3/scope.json`). Three reads on the same `2,986`
+co-scoreable cells, from two committed receipts and no forward pass: the model at its own lattice (AUC `0.933138`, F1@0
+`0.439024`, best swept `0.543974`), the same weights with registration granted (`0.970233` / `0.574181` / **`0.762590`**), and
+the committed pixel read-out on the same cells (`0.999195` / `0.974763` / **`0.987179`**). Registration is worth **+0.218616**
+best swept F1 and the representation **+0.224590**, with a **+0.188409** boundary term beside them; verdict
+`two-factor-first-order`, measured on one population and **not** claimed additive. The standing gate is occupied-cell F1
+`>= 0.70` at `0.0` from `0.379147`, so **no read-side lever of any kind could have cleared it** - the structural reading of
+twenty-three arms landing between `0.40` and `0.48`. Both factors are first-order: a registration-robust read and a read-out
+that sees what the 30-feature pixel read sees are separately declared levers, not a composition. Fit gate unchanged
+(`FALSE`, `0 / 28`). The four cross-receipt joins reproduce the published `0.439024` / `0.933138` / `0.574181` / `0.970233` /
+`0.978006` / `0.998765` before any number is written. Previous: **the symmetric pair margin avoids the collapse, improves the bare read, regresses the record-best read, and
 closes the pair-supervision axis** ([M26_GAP_MARGIN.md](M26_GAP_MARGIN.md), `docs/evidence/m26-gap-r1/scope.json`). The
 M25 charge was replaced by one that charges a pair by the closer of its two directional violations
 (`min(relu(1 - gap), relu(1 + gap))`, margin `1.0`, weight `.5`, both declared before the receipt). On the bare free

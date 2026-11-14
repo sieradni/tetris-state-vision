@@ -1,5 +1,41 @@
 # Contributor handoff — 2026-10-30
 
+## The occupancy deficit is two first-order factors, and the gate was unreachable one lever at a time (M27, 2026-11-14)
+
+[M27_THREE_FACTOR.md](M27_THREE_FACTOR.md) reads two committed receipts together - the registration-attribution
+receipt (model logits plus the model-cell -> target-cell mapping) and the pixel-ceiling receipt - and scores three
+reads on the same `2,986` co-scoreable cells. No forward pass, no training, no weight, threshold, gate or label
+change. Receipt `runs/m27-three-factor-r3-job.json` (passed, 3 work items, 0.39 s, 38,686,720 B of the declared
+128 MiB); evidence `docs/evidence/m27-three-factor-r3/scope.json`.
+
+| read | population | AUC | F1@0 | best swept F1 (threshold) |
+|---|---|---|---|---|
+| model, as-is | 5,600 deciding cells | 0.800604 | 0.379147 | 0.392496 (`0.60`) |
+| model, as-is | 2,986 matched cells | 0.933138 | 0.439024 | 0.543974 (`2.10`) |
+| model, oracle registration | 2,986 matched cells | 0.970233 | 0.574181 | **0.762590** (`2.25`) |
+| pixel read-out, same cells | 2,986 matched cells | 0.999195 | 0.974763 | **0.987179** (`1.05`) |
+| pixel read-out, full | 5,600 deciding cells | 0.998765 | 0.978006 | 0.985936 (`1.05`) |
+
+Verdict `two-factor-first-order`: **registration `+0.218616`**, **representation `+0.224590`**, **boundary
+`+0.188409`** (reported, inert - the level family stays closed). All four joins reproduce the published
+`0.439024 / 0.933138`, `0.574181 / 0.970233`, `0.379147 / 0.800604` and `0.978006 / 0.998765` or the pass refuses to
+write.
+
+The first consequence is about the campaign, not the model: the standing gate is occupied-cell F1 `>= 0.70` at
+`0.0` from `0.379147`, and the representation term alone is `0.224590`, so **no read-side lever could have cleared
+that gate** even by perfectly closing its own term. That is the structural explanation for twenty-three arms that
+all landed between `0.40` and `0.48` - each was moving one of three first-order terms while the gate charged the sum.
+The second is that the pixel ceiling is no longer only a label result: on identical cells it is `0.224590` ahead
+of the correctly registered learned read, so the missing information is per-cell raster content, not label policy.
+The next lever is therefore a read-out that sees what the 30-feature colour read sees at the model's own lattice
+(additive, zero-initialized, measurable at the standing 64-step protocol), with a registration-robust read as its
+separately declared sibling - not a composition, and not another level, pair or threshold term.
+
+Limits: the matched population is `53.3%` of the deciding cells and is biased away from the board edge the offset
+spills over; the pixel read is arm-independent while the model side is the `4x`-budget arm; the pixel read is
+granted the target lattice; one seed, synthetic, fit gate still `FALSE` at `0 / 28`. Three refused launches are
+preserved (`runs/m27-three-factor-r1..r2-job.json`, V-149) and are not evidence.
+
 ## The symmetric pair margin works on the bare read, fails on the record-best read, and closes the axis (M26)
 
 [M26_GAP_MARGIN.md](M26_GAP_MARGIN.md): `pair_gap_term` charges each cross-class pair by the closer of its two directional

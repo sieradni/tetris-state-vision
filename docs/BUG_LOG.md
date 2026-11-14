@@ -3000,3 +3000,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `tests/test_stencil_read.py::test_the_de_meaned_mode_carries_no_board_level`, which asserts the bar on the visible
   window rather than on the whole tensor.
 - Named green run: the M22 curation `passed 0` over all eight arms and the full suite green through the bounded runner.
+
+## V-149 - CLOSED: the decomposition instrument read its own receipt and scored the wrong population
+
+- Symptom: the first M27 launch exited 1 with "the bounded job did not pass"; the second exited 1 with "the matched
+  population is not the declared 2986 cells".
+- Root cause: two independent defects in the new read-only instrument. (1) It required its own durable job receipt to
+  already say `passed` while the child was still running; that receipt is written before argv resolves (V-067), so the
+  condition cannot hold from inside the run. (2) It built the as-is read over every known cell (`5,600`) instead of the
+  co-scoreable cells the committed `summary.as_is` is defined on (`2,986`), so the registration delta it would have
+  published was a population difference contaminated by alignment.
+- Change: the instrument now checks only the ceiling it was admitted under (its status is verified by the curator, as
+  the pixel-ceiling probe already does), and both pairings are built from one matched index set, so `as_is` and
+  `oracle` are scored on identical cells by construction. A third, test-side defect - a fixture that treated the pixel
+  receipt's occupied *count* as a label vector - was caught by the new test module before the canonical run.
+- Detection class: test-instrument.
+- Instrument: the four cross-receipt joins, which refused the run before any evidence directory existed. The instrument
+  must reproduce the registration receipt's own `summary.as_is` (`0.439024` / `0.933138`) and `summary.oracle`
+  (`0.574181` / `0.970233`) before it writes a number.
+- Named green run: `runs/m27-three-factor-r3-job.json` (passed, 3 work items, 0.39 s) writing
+  `docs/evidence/m27-three-factor-r3/scope.json`; instrument tests `runs/m27-tests-r4-job.json` (19 tests, `OK`).
+  Refused launches preserved as `runs/m27-three-factor-r1-job.json`, `-r2-job.json` and `runs/m27-tests-r1..r3-job.json`.

@@ -60,32 +60,45 @@ def nonempty(cases):
     return [case for case in cases if any(case["occupied"])]
 
 
-def pairs(cases, *, pairing, pixel=None):
+def pairs(cases, *, pairing):
     """(logit, label) rows for one pairing, on known target cells only.
 
     ``pairing='as_is'`` reads the label at the logit's own cell. ``pairing='oracle'`` reads
     the label at the target cell the model cell covers, and drops model cells that map
-    outside the target board. ``pixel`` supplies a second cell-keyed logit list per case, so
-    a pixel read can be scored on exactly the cells an oracle pairing selects.
+    outside the target board or onto an unknown cell.
     """
     rows = []
     for case in nonempty(cases):
-        logits = case[("pixel_logits" if pixel else "logits")]
+        logits = case["logits"]
         if len(logits) != CELLS:
             raise ValueError("every deciding board must carry two hundred cells")
-        if pixel and case.get("known_cells", CELLS) != CELLS:
+        for index in range(CELLS):
+            target = index if pairing == "as_is" else case["mapping"][index]
+            if target is None or not case["known"][target]:
+                continue
+            rows.append((float(logits[index]), bool(case["occupied"][target])))
+    return rows
+
+
+def pixel_pairs(registration_cases, pixel_cases):
+    """The pixel read-out on the same boards and cells, labelled from the registration receipt.
+
+    The pixel-ceiling receipt commits per-cell pixel logits and the board's occupied
+    *count*, not the label vector, so the labels are joined by ``sample_id`` from the
+    receipt that carries them - the same 36 boards and the same 200-cell order.
+    """
+    source = {case["sample_id"]: case for case in nonempty(registration_cases)}
+    rows = []
+    for case in pixel_cases:
+        reference = source.get(case["sample_id"])
+        if reference is None or len(case["pixel_logits"]) != CELLS:
+            raise ValueError("the pixel receipt does not carry every deciding board")
+        if case.get("known_cells") != CELLS:
             raise ValueError("a pixel read-out board must carry every known cell")
         for index in range(CELLS):
-            if pairing == "as_is":
-                target = index
-            else:
-                target = case["mapping"][index]
-                if target is None:
-                    continue
-            if not pixel and not case["known"][target]:
+            if not reference["known"][index]:
                 continue
-            value = case["pixel_logits"][target] if pixel else logits[index]
-            rows.append((float(value), bool(case["occupied"][target])))
+            rows.append((float(case["pixel_logits"][index]), bool(reference["occupied"][index])))
     return rows
 
 
@@ -142,22 +155,29 @@ def require_close(name, measured, published, tolerance=JOIN_TOLERANCE):
     return measured
 
 
-def matched_rows(cases, pixel_cases, *, pairing):
-    """Oracle/as-is rows on model cells, plus the pixel read on the same target cells."""
+def matched_reads(cases, pixel_cases):
+    """The three reads on one co-scoreable population.
+
+    The population is fixed once - model cells whose centre maps inside the target board
+    onto a known target cell - so ``as_is`` and ``oracle`` are scored on identical cells and
+    the pixel read is scored on the same target cells. Restricting ``as_is`` to the matched
+    population is what makes the registration delta an alignment measurement rather than a
+    population difference.
+    """
     pixels = {case["sample_id"]: case for case in pixel_cases}
-    model, pixel = [], []
+    as_is, oracle, pixel = [], [], []
     for case in nonempty(cases):
         other = pixels.get(case["sample_id"])
         if other is None or len(other["pixel_logits"]) != CELLS:
             raise ValueError("the pixel receipt does not carry every deciding board")
         for index in range(CELLS):
-            target = index if pairing == "as_is" else case["mapping"][index]
+            target = case["mapping"][index]
             if target is None or not case["known"][target]:
                 continue
-            label = bool(case["occupied"][target])
-            model.append((float(case["logits"][index]), label))
-            pixel.append((float(other["pixel_logits"][target]), label))
-    return model, pixel
+            as_is.append((float(case["logits"][index]), bool(case["occupied"][index])))
+            oracle.append((float(case["logits"][index]), bool(case["occupied"][target])))
+            pixel.append((float(other["pixel_logits"][target]), bool(case["occupied"][target])))
+    return {"as_is": as_is, "oracle": oracle, "pixel": pixel}
 
 
 def decomposition(reads):
@@ -203,40 +223,37 @@ def main():
         raise ValueError("both receipts must carry the 28 nonempty boards")
     if sum(sum(case["occupied"]) for case in cases) != OCCUPIED_CELLS:
         raise ValueError("the occupied cell count differs from the declared 667")
-    if sum(sum(case["occupied"]) for case in pixel_cases) != OCCUPIED_CELLS:
-        raise ValueError("the pixel receipt's occupied count differs from the declared 667")
+    if {case["sample_id"] for case in pixel_cases} != {case["sample_id"] for case in nonempty(cases)}:
+        raise ValueError("the two receipts do not describe one board population")
 
     full_as_is = score(pairs(cases, pairing="as_is"))
-    matched_as_is, pixel_as_is_subset = matched_rows(cases, pixel_cases, pairing="as_is")
-    matched_oracle, pixel_same = matched_rows(cases, pixel_cases, pairing="oracle")
-    if len(matched_as_is) != MATCHED_CELLS or len(matched_oracle) != MATCHED_CELLS:
-        raise ValueError(f"the matched population is not the declared {MATCHED_CELLS} cells")
+    matched = matched_reads(cases, pixel_cases)
+    for name, rows in matched.items():
+        if len(rows) != MATCHED_CELLS:
+            raise ValueError(f"the {name} read is not on the declared {MATCHED_CELLS} cells")
     published = registration["summary"]
-    require_close("model as-is matched F1", score(matched_as_is)["f1_at_zero"],
+    require_close("model as-is matched F1", score(matched["as_is"])["f1_at_zero"],
                   published["as_is"]["f1"])
-    require_close("model as-is matched AUC", score(matched_as_is)["auc"],
+    require_close("model as-is matched AUC", score(matched["as_is"])["auc"],
                   published["as_is"]["auc"])
-    require_close("model oracle matched F1", score(matched_oracle)["f1_at_zero"],
+    require_close("model oracle matched F1", score(matched["oracle"])["f1_at_zero"],
                   published["oracle"]["f1"])
-    require_close("model oracle matched AUC", score(matched_oracle)["auc"],
+    require_close("model oracle matched AUC", score(matched["oracle"])["auc"],
                   published["oracle"]["auc"])
     require_close("model as-is full F1", full_as_is["f1_at_zero"],
                   published["as_is_full"]["f1"])
     require_close("model as-is full AUC", full_as_is["auc"], published["as_is_full"]["auc"])
-    pixel_full = score(pairs(pixel_cases, pairing="as_is", pixel=True))
+    pixel_full = score(pixel_pairs(cases, pixel_cases))
     require_close("pixel full F1", pixel_full["f1_at_zero"],
                   pixel["measured"]["operating"]["f1"])
     require_close("pixel full AUC", pixel_full["auc"], pixel["measured"]["pooled_auc"])
-    for name, rows in (("pixel matched as-is", pixel_as_is_subset), ("pixel matched", pixel_same)):
-        if score(rows)["cells"] != MATCHED_CELLS:
-            raise ValueError(f"{name} does not cover the matched population")
     if len({case["group_id"] for case in cases}) != ANCESTRY_GROUPS:
         raise ValueError("the deciding population is not the twelve ancestry groups")
 
     reads = {"model_full_as_is": full_as_is,
-             "model_matched_as_is": score(matched_as_is),
-             "model_oracle": score(matched_oracle),
-             "pixel_matched": score(pixel_same),
+             "model_matched_as_is": score(matched["as_is"]),
+             "model_oracle": score(matched["oracle"]),
+             "pixel_matched": score(matched["pixel"]),
              "pixel_full": pixel_full}
     reading = decomposition(reads)
     result = {
@@ -267,9 +284,9 @@ def main():
                   "weight, threshold, gate or label change, and no accuracy, real-image or "
                   "complete-state claim."),
     }
+    # The durable receipt is written before argv resolves (V-067), so this pass can only
+    # check the ceiling it was admitted under; its own status is verified by the curator.
     job = read(ROOT/"runs"/(args.output.name+"-job.json"))
-    if job.get("status") != "passed" or job.get("exit_code") != 0:
-        raise ValueError("the bounded job did not pass")
     if job.get("memory_bytes") != CEILING_BYTES:
         raise ValueError("the job ceiling differs from the declared 128 MiB")
     args.output.mkdir(parents=True, exist_ok=False)

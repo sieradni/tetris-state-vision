@@ -1,0 +1,188 @@
+{
+  "status": "passed",
+  "instrument": "m27-three-factor-r1",
+  "predeclaration": "docs/M27_THREE_FACTOR.md",
+  "registration_receipt": "m3-occscale-registration-r2",
+  "pixel_ceiling_receipt": "m3-occpix-ceiling-r1-r2",
+  "model_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+  "pixel_arm_independent": true,
+  "population": {
+    "deciding_boards": 36,
+    "nonempty_boards": 28,
+    "anchored_cells": 5600,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "matched_cells": 2986,
+    "matched_share": 0.533214,
+    "ancestry_groups": 12
+  },
+  "joins": {
+    "model_matched_as_is": {
+      "f1": 0.43902439024390244,
+      "auc": 0.9331381235586843
+    },
+    "model_oracle": {
+      "f1": 0.5741811175337187,
+      "auc": 0.9702330653184927
+    },
+    "model_full_as_is": {
+      "f1": 0.3791469194312796,
+      "auc": 0.8006042589894998
+    },
+    "pixel_full": {
+      "f1": 0.9780058651026393,
+      "auc": 0.9987645544752457
+    }
+  },
+  "reads": {
+    "model_full_as_is": {
+      "cells": 5600,
+      "occupied": 667,
+      "empty": 4933,
+      "auc": 0.8006042589894998,
+      "f1_at_zero": 0.3791469194312796,
+      "counts_at_zero": {
+        "true_positive": 320,
+        "false_positive": 701,
+        "false_negative": 347
+      },
+      "precision_at_zero": 0.31341821743388837,
+      "recall_at_zero": 0.47976011994003,
+      "best": {
+        "threshold": 0.6,
+        "f1": 0.3924963924963925,
+        "precision": 0.37830319888734354,
+        "counts": {
+          "true_positive": 272,
+          "false_positive": 447,
+          "false_negative": 395,
+          "f1": 0.3924963924963925,
+          "precision": 0.37830319888734354,
+          "recall": 0.4077961019490255
+        }
+      }
+    },
+    "model_matched_as_is": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.9331381235586843,
+      "f1_at_zero": 0.43902439024390244,
+      "counts_at_zero": {
+        "true_positive": 207,
+        "false_positive": 522,
+        "false_negative": 7
+      },
+      "precision_at_zero": 0.2839506172839506,
+      "recall_at_zero": 0.9672897196261683,
+      "best": {
+        "threshold": 2.1,
+        "f1": 0.5439739413680782,
+        "precision": 0.4175,
+        "counts": {
+          "true_positive": 167,
+          "false_positive": 233,
+          "false_negative": 47,
+          "f1": 0.5439739413680782,
+          "precision": 0.4175,
+          "recall": 0.780373831775701
+        }
+      }
+    },
+    "model_oracle": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9702330653184927,
+      "f1_at_zero": 0.5741811175337187,
+      "counts_at_zero": {
+        "true_positive": 298,
+        "false_positive": 431,
+        "false_negative": 11
+      },
+      "precision_at_zero": 0.40877914951989025,
+      "recall_at_zero": 0.9644012944983819,
+      "best": {
+        "threshold": 2.25,
+        "f1": 0.762589928057554,
+        "precision": 0.6865284974093264,
+        "counts": {
+          "true_positive": 265,
+          "false_positive": 121,
+          "false_negative": 44,
+          "f1": 0.762589928057554,
+          "precision": 0.6865284974093264,
+          "recall": 0.8576051779935275
+        }
+      }
+    },
+    "pixel_matched": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9991954719152604,
+      "f1_at_zero": 0.9747634069400631,
+      "counts_at_zero": {
+        "true_positive": 309,
+        "false_positive": 16,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9507692307692308,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9871794871794872,
+        "precision": 0.9777777777777777,
+        "counts": {
+          "true_positive": 308,
+          "false_positive": 7,
+          "false_negative": 1,
+          "f1": 0.9871794871794872,
+          "precision": 0.9777777777777777,
+          "recall": 0.9967637540453075
+        }
+      }
+    },
+    "pixel_full": {
+      "cells": 5600,
+      "occupied": 667,
+      "empty": 4933,
+      "auc": 0.9987645544752457,
+      "f1_at_zero": 0.9780058651026393,
+      "counts_at_zero": {
+        "true_positive": 667,
+        "false_positive": 30,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9569583931133429,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9859363434492968,
+        "precision": 0.9736842105263158,
+        "counts": {
+          "true_positive": 666,
+          "false_positive": 18,
+          "false_negative": 1,
+          "f1": 0.9859363434492968,
+          "precision": 0.9736842105263158,
+          "recall": 0.9985007496251874
+        }
+      }
+    }
+  },
+  "reading": {
+    "registration_gain": 0.218616,
+    "representation_gap": 0.22459,
+    "boundary_gap": 0.188409,
+    "floors": {
+      "registration": 0.1,
+      "representation": 0.1
+    },
+    "verdict": "two-factor-first-order"
+  },
+  "sources": {
+    "scripts/oracle_pairing_read.py": "272b4410f9988c227ecf69436e09764ba5815661fab05c2246b20eaa78c680c0"
+  },
+  "scope": "Read-only decomposition of the locked-occupancy deficit on the committed deciding boards: two receipts joined, no forward pass, no training, no weight, threshold, gate or label change, and no accuracy, real-image or complete-state claim."
+}
