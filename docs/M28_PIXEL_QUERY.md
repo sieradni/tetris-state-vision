@@ -128,7 +128,8 @@ A missing or failed receipt yields no attribution.
 ## Measured
 
 Receipts: `runs/m28-pixelread-{base,lever}-r1` (64 steps each, admitted by their own 2-step
-profiles, 1,182-1,191 MB peak inside the 1,152 MiB ceiling), `...-sweep-r1` (54 forwards),
+profiles; measured peaks 1,058,054,144 and 1,054,588,928 bytes against the 1,152 MiB ceiling),
+`...-sweep-r1` (54 forwards),
 `...-registration-r1` (36 forwards), and the reader `runs/m28-pixel-query-r2-job.json` at 128 MiB.
 Joins passed: the reader's recomputed full-population F1 at `0.0`, AUC and best swept F1 match each
 sweep's `deciding` block exactly; the arm's weights are the ones its sweep and probe measured; the
