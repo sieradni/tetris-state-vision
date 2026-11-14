@@ -167,3 +167,14 @@ board it is reading.
 ## Receipts
 
 `runs/m34-support-{profile,study,probe}` receipts and `docs/evidence/m34-support-lattice-r1/scope.json`. Refused attempts keep their receipts; only completed runs are quoted.
+
+## M35 update: the contrast read was measured, and it moves closure
+
+The step recorded here was run (`docs/M35_CONTRAST_READ.md`,
+`docs/evidence/m35-contrast-lattice-r1/scope.json`): at this arm's placement, giving the projection the
+statistics' sample-mean deviation lifts best swept F1 from `0.385925` to `0.570048`
+(`+0.184123`) and closure from `-0.158049` to `+0.026074`, though the
+predeclared bar (`0.372881` / `0.689775`) is still not met and precision at the fixed boundary is
+`0.161787`. So the under-fit recorded here was a feature-level problem, and the next step is structural:
+the M36 monotone contrast read.
+

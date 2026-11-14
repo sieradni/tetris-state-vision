@@ -87,3 +87,68 @@ attribution over the unchanged control `>= 0.05`.
 
 `runs/m36-monotone-{profile,study,probe}` and `docs/evidence/m36-monotone-contrast-r1/scope.json`.
 Refused attempts keep their receipts; only completed runs are quoted.
+
+## Measured
+
+Study `m36-monotone` (probe `-registration`) on the winner's arm with form 10, the
+unchanged 64-step protocol, peak `1,066,770,432` bytes, scored by `scripts/m35_contrast_read.py`
+(`docs/evidence/m36-monotone-contrast-r1/scope.json`, diagnosis in `diagnosis.json`).
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| monotone contrast, identity vector | `0.313667` | `0.886350` | `0.420935` (at `2.25`) |
+| delta | -0.059214 | -0.068178 | -0.268839 |
+| monotone contrast, anchored vector | `0.295676` | `0.734408` | `0.388721` |
+| M35 contrast arm, for scale | `0.277778` | `0.945596` | `0.570048` |
+
+Gate block: identity per-cell `false`, ranking
+`false`, attribution `true`
+(+0.201309 over control `0.219626`); anchored per-cell
+`false`, ranking
+`false`, attribution
+`true`. **The bar is not met.**
+
+**The decision-structure hypothesis is refused**, on numbers rather than on principle: relative to M35's
+arm at the same features, placement and budget, the envelope moved F1 at `0.0` from `0.277778` to
+`0.313667` (+0.035889), best swept from `0.570048` to
+`0.420935` (-0.149113), and AUC from `0.945596` to `0.886350`
+(-0.059245). Precision at the fixed boundary did improve
+(`0.161787` -> `0.186667`) and false positives fell (`915` from
+`1088`), but the envelope raises every cell below a high read, so the margin distribution compresses
+(false positives now span `1.437523`-`3.108982`,
+median `2.277295`) and the swept ranking loses more than precision gains.
+Rows `10`-`19` are now clean (`0` false positives) - the envelope does what it says - and the errors that
+remain are all in the upper bands, where the read cannot tell a filled cell from a texture.
+
+## The span split
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | -0.123039 | -0.277611 |
+| placement | -0.032214 | -0.072685 |
+| representation | +0.598458 | 1.350296 |
+
+Sums asserted in code; `short_stage: closure`.
+
+## What this establishes, and where the campaign stands
+
+Three arms now measure the same population, placement and budget, differing only in the read:
+
+| arm | features | F1 at `0.0` | AUC | best swept | gate |
+|---|---|---|---|---|---|
+| M34 support lattice | 30 absolute | `0.274869` | `0.883260` | `0.385925` | fail |
+| M35 contrast | 60 (abs + deviation) | `0.277778` | `0.945596` | `0.570048` | fail |
+| M36 monotone contrast | 60 + column envelope | `0.313667` | `0.886350` | `0.420935` | fail |
+| M30/M31 winner | 30 absolute, predicted lattice | `0.372881` | `0.954529` | `0.689775` | pass (calibration arm) |
+
+The winner is still the operating point. The measured next step this receipt records is the
+representation: `1.350296` of span, with per-cell features that cannot separate a
+filled cell from a textured empty one in the upper bands - and the campaign's one measured instrument for
+that separation is the coarse map's own lattice-free channel (`stencil_contrast`, exact under a
+board-wide gain and offset), which no support-lattice arm has yet combined with the pixel statistics.
+That combination is the declared next step, not a threshold.
+
+## Receipts
+
+`runs/m36-monotone-{study,probe}` rows: `runs/m36-monotone-job.json` (peak `1,066,770,432`), `runs/m36-monotone-registration-job.json`, admissibility `runs/m36-monotone-profile-r4-job.json`; the guard's own refusal is kept as `runs/m36-monotone-profile-job.json`, the reader refusal as `runs/m36-monotone-r1-job.json`, and the completed read as `runs/m36-monotone-contrast-r1-job.json`.

@@ -3589,3 +3589,13 @@ The split is closure `-0.158049` (`-0.356605`), placement
 (`1.367384`), so `short_stage: closure` and the winner remains
 `m30-level-calibrate-r5`. Recorded next step: keep form 7 and give the hidden projection the statistics'
 within-sample contrast along the lattice axes alongside their absolute values.
+
+M35 measured the contrast read (form 8, `60` inputs): F1 at `0.0` `0.277778`, AUC
+`0.945596`, best swept `0.570048` - bar missed, closure moved to
+`+0.026074` from `-0.158049`. M36 measured the monotone contrast read (form 10, column
+envelope): F1 at `0.0` `0.313667`, AUC `0.886350`, best swept
+`0.420935` - missed, and worse than M35 (`-0.149113` best swept), because
+the envelope compresses margins even though it clears the lower bands (`0` false positives below row `10`,
+precision `0.186667`). Winner remains `m30-level-calibrate-r5`. Recorded next step: combine
+the pixel statistics with the coarse lattice-free channel (`stencil_contrast`, exact under a board-wide gain
+and offset), the campaign's only measured instrument for telling a filled cell from a textured empty one.

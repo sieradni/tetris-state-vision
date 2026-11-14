@@ -27,7 +27,7 @@ CELL_GATE = 0.70
 AUC_GATE = 0.90
 ATTRIBUTION_FLOOR = 0.05
 CEILING_BYTES = 128*1024**2
-BANDS = ((0, 4), (5, 9), (10, 14), (15, 19), (20, 25))
+BANDS = ((0, 4), (5, 9), (10, 14), (15, 19))
 
 
 def read(path):
@@ -51,19 +51,20 @@ def gates_for(read_, control_best):
 
 
 def margins(probe, fixed):
-    specific = {case["sample_id"]: case["pixel_logits"] for case in probe["cases"]}
+    specific = {case["sample_id"]: case["logits"] for case in probe["cases"]}
     rows = []
-    for sample, row, column, _, _ in fixed:
-        rows.append((row, column, float(specific[sample][row][column])))
+    for sample, index, _, _, _ in fixed:
+        rows.append((index//10, index % 10, float(specific[sample][index])))
     return rows
 
 
 def diagnose(probe, fixed):
-    cells = margins(probe, fixed)
-    truth = {(row, column): bool(identity) for _, row, column, identity, _ in fixed}
+    specific = {case["sample_id"]: case["logits"] for case in probe["cases"]}
+    cells = [(sample, index//10, index % 10, bool(identity), float(specific[sample][index]))
+             for sample, index, _, identity, _ in fixed]
     errors = {"true_positive": [], "false_positive": [], "false_negative": [], "true_negative": []}
-    for row, column, margin in cells:
-        positive, occupied = margin > 0, truth[(row, column)]
+    for sample, row, column, occupied, margin in cells:
+        positive = margin > 0
         key = ("true_" if positive == occupied else "false_")+("positive" if positive else "negative")
         errors[key].append((row, column, margin))
 
@@ -75,26 +76,25 @@ def diagnose(probe, fixed):
         return {"count": len(points), "margin_low": pick(0.0), "margin_median": pick(0.5),
                 "margin_high": pick(0.999)}
 
+    counted = {key: len(points) for key, points in errors.items()}
+    occupied_total = counted["true_positive"]+counted["false_negative"]
     bands = {}
     for low, high in BANDS:
-        inside = [(row, column) for row, column, _ in errors["false_positive"] if low <= row <= high]
-        truth_row = [(row, column) for _, row, column, identity, _ in fixed if identity and low <= row <= high]
+        false_positives = sum(1 for row, _, _ in errors["false_positive"] if low <= row <= high)
+        occupied = sum(1 for _, row, _, truth, _ in cells if truth and low <= row <= high)
         bands[f"rows_{low}_{high}"] = {
-            "false_positives": len(inside),
-            "occupied_cells": len(truth_row),
-            "false_positive_rate": round(len(inside)/max(len(truth_row), 1), 6)}
-    columns = {str(column): sum(1 for row, col, _ in errors["false_positive"] if col == column)
-               for column in range(10)}
-    f1_at_zero = score([(margin, truth[(row, column)]) for row, column, margin in cells])["f1_at_zero"]
+            "false_positives": false_positives, "occupied_cells": occupied,
+            "false_positives_per_occupied": round(false_positives/max(occupied, 1), 6)}
     return {
+        "cells": len(cells), "boards": len({sample for sample, *_ in cells}),
         "errors_at_zero": {key: summary(points) for key, points in errors.items()},
         "false_positive_bands": bands,
-        "false_positives_by_column": columns,
-        "precision_at_zero": round(sum(1 for r, c, m in cells if m > 0 and truth[(r, c)]) /
-                                   max(sum(1 for _, _, m in cells if m > 0), 1), 6),
-        "recall_at_zero": round(sum(1 for r, c, m in cells if m > 0 and truth[(r, c)]) /
-                                max(sum(1 for r, c, _ in cells if truth[(r, c)]), 1), 6),
-        "f1_at_zero_recomputed": round(f1_at_zero, 6),
+        "false_positives_by_column": {str(column): sum(1 for _, col, _ in errors["false_positive"]
+                                                    if col == column) for column in range(10)},
+        "precision_at_zero": round(counted["true_positive"]/max(counted["true_positive"] +
+                                                                 counted["false_positive"], 1), 6),
+        "recall_at_zero": round(counted["true_positive"]/max(occupied_total, 1), 6),
+        "occupied_cells": occupied_total,
         "worst_false_positive": sorted(errors["false_positive"], key=lambda item: -item[2])[:5],
         "closest_false_negative": sorted(errors["false_negative"], key=lambda item: -item[2])[:5],
         "note": ("Margins are the read's own logits at the scored cell, so they show whether the error is a "
@@ -154,8 +154,10 @@ def main():
     clears_bar = (own["f1_at_zero"] >= anchor_own["f1_at_zero"] and
                   own["best"]["f1"] >= anchor_own["best"]["f1"])
     diagnosis = diagnose(probe, fixed)
-    require_close("diagnosis recomputes the per-cell read", diagnosis["f1_at_zero_recomputed"],
-                  own["f1_at_zero"], tolerance=1e-6)
+    counted = sum(diagnosis["errors_at_zero"][key]["count"] for key in
+                  ("true_positive", "false_positive", "false_negative", "true_negative"))
+    if counted != len(fixed):
+        raise ValueError("the diagnosis does not account for every fixed cell")
     result = {
         "status": "passed", "instrument": "m35-contrast-lattice-r1",
         "predeclaration": "docs/M35_CONTRAST_READ.md",

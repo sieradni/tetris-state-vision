@@ -83,3 +83,90 @@ Anything less is a diagnostic arm, however much placement it keeps.
 `runs/m35-contrast-{profile,study,probe}` and `docs/evidence/m35-contrast-lattice-r1/scope.json`, with the
 diagnosis (if needed) in `docs/evidence/m35-contrast-lattice-r1/diagnosis.json`. Refused attempts keep
 their receipts; only completed runs are quoted.
+
+## Measured
+
+Study `m35-contrast` (probe `-registration`) on the winner's arm with form 8, the
+unchanged 64-step protocol, peak `1,059,209,216` bytes. Scored by `scripts/m35_contrast_read.py` on
+the fixed 2,986 cells and both label vectors (`docs/evidence/m35-contrast-lattice-r1/scope.json`), the
+winner re-scored in the same pass, the diagnosis reading the arm's own logits
+(`diagnosis.json`). No oracle, no per-board rule, no fitted threshold.
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (anchor, re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| contrast read, identity vector | `0.277778` | `0.945596` | `0.570048` (at `3.15`) |
+| delta | -0.095104 | -0.008933 | -0.119726 |
+| contrast read, anchored vector | `0.280025` | `0.793416` | `0.455863` |
+
+Gate block, unchanged thresholds: identity per-cell `false`, ranking
+`false`, attribution `true`
+(+0.350422 over the unchanged control `0.219626`); anchored per-cell
+`false`, ranking
+`false`, attribution
+`true`.
+
+**The bar is not met** (`F1 at 0.0 >= 0.372881` and `best >= 0.689775`):
+this is a diagnostic arm, not an operating point. But it is the first arm in the campaign to move closure
+off the floor - best swept F1 `0.570048` against M34's `0.385925`, `+0.184123`
+-and the first whose AUC (`0.945596`) is within `0.008933` of the
+winner.
+
+## The diagnosis: the read separates, then over-calls
+
+| class at `0.0` | count | margins | median |
+|---|---|---|---|
+| true positive | 210 | `0.936171`-`5.464106` | `3.307301` |
+| false positive | 1088 | `0.003737`-`4.629019` | `1.352717` |
+| false negative | 4 | `-2.998682`-`-1.187106` | `-1.59634` |
+| true negative | 1684 | `-4.460561`-`-0.027747` | `-2.596762` |
+
+Precision `0.161787`, recall `0.981308` at the fixed boundary, and the best
+swept point sits at `3.15` - so the ordering is informative (AUC
+`0.945596`) while the fixed boundary lands inside the wrong part of the margin distribution.
+The false positives are not marginal: `1088` of them with median margin
+`1.352717` and a maximum of `4.629019`. They
+cluster where the board is dense: `405` in rows 0-4,
+`528` in rows 5-9, `11` in rows
+10-14, `144` in rows 15-19, against
+`214` occupied cells among the scored rows.
+
+**Named constraint: decision structure, not capacity and not the sample.** The features carry the
+information (AUC `0.945596`, best swept `0.570048`), the arm is not starved (`60` inputs,
+`655,163` parameters), and placement is not the loss in this arm. What fails is that a per-cell read with
+no notion of the board's shape can call any colour-contrasting cell occupied - which is why the false
+positives are confident and sit in bands.
+
+## The span split
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | +0.026074 | 0.058831 |
+| placement | -0.114185 | -0.257635 |
+| representation | +0.531316 | 1.198804 |
+
+The sums are asserted in code. Closure is positive for the first time - the contrast features do close
+`0.058831` of the span - while the negative term is now the anchored vector's own gap
+(placement `-0.114185`), which is this arm's ordering favouring the identity vector rather
+than a sampling loss.
+
+## The concrete next structural step this stage implies
+
+The M36 pass declares it and is measured separately: keep form 8's features and projection, and make the
+read carry the stack's own bottom-first shape - one crossing per column via the campaign's declared
+`stack_contiguous` envelope - so a confident positive cannot sit above an empty cell in its own column.
+`docs/M36_MONOTONE_CONTRAST.md` fixes that bar before its run.
+
+## What this establishes, and what it does not
+
+- Within-sample contrast is worth `+0.184123` best swept F1 at the same placement and the
+  same budget: the M34 under-fit was a feature-level problem, and closure responds to feature structure.
+- The fixed boundary, not the ranking, is what remains out of reach at this capacity: precision
+  `0.161787` at recall `0.981308`.
+- Not shown: whether a structural constraint recovers precision without losing the ranking; whether the
+  remaining `1.198804`-span representation term is reachable at `64` steps. One
+  seed, training-fit boards, synthetic gates only.
+
+## Receipts
+
+`runs/m35-contrast-{profile,study,probe}` and `docs/evidence/m35-contrast-lattice-r1/{scope,diagnosis}.json`. Reader attempts that were refused before a completed read are kept as `runs/m35-contrast-lattice-r{1,2}-job.json` (wrong case key, then wrong cell binding) and `r{3,4,5}` (diagnosis keystone defects, V-159); the completed reads are `r6`-`r9`, with `r9` writing this receipt.

@@ -1435,3 +1435,21 @@ against a predeclared bar of `-0.083647`
 `-0.004778` (`-0.010780`), representation
 `+0.606031` (`1.367384`), so the short stage is **closure**
 and the recorded next step is a contrast read at the support lattice.
+
+## M35-M36 - closure responds to features, not to structure
+
+M35 measured the contrast read ([M35_CONTRAST_READ.md](M35_CONTRAST_READ.md),
+`docs/evidence/m35-contrast-lattice-r1/scope.json`): form 8 puts the `30` statistics beside their
+sample-mean deviations (`60` inputs) at the support lattice. F1 at `0.0` `0.277778`,
+AUC `0.945596`, best swept `0.570048` - the bar (`0.372881` / `0.689775`) is
+missed, but closure moves off the floor for the first time (`+0.026074` against M34's
+`-0.158049`) and the diagnosis shows the read separating while calling `1,088` empty cells confidently.
+
+M36 took the structural step that diagnosis implies ([M36_MONOTONE_CONTRAST.md](M36_MONOTONE_CONTRAST.md),
+`docs/evidence/m36-monotone-contrast-r1/scope.json`): form 10 adds the declaration that a locked stack is
+column-contiguous, so each column crosses the unchanged boundary once. F1 at `0.0`
+`0.313667`, AUC `0.886350`, best swept `0.420935` - **refused**.
+The envelope clears the lower bands (`0` false positives below row `10`) and lifts precision to
+`0.186667`, but compressing the margins costs more ranking than it buys. Both branches are
+now measured: closure wants better features, and the recorded next step is the coarse lattice-free channel
+combined with the pixel statistics.

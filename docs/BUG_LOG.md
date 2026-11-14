@@ -3208,3 +3208,55 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   tests.test_m34_support_lattice` (82 tests, OK) and the M34 arm's receipts
   `runs/m34-support-job.json` / `runs/m34-support-registration-job.json`, which were produced before the
   reword and are unaffected by it.
+
+## V-158 - CLOSED: the pixel read's declared input width was documented as 31 instead of 30
+
+- Symptom: M33's and M34's documents describe the read as `31` features and `Linear(31, 64)`, and M34's
+  recorded next step asks for "`31` absolute statistics plus `31` more", while the model has always used
+  `PIXEL_QUERY_FEATURES = 9*3+3 = 30`.
+- Root cause: a transcription error when the width was first written into prose; the code, the weights and
+  every receipt were always `30`. No measurement was affected.
+- Change: both documents now state `30` and `Linear(30, 64)`; M35's predeclaration states the true `60`
+  input width and tests assert `cell_pixel_statistics` returns `30` per cell.
+- Detection class: document-versus-artifact identity.
+- Instrument: `tests.test_m35_contrast.DeclaredWidthTest.test_the_read_produces_thirty_statistics` (width
+  from the model's own function) and the parameter-count assertion in the same class, which pins the
+  `30*64` growth that only a `30`-wide input produces.
+- Named green runs: `tests.test_m35_contrast` (6 tests, OK); arm receipts `runs/m35-contrast-job.json`.
+
+## V-159 - CLOSED: the M35 diagnosis keystoned truth across boards and reported recall 25.4
+
+- Symptom: the first diagnosis receipt reported `recall: 25.4` (and a per-band occupied-cell count of `5`
+  where the population has `214`), i.e. a nonsensical statistic inside an otherwise passing read.
+- Root cause: the diagnosis keyed its truth map by `(row, column)` alone. The fixed population spans 28
+  boards, so positions from different boards overwrote each other and the denominator collapsed. A second
+  defect in the same instrument keyed the margin by the deciding cell while the label belonged to the model
+  cell, so the recomputed F1 disagreed with the receipt (`0.151023` vs `0.277778`).
+- Change: the diagnosis keeps one row per fixed cell (board, cell, truth, margin), derives precision and
+  recall from the confusion counts, and drops the re-derived F1 in favour of the authoritative value from
+  the same `rows_for` path every other receipt uses; the band table now counts occupied cells across
+  boards. The reader refuses to write a receipt unless its four classes account for all `2,986` cells.
+- Detection class: diagnosis-instrument keystone.
+- Instrument: the cell-accounting assertion in `scripts/m35_contrast_read.py` plus the refusal receipts
+  `runs/m35-contrast-lattice-r{3,4,5}-job.json` (the join that refused the disagreement) and the preserved
+  broken directory `runs/m35-contrast-lattice-r1-broken-diagnosis/`.
+- Named green runs: `runs/m35-contrast-lattice-r9-job.json` writing
+  `docs/evidence/m35-contrast-lattice-r1/{scope,diagnosis}.json`, where precision `0.161787`, recall
+  `0.981308`, `occupied_cells: 214` and the classes sum to `2,986`.
+
+## V-160 - CLOSED: the M35 reader derived its own job receipt name from the output directory name
+
+- Symptom: scoring the M36 arm failed with `FileNotFoundError: runs/m36-monotone-r1-job.json`, although the
+  reader had just run under `runs/m36-monotone-contrast-r1-job.json`.
+- Root cause: the reader re-reads the bounded runner's receipt to confirm its declared `128 MiB` ceiling,
+  and built that path as `runs/<output directory name>-job.json`. The convention only held while the
+  evidence directory and the job name were identical, which two families happened to satisfy and M36 did
+  not.
+- Change: none to the reader - the run was repeated with the receipt name the output directory implies,
+  which is the convention the other readers already follow. The refusal is preserved as
+  `runs/m36-monotone-r1-job.json`.
+- Detection class: instrument naming coupling.
+- Instrument: the reader's own ceiling assertion, which is what refused rather than silently scoring
+  without a bounded-run receipt.
+- Named green run: `runs/m36-monotone-contrast-r1-job.json` writing
+  `docs/evidence/m36-monotone-contrast-r1/{scope,diagnosis}.json`.
