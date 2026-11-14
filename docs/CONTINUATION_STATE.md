@@ -3512,16 +3512,16 @@ Once clustering is respected the 0.90 bar is no longer excluded, so the claim ho
 
 Closing the gap at the current design would need four times the cells for +/-0.010: 144 images in 48 groups under independence, or about 4384 images in 1461 groups at the measured design effect (roughly 122x the present sweep). That is not feasible at 12-group granularity: the instrument needs a group-level evaluation (group-mean AUC with a bootstrap over groups) over about 1461 independent groups, which this pass does not build.
 
-M28 is closed: the per-cell pixel-statistics read-out is instrumented, tested before its run,
-trained at the unchanged 64-step protocol against a matched zero-flag control, and refused by its
-predeclared gates. Own lattice `0.284833 -> 0.387588` F1 at `0.0`, `0.742741 -> 0.860163` AUC,
-`0.433768 -> 0.461959` best swept F1; the `0.05` attribution floor and both gates fail, and the
-evidence is `docs/evidence/m28-pixel-query-r2/scope.json` (M28_PIXEL_QUERY.md, ROADMAP M28).
-The discriminating measurement is that the 30-feature pixel read keeps `0.9565` F1 at `0.0` on the
-lever's own cells while the learned read reaches `0.387588` on the full population: the features are
-present where the model looks, so the next lever targets representation - capacity, receptive
-field or supervision of the read-out - rather than registration or sampling.
-Open thread from this pass: the matched control's oracle read (`0.219413`) fell below its own
-pairing read (`0.280088`), so cross-arm oracle deltas are unsafe at this budget and the within-arm
-gains are the primary attribution; a future pass comparing arms should report both and never the
-cross-arm number alone.
+M28 is closed on its deciding population: the per-cell pixel-statistics read-out is instrumented,
+tested before its run, trained at the unchanged 64-step protocol against a matched zero-flag
+control, and refused by two of its three predeclared gates on the fixed 2,986-cell M27 population
+(`docs/evidence/m28-pixel-query-deciding-r2/scope.json`, M28_PIXEL_QUERY.md, ROADMAP M28).
+Own lattice `0.219626 -> 0.425703` best swept F1 and `0.574178 -> 0.898191` AUC over the control, a
+`0.464970` closure of the `0.5440 -> 0.9872` span; per-cell F1 `0.282638` against `0.70` and AUC
+`0.898191` against `0.90` still fail, while attribution (`+0.206077`) passes. The split is
+`-0.118271` closed, `-0.002900` placement, `+0.564376` representation, which sums to the `0.443205`
+span by construction: the features are present at the arm's own placement (pixel `0.987179` there),
+so the next lever changes what the read-out computes - capacity, receptive field or supervision of
+the projection - not registration or sampling.
+The first M28 verdict scored each arm on its own 3,316-cell set and is retained as a labelled
+secondary read only; V-150 records that scope defect and the instrument that now refuses it.

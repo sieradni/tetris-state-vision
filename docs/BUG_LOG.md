@@ -3021,3 +3021,28 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green run: `runs/m27-three-factor-r3-job.json` (passed, 3 work items, 0.39 s) writing
   `docs/evidence/m27-three-factor-r3/scope.json`; instrument tests `runs/m27-tests-r4-job.json` (19 tests, `OK`).
   Refused launches preserved as `runs/m27-three-factor-r1-job.json`, `-r2-job.json` and `runs/m27-tests-r1..r3-job.json`.
+
+## V-150 - CLOSED: the M28 verdict compared per-arm reads to fixed-population baselines
+
+- Symptom: the M28 receipt published the lever's `0.860163` AUC, `0.387588` F1 at `0.0` and `0.461959`
+  best swept F1 from each arm's own 3,316-cell co-scoreable set, set them against baselines measured on the
+  M27 matched 2,986 cells (`0.3791` / `0.5440` / `0.9872`), and recorded the required `0.5440 -> 0.9872` span
+  closure as "not comparable" instead of computing it.
+- Root cause: two scope defects in one instrument. (1) `scripts/pixel_query_read.py` built each arm's read from
+  that arm's own registration mapping, so the arms were scored on different cell sets and neither matched the
+  population every baseline came from. (2) Its cause rule compared the two arms' registration-granted reads,
+  which also swap the label vector (214 occupied under identity, 309 under anchoring), so a cross-arm anchored
+  delta could not attribute placement.
+- Change: `scripts/pixel_query_deciding_read.py` rebuilds the M27 population from the committed reference
+  receipt - 2,986 index-fixed rows whose committed mapping lands on a known cell - and fixes both label vectors
+  from that same receipt, so only logits move between arms. A target-space re-score was rejected with a
+  measurement: the arms' own mappings cover only 1,861 and 1,583 of those rows. The cause is now read from the
+  within-arm placement fraction, and the split is asserted to sum to the span, in points and in fractions,
+  before the receipt is written.
+- Detection class: evidence-scope.
+- Instrument: the five cross-receipt joins (reference own `0.439024`/`0.933138`, reference anchored
+  `0.574181`/`0.970233`, pixel `0.987179`), the fraction-sum assert, and `tests/test_pixel_query_deciding.py`.
+- Named green run: `runs/m28-pixel-query-deciding-r2-job.json` (passed, 1 work item, 128 MiB) writing
+  `docs/evidence/m28-pixel-query-deciding-r2/scope.json`, verdict `not-cleared`, cause
+  `representation-limited-partial-gain`. The superseded per-arm evidence `docs/evidence/m28-pixel-query-r2/`
+  is retained unedited as the labelled secondary read.

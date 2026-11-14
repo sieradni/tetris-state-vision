@@ -1,0 +1,528 @@
+{
+  "status": "passed",
+  "instrument": "m28-pixel-query-deciding-r1",
+  "predeclaration": "docs/M28_PIXEL_QUERY.md",
+  "reference_receipt": "m3-occscale-registration-r2",
+  "pixel_ceiling_receipt": "m3-occpix-ceiling-r1-r2",
+  "base_run": "m28-pixelread-base-r1",
+  "lever_run": "m28-pixelread-lever-r1",
+  "population": {
+    "fixed_cells": 2986,
+    "boards": 28,
+    "occupied_identity": 214,
+    "occupied_anchored": 309,
+    "definition": "the M27 arm's own registration receipt, cells whose committed mapping lands on a known target cell; index-fixed, so every arm is scored on identical rows and identical label vectors",
+    "reference_targets_covered_by_arm": {
+      "base": 1861,
+      "lever": 1583
+    },
+    "coverage_note": "how many of the fixed rows' reference target cells appear anywhere in an arm's own mapping; below the fixed cell count, which is why the rows are index-fixed and the arms' own mappings are not used"
+  },
+  "reads": {
+    "pixel": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9991954719152604,
+      "f1_at_zero": 0.9747634069400631,
+      "counts_at_zero": {
+        "true_positive": 309,
+        "false_positive": 16,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9507692307692308,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9871794871794872,
+        "precision": 0.9777777777777777,
+        "counts": {
+          "true_positive": 308,
+          "false_positive": 7,
+          "false_negative": 1,
+          "f1": 0.9871794871794872,
+          "precision": 0.9777777777777777,
+          "recall": 0.9967637540453075
+        }
+      }
+    },
+    "reference_own": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.9331381235586843,
+      "f1_at_zero": 0.43902439024390244,
+      "counts_at_zero": {
+        "true_positive": 207,
+        "false_positive": 522,
+        "false_negative": 7
+      },
+      "precision_at_zero": 0.2839506172839506,
+      "recall_at_zero": 0.9672897196261683,
+      "best": {
+        "threshold": 2.1,
+        "f1": 0.5439739413680782,
+        "precision": 0.4175,
+        "counts": {
+          "true_positive": 167,
+          "false_positive": 233,
+          "false_negative": 47,
+          "f1": 0.5439739413680782,
+          "precision": 0.4175,
+          "recall": 0.780373831775701
+        }
+      }
+    },
+    "reference_anchored": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9702330653184927,
+      "f1_at_zero": 0.5741811175337187,
+      "counts_at_zero": {
+        "true_positive": 298,
+        "false_positive": 431,
+        "false_negative": 11
+      },
+      "precision_at_zero": 0.40877914951989025,
+      "recall_at_zero": 0.9644012944983819,
+      "best": {
+        "threshold": 2.25,
+        "f1": 0.762589928057554,
+        "precision": 0.6865284974093264,
+        "counts": {
+          "true_positive": 265,
+          "false_positive": 121,
+          "false_negative": 44,
+          "f1": 0.762589928057554,
+          "precision": 0.6865284974093264,
+          "recall": 0.8576051779935275
+        }
+      }
+    },
+    "base_own": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.574178028617281,
+      "f1_at_zero": 0.12987012987012986,
+      "counts_at_zero": {
+        "true_positive": 100,
+        "false_positive": 1226,
+        "false_negative": 114
+      },
+      "precision_at_zero": 0.07541478129713423,
+      "recall_at_zero": 0.4672897196261682,
+      "best": {
+        "threshold": 3.3,
+        "f1": 0.21962616822429906,
+        "precision": 0.21962616822429906,
+        "counts": {
+          "true_positive": 47,
+          "false_positive": 167,
+          "false_negative": 167,
+          "f1": 0.21962616822429906,
+          "precision": 0.21962616822429906,
+          "recall": 0.21962616822429906
+        }
+      }
+    },
+    "base_anchored": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.4772622592309171,
+      "f1_at_zero": 0.1724770642201835,
+      "counts_at_zero": {
+        "true_positive": 141,
+        "false_positive": 1185,
+        "false_negative": 168
+      },
+      "precision_at_zero": 0.10633484162895927,
+      "recall_at_zero": 0.4563106796116505,
+      "best": {
+        "threshold": -6.0,
+        "f1": 0.18607479477044694,
+        "precision": 0.10268456375838926,
+        "counts": {
+          "true_positive": 306,
+          "false_positive": 2674,
+          "false_negative": 3,
+          "f1": 0.18607479477044694,
+          "precision": 0.10268456375838926,
+          "recall": 0.9902912621359223
+        }
+      }
+    },
+    "lever_own": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.8981908537983304,
+      "f1_at_zero": 0.28263795423956933,
+      "counts_at_zero": {
+        "true_positive": 210,
+        "false_positive": 1062,
+        "false_negative": 4
+      },
+      "precision_at_zero": 0.1650943396226415,
+      "recall_at_zero": 0.9813084112149533,
+      "best": {
+        "threshold": 2.4,
+        "f1": 0.42570281124497994,
+        "precision": 0.29831144465290804,
+        "counts": {
+          "true_positive": 159,
+          "false_positive": 374,
+          "false_negative": 55,
+          "f1": 0.42570281124497994,
+          "precision": 0.29831144465290804,
+          "recall": 0.7429906542056075
+        }
+      }
+    },
+    "lever_anchored": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.7606459435706057,
+      "f1_at_zero": 0.2719797596457938,
+      "counts_at_zero": {
+        "true_positive": 215,
+        "false_positive": 1057,
+        "false_negative": 94
+      },
+      "precision_at_zero": 0.1690251572327044,
+      "recall_at_zero": 0.6957928802588996,
+      "best": {
+        "threshold": 2.4,
+        "f1": 0.42280285035629456,
+        "precision": 0.3339587242026266,
+        "counts": {
+          "true_positive": 178,
+          "false_positive": 355,
+          "false_negative": 131,
+          "f1": 0.42280285035629456,
+          "precision": 0.3339587242026266,
+          "recall": 0.5760517799352751
+        }
+      }
+    }
+  },
+  "references": {
+    "own_best": 0.543974,
+    "pixel_best": 0.987179,
+    "own_f1_at_zero": 0.439024,
+    "own_auc": 0.933138,
+    "anchored_best": 0.76259,
+    "pixel_f1_at_zero": 0.974763,
+    "pixel_auc": 0.999195
+  },
+  "arithmetic": {
+    "span": 0.443205,
+    "arms": {
+      "base": {
+        "own_best": 0.219626,
+        "anchored_best": 0.186075,
+        "pixel_best": 0.987179,
+        "span_points": -0.324348,
+        "placement_points": -0.033551,
+        "representation_points": 0.801104,
+        "remaining_points": 0.767553,
+        "span_closed_fraction": -0.731823,
+        "placement_fraction": -0.075702,
+        "representation_fraction": 1.807525,
+        "remaining_fraction": 1.731823,
+        "fractions_sum_to_one": true,
+        "split_sums_to_span": true,
+        "residual": "representation"
+      },
+      "lever": {
+        "own_best": 0.425703,
+        "anchored_best": 0.422803,
+        "pixel_best": 0.987179,
+        "span_points": -0.118271,
+        "placement_points": -0.0029,
+        "representation_points": 0.564376,
+        "remaining_points": 0.561476,
+        "span_closed_fraction": -0.266854,
+        "placement_fraction": -0.006543,
+        "representation_fraction": 1.273398,
+        "remaining_fraction": 1.266854,
+        "fractions_sum_to_one": true,
+        "split_sums_to_span": true,
+        "residual": "representation"
+      }
+    },
+    "attribution_best_delta": 0.206077,
+    "attribution_auc_delta": 0.324013,
+    "attribution_f1_at_zero_delta": 0.152768,
+    "anchored_best_delta": 0.236728,
+    "control_relative_span_closed": 0.46497,
+    "placement_floor": 0.1,
+    "cause_source": "within-arm placement fraction, not the cross-arm anchored delta: anchoring also swaps the label vector"
+  },
+  "gates": {
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": true
+    },
+    "cell_bar": 0.7,
+    "auc_bar": 0.9,
+    "attribution_floor": 0.05,
+    "verdict": "not-cleared"
+  },
+  "verdict": "not-cleared",
+  "cause": "representation-limited-partial-gain",
+  "secondary_per_arm_population": {
+    "base": {
+      "cells": 3946,
+      "own_lattice": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.7427413396484406,
+        "f1_at_zero": 0.28483319315951783,
+        "counts_at_zero": {
+          "true_positive": 508,
+          "false_positive": 2392,
+          "false_negative": 159
+        },
+        "precision_at_zero": 0.17517241379310344,
+        "recall_at_zero": 0.7616191904047976,
+        "best": {
+          "threshold": 3.9,
+          "f1": 0.43376801647220314,
+          "precision": 0.4,
+          "counts": {
+            "true_positive": 316,
+            "false_positive": 474,
+            "false_negative": 351,
+            "f1": 0.43376801647220314,
+            "precision": 0.4,
+            "recall": 0.4737631184407796
+          }
+        }
+      },
+      "matched_as_is": {
+        "cells": 3946,
+        "occupied": 300,
+        "empty": 3646,
+        "auc": 0.6237410861217773,
+        "f1_at_zero": 0.16132368148914167,
+        "counts_at_zero": {
+          "true_positive": 156,
+          "false_positive": 1478,
+          "false_negative": 144
+        },
+        "precision_at_zero": 0.09547123623011015,
+        "recall_at_zero": 0.52,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.2800875273522976,
+          "precision": 0.40764331210191085,
+          "counts": {
+            "true_positive": 64,
+            "false_positive": 93,
+            "false_negative": 236,
+            "f1": 0.2800875273522976,
+            "precision": 0.40764331210191085,
+            "recall": 0.21333333333333335
+          }
+        }
+      },
+      "oracle": {
+        "cells": 3946,
+        "occupied": 493,
+        "empty": 3453,
+        "auc": 0.34448981366116654,
+        "f1_at_zero": 0.1316408086506817,
+        "counts_at_zero": {
+          "true_positive": 140,
+          "false_positive": 1494,
+          "false_negative": 353
+        },
+        "precision_at_zero": 0.08567931456548347,
+        "recall_at_zero": 0.2839756592292089,
+        "best": {
+          "threshold": -6.0,
+          "f1": 0.21941309255079006,
+          "precision": 0.12344424688849377,
+          "counts": {
+            "true_positive": 486,
+            "false_positive": 3451,
+            "false_negative": 7,
+            "f1": 0.21941309255079006,
+            "precision": 0.12344424688849377,
+            "recall": 0.9858012170385395
+          }
+        }
+      },
+      "pixel": {
+        "cells": 3946,
+        "occupied": 493,
+        "empty": 3453,
+        "auc": 0.9990912449943578,
+        "f1_at_zero": 0.974308300395257,
+        "counts_at_zero": {
+          "true_positive": 493,
+          "false_positive": 26,
+          "false_negative": 0
+        },
+        "precision_at_zero": 0.9499036608863198,
+        "recall_at_zero": 1.0,
+        "best": {
+          "threshold": 1.05,
+          "f1": 0.9889224572004028,
+          "precision": 0.982,
+          "counts": {
+            "true_positive": 491,
+            "false_positive": 9,
+            "false_negative": 2,
+            "f1": 0.9889224572004028,
+            "precision": 0.982,
+            "recall": 0.9959432048681541
+          }
+        }
+      }
+    },
+    "lever": {
+      "cells": 3316,
+      "own_lattice": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.8601633705750004,
+        "f1_at_zero": 0.3875878220140515,
+        "counts_at_zero": {
+          "true_positive": 662,
+          "false_positive": 2087,
+          "false_negative": 5
+        },
+        "precision_at_zero": 0.24081484176064022,
+        "recall_at_zero": 0.992503748125937,
+        "best": {
+          "threshold": 1.95,
+          "f1": 0.46195864221615296,
+          "precision": 0.31223628691983124,
+          "counts": {
+            "true_positive": 592,
+            "false_positive": 1304,
+            "false_negative": 75,
+            "f1": 0.46195864221615296,
+            "precision": 0.31223628691983124,
+            "recall": 0.8875562218890555
+          }
+        }
+      },
+      "matched_as_is": {
+        "cells": 3316,
+        "occupied": 342,
+        "empty": 2974,
+        "auc": 0.8921697597501936,
+        "f1_at_zero": 0.34297311009639775,
+        "counts_at_zero": {
+          "true_positive": 338,
+          "false_positive": 1291,
+          "false_negative": 4
+        },
+        "precision_at_zero": 0.20748925721301412,
+        "recall_at_zero": 0.9883040935672515,
+        "best": {
+          "threshold": 2.55,
+          "f1": 0.5079365079365079,
+          "precision": 0.3843843843843844,
+          "counts": {
+            "true_positive": 256,
+            "false_positive": 410,
+            "false_negative": 86,
+            "f1": 0.5079365079365079,
+            "precision": 0.3843843843843844,
+            "recall": 0.7485380116959064
+          }
+        }
+      },
+      "oracle": {
+        "cells": 3316,
+        "occupied": 363,
+        "empty": 2953,
+        "auc": 0.8562240948412176,
+        "f1_at_zero": 0.3152610441767068,
+        "counts_at_zero": {
+          "true_positive": 314,
+          "false_positive": 1315,
+          "false_negative": 49
+        },
+        "precision_at_zero": 0.19275629220380602,
+        "recall_at_zero": 0.8650137741046832,
+        "best": {
+          "threshold": 2.7,
+          "f1": 0.5344827586206896,
+          "precision": 0.4389380530973451,
+          "counts": {
+            "true_positive": 248,
+            "false_positive": 317,
+            "false_negative": 115,
+            "f1": 0.5344827586206896,
+            "precision": 0.4389380530973451,
+            "recall": 0.6831955922865014
+          }
+        }
+      },
+      "pixel": {
+        "cells": 3316,
+        "occupied": 363,
+        "empty": 2953,
+        "auc": 0.9981724706349895,
+        "f1_at_zero": 0.9565217391304348,
+        "counts_at_zero": {
+          "true_positive": 363,
+          "false_positive": 33,
+          "false_negative": 0
+        },
+        "precision_at_zero": 0.9166666666666666,
+        "recall_at_zero": 1.0,
+        "best": {
+          "threshold": 1.05,
+          "f1": 0.9771197846567967,
+          "precision": 0.9552631578947368,
+          "counts": {
+            "true_positive": 363,
+            "false_positive": 17,
+            "false_negative": 0,
+            "f1": 0.9771197846567967,
+            "precision": 0.9552631578947368,
+            "recall": 1.0
+          }
+        }
+      }
+    }
+  },
+  "secondary_arithmetic": {
+    "best_swept_delta": 0.028191,
+    "oracle_best_delta": 0.31507,
+    "matched_best_delta": 0.227849,
+    "registration_gain_lever": 0.072524,
+    "representation_gap_lever": 0.442637,
+    "m27_span_closed": -0.081311,
+    "m27_own_lattice": 0.543974,
+    "m27_pixel": 0.987179,
+    "base_registration_gain": -0.060674,
+    "base_representation_gap": 0.769509,
+    "control_oracle_below_own_lattice": true,
+    "residual_within_arm": "representation",
+    "cause_note": "the control's oracle read (0.219413) is below its own-lattice read (0.280088), so granting registration cannot be an upper bound on that arm and the cross-arm oracle delta that assigns `placement-only` is confounded; the within-arm lever reads assign the residual to representation (registration gain 0.072524 against representation gap 0.442637)"
+  },
+  "secondary_population_cells": 3316,
+  "secondary_note": "the 3,316-cell per-arm read retained from m28-pixel-query-r2; it is per-arm, so it is not cross-arm comparable and is not used for any verdict in this receipt",
+  "weights_sha256": {
+    "base": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+    "lever": "8f6e3efbd13e4f14db47fb6278a7a4a35c3a2dd11d14c881bdada2f7bba3de02"
+  },
+  "study_peaks": {
+    "base": 1058054144,
+    "lever": 1054588928
+  },
+  "scope": "Read-only re-score of two already-trained arms on one fixed population anchored to the committed matched cells; no forward pass, no training, no weight, threshold, gate or label change, and no accuracy, real-image or complete-state claim."
+}
