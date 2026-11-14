@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -597,6 +597,21 @@ def standardise_board(logits, visible, weight):
     return logits+weight*(((logits-mean)/spread)-logits)
 
 
+def pixel_fixed_lattice(rows, columns, device, dtype):
+    """Declared M33 fixed placement: the capture divided into the board's own rows and columns.
+
+    The predicted lattice moves with the decoder's placement error, and the M32 split measured that
+    error as the only negative term. These three vectors map cell coordinates to image coordinates
+    over the whole capture - origin top-left, columns rightwards, rows upwards, exactly the
+    conventions `decode_lattice` uses - and contain no fitted, learned or board-derived quantity, so
+    the read cannot inherit a placement it is supposed to be tested on.
+    """
+    origin = torch.tensor([0.0, 1.0], device=device, dtype=dtype)
+    column = torch.tensor([1.0/columns, 0.0], device=device, dtype=dtype)
+    row = torch.tensor([0.0, -1.0/rows], device=device, dtype=dtype)
+    return torch.stack((origin, column, row), 0)[None]
+
+
 def pixel_query_neighbours(statistics, rows, columns):
     """Each cell's statistics beside the mean of its four in-board neighbours.
 
@@ -859,7 +874,7 @@ class TetrisStateNet(nn.Module):
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
             features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5) else 1)
-            if config.occupancy_pixel_query in (3, 5):
+            if config.occupancy_pixel_query in (3, 5, 6):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1019,7 +1034,9 @@ class TetrisStateNet(nn.Module):
                 # Declared representation lever: the read-out is given the raster at this stage's
                 # own placement, so the features exist exactly where the model believes the cell
                 # is. The projection is zero-initialized, so at step zero this adds exactly zero.
-                statistics = cell_pixel_statistics(pixels, lattice, self.coordinates,
+                placement = (lattice if self.config.occupancy_pixel_query != 6 else
+                             pixel_fixed_lattice(rows, columns, pixels.device, pixels.dtype))
+                statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
                 if self.config.occupancy_pixel_query == 2:
                     statistics = pixel_query_centre(statistics)
