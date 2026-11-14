@@ -96,3 +96,92 @@ class BetweenTheEndpointsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosureConsistencyTest(unittest.TestCase):
+    """The closure statement rebuilt from the per-arm receipts, so the prose cannot drift from the table.
+
+    V-167: three maintained documents asserted the two arm families "do not overlap on either ranking
+    measure". They overlap on both, and one arm that moves the sampled geometry outranks two arms that keep
+    it. These tests derive the ranges, the overlap and the signs from the receipts themselves and then check
+    that the documents still claim the supported reading.
+    """
+
+    ARMS = {
+        "M34": "m34-support-lattice-r1",
+        "M35": "m35-contrast-lattice-r1",
+        "M36": "m36-monotone-contrast-r1",
+        "M37": "m37-stencil-fusion-r2",
+        "M38": "m38-capacity-r1",
+        "M39": "m39-dual-placement-r1",
+        "M40": "m40-composed-alignment-r6",
+    }
+    KEEPS = ("M35", "M37", "M38", "M36")
+    MOVES = ("M34", "M40", "M39")
+    DOCUMENTS = ("docs/M40_COMPOSED_ALIGNMENT.md", "docs/ROADMAP.md", "docs/CONTINUATION_STATE.md")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.metric = {}
+        for name, directory in cls.ARMS.items():
+            scope = json.loads((ROOT/"docs/evidence"/directory/"scope.json").read_text())
+            cls.metric[name] = (scope["own"]["auc"], scope["own_best"])
+
+    def auc(self, name):
+        return self.metric[name][0]
+
+    def best(self, name):
+        return self.metric[name][1]
+
+    def test_the_winner_is_above_every_arm_on_both_measures(self):
+        winner_auc, winner_best = SCOPE["anchors"]["anchor_auc"], SCOPE["anchors"]["anchor_best"]
+        self.assertLess(max(self.auc(name) for name in self.ARMS), winner_auc)
+        self.assertLess(max(self.best(name) for name in self.ARMS), winner_best)
+
+    def test_the_strength_axis_is_monotone_in_both_measures(self):
+        # same read, same head, only the support's share of the sampled geometry changes
+        axis = (SCOPE["anchors"]["anchor_auc"], self.auc("M40"), self.auc("M34"))
+        bests = (SCOPE["anchors"]["anchor_best"], self.best("M40"), self.best("M34"))
+        self.assertEqual(axis, tuple(sorted(axis, reverse=True)))
+        self.assertEqual(bests, tuple(sorted(bests, reverse=True)))
+
+    def test_the_families_overlap_and_the_overlap_holds_the_named_arms(self):
+        keeping_auc = (min(self.auc(n) for n in self.KEEPS), max(self.auc(n) for n in self.KEEPS))
+        moving_auc = (min(self.auc(n) for n in self.MOVES), max(self.auc(n) for n in self.MOVES))
+        keeping_best = (min(self.best(n) for n in self.KEEPS), max(self.best(n) for n in self.KEEPS))
+        moving_best = (min(self.best(n) for n in self.MOVES), max(self.best(n) for n in self.MOVES))
+        overlap_auc = (max(keeping_auc[0], moving_auc[0]), min(keeping_auc[1], moving_auc[1]))
+        overlap_best = (max(keeping_best[0], moving_best[0]), min(keeping_best[1], moving_best[1]))
+        # the ranges overlap on both measures, which is what the documents now say
+        self.assertLess(overlap_auc[0], overlap_auc[1])
+        self.assertLess(overlap_best[0], overlap_best[1])
+        inside_auc = sorted(n for n in self.ARMS if overlap_auc[0] <= self.auc(n) <= overlap_auc[1])
+        inside_both = sorted(n for n in self.ARMS if overlap_auc[0] <= self.auc(n) <= overlap_auc[1]
+                             and overlap_best[0] <= self.best(n) <= overlap_best[1])
+        self.assertEqual(inside_auc, ["M36", "M38", "M40"])
+        self.assertEqual(inside_both, ["M36", "M40"])
+
+    def test_a_moving_arm_outranks_a_keeping_arm_inside_the_overlap(self):
+        # the gap the corrected documents state explicitly: provenance alone does not order these arms
+        self.assertGreater(self.auc("M40"), self.auc("M36"))
+        self.assertGreater(self.best("M40"), self.best("M36"))
+        self.assertGreater(self.auc("M40"), self.auc("M38"))
+        self.assertLess(self.best("M40"), self.best("M38"))
+        self.assertLess(self.auc("M34"), self.auc("M36"))
+        self.assertLess(self.best("M34"), self.best("M36"))
+
+    def test_the_documents_state_the_overlap_rather_than_the_separation(self):
+        for document in self.DOCUMENTS:
+            body = (ROOT/document).read_text(encoding="utf-8")
+            self.assertIn("overlap", body.lower(), f"{document} must state the overlap")
+            self.assertNotIn("do not overlap", body.lower(),
+                             f"{document} still asserts a separation the receipts do not show")
+            self.assertNotIn("strictly lower", body.lower(),
+                             f"{document} still asserts a separation the receipts do not show")
+
+    def test_the_documents_keep_the_negative_and_the_gradient(self):
+        body = (ROOT/"docs/M40_COMPOSED_ALIGNMENT.md").read_text(encoding="utf-8")
+        for number in ("0.954529", "0.897918", "0.883260", "0.689775", "0.439535", "0.385925",
+                       "0.011568", "0.018600", "0.002877", "0.024016"):
+            self.assertIn(number, body)
+        self.assertIn("not learned", body.lower())

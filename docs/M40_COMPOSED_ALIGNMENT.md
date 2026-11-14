@@ -138,11 +138,46 @@ offered as an explanation and does not apply: the form adds **no parameter at al
 
 ## What this pass settles
 
-An exogenous correction to placement cannot be learned at this depth in any composition with the predicted
-lattice. The reasoning is the dose-response above plus the whole regression set, not this arm alone: every
-arm that keeps the predicted lattice as the *sampled* geometry (M35 `0.945596` / `0.570048`, M37 `0.919512` /
-`0.589286`, M38 `0.895041` / `0.463551`, M36 `0.886350` / `0.420935`) lands in one band, and every arm that
-moves the sampled geometry off it (M34 `0.883260` / `0.385925`, M40 `0.897918` / `0.439535`, M39 `0.836907` /
-`0.351779`) lands in a strictly lower one - with M39 showing that *having* the aligned statistics available is
-not the missing piece. The separation is the sampling path, and its cost is monotone in how much of that path
-is replaced.
+**The question, answered as far as the measurements go:** an exogenous correction to placement was not
+learned at this depth by any composition measured. All seven arms that contain one sit below the winner on
+both ranking measures, none clears the gate, and the half-strength arm recovers only `+0.014658` of AUC and
+`+0.053610` of best swept against the support endpoint it corrects from while landing `0.250240` of best
+swept below the winner. The cleanest evidence is the **strength axis**, where the read is held fixed (the
+`30` statistics, the same one-block head, the same protocol) and only the share of the sampled geometry taken
+from the support changes:
+
+| support share of the sampled geometry | arm | AUC | best swept |
+|---|---|---|---|
+| `0.0` | `m30-level-calibrate-r5` | `0.954529` | `0.689775` |
+| `0.5` | M40 `m40-composed-r2` | `0.897918` | `0.439535` |
+| `1.0` | M34 `m34-support` | `0.883260` | `0.385925` |
+
+Ranking falls monotonically in both metrics in proportion to the replaced share - the signature of a
+substitution, not of a learned correction.
+
+**What the evidence does not support, and an earlier draft of this section wrongly claimed:** a clean
+ordering between arms that keep the predicted lattice and arms that move it. The two ranges overlap, on both
+measures - AUC in `0.886350`-`0.897918`, best swept in `0.420935`-`0.439535` - and inside that overlap the
+ordering is mixed:
+
+| arm | what it does to the sampled geometry | AUC | best swept |
+|---|---|---|---|
+| M40 `m40-composed-r2` | moves it (half the support box) | `0.897918` | `0.439535` |
+| M38 `m38-capacity` | keeps it (width `128`) | `0.895041` | `0.463551` |
+| M36 `m36-monotone` | keeps it (one crossing per column) | `0.886350` | `0.420935` |
+| M34 `m34-support` | moves it (all of the support box) | `0.883260` | `0.385925` |
+
+M40, which moves the geometry, sits *above* M36, which keeps it, on both measures (`+0.011568` AUC,
+`+0.018600` best swept) and above M38 on AUC (`+0.002877`) while `0.024016` below it on best swept; M34,
+which also moves it, sits below M36 on both (`-0.003090` / `-0.035010`). Geometry provenance is therefore not
+sufficient to order these arms - they differ in features, width and protocol as well.
+
+**The genuine gap this leaves:** what the campaign measures is a *graded cost of replacing the endogenous
+geometry within one read*, and a refusal of every composition tried, not a family boundary between two kinds
+of arm. The mechanism statement - that the endogenous sampling path is what the winning arm uses to correct
+its own placement - remains the best-supported account of the strength gradient and of M39 (which sampled the
+support *and* carried the predicted-lattice statistics beside it, and still scored lowest of the seven at
+`0.836907` / `0.351779`, so the missing piece was not knowledge of the alignment). It is not established as
+an ordering principle, because the overlap contains a moving arm above two keeping arms. The closure is
+unchanged in what it refuses - no composition learned the correction, none came near the bar - and narrowed in
+what it explains.

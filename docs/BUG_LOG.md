@@ -21,6 +21,7 @@ the block lock, which is what every surviving cross-reference (CONTINUATION_STAT
 | visibility-contract | V-001, V-002, V-005, V-006, V-016 (5) | Paired-raster equivalence required for every hidden-component policy; AGENTS.md, test_layout.py and M3 prepared-source admission tripwire |
 | provenance | V-003, V-014, V-018, V-020, V-021, V-022, V-024, V-026, V-027, V-028, V-034, V-035, V-104, V-107, V-112 (15) | Standing artifact-derived identity rule in AGENTS; computed hashes/byte comparison, frozen execution, immutable controller origin, unwrapped callable origin, actual receipt status and checkpoint architecture/config/aggregate tripwire; saved text identities checked against actual wire bytes and JSON roundtrip; profile ancestry must match actual profile recipes; a staged start must be an exact sibling run re-read from source bytes and a staged resume must restate that contract; a selectable arm that adds no tensors must save exactly its parent's initial bytes, while distinct parameter sets must each save their own |
 | test-instrument | V-004, V-011, V-012, V-017, V-019, V-023, V-025, V-037, V-049, V-057, V-058, V-061, V-069, V-070, V-072, V-092, V-097, V-098, V-100, V-101, V-102, V-105, V-108, V-109, V-117, V-118, V-123 (27) | Native admission/raw counters; warm backward; standing pre-import CPU-library policy/live child tripwire; observer-validated fixtures before model gates; named queue anchor flags; raw versus normalized evidence-copy tripwire; a fixture must derive archived supervisor identity from the bytes it copies; a new read-only instrument must reproduce a published number from another receipt before its own verdict is written (cross-receipt join); a matched start compares the function, not the objective's value, so the objective's own fields are stripped before step-0 probes are compared; a convention shared by a read and its provenance join lives in one helper, because a fix applied to one copy leaves the defect standing; a component read is recomputed on the population its verdict reads, through one helper, and a reported interval is asserted against the statistic printed beside it; a reproduction join reads the block the curator derived, never a raw sweep block that omits the re-derived numbers; a stage output added beside the detail tap must hold for every tap variant, including the stencil's several-samples-per-cell read, so the existing step-zero and paired-raster suite runs against each |
+| claim-versus-receipt | V-167 (1) | `tests/test_m40_receipt.py::ClosureConsistencyTest` rebuilds the arm families, the overlap set and the strength axis from the receipts, and a source guard refuses a maintained document that asserts a separation the receipts do not show |
 | resource-identity | V-007 (1) | Exact named Job plus kernel membership/readback |
 | corpus-admission | V-008, V-009 (2) | Malformed/duplicate records and off-image known-cell fixtures |
 | resource-pressure | V-010 (1) | OS commit admission and pressure/failure process-tree tripwires |
@@ -3372,3 +3373,29 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m40-composed-alignment-r6-job.json` (score, 128 MiB), checkpoint `f888685a2d04…` distinct from the
   anchor's `eddec1fd…`. The inert run is preserved as `runs/m40-composed-superseded-inert*` with its receipt
   and its scoring as `docs/evidence/m40-composed-alignment-r5-superseded-inert`.
+
+## V-167 - CLOSED: the M40 closure claim asserted a family separation the receipts do not show
+
+- Symptom: the M40 findings doc, its ROADMAP closure section and the continuation checkpoint all stated that
+  the "keeps the predicted lattice sampled" family and the "moves it off" family "do not overlap on either
+  ranking measure". Re-deriving the two ranges from the per-arm receipts
+  (`docs/evidence/m3{4,5,6,7,8,9}-*/scope.json`, `m40-composed-alignment-r6/scope.json`) shows they overlap on
+  both: AUC in `0.886350`-`0.897918`, best swept in `0.420935`-`0.439535`. Inside that overlap M40 (moves the
+  geometry) outranks M36 (keeps it) on both measures and M38 on AUC, while M34 (also moves it) is below M36 on
+  both.
+- Root cause: the claim was carried from the argument into the prose without being checked against the table
+  printed beside it - the ranges were described by their families' intent rather than recomputed from the
+  arms. The two families also differ in features, width and protocol, so provenance could not have ordered
+  them cleanly in the first place.
+- Change: all three documents now state the overlap explicitly, name the arms inside it with their numbers,
+  keep the negative for every composition tried (none learned the correction, none near the bar), keep the
+  monotone strength axis (`0.0` / `0.5` / `1.0`) and M39's rule-out of the information account, and demote the
+  mechanism statement from an ordering principle to the best-supported account of the gradient. M40's evidence
+  directory, receipts, predeclared bar and verdict are unchanged; no run was re-scored.
+- Detection class: claim-versus-receipt consistency - first occurrence, standing instrument added.
+- Instrument: `tests/test_m40_receipt.py::ClosureConsistencyTest` rebuilds both families from the receipts,
+  asserts the winner is above every arm on both measures, asserts the axis is monotone, and pins the overlap
+  set by arm (`{M36, M38, M40}` on AUC, `{M36, M40}` on both) together with M40's sign against M36 and M38.
+  A companion source guard fails if any of the three maintained documents says the families "do not overlap"
+  or fails to contain the word "overlap", so the prose cannot drift from the table again.
+- Named green runs: `tests.test_m40_receipt` (14 tests, OK); full suite `runs/m40-suite-r2-job.json`.

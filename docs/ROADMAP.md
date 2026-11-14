@@ -1504,30 +1504,53 @@ the first run: the composed placement was assigned after the statistics had been
 the winner - visible because its checkpoint hash was byte-identical to the anchor's. Repaired before the
 scored run, with the inert run and its scoring kept and labelled.
 
-## The campaign's remaining empirical question, closed
+## The campaign's remaining empirical question: answered in the negative, measured but not cleanly separated
 
 **Can an exogenous correction to placement be learned at this depth by any composition with the predicted
-lattice? Measured answer: no - not at this depth, at this budget, by any composition tried.** The support is
-read across the whole regression set rather than from this arm alone:
+lattice? Measured answer: not by any composition tried and not at this depth or budget - but the evidence
+supports a graded cost of replacement, not a clean separation between the two kinds of arm.** Read across the
+whole regression set, not from M40 alone:
 
 | what the arm does to the sampled geometry | arms | AUC range | best swept range |
 |---|---|---|---|
 | keeps the predicted lattice sampled (adds features or width) | M35, M37, M38, M36 | `0.886350`-`0.945596` | `0.420935`-`0.589286` |
 | moves it off the predicted lattice (replaces or blends in the support) | M34, M40, M39 | `0.836907`-`0.897918` | `0.351779`-`0.439535` |
 
-The two families do not overlap on either ranking measure, and the winner (`0.954529` / `0.689775`) is above
-both. Inside the moving family the loss is monotone in how much of the geometry is replaced
-(`0.954529` / `0.689775` at share `0.0`; `0.897918` / `0.439535` at `0.5`; `0.883260` / `0.385925` at `1.0`),
-which is what a substitution shows and not what a learned correction shows - a correction would have to beat
-the endpoint it corrects from, and the half-strength arm recovers only `+0.014658` of AUC and `+0.053610` of
-best swept against it while landing `0.250240` of best swept below the winner. M39 rules out the remaining
-alternative explanation: the aligned *statistics* were available to that read at full strength and the ranking
-still fell, so what is lost is the endogenous sampling path itself, not information about the alignment.
+**Those ranges overlap on both measures** - AUC in `0.886350`-`0.897918`, best swept in `0.420935`-`0.439535` -
+and the earlier draft of this section wrongly said they did not. Inside the overlap the ordering is mixed:
 
-Scope of the statement: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed,
-`64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured points on the
-strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no parameter),
-and a learned per-board mixing weight was predeclared out of scope.
+| arm | sampled geometry | AUC | best swept |
+|---|---|---|---|
+| M40 `m40-composed-r2` | moves it (half support) | `0.897918` | `0.439535` |
+| M38 `m38-capacity` | keeps it (width `128`) | `0.895041` | `0.463551` |
+| M36 `m36-monotone` | keeps it | `0.886350` | `0.420935` |
+| M34 `m34-support` | moves it (full support) | `0.883260` | `0.385925` |
+
+M40, which moves the geometry, outranks M36, which keeps it, on both measures (`+0.011568` AUC, `+0.018600`
+best swept) and outranks M38 on AUC (`+0.002877`) while sitting `0.024016` below it on best swept; M34, which
+also moves it, is below M36 on both (`-0.003090` / `-0.035010`). What separates the two tables is therefore
+not provenance alone - these arms differ in features, width and protocol too.
+
+What *is* clean, and what carries the negative:
+
+- **the winner is above all seven arms on both measures** (`0.954529` / `0.689775` against a best keeping arm
+  at `0.945596` / `0.589286` and a best moving arm at `0.897918` / `0.439535`), and no arm clears the gate;
+- **the strength axis is monotone in both metrics**, with the read held fixed and only the support's share of
+  the sampled geometry changed: `0.0` → `0.954529` / `0.689775`, `0.5` → `0.897918` / `0.439535`, `1.0` →
+  `0.883260` / `0.385925`. That is what a substitution shows; a learned correction would have had to beat the
+  endpoint it corrects from, and the half-strength arm recovers only `+0.014658` of AUC and `+0.053610` of
+  best swept against it while landing `0.250240` of best swept below the winner;
+- **M39 rules out the information account**: that read sampled the support *and* carried the aligned
+  statistics beside the predicted-lattice ones, and still scored lowest of the seven (`0.836907` /
+  `0.351779`), so the missing piece was not knowledge of the alignment.
+
+The mechanism statement - the winner uses its endogenous sampling path to correct its own placement - thus
+remains the best-supported account of the strength gradient, and is **demoted from an ordering principle**:
+the overlap contains a moving arm above two keeping arms, so a future arm could outrank some keeping arms
+without being close to the winner. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
+vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured
+points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
+parameter), and a learned per-board mixing weight was predeclared out of scope.
 
 ## The measured regression set (maintained)
 
@@ -1568,11 +1591,14 @@ placed beside an endogenous one.**
 ## The next structural step this pass superseded (recorded, measured, refused)
 
 M40 was that step and it was refused; its numbers are in the regression set above and the question it was
-tasked to close is closed in its own section. The next structural step is therefore not another composition
-of the sampling geometry: the measured separation says the sampled lattice must stay the predicted one, so
-the open direction is to make the *decision* placement-aware without moving the sampling geometry - for
-example a declared per-board term that uses the support only to set the board's own crossing level, which is
-a decision rule rather than a sampled geometry and leaves every sampled point where the network put it.
+tasked to close is answered in its own section - in the negative for every composition tried, with the
+mechanism claim demoted from an ordering principle. The next structural step follows from what survived that
+correction: the strength axis is the only clean gradient, so an arm should not replace any of the sampled
+geometry; but since provenance alone does not order arms, the step must be judged against the **winner and
+the bar**, not against a family of arms. The open direction is therefore to make the *decision* placement-aware
+without moving the sampling geometry - for example a declared per-board term that uses the support only to set
+the board's own crossing level, which is a decision rule rather than a sampled geometry and leaves every
+sampled point where the network put it.
 
 ## Superseded: the previously recorded next step, and why it looked structurally different
 

@@ -3635,18 +3635,29 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`. All fail the gate; all sit below the winner.
 
-**The campaign's remaining empirical question is closed, in measured terms:** an exogenous correction to
-placement cannot be learned at this depth by any composition with the predicted lattice. Across the whole
-regression set, arms that keep the predicted lattice as the sampled geometry (M35, M37, M38, M36) occupy AUC
-`0.886350`-`0.945596` and best swept `0.420935`-`0.589286`; every arm that moves the sampled geometry off it
-(M34, M40, M39) occupies AUC `0.836907`-`0.897918` and best swept `0.351779`-`0.439535` - the families do not
-overlap, and inside the moving family the loss is monotone in the replaced share (`0.0`: `0.954529` /
-`0.689775`; `0.5`: `0.897918` / `0.439535`; `1.0`: `0.883260` / `0.385925`). M39 rules out the alternative
-account, because the aligned statistics were available to that read at full strength and the ranking still
-fell: what is lost is the endogenous sampling path, not information about the alignment. Capacity is excluded
-(M38 at width `128` refused; M40 adds no parameter). Scope: one population, both fixed label vectors, one seed,
-`64` steps, a `64`-wide one-block head, fixed global `0.0`, three measured points on the strength axis.
+**The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
+separated.** No exogenous correction to placement was learned at this depth by any composition tried: all
+seven arms that contain one sit below the winner, and none clears the gate. What is clean is (a) the winner's
+margin on both measures (`0.954529` / `0.689775` against the best arm of either kind), (b) the **strength
+axis** - with the read held fixed, the loss is monotone in the support's share of the sampled geometry
+(`0.0`: `0.954529` / `0.689775`; `0.5`: `0.897918` / `0.439535`; `1.0`: `0.883260` / `0.385925`), which is a
+substitution signature, and (c) M39's rule-out of the information account (it carried the aligned statistics
+beside the predicted-lattice ones and still scored lowest of the seven, `0.836907` / `0.351779`).
 
-Recorded next step, in the direction the closure leaves open: keep every sampled point where the network puts
-it and make the *decision* support-aware instead - a declared per-board term that uses the support only to set
-the board's own crossing level, which is a decision rule rather than a change of sampling geometry.
+What is **not** clean, and what an earlier draft of this checkpoint overstated: the arms that keep the
+predicted lattice sampled (M35, M37, M38, M36: AUC `0.886350`-`0.945596`, best swept
+`0.420935`-`0.589286`) and those that move it (M34, M40, M39: AUC `0.836907`-`0.897918`, best swept
+`0.351779`-`0.439535`) **overlap on both measures** - AUC in `0.886350`-`0.897918`, best swept in
+`0.420935`-`0.439535`. Inside the overlap M40 (moves the geometry) is above M36 (keeps it) on both measures
+(`+0.011568` AUC, `+0.018600` best swept) and above M38 on AUC (`+0.002877`) while `0.024016` below it on best
+swept, and M34 (also moves it) is below M36 on both. Geometry provenance is therefore not sufficient to order
+these arms, and the mechanism statement is the best-supported account of the strength gradient rather than an
+ordering principle. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
+population, both fixed label vectors, one seed, `64` steps, a `64`-wide one-block head, fixed global `0.0`,
+three measured points on the strength axis.
+
+Recorded next step: keep every sampled point where the network puts it - the strength axis says replacing any
+of the geometry costs ranking - but judge the arm against the winner and the bar rather than against a family,
+since the overlap shows provenance alone does not order arms. Concretely, make the *decision* support-aware: a
+declared per-board term that uses the support only to set the board's own crossing level, which is a decision
+rule rather than a change of sampling geometry.
