@@ -3464,10 +3464,22 @@
         "scope.json": "c19b5f712ae1a0944827479483955b156442d47a646dd4f7c642b31eeadcdb5f"
       }
     },
+    "m28-pixel-query-deciding-r3": {
+      "record_commit": "400ef6aecffac5e614e834d879780bf54ff64bce",
+      "files": {
+        "scope.json": "1ac1aae4262e6005f6d91ad3619f51507503857e78bf148946aa8f7278b99d20"
+      }
+    },
     "m28-pixel-query-r2": {
       "record_commit": "a6bf87a8891607318a59d419c8585362a756cefd",
       "files": {
         "scope.json": "f12bade77551f8d53847a6b153e678f9f03608576656cfaf05eee6969b060420"
+      }
+    },
+    "m28-reference-provenance-r1": {
+      "record_commit": "400ef6aecffac5e614e834d879780bf54ff64bce",
+      "files": {
+        "scope.json": "ecaf3955974cbc0e57cd097c6488eb61573a50ee40cba2835cb46df52b774783"
       }
     },
     "m3-capture-side-tests-r1": {
@@ -4991,7 +5003,7 @@
     }
   },
   "totals": {
-    "directories": 268,
-    "files": 3639
+    "directories": 270,
+    "files": 3641
   }
 }
