@@ -3388,7 +3388,10 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Root cause: the claim was carried from the argument into the prose without being checked against the table
   printed beside it - the ranges were described by their families' intent rather than recomputed from the
   arms. The two families also differ in features, width and protocol, so provenance could not have ordered
-  them cleanly in the first place.
+  them cleanly in the first place. **Superseded in part by M41:** with provenance isolated as the only
+  varied recorded fact it does cost ranking (`-0.126522` AUC, `-0.230048` best swept, M35 -> M41 at an
+  identical `8,025,482` parameters), so what the overlap reflects is the correlated configuration
+  differences, not provenance being inert. See `docs/M41_SUPPORT_CONTRAST.md`.
 - Change: all three documents now state the overlap explicitly, name the arms inside it with their numbers,
   keep the negative for every composition tried (none learned the correction, none near the bar), keep the
   monotone strength axis (`0.0` / `0.5` / `1.0`) and M39's rule-out of the information account, and demote the

@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "eb5ac54d9cc3cb665b1fcea91e24b5eeac70950c",
+    "generated_at_commit": "fc8bff933477b97deab559737ce331bd614182a1",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4480,17 +4480,24 @@
       }
     },
     "m40-composed-alignment-r5-superseded-inert": {
-      "record_commit": "",
+      "record_commit": "667787a98077bdece71bd1dd848d2e0af220fb0b",
       "files": {
         "diagnosis.json": "53d67b335aebdd54c9add727bb9d3e99c4257bd8a36c620273b285dc99e863e1",
         "scope.json": "c82a74262b8de3b9e790df23092521d17d771c75de3f36e905214f88b3823d1d"
       }
     },
     "m40-composed-alignment-r6": {
-      "record_commit": "",
+      "record_commit": "667787a98077bdece71bd1dd848d2e0af220fb0b",
       "files": {
         "diagnosis.json": "ceb87d3485d51c320964d8f89bed6ff3909d0e239d3f10fb511367deefae46f7",
         "scope.json": "a34f7d422a4cfb0ade464e3f18f8bb70d528829722c55ffa10ecc17c63ee7080"
+      }
+    },
+    "m41-support-contrast-r1": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "2c5e20e46a505ac440f1636e117a4e6fd9a17138ee6fc57d93746d5304db860c",
+        "scope.json": "ed395c379c0ee2f9e4eca5e934c3b77c1506685887356aacc0cf544ba60e6ef9"
       }
     },
     "m5-column-readout-r1": {
@@ -5112,7 +5119,7 @@
     }
   },
   "totals": {
-    "directories": 287,
-    "files": 3665
+    "directories": 288,
+    "files": 3667
   }
 }

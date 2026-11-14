@@ -115,9 +115,10 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M38": "m38-capacity-r1",
         "M39": "m39-dual-placement-r1",
         "M40": "m40-composed-alignment-r6",
+        "M41": "m41-support-contrast-r1",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
-    MOVES = ("M34", "M40", "M39")
+    MOVES = ("M34", "M40", "M39", "M41")
     DOCUMENTS = ("docs/M40_COMPOSED_ALIGNMENT.md", "docs/ROADMAP.md", "docs/CONTINUATION_STATE.md")
 
     @classmethod

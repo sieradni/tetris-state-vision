@@ -179,8 +179,15 @@ overlapping pairs confounded. The winner (form `3`), M40 (form `14`) and M34 (fo
 records `8,039,114`, its wider head plus `40` inputs. Every other recorded setting (`dimension` `192`,
 `blocks` `6`, all lever flags `0`, same curriculum, initial weights, `64` steps, same population) is
 identical. So no overlapping pair varies provenance alone, and the overlap is consistent with feature count,
-head width or the decision rule rather than with geometry provenance. That is an open question for the next
-step, not a result: see the same table in `ROADMAP.md`.
+head width or the decision rule rather than with geometry provenance.
+
+**Answered by M41** (`docs/M41_SUPPORT_CONTRAST.md`): that pass measured the missing cell - M35's `60`-input
+features sampled at the support lattice, `8,025,482` parameters, M35's exactly, with `occupancy_pixel_query`
+the only config field that differs - and it landed at `0.272073` / `0.819074` / `0.340000` against M35's
+`0.277778` / `0.945596` / `0.570048`. Provenance, isolated as the only varied fact, costs `-0.126522` AUC and
+`-0.230048` best swept, so the overlap is attributable to the recorded confound and not to geometry
+provenance being inert. This paragraph is left as written because it is the record of what this pass left
+open; the earlier measured numbers, bar and verdict above are unchanged.
 
 **The genuine gap this leaves:** what the campaign measures is a *graded cost of replacing the endogenous
 geometry within one read*, and a refusal of every composition tried, not a family boundary between two kinds

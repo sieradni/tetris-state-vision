@@ -1506,6 +1506,26 @@ the first run: the composed placement was assigned after the statistics had been
 the winner - visible because its checkpoint hash was byte-identical to the anchor's. Repaired before the
 scored run, with the inert run and its scoring kept and labelled.
 
+## M41 - provenance isolated, and the confound settled
+
+[M41_SUPPORT_CONTRAST.md](M41_SUPPORT_CONTRAST.md) predeclared and measured the arm the M40 pass lacked: form
+`15` is M35's `60` contrast inputs sampled at the **support lattice**, completing the geometry-by-features
+square whose other three cells are the winner (predicted, `30`), M34 (support, `30`) and M35 (predicted, `60`).
+Recorded configuration pins the isolation: `8,025,482` parameters, identical to M35's, with
+`occupancy_pixel_query` the only config field that differs (`15` against `8`), so features, head width,
+decision rule, dimension, blocks, standardise flag, curriculum, initial weights and step count are all held
+fixed.
+
+Measured `docs/evidence/m41-support-contrast-r1/scope.json`: F1 at `0.0` `0.272073`, AUC `0.819074`, best
+swept `0.340000` (at `1.20`) - **not cleared** on the predeclared bar, gate per-cell/ranking false,
+attribution true, deltas `-0.100808` / `-0.135455` / `-0.349775`; split closure `-0.203974` / placement
+`-0.016333` / representation `+0.663512`, sum asserted.
+
+The predeclared branch that fired is **REPRODUCES** (its thresholds were AUC `<= 0.910000` and best swept
+`<= 0.480000`, both met): at matched features the geometry swap costs `-0.126522` AUC and `-0.230048` best
+swept, against `-0.071268` / `-0.303850` for the same swap at `30` inputs. **The overlap in the section below
+is attributable to its recorded confound, not to provenance failing to order anything.**
+
 ## The campaign's remaining empirical question: answered in the negative, measured but not cleanly separated
 
 **Can an exogenous correction to placement be learned at this depth by any composition with the predicted
@@ -1562,10 +1582,15 @@ attribution these receipts support. No overlapping pair is matched: M40 vs M36 d
 geometry provenance from recorded configuration** - the form id carries feature count, head width, sampling
 geometry and, for form 10, a decision rule at once.
 
-**Open question, recorded for the next step:** no arm in the set changes provenance alone across these
-two groups, so a provenance-only comparison would need a new arm that holds features, head width and
-decision rule fixed and varies only the geometry source - the strength axis is the closest existing thing,
-and it is within one form family rather than across two.
+**Answered in M41** (the arm this paragraph asked for). Form `15` holds M35's `60`-input feature set, head
+width `64`, `192`-dimension, `6` blocks, no decision rule and every other recorded setting fixed, and samples
+the support lattice instead of the predicted one: `8,025,482` parameters, M35's exactly, with
+`occupancy_pixel_query` the only config field that differs. Measured `0.272073` / `0.819074` / `0.340000`
+against M35's `0.277778` / `0.945596` / `0.570048` - the provenance cost reproduces at matched config
+(`-0.126522` AUC, `-0.230048` best swept, `1.78x` and `0.76x` the `30`-input axis cost). The overlap is
+therefore a **cross-configuration effect**: M40's position above M36 is attributable to M36's `60`-input
+features and its one-crossing rule, and its position above M38 on AUC to M38's wider head, not to
+provenance being inert.
 
 What *is* clean, and what carries the negative:
 
@@ -1583,7 +1608,16 @@ What *is* clean, and what carries the negative:
 The mechanism statement - the winner uses its endogenous sampling path to correct its own placement - thus
 remains the best-supported account of the strength gradient, and is **demoted from an ordering principle**:
 the overlap contains a moving arm above two keeping arms, so a future arm could outrank some keeping arms
-without being close to the winner. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
+without being close to the winner.
+
+**M41 explains that overlap without changing the sentence above.** With provenance held as the only varied
+recorded fact, the geometry swap costs `-0.126522` AUC and `-0.230048` best swept (M35 `0.945596` / `0.570048`
+-> M41 `0.819074` / `0.340000`), reproducing the strength axis at a second feature set. So the demotion is
+about *cross-configuration* comparisons, which this regression set is full of, and not about geometry being
+inert: the overlap's ordering comes from the feature count and decision rule that came with each arm. M41 is
+also the worst-ranked arm measured while M35 is the best arm that keeps the predicted lattice, and they differ
+in one recorded fact - so the contrast features amplify rather than repair a displaced geometry, and no
+feature-side rescue of the support lattice is available to a future arm. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
 vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured
 points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
 parameter), and a learned per-board mixing weight was predeclared out of scope.
@@ -1604,11 +1638,13 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M38 `m38-capacity` | hidden width 64 -> 128 | `0.273082` | `0.895041` | `0.463551` | fail |
 | M39 `m39-dual` | both placements in one read (60 inputs) | `0.246228` | `0.836907` | `0.351779` | fail |
 | M40 `m40-composed-r2` | predicted lattice blended half onto the support box | `0.260599` | `0.897918` | `0.439535` | fail |
+| M41 `m41-support-contrast` | M35's features sampled at the support lattice | `0.272073` | `0.819074` | `0.340000` | fail |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
-M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`.
+M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`; M41
+`-0.100808` / `-0.135455` / `-0.349775`.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 
@@ -1631,6 +1667,17 @@ positives in the dense upper bands (`1,088`-`1,239` at median margins `1.35`-`2.
 weakest true positive), with AUC falling from `0.954529` to `0.836907`-`0.945596`. M39 shows that handing
 the read *both* geometries does not repair it: an exogenous half does not become a correction just by being
 placed beside an endogenous one.**
+
+## The next structural step (recorded after M41)
+
+The confound is settled, so the next arm is chosen by what M41 leaves standing. Geometry replacement costs
+ranking at both feature sets, and the best-feature arm measured (`M35`) became the worst-ranked arm measured
+(`M41`) by that change alone, so the sampled lattice must stay the predicted one and there is no feature-side
+rescue to try. What is untested is the **decision side**: use the raster's support only to set the board's own
+crossing level, leaving every sampled point exactly where the network puts it. That is a decision rule rather
+than a sampled geometry - the one axis the evidence has not closed - and it must be judged against the winner
+and the predeclared bar, not against an arm family, since cross-configuration comparisons are exactly what
+this set cannot read as provenance.
 
 ## The next structural step this pass superseded (recorded, measured, refused)
 

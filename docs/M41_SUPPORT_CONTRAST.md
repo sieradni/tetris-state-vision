@@ -119,3 +119,71 @@ explanation and will not be offered.
 `runs/m41-support-contrast{,-profile,-registration}` and
 `docs/evidence/m41-support-contrast-r1/{scope,diagnosis}.json`. Refused attempts keep their receipts; only
 completed runs are quoted.
+
+## Measured (form 15, `m41-support-contrast`, scored `m41-support-contrast-r1`)
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| `m30-level-calibrate-r5` (winner, re-scored in the same pass) | `0.372881` | `0.954529` | `0.689775` (at `3.6`) |
+| M35 `m35-contrast` - same features, **predicted** lattice | `0.277778` | `0.945596` | `0.570048` (at `3.15`) |
+| **M41 `m41-support-contrast` - same features, support lattice** | **`0.272073`** | **`0.819074`** | **`0.340000`** (at `1.20`) |
+| M41 delta vs winner | `-0.100808` | `-0.135455` | `-0.349775` |
+| anchored variant | `0.268473` | `0.703850` | `0.323667` (at `2.10`) |
+
+**Verdict: not cleared** on the predeclared bar (`F1@0 >= 0.372881` and best swept `>= 0.689775`), gate
+per-cell/ranking false, attribution true - the same three flags on the anchored variant. Recorded
+configuration: form `15`, **`8,025,482` parameters, identical to M35's**, `60` inputs, head width `64`, no
+decision rule, `dimension` `192`, `blocks` `6`, `occupancy_read_standardise` `1`, every other lever `0`.
+Checkpoint `bbda7646…`, distinct from every other arm. Split closure `-0.203974` / placement `-0.016333` /
+representation `+0.663512` (`-0.460225` / `-0.036852` / `+1.497077` of the span), sum asserted;
+`short_stage: closure`.
+
+### Which predeclared branch fired
+
+**REPRODUCES the provenance cost** - the branch required AUC `<= 0.910000` **and** best swept `<= 0.480000`;
+measured `0.819074` and `0.340000`. At matched features, width and decision rule, replacing the predicted
+lattice with the support lattice costs **`-0.126522` AUC** and **`-0.230048` best swept** against M35. The
+same replacement at `30` inputs (winner -> M34) cost `-0.071268` and `-0.303850`, so the matched-config cost
+is **`1.78x` the `30`-input AUC cost and `0.76x` its best-swept cost** - it reproduces at both feature sets
+and is, if anything, larger on ranking.
+
+That is the confound settled by measurement: **the overlap was a cross-configuration effect.** Provenance
+does order arms when it is the only varied fact (the strength axis and this cell agree), so M40's position
+above M36 is attributable to the recorded differences that came with it - M36's `60`-input feature set and its
+one-crossing decision rule - and M40's above M38 on AUC to M38's wider head, not to geometry provenance being
+inert. The closure's calibrated wording stands unchanged, because it describes this regression set as
+configured; what changes is that its open question is now answered rather than pending.
+
+### Diagnosis, in the same terms as the last three passes
+
+False positives `1107` at median margin `2.549952` (M35 `1088` at `1.352717`), weakest true positive
+`0.282220`, `822` of those false positives in rows 0-9 and `238` in rows 15-19 (`M35`: `933` and `144`),
+`textured_empty_separated: false`; per band `305` / `517` / `47` / `238` against M35's `405` / `528` / `11` /
+`144`. The error mass moved from the lower bands into rows 10-19, which is the same coarse-placement
+signature as M34 and M40, now measured with the feature set held at its best.
+
+One interaction is worth recording because it bears on how the next arm should be designed: M35 is the best
+arm that keeps the predicted lattice and M41 is the worst-ranked arm measured, and they share every recorded
+fact except geometry. So the contrast features do not compensate for a displaced geometry - they amplify the
+cost - and no feature-side rescue of the support lattice is available to a future arm.
+
+## Propagation
+
+Swept for sentences that read as stale once this arm landed (`git grep` over `open question`, `confound`,
+and the closure's vocabulary, across every tracked markdown and python file):
+
+- `docs/M40_COMPOSED_ALIGNMENT.md` - the "open question for the next step" sentence now names M41 as its
+  answer, and the confound paragraph points at M41's matched contrast;
+- `docs/ROADMAP.md` - the "Open question, recorded for the next step" paragraph became "Answered in M41"
+  with the measured numbers, and the closure section gained a paragraph stating what M41 adds without
+  altering the closure wording the guard pins;
+- `docs/CONTINUATION_STATE.md` - the confound sentence and "recorded as an open question" now state the
+  answer and the next arm;
+- `docs/M39_DUAL_PLACEMENT.md` - the superseded-reading note added after M40 still reads correctly (it
+  points at the corrected closure), so it was left as written;
+- `docs/M40_COMPOSED_ALIGNMENT.md`'s measured section and every receipts/evidence file - untouched: M40's
+  evidence directory, receipts, predeclared bar and verdict are byte-unchanged by this pass.
+
+The corrected closure claim was not edited, and `tests/test_m40_receipt.py::ClosureConsistencyTest` still
+passes on it; `tests/test_m41_receipt.py` adds the receipt, the recorded-config identity against M35 and the
+predeclared-branch check for this arm.

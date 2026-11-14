@@ -3633,7 +3633,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.0` / AUC / best swept): M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` /
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
-`0.439535`. All fail the gate; all sit below the winner.
+`0.439535`; M41 `0.272073` / `0.819074` / `0.340000`. All fail the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
 separated.** No exogenous correction to placement was learned at this depth by any composition tried: all
@@ -3656,13 +3656,30 @@ ordering principle. The overlap is also **confounded in the recorded configs**: 
 `8,023,562` parameters (winner form `3`, M40 form `14`, M34 form `7`) are the strength axis and differ only in
 the sampled geometry's source, while the overlapping arms differ in more than that - M36 (form `10`,
 `8,025,482`) in features and a one-crossing rule, M38 (form `12`, `8,039,114`) in head width and features -
-so provenance alone is not testable across the two groups with these receipts, and a provenance-only arm is
-recorded as an open question. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
+so provenance was not testable across the two groups with those receipts.
+
+M41 supplied that arm, and the confound is now settled. Form `15` is M35's `60` contrast inputs sampled at the
+support lattice, with `8,025,482` parameters - M35's exactly - and `occupancy_pixel_query` (`15` against `8`)
+the only config field that differs, so features, head width, decision rule, dimension, blocks, standardise,
+curriculum, initial weights and steps are held fixed. Measured
+`docs/evidence/m41-support-contrast-r1/scope.json`: F1 at `0.0` `0.272073`, AUC `0.819074`, best swept
+`0.340000` (at `1.20`) - not cleared on the predeclared bar, gate per-cell/ranking false, attribution true,
+deltas `-0.100808` / `-0.135455` / `-0.349775`, split closure `-0.203974` / placement `-0.016333` /
+representation `+0.663512`. The predeclared **REPRODUCES** branch fired (AUC `<= 0.910000`, best swept
+`<= 0.480000`): the isolated geometry swap costs `-0.126522` AUC and `-0.230048` best swept, against
+`-0.071268` / `-0.303850` at `30` inputs.
+
+So the overlap is a cross-configuration effect - M36's `60`-input features and one-crossing rule against M40's
+`30`-input feature set, and M38's wider head against M40's - and the corrected closure keeps its wording. M41
+is also the worst-ranked arm measured while M35 is the best arm that keeps the predicted lattice, and they
+differ in one recorded fact: the contrast features amplify a displaced geometry rather than compensating for
+it, so no feature-side rescue is available. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
 population, both fixed label vectors, one seed, `64` steps, a `64`-wide one-block head, fixed global `0.0`,
 three measured points on the strength axis.
 
-Recorded next step: keep every sampled point where the network puts it - the strength axis says replacing any
-of the geometry costs ranking - but judge the arm against the winner and the bar rather than against a family,
-since the overlap shows provenance alone does not order arms. Concretely, make the *decision* support-aware: a
-declared per-board term that uses the support only to set the board's own crossing level, which is a decision
-rule rather than a change of sampling geometry.
+Recorded next step, unchanged in substance and now motivated by the isolation rather than by the overlap: keep
+every sampled point where the network puts it - M41 shows replacing any of the geometry costs ranking at both
+feature sets, and that the contrast features amplify rather than repair it - and make the *decision*
+support-aware instead: a declared per-board term that uses the support only to set the board's own crossing
+level, which is a decision rule rather than a change of sampling geometry. Judge it against the winner and the
+predeclared bar, not against an arm family.
