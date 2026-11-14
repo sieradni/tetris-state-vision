@@ -4432,6 +4432,12 @@
         "scope.json": "3306289f93562a6aba4d5ef8daef91dea856c6552567edc88f8f4024d5941fc7"
       }
     },
+    "m34-support-lattice-r1": {
+      "record_commit": "fd6a5290133d7a1b8e2fd15e45e5b5e4d66e649b",
+      "files": {
+        "scope.json": "142aab37c2819899bee5e79eacd30c565b39fa6b96cd2c8f377b71eaef58bcb9"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5057,7 +5063,7 @@
     }
   },
   "totals": {
-    "directories": 279,
-    "files": 3650
+    "directories": 280,
+    "files": 3651
   }
 }
