@@ -79,7 +79,7 @@ class FormTest(unittest.TestCase):
 
     def test_the_form_is_declared(self):
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=15)
+            replace(ModelConfig(), occupancy_pixel_query=16)
 
 
 if __name__ == "__main__":

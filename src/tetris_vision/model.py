@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -952,11 +952,11 @@ class TetrisStateNet(nn.Module):
             # computed at the model's own predicted lattice from the prepared raster only. The
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
-            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5, 8, 9, 10, 13)
+            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5, 8, 9, 10, 13, 15)
                                              else 1)
             if config.occupancy_pixel_query in (11, 12):
                 features = PIXEL_QUERY_FEATURES+PIXEL_QUERY_STENCIL_FEATURES
-            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14):
+            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1122,7 +1122,7 @@ class TetrisStateNet(nn.Module):
                 # is. The projection is zero-initialized, so at step zero this adds exactly zero.
                 if self.config.occupancy_pixel_query == 6:
                     placement = pixel_fixed_lattice(rows, columns, pixels.device, pixels.dtype)
-                elif self.config.occupancy_pixel_query == 7:
+                elif self.config.occupancy_pixel_query in (7, 15):
                     placement = pixel_support_lattice(valid, rows, columns,
                                                       pixels.device, pixels.dtype)
                 elif self.config.occupancy_pixel_query == 14:
@@ -1164,7 +1164,7 @@ class TetrisStateNet(nn.Module):
                     statistics = torch.cat((statistics,
                                             summary.reshape(statistics.shape[0], -1,
                                                             PIXEL_QUERY_STENCIL_FEATURES)), dim=-1)
-                elif self.config.occupancy_pixel_query in (8, 10):
+                elif self.config.occupancy_pixel_query in (8, 10, 15):
                     # declared m35 contrast read: each statistic beside its deviation from the sample's
                     # own mean over the lattice, so the projection sees the board's internal contrast as
                     # well as its level. the mean comes from the sample itself, never from a population

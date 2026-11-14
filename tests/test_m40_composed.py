@@ -96,7 +96,7 @@ class FormTest(unittest.TestCase):
     def test_the_declared_boundary_is_where_the_predeclaration_says(self):
         replace(ModelConfig(), occupancy_pixel_query=14)
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=15)
+            replace(ModelConfig(), occupancy_pixel_query=16)
 
     def test_step_zero_is_the_published_read(self):
         pixels = torch.rand(1, 3, 64, 64)
