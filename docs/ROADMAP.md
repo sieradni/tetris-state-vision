@@ -1485,9 +1485,53 @@ features and its placement are trained together), and every support-lattice arm 
 exogenous prior. The next declared step keeps the geometry endogenous and uses the support only as an
 alignment applied to the predicted lattice.
 
+## M40 - the predicted lattice, corrected by the support, and the question closed
+
+[M40_COMPOSED_ALIGNMENT.md](M40_COMPOSED_ALIGNMENT.md) predeclared and measured form 14: the `30`
+statistics sampled at a declared per-board blend of the model's predicted lattice and the support lattice
+(`PIXEL_COMPOSED_WEIGHT = 0.5`, fixed, no parameter), so the geometry stays a function of what the network
+predicts while the raster's support enters as a correction. Measured
+`docs/evidence/m40-composed-alignment-r6/scope.json`: F1 at `0.0` `0.260599`, AUC `0.897918`, best swept
+`0.439535` (at `1.65`) - refused, gate per-cell/ranking false, attribution true, bar missed
+(`-0.112283` / `-0.056611` / `-0.250240`). Split closure `-0.104439` / placement `-0.009742` /
+representation `+0.557387`, sum asserted; false positives `1181` at median margin `1.233860`, `910` of them in
+rows 0-9 and `136` in rows 15-19, `textured_empty_separated: false`.
+
+The predeclaration records the defect caught before the run: the *literal* composition (map the predicted
+board box onto the support box) is provably the support lattice itself, so it would have re-measured M34
+under a new name; the declared form is a convex combination instead. A second defect (V-166) was caught after
+the first run: the composed placement was assigned after the statistics had been sampled, so the arm trained as
+the winner - visible because its checkpoint hash was byte-identical to the anchor's. Repaired before the
+scored run, with the inert run and its scoring kept and labelled.
+
+## The campaign's remaining empirical question, closed
+
+**Can an exogenous correction to placement be learned at this depth by any composition with the predicted
+lattice? Measured answer: no - not at this depth, at this budget, by any composition tried.** The support is
+read across the whole regression set rather than from this arm alone:
+
+| what the arm does to the sampled geometry | arms | AUC range | best swept range |
+|---|---|---|---|
+| keeps the predicted lattice sampled (adds features or width) | M35, M37, M38, M36 | `0.886350`-`0.945596` | `0.420935`-`0.589286` |
+| moves it off the predicted lattice (replaces or blends in the support) | M34, M40, M39 | `0.836907`-`0.897918` | `0.351779`-`0.439535` |
+
+The two families do not overlap on either ranking measure, and the winner (`0.954529` / `0.689775`) is above
+both. Inside the moving family the loss is monotone in how much of the geometry is replaced
+(`0.954529` / `0.689775` at share `0.0`; `0.897918` / `0.439535` at `0.5`; `0.883260` / `0.385925` at `1.0`),
+which is what a substitution shows and not what a learned correction shows - a correction would have to beat
+the endpoint it corrects from, and the half-strength arm recovers only `+0.014658` of AUC and `+0.053610` of
+best swept against it while landing `0.250240` of best swept below the winner. M39 rules out the remaining
+alternative explanation: the aligned *statistics* were available to that read at full strength and the ranking
+still fell, so what is lost is the endogenous sampling path itself, not information about the alignment.
+
+Scope of the statement: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed,
+`64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured points on the
+strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no parameter),
+and a learned per-board mixing weight was predeclared out of scope.
+
 ## The measured regression set (maintained)
 
-The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M39 has overtaken it. Every row
+The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row
 below is the same fixed 2,986 cells, both fixed label vectors, the same seed, the same 64-step protocol and
 the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 
@@ -1500,11 +1544,12 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M37 `m37-stencil` | + coarse `stencil_contrast` summary (40 inputs) | `0.270096` | `0.919512` | `0.589286` | fail |
 | M38 `m38-capacity` | hidden width 64 -> 128 | `0.273082` | `0.895041` | `0.463551` | fail |
 | M39 `m39-dual` | both placements in one read (60 inputs) | `0.246228` | `0.836907` | `0.351779` | fail |
+| M40 `m40-composed-r2` | predicted lattice blended half onto the support box | `0.260599` | `0.897918` | `0.439535` | fail |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
-M39 `-0.126653` / `-0.117621` / `-0.337996`.
+M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`.
 
 ## What the evidence settles
 
@@ -1520,7 +1565,16 @@ weakest true positive), with AUC falling from `0.954529` to `0.836907`-`0.945596
 the read *both* geometries does not repair it: an exogenous half does not become a correction just by being
 placed beside an endogenous one.**
 
-## The next structural step, and why it is structurally different
+## The next structural step this pass superseded (recorded, measured, refused)
+
+M40 was that step and it was refused; its numbers are in the regression set above and the question it was
+tasked to close is closed in its own section. The next structural step is therefore not another composition
+of the sampling geometry: the measured separation says the sampled lattice must stay the predicted one, so
+the open direction is to make the *decision* placement-aware without moving the sampling geometry - for
+example a declared per-board term that uses the support only to set the board's own crossing level, which is
+a decision rule rather than a sampled geometry and leaves every sampled point where the network put it.
+
+## Superseded: the previously recorded next step, and why it looked structurally different
 
 Make the support informative but keep the geometry endogenous: sample at the **predicted lattice composed
 with the support's alignment** - a declared per-board affine transform that maps the predicted board box
@@ -1529,4 +1583,5 @@ itself stays the differentiable geometry the read is trained through. Nothing is
 sampled from a fixed grid, and the read keeps the gradient path to its own placement while gaining the
 raster's correction. It is structurally different from M34-M39 in the one respect the evidence names: the
 sampling geometry remains a function of what the network predicts, instead of being replaced by, or
-duplicated beside, a label-free prior.
+duplicated beside, an externally computed prior. **Measured in M40 and refused** - see the closure section
+above.

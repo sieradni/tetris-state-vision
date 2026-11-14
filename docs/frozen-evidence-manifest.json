@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "8b2f761beea8c3766ba060ae2f4fb0783a50e59a",
+    "generated_at_commit": "eb5ac54d9cc3cb665b1fcea91e24b5eeac70950c",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -28,11 +28,11 @@
     "fixtures-r3.log": "4c48a5aab818fcc27776637c06d77ecc405b1b93a352ae1d0420e5635c954317",
     "fixtures-r3.stderr.log": "96b5de3ee37a08529ca1a51ca4110ac6f90030f5f6db1546ecb41dbdcf6ccd0b",
     "foundation.json": "74583434e5219833a9b887f0b6c2ffa7fd58b4b856ded724f1dabd17b4249c4f",
+    "m22-stencil-r1-inertness.json": "a3aea04bbd737988a506f7ee13ea8abd7b5f89191854468d35813b15a929a80d",
+    "m23-contrast-r1-inertness.json": "7cef9b7d50395fe4f30148917c55ca636e0d7b1297c5d577488239795e19bbf7",
     "setup.json": "e7b96b85a773ff3357eb49cb8033bc19a2e51db108b98cd3435364c9b9a76417",
     "setup.log": "5708135b677933fe2dfaa783a4f303c49daf27aad7a90f39e553e8960f79dc95",
-    "setup.stderr.log": "c0a3eff150e53a00407da93eeecb6419ef3ccb49405f09cef8c040c6cbcfa0f1",
-    "m22-stencil-r1-inertness.json": "a3aea04bbd737988a506f7ee13ea8abd7b5f89191854468d35813b15a929a80d",
-    "m23-contrast-r1-inertness.json": "7cef9b7d50395fe4f30148917c55ca636e0d7b1297c5d577488239795e19bbf7"
+    "setup.stderr.log": "c0a3eff150e53a00407da93eeecb6419ef3ccb49405f09cef8c040c6cbcfa0f1"
   },
   "directories": {
     "accumulation-arm-balanced-errors-r1": {
@@ -4479,6 +4479,20 @@
         "scope.json": "c56f6a3ce8c57ca8519427973fc02e924521aca3bc64d5844a047290efe557a0"
       }
     },
+    "m40-composed-alignment-r5-superseded-inert": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "53d67b335aebdd54c9add727bb9d3e99c4257bd8a36c620273b285dc99e863e1",
+        "scope.json": "c82a74262b8de3b9e790df23092521d17d771c75de3f36e905214f88b3823d1d"
+      }
+    },
+    "m40-composed-alignment-r6": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "ceb87d3485d51c320964d8f89bed6ff3909d0e239d3f10fb511367deefae46f7",
+        "scope.json": "a34f7d422a4cfb0ade464e3f18f8bb70d528829722c55ffa10ecc17c63ee7080"
+      }
+    },
     "m5-column-readout-r1": {
       "record_commit": "889a6197b347af30f2497ed30781d07fb31276eb",
       "files": {
@@ -5098,7 +5112,7 @@
     }
   },
   "totals": {
-    "directories": 285,
-    "files": 3661
+    "directories": 287,
+    "files": 3665
   }
 }

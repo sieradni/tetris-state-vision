@@ -3333,3 +3333,42 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   fails in its own test file before the suite does. The three original guard tests remain the authority.
 - Named green runs: `tests.test_span_level tests.test_tap_span tests.test_two_path tests.test_m37_fusion`
   (83 tests, OK).
+
+## V-165 - CLOSED: the declared composition was a duplicate of the arm it was meant to improve on
+
+- Symptom: none at run time - found while checking the declared form's arithmetic before spending a run.
+  The declared "predicted board box mapped onto the valid-support box" produces, for every board, the
+  support lattice itself.
+- Root cause: an affine lattice is three vectors; mapping one affinely onto a box yields the lattice of that
+  box. Whatever the predicted lattice was, the composed geometry equals `pixel_support_lattice`, so form 14
+  as first declared would have re-measured M34 under a new name while the document claimed a new mechanism.
+- Change: the declared form is a convex combination of the predicted lattice and the aligned one with
+  `PIXEL_COMPOSED_WEIGHT = 0.5` fixed, so the geometry keeps half its own structure and the arm is neither
+  endpoint. No guard, threshold or protocol was touched.
+- Detection class: declared-mechanism identity - first occurrence.
+- Instrument: `tests/test_m40_composed.py::GeometryTest::test_the_outright_alignment_would_be_the_support_lattice`
+  pins the collapse explicitly (`weight=1.0` equals `pixel_support_lattice`), so the claim in this entry is
+  executable rather than prose, and the blend's own test pins that the declared form is neither endpoint.
+- Named green runs: `tests.test_m40_composed` (10 tests, OK).
+
+## V-166 - CLOSED: the composed placement was assigned after sampling, so form 14 trained as form 3
+
+- Symptom: the first scored receipt of form 14 returned numbers identical to the winner to full precision
+  (`f1_at_zero` `0.3728813559`, AUC `0.9545285971`, best swept `0.689775` at `3.6`), i.e. a zero delta that
+  no distinct arm produces.
+- Root cause: the form's branch set `placement = pixel_composed_lattice(...)` *after* the statistics had
+  already been read at the previously selected placement, so the declared geometry was computed and then
+  discarded. The checkpoint hash proved it independently: `eddec1fd…` for both the arm and the anchor, which
+  is what identical dynamics from identical initialisation produce, and what a real arm cannot.
+- Change: the composed placement is selected inside the lattice chain, before the statistics are sampled, and
+  the dead late assignment was removed. No guard, threshold, width or protocol was touched.
+- Detection class: declared-mechanism wiring - first occurrence, and the stronger signal was provenance
+  (identical weights) rather than the metric.
+- Instrument: `tests/test_m40_composed.py::FormTest::test_the_sampled_geometry_actually_follows_the_support`
+  spies on the declared helper and requires form 14 to call it and form 3 not to, so an inert branch fails in
+  its own file. Standing lesson recorded: every arm's receipt should be checked against the anchor's checkpoint
+  hash for *distinctness*, since a byte-identical hash is the cheapest proof that a form never ran.
+- Named green runs: `runs/m40-composed-r2-job.json` (study, peak `1,032,208,384`),
+  `runs/m40-composed-alignment-r6-job.json` (score, 128 MiB), checkpoint `f888685a2d04…` distinct from the
+  anchor's `eddec1fd…`. The inert run is preserved as `runs/m40-composed-superseded-inert*` with its receipt
+  and its scoring as `docs/evidence/m40-composed-alignment-r5-superseded-inert`.

@@ -9,8 +9,10 @@ import sys
 import unittest
 from dataclasses import replace
 from pathlib import Path
+from unittest import mock
 
 import torch
+import tetris_vision.model
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"src"))
@@ -70,6 +72,23 @@ class FormTest(unittest.TestCase):
     def test_the_form_adds_no_parameter(self):
         self.assertEqual(sum(p.numel() for p in model(14).parameters()),
                          sum(p.numel() for p in model(3).parameters()))
+
+    def test_the_sampled_geometry_actually_follows_the_support(self):
+        """The defect this pins: assigning the composed placement after sampling made the form inert."""
+        # the sampled placement has to be produced by the declared composition, not left at the predicted
+        # lattice: the first wiring of this form assigned it after the statistics had been taken, which made
+        # the arm numerically identical to the arm it was supposed to be compared against.
+        pixels = torch.rand(1, 3, 64, 64)
+        calls = {}
+        for form in (3, 14):
+            real = tetris_vision.model.pixel_composed_lattice
+            with mock.patch.object(tetris_vision.model, "pixel_composed_lattice",
+                                   side_effect=real) as spy:
+                model(form)(pixels, mask())
+                calls[form] = spy.call_count
+        # the composed geometry has to be what the form samples; a form that never calls it is inert
+        self.assertGreaterEqual(calls[14], 1)
+        self.assertEqual(calls[3], 0)
 
     def test_the_form_reads_the_unchanged_thirty_inputs(self):
         self.assertEqual(model(14).occupancy_pixel_query[0].in_features, 30)

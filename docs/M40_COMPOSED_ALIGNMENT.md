@@ -72,5 +72,77 @@ how strongly it is applied.
 
 ## Receipts
 
-`runs/m40-composed-{profile,study,probe}` and `docs/evidence/m40-composed-alignment-r1/{scope,diagnosis}.json`.
-Refused attempts keep their receipts; only completed runs are quoted.
+`runs/m40-composed-r2{,-profile,-registration}` and
+`docs/evidence/m40-composed-alignment-r6/{scope,diagnosis}.json`. Every earlier attempt keeps its receipt.
+
+## Measured (form 14, `m40-composed-r2`, scored `m40-composed-alignment-r6`)
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| `m30-level-calibrate-r5` (winner, re-scored in the same pass) | `0.372881` | `0.954529` | `0.689775` (at `3.6`) |
+| **M40 composed alignment** | **`0.260599`** | **`0.897918`** | **`0.439535`** (at `1.65`) |
+| delta | `-0.112283` | `-0.056611` | `-0.250240` |
+| anchored variant | `0.326074` | `0.836073` | `0.429792` (at `2.1`) |
+
+Gate: per-cell **false**, ranking **false**, attribution **true**; the same three flags on the anchored
+variant. Bar not met. Peak commit `1,032,208,384` (study, against `1,152` MiB), probe `564,199,424`, scoring
+reader `44` MB; checkpoint `f888685a2d04…`.
+
+Split (closure / placement / representation), sum asserted: `-0.104439` / `-0.009742` / `+0.557387`, i.e.
+`-0.235645` / `-0.021982` / `+1.257627` of the `0.443205` span; `short_stage: closure`.
+
+### What the refusal says, in the terms predeclared for it
+
+The arm does not sit where a learned correction would put it. Its error profile is a *partial* copy of the
+support-lattice endpoint's, not a blend toward the winner: false positives `1181` at median margin
+`1.233860` (M35 `1088` at `1.352717`), weakest true positive `0.168971`, and `910` of those false positives
+in rows 0-9 with `136` more in rows 15-19; `textured_empty_separated: false`. Contrast AUC `0.897918` - it
+recovers `+0.014658` of the support endpoint's `-0.071268` gap and `0.260599` recovers nothing at `0.0`.
+
+Measured against *both* endpoints, which is what the predeclaration asked for:
+
+| exogenous share of the sampled geometry | arm | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|---|
+| `0.0` | `m30-level-calibrate-r5` | `0.372881` | `0.954529` | `0.689775` |
+| `0.5` | M40 `m40-composed-r2` | `0.260599` | `0.897918` | `0.439535` |
+| `1.0` | M34 `m34-support` | `0.274869` | `0.883260` | `0.385925` |
+
+Both ranking measures fall monotonically in the exogenous share, and the half-strength arm sits nearer the
+full-strength endpoint than the winner on both (`0.897918` against `0.954529` and `0.883260`; `0.439535`
+against `0.689775` and `0.385925`). A correction that was being *learned* would have to beat the endpoint it
+corrects from; a substitution shows exactly this - a graded loss, in both metrics, in proportion to how much
+of the endogenous geometry it replaces. At `0.0` the ordering is not monotone (`0.260599` is below the
+endpoint's `0.274869`): half a correction buys neither the endpoint's coarse placement nor the winner's
+fine one.
+
+So: **the placement-consistency signal is present-but-swamped at any strength, and its cost is graded.** The
+signal is present (the arm is not the winner, and its split moves the placement term by `-0.009742` while the
+representation term rises `+0.557387`); it is swamped because the confident false positives stay in the dense
+upper bands at margins above the weakest true positive (`910` in rows 0-9, `136` in rows 15-19, median
+`1.233860` against a weakest true positive of `0.168971`), exactly the signature of M34-M39. Capacity is not
+offered as an explanation and does not apply: the form adds **no parameter at all** against the winner
+(`653,243` either way).
+
+## Defects this pass found
+
+- **V-165** - the literal composition is a duplicate arm (recorded in the predeclaration above): an affine
+  lattice mapped onto the support box is the support lattice, so the declared form became a blend instead.
+  Caught before any run.
+- **V-166** - the first wiring assigned the composed placement *after* the statistics had been sampled, so
+  form 14 trained as form 3. Caught by the re-scored checkpoint hash being byte-identical to the anchor's
+  (`eddec1fd…` in both), which no distinct arm can produce. Repaired by selecting the placement in the
+  lattice chain before sampling; pinned by `tests/test_m40_composed.py::FormTest::test_the_sampled_geometry_actually_follows_the_support`,
+  which spies on the declared helper and requires form 14 to call it and form 3 not to. The inert run is kept
+  as `runs/m40-composed-superseded-inert` with its receipt, and its scoring as
+  `docs/evidence/m40-composed-alignment-r5-superseded-inert`.
+
+## What this pass settles
+
+An exogenous correction to placement cannot be learned at this depth in any composition with the predicted
+lattice. The reasoning is the dose-response above plus the whole regression set, not this arm alone: every
+arm that keeps the predicted lattice as the *sampled* geometry (M35 `0.945596` / `0.570048`, M37 `0.919512` /
+`0.589286`, M38 `0.895041` / `0.463551`, M36 `0.886350` / `0.420935`) lands in one band, and every arm that
+moves the sampled geometry off it (M34 `0.883260` / `0.385925`, M40 `0.897918` / `0.439535`, M39 `0.836907` /
+`0.351779`) lands in a strictly lower one - with M39 showing that *having* the aligned statistics available is
+not the missing piece. The separation is the sampling path, and its cost is monotone in how much of that path
+is replaced.

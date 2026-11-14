@@ -1125,18 +1125,18 @@ class TetrisStateNet(nn.Module):
                 elif self.config.occupancy_pixel_query == 7:
                     placement = pixel_support_lattice(valid, rows, columns,
                                                       pixels.device, pixels.dtype)
+                elif self.config.occupancy_pixel_query == 14:
+                    # declared m40 composed geometry: the predicted lattice stays the sampled geometry, so
+                    # the read is still a function of what the network predicts, and the raster's valid
+                    # support enters only as a per-board correction composed with it. no parameter, nothing
+                    # fitted, and the identity whenever the predicted box already sits on the support.
+                    placement = pixel_composed_lattice(lattice, valid, rows, columns,
+                                                      pixels.device, pixels.dtype)
                 else:
                     placement = lattice
                 statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
-                if self.config.occupancy_pixel_query == 14:
-                    # declared m40 composed geometry: the predicted lattice stays the sampled geometry, so
-                    # the read is still a function of what the network predicts, and the raster's valid
-                    # support enters only as a per-board alignment composed with it. no parameter, nothing
-                    # fitted, and the identity whenever the predicted box already sits on the support.
-                    placement = pixel_composed_lattice(lattice, valid, rows, columns,
-                                                      pixels.device, pixels.dtype)
-                elif self.config.occupancy_pixel_query == 13:
+                if self.config.occupancy_pixel_query == 13:
                     # declared m39 dual-placement read: the same thirty statistics sampled twice - once at
                     # the decoder's own predicted lattice, where the model believes the cells are, and once
                     # at the capture's support lattice, where the raster says the board sits. The pair is the

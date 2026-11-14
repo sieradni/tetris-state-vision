@@ -3620,13 +3620,33 @@ placement-consistency signal is present and **swamped** (false positives `1239` 
 median margin `2.316557`, upper bands `939`, rows
 15-19 `283`).
 
+M40 ran the recorded composed-alignment read (form 14, `30` inputs sampled at a declared half-strength blend
+of the predicted lattice and the support box, `PIXEL_COMPOSED_WEIGHT = 0.5`, no parameter): F1 at `0.0`
+`0.260599`, AUC `0.897918`, best swept `0.439535` (at `1.65`) - refused, deltas `-0.112283` / `-0.056611` /
+`-0.250240`, split closure `-0.104439` / placement `-0.009742` / representation `+0.557387`, false positives
+`1181` at median margin `1.233860` (`910` in rows 0-9, `136` in rows 15-19), textured-empty still not
+separated. Two defects were caught and recorded: the literal alignment is provably the support lattice
+(V-165, before any run, so the form is a blend), and the first wiring assigned the placement after sampling so
+the arm trained as the winner (V-166, caught by a byte-identical checkpoint hash to the anchor).
+
 Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775`. Regression set (F1 at
 `0.0` / AUC / best swept): M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` /
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
-`0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`. All fail the gate; all sit
-below the winner. Settlement: the winner's sampling geometry is endogenous (it samples the lattice it
-predicts, so placement is trained with the features), and a support lattice is an exogenous prior that
-removes that channel - which is why every support-lattice arm shows the same signature (confident false
-positives in the dense upper bands, AUC down `0.009`-`0.118`). Recorded next step: keep the predicted lattice
-as the sampled geometry and apply the support only as a per-board alignment composed with it - structurally
-different because the geometry stays a function of what the network predicts.
+`0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
+`0.439535`. All fail the gate; all sit below the winner.
+
+**The campaign's remaining empirical question is closed, in measured terms:** an exogenous correction to
+placement cannot be learned at this depth by any composition with the predicted lattice. Across the whole
+regression set, arms that keep the predicted lattice as the sampled geometry (M35, M37, M38, M36) occupy AUC
+`0.886350`-`0.945596` and best swept `0.420935`-`0.589286`; every arm that moves the sampled geometry off it
+(M34, M40, M39) occupies AUC `0.836907`-`0.897918` and best swept `0.351779`-`0.439535` - the families do not
+overlap, and inside the moving family the loss is monotone in the replaced share (`0.0`: `0.954529` /
+`0.689775`; `0.5`: `0.897918` / `0.439535`; `1.0`: `0.883260` / `0.385925`). M39 rules out the alternative
+account, because the aligned statistics were available to that read at full strength and the ranking still
+fell: what is lost is the endogenous sampling path, not information about the alignment. Capacity is excluded
+(M38 at width `128` refused; M40 adds no parameter). Scope: one population, both fixed label vectors, one seed,
+`64` steps, a `64`-wide one-block head, fixed global `0.0`, three measured points on the strength axis.
+
+Recorded next step, in the direction the closure leaves open: keep every sampled point where the network puts
+it and make the *decision* support-aware instead - a declared per-board term that uses the support only to set
+the board's own crossing level, which is a decision rule rather than a change of sampling geometry.
