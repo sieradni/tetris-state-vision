@@ -4452,6 +4452,20 @@
         "scope.json": "4466f7ce9c91dbe7d2a562c761a91c96ee7eeef0b3d87754c52df7548729d9ea"
       }
     },
+    "m37-stencil-fusion-r2": {
+      "record_commit": "c761c6c47078f229a3d26d3aaac4a1a289ac3e13",
+      "files": {
+        "diagnosis.json": "0c6b81cb86abd8d3e31b44df286bd598b247775e549824508b088fc90d7e2219",
+        "scope.json": "7b1cce5ac886750f0df6466b603eaffdd1ace93a9174566db8a806e80f4e66c5"
+      }
+    },
+    "m38-capacity-r1": {
+      "record_commit": "c761c6c47078f229a3d26d3aaac4a1a289ac3e13",
+      "files": {
+        "diagnosis.json": "1650a9bc8737bd96e9a6a21fa786f984bcfbcc6c0598d1c43a2b54a921c985a0",
+        "scope.json": "376ce801c07d3b1c1756a81dd3e6a52310cf3a4ecd799bf35c40c7540becf260"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5077,7 +5091,7 @@
     }
   },
   "totals": {
-    "directories": 282,
-    "files": 3655
+    "directories": 284,
+    "files": 3659
   }
 }
