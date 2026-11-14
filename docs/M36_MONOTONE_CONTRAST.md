@@ -33,11 +33,20 @@ filled, wherever it sits.
 So the binding constraint is the decision structure, not capacity: the per-cell margin is informative
 (AUC `0.945596`) and the read is not starved (60 inputs, 655,163 parameters).
 
-## The declared mechanism: form 8 features, one crossing per column
+## The declared mechanism: form 10, one crossing per column
 
-`--occupancy-pixel-query 8 --occupancy-stack-monotone 1`, unchanged features and unchanged projection,
-with the campaign's already-declared `stack_contiguous` envelope applied after the read and before the
-consumer's boundary:
+`--occupancy-pixel-query 10` - one declared form, unchanged features and unchanged projection, with the
+campaign's already-declared `stack_contiguous` envelope applied inside the form after the read and before
+the consumer's boundary:
+
+**Amendment, recorded before any M36 run.** The first version of this document declared form 8 plus
+`--occupancy-stack-monotone 1` side by side. The CLI refused that pairing - "the pixel-statistics read-out
+is a standalone lever: it is declared alone, so no other occupancy read-out selector is set beside it" -
+which is the standing admission guard doing its job, and the refusal is kept as
+`runs/m36-monotone-profile-job.json`. Rather than relax the guard, the envelope is now part of the form
+itself: `occupancy_pixel_query == 10` is form 8's features and projection followed by the same declared
+envelope. The guard, the selector list's structure and every other declaration are untouched, and no
+scoring run existed before this amendment.
 
 - the per-column occupancy profile is replaced by its suffix maximum in the project's bottom-first row
   order, so a column crosses `0.0` at most once and that crossing is the column's height;
@@ -49,7 +58,8 @@ consumer's boundary:
 
 ## The single change, and what stays fixed
 
-One change against M35's arm (`m35-contrast`): the monotone envelope. Placement (`pixel_support_lattice`),
+One change against M35's arm (`m35-contrast`): the monotone envelope, carried inside the form. Placement
+(`pixel_support_lattice`),
 the `30` statistics, their `30` sample-mean deviations, the `60`-input hidden projection, the seed, the
 source checkpoint, the `64` steps and the `1,152` MiB ceiling are untouched. The consumer's boundary stays
 the fixed global `0.0`.
