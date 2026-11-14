@@ -111,7 +111,7 @@ def balanced_occupancy(logits, target, mask, positive_weight=1):
     errors = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
     positive, negative = mask & (target == 1), mask & (target == 0)
     positive_count, negative_count = positive.sum((1, 2)), negative.sum((1, 2))
-    if positive_weight == -1:
+    if positive_weight == DATA_DERIVED_BUDGET:
         positive_weight = (negative_count.float()/positive_count.clamp_min(1).float()
                            ).clamp(.1, 10.)
     per_image = ((positive_weight*(errors*positive).sum((1, 2))/positive_count.clamp_min(1))+
@@ -445,13 +445,20 @@ def require_occupancy_factor(factor, summary):
 # Declared class budget on occupied cells inside the balanced per-cell term, and its
 # admission join. Unlike OCCUPANCY_FACTORS this changes the split between classes, not
 # the term's total weight: the closed scale lever is never re-run through this name.
-# -1 is the declared data-derived budget: each image's own prevalence ratio, clamped, so the
-# level comes from the labels' mass rather than a chosen constant.
-POSITIVE_CELL_WEIGHTS = (1, 4, -1)
+POSITIVE_CELL_WEIGHTS = (1, 4)
+# Declared data-derived budget: each image's own prevalence ratio, clamped. It is an internal
+# sentinel rather than a declared class budget, so it never widens the driver's choices; the
+# admission join requires the matching `occupancy_balance` declaration instead.
+DATA_DERIVED_BUDGET = -1
 
 
 def require_positive_weight(weight, summary):
     """One declaration of the admission join for the occupancy class budget."""
+    if weight == DATA_DERIVED_BUDGET:
+        if (summary.get("arguments", {}).get("occupancy_balance") != 1 or
+                summary.get("recovery_contract", {}).get("occupancy_balance") != 1):
+            raise ValueError("data-derived budget without its declared balance")
+        return
     if (type(weight) is not int or weight not in POSITIVE_CELL_WEIGHTS or
             summary.get("arguments", {}).get("occupancy_positive_weight", 1) != weight or
             summary.get("recovery_contract", {}).get("occupancy_positive_weight", 1) != weight):
@@ -887,7 +894,8 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
             label["occupied"].flatten(0, 1), label["known"].flatten(0, 1))
     check(type(occupancy_factor) is int and occupancy_factor in OCCUPANCY_FACTORS,
           "occupancy factor must be1 or4")
-    check(type(positive_weight) is int and positive_weight in POSITIVE_CELL_WEIGHTS,
+    check(type(positive_weight) is int and (positive_weight in POSITIVE_CELL_WEIGHTS
+          or positive_weight == DATA_DERIVED_BUDGET),
           "occupancy positive weight must be1 or4")
     check(type(occupancy_placed) is int and occupancy_placed in OCCUPANCY_PLACED_WEIGHTS,
           "occupancy placed must be0 or1")

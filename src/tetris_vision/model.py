@@ -880,7 +880,7 @@ class TetrisStateNet(nn.Module):
         self.pixel_query_level = None
         if config.pixel_query_level:
             self.pixel_query_level = nn.Parameter(torch.zeros(2))
-        # Declared label-free read standardisation (M30): a gated board standardisation, exactly the
+        # Declared supervision-free read standardisation (M30): a gated board standardisation, exactly the
         # published logits at step zero, whose gate is learned through the same loss.
         self.read_calibration = None
         if config.occupancy_read_standardise:

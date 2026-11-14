@@ -16,7 +16,7 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"src"))
 
-from tetris_vision.losses import balanced_occupancy  # noqa: E402
+from tetris_vision.losses import DATA_DERIVED_BUDGET, balanced_occupancy  # noqa: E402
 from tetris_vision.model import ModelConfig, TetrisStateNet  # noqa: E402
 
 SIDE = 64
@@ -104,8 +104,13 @@ class BalanceTest(unittest.TestCase):
         self.assertAlmostEqual(float(derived), float(clamped), places=6)
 
     def test_the_sentinel_is_declared(self):
-        from tetris_vision.losses import POSITIVE_CELL_WEIGHTS
-        self.assertIn(-1, POSITIVE_CELL_WEIGHTS)
+        from tetris_vision.losses import POSITIVE_CELL_WEIGHTS, require_positive_weight
+        self.assertEqual(DATA_DERIVED_BUDGET, -1)
+        self.assertNotIn(DATA_DERIVED_BUDGET, POSITIVE_CELL_WEIGHTS)
+        with self.assertRaises(ValueError):
+            require_positive_weight(DATA_DERIVED_BUDGET, {"arguments": {}})
+        require_positive_weight(DATA_DERIVED_BUDGET, {"arguments": {"occupancy_balance": 1},
+                                                      "recovery_contract": {"occupancy_balance": 1}})
 
 
 if __name__ == "__main__":
