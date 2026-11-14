@@ -555,7 +555,7 @@ def staged_mode(summary, *, freeze_backbone, init_weights_from):
 # constant rather than a literal inside the check so a new declared module cannot be refused for
 # matching its parent's name only up to the first underscore (V-104).
 INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_pixel_query.",
-                                 "pixel_query_level",
+                                 "pixel_query_level", "read_calibration",
                                  "occupancy_detail_tap.",
                                  "occupancy_resolution_branch.", "occupancy_deform.",
                                  "occupancy_deform_coarse.", "support_box.", "lattice_residual.",
@@ -1016,6 +1016,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                       allow_absent=(                                                    "occupancy_context", "occupancy_pixel_query",
                                                     "occupancy_detail", "pixel_query_level",
                                                     "occupancy_read_standardise",
+                                                    "occupancy_balance",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
                                                     "lattice_support",

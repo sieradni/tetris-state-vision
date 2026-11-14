@@ -3098,3 +3098,29 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   writing `docs/evidence/m29-amplitude-r1/scope.json`; studies `runs/m29-pixelform-{centred-r3,hidden-r2,neighbours-r2}-job.json`
   (peaks 1,050,759,168 / 1,008,046,080 / 994,127,872 bytes). First launches destroyed by a host
   disconnect are preserved as `runs/m29-pixelform-*-r1*` and `runs/m29-pixelform-centred-r2-job.json`.
+
+## V-153 - CLOSED: an operating-point deficit was carried as if it were a capacity deficit
+
+- Symptom: after M29 the campaign held a read that ranked at `0.946604` AUC yet scored
+  `0.291464` F1 at the fixed `0.0` boundary, and the residue was still written up as a
+  read-out problem - even though capacity had already been confirmed as the M29 mechanism.
+- Root cause: the campaign had no instrument that could separate *where the read sits* from *what it can
+  order*. Three plausible level mechanisms (learned scale/bias, class budget, board normalisation) had never
+  been measured against each other on one population, so the next lever was being chosen by argument.
+- Change: `scripts/m30_operating_point_read.py` scores one declared single-change level mechanism per form on
+  the identical 2,986 rows, and `scripts/m30_level_tensors.py` reads the learned scale/bias and calibration gate
+  from the committed checkpoints. Learned scale/bias is excluded (`-0.005750`),
+  class budget excluded and negative (`-0.015693`), gated board
+  standardisation confirmed at `+0.081417` (gate `0.022809`).
+- Detection class: analysis-instrument.
+- Instrument: the fixed-population joins (control `0.219626`, reference `0.543974`,
+  pixel `0.987179`), the anchor re-score from the M29 probe, the `0.05` confirmation floor, the
+  point-sum and fraction-sum asserts, and `tests/test_m30_receipt.py`.
+- Named green runs: `runs/m30-operating-point-r3-job.json` (passed, 128 MiB) writing
+  `docs/evidence/m30-operating-point-r1/scope.json`, and `runs/m30-level-tensors-r3-job.json` (passed,
+  640 MiB) writing `docs/evidence/m30-level-tensors-r1/scope.json`; studies
+  `runs/m30-level-{bias-r2,balance-r2,calibrate-r5}-job.json` (peaks
+  1,026,846,720 / 1,060,216,832 /
+  1,060,855,808 bytes) with probes `runs/m30-level-*-registration*`. Preserved refusals:
+  `runs/m30-level-calibrate-r2..r4-job.json` (`os_commit_pressure`, exit 125) and the r1 studies whose
+  receipts declared too few work items for the probe's completion guard.

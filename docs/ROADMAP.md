@@ -1361,3 +1361,19 @@ The gates still fail on the operating point (F1 at `0.0` `0.291464`
 against `0.70`; best `0.610101` against `0.70`), so the lever is not cleared, but
 the read-out's remaining deficit is no longer representation of the features: it is the threshold the
 read lands on.
+
+## M30 - the level is adjustable, the per-cell boundary is not
+
+A predeclared operating-point instrument ([M30_OPERATING_POINT.md](M30_OPERATING_POINT.md),
+`docs/evidence/m30-operating-point-r1/scope.json`) declares three single-change mechanisms that can only
+move the M29 winner's level, each identity at step zero. A learned scale and bias on the projection is
+excluded (`-0.005750` F1 at `0.0`; the learned scale settled at
+`0.995428`), a data-derived class budget is excluded and negative
+(`-0.015693`), and a label-free gated board standardisation is
+confirmed at `+0.081417` - F1 at `0.0` `0.372881`, AUC
+`0.954529`, best `0.689775` against the unchanged control `0.219626`
+and reference `0.543974`. The gates still fail on two of three (per-cell
+`0.372881` against `0.70`; best `0.689775`, `0.010225`
+short), so the lever stays uncleared. The measured limit is now the gate's single global `0.0` boundary
+applied to a read whose correct level is per-board; closing it would change the metric, which this pass
+does not do.

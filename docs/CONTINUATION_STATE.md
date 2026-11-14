@@ -3529,3 +3529,17 @@ cleared and the next lever targets the threshold the read lands on, not its inpu
 M28's own record stands as measured: form 1 at `0.425703` best swept F1, per-arm 3,316-cell read kept
 as the labelled secondary (V-150), reference provenance pinned in
 `docs/evidence/m28-reference-provenance-r1/scope.json` (V-151).
+
+M30 attacked that operating point with three predeclared label-free level mechanisms, each identity at
+step zero, on the same fixed 2,986 cells. A learned scale and bias is excluded
+(`-0.005750` F1 at `0.0`, learned scale `0.995428`),
+a data-derived class budget is excluded and negative (`-0.015693`), and a
+gated board standardisation is confirmed at `+0.081417`: F1 at `0.0`
+`0.372881`, AUC `0.954529`, best `0.689775`
+(`docs/evidence/m30-operating-point-r1/scope.json`, M30_OPERATING_POINT.md, ROADMAP M30). Span closure
+`+0.145801`, placement `-0.114151`, representation
+`+0.411555`, summing to `0.443205` by construction; attribution over the
+control `+0.470149`. Gates: per-cell `0.372881` and best
+`0.689775` fail, attribution passes, so `cleared` is false and the
+cause is `level-inconclusive:calibrate`. The measured limit is the gate's single global `0.0` boundary on a read whose
+correct level is per-board - a metric question, not a capacity or ordering question.

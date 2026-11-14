@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "instrument": "m30-level-tensors-r1",
+  "predeclaration": "docs/M30_OPERATING_POINT.md",
+  "ceiling_bytes": 671088640,
+  "job_name": "Local\\TetrisStateVision-ccd05dea9e514d03bdef5445c465a21d",
+  "forms": {
+    "bias": {
+      "run": "m30-level-bias-r2",
+      "mechanism": "learned scale and bias",
+      "scale_delta": -0.004572,
+      "bias": 0.000636,
+      "scale": 0.995428,
+      "ordering_preserved": true
+    },
+    "balance": {
+      "run": "m30-level-balance-r2",
+      "mechanism": "data-derived class budget",
+      "ordering_preserved": true,
+      "note": "the budget changes the loss level only; no tensor is added"
+    },
+    "calibrate": {
+      "run": "m30-level-calibrate-r5",
+      "mechanism": "gated board standardisation",
+      "gate": 0.022809,
+      "ordering_preserved": true,
+      "note": "monotone inside a board while the gate is non-negative; the pooled ordering is reported by the scoring receipt"
+    }
+  },
+  "scope": "Read-only scalar read of declared parameters from committed checkpoints; no forward pass, no training, no weight change."
+}

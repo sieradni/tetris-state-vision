@@ -78,3 +78,78 @@ receipt; only completed runs are reported.
   the read without moving F1 at `0.0` is not the same as a mechanism that improves separation.
 - No population, metric, threshold or gate is changed, and the control and reference arms are the
   committed ones, not retrained.
+
+## Measured
+
+Three declared forms, one change each, all trained at the unchanged 64-step protocol from
+`runs/m3-percell-balance-r1` and all scored on the identical 2,986 cells with both fixed label
+vectors (`docs/evidence/m30-operating-point-r1/scope.json`). The anchor is the M29 winner,
+re-scored here from its own probe rather than quoted: F1 at `0.0` `0.291464`,
+AUC `0.946604`, best `0.610101`.
+
+| mechanism | F1 at `0.0` | AUC | best swept F1 | delta F1 at `0.0` | delta best | verdict |
+|---|---|---|---|---|---|---|
+| bias | 0.285714 | 0.943155 | 0.621315 | -0.005750 | +0.011214 | excluded |
+| balance | 0.275772 | 0.903305 | 0.449123 | -0.015693 | -0.160978 | excluded |
+| calibrate | 0.372881 | 0.954529 | 0.689775 | +0.081417 | +0.079674 | confirmed |
+
+The unchanged control is `0.219626` best and the reference arm
+`0.543974`; the pixel read-out on the same cells holds
+`0.987179`.
+
+### What each mechanism did
+
+- **Learned level freedom (A, bias): excluded.** The learned scale settled at
+  `0.995428` with bias `0.000636` - essentially
+  identity, because the loss has no reason to move a parameter that does not change the ordering and the
+  batch already balances classes. F1 at `0.0` moved `-0.005750`, best
+  `+0.011214`. The mechanism is real but too weak to explain the
+  level, at this budget and on this loss.
+- **Data-derived class budget (B, balance): excluded, and negative.** F1 at `0.0`
+  `-0.015693`, best `-0.160978`,
+  AUC `-0.043298`. The already class-balanced loss means the
+  prevalence ratio mostly re-weights a term that was balanced by construction, and it cost ranking.
+- **Gated board standardisation (C, calibrate): confirmed.** F1 at `0.0`
+  `0.372881` (`+0.081417`), best swept
+  `0.689775` (`+0.079674`), AUC
+  `0.954529` (`+0.007925`), attribution over the control
+  `+0.470149`. The learned gate is `0.022809` - a small,
+  strictly positive, label-free affine map per board - and it moves the level far more than that number
+  suggests, because the read's across-board offsets are what the F1-at-`0.0` gate samples.
+
+### The gate on the confirmed mechanism
+
+| gate | bar | calibrate | result |
+|---|---|---|---|
+| per-cell F1 at `0.0` | `>= 0.70` | `0.372881` | fail |
+| ranking (AUC `>= 0.90` and best `>= 0.70`) | `0.90` / `0.70` | `0.954529` / `0.689775` | AUC pass, best fail |
+| attribution over the unchanged control | `>= 0.05` | `+0.470149` | pass |
+
+`cleared` is `False` and the cause field reads `level-inconclusive:calibrate`: one of three gates
+passes. Span closure for this read is `+0.145801` (`0.328969`),
+placement `-0.114151` (`-0.257557`), representation
+`+0.411555` (`0.928588`), summing to the
+`0.443205` span in points and to one in fractions, asserted in code.
+
+### The reading, stated as predeclared
+
+The predeclaration says a monotone calibration that lifts F1 at `0.0` is evidence about the gate's
+operating point, not a pass of the ranking claim. Here it is more than that and less than a clearance:
+the AUC also moved `+0.007925` - the map is monotone inside each board, so the
+pooled AUC could only move through the across-board level, and it did - and the best swept F1 rose
+`+0.079674` to `0.689775`, `0.010225` short of the
+`0.70` ranking bar. Per-cell F1 at the fixed `0.0` boundary remains `0.327119`
+short, and that is the gate the level cannot buy: standardisation re-centres each board but the fixed
+boundary is global, so a per-board map moves each board's level against a threshold it does not own.
+
+### What this establishes, and what it does not
+
+- The read's level *is* adjustable by a label-free structural mechanism, and the mechanism that works is
+  the across-board normalisation, not a learned scalar, not a class budget.
+- The remaining per-cell gap is a boundary problem: the gate scores every cell against one global
+  threshold while the read's correct level differs per board. That is a property of the gate the campaign
+  measures, and since the predeclaration forbids changing it, this receipt reports the gap rather than
+  closing it by redefinition.
+- Not shown: whether a per-board boundary would clear the per-cell gate (that would be a metric change and
+  is out of scope here), whether wider capacity compounds with this mechanism, or any real-image claim.
+  One seed, 64 steps, training-fit boards.

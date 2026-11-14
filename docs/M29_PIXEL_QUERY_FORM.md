@@ -160,3 +160,17 @@ not an information or placement problem.
 - Not shown: whether a wider or deeper block continues to improve, whether the operating point can
   be fixed by anything other than a decision rule, and any real-image or generalization claim. One
   seed, 64 steps, training-fit boards.
+
+## M30 update: the level moves, but the per-cell boundary does not
+
+The M29 winner's operating point was attacked directly with three predeclared label-free level
+mechanisms (`docs/M30_OPERATING_POINT.md`, `docs/evidence/m30-operating-point-r1/scope.json`).
+A learned scale and bias on the projection is too weak (`-0.005750`
+F1 at `0.0`) and a data-derived class budget is negative (`-0.015693`);
+a gated board standardisation is confirmed at `+0.081417`, lifting best swept F1 to
+`0.689775` (`0.954529` AUC) while attribution holds at
+`+0.470149`. The read therefore improves, and the ranking gate is
+`0.010225` short while the per-cell gate at the fixed `0.0` boundary stays
+`0.327119` short. The form-1 and form-3 records above stand as measured; what
+changes is that the remaining deficit is now located in the gate's single global boundary, not in
+capacity or in the read's ability to order cells.
