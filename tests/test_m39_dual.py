@@ -41,10 +41,10 @@ class DeclaredWidthTest(unittest.TestCase):
         self.assertEqual(dual-sampled, PIXEL_QUERY_FEATURES*64)
 
     def test_the_declared_boundary_is_where_the_predeclaration_says(self):
-        for form in (11, 12, 13):
+        for form in (11, 12, 13, 14):
             replace(ModelConfig(), occupancy_pixel_query=form)
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=14)
+            replace(ModelConfig(), occupancy_pixel_query=15)
 
 
 class BothPlacementsTest(unittest.TestCase):

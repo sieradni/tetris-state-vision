@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -569,6 +569,9 @@ def sample_features(features, lattice, coordinates, offsets):
 
 PIXEL_QUERY_EXTENT = .3
 PIXEL_QUERY_SAMPLES = 9
+# Declared m40 correction strength: the sampled geometry is this fraction of the fully aligned
+# lattice and the rest the predicted lattice itself. A fixed constant, not a learned weight.
+PIXEL_COMPOSED_WEIGHT = 0.5
 PIXEL_QUERY_FEATURES = PIXEL_QUERY_SAMPLES*3+3
 # declared m37 fusion width: five coarse stencil taps per cell, each read as its channel mean and its
 # channel spread after the declared exact-invariant contrast transform, so the coarse channel enters the
@@ -643,6 +646,49 @@ def pixel_support_lattice(valid, rows, columns, device, dtype):
         row = torch.tensor([0.0, -(y1-y0)/rows], device=device, dtype=dtype)
         lattices.append(torch.stack((origin, column, row), 0))
     return torch.stack(lattices, 0)
+
+
+def pixel_composed_lattice(lattice, valid, rows, columns, device, dtype,
+                           weight=PIXEL_COMPOSED_WEIGHT):
+    """Declared M40 geometry: the predicted lattice, half-corrected onto the capture's valid support.
+
+    M34-M39 replaced the geometry the read is trained through with a prior computed from the raster alone,
+    and every one ranked below the arm that samples its own predicted lattice. The first formulation of this helper mapped the
+    predicted board box onto the support box outright - and that is provably the support lattice itself,
+    because an affine lattice mapped affinely onto the support box *is* the lattice of that box, whatever
+    it was before. That is why the declared form is a convex combination instead: the sampled geometry is
+    `weight` parts the fully aligned lattice and `1-weight` parts the predicted lattice, with the declared
+    constant `PIXEL_COMPOSED_WEIGHT`. The read therefore keeps its own geometry (and the gradient path to
+    it) while the raster's support enters as a half-strength correction; it is the identity when the two
+    boxes coincide, and it is neither endpoint by construction.
+    """
+    origin, column, row = lattice[:, 0], lattice[:, 1], lattice[:, 2]
+    width = (columns*column[:, 0]).clamp_min(1e-3)
+    height = (-rows*row[:, 1]).clamp_min(1e-3)
+    boxes = []
+    for index in range(valid.shape[0]):
+        mask = valid[index, 0]
+        height_px, width_px = mask.shape
+        rows_hit, columns_hit = mask.any(dim=1), mask.any(dim=0)
+        if not bool(rows_hit.any()):
+            raise ValueError("the composed lattice needs a non-empty valid mask")
+        support_top = int(torch.argmax(rows_hit.to(torch.int8)))
+        support_bottom = int(height_px-torch.argmax(rows_hit.flip(0).to(torch.int8)))
+        support_left = int(torch.argmax(columns_hit.to(torch.int8)))
+        support_right = int(width_px-torch.argmax(columns_hit.flip(0).to(torch.int8)))
+        boxes.append(torch.stack((torch.tensor([support_left/width_px, support_top/height_px],
+                                               device=device, dtype=dtype),
+                                  torch.tensor([support_right/width_px, support_bottom/height_px],
+                                               device=device, dtype=dtype)), 0))
+    support = torch.stack(boxes, 0)
+    scale_x = ((support[:, 1, 0]-support[:, 0, 0])/width).clamp_min(1e-6)
+    scale_y = ((support[:, 1, 1]-support[:, 0, 1])/height).clamp_min(1e-6)
+    aligned_origin = torch.stack((support[:, 0, 0], support[:, 1, 1]), -1)
+    aligned_column = torch.stack((column[:, 0]*scale_x, torch.zeros_like(column[:, 1])), -1)
+    aligned_row = torch.stack((torch.zeros_like(row[:, 0]), row[:, 1]*scale_y), -1)
+    blend = lambda predicted, aligned: (1.0-weight)*predicted+weight*aligned
+    return torch.stack((blend(origin, aligned_origin), blend(column, aligned_column),
+                        blend(row, aligned_row)), 1)
 
 
 def pixel_query_neighbours(statistics, rows, columns):
@@ -910,7 +956,7 @@ class TetrisStateNet(nn.Module):
                                              else 1)
             if config.occupancy_pixel_query in (11, 12):
                 features = PIXEL_QUERY_FEATURES+PIXEL_QUERY_STENCIL_FEATURES
-            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11, 12, 13):
+            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1083,7 +1129,14 @@ class TetrisStateNet(nn.Module):
                     placement = lattice
                 statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
-                if self.config.occupancy_pixel_query == 13:
+                if self.config.occupancy_pixel_query == 14:
+                    # declared m40 composed geometry: the predicted lattice stays the sampled geometry, so
+                    # the read is still a function of what the network predicts, and the raster's valid
+                    # support enters only as a per-board alignment composed with it. no parameter, nothing
+                    # fitted, and the identity whenever the predicted box already sits on the support.
+                    placement = pixel_composed_lattice(lattice, valid, rows, columns,
+                                                      pixels.device, pixels.dtype)
+                elif self.config.occupancy_pixel_query == 13:
                     # declared m39 dual-placement read: the same thirty statistics sampled twice - once at
                     # the decoder's own predicted lattice, where the model believes the cells are, and once
                     # at the capture's support lattice, where the raster says the board sits. The pair is the
