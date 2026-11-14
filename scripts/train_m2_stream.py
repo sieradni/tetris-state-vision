@@ -56,7 +56,7 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-positive-weight", type=int, choices=POSITIVE_CELL_WEIGHTS, default=1,
                         help="declared class budget on occupied cells inside the balanced occupancy term;"
                              "1 is published and leaves the term magnitude unchanged")
-    parser.add_argument("--occupancy-pixel-query", type=int, choices=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), default=0,
+    parser.add_argument("--occupancy-pixel-query", type=int, choices=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), default=0,
                         help="declared per-cell pixel-statistics read-out (M28): deterministic colour/contrast"
                              " features at the model's own lattice through a zero-initialized projection")
     parser.add_argument("--pixel-query-level", type=int, choices=(0, 1), default=0,

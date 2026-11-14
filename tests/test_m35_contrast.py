@@ -55,7 +55,7 @@ class DeclaredWidthTest(unittest.TestCase):
         for form in (8, 9):
             replace(ModelConfig(), occupancy_pixel_query=form)
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=13)
+            replace(ModelConfig(), occupancy_pixel_query=14)
 
 
 class StepZeroTest(unittest.TestCase):
