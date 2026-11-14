@@ -3124,3 +3124,30 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   1,060,855,808 bytes) with probes `runs/m30-level-*-registration*`. Preserved refusals:
   `runs/m30-level-calibrate-r2..r4-job.json` (`os_commit_pressure`, exit 125) and the r1 studies whose
   receipts declared too few work items for the probe's completion guard.
+
+## V-154 - CLOSED: the per-cell deficit was undecidable from the record, and its first oracle diagnostic was not an upper bound
+
+- Symptom: after M30 the campaign held a read at `0.372881` F1 at `0.0` and
+  `0.689775` best swept F1, and could not say whether the per-cell bar was missed because the
+  read was wrong or because one global boundary was applied to a per-board level. The first implementation of the
+  oracle diagnostic reported `0.260062` - *below* the global read - which is impossible for a boundary family fitted
+  on the labels, so the diagnostic itself was wrong.
+- Root cause: no read existed that scored the same frozen arm under the unchanged boundary and under the declared
+  label-free rule side by side. The faulty diagnostic chose each board's boundary by that board's own F1, which is
+  not the pooled objective the gate scores, and it was labelled an upper bound it did not compute.
+- Change: `scripts/m31_decision_rule_read.py` scores (a) the unchanged global `0.0` read, (b) the committed
+  `otsu_board` applied label-free to each board's own logits, and (c) a label-fitted per-board boundary computed by
+  coordinate ascent on pooled F1. (c) is marked oracle-only and excluded from every verdict and gate; (b) decides the
+  branch. Result: label-free `0.278699` < global `0.372881`,
+  branch `representation`, oracle `0.763916`.
+- Detection class: analysis-instrument.
+- Instrument: the three-boundary side-by-side read, the oracle-exclusion rule, the join to the M30 receipt's global
+  read, the point-sum and fraction-sum asserts, and `tests/test_m31_receipt.py`. The r1 diagnostic is preserved as
+  `docs/evidence/m31-decision-rule-r1` and superseded by r2.
+- Named green runs: `runs/m31-decision-rule-r4-job.json` (passed, 640 MiB) writing
+  `docs/evidence/m31-decision-rule-r2/scope.json`; the branch's follow-up
+  `runs/m31-followup-r2-job.json` (passed, 128 MiB) writing `docs/evidence/m31-followup-r1/scope.json` from study
+  `runs/m31-context-r5-job.json` (passed, peak `1,026,760,704` bytes) and probe
+  `runs/m31-context-r5-registration-r4`. Preserved refusals: `runs/m31-context-r1..r4-job.json` and
+  `runs/m31-context-r1..r3-registration*` (`os_commit_pressure`/`os_commit_reservation`, exit 125) and the probes
+  refused before the `m31-` family was declared in the owned-run guard.

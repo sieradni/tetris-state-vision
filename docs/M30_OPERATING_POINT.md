@@ -153,3 +153,15 @@ boundary is global, so a per-board map moves each board's level against a thresh
 - Not shown: whether a per-board boundary would clear the per-cell gate (that would be a metric change and
   is out of scope here), whether wider capacity compounds with this mechanism, or any real-image claim.
   One seed, 64 steps, training-fit boards.
+
+## M31 update: the boundary was never the limit
+
+The question this receipt left open is settled on the same frozen arm
+(`docs/M31_DECISION_RULE.md`, `docs/evidence/m31-decision-rule-r2/scope.json`): the campaign's declared
+label-free per-board crossing scores `0.278699` F1 at `0.0` against the global
+read's `0.372881`, so the boundary is not the deficit, and the standing gate is
+unchanged. A label-fitted per-board boundary is reported only as an oracle bound
+(`0.763916`, excluded from every verdict). The branch's declared structural
+follow-up, a context-carrying hidden projection on this arm, measured `0.518657` best swept F1
+against `0.689775` (`-0.171118`), so that step is refused too.
+

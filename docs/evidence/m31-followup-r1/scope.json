@@ -1,0 +1,130 @@
+{
+  "status": "passed",
+  "instrument": "m31-followup-r1",
+  "predeclaration": "docs/M31_DECISION_RULE.md",
+  "branch": "representation",
+  "branch_receipt": "C:\\Users\\micha\\Code\\tetris-state-vision\\docs\\evidence\\m31-decision-rule-r2\\scope.json",
+  "population": {
+    "fixed_cells": 2986,
+    "occupied_identity": 214,
+    "occupied_anchored": 309,
+    "boards": 28
+  },
+  "arm": {
+    "run": "m31-context-r5",
+    "registration": "-registration-r4",
+    "weights_sha256": "4b2313dd5d21c935a8d2e9666c2697edd974c7b81c1e432fdb455929b042a4ef",
+    "job_name": "Local\\TetrisStateVision-0220fe00739c440195618801358da26c"
+  },
+  "anchors": {
+    "anchor_run": "m30-level-calibrate-r5",
+    "anchor_f1_at_zero": 0.372881,
+    "anchor_auc": 0.954529,
+    "anchor_best": 0.689775,
+    "control_best": 0.219626,
+    "reference_own_best": 0.543974,
+    "pixel_best": 0.987179,
+    "span": 0.443205
+  },
+  "own": {
+    "cells": 2986,
+    "occupied": 214,
+    "empty": 2772,
+    "auc": 0.9166632951679681,
+    "f1_at_zero": 0.2551390568319226,
+    "counts_at_zero": {
+      "true_positive": 211,
+      "false_positive": 1229,
+      "false_negative": 3
+    },
+    "precision_at_zero": 0.14652777777777778,
+    "recall_at_zero": 0.985981308411215,
+    "best": {
+      "threshold": 3.3,
+      "f1": 0.5186567164179104,
+      "precision": 0.43167701863354035,
+      "counts": {
+        "true_positive": 139,
+        "false_positive": 183,
+        "false_negative": 75,
+        "f1": 0.5186567164179104,
+        "precision": 0.43167701863354035,
+        "recall": 0.6495327102803738
+      }
+    }
+  },
+  "anchored": {
+    "cells": 2986,
+    "occupied": 309,
+    "empty": 2677,
+    "auc": 0.8079710539136574,
+    "f1_at_zero": 0.31675242995997716,
+    "counts_at_zero": {
+      "true_positive": 277,
+      "false_positive": 1163,
+      "false_negative": 32
+    },
+    "precision_at_zero": 0.19236111111111112,
+    "recall_at_zero": 0.8964401294498382,
+    "best": {
+      "threshold": 2.85,
+      "f1": 0.3989145183175034,
+      "precision": 0.34345794392523366,
+      "counts": {
+        "true_positive": 147,
+        "false_positive": 281,
+        "false_negative": 162,
+        "f1": 0.3989145183175034,
+        "precision": 0.34345794392523366,
+        "recall": 0.47572815533980584
+      }
+    }
+  },
+  "full": {
+    "cells": 5600,
+    "occupied": 667,
+    "empty": 4933,
+    "auc": 0.8409186851941959,
+    "f1_at_zero": 0.3417653390742734,
+    "counts_at_zero": {
+      "true_positive": 635,
+      "false_positive": 2414,
+      "false_negative": 32
+    },
+    "precision_at_zero": 0.20826500491964578,
+    "recall_at_zero": 0.952023988005997,
+    "best": {
+      "threshold": 3.0,
+      "f1": 0.4583333333333333,
+      "precision": 0.3800592300098717,
+      "counts": {
+        "true_positive": 385,
+        "false_positive": 628,
+        "false_negative": 282,
+        "f1": 0.4583333333333333,
+        "precision": 0.3800592300098717,
+        "recall": 0.5772113943028486
+      }
+    }
+  },
+  "own_best": 0.518657,
+  "gain_over_anchor_f1": -0.117742,
+  "gain_over_anchor_best": -0.171118,
+  "auc_delta_vs_anchor": -0.037865,
+  "gain_over_control": 0.299031,
+  "span_points": -0.025317,
+  "placement_points": -0.119742,
+  "representation_points": 0.588264,
+  "span_closed_fraction": -0.057123,
+  "placement_fraction": -0.270173,
+  "representation_fraction": 1.327297,
+  "fractions_sum_to_one": true,
+  "gates": {
+    "per_cell_f1": false,
+    "ranking": false,
+    "attribution": true
+  },
+  "cleared": false,
+  "peak_bytes": 1026760704,
+  "scope": "Read-only scoring of one committed study on the fixed population under the unchanged global 0.0 boundary; no weight, threshold, gate or label change and no real-image or complete-state claim."
+}

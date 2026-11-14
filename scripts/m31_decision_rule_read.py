@@ -65,19 +65,49 @@ def label_free_offsets(arm, visible_rows):
     return offsets
 
 
-def oracle_offsets(grouped):
-    """Per-board best F1 boundary from the standing grid - an upper bound, never a verdict."""
-    offsets = {}
+def oracle_offsets(grouped, start_offsets=None):
+    """Per-board boundaries fitted with the labels by coordinate ascent on the pooled F1.
+
+    A per-board optimum of *pooled* F1 is not the sum of per-board optima, so each board's boundary
+    is re-chosen against the pooled counts with the others fixed. Pure counting, no model call: the
+    board's rows are sorted once and swept as a prefix. Diagnostic upper bound on what this boundary
+    family reaches here; excluded from every verdict and every gate.
+    """
+    prepared = {}
     for sample_id, rows in grouped.items():
-        best, best_threshold = -1.0, 0.0
-        for threshold in GRID:
-            tp = sum(1 for value, label in rows if value > threshold and label)
-            fp = sum(1 for value, label in rows if value > threshold and not label)
-            fn = sum(1 for value, label in rows if value <= threshold and label)
-            position = 2*tp/(2*tp+fp+fn) if tp else 0.0
-            if position > best+1e-12:
-                best, best_threshold = position, threshold
-        offsets[sample_id] = best_threshold
+        ordered = sorted(rows, key=lambda row: -row[0])
+        positives = 0
+        prefix = []
+        for value, label in ordered:
+            positives += int(label)
+            prefix.append(positives)
+        prepared[sample_id] = (ordered, prefix, len(ordered), positives)
+    offsets = dict(start_offsets or {})
+    for _ in range(3):
+        for sample_id in grouped:
+            tp_other = fp_other = fn_other = 0
+            for other, (_, _, count, positives) in prepared.items():
+                if other == sample_id:
+                    continue
+                shift = offsets.get(other, 0.0)
+                part = sum(1 for value, label in grouped[other] if (value-shift) > 0 and label)
+                predicted = sum(1 for value, _ in grouped[other] if (value-shift) > 0)
+                tp_other += part
+                fp_other += predicted-part
+                fn_other += positives-part
+            ordered, prefix, count, positives = prepared[sample_id]
+            best, best_threshold = -1.0, offsets.get(sample_id, 0.0)
+            for taken in range(count+1):
+                tp = tp_other+(prefix[taken-1] if taken else 0)
+                fp = fp_other+(taken-(prefix[taken-1] if taken else 0))
+                fn = fn_other+(positives-(prefix[taken-1] if taken else 0))
+                position = 2*tp/(2*tp+fp+fn) if tp else 0.0
+                if position > best+1e-12:
+                    best = position
+                    best_threshold = (ordered[taken-1][0]-1e-9 if taken == count else
+                                      (ordered[taken-1][0]+ordered[taken][0])/2 if taken else
+                                      ordered[0][0]+1e-9)
+            offsets[sample_id] = best_threshold
     return offsets
 
 
@@ -133,7 +163,7 @@ def main():
         grouped = boards(arm, fixed, pairing)
         global_read = score(flatten(grouped))
         free = score(flatten(grouped, offsets))
-        oracle = score(flatten(grouped, oracle_offsets(grouped)))
+        oracle = score(flatten(grouped, oracle_offsets(grouped, offsets)))
         stored = m30["variants"]["calibrate"]["own"]
         expected = stored["f1_at_zero"] if pairing == "identity" else None
         if expected is not None:
@@ -186,9 +216,8 @@ def main():
                   "one fixed population; no training, no forward pass, no weight, threshold-grid, gate "
                   "or label change."),
     }
-    receipt = [json.loads(line) for line in
-               (ROOT/"runs"/(args.output.name+"-job.json")).read_text().splitlines() if line.strip()]
-    if not any(record.get("memory_bytes") == CEILING_BYTES for record in receipt):
+    receipt = json.loads((ROOT/"runs"/(args.output.name+"-job.json")).read_text())
+    if receipt.get("memory_bytes") != CEILING_BYTES:
         raise ValueError("the reader ceiling differs from the declared 640 MiB")
     args.output.mkdir(parents=True, exist_ok=False)
     (args.output/"scope.json").write_text(json.dumps(result, indent=2, allow_nan=False)+"\n",

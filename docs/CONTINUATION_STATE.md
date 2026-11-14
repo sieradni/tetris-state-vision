@@ -3543,3 +3543,16 @@ control `+0.470149`. Gates: per-cell `0.372881` and best
 `0.689775` fail, attribution passes, so `cleared` is false and the
 cause is `level-inconclusive:calibrate`. The measured limit is the gate's single global `0.0` boundary on a read whose
 correct level is per-board - a metric question, not a capacity or ordering question.
+
+M31 settles what M30 left open. On the same frozen arm and fixed 2,986 cells the unchanged global `0.0`
+gate scores `0.372881` F1 at `0.0` and `0.689775` best swept F1,
+the campaign's declared **label-free** per-board `otsu_board` rule scores
+`0.278699` / `0.581359`, and a label-fitted per-board
+boundary - oracle only, excluded from every verdict - reaches `0.763916`
+(`docs/evidence/m31-decision-rule-r2/scope.json`, M31_DECISION_RULE.md, ROADMAP M31). The label-free rule
+loses, so the branch is representation; the oracle says the logits carry almost enough, so the limit is the
+shape of the read's score distribution rather than its information. The declared structural follow-up,
+a context-carrying hidden layer on the winning arm, measured `0.518657` best against
+`0.689775` (`-0.171118`, span closure
+`-0.057123`, `docs/evidence/m31-followup-r1/scope.json`) and is refused. Gates on the
+unchanged boundary remain per-cell `false`, ranking `false`, attribution `true`.

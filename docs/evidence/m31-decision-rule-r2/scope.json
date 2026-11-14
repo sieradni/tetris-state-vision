@@ -1,0 +1,220 @@
+{
+  "status": "passed",
+  "instrument": "m31-decision-rule-r1",
+  "predeclaration": "docs/M31_DECISION_RULE.md",
+  "population": {
+    "fixed_cells": 2986,
+    "occupied_identity": 214,
+    "occupied_anchored": 309,
+    "boards": 28
+  },
+  "arm": {
+    "run": "m30-level-calibrate-r5",
+    "weights_sha256": "eddec1fd4af2ce189de62065a964436fd03f566126a95cfe10ad332689d3c7ea",
+    "registration": "-registration",
+    "visible_rows": 20,
+    "job_name": "Local\\TetrisStateVision-2b9542a00b7742d3a62f1bad3c95ad93"
+  },
+  "anchors": {
+    "control_best": 0.219626,
+    "reference_own_best": 0.543974,
+    "pixel_best": 0.987179,
+    "global_gate_best": 0.610101
+  },
+  "reads": {
+    "identity": {
+      "global": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.9545285970519616,
+        "f1_at_zero": 0.3728813559322034,
+        "counts_at_zero": {
+          "true_positive": 209,
+          "false_positive": 698,
+          "false_negative": 5
+        },
+        "precision_at_zero": 0.23042998897464168,
+        "recall_at_zero": 0.9766355140186916,
+        "best": {
+          "threshold": 3.6,
+          "f1": 0.6897746967071057,
+          "precision": 0.5482093663911846,
+          "counts": {
+            "true_positive": 199,
+            "false_positive": 164,
+            "false_negative": 15,
+            "f1": 0.6897746967071057,
+            "precision": 0.5482093663911846,
+            "recall": 0.9299065420560748
+          }
+        }
+      },
+      "label_free": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.9362449596094455,
+        "f1_at_zero": 0.278699402786994,
+        "counts_at_zero": {
+          "true_positive": 210,
+          "false_positive": 1083,
+          "false_negative": 4
+        },
+        "precision_at_zero": 0.16241299303944315,
+        "recall_at_zero": 0.9813084112149533,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.5813586097946287,
+          "precision": 0.43914081145584727,
+          "counts": {
+            "true_positive": 184,
+            "false_positive": 235,
+            "false_negative": 30,
+            "f1": 0.5813586097946287,
+            "precision": 0.43914081145584727,
+            "recall": 0.8598130841121495
+          }
+        }
+      },
+      "oracle": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.9600527976696202,
+        "f1_at_zero": 0.763915547024952,
+        "counts_at_zero": {
+          "true_positive": 199,
+          "false_positive": 108,
+          "false_negative": 15
+        },
+        "precision_at_zero": 0.6482084690553745,
+        "recall_at_zero": 0.9299065420560748,
+        "best": {
+          "threshold": 0.0,
+          "f1": 0.763915547024952,
+          "precision": 0.6482084690553745,
+          "counts": {
+            "true_positive": 199,
+            "false_positive": 108,
+            "false_negative": 15,
+            "f1": 0.763915547024952,
+            "precision": 0.6482084690553745,
+            "recall": 0.9299065420560748
+          }
+        }
+      },
+      "boards": 28,
+      "label_free_f1_at_zero": 0.278699,
+      "oracle_f1_at_zero": 0.763916,
+      "label_free_best": 0.581359,
+      "oracle_best": 0.763916,
+      "global_f1_at_zero": 0.372881,
+      "global_best": 0.689775
+    },
+    "anchored": {
+      "global": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.791626621598587,
+        "f1_at_zero": 0.37335526315789475,
+        "counts_at_zero": {
+          "true_positive": 227,
+          "false_positive": 680,
+          "false_negative": 82
+        },
+        "precision_at_zero": 0.25027563395810365,
+        "recall_at_zero": 0.7346278317152104,
+        "best": {
+          "threshold": 3.45,
+          "f1": 0.5756240822320118,
+          "precision": 0.5268817204301075,
+          "counts": {
+            "true_positive": 196,
+            "false_positive": 176,
+            "false_negative": 113,
+            "f1": 0.5756240822320118,
+            "precision": 0.5268817204301075,
+            "recall": 0.6343042071197411
+          }
+        }
+      },
+      "label_free": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.746285328816854,
+        "f1_at_zero": 0.28963795255930086,
+        "counts_at_zero": {
+          "true_positive": 232,
+          "false_positive": 1061,
+          "false_negative": 77
+        },
+        "precision_at_zero": 0.1794276875483372,
+        "recall_at_zero": 0.7508090614886731,
+        "best": {
+          "threshold": 3.45,
+          "f1": 0.4910025706940874,
+          "precision": 0.4072494669509595,
+          "counts": {
+            "true_positive": 191,
+            "false_positive": 278,
+            "false_negative": 118,
+            "f1": 0.4910025706940874,
+            "precision": 0.4072494669509595,
+            "recall": 0.6181229773462783
+          }
+        }
+      },
+      "oracle": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.8519885927467955,
+        "f1_at_zero": 0.6676783004552352,
+        "counts_at_zero": {
+          "true_positive": 220,
+          "false_positive": 130,
+          "false_negative": 89
+        },
+        "precision_at_zero": 0.6285714285714286,
+        "recall_at_zero": 0.7119741100323624,
+        "best": {
+          "threshold": 0.0,
+          "f1": 0.6676783004552352,
+          "precision": 0.6285714285714286,
+          "counts": {
+            "true_positive": 220,
+            "false_positive": 130,
+            "false_negative": 89,
+            "f1": 0.6676783004552352,
+            "precision": 0.6285714285714286,
+            "recall": 0.7119741100323624
+          }
+        }
+      },
+      "boards": 28,
+      "label_free_f1_at_zero": 0.289638,
+      "oracle_f1_at_zero": 0.667678,
+      "label_free_best": 0.491003,
+      "oracle_best": 0.667678,
+      "global_f1_at_zero": 0.373355,
+      "global_best": 0.575624
+    }
+  },
+  "gate": {
+    "per_cell_f1": false,
+    "ranking": false,
+    "attribution": true
+  },
+  "cleared": false,
+  "decision": {
+    "branch": "representation",
+    "cell_gate": 0.7,
+    "reading": "The per-board boundary does not reach the per-cell gate, so the deficit is the read's own per-cell scores and the declared structural follow-up is the context-carrying hidden projection.",
+    "oracle_excluded": true,
+    "oracle_role": "diagnostic upper bound only; excluded from the gate, the branch and every verdict"
+  },
+  "scope": "Read-only scoring of one frozen arm's committed logits under three boundaries on one fixed population; no training, no forward pass, no weight, threshold-grid, gate or label change."
+}

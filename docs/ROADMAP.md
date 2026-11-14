@@ -1377,3 +1377,18 @@ and reference `0.543974`. The gates still fail on two of three (per-cell
 short), so the lever stays uncleared. The measured limit is now the gate's single global `0.0` boundary
 applied to a read whose correct level is per-board; closing it would change the metric, which this pass
 does not do.
+
+## M31 - the per-cell deficit is the read's score shape, not the boundary
+
+A predeclared three-boundary read ([M31_DECISION_RULE.md](M31_DECISION_RULE.md),
+`docs/evidence/m31-decision-rule-r2/scope.json`) scores one frozen arm on the same 2,986 cells and both
+fixed label vectors: the unchanged global `0.0` gate `0.372881` F1 at `0.0` /
+`0.689775` best, the declared **label-free** per-board `otsu_board` rule
+`0.278699` / `0.581359`, and a label-fitted per-board
+boundary as an oracle-only diagnostic `0.763916` excluded from every verdict. The
+label-free rule loses to the global boundary, so the branch is representation, and the oracle says the
+logits still carry enough to clear `0.70` - the failure is where a label-free rule can look, not what the
+read knows. The branch's declared structural step, the hidden layer given one cell of neighbourhood context,
+measured `0.518657` best swept F1 against `0.689775`
+(`-0.171118`, `docs/evidence/m31-followup-r1/scope.json`), so it is refused on
+measurement. The standing gate is untouched and still fails on both per-cell and ranking.
