@@ -4438,6 +4438,20 @@
         "scope.json": "142aab37c2819899bee5e79eacd30c565b39fa6b96cd2c8f377b71eaef58bcb9"
       }
     },
+    "m35-contrast-lattice-r1": {
+      "record_commit": "047f013671a611e872bd081bf427af6a2e5c2403",
+      "files": {
+        "diagnosis.json": "858e3a4a0079cbee1123f7b9be7d21a7a888dbc499db7707cd09481965c8b847",
+        "scope.json": "eb40383c35e357441b43265fa7f868b204edd2443eea0335facfc10588d4695c"
+      }
+    },
+    "m36-monotone-contrast-r1": {
+      "record_commit": "047f013671a611e872bd081bf427af6a2e5c2403",
+      "files": {
+        "diagnosis.json": "c4049df34b728f57a9da143256278d8436e20ce3e6f2fe383c23e5fb9311b45f",
+        "scope.json": "4466f7ce9c91dbe7d2a562c761a91c96ee7eeef0b3d87754c52df7548729d9ea"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5063,7 +5077,7 @@
     }
   },
   "totals": {
-    "directories": 280,
-    "files": 3651
+    "directories": 282,
+    "files": 3655
   }
 }
