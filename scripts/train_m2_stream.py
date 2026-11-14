@@ -945,6 +945,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_read_standardise=args.occupancy_read_standardise,
                      occupancy_read_level=args.occupancy_read_level,
                      occupancy_balance=args.occupancy_balance,
+                     occupancy_mass=args.occupancy_mass,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
                      occupancy_resolution=args.occupancy_resolution,
