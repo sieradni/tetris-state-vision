@@ -4390,6 +4390,18 @@
         "sweep-result.json": "656d620fc12af58bc7ca9b5554988719a47a45d473a9ff4b3f9508f8acd559e8"
       }
     },
+    "m30-level-tensors-r1": {
+      "record_commit": "b869a0810e9fa017bbab0cd043426f22b0b5e1d1",
+      "files": {
+        "scope.json": "fdc18b12642f24d29642f606a33caeec1ef876126673be77197a020d34968ea0"
+      }
+    },
+    "m30-operating-point-r1": {
+      "record_commit": "b869a0810e9fa017bbab0cd043426f22b0b5e1d1",
+      "files": {
+        "scope.json": "95bff1227d8d0f73a3ce8a4f5807e3d8b0cd05a15b5954dd73ceacda6b35ddbf"
+      }
+    },
     "m4-placed-supervision-r1": {
       "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
       "files": {
@@ -5015,7 +5027,7 @@
     }
   },
   "totals": {
-    "directories": 272,
-    "files": 3643
+    "directories": 274,
+    "files": 3645
   }
 }
