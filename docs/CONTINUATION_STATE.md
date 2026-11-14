@@ -3652,7 +3652,12 @@ predicted lattice sampled (M35, M37, M38, M36: AUC `0.886350`-`0.945596`, best s
 (`+0.011568` AUC, `+0.018600` best swept) and above M38 on AUC (`+0.002877`) while `0.024016` below it on best
 swept, and M34 (also moves it) is below M36 on both. Geometry provenance is therefore not sufficient to order
 these arms, and the mechanism statement is the best-supported account of the strength gradient rather than an
-ordering principle. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
+ordering principle. The overlap is also **confounded in the recorded configs**: the three arms that record
+`8,023,562` parameters (winner form `3`, M40 form `14`, M34 form `7`) are the strength axis and differ only in
+the sampled geometry's source, while the overlapping arms differ in more than that - M36 (form `10`,
+`8,025,482`) in features and a one-crossing rule, M38 (form `12`, `8,039,114`) in head width and features -
+so provenance alone is not testable across the two groups with these receipts, and a provenance-only arm is
+recorded as an open question. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
 population, both fixed label vectors, one seed, `64` steps, a `64`-wide one-block head, fixed global `0.0`,
 three measured points on the strength axis.
 

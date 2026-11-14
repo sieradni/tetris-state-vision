@@ -140,3 +140,13 @@ Sums asserted in code; `short_stage: closure`.
 ## Receipts
 
 `runs/m39-dual-job.json` (study, peak `1,053,429,760`), `runs/m39-dual-registration-job.json` (probe), `runs/m39-dual-profile-r3-job.json` (admission; `-r2` was refused by the host's commit pressure and is kept as such), and `runs/m39-dual-placement-r1-job.json` (this score, 128 MiB).
+
+## Superseded reading (added after M40; nothing above is rewritten)
+
+The branch interpretation recorded above - that the fixed-support arms' deficit is a property of *how* a read
+is tied to geometry - was the reading this pass pre-committed to. M40 tested the composition it implied and
+the campaign then narrowed the claim: the two arm groups **overlap** on both ranking measures, a moving arm
+outranks two keeping arms inside that overlap, and the overlapping pairs are confounded in their recorded
+configs (see `docs/M40_COMPOSED_ALIGNMENT.md` and the ROADMAP closure section). What survives is a graded
+cost of replacement within one read, monotone in the replaced share, with the winner above all seven arms.
+This note is a pointer, not a revision: the predeclaration and the measured sections above stand as written.

@@ -3378,7 +3378,9 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 
 - Symptom: the M40 findings doc, its ROADMAP closure section and the continuation checkpoint all stated that
   the "keeps the predicted lattice sampled" family and the "moves it off" family "do not overlap on either
-  ranking measure". Re-deriving the two ranges from the per-arm receipts
+  ranking measure". **The quoted assertion is the retracted wording, preserved as this entry's symptom;
+  it is superseded by the corrected closure in `docs/M40_COMPOSED_ALIGNMENT.md`, the ROADMAP closure
+  section and `docs/CONTINUATION_STATE.md`, and must not be read as a current claim.** Re-deriving the two ranges from the per-arm receipts
   (`docs/evidence/m3{4,5,6,7,8,9}-*/scope.json`, `m40-composed-alignment-r6/scope.json`) shows they overlap on
   both: AUC in `0.886350`-`0.897918`, best swept in `0.420935`-`0.439535`. Inside that overlap M40 (moves the
   geometry) outranks M36 (keeps it) on both measures and M38 on AUC, while M34 (also moves it) is below M36 on
@@ -3399,3 +3401,15 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   A companion source guard fails if any of the three maintained documents says the families "do not overlap"
   or fails to contain the word "overlap", so the prose cannot drift from the table again.
 - Named green runs: `tests.test_m40_receipt` (14 tests, OK); full suite `runs/m40-suite-r2-job.json`.
+- Repo sweep (tracked files only, `git grep` over 4,149 tracked files / 117 markdown / 525 python,
+  excluding the frozen `docs/evidence` tree): every hit for `do not overlap`, `no overlap`, `disjoint`,
+  `strictly higher|lower|separate`, `family boundar(y|ies)`, `separate bands` was read. Two hits needed
+  action or a disposition - this entry's own quotation of the retracted claim (now marked
+  superseded-wording above) and the instrument line below that *describes* the guard's target phrase
+  (a description, not a claim). All remaining hits are a different sense of the words and were left
+  untouched: `README.md` and `docs/LAYER_EVIDENCE_EXPERIMENT.md` (disjoint-ancestry diagnostic),
+  `docs/M19_SPAN_LEVEL.md`, `docs/M20_TWO_PATH_READ.md`, `scripts/record_two_path.py` (disjoint error
+  axes), `docs/ROADMAP.md:171` and `docs/CONTINUATION_STATE.md:251` (two bests being disjoint, which is
+  a statement about two numbers, not about arm families), and `docs/M40_COMPOSED_ALIGNMENT.md`'s "not a
+  family boundary" (the corrected negation). The three maintained closures are the only files the
+  consistency test guards, and all three now name the overlap.

@@ -102,7 +102,7 @@ class ClosureConsistencyTest(unittest.TestCase):
     """The closure statement rebuilt from the per-arm receipts, so the prose cannot drift from the table.
 
     V-167: three maintained documents asserted the two arm families "do not overlap on either ranking
-    measure". They overlap on both, and one arm that moves the sampled geometry outranks two arms that keep
+    measure" (retracted wording, quoted only as this instrument's symptom). They overlap on both, and one arm that moves the sampled geometry outranks two arms that keep
     it. These tests derive the ranges, the overlap and the signs from the receipts themselves and then check
     that the documents still claim the supported reading.
     """
@@ -170,14 +170,32 @@ class ClosureConsistencyTest(unittest.TestCase):
         self.assertLess(self.auc("M34"), self.auc("M36"))
         self.assertLess(self.best("M34"), self.best("M36"))
 
+    FAMILY_TOKENS = ("famil", "keeping", "moves the")
+    SEPARATION = ("do not overlap", "don't overlap", "does not overlap", "no overlap", "are disjoint",
+                  "are separate", "strictly higher", "strictly lower", "strictly separate",
+                  "separate bands", "in a different band", "never overlaps", "disjoint bands")
+
+    def phrases_claiming_separation(self, document):
+        """Sentences that put a family and a separation word together - the retracted claim's shape."""
+        body = (ROOT/document).read_text(encoding="utf-8")
+        flat = " ".join(body.split())
+        found = []
+        for sentence in flat.replace(". ", ".\n").splitlines():
+            low = sentence.lower()
+            if any(token in low for token in self.FAMILY_TOKENS) and \
+                    any(phrase in low for phrase in self.SEPARATION):
+                found.append(sentence.strip())
+        return found
+
     def test_the_documents_state_the_overlap_rather_than_the_separation(self):
         for document in self.DOCUMENTS:
             body = (ROOT/document).read_text(encoding="utf-8")
             self.assertIn("overlap", body.lower(), f"{document} must state the overlap")
-            self.assertNotIn("do not overlap", body.lower(),
-                             f"{document} still asserts a separation the receipts do not show")
-            self.assertNotIn("strictly lower", body.lower(),
-                             f"{document} still asserts a separation the receipts do not show")
+            for sentence in self.phrases_claiming_separation(document):
+                self.fail(f"{document} asserts a separation the receipts do not show: {sentence!r} - "
+                          "the two families overlap on AUC 0.886350-0.897918 and best swept "
+                          "0.420935-0.439535 (M36/M38/M40 and M36/M40), so the sentence must say the "
+                          "ranges overlap and name the arms inside the overlap")
 
     def test_the_documents_keep_the_negative_and_the_gradient(self):
         body = (ROOT/"docs/M40_COMPOSED_ALIGNMENT.md").read_text(encoding="utf-8")

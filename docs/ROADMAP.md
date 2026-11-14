@@ -1479,11 +1479,13 @@ model's own predicted lattice beside the same `30` at the support lattice, `60` 
 attribution true, bar missed. The placement-consistency signal is **present and swamped**: false positives
 rise to `1239` at median margin `2.316557`, rows 15-19 alone
 `283` against M35's `144`.
-[ladder](M34_SUPPORT_LATTICE.md) - see the maintained regression set below. The evidence now supports one
-structural reading: the winner's geometry is *endogenous* (it samples the lattice it predicts, so its
-features and its placement are trained together), and every support-lattice arm replaces that with an
+[ladder](M34_SUPPORT_LATTICE.md) - see the maintained regression set below. The evidence supported one
+structural reading at this point: the winner's geometry is *endogenous* (it samples the lattice it predicts,
+so its features and its placement are trained together), and every support-lattice arm replaces that with an
 exogenous prior. The next declared step keeps the geometry endogenous and uses the support only as an
-alignment applied to the predicted lattice.
+alignment applied to the predicted lattice. **That reading was tested in M40 and narrowed there**: it remains
+the best-supported account of the strength gradient, but it is not an ordering principle - see the corrected
+closure section below.
 
 ## M40 - the predicted lattice, corrected by the support, and the question closed
 
@@ -1531,6 +1533,40 @@ best swept) and outranks M38 on AUC (`+0.002877`) while sitting `0.024016` below
 also moves it, is below M36 on both (`-0.003090` / `-0.035010`). What separates the two tables is therefore
 not provenance alone - these arms differ in features, width and protocol too.
 
+### What the overlap is, and is not, attributable to
+
+Recorded facts only - the form id from each arm's saved config, the parameter count from its checkpoint
+manifest (`runs/<arm>/checkpoint/manifest.json`), and what the declared form samples. Nothing re-scored, no
+new arm:
+
+| arm | recorded form | recorded parameters | sampled geometry (as the form declares it) |
+|---|---|---|---|
+| `m30-level-calibrate-r5` (winner) | `3` | `8,023,562` | predicted lattice |
+| M40 `m40-composed-r2` | `14` | `8,023,562` | predicted lattice, half-corrected onto the support box |
+| M34 `m34-support` | `7` | `8,023,562` | support lattice, fully exogenous |
+| M36 `m36-monotone` | `10` | `8,025,482` | predicted lattice, one crossing per column |
+| M38 `m38-capacity-r2` | `12` | `8,039,114` | predicted lattice, head width `128` |
+
+Every other recorded setting is identical across these five: `dimension` `192`, `blocks` `6`,
+`occupancy_read_standardise` `1`, every lever flag `0` (`occupancy_deform`, `occupancy_context`,
+`occupancy_detail`, `lattice_support`, `occupancy_normalise`, `occupancy_centre`,
+`occupancy_crossing_threshold`, `occupancy_stack_monotone`), the same curriculum, initial weights, `64`
+steps and evaluation population.
+
+The parameter offsets are the forms' own arithmetic - `+1,920` for M36's extra `30` inputs, `+15,552` for
+M38's wider head - and that is the point: **the three arms with identical parameter counts (winner, M40,
+M34) differ only in where the sampled geometry comes from**, which is why the strength axis is the one
+attribution these receipts support. No overlapping pair is matched: M40 vs M36 differ in features (`30` vs
+`60`) and in M36's monotone decision rule, M40 vs M38 in head width (`64` vs `128`) and features (`30` vs
+`40`), M34 vs M36 likewise. The overlap is therefore **consistent with a confound and not attributable to
+geometry provenance from recorded configuration** - the form id carries feature count, head width, sampling
+geometry and, for form 10, a decision rule at once.
+
+**Open question, recorded for the next step:** no arm in the set changes provenance alone across these
+two groups, so a provenance-only comparison would need a new arm that holds features, head width and
+decision rule fixed and varies only the geometry source - the strength axis is the closest existing thing,
+and it is within one form family rather than across two.
+
 What *is* clean, and what carries the negative:
 
 - **the winner is above all seven arms on both measures** (`0.954529` / `0.689775` against a best keeping arm
@@ -1574,7 +1610,15 @@ M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
 M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`.
 
-## What the evidence settles
+## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
+
+**Superseded by the corrected closure section above.** This paragraph, written after M39, stated the ordering
+as settled. M40 measured the missing case and the statement below is no longer true as written: the two
+groups overlap on both ranking measures, a moving arm outranks two keeping arms inside that overlap, and the
+overlapping pairs are confounded in the recorded configs. What survives is the narrower claim recorded in
+the closure section - a graded cost of replacement within one read, monotone in the replaced share
+(`0.0` / `0.5` / `1.0`), with the winner above all seven arms - not a rule that endogenous geometry outranks
+exogenous geometry. The paragraph is kept as the record of what was believed before M40:
 
 **Arms that read a fixed support lattice rank below the arm that samples its own predicted lattice because
 in the winner the sampling geometry is endogenous: the lattice the read samples is the lattice the network

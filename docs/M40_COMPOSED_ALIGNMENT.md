@@ -172,6 +172,16 @@ M40, which moves the geometry, sits *above* M36, which keeps it, on both measure
 which also moves it, sits below M36 on both (`-0.003090` / `-0.035010`). Geometry provenance is therefore not
 sufficient to order these arms - they differ in features, width and protocol as well.
 
+**Why the overlap cannot be pushed further with these receipts:** the recorded configuration makes the
+overlapping pairs confounded. The winner (form `3`), M40 (form `14`) and M34 (form `7`) each record
+`8,023,562` parameters and differ only in where the sampled geometry comes from; M36 (form `10`) records
+`8,025,482` - its extra `30` inputs, and it also carries a one-crossing decision rule - and M38 (form `12`)
+records `8,039,114`, its wider head plus `40` inputs. Every other recorded setting (`dimension` `192`,
+`blocks` `6`, all lever flags `0`, same curriculum, initial weights, `64` steps, same population) is
+identical. So no overlapping pair varies provenance alone, and the overlap is consistent with feature count,
+head width or the decision rule rather than with geometry provenance. That is an open question for the next
+step, not a result: see the same table in `ROADMAP.md`.
+
 **The genuine gap this leaves:** what the campaign measures is a *graded cost of replacing the endogenous
 geometry within one read*, and a refusal of every composition tried, not a family boundary between two kinds
 of arm. The mechanism statement - that the endogenous sampling path is what the winning arm uses to correct
