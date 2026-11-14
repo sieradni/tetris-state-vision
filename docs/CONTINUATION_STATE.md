@@ -3599,3 +3599,16 @@ the envelope compresses margins even though it clears the lower bands (`0` false
 precision `0.186667`). Winner remains `m30-level-calibrate-r5`. Recorded next step: combine
 the pixel statistics with the coarse lattice-free channel (`stencil_contrast`, exact under a board-wide gain
 and offset), the campaign's only measured instrument for telling a filled cell from a textured empty one.
+
+M37 fused the coarse `stencil_contrast` channel into the pixel read (form 11, `40` inputs):
+F1 at `0.0` `0.270096`, AUC `0.919512`, best swept
+`0.589286` - bar missed, textured-empty false positives not separated
+(`1108`-class errors unchanged: `1131` against `1088`, upper bands `932` against `933`). M38 doubled the
+hidden width at the same inputs (form 12, `128`): F1 at `0.0` `0.273082`, AUC
+`0.895041`, best swept `0.463551` - refused and worse than `64` wide, so capacity at a
+fixed 64-step budget is refused too. Ladder: winner `m30-level-calibrate-r5` `0.372881` / `0.954529` /
+`0.689775`; M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` / `0.570048`; M36
+`0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38 `0.273082` /
+`0.895041` / `0.463551`. Recorded next step: sample each cell at both placements in one read (predicted
+lattice + support lattice, `60` inputs) to expose the placement-consistency difference the winner's arm
+class alone has.

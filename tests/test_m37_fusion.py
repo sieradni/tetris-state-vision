@@ -58,7 +58,8 @@ class DeclaredWidthTest(unittest.TestCase):
         self.assertEqual(fused[-1].out_features, wide[-1].out_features)
         growth = (sum(p.numel() for p in model(12).parameters())
                   - sum(p.numel() for p in model(11).parameters()))
-        self.assertEqual(growth, PIXEL_QUERY_FEATURES*64+64*64+64*64)
+        inputs = PIXEL_QUERY_FEATURES+PIXEL_QUERY_STENCIL_FEATURES
+        self.assertEqual(growth, inputs*64+64+64*64)
 
 
 class StepZeroTest(unittest.TestCase):

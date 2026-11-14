@@ -1453,3 +1453,19 @@ The envelope clears the lower bands (`0` false positives below row `10`) and lif
 `0.186667`, but compressing the margins costs more ranking than it buys. Both branches are
 now measured: closure wants better features, and the recorded next step is the coarse lattice-free channel
 combined with the pixel statistics.
+
+## M37-M38 - the coarse channel and a doubled width are both refused
+
+M37 fused the coarse `stencil_contrast` summary into the pixel read
+([M37_STENCIL_FUSION.md](M37_STENCIL_FUSION.md), `docs/evidence/m37-stencil-fusion-r2/scope.json`):
+F1 at `0.0` `0.270096`, AUC `0.919512`, best swept
+`0.589286` - bar missed, and the channel does not separate the textured-empty cells
+(false positives `1131` against M35's `1088`, median margin higher, upper bands unchanged).
+
+M38 doubled the same read's hidden width to `128` ([M38_CAPACITY.md](M38_CAPACITY.md),
+`docs/evidence/m38-capacity-r1/scope.json`): F1 at `0.0` `0.273082`, AUC
+`0.895041`, best swept `0.463551` - refused, and worse than the `64`-wide arm at the
+same inputs, so at a fixed 64-step budget the width is not the binding constraint. The ladder now reads:
+winner `0.372881` / `0.954529` / `0.689775`; every support-lattice arm below it on all three. The recorded
+next step is a read that samples each cell at **both** placements (predicted lattice and support lattice,
+`60` inputs) so the placement-consistency difference is available to the read.

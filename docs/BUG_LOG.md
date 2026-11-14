@@ -3281,3 +3281,38 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Named green runs: `tests.test_stack_contiguity tests.test_m35_contrast tests.test_m35_receipt
   tests.test_pixel_query tests.test_m33_fixed_lattice tests.test_m34_support_lattice` (77 tests, OK) and
   the M36 evidence already recorded, whose numbers this change does not alter.
+
+## V-162 - CLOSED: the fusion reader reported an inherited input width instead of the arm's
+
+- Symptom: the M37 scope recorded `"inputs": 60, "features": 30` for a `40`-input arm, because the reader
+  was copied from M35's and carried M35's hard-coded width.
+- Root cause: the width was a literal in the instrument, not a declared argument, so any arm scored through
+  it inherited the previous arm's number. Nothing measured changed - the arm, its weights and its logits
+  were always `40` inputs - but the receipt's own description was wrong, which is exactly the class of error
+  V-158 already recorded once.
+- Change: the reader takes `--inputs` as a required argument and `--features` as a declared one, and writes
+  what the caller declares. The M37 arm was re-scored with `--inputs 40` into
+  `docs/evidence/m37-stencil-fusion-r2/`; the superseded directory and its receipt are preserved as
+  `runs/m37-stencil-fusion-r1-superseded-width/` and `runs/m37-stencil-fusion-r1-job.json`.
+- Detection class: document-versus-artifact identity.
+- Instrument: the required `--inputs` argument itself (a score cannot be produced without stating the
+  width), plus `tests.test_m37_fusion.DeclaredWidthTest.test_the_declared_widths_are_thirty_and_ten`,
+  which pins the model's own width against the declared constants.
+- Named green runs: `runs/m37-stencil-fusion-r2-job.json` (128 MiB, passed) writing the re-scored receipt.
+
+## V-163 - CLOSED: a duplicate study was launched after the runner restart
+
+- Symptom: two complete M38 studies exist (`m38-capacity` and `m38-capacity-r2`) for one declared protocol,
+  because the pass was relaunched while the first study had in fact survived the runner restart.
+- Root cause: the restart check inspected the profile receipt (which had not yet reached `passed`), the
+  driver log, and a `wmic` listing filtered to `name='python.exe'` whose command-line column was truncated -
+  so a live `train_m2_stream.py` child was read as absent. The check should have asked the receipt's own
+  state and the job objects, not a formatted process listing.
+- Change: no protocol change. Both studies are kept, and the second one is turned into a positive control:
+  the two runs share `weights_sha256` (`74d80e8e...`) and differ by `0.0` in every one of the 36 boards'
+  logits, so the protocol is bit-reproducible at this seed and the measured arm is the first run's receipt.
+- Detection class: launch-duplication.
+- Instrument: the two probe receipts themselves (`runs/m38-capacity-registration/result.json` and
+  `runs/m38-capacity-r2-registration/result.json`), compared field by field before either is quoted.
+- Named green runs: `runs/m38-capacity-job.json` (peak `1,026,883,584`), `runs/m38-capacity-r2-job.json`
+  (peak `1,029,341,184`), `runs/m38-capacity-r1-job.json` (score, 128 MiB).

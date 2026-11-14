@@ -116,6 +116,9 @@ def main():
     parser.add_argument("--m35-diagnosis", type=Path,
                         default=ROOT/"docs/evidence/m35-contrast-lattice-r1/diagnosis.json")
     parser.add_argument("--instrument", default="m37-stencil-fusion-r1")
+    parser.add_argument("--inputs", type=int, required=True,
+                        help="the form's declared input width, stated by the caller, never inherited")
+    parser.add_argument("--features", type=int, default=30)
     parser.add_argument("--predeclaration", default="docs/M37_STENCIL_FUSION.md")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -191,7 +194,7 @@ def main():
                        "occupied_anchored": 309, "boards": 28},
         "arm": {"run": args.arm, "registration": args.registration,
                 "weights_sha256": probe["weights_sha256"], "job_name": job.get("job_name"),
-                "inputs": 60, "features": 30},
+                "inputs": args.inputs, "features": args.features},
         "anchors": {"anchor_run": args.anchor,
                     "anchor_f1_at_zero": round(anchor_own["f1_at_zero"], 6),
                     "anchor_auc": round(anchor_own["auc"], 6),

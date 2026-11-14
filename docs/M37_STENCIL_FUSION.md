@@ -72,3 +72,79 @@ another sampling recipe, another threshold, or a re-swept operating point.
 
 `runs/m37-stencil-{profile,study,probe}` and `docs/evidence/m37-stencil-fusion-r1/{scope,diagnosis}.json`.
 Refused attempts keep their receipts; only completed runs are quoted.
+
+## Measured
+
+Study `m37-stencil` (probe `-registration`), form 11 with `40`
+declared inputs, the unchanged 64-step protocol, peak `1,028,612,096` bytes. Scored by
+`scripts/m37_stencil_read.py` (`docs/evidence/m37-stencil-fusion-r2/scope.json`, diagnosis in
+`diagnosis.json`), the winner re-scored in the same pass.
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| fused coarse channel, identity vector | `0.270096` | `0.919512` | `0.589286` (at `3.15`) |
+| delta | -0.102785 | -0.035016 | -0.100489 |
+| fused coarse channel, anchored vector | `0.282424` | `0.757793` | `0.495697` |
+
+Gate block: identity per-cell `false`, ranking
+`false`, attribution `true`
+(+0.369660 over control `0.219626`).
+
+**The fusion is refused.** It lifts the best swept point over M35's by
++0.019238 and moves closure to `+0.045312`, but AUC falls
+-0.035016 and the bar (`0.372881` / `0.689775`) is missed on both comparisons.
+
+## The diagnosis: the coarse channel does not separate the textured-empty cells
+
+| measurement | M35 (60 inputs) | this arm (40 inputs) |
+|---|---|---|
+| false positives at `0.0` | `1088` | `1131` |
+| false-positive median margin | `1.352717` | `1.558202` |
+| weakest true-positive margin | `0.936171` | `0.804033` |
+| upper-band false positives (rows 0-9) | `933` | `932` |
+| `textured_empty_separated` | - | **`false`** |
+
+Per band (before -> now): rows 0-4 `405` ->
+`405`, rows 5-9 `528` ->
+`527`, rows 10-14 `11` ->
+`16`, rows 15-19 `144` ->
+`183`. Precision `0.1566` at recall
+`0.981308`; true positives hold margins `0.804033`-
+`5.765948` (median `3.551605`), false positives
+`9.3e-05`-`5.563735`.
+
+So the coarse contrast channel adds **nothing** to the separation this arm needs: the false positives are
+the same cells, their margins are higher than M35's, and they still outrank the weakest true positive. The
+declared exact-invariance of the transform is real but irrelevant here - these captures' textured-empty
+cells are not a board-wide gain or offset away from filled ones.
+
+## The span split
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | +0.045312 | 0.102236 |
+| placement | -0.093589 | -0.211163 |
+| representation | +0.491482 | 1.108927 |
+
+Sums asserted in code; `short_stage: placement`.
+
+## The ladder, and what the numbers now say about the constraint
+
+| arm | inputs | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|---|
+| M30/M31 winner (predicted lattice) | 30 | `0.372881` | `0.954529` | `0.689775` |
+| M34 support lattice | 30 | `0.274869` | `0.883260` | `0.385925` |
+| M35 contrast | 60 | `0.277778` | `0.945596` | `0.570048` |
+| M36 monotone contrast | 60 | `0.313667` | `0.886350` | `0.420935` |
+| M37 fused coarse channel | 40 | `0.270096` | `0.919512` | `0.589286` |
+
+Every support-lattice arm's best swept point is computed at its own optimal threshold, so the shortfall is
+not the fixed boundary: at `0.689775` the winner's arm is simply better at ranking cells than
+any of these four, whatever threshold they are given. Three feature families have been tried; the
+remaining untried lever inside this arm class is the read's own capacity (a 64-wide hidden layer for
+`40`-`60` inputs), which `docs/M38_CAPACITY.md` predeclares and measures in the same pass.
+
+## Receipts
+
+`runs/m37-stencil-job.json` (study, peak `1,028,612,096`), `runs/m37-stencil-registration-job.json` (probe), `runs/m37-stencil-profile-job.json` (admissibility) and `runs/m37-stencil-fusion-r2-job.json` (this score). The first score, `runs/m37-stencil-fusion-r1-job.json` with its evidence directory, is preserved as a superseded record: V-162, the reader reported M35's inherited input width.
