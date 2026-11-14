@@ -115,6 +115,8 @@ def main():
     parser.add_argument("--pixel-ceiling", default="m3-occpix-ceiling-r1-r2")
     parser.add_argument("--m35-diagnosis", type=Path,
                         default=ROOT/"docs/evidence/m35-contrast-lattice-r1/diagnosis.json")
+    parser.add_argument("--instrument", default="m37-stencil-fusion-r1")
+    parser.add_argument("--predeclaration", default="docs/M37_STENCIL_FUSION.md")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -183,8 +185,8 @@ def main():
                      for band in diagnosis["false_positive_bands"]},
     }
     result = {
-        "status": "passed", "instrument": "m37-stencil-fusion-r1",
-        "predeclaration": "docs/M37_STENCIL_FUSION.md",
+        "status": "passed", "instrument": args.instrument,
+        "predeclaration": args.predeclaration,
         "population": {"fixed_cells": len(fixed), "occupied_identity": 214,
                        "occupied_anchored": 309, "boards": 28},
         "arm": {"run": args.arm, "registration": args.registration,

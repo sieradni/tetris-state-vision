@@ -46,9 +46,19 @@ class DeclaredWidthTest(unittest.TestCase):
         self.assertEqual(fusion-sampled, PIXEL_QUERY_STENCIL_FEATURES*64)
 
     def test_the_declared_boundary_is_where_the_predeclaration_says(self):
-        replace(ModelConfig(), occupancy_pixel_query=11)
+        for form in (11, 12):
+            replace(ModelConfig(), occupancy_pixel_query=form)
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=12)
+            replace(ModelConfig(), occupancy_pixel_query=13)
+
+    def test_the_capacity_arm_doubles_only_the_hidden_width(self):
+        fused, wide = model(11).occupancy_pixel_query, model(12).occupancy_pixel_query
+        self.assertEqual(fused[0].in_features, wide[0].in_features)
+        self.assertEqual(wide[0].out_features, 128)
+        self.assertEqual(fused[-1].out_features, wide[-1].out_features)
+        growth = (sum(p.numel() for p in model(12).parameters())
+                  - sum(p.numel() for p in model(11).parameters()))
+        self.assertEqual(growth, PIXEL_QUERY_FEATURES*64+64*64+64*64)
 
 
 class StepZeroTest(unittest.TestCase):

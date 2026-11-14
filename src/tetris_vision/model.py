@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -907,14 +907,18 @@ class TetrisStateNet(nn.Module):
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
             features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5, 8, 9, 10) else 1)
-            if config.occupancy_pixel_query == 11:
+            if config.occupancy_pixel_query in (11, 12):
                 features = PIXEL_QUERY_FEATURES+PIXEL_QUERY_STENCIL_FEATURES
-            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11):
+            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11, 12):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
+                # declared m38 capacity arm: the fused read's hidden width doubles from 64 to 128, with
+                # the same inputs and the same zero-initialised output, so step zero is the published
+                # function and only the read's capacity changes.
+                hidden = 128 if config.occupancy_pixel_query == 12 else 64
                 self.occupancy_pixel_query = nn.Sequential(
-                    nn.Linear(features, 64), nn.SiLU(), nn.Linear(64, dimension))
+                    nn.Linear(features, hidden), nn.SiLU(), nn.Linear(hidden, dimension))
                 nn.init.zeros_(self.occupancy_pixel_query[2].weight)
                 nn.init.zeros_(self.occupancy_pixel_query[2].bias)
             else:
@@ -1078,7 +1082,7 @@ class TetrisStateNet(nn.Module):
                     placement = lattice
                 statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
-                if self.config.occupancy_pixel_query == 11:
+                if self.config.occupancy_pixel_query in (11, 12):
                     # declared m37 fusion: the coarse channel's own contrast stencil, read exactly as the
                     # lattice-free arm declares it (a fixed coarse box lattice, each box against the mean and
                     # spread of its own 5x5 neighbourhood, so a board-wide gain or offset cancels), then

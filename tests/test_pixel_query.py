@@ -72,7 +72,7 @@ class ZeroInitTest(unittest.TestCase):
 
     def test_the_configuration_refuses_an_undeclared_value(self):
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=12)
+            replace(ModelConfig(), occupancy_pixel_query=13)
 
     def test_every_declared_form_keeps_step_zero_bit_identical(self):
         pixels = torch.rand(1, 3, SIDE, SIDE)
