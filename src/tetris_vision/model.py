@@ -618,8 +618,8 @@ def pixel_support_lattice(valid, rows, columns, device, dtype):
     The M33 receipt measured a constant lattice over the full capture as the worst placement recipe so
     far, because a padded capture puts the board somewhere inside it. This takes the bounding box of the
     valid pixels - the same support the lattice-free channel pools over - and maps the board's rows and
-    columns onto it, bottom-first. It reads the raster mask only: no label, no prevalence, no scored
-    cell, no fitted or learned quantity.
+    columns onto it, bottom-first. It reads the raster mask only: no annotation, no fitted or
+    learned quantity, and nothing about the truth of any cell.
     """
     lattices = []
     for index in range(valid.shape[0]):

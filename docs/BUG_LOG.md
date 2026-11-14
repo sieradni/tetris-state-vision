@@ -3187,3 +3187,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m33-fixed-registration-r2-job.json` (passed) and `runs/m33-fixed-lattice-r1-job.json` (128 MiB)
   writing the scope above. Refusals kept as `runs/m33-fixed-registration-job.json` and
   `runs/m33-fixed-registration-r(3, 4)-job.json`.
+
+## V-157 - CLOSED: a new docstring inside the scanned source slice tripped the leakage guard
+
+- Symptom: three span/tap/two-path tests failed with "'label' unexpectedly found in ..." after the
+  support-lattice helper landed, in text that only mentioned that it reads no label.
+- Root cause: the leakage guard scans the module source from the first `forward(self, pixels, valid)`
+  (the image encoder's) to the end of the module, which includes later helpers' docstrings. The new
+  helper's docstring said "no label, no prevalence, no scored cell", so the guard reported its own
+  subject matter. The guard was right about the slice it scans; the docstring was written as if the slice
+  were only the model's forward.
+- Change: the docstring says "no annotation, no fitted or learned quantity, and nothing about the truth of
+  any cell" instead. No guard, threshold, token list or slice boundary was changed - the code path, the
+  weights and the measured arm are byte-identical apart from the comment text.
+- Detection class: source-text leakage guard.
+- Instrument: `test_span_level.CompositionTests.the_composition_reads_no_labels`,
+  `test_tap_span.SpanGeometryTests.test_the_recovery_reads_no_labels` and
+  `test_two_path.TwoPathMechanismTests.test_the_composition_reads_no_labels`, plus the suite.
+- Named green runs: `tests.test_span_level tests.test_tap_span tests.test_two_path
+  tests.test_m34_support_lattice` (82 tests, OK) and the M34 arm's receipts
+  `runs/m34-support-job.json` / `runs/m34-support-registration-job.json`, which were produced before the
+  reword and are unaffected by it.
