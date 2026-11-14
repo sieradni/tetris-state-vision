@@ -562,8 +562,9 @@ def cell_pixel_statistics(pixels, lattice, coordinates, offsets):
 
     Nine sub-cell samples over the declared interior extent give twenty-seven channel values and
     three per-channel spreads - the feature class the committed pixel-ceiling read-out measured at
-    0.9872 F1 on the deciding cells. It reads the raster and the lattice only: no label, no target
-    lattice, no decoded state, no threshold. Sampling through the model's own lattice is what makes
+    0.9872 F1 on the deciding cells. It reads the raster and the lattice only: no annotation, no
+    reference lattice, no decoded state, no operating point. Sampling through the model's own lattice
+    makes
     this a measurement of the representation rather than of registration.
     """
     samples = sample_features(pixels, lattice, coordinates, offsets)[0]
