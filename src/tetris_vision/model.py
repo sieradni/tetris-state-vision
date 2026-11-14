@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -570,6 +570,10 @@ def sample_features(features, lattice, coordinates, offsets):
 PIXEL_QUERY_EXTENT = .3
 PIXEL_QUERY_SAMPLES = 9
 PIXEL_QUERY_FEATURES = PIXEL_QUERY_SAMPLES*3+3
+# declared m37 fusion width: five coarse stencil taps per cell, each read as its channel mean and its
+# channel spread after the declared exact-invariant contrast transform, so the coarse channel enters the
+# same projection as a fixed ten-number summary rather than as a second read-out or a learned pool.
+PIXEL_QUERY_STENCIL_FEATURES = 10
 
 
 def pixel_query_centre(statistics):
@@ -903,7 +907,9 @@ class TetrisStateNet(nn.Module):
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
             features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5, 8, 9, 10) else 1)
-            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10):
+            if config.occupancy_pixel_query == 11:
+                features = PIXEL_QUERY_FEATURES+PIXEL_QUERY_STENCIL_FEATURES
+            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9, 10, 11):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1072,7 +1078,23 @@ class TetrisStateNet(nn.Module):
                     placement = lattice
                 statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
-                if self.config.occupancy_pixel_query in (8, 10):
+                if self.config.occupancy_pixel_query == 11:
+                    # declared m37 fusion: the coarse channel's own contrast stencil, read exactly as the
+                    # lattice-free arm declares it (a fixed coarse box lattice, each box against the mean and
+                    # spread of its own 5x5 neighbourhood, so a board-wide gain or offset cancels), then
+                    # summarised per cell by channel mean and channel spread over the five taps. it reads the
+                    # encoder's coarse map and the raster-derived lattice; nothing is fitted here and no label
+                    # or prevalence is involved.
+                    grid = F.adaptive_avg_pool2d(coarse, (rows+2, columns+2))
+                    grid = stencil_contrast(grid)
+                    taps = (grid[:, :, 1:-1, 1:-1], grid[:, :, :-2, 1:-1], grid[:, :, 2:, 1:-1],
+                            grid[:, :, 1:-1, :-2], grid[:, :, 1:-1, 2:])
+                    summary = torch.stack([tap.mean(dim=1) for tap in taps] +
+                                          [tap.std(dim=1, unbiased=False) for tap in taps], dim=-1)
+                    statistics = torch.cat((statistics,
+                                            summary.reshape(statistics.shape[0], -1,
+                                                            PIXEL_QUERY_STENCIL_FEATURES)), dim=-1)
+                elif self.config.occupancy_pixel_query in (8, 10):
                     # declared m35 contrast read: each statistic beside its deviation from the sample's
                     # own mean over the lattice, so the projection sees the board's internal contrast as
                     # well as its level. the mean comes from the sample itself, never from a population
