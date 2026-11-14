@@ -891,6 +891,72 @@
         "manifest.jsonl": "cc29f630b2e15ac7d67c57b6e26a0582b8a3b520827402855b861e02d8aeae93"
       }
     },
+    "m10-supervised-anchor-r1": {
+      "record_commit": "435ba7312001da1f238e3e34182d050de1b6e45e",
+      "files": {
+        "scope.json": "c3f33314f2d2d03bc30197b5d9c9ff78615c1041eca57f7b9ea0d020867733ca"
+      }
+    },
+    "m11-quantile-anchor-r1": {
+      "record_commit": "d934c0aa72bcc720bfbce9c0b4b319dc518b5081",
+      "files": {
+        "scope.json": "7c1f052672d126ebc40fc25e5b31e27cc93e1abbc8a1ce7053cc12b0c2b99a52"
+      }
+    },
+    "m12-dense-hinge-r1": {
+      "record_commit": "13fd27e06ecae2acbf3acc84dbebd6b8d4bfefc1",
+      "files": {
+        "scope.json": "9161559a9fda200c6d3b7d358afb77407bbb3d7435623e0325b4fd64966c7bc2"
+      }
+    },
+    "m13-midpoint-r1": {
+      "record_commit": "c277fb659505a54eb407a1a5ac9227c940b86b07",
+      "files": {
+        "scope.json": "4eab5637eb4b4b01f300c7b8bc9911219c7619a577b36dcf3c35f59c679ae8b2"
+      }
+    },
+    "m14-read-centring-r1": {
+      "record_commit": "71495484f13c457a8ee190e4c1788b9d9a294990",
+      "files": {
+        "scope.json": "2027e636807925a4d2c624ae5fe37d1c7b3dc11fda0ab79d8621dec7b6c9c265"
+      }
+    },
+    "m15-stack-combined-r1": {
+      "record_commit": "9af562ec7e4e67d1b3c2e6181f02ad9a2be1d71c",
+      "files": {
+        "scope.json": "cc6366f8dfba7ddad3feea97af6f35a882a571341061fcd47dd7b452e48847b5"
+      }
+    },
+    "m15-stack-contiguity-r1": {
+      "record_commit": "6f545428769e02de4655c54e841035e080e7f085",
+      "files": {
+        "scope.json": "27dbc908b832f457cfefaf284ded86ae0a104ffdd1396b092944245b80e84b32"
+      }
+    },
+    "m16-crossing-threshold-r1": {
+      "record_commit": "81c56eb2b190a0eba21fd1d7f313c803c9138b5c",
+      "files": {
+        "scope.json": "33d9622c020e0b3601f35d2feab07d5687c7a3eb3cb60e4fe8ae8d417cace0c4"
+      }
+    },
+    "m17-skyline-recovery-r1": {
+      "record_commit": "47620067c768e092fb8774b7bb75ee63ddd78b9e",
+      "files": {
+        "scope.json": "025c9283d8b8fbb1f1042da75c8928bc0e804d33266ca1efe630af1a330ed47a"
+      }
+    },
+    "m18-tap-span-r1": {
+      "record_commit": "0ae43d7728496d24b5c08f12247844aa12946647",
+      "files": {
+        "scope.json": "635b7d64a1b2023f467e14b9dd648943e2c4715fe31c012b36ff81f026db9769"
+      }
+    },
+    "m19-span-level-r1": {
+      "record_commit": "afbea4c58b732ec4ab74ed7314313794b98faede",
+      "files": {
+        "scope.json": "18de771b5b8e96a27f6afe5041ad243acc259a017f2e9f6e298669f3919509f1"
+      }
+    },
     "m2-environment": {
       "record_commit": "28a78b4db0745a5c612dfdfff4e4d0c6606d3dec",
       "files": {
@@ -3344,6 +3410,60 @@
         "training.jsonl": "3ff705a0f76ae1f9df879c0d85d09400dfef0cc58b9e255b715ac93c32d8896d"
       }
     },
+    "m20-two-path-r1": {
+      "record_commit": "121b66c6b12154ae99c03da71c906d8d412e44d0",
+      "files": {
+        "scope.json": "2540022640027fe1495cf368c22f0561604d39ec76ab91b04907486ba056239a"
+      }
+    },
+    "m21-level-r1": {
+      "record_commit": "b893a2075397f0e7743ef6dc331d925bef56c162",
+      "files": {
+        "scope.json": "777d6553bd472c4ba48ada665f306372efd236edacab1bcb00707299a8e506c8"
+      }
+    },
+    "m22-stencil-r1": {
+      "record_commit": "a96b5211e34ad1e73ebb372635223a6a62aa7fab",
+      "files": {
+        "scope.json": "c701b782f9ed20250da4bff36a9e130e40ce3af80df93f396a1538bef197f183"
+      }
+    },
+    "m23-contrast-r1": {
+      "record_commit": "2c5debf31026bc8ef07fa0320cc6f4793c3da6d7",
+      "files": {
+        "scope.json": "b5fe0228c999b1957dfd3c433c6656b693dd4addf775eded2f0c8f8b4907b244"
+      }
+    },
+    "m24-exactness-r1": {
+      "record_commit": "018197fd5480b5858c315342f9f7bc476aee83b3",
+      "files": {
+        "scope.json": "67ad33808f7ca4ffdc69e1429b93309e10625fbf1b5839825c2d8cd8b2d321c0"
+      }
+    },
+    "m25-rank-r1": {
+      "record_commit": "661f1e58de7dff0cb8293256429aa08cf87be1cf",
+      "files": {
+        "scope.json": "621d425c175c47f2ac32987cc45d2cec19efe754d1e99cd14bc8d477465e4e2d"
+      }
+    },
+    "m26-gap-r1": {
+      "record_commit": "2efab678e81adb2477a1a2f7f8f0bd3a367c3089",
+      "files": {
+        "scope.json": "8dce0413ee76e6b03d5c28862014af50ab6e318e1aa954c234df3ea7add5ca36"
+      }
+    },
+    "m27-three-factor-r3": {
+      "record_commit": "ab8f90e50c7ac29763354bdb100dea1c3f6e0a57",
+      "files": {
+        "scope.json": "592f392c9dddde840634167c2a28c149fd1ca9350b4bb2f5a514e34a2078d956"
+      }
+    },
+    "m28-pixel-query-r2": {
+      "record_commit": "a6bf87a8891607318a59d419c8585362a756cefd",
+      "files": {
+        "scope.json": "f12bade77551f8d53847a6b153e678f9f03608576656cfaf05eee6969b060420"
+      }
+    },
     "m3-capture-side-tests-r1": {
       "record_commit": "91e6ad6c68352758ee9fa6a3c78b3934e24ae3db",
       "files": {
@@ -3369,6 +3489,13 @@
         "m3-component-targets-tests.log": "69757fbab38032514b4640874e4cedcc0295d3c7bce0c3c74540911d3a84799e",
         "m3-component-targets-tests.stderr.log": "9dc6bc2f55519dbf70ff77c93a6616a26c415e0543e152accb56d97dafd90cb7",
         "scope.json": "7698a139b4598750fde932ef78af0a99ce99265b9472864df3f28e15968d9d0b"
+      }
+    },
+    "m3-compute-replication-r1": {
+      "record_commit": "269092fc1a171995cd2922c58a151005f9436820",
+      "files": {
+        "result.json": "e5ae1849df0f43049065da055dfd1ff7b1c34dbf3bd46bc1728c5a7d6d39d1dd",
+        "scope.json": "6f8e4fa5b1e0a28774ec78dc1c1dfa85adb8f10fba5d5c511ad7edf2621a2eae"
       }
     },
     "m3-controller-recovery-r1": {
@@ -3413,6 +3540,62 @@
         "test_controller_evidence.py": "f866886d493cb086684a7d0764806dae4c60287112f881b07dc079c7d516169f"
       }
     },
+    "m3-deciding-headroom-narrow-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "151444aff8b6f43fbb2c21951300922a6068e79a81d0f3928d2cf22f9699ca12",
+        "result.json": "fc6258cba7cc45e9a9d35259df5147ce9a86331d2ffadf55e7167be179282356",
+        "scope.json": "0baea64c4761bf1870d00121e32111830cf7a261960daddf58e501890fff3771"
+      }
+    },
+    "m3-deciding-headroom-preguard-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "53d34853b80313e5cd7b11063f72c7498795ff78b143710878439c606816f54a",
+        "scope.json": "c7d5c873b5ec28913f3b6351ff4e918e4020ad124bbc45f1c74838595704cc36"
+      }
+    },
+    "m3-deciding-headroom-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "c7e833974f53f267a5fda9c4a699f38d69d9ee27a962dd6ffc2c6377dcea908a",
+        "scope.json": "9d1c7ae739dd3afd614db19d41ef08d998810a5136c5a22a54939c528b85de11"
+      }
+    },
+    "m3-deciding-headroom-rerun-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "535da69e18f83f17f51b8173fcd59f79ff0194d0b91a211a5194483273368b4a",
+        "scope.json": "e49ed54a474ce8073379935a9955a930a21df03245c1f6980f09032528271693"
+      }
+    },
+    "m3-deciding-headroom-rerun-r2": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "a03f48e2e9c3bbc7bd218615ca71a9d0d862cb099f54f931afcc868f84fd3e3e",
+        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
+      }
+    },
+    "m3-deciding-headroom-rerun-r3": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "f5d113e04bf86d9abf1f0194633f1c5639bc4408376dfd310c121a322359fb83",
+        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
+      }
+    },
+    "m3-deciding-headroom-rerun-r4": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "f406e72ae73395c551189ade0f58564fb493e51ba3451d6980f305f9c1cf2409",
+        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
+      }
+    },
     "m3-fit-occupancy-r1-errors-r1": {
       "record_commit": "1d4e29b8e43a389ccf708bd01c7294aa832beee0",
       "files": {
@@ -3428,6 +3611,51 @@
         "scope.json": "79ef1c503df4346d49b8f9b1cc9b3bb92aee7ce5d36fbde845fd25f1d5ea4d4c",
         "source-manifest.json": "b6f9aaf9870fa1e592f81aa2d854de59f73cb4effac7d2528f36872f255df2ba",
         "training-probe.jsonl": "c59e10a67c67d3f053c7779fe8bb8703ed289f7749a36a28a26683770de8300f"
+      }
+    },
+    "m3-fit-occupancy-r1-errors-r2": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "6d70fef998af7601a0af132e52167c5cd068d2ca495f4728a93442e2d4d11cca"
+      }
+    },
+    "m3-fit-occupancy-r1-errors-r3": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "1c264827df5266b1e79cff7c16b51dedc6047424daeca97b7983cd66628dc6f8"
+      }
+    },
+    "m3-fit-occupancy-r1-errors-r4": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "29a93c6892eb16c72aeb233c44d59075394e3b666fa3544aa48d5b34f2f7b1a1"
+      }
+    },
+    "m3-fit-occupancy-r1-errors-r5": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
+        "result.json": "f97bae220f313b975152d828d627571a0c52b40fe9044f6b002f7076bd8e530d"
+      }
+    },
+    "m3-gpu-fit-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "chain-12800.json": "0a7167a1aefdbff6b96a5e69692af2a48959e246723f5ea9f3a7ffd0a2f8d9c2",
+        "chain-12800.md": "fbd34f3becdeb6d0525361d3ad09b56e26a8ecf9d87b8a3038096b8306de3195",
+        "cpu-suite-job.json": "855abae4ed4a936420161f19f930eb869b6f69fdfc657b7f97fdeaf84accc7f7",
+        "decode-400.json": "52eb732ed9a7b10f4ef001844a2f8db6856e57ccbd3115bde5d9240bf4712c27",
+        "diagnosis-400.json": "b9022de0aeab6e7e5aa458d9e90007adbe3750113f98fd971f98f37524eb6e55",
+        "diagnosis-400.md": "2deda78a69981a12371a9468820b5d5cf64e60b4f6ad8057850a53f455f270bc",
+        "gpu_fit_test.py": "f17f9e59662b49ba72a85e5701a3b10fb8a6a3689063f34144b8ed070356868f",
+        "predictions-400.json": "be2971ba00dcbce1598ee181b8c1a6fe264c8641e0fb6c609b4b929904990fba",
+        "smoke-400-run.log": "0d1f55be57bc2a3b562a51f5703d0ec8840b20a756f4766fc2d33b9aece58e4d",
+        "smoke-400.json": "07657de0150ad54e9dc30baf6d55f8cd6911684b03b2bd5a840c73e928e0d0f8",
+        "stability-1600.json": "b98cfba7172180e13847943f05e6071d0c04e940267105cacc7295b957523808",
+        "stability-1600.md": "27183fa83eafbfcfd0a34f7a3e153941be44be61dcbab8c17563bfb25bedad83"
       }
     },
     "m3-identity-discrimination-r2": {
@@ -3610,6 +3838,161 @@
         "scope.json": "627b0bdc117e435e5b9b6d1a8e114e91bad4cde369679db7d9651a211e29ba08"
       }
     },
+    "m3-occupancy-board-refinement-r1": {
+      "record_commit": "2e7d883d10273d894b1cf08b099a85ba9ccb02e0",
+      "files": {
+        "scope.json": "dfa0c37271adad1229b0acf794afa670b90e62c5dcbd12722b4709ebbbb2818e"
+      }
+    },
+    "m3-occupancy-conditioning-r1": {
+      "record_commit": "027a3fded9ca88fc4598d6c11fcca4717cfa106e",
+      "files": {
+        "scope.json": "6334426acae8f569d6a375afa903f32a11c63860560db4690f098cd1cf95db68"
+      }
+    },
+    "m3-occupancy-deformation-r1": {
+      "record_commit": "f5beaa6cbd0beaf607b44cf0b0f2b817ab0ae37a",
+      "files": {
+        "scope.json": "3f807bc182ac82d363f4aab79689793ac81b6e3334e254f2b307c358a1cbc0ed"
+      }
+    },
+    "m3-occupancy-deformation-r2": {
+      "record_commit": "b37cd048b27bb9497130bff0a0cb8543be9135ee",
+      "files": {
+        "scope.json": "7d1d900c6295635392a3be910a4a6dfa682199772ef3ddc03950c92aae767ffb"
+      }
+    },
+    "m3-occupancy-deformation-r3": {
+      "record_commit": "3615764d0b2c48faca1d4267bff9a4e8884903c8",
+      "files": {
+        "scope.json": "916c7d30eb213b5faf8bfc8a06d8db6a67ed10dec9e16727f3c90f4a20196de9"
+      }
+    },
+    "m3-occupancy-extent-r1": {
+      "record_commit": "ae17a47df416b9b2d18a076ade856aa1849c2d84",
+      "files": {
+        "scope.json": "635471c876d5083c642c217a40f1c041a5533e1fe8ca8816d6ec8806f3e67d30"
+      }
+    },
+    "m3-occupancy-fit-budget-r1": {
+      "record_commit": "98caa612b3c6744b15c4d8488517dd3e436dc066",
+      "files": {
+        "scope.json": "e544c8ce76b4792adc4158943b0c2997f7e277d7f878848266e3e96a19d99cb0"
+      }
+    },
+    "m3-occupancy-geometry-capacity-r1": {
+      "record_commit": "e5693d20d9f37d2f4997a993d1f45fdb8968445a",
+      "files": {
+        "scope.json": "5837833d20f2d0d59fc73a0d061b19bb04fb133131ecbcaaf9d30700b74c7f4f"
+      }
+    },
+    "m3-occupancy-geometry-r1": {
+      "record_commit": "1bf3d883947228510fb10a2c1e0180035476e021",
+      "files": {
+        "scope.json": "bf7be4bf3bcaec7ce1976dd0e50af3ecbfee462679c77abd5d6c7a9b232a8c63"
+      }
+    },
+    "m3-occupancy-lattice-free-readout-r1": {
+      "record_commit": "912a628d33e49dd79ea6de9826c0182c06b53866",
+      "files": {
+        "scope.json": "753667f92b31d962d6dc24bbe3d27d430f0b78da54bbceff9f343f12f1d7fa4a"
+      }
+    },
+    "m3-occupancy-lattice-residual-r1": {
+      "record_commit": "39bdefe8a27d87d05cad4186e67dfbe4d10c9fde",
+      "files": {
+        "scope.json": "03ae7d5f712f17595352a209687598a039ce312653eb5303b830bc9eac650bb6"
+      }
+    },
+    "m3-occupancy-pixel-ceiling-r1": {
+      "record_commit": "df7ccc22578079712ea1a5c3c24b2f342d8661f4",
+      "files": {
+        "scope.json": "b41410f181688833af4cc8190611ec2302ea7e63508266d912248fc6be86ca16"
+      }
+    },
+    "m3-occupancy-precision-r1": {
+      "record_commit": "0d54ff4a94340749b9c853531d06f25061b3e858",
+      "files": {
+        "scope.json": "8146696b190ca4402bf8c54f0422f884de1fef3e294b2204b76757dd59a4316d",
+        "verification.json": "a7c73203cb00f2b8af38310a05cd2f3f061620a6f8114fc2e23d111ae8a34554"
+      }
+    },
+    "m3-occupancy-registration-r1": {
+      "record_commit": "299cfb241ae86cca12e90335998dc9e1b1ee397e",
+      "files": {
+        "scope.json": "a4809b9c778cac3861ef4a7861e2f017ac5df1053dac290edb23ba2aecb00fd7"
+      }
+    },
+    "m3-occupancy-representation-r1": {
+      "record_commit": "bdfaf4c79e7a136a9c0c9824e2c1e446a22cb88c",
+      "files": {
+        "scope.json": "cdbb92bc949419f6ee9acba9aaeabd1cf90adc30265abb025b52afc30e48888c"
+      }
+    },
+    "m3-occupancy-resolution-r1": {
+      "record_commit": "979d89fbaebdce6eacc7da613b90965421f41d48",
+      "files": {
+        "audit.json": "e5f11307ac5a5c0c1590e686645417fb05c2a850b5d2ae5328013c65a9e8180a",
+        "closing.json": "1054fb9be3826e3d803a203116499acc737980ae3e99e1fa31e0605a5c9e69e2",
+        "refusal.json": "84714df91ea4d5918feb1248f1b0f007c419ab877725367b076dc62bbe0078d6",
+        "verification.json": "5550e726748d63a3c15247a5d1cf774c7d1ad3d3002291e8501c1aef84ae0793"
+      }
+    },
+    "m3-occupancy-resolution-r2": {
+      "record_commit": "0e08ba1544cb010d423c06c0303f25dad0917156",
+      "files": {
+        "scope.json": "79ebc3e28b470ed05d19cc672528f2d20f1bcb47458bbca098947ae2a134c5bf"
+      }
+    },
+    "m3-occupancy-scaled-r1": {
+      "record_commit": "299cfb241ae86cca12e90335998dc9e1b1ee397e",
+      "files": {
+        "scope.json": "31ee1ec44bb4f1fe4a66d20e1bc8773b1f0911af75c660bec79cd586cb827c21"
+      }
+    },
+    "m3-occupancy-stacking-r1": {
+      "record_commit": "e3d9fa60a2de244b6c6befbf856a07bad65ca613",
+      "files": {
+        "audit.json": "ac625edcf2b6cc0d1131c0cce7d1d48e8d19855d86afec966a0aed3601c04c58",
+        "closing.json": "410bb1ef08b9247a7268a4878d2a1a7feffe9cbbbf1d25c0316580346783708a",
+        "scope.json": "5b2c133f8a3c7c63651002f8c39edc430eca12d025e1c2c2461c7c501af07d89",
+        "verification.json": "dfa5d832cde43fceebbd8c52870b406a2dc0fa05f83c0344a2bcc5af2930352c"
+      }
+    },
+    "m3-occupancy-stencil-r1": {
+      "record_commit": "20d2ffdcfd2d42a143d82911e1c15daf2fa07b0b",
+      "files": {
+        "closing.json": "14441769625b5b9606f8f10622bd636cf8a1acd1c4235a2b061fd96693944281",
+        "scope.json": "c40edf0440a5a90bbc4b0df3cf2e9e3cdbfb63423f90a54ca65dca82dd9c9e32",
+        "verification.json": "67e745b40175085b2bcd595d0361ad4c2ef90c6161f1786b46d8fd73d56751a3"
+      }
+    },
+    "m3-occupancy-translation-r1": {
+      "record_commit": "aabf83d2fd25cb10a54237db979b0e735e74a3a4",
+      "files": {
+        "scope.json": "aec68d93d415c8514674b770b3974f2e838df24a4e847c787fc4c40a29b32340"
+      }
+    },
+    "m3-operating-point-r1": {
+      "record_commit": "a1e68272ab6b395f9801ed2308e53afb7970b889",
+      "files": {
+        "result.json": "4889a353059e58ee7980caab730956b268392c4d056a46f2f51414923db3e99c",
+        "scope.json": "425a2c17f92244f1c2d804e16830b6e716990f6bf81e0f17643e76e4851e8577"
+      }
+    },
+    "m3-operating-point-r2": {
+      "record_commit": "a1e68272ab6b395f9801ed2308e53afb7970b889",
+      "files": {
+        "result.json": "4277bb8570322bc30ee2a3962d04215c519725e49ec3ae6992e85d19ea067e6f",
+        "scope.json": "8a2c47bb53ee5dfdab461fe980e2d095d2794c9b9963c8792543c6359e5e845b"
+      }
+    },
+    "m3-optimiser-schedule-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "scope.json": "100dfd83d302493eed7499416706c4df333dbfbbc737df31f547aa345a611218"
+      }
+    },
     "m3-percell-balance-r1-errors-r1": {
       "record_commit": "c2dfa18e5f04a937895b45e65e7453cc3ab87340",
       "files": {
@@ -3625,6 +4008,27 @@
         "scope.json": "fbedba58181879385104eac42fbc8708b04240114c21dc52f33ea1d65159b21d",
         "source-manifest.json": "be22ee164f825110a7f587041cce60198b560295ca7690a0e54bca0f4abf1279",
         "training-probe.jsonl": "c59e10a67c67d3f053c7779fe8bb8703ed289f7749a36a28a26683770de8300f"
+      }
+    },
+    "m3-power-mde-r1": {
+      "record_commit": "a080e61e8654bacc2b16a6f7880311fba5b1def7",
+      "files": {
+        "result.json": "7a5c7e29a374da1ee5f10a7b53f26237519b405e114470a1c4bc4872faa449aa",
+        "scope.json": "02b24fb7e09269d8e387376d89217183108d16057974ec4fde133c2cb816e15b"
+      }
+    },
+    "m3-power-mde-r2": {
+      "record_commit": "a080e61e8654bacc2b16a6f7880311fba5b1def7",
+      "files": {
+        "result.json": "bee4f5aa816cad4a10cfd8450fc611772bb2124eaf1529fdda9bf9a2fbd98120",
+        "scope.json": "a1f826b8788549f43723b502524057cb17cff6c335c85bf87c90574056ed84be"
+      }
+    },
+    "m3-power-mde-r3": {
+      "record_commit": "37a12a1a4a74e1f15e1df83a7750f303f06d73cf",
+      "files": {
+        "result.json": "f337f0d4d6f6fbce751868474704066673d944a07af7b6fbcecc74c987f5dc9e",
+        "scope.json": "baf52e07f629ebc9988a0cb1de36ac58c2a326820308d4daf5a938420dbe1691"
       }
     },
     "m3-stream-controller-recovery-full": {
@@ -3868,6 +4272,24 @@
         "scope.json": "9b673dc911b758089f64e4619b4ba5d4b7bf4c0a50345803f4c159498412684e"
       }
     },
+    "m3-sweep-deciding-power-r4": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "power.json": "8f774e17829dfbe2d1af0f4c3b95bfdb5ac70e8adce57c90e0cdc64de0b09e2a"
+      }
+    },
+    "m3-sweep-deciding-power-r5": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "power.json": "383a8e1fe69d1c2a079761ee7d4dd76b8d82854dc5d7865c4dc3bea047e65d23"
+      }
+    },
+    "m3-sweep-deciding-power-r6": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "power.json": "e33524efd3ee0282416da1c931fd7169f0973234eeb07d05f4e1622c62bc3440"
+      }
+    },
     "m3-sweep-occupancy-r1-ranking-r1": {
       "record_commit": "0188af40cf9b6c460194218bc05a1d8aed0c49ca",
       "files": {
@@ -3882,6 +4304,102 @@
         "result.json": "d9cf5993e5965969b4b4f2185764f8d208f60fdbc4ee91c62b4e40985e18ae35",
         "scope.json": "79dfb0096c3b9e7c15cacd757611dd80ef0a6411e8896c1725d956b3032cd847",
         "source-manifest.json": "be22ee164f825110a7f587041cce60198b560295ca7690a0e54bca0f4abf1279"
+      }
+    },
+    "m3-trunk-width-pricing": {
+      "record_commit": "524daeba5e4dcc96aaa88429528d1d45c0aed371",
+      "files": {
+        "attempt-1152mib-job.json": "626b3cc11ce0b152831b7dbc02b8f9e81f908932f5e52b21db6d182ba6854b03",
+        "job.json": "771a5c096836a88001fd81ed6baf16773fd5099beba25b0d160ae0ed52be9419",
+        "per-trunk-ceiling.json": "1b28e6c477f89ba66ced59ff5504890c26e80e1ed8d8ff0337e132de2b66f100",
+        "per-trunk-published-job.json": "e3edd1747b555b6396919512bda920f39de908257fef1964a68eeed8261d857d",
+        "per-trunk-wide_a-job.json": "66457a597776bbeda82f0a0db096f71e1dd5692e23556a503372042a547a8d6d",
+        "per-trunk-wide_b-job.json": "b0509ed90a1942008e9ae0acac01f093708eced10e6896f9606688061cc69c12",
+        "price_trunk_width.py": "d2efc7c2b6105133b35b45daf5ac08e2c3f9e763941ec361fd69fce8c0f453aa",
+        "pricing.json": "947c263444e6670b2e1739f102e23dd4cee9180f954e109cb87dd41b28fc23e4"
+      }
+    },
+    "m3-trunkwidth-r1": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "5298b42dab80c16079f3058df3edf8078013b124abe2c5347a2caea9f3104d16",
+        "scope.json": "91ffa14fb3bbfdab375ce252bd22d7c45035c73c8bf043aaa4cdad8238cd4334"
+      }
+    },
+    "m3-trunkwidth-r1-interrupted-attempt": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "eae905398bf65050d41d2a40766639745b6d1fcf9b875f37456e0fc4cb7d834e"
+      }
+    },
+    "m3-trunkwidth-r2": {
+      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
+      "files": {
+        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
+        "result.json": "2c95c817c3279aa71e18d7851469cf4ff26f2368dc98ef0b0e3ebb815b3b222d",
+        "scope.json": "350b8259afd947cf948cf8d7d415cac3411fd1848c04e258bbebc75f1173c9bc"
+      }
+    },
+    "m3-widened-deciding-population-clustering-r1": {
+      "record_commit": "f260bf60c71fb253a1f8d9af3998b3d92301e99c",
+      "files": {
+        "scope.json": "f5fbf6867c1fca4eba7bee56f53e34397a069e27806be22ab67b9111436d0bfe"
+      }
+    },
+    "m3-widened-deciding-population-r1": {
+      "record_commit": "27a4b638d7b2131959bff812338947d255102e1d",
+      "files": {
+        "admission-summary.json": "a37b0ba8e7681b1ef289a7e79d14ac0fc33f0b142acf3974eb3568e8e471d76d",
+        "identity-job.json": "76bc507b220d652f69cf9023e0a5881d99a4585764bdafefd3a0b48d2fa8f544",
+        "identity-result.json": "5950467b21cb648a45d97b58e77cb9c29d834c270aa38fb427f90ab92a4e2cab",
+        "occupancy-job.json": "affbed2adceb1a69abdc9bc22e6be161592139b859cf73659d7bd6ce3d79d4b9",
+        "occupancy-result.json": "05ba51d8418d0bacc9dde66e5924e696b3950742c0ba536ee6f9c1258521419c",
+        "scope.json": "a3d9a10a0044fc1ce0d08c73958573b9618d685735b9176607abdf084bc5d03f",
+        "sweep-job.json": "fa77de8a912a6a643fd2706323dd7b7a1bc2ec75dee113dbfed4143770e78a39",
+        "sweep-result.json": "656d620fc12af58bc7ca9b5554988719a47a45d473a9ff4b3f9508f8acd559e8"
+      }
+    },
+    "m4-placed-supervision-r1": {
+      "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
+      "files": {
+        "scope.json": "c56f6a3ce8c57ca8519427973fc02e924521aca3bc64d5844a047290efe557a0"
+      }
+    },
+    "m5-column-readout-r1": {
+      "record_commit": "889a6197b347af30f2497ed30781d07fb31276eb",
+      "files": {
+        "scope.json": "7a44d671da0dc85b1ac8ee51c9863991e2a4f7d9a6cbcf3ee7701539b89a43de"
+      }
+    },
+    "m5-row-error-r1": {
+      "record_commit": "afb7a0a1ee2286aa4c47c88d5def6c1f114adced",
+      "files": {
+        "scope.json": "00994aad15352d467e646944b4a2c3bdb32d64b9652605c23bb4395993e46ae1"
+      }
+    },
+    "m6-row-offset-r1": {
+      "record_commit": "8e61a545b0bba02bebc827e7991ceb0850cdf6c9",
+      "files": {
+        "scope.json": "fdbd1ee2d0597fba8fdeecd60caf2c9fdf84e53fe5b6929a09025f04d6f8c467"
+      }
+    },
+    "m7-calibration-r1": {
+      "record_commit": "352e7fc3917bcbfe8436f6935e815490db183ad4",
+      "files": {
+        "scope.json": "9842175ff52dc245acbb2f370e4c1da82e887c11636cb69e59e1e721ae6416d1"
+      }
+    },
+    "m8-normalised-boundary-r1": {
+      "record_commit": "b3cc990964e072719d620416144174eeb2bd78b3",
+      "files": {
+        "scope.json": "8523b62bb096fe00ce327355101afa60e979c7b126fd95c3eff786e8cecb27f5"
+      }
+    },
+    "m9-supervised-margin-r1": {
+      "record_commit": "9360e344a89af1ec47012d069a3c951774b70387",
+      "files": {
+        "scope.json": "f7fb2cacf3492d0f5bdfb0d6b42829d7594c13c56c937bc34c99c295acd7b120"
       }
     },
     "pixel-replay-contract-r2": {
@@ -4453,518 +4971,6 @@
         "v030-preflight-tests-r2.stderr.log": "8a8fd5b27cfb48caae06faf84c56614e57eb0ffb9fe03c83b2045d614b483b44"
       }
     },
-    "m27-three-factor-r3": {
-      "record_commit": "ab8f90e50c7ac29763354bdb100dea1c3f6e0a57",
-      "files": {
-        "scope.json": "592f392c9dddde840634167c2a28c149fd1ca9350b4bb2f5a514e34a2078d956"
-      }
-    },
-    "m10-supervised-anchor-r1": {
-      "record_commit": "435ba7312001da1f238e3e34182d050de1b6e45e",
-      "files": {
-        "scope.json": "c3f33314f2d2d03bc30197b5d9c9ff78615c1041eca57f7b9ea0d020867733ca"
-      }
-    },
-    "m11-quantile-anchor-r1": {
-      "record_commit": "d934c0aa72bcc720bfbce9c0b4b319dc518b5081",
-      "files": {
-        "scope.json": "7c1f052672d126ebc40fc25e5b31e27cc93e1abbc8a1ce7053cc12b0c2b99a52"
-      }
-    },
-    "m12-dense-hinge-r1": {
-      "record_commit": "13fd27e06ecae2acbf3acc84dbebd6b8d4bfefc1",
-      "files": {
-        "scope.json": "9161559a9fda200c6d3b7d358afb77407bbb3d7435623e0325b4fd64966c7bc2"
-      }
-    },
-    "m13-midpoint-r1": {
-      "record_commit": "c277fb659505a54eb407a1a5ac9227c940b86b07",
-      "files": {
-        "scope.json": "4eab5637eb4b4b01f300c7b8bc9911219c7619a577b36dcf3c35f59c679ae8b2"
-      }
-    },
-    "m14-read-centring-r1": {
-      "record_commit": "71495484f13c457a8ee190e4c1788b9d9a294990",
-      "files": {
-        "scope.json": "2027e636807925a4d2c624ae5fe37d1c7b3dc11fda0ab79d8621dec7b6c9c265"
-      }
-    },
-    "m15-stack-combined-r1": {
-      "record_commit": "9af562ec7e4e67d1b3c2e6181f02ad9a2be1d71c",
-      "files": {
-        "scope.json": "cc6366f8dfba7ddad3feea97af6f35a882a571341061fcd47dd7b452e48847b5"
-      }
-    },
-    "m15-stack-contiguity-r1": {
-      "record_commit": "6f545428769e02de4655c54e841035e080e7f085",
-      "files": {
-        "scope.json": "27dbc908b832f457cfefaf284ded86ae0a104ffdd1396b092944245b80e84b32"
-      }
-    },
-    "m16-crossing-threshold-r1": {
-      "record_commit": "81c56eb2b190a0eba21fd1d7f313c803c9138b5c",
-      "files": {
-        "scope.json": "33d9622c020e0b3601f35d2feab07d5687c7a3eb3cb60e4fe8ae8d417cace0c4"
-      }
-    },
-    "m17-skyline-recovery-r1": {
-      "record_commit": "47620067c768e092fb8774b7bb75ee63ddd78b9e",
-      "files": {
-        "scope.json": "025c9283d8b8fbb1f1042da75c8928bc0e804d33266ca1efe630af1a330ed47a"
-      }
-    },
-    "m18-tap-span-r1": {
-      "record_commit": "0ae43d7728496d24b5c08f12247844aa12946647",
-      "files": {
-        "scope.json": "635b7d64a1b2023f467e14b9dd648943e2c4715fe31c012b36ff81f026db9769"
-      }
-    },
-    "m19-span-level-r1": {
-      "record_commit": "afbea4c58b732ec4ab74ed7314313794b98faede",
-      "files": {
-        "scope.json": "18de771b5b8e96a27f6afe5041ad243acc259a017f2e9f6e298669f3919509f1"
-      }
-    },
-    "m20-two-path-r1": {
-      "record_commit": "121b66c6b12154ae99c03da71c906d8d412e44d0",
-      "files": {
-        "scope.json": "2540022640027fe1495cf368c22f0561604d39ec76ab91b04907486ba056239a"
-      }
-    },
-    "m21-level-r1": {
-      "record_commit": "b893a2075397f0e7743ef6dc331d925bef56c162",
-      "files": {
-        "scope.json": "777d6553bd472c4ba48ada665f306372efd236edacab1bcb00707299a8e506c8"
-      }
-    },
-    "m22-stencil-r1": {
-      "record_commit": "a96b5211e34ad1e73ebb372635223a6a62aa7fab",
-      "files": {
-        "scope.json": "c701b782f9ed20250da4bff36a9e130e40ce3af80df93f396a1538bef197f183"
-      }
-    },
-    "m23-contrast-r1": {
-      "record_commit": "2c5debf31026bc8ef07fa0320cc6f4793c3da6d7",
-      "files": {
-        "scope.json": "b5fe0228c999b1957dfd3c433c6656b693dd4addf775eded2f0c8f8b4907b244"
-      }
-    },
-    "m24-exactness-r1": {
-      "record_commit": "018197fd5480b5858c315342f9f7bc476aee83b3",
-      "files": {
-        "scope.json": "67ad33808f7ca4ffdc69e1429b93309e10625fbf1b5839825c2d8cd8b2d321c0"
-      }
-    },
-    "m25-rank-r1": {
-      "record_commit": "661f1e58de7dff0cb8293256429aa08cf87be1cf",
-      "files": {
-        "scope.json": "621d425c175c47f2ac32987cc45d2cec19efe754d1e99cd14bc8d477465e4e2d"
-      }
-    },
-    "m26-gap-r1": {
-      "record_commit": "2efab678e81adb2477a1a2f7f8f0bd3a367c3089",
-      "files": {
-        "scope.json": "8dce0413ee76e6b03d5c28862014af50ab6e318e1aa954c234df3ea7add5ca36"
-      }
-    },
-    "m3-compute-replication-r1": {
-      "record_commit": "269092fc1a171995cd2922c58a151005f9436820",
-      "files": {
-        "result.json": "e5ae1849df0f43049065da055dfd1ff7b1c34dbf3bd46bc1728c5a7d6d39d1dd",
-        "scope.json": "6f8e4fa5b1e0a28774ec78dc1c1dfa85adb8f10fba5d5c511ad7edf2621a2eae"
-      }
-    },
-    "m3-deciding-headroom-narrow-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "151444aff8b6f43fbb2c21951300922a6068e79a81d0f3928d2cf22f9699ca12",
-        "result.json": "fc6258cba7cc45e9a9d35259df5147ce9a86331d2ffadf55e7167be179282356",
-        "scope.json": "0baea64c4761bf1870d00121e32111830cf7a261960daddf58e501890fff3771"
-      }
-    },
-    "m3-deciding-headroom-preguard-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "53d34853b80313e5cd7b11063f72c7498795ff78b143710878439c606816f54a",
-        "scope.json": "c7d5c873b5ec28913f3b6351ff4e918e4020ad124bbc45f1c74838595704cc36"
-      }
-    },
-    "m3-deciding-headroom-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "c7e833974f53f267a5fda9c4a699f38d69d9ee27a962dd6ffc2c6377dcea908a",
-        "scope.json": "9d1c7ae739dd3afd614db19d41ef08d998810a5136c5a22a54939c528b85de11"
-      }
-    },
-    "m3-deciding-headroom-rerun-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "535da69e18f83f17f51b8173fcd59f79ff0194d0b91a211a5194483273368b4a",
-        "scope.json": "e49ed54a474ce8073379935a9955a930a21df03245c1f6980f09032528271693"
-      }
-    },
-    "m3-deciding-headroom-rerun-r2": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "a03f48e2e9c3bbc7bd218615ca71a9d0d862cb099f54f931afcc868f84fd3e3e",
-        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
-      }
-    },
-    "m3-deciding-headroom-rerun-r3": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "f5d113e04bf86d9abf1f0194633f1c5639bc4408376dfd310c121a322359fb83",
-        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
-      }
-    },
-    "m3-deciding-headroom-rerun-r4": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "f406e72ae73395c551189ade0f58564fb493e51ba3451d6980f305f9c1cf2409",
-        "scope.json": "846b63973eb40d8296aaea18fe71ceaf9ca12ebb1027b70bcfd8816bc5a79e1b"
-      }
-    },
-    "m3-fit-occupancy-r1-errors-r2": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
-        "result.json": "6d70fef998af7601a0af132e52167c5cd068d2ca495f4728a93442e2d4d11cca"
-      }
-    },
-    "m3-fit-occupancy-r1-errors-r3": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
-        "result.json": "1c264827df5266b1e79cff7c16b51dedc6047424daeca97b7983cd66628dc6f8"
-      }
-    },
-    "m3-fit-occupancy-r1-errors-r4": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
-        "result.json": "29a93c6892eb16c72aeb233c44d59075394e3b666fa3544aa48d5b34f2f7b1a1"
-      }
-    },
-    "m3-fit-occupancy-r1-errors-r5": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "b0e3e00903abe91c5679bf90ad33ccb9d982b3804f909927e3095397ea7c3ae6",
-        "result.json": "f97bae220f313b975152d828d627571a0c52b40fe9044f6b002f7076bd8e530d"
-      }
-    },
-    "m3-gpu-fit-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "chain-12800.json": "0a7167a1aefdbff6b96a5e69692af2a48959e246723f5ea9f3a7ffd0a2f8d9c2",
-        "chain-12800.md": "fbd34f3becdeb6d0525361d3ad09b56e26a8ecf9d87b8a3038096b8306de3195",
-        "cpu-suite-job.json": "855abae4ed4a936420161f19f930eb869b6f69fdfc657b7f97fdeaf84accc7f7",
-        "decode-400.json": "52eb732ed9a7b10f4ef001844a2f8db6856e57ccbd3115bde5d9240bf4712c27",
-        "diagnosis-400.json": "b9022de0aeab6e7e5aa458d9e90007adbe3750113f98fd971f98f37524eb6e55",
-        "diagnosis-400.md": "2deda78a69981a12371a9468820b5d5cf64e60b4f6ad8057850a53f455f270bc",
-        "gpu_fit_test.py": "f17f9e59662b49ba72a85e5701a3b10fb8a6a3689063f34144b8ed070356868f",
-        "predictions-400.json": "be2971ba00dcbce1598ee181b8c1a6fe264c8641e0fb6c609b4b929904990fba",
-        "smoke-400-run.log": "0d1f55be57bc2a3b562a51f5703d0ec8840b20a756f4766fc2d33b9aece58e4d",
-        "smoke-400.json": "07657de0150ad54e9dc30baf6d55f8cd6911684b03b2bd5a840c73e928e0d0f8",
-        "stability-1600.json": "b98cfba7172180e13847943f05e6071d0c04e940267105cacc7295b957523808",
-        "stability-1600.md": "27183fa83eafbfcfd0a34f7a3e153941be44be61dcbab8c17563bfb25bedad83"
-      }
-    },
-    "m3-occupancy-board-refinement-r1": {
-      "record_commit": "2e7d883d10273d894b1cf08b099a85ba9ccb02e0",
-      "files": {
-        "scope.json": "dfa0c37271adad1229b0acf794afa670b90e62c5dcbd12722b4709ebbbb2818e"
-      }
-    },
-    "m3-occupancy-conditioning-r1": {
-      "record_commit": "027a3fded9ca88fc4598d6c11fcca4717cfa106e",
-      "files": {
-        "scope.json": "6334426acae8f569d6a375afa903f32a11c63860560db4690f098cd1cf95db68"
-      }
-    },
-    "m3-occupancy-deformation-r1": {
-      "record_commit": "f5beaa6cbd0beaf607b44cf0b0f2b817ab0ae37a",
-      "files": {
-        "scope.json": "3f807bc182ac82d363f4aab79689793ac81b6e3334e254f2b307c358a1cbc0ed"
-      }
-    },
-    "m3-occupancy-deformation-r2": {
-      "record_commit": "b37cd048b27bb9497130bff0a0cb8543be9135ee",
-      "files": {
-        "scope.json": "7d1d900c6295635392a3be910a4a6dfa682199772ef3ddc03950c92aae767ffb"
-      }
-    },
-    "m3-occupancy-deformation-r3": {
-      "record_commit": "3615764d0b2c48faca1d4267bff9a4e8884903c8",
-      "files": {
-        "scope.json": "916c7d30eb213b5faf8bfc8a06d8db6a67ed10dec9e16727f3c90f4a20196de9"
-      }
-    },
-    "m3-occupancy-extent-r1": {
-      "record_commit": "ae17a47df416b9b2d18a076ade856aa1849c2d84",
-      "files": {
-        "scope.json": "635471c876d5083c642c217a40f1c041a5533e1fe8ca8816d6ec8806f3e67d30"
-      }
-    },
-    "m3-occupancy-fit-budget-r1": {
-      "record_commit": "98caa612b3c6744b15c4d8488517dd3e436dc066",
-      "files": {
-        "scope.json": "e544c8ce76b4792adc4158943b0c2997f7e277d7f878848266e3e96a19d99cb0"
-      }
-    },
-    "m3-occupancy-geometry-capacity-r1": {
-      "record_commit": "e5693d20d9f37d2f4997a993d1f45fdb8968445a",
-      "files": {
-        "scope.json": "5837833d20f2d0d59fc73a0d061b19bb04fb133131ecbcaaf9d30700b74c7f4f"
-      }
-    },
-    "m3-occupancy-geometry-r1": {
-      "record_commit": "1bf3d883947228510fb10a2c1e0180035476e021",
-      "files": {
-        "scope.json": "bf7be4bf3bcaec7ce1976dd0e50af3ecbfee462679c77abd5d6c7a9b232a8c63"
-      }
-    },
-    "m3-occupancy-lattice-free-readout-r1": {
-      "record_commit": "912a628d33e49dd79ea6de9826c0182c06b53866",
-      "files": {
-        "scope.json": "753667f92b31d962d6dc24bbe3d27d430f0b78da54bbceff9f343f12f1d7fa4a"
-      }
-    },
-    "m3-occupancy-lattice-residual-r1": {
-      "record_commit": "39bdefe8a27d87d05cad4186e67dfbe4d10c9fde",
-      "files": {
-        "scope.json": "03ae7d5f712f17595352a209687598a039ce312653eb5303b830bc9eac650bb6"
-      }
-    },
-    "m3-occupancy-pixel-ceiling-r1": {
-      "record_commit": "df7ccc22578079712ea1a5c3c24b2f342d8661f4",
-      "files": {
-        "scope.json": "b41410f181688833af4cc8190611ec2302ea7e63508266d912248fc6be86ca16"
-      }
-    },
-    "m3-occupancy-precision-r1": {
-      "record_commit": "0d54ff4a94340749b9c853531d06f25061b3e858",
-      "files": {
-        "scope.json": "8146696b190ca4402bf8c54f0422f884de1fef3e294b2204b76757dd59a4316d",
-        "verification.json": "a7c73203cb00f2b8af38310a05cd2f3f061620a6f8114fc2e23d111ae8a34554"
-      }
-    },
-    "m3-occupancy-registration-r1": {
-      "record_commit": "299cfb241ae86cca12e90335998dc9e1b1ee397e",
-      "files": {
-        "scope.json": "a4809b9c778cac3861ef4a7861e2f017ac5df1053dac290edb23ba2aecb00fd7"
-      }
-    },
-    "m3-occupancy-representation-r1": {
-      "record_commit": "bdfaf4c79e7a136a9c0c9824e2c1e446a22cb88c",
-      "files": {
-        "scope.json": "cdbb92bc949419f6ee9acba9aaeabd1cf90adc30265abb025b52afc30e48888c"
-      }
-    },
-    "m3-occupancy-resolution-r1": {
-      "record_commit": "979d89fbaebdce6eacc7da613b90965421f41d48",
-      "files": {
-        "audit.json": "e5f11307ac5a5c0c1590e686645417fb05c2a850b5d2ae5328013c65a9e8180a",
-        "closing.json": "1054fb9be3826e3d803a203116499acc737980ae3e99e1fa31e0605a5c9e69e2",
-        "refusal.json": "84714df91ea4d5918feb1248f1b0f007c419ab877725367b076dc62bbe0078d6",
-        "verification.json": "5550e726748d63a3c15247a5d1cf774c7d1ad3d3002291e8501c1aef84ae0793"
-      }
-    },
-    "m3-occupancy-resolution-r2": {
-      "record_commit": "0e08ba1544cb010d423c06c0303f25dad0917156",
-      "files": {
-        "scope.json": "79ebc3e28b470ed05d19cc672528f2d20f1bcb47458bbca098947ae2a134c5bf"
-      }
-    },
-    "m3-occupancy-scaled-r1": {
-      "record_commit": "299cfb241ae86cca12e90335998dc9e1b1ee397e",
-      "files": {
-        "scope.json": "31ee1ec44bb4f1fe4a66d20e1bc8773b1f0911af75c660bec79cd586cb827c21"
-      }
-    },
-    "m3-occupancy-stacking-r1": {
-      "record_commit": "e3d9fa60a2de244b6c6befbf856a07bad65ca613",
-      "files": {
-        "audit.json": "ac625edcf2b6cc0d1131c0cce7d1d48e8d19855d86afec966a0aed3601c04c58",
-        "closing.json": "410bb1ef08b9247a7268a4878d2a1a7feffe9cbbbf1d25c0316580346783708a",
-        "scope.json": "5b2c133f8a3c7c63651002f8c39edc430eca12d025e1c2c2461c7c501af07d89",
-        "verification.json": "dfa5d832cde43fceebbd8c52870b406a2dc0fa05f83c0344a2bcc5af2930352c"
-      }
-    },
-    "m3-occupancy-stencil-r1": {
-      "record_commit": "20d2ffdcfd2d42a143d82911e1c15daf2fa07b0b",
-      "files": {
-        "closing.json": "14441769625b5b9606f8f10622bd636cf8a1acd1c4235a2b061fd96693944281",
-        "scope.json": "c40edf0440a5a90bbc4b0df3cf2e9e3cdbfb63423f90a54ca65dca82dd9c9e32",
-        "verification.json": "67e745b40175085b2bcd595d0361ad4c2ef90c6161f1786b46d8fd73d56751a3"
-      }
-    },
-    "m3-occupancy-translation-r1": {
-      "record_commit": "aabf83d2fd25cb10a54237db979b0e735e74a3a4",
-      "files": {
-        "scope.json": "aec68d93d415c8514674b770b3974f2e838df24a4e847c787fc4c40a29b32340"
-      }
-    },
-    "m3-operating-point-r1": {
-      "record_commit": "a1e68272ab6b395f9801ed2308e53afb7970b889",
-      "files": {
-        "result.json": "4889a353059e58ee7980caab730956b268392c4d056a46f2f51414923db3e99c",
-        "scope.json": "425a2c17f92244f1c2d804e16830b6e716990f6bf81e0f17643e76e4851e8577"
-      }
-    },
-    "m3-operating-point-r2": {
-      "record_commit": "a1e68272ab6b395f9801ed2308e53afb7970b889",
-      "files": {
-        "result.json": "4277bb8570322bc30ee2a3962d04215c519725e49ec3ae6992e85d19ea067e6f",
-        "scope.json": "8a2c47bb53ee5dfdab461fe980e2d095d2794c9b9963c8792543c6359e5e845b"
-      }
-    },
-    "m3-optimiser-schedule-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "scope.json": "100dfd83d302493eed7499416706c4df333dbfbbc737df31f547aa345a611218"
-      }
-    },
-    "m3-power-mde-r1": {
-      "record_commit": "a080e61e8654bacc2b16a6f7880311fba5b1def7",
-      "files": {
-        "result.json": "7a5c7e29a374da1ee5f10a7b53f26237519b405e114470a1c4bc4872faa449aa",
-        "scope.json": "02b24fb7e09269d8e387376d89217183108d16057974ec4fde133c2cb816e15b"
-      }
-    },
-    "m3-power-mde-r2": {
-      "record_commit": "a080e61e8654bacc2b16a6f7880311fba5b1def7",
-      "files": {
-        "result.json": "bee4f5aa816cad4a10cfd8450fc611772bb2124eaf1529fdda9bf9a2fbd98120",
-        "scope.json": "a1f826b8788549f43723b502524057cb17cff6c335c85bf87c90574056ed84be"
-      }
-    },
-    "m3-power-mde-r3": {
-      "record_commit": "37a12a1a4a74e1f15e1df83a7750f303f06d73cf",
-      "files": {
-        "result.json": "f337f0d4d6f6fbce751868474704066673d944a07af7b6fbcecc74c987f5dc9e",
-        "scope.json": "baf52e07f629ebc9988a0cb1de36ac58c2a326820308d4daf5a938420dbe1691"
-      }
-    },
-    "m3-sweep-deciding-power-r4": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "power.json": "8f774e17829dfbe2d1af0f4c3b95bfdb5ac70e8adce57c90e0cdc64de0b09e2a"
-      }
-    },
-    "m3-sweep-deciding-power-r5": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "power.json": "383a8e1fe69d1c2a079761ee7d4dd76b8d82854dc5d7865c4dc3bea047e65d23"
-      }
-    },
-    "m3-sweep-deciding-power-r6": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "power.json": "e33524efd3ee0282416da1c931fd7169f0973234eeb07d05f4e1622c62bc3440"
-      }
-    },
-    "m3-trunk-width-pricing": {
-      "record_commit": "524daeba5e4dcc96aaa88429528d1d45c0aed371",
-      "files": {
-        "attempt-1152mib-job.json": "626b3cc11ce0b152831b7dbc02b8f9e81f908932f5e52b21db6d182ba6854b03",
-        "job.json": "771a5c096836a88001fd81ed6baf16773fd5099beba25b0d160ae0ed52be9419",
-        "per-trunk-ceiling.json": "1b28e6c477f89ba66ced59ff5504890c26e80e1ed8d8ff0337e132de2b66f100",
-        "per-trunk-published-job.json": "e3edd1747b555b6396919512bda920f39de908257fef1964a68eeed8261d857d",
-        "per-trunk-wide_a-job.json": "66457a597776bbeda82f0a0db096f71e1dd5692e23556a503372042a547a8d6d",
-        "per-trunk-wide_b-job.json": "b0509ed90a1942008e9ae0acac01f093708eced10e6896f9606688061cc69c12",
-        "price_trunk_width.py": "d2efc7c2b6105133b35b45daf5ac08e2c3f9e763941ec361fd69fce8c0f453aa",
-        "pricing.json": "947c263444e6670b2e1739f102e23dd4cee9180f954e109cb87dd41b28fc23e4"
-      }
-    },
-    "m3-trunkwidth-r1": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "5298b42dab80c16079f3058df3edf8078013b124abe2c5347a2caea9f3104d16",
-        "scope.json": "91ffa14fb3bbfdab375ce252bd22d7c45035c73c8bf043aaa4cdad8238cd4334"
-      }
-    },
-    "m3-trunkwidth-r1-interrupted-attempt": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "eae905398bf65050d41d2a40766639745b6d1fcf9b875f37456e0fc4cb7d834e"
-      }
-    },
-    "m3-trunkwidth-r2": {
-      "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
-      "files": {
-        "progress.json": "3b8d587d4d022b38db837a0017c721b06fe37937b54d0d9b4572ec6dbae18c60",
-        "result.json": "2c95c817c3279aa71e18d7851469cf4ff26f2368dc98ef0b0e3ebb815b3b222d",
-        "scope.json": "350b8259afd947cf948cf8d7d415cac3411fd1848c04e258bbebc75f1173c9bc"
-      }
-    },
-    "m3-widened-deciding-population-clustering-r1": {
-      "record_commit": "f260bf60c71fb253a1f8d9af3998b3d92301e99c",
-      "files": {
-        "scope.json": "f5fbf6867c1fca4eba7bee56f53e34397a069e27806be22ab67b9111436d0bfe"
-      }
-    },
-    "m3-widened-deciding-population-r1": {
-      "record_commit": "27a4b638d7b2131959bff812338947d255102e1d",
-      "files": {
-        "admission-summary.json": "a37b0ba8e7681b1ef289a7e79d14ac0fc33f0b142acf3974eb3568e8e471d76d",
-        "identity-job.json": "76bc507b220d652f69cf9023e0a5881d99a4585764bdafefd3a0b48d2fa8f544",
-        "identity-result.json": "5950467b21cb648a45d97b58e77cb9c29d834c270aa38fb427f90ab92a4e2cab",
-        "occupancy-job.json": "affbed2adceb1a69abdc9bc22e6be161592139b859cf73659d7bd6ce3d79d4b9",
-        "occupancy-result.json": "05ba51d8418d0bacc9dde66e5924e696b3950742c0ba536ee6f9c1258521419c",
-        "scope.json": "a3d9a10a0044fc1ce0d08c73958573b9618d685735b9176607abdf084bc5d03f",
-        "sweep-job.json": "fa77de8a912a6a643fd2706323dd7b7a1bc2ec75dee113dbfed4143770e78a39",
-        "sweep-result.json": "656d620fc12af58bc7ca9b5554988719a47a45d473a9ff4b3f9508f8acd559e8"
-      }
-    },
-    "m4-placed-supervision-r1": {
-      "record_commit": "7b3b7dcd57070bf6b1864ff3da46f907c6c54cb8",
-      "files": {
-        "scope.json": "c56f6a3ce8c57ca8519427973fc02e924521aca3bc64d5844a047290efe557a0"
-      }
-    },
-    "m5-column-readout-r1": {
-      "record_commit": "889a6197b347af30f2497ed30781d07fb31276eb",
-      "files": {
-        "scope.json": "7a44d671da0dc85b1ac8ee51c9863991e2a4f7d9a6cbcf3ee7701539b89a43de"
-      }
-    },
-    "m5-row-error-r1": {
-      "record_commit": "afb7a0a1ee2286aa4c47c88d5def6c1f114adced",
-      "files": {
-        "scope.json": "00994aad15352d467e646944b4a2c3bdb32d64b9652605c23bb4395993e46ae1"
-      }
-    },
-    "m6-row-offset-r1": {
-      "record_commit": "8e61a545b0bba02bebc827e7991ceb0850cdf6c9",
-      "files": {
-        "scope.json": "fdbd1ee2d0597fba8fdeecd60caf2c9fdf84e53fe5b6929a09025f04d6f8c467"
-      }
-    },
-    "m7-calibration-r1": {
-      "record_commit": "352e7fc3917bcbfe8436f6935e815490db183ad4",
-      "files": {
-        "scope.json": "9842175ff52dc245acbb2f370e4c1da82e887c11636cb69e59e1e721ae6416d1"
-      }
-    },
-    "m8-normalised-boundary-r1": {
-      "record_commit": "b3cc990964e072719d620416144174eeb2bd78b3",
-      "files": {
-        "scope.json": "8523b62bb096fe00ce327355101afa60e979c7b126fd95c3eff786e8cecb27f5"
-      }
-    },
-    "m9-supervised-margin-r1": {
-      "record_commit": "9360e344a89af1ec47012d069a3c951774b70387",
-      "files": {
-        "scope.json": "f7fb2cacf3492d0f5bdfb0d6b42829d7594c13c56c937bc34c99c295acd7b120"
-      }
-    },
     "visibleboard-proof-archive-r1": {
       "record_commit": "5988747c83166d9a7f1ee59adac36e730a3efbb4",
       "files": {
@@ -4979,7 +4985,7 @@
     }
   },
   "totals": {
-    "directories": 189,
-    "files": 3496
+    "directories": 267,
+    "files": 3638
   }
 }
