@@ -3170,3 +3170,20 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m32-mass-v4-registration-job.json` (passed, 640 MiB); the refusals are preserved as
   `runs/m32-mass-r1..r5*`, `runs/m32-mass-v2*`, `runs/m32-mass-v3*` and the duplicate-driver collisions
   in `runs/m32-mass.log`.
+
+## V-156 - CLOSED: the declared owned-run family excluded its own study name
+
+- Symptom: the M33 study completed and its probe was refused three times with "owned finite run name
+  required", although `m33-fixed` was the declared family's name.
+- Root cause: the family was declared as `m33-fixed-[a-z0-9-]{1,40}`, which requires a suffix, while
+  the study itself carries no suffix. The guard behaved exactly as declared; the declaration was wrong.
+- Change: the pattern becomes `m33-fixed(?:-[a-z0-9-]{1,40})?`, so the bare study name and every
+  suffixed attempt satisfy it. No guard logic, threshold or pin was relaxed - the alphabet, length cap
+  and full-match requirement are unchanged.
+- Detection class: owned-run registration.
+- Instrument: `require_owned_run` itself (it refused the probe), plus the preserved refusal receipts and
+  `tests/test_m33_fixed_lattice.py`'s declaration checks.
+- Named green runs: `runs/m33-fixed-job.json` (passed, peak `1,046,130,688` bytes),
+  `runs/m33-fixed-registration-r2-job.json` (passed) and `runs/m33-fixed-lattice-r1-job.json` (128 MiB)
+  writing the scope above. Refusals kept as `runs/m33-fixed-registration-job.json` and
+  `runs/m33-fixed-registration-r(3, 4)-job.json`.

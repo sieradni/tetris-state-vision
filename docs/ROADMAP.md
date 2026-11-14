@@ -1407,3 +1407,16 @@ Gate block: per-cell false, ranking false, attribution true. Span split: closure
 (`1.102488`). Placement is now the only negative term, so the recorded next
 structural step is a fixed-lattice placement for the pixel-statistics read rather than another
 supervision term on the score map.
+
+## M33 - a constant lattice does not buy placement
+
+The M32 receipt's recorded next step was measured ([M33_FIXED_LATTICE.md](M33_FIXED_LATTICE.md),
+`docs/evidence/m33-fixed-lattice-r1/scope.json`): form 6 samples the same pixel statistics at a fixed
+lattice over the capture (no parameter, nothing fitted, boundary still `0.0`). It is **negative** -
+F1 at `0.0` `0.255630` (-0.117251), AUC `0.945085`
+(-0.009444), best swept `0.632327` (-0.057448),
+attribution +0.412701 - and the split leaves placement the only negative term at
+`-0.118649` (`-0.267707` of span), representation
+`+0.473501` (`1.068357`). So the placement question is
+not answered by removing the decoder from the sample: the next declared step is a lattice derived from
+the capture's valid support (mask centroid and extents), which reads the raster only and fits nothing.

@@ -1,0 +1,138 @@
+{
+  "status": "passed",
+  "instrument": "m33-fixed-lattice-r1",
+  "predeclaration": "docs/M33_FIXED_LATTICE.md",
+  "population": {
+    "fixed_cells": 2986,
+    "occupied_identity": 214,
+    "occupied_anchored": 309,
+    "boards": 28
+  },
+  "arm": {
+    "run": "m33-fixed",
+    "registration": "-registration-r2",
+    "weights_sha256": "b9b9bc1379eca1a3b0f958e6ad02d6ea68b5f4a5af48609931fb7242e421dfe3",
+    "job_name": "Local\\TetrisStateVision-084786a7fd6c40ff92b01d8c5a5bd564"
+  },
+  "anchors": {
+    "anchor_run": "m30-level-calibrate-r5",
+    "anchor_f1_at_zero": 0.372881,
+    "anchor_auc": 0.954529,
+    "anchor_best": 0.689775,
+    "control_best": 0.219626,
+    "reference_own_best": 0.543974,
+    "pixel_best": 0.987179,
+    "span": 0.443205
+  },
+  "own": {
+    "cells": 2986,
+    "occupied": 214,
+    "empty": 2772,
+    "auc": 0.9450850291971787,
+    "f1_at_zero": 0.2556299452221546,
+    "counts_at_zero": {
+      "true_positive": 210,
+      "false_positive": 1219,
+      "false_negative": 4
+    },
+    "precision_at_zero": 0.1469559132260322,
+    "recall_at_zero": 0.9813084112149533,
+    "best": {
+      "threshold": 2.7,
+      "f1": 0.6323268206039077,
+      "precision": 0.5100286532951289,
+      "counts": {
+        "true_positive": 178,
+        "false_positive": 171,
+        "false_negative": 36,
+        "f1": 0.6323268206039077,
+        "precision": 0.5100286532951289,
+        "recall": 0.8317757009345794
+      }
+    }
+  },
+  "anchored": {
+    "cells": 2986,
+    "occupied": 309,
+    "empty": 2677,
+    "auc": 0.8437619757420578,
+    "f1_at_zero": 0.3141542002301496,
+    "counts_at_zero": {
+      "true_positive": 273,
+      "false_positive": 1156,
+      "false_negative": 36
+    },
+    "precision_at_zero": 0.19104268719384185,
+    "recall_at_zero": 0.883495145631068,
+    "best": {
+      "threshold": 2.7,
+      "f1": 0.513677811550152,
+      "precision": 0.48424068767908307,
+      "counts": {
+        "true_positive": 169,
+        "false_positive": 180,
+        "false_negative": 140,
+        "f1": 0.513677811550152,
+        "precision": 0.48424068767908307,
+        "recall": 0.5469255663430421
+      }
+    }
+  },
+  "full": {
+    "cells": 5600,
+    "occupied": 667,
+    "empty": 4933,
+    "auc": 0.8751276095177629,
+    "f1_at_zero": 0.3567567567567568,
+    "counts_at_zero": {
+      "true_positive": 660,
+      "false_positive": 2373,
+      "false_negative": 7
+    },
+    "precision_at_zero": 0.2176063303659743,
+    "recall_at_zero": 0.9895052473763118,
+    "best": {
+      "threshold": 2.7,
+      "f1": 0.5316973415132924,
+      "precision": 0.4875,
+      "counts": {
+        "true_positive": 390,
+        "false_positive": 410,
+        "false_negative": 277,
+        "f1": 0.5316973415132924,
+        "precision": 0.4875,
+        "recall": 0.5847076461769115
+      }
+    }
+  },
+  "own_best": 0.632327,
+  "anchored_best": 0.513678,
+  "gain_over_anchor_f1": -0.117251,
+  "gain_over_anchor_best": -0.057448,
+  "auc_delta_vs_anchor": -0.009444,
+  "placement_delta_vs_anchor": -0.118649,
+  "gain_over_control": 0.412701,
+  "span_points": 0.088353,
+  "placement_points": -0.118649,
+  "representation_points": 0.473501,
+  "span_closed_fraction": 0.19935,
+  "placement_fraction": -0.267707,
+  "representation_fraction": 1.068357,
+  "fractions_sum_to_one": true,
+  "gates": {
+    "per_cell_f1": false,
+    "ranking": false,
+    "attribution": true
+  },
+  "gates_anchored": {
+    "per_cell_f1": false,
+    "ranking": false,
+    "attribution": true
+  },
+  "cleared": false,
+  "cleared_identity": false,
+  "cleared_anchored": false,
+  "short_stage": "placement",
+  "peak_bytes": 1046130688,
+  "scope": "Read-only scoring of one committed study on the fixed population under the unchanged global 0.0 boundary, with no oracle and no fitted threshold; no real-image or complete-state claim."
+}

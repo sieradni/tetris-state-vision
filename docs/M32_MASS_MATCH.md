@@ -140,3 +140,14 @@ pass; it is not run in this one.
 - Not shown: whether the fixed-lattice read recovers the placement loss at this capacity; whether any
   supervision term on mass can help on a read with better placement. One seed, 64 steps, training-fit
   boards, synthetic gates only.
+
+## M33 update: the fixed lattice is refused, and placement is still the stage
+
+The step this receipt recorded was run (`docs/M33_FIXED_LATTICE.md`,
+`docs/evidence/m33-fixed-lattice-r1/scope.json`): the same pixel statistics sampled at a constant
+lattice over the capture. It costs -0.117251 F1 at `0.0` and
+-0.057448 best swept F1 against this receipt's arm, so a constant placement does
+not recover the placement term - placement is now measured at `-0.118649` and is still
+the only negative term. The next step is recorded as a support-derived lattice rather than another
+constant.
+

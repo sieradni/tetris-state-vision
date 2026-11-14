@@ -3566,3 +3566,13 @@ untouched (`docs/evidence/m32-mass-match-r1/scope.json`, M32_MASS_MATCH.md, ROAD
 names **placement** as the short stage (`-0.103647`, `-0.233858` of
 span, the only negative term) with representation at `1.102488`; the recorded
 next step is a fixed-lattice placement for the pixel-statistics read, not another supervision term.
+
+M33 ran M32's recorded step: the pixel statistics sampled at a constant lattice over the capture
+(`docs/evidence/m33-fixed-lattice-r1/scope.json`, M33_FIXED_LATTICE.md, ROADMAP M33). It is
+**negative** - F1 at `0.0` `0.255630` (-0.117251), AUC
+-0.009444, best `0.632327` (-0.057448), anchored
+`0.314154` / `0.513678`, attribution +0.412701
+- so a constant placement does not recover the placement term, which is now `-0.118649`
+(`-0.267707` of span) and still the only negative term while representation carries
+`1.068357`. The recorded next step is a lattice derived from the capture's
+valid support (mask centroid and extents), reading the raster only and fitting nothing.
