@@ -1392,3 +1392,18 @@ read knows. The branch's declared structural step, the hidden layer given one ce
 measured `0.518657` best swept F1 against `0.689775`
 (`-0.171118`, `docs/evidence/m31-followup-r1/scope.json`), so it is refused on
 measurement. The standing gate is untouched and still fails on both per-cell and ranking.
+
+## M32 - mass matching is refused, and the split now names placement
+
+A predeclared supervision-side term ([M32_MASS_MATCH.md](M32_MASS_MATCH.md),
+`docs/evidence/m32-mass-match-r1/scope.json`) charged each board's predicted positive mass against its
+own occupancy, with a fixed unit weight, no new parameter and no change to the inference boundary. It
+is **negative**: F1 at `0.0` `0.277778` (-0.095104), best swept
+`0.602198` (-0.087577), AUC `0.942324`
+(-0.012205), attribution +0.382572 over the unchanged control.
+Gate block: per-cell false, ranking false, attribution true. Span split: closure
+`s0.058224` (`0.131370`), placement `-0.103647`
+(`-0.233858`), representation `+0.488628`
+(`1.102488`). Placement is now the only negative term, so the recorded next
+structural step is a fixed-lattice placement for the pixel-statistics read rather than another
+supervision term on the score map.

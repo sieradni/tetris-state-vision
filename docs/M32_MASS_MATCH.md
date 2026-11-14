@@ -77,3 +77,66 @@ verdict.
 `runs/m32-mass-{profile,study,probe}` receipts and `docs/evidence/m32-mass-match-r1/scope.json` written
 by `scripts/m32_mass_match_read.py`. Refused attempts keep their receipts and are reported; only
 completed runs are quoted.
+
+## Measured
+
+The declared study is `m32-mass-v4`: the M30 winner's arm with the mass term added, trained at
+the unchanged 64-step protocol and scored with `scripts/m32_mass_match_read.py` on the fixed 2,986
+cells and both label vectors (`docs/evidence/m32-mass-match-r1/scope.json`, peak
+`1,061,507,072` bytes). No oracle, no per-board rule and no fitted threshold appears anywhere in
+this receipt.
+
+| read | F1 at `0.0` | AUC | best swept F1 |
+|---|---|---|---|
+| M30/M31 winner (anchor, re-scored) | `0.372881` | `0.954529` | `0.689775` |
+| mass-shaped arm | `0.277778` | `0.942324` | `0.602198` |
+| delta | -0.095104 | -0.012205 | -0.087577 |
+| unchanged control `0.219626` / reference `0.543974` | - | - | attribution +0.382572 |
+
+## The branch resolves to fail
+
+Per-cell F1 at `0.0` `0.277778` against the `0.70` bar, AUC
+`0.942324` against `0.90`, best swept `0.602198` against `0.70`. Gate block:
+per-cell `false`, ranking `false`,
+attribution `true`; `cleared: false`.
+
+The mechanism moved the read in the wrong direction on every separation measure: F1 at `0.0`
+-0.095104, best swept -0.087577, AUC
+-0.012205. Charging a board's predicted mass toward its occupancy forces the
+read's level to a prevalence the ranking does not support at that threshold, so the cells it needed
+above `0.0` are pushed below it. The hypothesis that mass placement alone was the obstacle is
+refuted on this protocol.
+
+## The span split, and the stage it names
+
+| term | points | fraction of the `0.443205` span |
+|---|---|---|
+| closure | +0.058224 | 0.131370 |
+| placement | -0.103647 | -0.233858 |
+| representation | +0.488628 | 1.102488 |
+
+Points and fractions sum to the span and to one (asserted in code before the receipt was written).
+Placement is the short stage and the only negative term: the read loses `0.103647`
+of best swept F1 when the reference registration is granted, while the representation term still
+carries `1.102488` of the span. Since the arm's own lattice read is what the
+pixel statistics are sampled from, the deficit this pass can act on next is **where the read samples**,
+not how much mass it puts there.
+
+### The concrete next structural step this stage implies
+
+Give the pixel-statistics read a **fixed-lattice** placement so its scores cannot inherit the
+predicted lattice's misplacement: the campaign's declared lattice-free channel
+(`--occupancy-lattice-free`, reading a coarse map over equal divisions of the capture plus the cell's
+own row/column embeddings) combined with the form-3 projection, which removes the sampled placement
+from the gate by construction rather than correcting it. That is the step recorded here for the next
+pass; it is not run in this one.
+
+## What this establishes, and what it does not
+
+- The M31 reading - that the read's score *shape* was the obstacle - is **not** fixable by matching
+  per-board mass; that mechanism is measured and refused.
+- Placement, not representation, is now the largest single loss in the split, so the next declared
+  step is a placement-free read rather than another supervision term on the score map.
+- Not shown: whether the fixed-lattice read recovers the placement loss at this capacity; whether any
+  supervision term on mass can help on a read with better placement. One seed, 64 steps, training-fit
+  boards, synthetic gates only.

@@ -3151,3 +3151,22 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `runs/m31-context-r5-registration-r4`. Preserved refusals: `runs/m31-context-r1..r4-job.json` and
   `runs/m31-context-r1..r3-registration*` (`os_commit_pressure`/`os_commit_reservation`, exit 125) and the probes
   refused before the `m31-` family was declared in the owned-run guard.
+
+## V-155 - CLOSED: a declared flag was recorded in the contract but never joined at admission
+
+- Symptom: three M32 attempts were refused with "occupancy mass differs from resource admission" even
+  though the profile's summary and recovery contract both recorded `occupancy_mass: 1`. One study also
+  crashed in `dataclasses.replace` because the loss-only flag was passed as a model config field.
+- Root cause: the new declaration was wired into the argparse, the recovery contract and the loss, but
+  the `validate_admission(...)` call site kept its defaults, and the config `replace(...)` was given a
+  field `ModelConfig` does not have. Both are single-line wiring errors that the guard reported
+  correctly - the fix belongs in the wiring, never in the guard.
+- Change: the admission call now forwards `occupancy_read_level` and `occupancy_mass`, and the config
+  replace no longer receives the loss-only flag. No guard, threshold or pin was touched.
+- Detection class: admission-join.
+- Instrument: the admission join itself (it refused the mismatched declaration), the `m32-` receipts
+  that record each refusal, and the passing profile/study pair whose contract now matches.
+- Named green runs: `runs/m32-mass-v4-job.json` (passed, peak `1,061,507,072` bytes) and
+  `runs/m32-mass-v4-registration-job.json` (passed, 640 MiB); the refusals are preserved as
+  `runs/m32-mass-r1..r5*`, `runs/m32-mass-v2*`, `runs/m32-mass-v3*` and the duplicate-driver collisions
+  in `runs/m32-mass.log`.

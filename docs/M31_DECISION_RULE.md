@@ -133,3 +133,13 @@ declared step is measured and refused, not deferred.
 - Not shown: whether a supervision-side mechanism that shapes the read's level (rather than its inputs)
   would let a label-free rule find the split; whether a different boundary family would; any real-image
   claim. One seed, 64 steps, training-fit boards, and the anonymised label vectors the campaign scores.
+
+## M32 update: the score shape was not fixable by mass matching
+
+The declared supervision-side test of the M31 diagnosis is measured: charging each board's predicted
+mass toward its occupancy (`docs/M32_MASS_MATCH.md`) moved F1 at `0.0` by -0.095104
+and best swept F1 by -0.087577 against this receipt's arm, so the score shape is
+not an artifact of unconstrained mass. The span split puts the short stage at placement
+(`-0.103647`) while representation still carries
+`1.102488` of the span, which is the stage the next pass targets.
+

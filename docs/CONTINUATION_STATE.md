@@ -3556,3 +3556,13 @@ a context-carrying hidden layer on the winning arm, measured `0.518657` best aga
 `0.689775` (`-0.171118`, span closure
 `-0.057123`, `docs/evidence/m31-followup-r1/scope.json`) and is refused. Gates on the
 unchanged boundary remain per-cell `false`, ranking `false`, attribution `true`.
+
+M32 tested M31's diagnosis on the winner's arm with one declared supervision-side term: each board's
+predicted positive mass charged against its occupancy, weight `1.0`, no parameter, inference boundary
+untouched (`docs/evidence/m32-mass-match-r1/scope.json`, M32_MASS_MATCH.md, ROADMAP M32). It is
+**negative** - F1 at `0.0` `0.277778` (-0.095104), best
+`0.602198` (-0.087577), AUC -0.012205, attribution
++0.382572 - so the score shape is not fixable by mass matching. The span split now
+names **placement** as the short stage (`-0.103647`, `-0.233858` of
+span, the only negative term) with representation at `1.102488`; the recorded
+next step is a fixed-lattice placement for the pixel-statistics read, not another supervision term.
