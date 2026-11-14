@@ -3260,3 +3260,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   without a bounded-run receipt.
 - Named green run: `runs/m36-monotone-contrast-r1-job.json` writing
   `docs/evidence/m36-monotone-contrast-r1/{scope,diagnosis}.json`.
+
+## V-161 - CLOSED: form 10's envelope was applied above the declared block, tripping the head-placement guard
+
+- Symptom: `test_stack_contiguity.HeadPlacementTests.test_the_head_applies_the_envelope_before_the_stages_are_emitted`
+  failed - the guard line it looks for was found, then the suite refused with the envelope applied before
+  the guard block, and a first repair broke the guard's own anchor string instead.
+- Root cause: form 10 applied `stack_contiguous` immediately after the read standardisation, i.e. above the
+  `if self.config.occupancy_stack_monotone:` block that the declared head order is defined against. The
+  order is a declared property of the head, not an implementation detail, so the guard was right.
+- Change: the guard's line and comment are restored byte-for-byte, and form 10's envelope is a separate
+  block immediately after it - still before `centre_board`, before the crossing rules and before
+  `stages.append`, which is exactly the declared order. For this arm's flags (standardise on, no other
+  head transform) the read is unchanged: re-running its probe reproduces `weights_sha256` identically and
+  a maximum absolute logit difference of `0.0` across all 36 boards
+  (`runs/m36-monotone-verify/result.json` vs `runs/m36-monotone-registration/result.json`).
+- Detection class: head-order source guard.
+- Instrument: the head-placement test itself, plus the re-run probe receipt
+  `runs/m36-monotone-verify-job.json` (passed, peak `552,468,480`).
+- Named green runs: `tests.test_stack_contiguity tests.test_m35_contrast tests.test_m35_receipt
+  tests.test_pixel_query tests.test_m33_fixed_lattice tests.test_m34_support_lattice` (77 tests, OK) and
+  the M36 evidence already recorded, whose numbers this change does not alter.

@@ -1101,13 +1101,6 @@ class TetrisStateNet(nn.Module):
             if self.read_calibration is not None:
                 occupancy_logits = standardise_board(occupancy_logits, self.config.visible_rows,
                                                      torch.tanh(self.read_calibration))
-            if self.config.occupancy_pixel_query == 10:
-                # declared m36 form: the same contrast features and projection, read through the stack's
-                # own shape. a locked stack rests on the floor, so a column's occupancy is one contiguous
-                # run from row zero upward; the envelope makes every column cross the unchanged boundary at
-                # most once, at its height. it is a domain constraint on the read's structure, not a
-                # threshold, weight or any kind of annotation: nothing is fitted and no parameter is added.
-                occupancy_logits = stack_contiguous(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_read_level:
                 # Declared M31 mechanism change: the board's own standardised read *is* the read, so the
                 # unchanged global boundary lands at each board's own level by construction rather than at
@@ -1174,6 +1167,13 @@ class TetrisStateNet(nn.Module):
             if self.config.occupancy_stack_monotone:
                 # Declared structural option: the read loses the freedom to scatter its per-column profile, so the
                 # crossing of `0.0` is the column's height rather than a level a term has to place.
+                occupancy_logits = stack_contiguous(occupancy_logits, self.config.visible_rows)
+            if self.config.occupancy_pixel_query == 10:
+                # Declared m36 form: the same contrast features and projection, read through the stack's own
+                # shape. A locked stack rests on the floor, so a column's occupancy is one contiguous run from
+                # row zero upward; this makes every column cross the unchanged boundary at most once, at its
+                # height. It is the domain's own constraint, carried inside the form rather than declared as a
+                # second selector beside it: nothing is fitted, and no parameter is added.
                 occupancy_logits = stack_contiguous(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_centre:
                 # Declared structural centring: the read loses its additive mode inside the head, before
