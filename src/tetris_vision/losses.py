@@ -410,6 +410,14 @@ def require_pixel_query_level(level, summary):
         raise ValueError("pixel query level differs from resource admission")
 
 
+def require_occupancy_read_level(value, summary):
+    """One declaration of the admission join for the board-defined read level."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_read_level", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_read_level", 0) != value):
+        raise ValueError("occupancy read level differs from resource admission")
+
+
 def require_occupancy_read_standardise(value, summary):
     """One declaration of the admission join for the label-free read standardisation."""
     if (type(value) is not int or value not in (0, 1) or
@@ -428,7 +436,7 @@ def require_occupancy_balance(value, summary):
 
 def require_occupancy_pixel_query(query, summary):
     """One declaration of the admission join for the per-cell pixel-statistics read-out."""
-    if (type(query) is not int or query not in (0, 1, 2, 3, 4) or
+    if (type(query) is not int or query not in (0, 1, 2, 3, 4, 5) or
             summary.get("arguments", {}).get("occupancy_pixel_query", 0) != query or
             summary.get("recovery_contract", {}).get("occupancy_pixel_query", 0) != query):
         raise ValueError("occupancy pixel query differs from resource admission")

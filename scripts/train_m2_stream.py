@@ -56,7 +56,7 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-positive-weight", type=int, choices=POSITIVE_CELL_WEIGHTS, default=1,
                         help="declared class budget on occupied cells inside the balanced occupancy term;"
                              "1 is published and leaves the term magnitude unchanged")
-    parser.add_argument("--occupancy-pixel-query", type=int, choices=(0, 1, 2, 3, 4), default=0,
+    parser.add_argument("--occupancy-pixel-query", type=int, choices=(0, 1, 2, 3, 4, 5), default=0,
                         help="declared per-cell pixel-statistics read-out (M28): deterministic colour/contrast"
                              " features at the model's own lattice through a zero-initialized projection")
     parser.add_argument("--pixel-query-level", type=int, choices=(0, 1), default=0,
@@ -64,6 +64,8 @@ def arguments(argv=None):
                              "scale (1+tanh) and a bias, identity at step zero")
     parser.add_argument("--occupancy-read-standardise", type=int, choices=(0, 1), default=0,
                         help="declared M30 label-free monotone per-board standardisation of the read")
+    parser.add_argument("--occupancy-read-level", type=int, choices=(0, 1), default=0,
+                        help="declared M31 mechanism change: the board's own standardised read is the read")
     parser.add_argument("--occupancy-balance", type=int, choices=(0, 1), default=0,
                         help="declared M30 data-derived class budget in the occupancy loss")
     parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
@@ -594,7 +596,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_balance=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_read_level=0, occupancy_balance=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
                    lattice_board_refine=0, occupancy_pair_rank=0, occupancy_pair_gap=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
@@ -627,7 +629,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_pair_gap,
                                      require_occupancy_context, require_occupancy_pixel_query,
                                      require_pixel_query_level, require_occupancy_read_standardise,
-                                     require_occupancy_balance,
+                                     require_occupancy_balance, require_occupancy_read_level,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
                                      require_occupancy_deform, require_positive_weight,
@@ -651,6 +653,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_pixel_query(occupancy_pixel_query, summary)
     require_pixel_query_level(pixel_query_level, summary)
     require_occupancy_read_standardise(occupancy_read_standardise, summary)
+    require_occupancy_read_level(occupancy_read_level, summary)
     require_occupancy_balance(occupancy_balance, summary)
     require_occupancy_detail(occupancy_detail, summary)
     require_occupancy_detail_stencil(occupancy_detail_stencil, summary)
@@ -936,6 +939,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_pixel_query=args.occupancy_pixel_query,
                      pixel_query_level=args.pixel_query_level,
                      occupancy_read_standardise=args.occupancy_read_standardise,
+                     occupancy_read_level=args.occupancy_read_level,
                      occupancy_balance=args.occupancy_balance,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
@@ -1016,7 +1020,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                       allow_absent=(                                                    "occupancy_context", "occupancy_pixel_query",
                                                     "occupancy_detail", "pixel_query_level",
                                                     "occupancy_read_standardise",
-                                                    "occupancy_balance",
+                                                    "occupancy_balance", "occupancy_read_level",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
                                                     "lattice_support",
@@ -1180,6 +1184,7 @@ def main(argv=None, *, _archive=None, _started=None):
     recovery_contract["occupancy_pixel_query"] = args.occupancy_pixel_query
     recovery_contract["pixel_query_level"] = args.pixel_query_level
     recovery_contract["occupancy_read_standardise"] = args.occupancy_read_standardise
+    recovery_contract["occupancy_read_level"] = args.occupancy_read_level
     recovery_contract["occupancy_balance"] = args.occupancy_balance
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil

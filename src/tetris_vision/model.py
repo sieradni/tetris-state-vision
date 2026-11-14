@@ -33,6 +33,7 @@ class ModelConfig:
     occupancy_pixel_query: int = 0
     pixel_query_level: int = 0
     occupancy_read_standardise: int = 0
+    occupancy_read_level: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -76,9 +77,11 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
+        check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
+              "occupancy_read_level is 0 (off) or 1 (the board defines the read's level)")
         for name, value in (("pixel_query_level", self.pixel_query_level),
                             ("occupancy_read_standardise", self.occupancy_read_standardise),
                             ("occupancy_balance", self.occupancy_balance)):
@@ -855,8 +858,8 @@ class TetrisStateNet(nn.Module):
             # computed at the model's own predicted lattice from the prepared raster only. The
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
-            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query == 4 else 1)
-            if config.occupancy_pixel_query == 3:
+            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5) else 1)
+            if config.occupancy_pixel_query in (3, 5):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1020,7 +1023,7 @@ class TetrisStateNet(nn.Module):
                                                    self.pixel_query_offsets)
                 if self.config.occupancy_pixel_query == 2:
                     statistics = pixel_query_centre(statistics)
-                elif self.config.occupancy_pixel_query == 4:
+                elif self.config.occupancy_pixel_query in (4, 5):
                     statistics = torch.cat((statistics, pixel_query_neighbours(
                         statistics, rows, columns)), dim=-1)
                 projected = self.occupancy_pixel_query(statistics)
@@ -1032,6 +1035,12 @@ class TetrisStateNet(nn.Module):
             if self.read_calibration is not None:
                 occupancy_logits = standardise_board(occupancy_logits, self.config.visible_rows,
                                                      torch.tanh(self.read_calibration))
+            if self.config.occupancy_read_level:
+                # Declared M31 mechanism change: the board's own standardised read *is* the read, so the
+                # unchanged global boundary lands at each board's own level by construction rather than at
+                # a free offset. No parameter and no gate; the ordering inside a board does not move.
+                occupancy_logits = standardise_board(occupancy_logits, self.config.visible_rows,
+                                                     occupancy_logits.new_tensor(1.0))
             occupancy_parts = None
             if self.occupancy_lattice_free is not None:
                 weight = context_valid.float()[:, :, None]
