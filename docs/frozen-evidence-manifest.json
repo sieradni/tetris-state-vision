@@ -3458,6 +3458,12 @@
         "scope.json": "592f392c9dddde840634167c2a28c149fd1ca9350b4bb2f5a514e34a2078d956"
       }
     },
+    "m28-pixel-query-deciding-r2": {
+      "record_commit": "630d555db23ac859d54b79ca74cab0c93cd9e3ee",
+      "files": {
+        "scope.json": "c19b5f712ae1a0944827479483955b156442d47a646dd4f7c642b31eeadcdb5f"
+      }
+    },
     "m28-pixel-query-r2": {
       "record_commit": "a6bf87a8891607318a59d419c8585362a756cefd",
       "files": {
@@ -4985,7 +4991,7 @@
     }
   },
   "totals": {
-    "directories": 267,
-    "files": 3638
+    "directories": 268,
+    "files": 3639
   }
 }
