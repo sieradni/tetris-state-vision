@@ -32,8 +32,8 @@ def read(path):
     return json.loads(Path(path).read_text())
 
 
-def arm(name, sweep_name):
-    registration = read(ROOT/"runs"/name/"result.json")
+def arm(name, sweep_name, registration_suffix):
+    registration = read(ROOT/"runs"/(name+registration_suffix)/"result.json")
     sweep = read(ROOT/"runs"/sweep_name/"result.json")
     job = read(ROOT/"runs"/(name+"-job.json"))
     if registration.get("status") != "passed" or sweep.get("status") != "passed":
@@ -64,11 +64,12 @@ def main():
     parser.add_argument("--base", required=True)
     parser.add_argument("--lever", required=True)
     parser.add_argument("--suffix", default="-sweep-r1")
+    parser.add_argument("--registration-suffix", default="-registration-r1")
     parser.add_argument("--pixel-ceiling", required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    arms = {"base": arm(args.base, args.base+args.suffix),
-            "lever": arm(args.lever, args.lever+args.suffix)}
+    arms = {"base": arm(args.base, args.base+args.suffix, args.registration_suffix),
+            "lever": arm(args.lever, args.lever+args.suffix, args.registration_suffix)}
     if arms["base"]["registration"]["weights_sha256"] == arms["lever"]["registration"]["weights_sha256"]:
         raise ValueError("the two arms carry identical weights")
     pixel_cases = read(ROOT/"runs"/args.pixel_ceiling/"result.json")["cases"]
@@ -104,6 +105,18 @@ def main():
         cause = "features-unavailable-at-own-lattice"
     else:
         cause = "head-cannot-exploit"
+    base_gain = base["oracle"]["best"]["f1"]-base["matched_as_is"]["best"]["f1"]
+    base_gap = base["pixel"]["best"]["f1"]-base["oracle"]["best"]["f1"]
+    control_below_own = base["oracle"]["best"]["f1"] < base["matched_as_is"]["best"]["f1"]
+    within_arm = ("representation" if representation_gap >= registration_gain else "placement")
+    note = None
+    if control_below_own:
+        note = ("the control's oracle read (%.6f) is below its own-lattice read (%.6f), so granting "
+                "registration cannot be an upper bound on that arm and the cross-arm oracle delta that "
+                "assigns `placement-only` is confounded; the within-arm lever reads assign the residual "
+                "to %s (registration gain %.6f against representation gap %.6f)"
+                % (base["oracle"]["best"]["f1"], base["matched_as_is"]["best"]["f1"],
+                   within_arm, registration_gain, representation_gap))
     result = {
         "status": "passed", "instrument": "m28-pixel-query-r1",
         "predeclaration": "docs/M28_PIXEL_QUERY.md",
@@ -121,7 +134,12 @@ def main():
                         "registration_gain_lever": round(registration_gain, 6),
                         "representation_gap_lever": round(representation_gap, 6),
                         "m27_span_closed": round(closed, 6),
-                        "m27_own_lattice": M27_OWN_LATTICE, "m27_pixel": M27_PIXEL},
+                        "m27_own_lattice": M27_OWN_LATTICE, "m27_pixel": M27_PIXEL,
+                        "base_registration_gain": round(base_gain, 6),
+                        "base_representation_gap": round(base_gap, 6),
+                        "control_oracle_below_own_lattice": control_below_own,
+                        "residual_within_arm": within_arm,
+                        "cause_note": note},
         "gates": {"conditions": conditions, "cell_bar": CELL_GATE, "auc_bar": AUC_GATE,
                   "attribution_floor": ATTRIBUTION_FLOOR, "ranking": ranking},
         "verdict": "cleared" if cleared else "not-cleared",

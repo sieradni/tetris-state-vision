@@ -1,0 +1,277 @@
+{
+  "status": "passed",
+  "instrument": "m28-pixel-query-r1",
+  "predeclaration": "docs/M28_PIXEL_QUERY.md",
+  "base_run": "m28-pixelread-base-r1",
+  "lever_run": "m28-pixelread-lever-r1",
+  "declared_change": {
+    "occupancy_pixel_query": [
+      0,
+      1
+    ]
+  },
+  "weights_sha256": {
+    "base": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+    "lever": "8f6e3efbd13e4f14db47fb6278a7a4a35c3a2dd11d14c881bdada2f7bba3de02"
+  },
+  "population": {
+    "deciding_boards": 36,
+    "nonempty_boards": 28,
+    "occupied_cells": 667,
+    "empty_cells": 4933,
+    "matched_cells": 3316
+  },
+  "reads": {
+    "base": {
+      "cells": 3946,
+      "own_lattice": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.7427413396484406,
+        "f1_at_zero": 0.28483319315951783,
+        "counts_at_zero": {
+          "true_positive": 508,
+          "false_positive": 2392,
+          "false_negative": 159
+        },
+        "precision_at_zero": 0.17517241379310344,
+        "recall_at_zero": 0.7616191904047976,
+        "best": {
+          "threshold": 3.9,
+          "f1": 0.43376801647220314,
+          "precision": 0.4,
+          "counts": {
+            "true_positive": 316,
+            "false_positive": 474,
+            "false_negative": 351,
+            "f1": 0.43376801647220314,
+            "precision": 0.4,
+            "recall": 0.4737631184407796
+          }
+        }
+      },
+      "matched_as_is": {
+        "cells": 3946,
+        "occupied": 300,
+        "empty": 3646,
+        "auc": 0.6237410861217773,
+        "f1_at_zero": 0.16132368148914167,
+        "counts_at_zero": {
+          "true_positive": 156,
+          "false_positive": 1478,
+          "false_negative": 144
+        },
+        "precision_at_zero": 0.09547123623011015,
+        "recall_at_zero": 0.52,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.2800875273522976,
+          "precision": 0.40764331210191085,
+          "counts": {
+            "true_positive": 64,
+            "false_positive": 93,
+            "false_negative": 236,
+            "f1": 0.2800875273522976,
+            "precision": 0.40764331210191085,
+            "recall": 0.21333333333333335
+          }
+        }
+      },
+      "oracle": {
+        "cells": 3946,
+        "occupied": 493,
+        "empty": 3453,
+        "auc": 0.34448981366116654,
+        "f1_at_zero": 0.1316408086506817,
+        "counts_at_zero": {
+          "true_positive": 140,
+          "false_positive": 1494,
+          "false_negative": 353
+        },
+        "precision_at_zero": 0.08567931456548347,
+        "recall_at_zero": 0.2839756592292089,
+        "best": {
+          "threshold": -6.0,
+          "f1": 0.21941309255079006,
+          "precision": 0.12344424688849377,
+          "counts": {
+            "true_positive": 486,
+            "false_positive": 3451,
+            "false_negative": 7,
+            "f1": 0.21941309255079006,
+            "precision": 0.12344424688849377,
+            "recall": 0.9858012170385395
+          }
+        }
+      },
+      "pixel": {
+        "cells": 3946,
+        "occupied": 493,
+        "empty": 3453,
+        "auc": 0.9990912449943578,
+        "f1_at_zero": 0.974308300395257,
+        "counts_at_zero": {
+          "true_positive": 493,
+          "false_positive": 26,
+          "false_negative": 0
+        },
+        "precision_at_zero": 0.9499036608863198,
+        "recall_at_zero": 1.0,
+        "best": {
+          "threshold": 1.05,
+          "f1": 0.9889224572004028,
+          "precision": 0.982,
+          "counts": {
+            "true_positive": 491,
+            "false_positive": 9,
+            "false_negative": 2,
+            "f1": 0.9889224572004028,
+            "precision": 0.982,
+            "recall": 0.9959432048681541
+          }
+        }
+      }
+    },
+    "lever": {
+      "cells": 3316,
+      "own_lattice": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.8601633705750004,
+        "f1_at_zero": 0.3875878220140515,
+        "counts_at_zero": {
+          "true_positive": 662,
+          "false_positive": 2087,
+          "false_negative": 5
+        },
+        "precision_at_zero": 0.24081484176064022,
+        "recall_at_zero": 0.992503748125937,
+        "best": {
+          "threshold": 1.95,
+          "f1": 0.46195864221615296,
+          "precision": 0.31223628691983124,
+          "counts": {
+            "true_positive": 592,
+            "false_positive": 1304,
+            "false_negative": 75,
+            "f1": 0.46195864221615296,
+            "precision": 0.31223628691983124,
+            "recall": 0.8875562218890555
+          }
+        }
+      },
+      "matched_as_is": {
+        "cells": 3316,
+        "occupied": 342,
+        "empty": 2974,
+        "auc": 0.8921697597501936,
+        "f1_at_zero": 0.34297311009639775,
+        "counts_at_zero": {
+          "true_positive": 338,
+          "false_positive": 1291,
+          "false_negative": 4
+        },
+        "precision_at_zero": 0.20748925721301412,
+        "recall_at_zero": 0.9883040935672515,
+        "best": {
+          "threshold": 2.55,
+          "f1": 0.5079365079365079,
+          "precision": 0.3843843843843844,
+          "counts": {
+            "true_positive": 256,
+            "false_positive": 410,
+            "false_negative": 86,
+            "f1": 0.5079365079365079,
+            "precision": 0.3843843843843844,
+            "recall": 0.7485380116959064
+          }
+        }
+      },
+      "oracle": {
+        "cells": 3316,
+        "occupied": 363,
+        "empty": 2953,
+        "auc": 0.8562240948412176,
+        "f1_at_zero": 0.3152610441767068,
+        "counts_at_zero": {
+          "true_positive": 314,
+          "false_positive": 1315,
+          "false_negative": 49
+        },
+        "precision_at_zero": 0.19275629220380602,
+        "recall_at_zero": 0.8650137741046832,
+        "best": {
+          "threshold": 2.7,
+          "f1": 0.5344827586206896,
+          "precision": 0.4389380530973451,
+          "counts": {
+            "true_positive": 248,
+            "false_positive": 317,
+            "false_negative": 115,
+            "f1": 0.5344827586206896,
+            "precision": 0.4389380530973451,
+            "recall": 0.6831955922865014
+          }
+        }
+      },
+      "pixel": {
+        "cells": 3316,
+        "occupied": 363,
+        "empty": 2953,
+        "auc": 0.9981724706349895,
+        "f1_at_zero": 0.9565217391304348,
+        "counts_at_zero": {
+          "true_positive": 363,
+          "false_positive": 33,
+          "false_negative": 0
+        },
+        "precision_at_zero": 0.9166666666666666,
+        "recall_at_zero": 1.0,
+        "best": {
+          "threshold": 1.05,
+          "f1": 0.9771197846567967,
+          "precision": 0.9552631578947368,
+          "counts": {
+            "true_positive": 363,
+            "false_positive": 17,
+            "false_negative": 0,
+            "f1": 0.9771197846567967,
+            "precision": 0.9552631578947368,
+            "recall": 1.0
+          }
+        }
+      }
+    }
+  },
+  "attribution": {
+    "best_swept_delta": 0.028191,
+    "oracle_best_delta": 0.31507,
+    "matched_best_delta": 0.227849,
+    "registration_gain_lever": 0.072524,
+    "representation_gap_lever": 0.442637,
+    "m27_span_closed": -0.081311,
+    "m27_own_lattice": 0.543974,
+    "m27_pixel": 0.987179,
+    "base_registration_gain": -0.060674,
+    "base_representation_gap": 0.769509,
+    "control_oracle_below_own_lattice": true,
+    "residual_within_arm": "representation",
+    "cause_note": "the control's oracle read (0.219413) is below its own-lattice read (0.280088), so granting registration cannot be an upper bound on that arm and the cross-arm oracle delta that assigns `placement-only` is confounded; the within-arm lever reads assign the residual to representation (registration gain 0.072524 against representation gap 0.442637)"
+  },
+  "gates": {
+    "conditions": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": false
+    },
+    "cell_bar": 0.7,
+    "auc_bar": 0.9,
+    "attribution_floor": 0.05,
+    "ranking": "uninformative"
+  },
+  "verdict": "not-cleared",
+  "cause": "placement-only",
+  "scope": "Read-only decomposition of one declared lever against its matched control on the committed deciding boards; no model forward, no training, no weight, threshold, gate or label change, and no accuracy, real-image or complete-state claim."
+}

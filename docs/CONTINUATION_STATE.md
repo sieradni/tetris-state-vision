@@ -3511,3 +3511,17 @@ and 0.047 at board level (design effect 10.33); the cluster-respecting half-widt
 Once clustering is respected the 0.90 bar is no longer excluded, so the claim holds only under the independent-cell assumption.
 
 Closing the gap at the current design would need four times the cells for +/-0.010: 144 images in 48 groups under independence, or about 4384 images in 1461 groups at the measured design effect (roughly 122x the present sweep). That is not feasible at 12-group granularity: the instrument needs a group-level evaluation (group-mean AUC with a bootstrap over groups) over about 1461 independent groups, which this pass does not build.
+
+M28 is closed: the per-cell pixel-statistics read-out is instrumented, tested before its run,
+trained at the unchanged 64-step protocol against a matched zero-flag control, and refused by its
+predeclared gates. Own lattice `0.284833 -> 0.387588` F1 at `0.0`, `0.742741 -> 0.860163` AUC,
+`0.433768 -> 0.461959` best swept F1; the `0.05` attribution floor and both gates fail, and the
+evidence is `docs/evidence/m28-pixel-query-r2/scope.json` (M28_PIXEL_QUERY.md, ROADMAP M28).
+The discriminating measurement is that the 30-feature pixel read keeps `0.9565` F1 at `0.0` on the
+lever's own cells while the learned read reaches `0.387588` on the full population: the features are
+present where the model looks, so the next lever targets representation - capacity, receptive
+field or supervision of the read-out - rather than registration or sampling.
+Open thread from this pass: the matched control's oracle read (`0.219413`) fell below its own
+pairing read (`0.280088`), so cross-arm oracle deltas are unsafe at this budget and the within-arm
+gains are the primary attribution; a future pass comparing arms should report both and never the
+cross-arm number alone.

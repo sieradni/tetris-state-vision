@@ -1326,3 +1326,17 @@ Prior tetrguide failures retained as design constraints:
 The neighboring engine roadmap, binaries, package and run state are not owned by
 this project. Never modify them to make a vision gate pass. See BUG_LOG.md,
 TRAINING_RECOVERY.md, RESOURCE_GUARD.md and CORPUS.md for the current contracts.
+
+## M28 - the per-cell pixel-statistics read-out is measured and refused
+
+`occupancy_pixel_query` now exists as a zero-initialized, strictly additive read-out of 30
+deterministic per-cell colour/contrast statistics computed at the model's own predicted lattice
+([M28_PIXEL_QUERY.md](M28_PIXEL_QUERY.md), `docs/evidence/m28-pixel-query-r2/scope.json`). At the
+standing 64-step protocol and unchanged population it moves the deciding read from
+`0.284833` to `0.387588` F1 at `0.0` and `0.742741` to `0.860163` AUC, but only `0.433768` to
+`0.461959` best swept F1 - short of all three declared gates, so the lever is **not cleared**.
+The pixel read-out holds `0.9565` on the lever's own cells, so the feature class is available at
+the model's lattice and the shortfall is not placement: the within-arm reads put the residual in
+representation (`+0.072524` registration gain against `+0.442637` remaining pixel gap). The
+next lever must therefore act on *what* the read-out can express - its receptive field, its
+supervision or the read-out's capacity - not on where it samples.
