@@ -1332,12 +1332,16 @@ TRAINING_RECOVERY.md, RESOURCE_GUARD.md and CORPUS.md for the current contracts.
 `occupancy_pixel_query` is a zero-initialized, strictly additive read-out of 30 deterministic
 per-cell colour/contrast statistics computed at the model's own predicted lattice. On the fixed
 M27 matched population of 2,986 cells ([M28_PIXEL_QUERY.md](M28_PIXEL_QUERY.md),
-`docs/evidence/m28-pixel-query-deciding-r2/scope.json`) it moves its own read from `0.219626` to
+`docs/evidence/m28-pixel-query-deciding-r3/scope.json`) it moves its own read from `0.219626` to
 `0.425703` best swept F1 and `0.574178` to `0.898191` AUC over a matched control - `0.464970` of
 the `0.5440 -> 0.9872` span - but stays `0.118271` below the `0.543974` reference arm and `0.561476`
 below the `0.987179` pixel read. The per-cell (`0.282638` against `0.70`) and ranking (`0.898191`
 against `0.90`) gates fail while the attribution gate passes, so the lever is **not cleared**.
 Placement is measured at zero (`-0.002900` of best swept F1 when the reference registration is
 granted) and the pixel read holds `0.987179` on the same placement, so the residual is
-representation: the read-out must change what it computes, not where it samples. The earlier per-arm
+representation: the read-out must change what it computes, not where it samples.
+The baselines carry their own populations (V-151, `docs/evidence/m28-reference-provenance-r1/`):
+`0.5440`, `0.7626` and `0.9872` are matched-2,986 figures of the reference arm and the pixel read,
+while `0.3791` is the reference arm's own-lattice read on the full 5,600-cell set and was never the
+control's value - the control's own full-population read is `0.284833`. The earlier per-arm
 3,316-cell verdict is retained as a labelled secondary read (V-150).

@@ -3515,13 +3515,16 @@ Closing the gap at the current design would need four times the cells for +/-0.0
 M28 is closed on its deciding population: the per-cell pixel-statistics read-out is instrumented,
 tested before its run, trained at the unchanged 64-step protocol against a matched zero-flag
 control, and refused by two of its three predeclared gates on the fixed 2,986-cell M27 population
-(`docs/evidence/m28-pixel-query-deciding-r2/scope.json`, M28_PIXEL_QUERY.md, ROADMAP M28).
+(`docs/evidence/m28-pixel-query-deciding-r3/scope.json`, M28_PIXEL_QUERY.md, ROADMAP M28).
 Own lattice `0.219626 -> 0.425703` best swept F1 and `0.574178 -> 0.898191` AUC over the control, a
 `0.464970` closure of the `0.5440 -> 0.9872` span; per-cell F1 `0.282638` against `0.70` and AUC
 `0.898191` against `0.90` still fail, while attribution (`+0.206077`) passes. The split is
-`-0.118271` closed, `-0.002900` placement, `+0.564376` representation, which sums to the `0.443205`
+`-0.118271` closed, `-0.002900` placement, `+0.564376` representation, summing to the `0.443205`
 span by construction: the features are present at the arm's own placement (pixel `0.987179` there),
 so the next lever changes what the read-out computes - capacity, receptive field or supervision of
 the projection - not registration or sampling.
+Reference provenance is pinned in `docs/evidence/m28-reference-provenance-r1/scope.json` (V-151):
+`0.5440` / `0.7626` / `0.9872` are matched-2,986 figures, `0.3791` is the reference arm's
+full-5,600 own-lattice read and not the control's, whose own full-population value is `0.284833`.
 The first M28 verdict scored each arm on its own 3,316-cell set and is retained as a labelled
-secondary read only; V-150 records that scope defect and the instrument that now refuses it.
+secondary read only (V-150).

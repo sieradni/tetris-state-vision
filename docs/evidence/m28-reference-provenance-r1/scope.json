@@ -1,0 +1,286 @@
+{
+  "status": "passed",
+  "instrument": "m28-reference-provenance-r1",
+  "question": "which population and arm produced the 0.3791 / 0.5440 / 0.7626 / 0.9872 baselines the M28 table is scored against",
+  "answer": {
+    "0.3791": "reference arm, full 5,600-cell deciding population - not the M28 control",
+    "0.5440": "reference arm, matched 2,986-cell co-scoreable population, best swept",
+    "0.7626": "reference arm, matched 2,986-cell population, registration granted",
+    "0.9872": "pixel read-out, matched 2,986-cell population",
+    "table_sound": true,
+    "control_defect": false,
+    "reason": "0.3791 is the reference arm's own-lattice read on the full deciding set; the control is a different checkpoint with different weights, and its own committed full-population read is reproduced exactly here before its matched read is used"
+  },
+  "references": {
+    "0.3791": {
+      "figure": 0.379147,
+      "measured_as": "F1 at threshold 0.0, own lattice",
+      "population": "full deciding set, 5600 known cells, 667 occupied",
+      "population_name": "full-5600",
+      "arm": "m3-occscale-registration-r2",
+      "arm_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "label_vector": "target cell at the cell's own index (as_is)",
+      "source_receipt": "runs/m3-occscale-registration-r2/result.json",
+      "source_block": "summary.as_is_full",
+      "job_receipt": "runs/m3-occscale-registration-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204"
+    },
+    "0.439024": {
+      "figure": 0.439024,
+      "measured_as": "F1 at threshold 0.0, own lattice",
+      "population": "matched set, 2986 cells, 214 occupied",
+      "population_name": "matched-2986",
+      "arm": "m3-occscale-registration-r2",
+      "arm_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "label_vector": "target cell at the cell's own index (as_is)",
+      "source_receipt": "runs/m3-occscale-registration-r2/result.json",
+      "source_block": "summary.as_is",
+      "job_receipt": "runs/m3-occscale-registration-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204"
+    },
+    "0.5440": {
+      "figure": 0.543974,
+      "measured_as": "best swept F1 over the standing grid",
+      "population": "matched set, 2986 cells, 214 occupied",
+      "population_name": "matched-2986",
+      "arm": "m3-occscale-registration-r2",
+      "arm_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "label_vector": "target cell at the cell's own index (as_is)",
+      "source_receipt": "docs/evidence/m27-three-factor-r3/scope.json",
+      "source_block": "reads.model_matched_as_is.best.f1",
+      "recomputed_from": "runs/m3-occscale-registration-r2/result.json",
+      "job_receipt": "runs/m3-occscale-registration-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204"
+    },
+    "0.7626": {
+      "figure": 0.76259,
+      "measured_as": "best swept F1 with the committed registration granted",
+      "population": "matched set, 2986 cells, 309 occupied",
+      "population_name": "matched-2986",
+      "arm": "m3-occscale-registration-r2",
+      "arm_weights_sha256": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+      "label_vector": "target cell the committed mapping points at (oracle)",
+      "source_receipt": "docs/evidence/m27-three-factor-r3/scope.json",
+      "source_block": "reads.model_oracle.best.f1",
+      "recomputed_from": "runs/m3-occscale-registration-r2/result.json",
+      "job_receipt": "runs/m3-occscale-registration-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204"
+    },
+    "0.9872": {
+      "figure": 0.987179,
+      "measured_as": "best swept F1 of the 30-feature pixel read-out",
+      "population": "matched set, 2986 cells, 309 occupied",
+      "population_name": "matched-2986",
+      "arm": "m3-occpix-ceiling-r1-r2 (arm-independent read)",
+      "arm_weights_sha256": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+      "label_vector": "target cell the committed mapping points at (oracle)",
+      "source_receipt": "runs/m3-occpix-ceiling-r1-r2/result.json",
+      "source_block": "cases[].pixel_logits with the reference labels",
+      "job_receipt": "runs/m3-occpix-ceiling-r1-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-97361e7d76db43d696bc16f1ca6959b4"
+    },
+    "0.978006": {
+      "figure": 0.978006,
+      "measured_as": "F1 at threshold 0.0 of the pixel read-out",
+      "population": "full deciding set, 5600 known cells, 667 occupied",
+      "population_name": "full-5600",
+      "arm": "m3-occpix-ceiling-r1-r2 (arm-independent read)",
+      "arm_weights_sha256": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+      "label_vector": "target cell at the cell's own index (as_is)",
+      "source_receipt": "runs/m3-occpix-ceiling-r1-r2/result.json",
+      "source_block": "measured.operating",
+      "job_receipt": "runs/m3-occpix-ceiling-r1-r2-job.json",
+      "job_name": "Local\\TetrisStateVision-97361e7d76db43d696bc16f1ca6959b4"
+    }
+  },
+  "recomputed": {
+    "reference_full": {
+      "cells": 5600,
+      "occupied": 667,
+      "empty": 4933,
+      "auc": 0.8006042589894998,
+      "f1_at_zero": 0.3791469194312796,
+      "counts_at_zero": {
+        "true_positive": 320,
+        "false_positive": 701,
+        "false_negative": 347
+      },
+      "precision_at_zero": 0.31341821743388837,
+      "recall_at_zero": 0.47976011994003,
+      "best": {
+        "threshold": 0.6,
+        "f1": 0.3924963924963925,
+        "precision": 0.37830319888734354,
+        "counts": {
+          "true_positive": 272,
+          "false_positive": 447,
+          "false_negative": 395,
+          "f1": 0.3924963924963925,
+          "precision": 0.37830319888734354,
+          "recall": 0.4077961019490255
+        }
+      }
+    },
+    "reference_matched": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.9331381235586843,
+      "f1_at_zero": 0.43902439024390244,
+      "counts_at_zero": {
+        "true_positive": 207,
+        "false_positive": 522,
+        "false_negative": 7
+      },
+      "precision_at_zero": 0.2839506172839506,
+      "recall_at_zero": 0.9672897196261683,
+      "best": {
+        "threshold": 2.1,
+        "f1": 0.5439739413680782,
+        "precision": 0.4175,
+        "counts": {
+          "true_positive": 167,
+          "false_positive": 233,
+          "false_negative": 47,
+          "f1": 0.5439739413680782,
+          "precision": 0.4175,
+          "recall": 0.780373831775701
+        }
+      }
+    },
+    "reference_anchored": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9702330653184927,
+      "f1_at_zero": 0.5741811175337187,
+      "counts_at_zero": {
+        "true_positive": 298,
+        "false_positive": 431,
+        "false_negative": 11
+      },
+      "precision_at_zero": 0.40877914951989025,
+      "recall_at_zero": 0.9644012944983819,
+      "best": {
+        "threshold": 2.25,
+        "f1": 0.762589928057554,
+        "precision": 0.6865284974093264,
+        "counts": {
+          "true_positive": 265,
+          "false_positive": 121,
+          "false_negative": 44,
+          "f1": 0.762589928057554,
+          "precision": 0.6865284974093264,
+          "recall": 0.8576051779935275
+        }
+      }
+    },
+    "pixel_matched": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9991954719152604,
+      "f1_at_zero": 0.9747634069400631,
+      "counts_at_zero": {
+        "true_positive": 309,
+        "false_positive": 16,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9507692307692308,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9871794871794872,
+        "precision": 0.9777777777777777,
+        "counts": {
+          "true_positive": 308,
+          "false_positive": 7,
+          "false_negative": 1,
+          "f1": 0.9871794871794872,
+          "precision": 0.9777777777777777,
+          "recall": 0.9967637540453075
+        }
+      }
+    },
+    "pixel_full": {
+      "cells": 5600,
+      "occupied": 667,
+      "empty": 4933,
+      "auc": 0.9987645544752457,
+      "f1_at_zero": 0.9780058651026393,
+      "counts_at_zero": {
+        "true_positive": 667,
+        "false_positive": 30,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9569583931133429,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9859363434492968,
+        "precision": 0.9736842105263158,
+        "counts": {
+          "true_positive": 666,
+          "false_positive": 18,
+          "false_negative": 1,
+          "f1": 0.9859363434492968,
+          "precision": 0.9736842105263158,
+          "recall": 0.9985007496251874
+        }
+      }
+    },
+    "control_full": {
+      "cells": 5600,
+      "occupied": 667,
+      "empty": 4933,
+      "auc": 0.7427413396484406,
+      "f1_at_zero": 0.28483319315951783,
+      "counts_at_zero": {
+        "true_positive": 508,
+        "false_positive": 2392,
+        "false_negative": 159
+      },
+      "precision_at_zero": 0.17517241379310344,
+      "recall_at_zero": 0.7616191904047976,
+      "best": {
+        "threshold": 3.9,
+        "f1": 0.43376801647220314,
+        "precision": 0.4,
+        "counts": {
+          "true_positive": 316,
+          "false_positive": 474,
+          "false_negative": 351,
+          "f1": 0.43376801647220314,
+          "precision": 0.4,
+          "recall": 0.4737631184407796
+        }
+      }
+    }
+  },
+  "control": {
+    "arm": "m28-pixelread-base-r1",
+    "arm_weights_sha256": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4",
+    "full_f1_at_zero": 0.284833,
+    "full_auc": 0.742741,
+    "full_population": "5600 known cells, 667 occupied",
+    "full_source": "runs/m28-pixelread-base-r1-sweep-r1/result.json",
+    "full_job_name": "Local\\TetrisStateVision-f5e8ffce8e8d41929393d357f1455809",
+    "matched_f1_at_zero": 0.12987,
+    "matched_auc": 0.574178,
+    "matched_population": "2986 cells, 214 occupied",
+    "reproduces_its_own_committed_full_read": true,
+    "note": "the control's own committed full-population F1 at 0.0 is its sweep's deciding value, which this read recomputes exactly; its matched-population value is lower because the matched cells are the reference arm's co-scoreable subset, not because the read path differs"
+  },
+  "deciding_receipt": "m28-pixel-query-deciding-r2",
+  "weights_sha256": {
+    "reference": "150b3ca3f020b794a5b592fe1e5d87f53d01cc5ee4d39ae387df5cfa91433c5b",
+    "pixel": "c0b5b783fc117078ddb5e26246b31c1feaabf633512c87b945df9219e334ab49",
+    "control": "75fc5a91a4de3571dcf4663ab80c698fd57f62b43617367d1c91bff2c652d9c4"
+  },
+  "jobs": {
+    "m3-occscale-registration-r2": "Local\\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204",
+    "m3-occpix-ceiling-r1-r2": "Local\\TetrisStateVision-97361e7d76db43d696bc16f1ca6959b4",
+    "m28-pixelread-base-r1": "Local\\TetrisStateVision-f5e8ffce8e8d41929393d357f1455809"
+  },
+  "scope": "Read-only provenance read of committed receipts: no forward pass, no training, no weight, threshold, gate or label change, and no accuracy, real-image or complete-state claim."
+}

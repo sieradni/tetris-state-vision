@@ -1,17 +1,19 @@
-"""Integrity controls for the M28 deciding-population re-score.
+"""Integrity controls for the M28 deciding-population re-score and its provenance.
 
-`docs/M28_PIXEL_QUERY.md` declares the re-score and
-`docs/evidence/m28-pixel-query-deciding-r2/scope.json` is its receipt. These tests bind the
-receipt's three load-bearing claims: one fixed population, references that reproduce the
-committed M27 endpoints, and an arithmetic split that actually sums to the span. They read
-the committed evidence only, so they hold in a fresh checkout.
+`docs/M28_PIXEL_QUERY.md` declares both reads and
+`docs/evidence/m28-pixel-query-deciding-r3/scope.json` plus
+`docs/evidence/m28-reference-provenance-r1/scope.json` are their receipts. These tests bind the
+load-bearing claims: one fixed population, references that reproduce the committed M27 endpoints,
+every cited baseline carrying its own population and arm, and an arithmetic split that sums to the
+span. They read committed evidence only, so they hold in a fresh checkout.
 """
 import json
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SCOPE = json.loads((ROOT/"docs/evidence/m28-pixel-query-deciding-r2/scope.json").read_text())
+SCOPE = json.loads((ROOT/"docs/evidence/m28-pixel-query-deciding-r3/scope.json").read_text())
+PROVENANCE = json.loads((ROOT/"docs/evidence/m28-reference-provenance-r1/scope.json").read_text())
 
 
 class PopulationTest(unittest.TestCase):
@@ -43,10 +45,48 @@ class ReferenceTest(unittest.TestCase):
         self.assertAlmostEqual(references["pixel_f1_at_zero"], 0.974763, places=6)
 
     def test_the_pixel_read_is_identical_for_both_arms(self):
-        self.assertEqual(SCOPE["reads"]["pixel"]["best"]["f1"],
-                         SCOPE["reads"]["pixel"]["best"]["f1"])
         self.assertEqual(SCOPE["arithmetic"]["arms"]["base"]["pixel_best"],
                          SCOPE["arithmetic"]["arms"]["lever"]["pixel_best"])
+
+
+class ProvenanceTest(unittest.TestCase):
+    def test_every_cited_baseline_carries_its_population_and_arm(self):
+        figures = PROVENANCE["references"]
+        self.assertEqual(figures["0.3791"]["figure"], 0.379147)
+        self.assertEqual(figures["0.5440"]["figure"], 0.543974)
+        self.assertEqual(figures["0.7626"]["figure"], 0.762590)
+        self.assertEqual(figures["0.9872"]["figure"], 0.987179)
+        for key, entry in figures.items():
+            self.assertTrue(entry["population"], key)
+            self.assertTrue(entry["arm"], key)
+            self.assertTrue(entry["source_receipt"], key)
+
+    def test_only_the_full_population_figure_belongs_to_the_full_set(self):
+        figures = PROVENANCE["references"]
+        self.assertEqual(figures["0.3791"]["population_name"], "full-5600")
+        self.assertIn("5600", figures["0.3791"]["population"])
+        for key in ("0.5440", "0.7626", "0.9872"):
+            self.assertEqual(figures[key]["population_name"], "matched-2986", key)
+
+    def test_the_control_never_carried_the_0_3791(self):
+        control = PROVENANCE["control"]
+        self.assertTrue(control["reproduces_its_own_committed_full_read"])
+        self.assertEqual(control["full_f1_at_zero"], 0.284833)
+        self.assertEqual(control["matched_f1_at_zero"], 0.129870)
+        self.assertNotEqual(control["full_f1_at_zero"], 0.379147)
+        self.assertEqual(PROVENANCE["answer"]["control_defect"], False)
+        self.assertEqual(PROVENANCE["answer"]["table_sound"], True)
+
+    def test_the_deciding_table_states_a_population_on_every_row(self):
+        table = SCOPE["table"]
+        self.assertGreaterEqual(len(table), 8)
+        for row in table:
+            self.assertIn(row["population"], {"full-5600", "matched-2986"}, row["label"])
+            if row["population"] == "matched-2986":
+                self.assertEqual(row["cells"], 2986, row["label"])
+        full = [row for row in table if row["population"] == "full-5600"]
+        self.assertEqual([row["f1_at_zero"] for row in full], [0.379147])
+        self.assertEqual(SCOPE["reference_provenance"]["answer"]["table_sound"], True)
 
 
 class ArithmeticTest(unittest.TestCase):
@@ -79,8 +119,8 @@ class ArithmeticTest(unittest.TestCase):
 
 class VerdictTest(unittest.TestCase):
     def test_the_verdict_follows_the_declared_gates(self):
-        gates = SCOPE["gates"]["conditions"]
-        self.assertEqual(gates, {"per_cell_f1": False, "ranking": False, "attribution": True})
+        self.assertEqual(SCOPE["gates"]["conditions"],
+                         {"per_cell_f1": False, "ranking": False, "attribution": True})
         self.assertEqual(SCOPE["verdict"], "not-cleared")
         self.assertEqual(SCOPE["cause"], "representation-limited-partial-gain")
 

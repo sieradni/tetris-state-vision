@@ -3046,3 +3046,29 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `docs/evidence/m28-pixel-query-deciding-r2/scope.json`, verdict `not-cleared`, cause
   `representation-limited-partial-gain`. The superseded per-arm evidence `docs/evidence/m28-pixel-query-r2/`
   is retained unedited as the labelled secondary read.
+
+## V-151 - CLOSED: the reference line quoted two populations as one, and 0.3791 was read as the control's
+
+- Symptom: the M28 write-up scored the lever against "`0.3791` F1 at `0.0`, `0.5440` best swept, `0.7626`
+  registration-granted, `0.9872` pixel read" as if those four were one cross-arm baseline set, and the deciding
+  pass then dismissed `0.3791` as a "full-population read" without putting the originating receipt on the record.
+  A reader comparing the deciding table's control (`0.129870` F1 at `0.0`) with `0.3791` would reasonably conclude
+  the control read was broken.
+- Root cause: two figures from two populations and two arms were printed in one sentence. `0.3791` is the
+  reference arm's `summary.as_is_full` over the 5,600-cell full deciding set; `0.5440`, `0.7626` and `0.9872` are
+  `matched` figures over the 2,986-cell co-scoreable set. The M28 control never had a `0.3791`: it is a different
+  checkpoint (`m28-pixelread-base-r1`) whose own committed full-population read is `0.284833`.
+- Change: `scripts/m28_reference_provenance.py` recomputes every cited figure from the committed receipts and
+  records, per figure, its population, occupied count, arm, weights, label vector, source block and job; it also
+  reproduces the control's own full-population read from its probe before the matched value is used, so a real
+  read defect would have been separated from a population effect. The deciding receipt was re-issued
+  (`docs/evidence/m28-pixel-query-deciding-r3/`) with a table in which every row states its population, and its
+  numbers, span closure, split and verdict were re-derived with the arithmetic asserted in code.
+- Detection class: evidence-scope.
+- Instrument: the provenance reader's eight per-figure recomputation joins plus the control-full join, the
+  deciding receipt's population-labelled `table`, and `tests/test_pixel_query_deciding.py`.
+- Named green run: `runs/m28-reference-provenance-r1-job.json` (passed, 1 work item, 128 MiB) and
+  `runs/m28-pixel-query-deciding-r3-job.json` (passed, 1 work item, 128 MiB); verdict `not-cleared`, cause
+  `representation-limited-partial-gain`. The superseded deciding receipts `m28-pixel-query-deciding-r1/r2` and
+  the per-arm `m28-pixel-query-r2` remain on record; r1 and r2 are unregistered/registered as history, r2's
+  numbers are unchanged and re-issued in r3.

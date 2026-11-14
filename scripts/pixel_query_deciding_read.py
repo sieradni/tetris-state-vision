@@ -116,6 +116,8 @@ def main():
     parser.add_argument("--lever", required=True)
     parser.add_argument("--registration-suffix", default="-registration-r1")
     parser.add_argument("--previous-evidence", type=Path, required=True)
+    parser.add_argument("--provenance", type=Path, default=None,
+                        help="the reference-provenance receipt this table's citations are joined to")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     reference = read(ROOT/"runs"/args.reference/"result.json")
@@ -147,6 +149,17 @@ def main():
         raise ValueError("the reference own read does not reproduce the committed 0.543974")
 
     previous = read(ROOT/args.previous_evidence/"scope.json")
+    provenance = None
+    if args.provenance is not None:
+        provenance = read(ROOT/args.provenance/"scope.json")
+        if provenance.get("status") != "passed" or not provenance["answer"]["table_sound"]:
+            raise ValueError("the provenance receipt does not hold the table sound")
+        for figure, want in (("0.5440", REFERENCE_OWN), ("0.9872", REFERENCE_PIXEL)):
+            require_close(f"provenance {figure}", provenance["references"][figure]["figure"], want)
+        require_close("provenance 0.3791", provenance["references"]["0.3791"]["figure"],
+                      provenance["recomputed"]["reference_full"]["f1_at_zero"])
+        if provenance["control"]["arm"] != args.base:
+            raise ValueError("the provenance receipt names a different control arm")
     arms = {}
     for key in ("base", "lever"):
         data, job = receipt_arm(getattr(args, key), args.registration_suffix)
@@ -213,8 +226,31 @@ def main():
     else:
         cause = "head-cannot-exploit"
 
+    table = []
+    for label, read_raw, population_name, arm in (
+            ("pixel read-out", pixel_read, "matched-2986", "arm-independent"),
+            ("reference, own lattice", reference_own, "matched-2986", args.reference),
+            ("reference, registration granted", reference_anchored, "matched-2986", args.reference),
+            ("control, own lattice", arms["base"]["own"], "matched-2986", args.base),
+            ("lever, own lattice", arms["lever"]["own"], "matched-2986", args.lever),
+            ("control, registration granted", arms["base"]["anchored"], "matched-2986", args.base),
+            ("lever, registration granted", arms["lever"]["anchored"], "matched-2986", args.lever)):
+        table.append({"label": label, "arm": arm, "population": population_name,
+                      "cells": read_raw["cells"], "occupied": read_raw["occupied"],
+                      "auc": round(read_raw["auc"], 6),
+                      "f1_at_zero": round(read_raw["f1_at_zero"], 6),
+                      "best": round(read_raw["best"]["f1"], 6),
+                      "threshold": read_raw["best"]["threshold"]})
+    if provenance is not None:
+        full = provenance["recomputed"]["reference_full"]
+        table.insert(0, {"label": "reference, own lattice, full deciding set", "arm": args.reference,
+                         "population": "full-5600", "cells": full["cells"],
+                         "occupied": full["occupied"], "auc": round(full["auc"], 6),
+                         "f1_at_zero": round(full["f1_at_zero"], 6),
+                         "best": round(full["best"]["f1"], 6),
+                         "threshold": full["best"]["threshold"]})
     result = {
-        "status": "passed", "instrument": "m28-pixel-query-deciding-r1",
+        "status": "passed", "instrument": "m28-pixel-query-deciding-r2",
         "predeclaration": "docs/M28_PIXEL_QUERY.md",
         "reference_receipt": args.reference, "pixel_ceiling_receipt": args.pixel_ceiling,
         "base_run": args.base, "lever_run": args.lever,
@@ -237,6 +273,10 @@ def main():
             "base_own": arms["base"]["own"], "base_anchored": arms["base"]["anchored"],
             "lever_own": arms["lever"]["own"], "lever_anchored": arms["lever"]["anchored"],
         },
+        "table": table,
+        "reference_provenance": (None if provenance is None else {
+            "receipt": str(args.provenance), "answer": provenance["answer"],
+            "figures": {key: value for key, value in provenance["references"].items()}}),
         "references": {"own_best": REFERENCE_OWN, "pixel_best": REFERENCE_PIXEL,
                        "own_f1_at_zero": round(reference_own["f1_at_zero"], 6),
                        "own_auc": round(reference_own["auc"], 6),

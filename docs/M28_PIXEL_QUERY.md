@@ -127,68 +127,84 @@ A missing or failed receipt yields no attribution.
 
 ## Measured
 
-Receipts: `docs/evidence/m28-pixel-query-deciding-r2/scope.json` (this read, 128 MiB, one work item),
-joining the committed reference receipts `runs/m3-occscale-registration-r2` and
-`runs/m3-occpix-ceiling-r1-r2` with the two trained arms' own probes
-(`runs/m28-pixelread-{base,lever}-r1-registration-r1`) and their study job receipts. No retraining, no
-forward pass, no population, protocol, metric, threshold or gate change.
+Receipts: `docs/evidence/m28-pixel-query-deciding-r3/scope.json` (the deciding read, 128 MiB, one work
+item, table annotated per population) and `docs/evidence/m28-reference-provenance-r1/scope.json` (the
+provenance read that pins each cited baseline). They join the committed reference receipts
+`runs/m3-occscale-registration-r2` and `runs/m3-occpix-ceiling-r1-r2` with the two trained arms' own
+probes (`runs/m28-pixelread-{base,lever}-r1-registration-r1`) and their study job receipts. No
+retraining, no forward pass, no population, protocol, metric, threshold or gate change.
 
-### The deciding population, and why it is index-fixed
+### Provenance of the cited baselines (V-151)
 
-The population is the M27 matched set, rebuilt from the reference arm's committed registration
-receipt: the **2,986 (board, model cell) rows** whose committed mapping lands on a known target
-cell, over 28 nonempty boards in 12 ancestry groups. Two label vectors are fixed for every arm
-because both are read from that same receipt:
+The four figures the lever is scored against were previously quoted as one row of prose, which reads
+as a single population. They are not one population. Read from the receipts and recomputed by
+`scripts/m28_reference_provenance.py` - which refuses to write unless each figure reproduces its
+source block exactly:
 
-- **identity** - the truth at the row's own target index, the pairing M27 scored as the model at its
-  own lattice (`0.439024` / `0.543974`);
-- **anchored** - the truth at the target cell the committed registration pairs with the row, the
-  pairing M27 scored as registration granted (`0.574181` / `0.762590`).
-
-Only the logits move between arms. The arms' **own** mappings are deliberately not used, because
-they do not cover the reference targets: `1,861` of 2,986 rows for the control and `1,583` for the
-lever. A target-space re-score would therefore have silently become a per-arm population, which is
-the defect this pass exists to remove. The joins refuse the run unless the reference arm's own read
-recomputes `0.439024` / `0.933138` and its anchored read `0.574181` / `0.970233`, and unless the
-pixel read recomputes `0.987179` on these rows.
-
-### The deciding table
-
-| read | AUC | F1 at `0.0` | best swept F1 | at |
+| figure | measured as | population | arm | source (block) |
 |---|---|---|---|---|
-| pixel read-out, same 2,986 cells (arm-independent) | 0.999195 | 0.974763 | **0.987179** | 1.05 |
-| reference arm `m3-occscale-lever-r1`, own lattice | 0.933138 | 0.439024 | **0.543974** | 2.10 |
-| reference arm, registration granted | 0.970233 | 0.574181 | 0.762590 | 2.25 |
-| control `m28-pixelread-base-r1`, own lattice | 0.574178 | 0.129870 | 0.219626 | 3.30 |
-| **lever `m28-pixelread-lever-r1`, own lattice** | **0.898191** | **0.282638** | **0.425703** | 2.40 |
-| control, registration granted | 0.477262 | 0.172477 | 0.186075 | -6.00 |
-| lever, registration granted | 0.760646 | 0.271980 | 0.422803 | 2.40 |
+| `0.3791` = `0.379147` | F1 at threshold 0.0, own lattice | full deciding set, 5600 known cells, 667 occupied | `m3-occscale-registration-r2` | `runs/m3-occscale-registration-r2/result.json` (summary.as_is_full) |
+| `0.439024` = `0.439024` | F1 at threshold 0.0, own lattice | matched set, 2986 cells, 214 occupied | `m3-occscale-registration-r2` | `runs/m3-occscale-registration-r2/result.json` (summary.as_is) |
+| `0.5440` = `0.543974` | best swept F1 over the standing grid | matched set, 2986 cells, 214 occupied | `m3-occscale-registration-r2` | `docs/evidence/m27-three-factor-r3/scope.json` (reads.model_matched_as_is.best.f1) |
+| `0.7626` = `0.76259` | best swept F1 with the committed registration granted | matched set, 2986 cells, 309 occupied | `m3-occscale-registration-r2` | `docs/evidence/m27-three-factor-r3/scope.json` (reads.model_oracle.best.f1) |
+| `0.9872` = `0.987179` | best swept F1 of the 30-feature pixel read-out | matched set, 2986 cells, 309 occupied | `m3-occpix-ceiling-r1-r2 (arm-independent read)` | `runs/m3-occpix-ceiling-r1-r2/result.json` (cases[].pixel_logits with the reference labels) |
+| `0.978006` = `0.978006` | F1 at threshold 0.0 of the pixel read-out | full deciding set, 5600 known cells, 667 occupied | `m3-occpix-ceiling-r1-r2 (arm-independent read)` | `runs/m3-occpix-ceiling-r1-r2/result.json` (measured.operating) |
 
-The lever beats its matched control on the deciding population by `+0.324013` AUC, `+0.152768` F1 at
-`0.0` and `+0.206077` best swept F1. The full-population `0.3791` baseline is a different population;
-the comparable F1-at-`0.0` reference on these cells is the reference arm's `0.439024`.
+`0.3791` is therefore the **reference arm's own-lattice F1 at `0.0` on the full 5,600-cell deciding
+set**, not a property of the M28 control and not the same population as `0.5440` / `0.7626` /
+`0.9872`, which are all measured on the matched 2,986-cell co-scoreable set. The reference arm is
+`m3-occscale-lever-r1`, weights `150b3ca3...`, job
+`Local\TetrisStateVision-45973ed3bb344119b4dfbe7d2cda2204`; the pixel read is job `Local\TetrisStateVision-97361e7d76db43d696bc16f1ca6959b4`.
+
+The M28 control is a **different checkpoint** (`m28-pixelread-base-r1`, weights
+`75fc5a91a4de3571...`), and its own committed full-population read is reproduced
+exactly by this pass: `0.284833` F1 at `0.0` and `0.742741` AUC on
+5600 known cells, 667 occupied, matching its sweep `runs/m28-pixelread-base-r1-sweep-r1/result.json`
+(job `Local\TetrisStateVision-f5e8ffce8e8d41929393d357f1455809`). Its matched-population value of `0.12987`
+is lower because those cells are the reference arm's co-scoreable subset - it is a population effect,
+not a defect in the control read, and no control figure was ever `0.3791`.
+
+### The deciding table, with each row's population stated
+
+| population | read | arm | cells (occupied) | AUC | F1 at `0.0` | best swept F1 |
+|---|---|---|---|---|---|---|
+| full-5600 | reference own lattice | `m3-occscale-lever-r1` | 5,600 (667) | 0.800604 | **0.379147** | 0.392496 |
+| matched-2986 | pixel read-out, arm-independent | pixel ceiling | 2,986 (309) | 0.999195 | 0.974763 | **0.987179** |
+| matched-2986 | reference own lattice | `m3-occscale-lever-r1` | 2,986 (214) | 0.933138 | **0.439024** | **0.543974** |
+| matched-2986 | reference, registration granted | `m3-occscale-lever-r1` | 2,986 (309) | 0.970233 | 0.574181 | 0.762590 |
+| matched-2986 | control own lattice | `m28-pixelread-base-r1` | 2,986 (214) | 0.574178 | 0.129870 | 0.219626 |
+| matched-2986 | **lever own lattice** | `m28-pixelread-lever-r1` | 2,986 (214) | **0.898191** | **0.282638** | **0.425703** |
+| matched-2986 | control, registration granted | `m28-pixelread-base-r1` | 2,986 (309) | 0.477262 | 0.172477 | 0.186075 |
+| matched-2986 | lever, registration granted | `m28-pixelread-lever-r1` | 2,986 (309) | 0.760646 | 0.271980 | 0.422803 |
+
+Every arm row above is scored on the same 2,986 rows with the same two label vectors, fixed from the
+reference receipt (identity: 214 occupied; anchored: 309). On that population the lever beats its
+matched control by `+0.324013` AUC, `+0.152768` F1 at `0.0` and `+0.206077` best swept F1. The
+comparable F1-at-`0.0` reference on these cells is `0.439024`; the `0.379147` full-population figure
+belongs to the reference arm on 5,600 cells and is shown here only so it can no longer be mistaken
+for a matched-population baseline.
 
 ### Span closure and the split, in points and in span fractions
 
-Span = `0.987179 - 0.543974 = 0.443205`. Each arm's three terms are written so that they sum to that
-span exactly; the reader asserts both the point sum and the fraction sum before it writes.
+Span = `0.987179 - 0.543974 = 0.443205`, both endpoints on the matched 2,986-cell population. Each
+arm's three terms sum to that span; the reader asserts the point sum and the fraction sum before it
+writes.
 
 | arm | closed `own - 0.5440` | placement `anchored - own` | representation `0.9872 - anchored` |
 |---|---|---|---|
 | control | `0.219626 - 0.543974 = -0.324348` (-0.7318) | `0.186075 - 0.219626 = -0.033551` (-0.0757) | `0.987179 - 0.186075 = +0.801104` (+1.8075) |
 | lever | `0.425703 - 0.543974 = -0.118271` (-0.2669) | `0.422803 - 0.425703 = -0.002900` (-0.0065) | `0.987179 - 0.422803 = +0.564376` (+1.2734) |
 
-Parenthesised values are fractions of the `0.5440 -> 0.9872` span; the three add to exactly one span
+Parenthesised values are fractions of the span; the three add to exactly one span
 (`-0.118271 - 0.002900 + 0.564376 = 0.443205`). Relative to its **control** the lever closes
-`0.206077 / 0.443205 = 0.464970` of the span, while relative to the `0.5440` **reference arm** it
-ends `0.118271` below that anchor, so its closure against the reference is negative.
+`0.206077 / 0.443205 = 0.464970` of the span; relative to the `0.543974` **reference arm** it ends
+`0.118271` below that anchor.
 
 **The residual is representation for both arms, and placement is measured at zero.** Granting the
-reference registration moves the lever's best swept F1 by `-0.002900` (0.65% of the span) and the
-control's by `-0.033551`; the pixel read-out on the same placement reaches `0.987179`. So the
-features are demonstrably present where the arm reads, and the arm converts none of its remaining gap
-through placement: `1.2734` span fractions sit between its registration-granted read and the pixel
-read.
+reference registration moves the lever's best swept F1 by `-0.002900` (0.65% of span) and the
+control's by `-0.033551`; the pixel read-out on the same placement reaches `0.987179`. The features
+are present where the arm reads, and `1.2734` span fractions sit between its registration-granted
+read and the pixel read.
 
 ### Verdict on the deciding population: **NOT CLEARED**, attribution gate passed
 
@@ -198,18 +214,15 @@ read.
 | ranking (AUC `>= 0.90` and best `>= 0.70`) | `0.90` / `0.70` | `0.898191` / `0.425703` | fail |
 | attribution over its control | `>= 0.05` | `+0.206077` | **pass** |
 
-Two of three still fail, so the lever remains **not cleared** - but the attribution gate now passes
-with a positive measurement, and the earlier statement that "all three declared conditions fail" is
-corrected here. The ranking gate misses by `0.001809` AUC (`0.898191` against `0.90`) while the
-per-cell bar is `0.417362` away, so the block buys ordering and very little absolute operating point.
+Two of three fail, so the lever remains **not cleared**; the attribution gate passes with a positive
+measurement, correcting the earlier "all three conditions fail". The ranking gate misses by `0.001809`
+AUC while the per-cell bar is `0.417362` away, so the block buys ordering and very little absolute
+operating point.
 
-`cause = representation-limited-partial-gain`: the arm's own read does move (`0.464970` of span over
-its control), the features are available at its placement (pixel `0.987179` there), and the placement
-term is `-0.0065` of span. "The head cannot exploit the features" is therefore half true - it
-exploits about `0.46` of span and leaves `1.27` - and the cause is read from the within-arm placement
-term, never from a cross-arm anchored delta, because anchoring also swaps the label vector (214
-occupied under identity, 309 under anchored) and can move two arms in opposite directions for reasons
-that are not placement.
+`cause = representation-limited-partial-gain`: the arm's own read moves `0.464970` of span over its
+control, the features are available at its placement (`0.987179`), and the placement term is
+`-0.0065` of span. The cause is read from the within-arm placement term, never from a cross-arm
+anchored delta, because anchoring also swaps the label vector (214 against 309 occupied).
 
 ### Secondary read: the per-arm 3,316-cell population (retained, not comparable)
 
@@ -224,10 +237,11 @@ any verdict here.
 
 ### What this establishes, and what it does not
 
-- The added feature class is available at the model's own lattice and the block is used: `+0.324`
-  AUC and `+0.206` best swept F1 over a matched control on one fixed population, the largest
-  read-side movement this campaign has measured at 64 steps.
+- The feature class is available at the model's own lattice and the block is used: `+0.324` AUC and
+  `+0.206` best swept F1 over a matched control on one fixed population.
 - It is **not** sufficient: the lever stops `0.118271` below the `0.543974` reference arm on the same
   cells and `0.561476` below the `0.987179` pixel read, with the placement term at zero.
+- The `0.3791` figure is the reference arm's full-population read and is never the control's; no
+  deciding-population claim rests on it.
 - Not shown: a longer or wider block, a different budget, another seed, real images, or that the
   representation is sufficient at any budget. One seed, training-fit boards, no generalization claim.
