@@ -448,7 +448,7 @@ def require_occupancy_balance(value, summary):
 
 def require_occupancy_pixel_query(query, summary):
     """One declaration of the admission join for the per-cell pixel-statistics read-out."""
-    if (type(query) is not int or query not in (0, 1, 2, 3, 4, 5, 6, 7) or
+    if (type(query) is not int or query not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9) or
             summary.get("arguments", {}).get("occupancy_pixel_query", 0) != query or
             summary.get("recovery_contract", {}).get("occupancy_pixel_query", 0) != query):
         raise ValueError("occupancy pixel query differs from resource admission")

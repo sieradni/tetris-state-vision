@@ -25,8 +25,8 @@ points.
   conventions `decode_lattice` uses. It contains no learned, fitted, board-derived or scored-cell
   quantity; it is a constant of the capture's geometry.
 - **Statistics**: unchanged `cell_pixel_statistics` — nine sub-cell samples over the declared interior
-  extent, twenty-seven channel values and three per-channel spreads (`31` features).
-- **Projection**: the M29/M30 form-3 hidden layer, `Linear(31, 64) -> SiLU -> Linear(64, dimension)`,
+  extent, twenty-seven channel values and three per-channel spreads (`30` features).
+- **Projection**: the M29/M30 form-3 hidden layer, `Linear(30, 64) -> SiLU -> Linear(64, dimension)`,
   output zero-initialized so step zero is the published function (V-143 rule).
 - **Constants**: none new; the declared sub-cell extent and sample count are the existing ones. No
   weight is introduced — the change is spatial, not a loss term.

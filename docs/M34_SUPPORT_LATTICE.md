@@ -32,8 +32,8 @@ reducible at this capacity rather than assume it.
   `origin = (x0, y1)`, `column = ((x1-x0)/columns, 0)`, `row = (0, -(y1-y0)/rows)` — bottom-first, the
   conventions `decode_lattice` uses. It reads the raster mask only: no label, no prevalence, no scored
   cell, no fitted, learned or board-derived-from-labels quantity.
-- **Statistics and projection**: unchanged — nine sub-cell samples, `31` features, and the M29/M30 form-3
-  hidden layer `Linear(31, 64) -> SiLU -> Linear(64, dimension)` with a zero-initialized output, so step
+- **Statistics and projection**: unchanged — nine sub-cell samples, `30` features, and the M29/M30 form-3
+  hidden layer `Linear(30, 64) -> SiLU -> Linear(64, dimension)` with a zero-initialized output, so step
   zero is the published function and the form adds no parameter.
 - **Single change** against the M30/M31 winner (`m30-level-calibrate-r5`): same seed, same source
   checkpoint, same 64 steps, same 1,152 MiB ceiling. The consumer's boundary stays the fixed global `0.0`.
@@ -148,8 +148,8 @@ read looks left the per-cell decision itself under-fitted, and representation ca
 
 Closure, at the placement that is now correct: the read's decision needs the statistics' *within-sample
 contrast* rather than their absolute level. Declared step for the next pass: keep form 7's support
-lattice and the same nine-sample statistics, and give the hidden projection both the `31` absolute
-statistics and their deviation from the sample's own mean along the lattice axes (`31` more) - computed
+lattice and the same nine-sample statistics, and give the hidden projection both the `30` absolute
+statistics and their deviation from the sample's own mean along the lattice axes (`30` more) - computed
 from the sample itself, no fitted constant, no label, no scored cell, and no additional output parameter.
 The winner's absolute-level read then has to compete with the same information expressed relative to the
 board it is reading.

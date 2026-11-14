@@ -77,7 +77,7 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7),
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
               "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
@@ -902,8 +902,8 @@ class TetrisStateNet(nn.Module):
             # computed at the model's own predicted lattice from the prepared raster only. The
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
-            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5) else 1)
-            if config.occupancy_pixel_query in (3, 5, 6, 7):
+            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query in (4, 5, 8, 9) else 1)
+            if config.occupancy_pixel_query in (3, 5, 6, 7, 8, 9):
                 # Declared form-3 variant: the same zero-initialized projection with one hidden
                 # layer, so only capacity changes. The output stays at zero, so step zero is the
                 # published function and the arm is strictly additive.
@@ -1072,7 +1072,22 @@ class TetrisStateNet(nn.Module):
                     placement = lattice
                 statistics = cell_pixel_statistics(pixels, placement, self.coordinates,
                                                    self.pixel_query_offsets)
-                if self.config.occupancy_pixel_query == 2:
+                if self.config.occupancy_pixel_query == 8:
+                    # declared m35 contrast read: each statistic beside its deviation from the sample's
+                    # own mean over the lattice, so the projection sees the board's internal contrast as
+                    # well as its level. the mean comes from the sample itself, never from a population
+                    # or from any scored cell.
+                    statistics = torch.cat((statistics, statistics-statistics.mean(dim=1,
+                                                                                 keepdim=True)), dim=-1)
+                elif self.config.occupancy_pixel_query == 9:
+                    # declared m36 spread-normalised contrast: each statistic against the sample's own mean
+                    # and spread over the lattice, so a board-wide gain or offset on any statistic cancels
+                    # exactly in the ratio - the declared stencil rule of m23 applied to these statistics.
+                    # both moments come from the sample itself, never from a population or scored cell.
+                    mean = statistics.mean(dim=1, keepdim=True)
+                    spread = statistics.std(dim=1, keepdim=True, unbiased=False).clamp_min(1e-6)
+                    statistics = torch.cat((statistics, (statistics-mean)/spread), dim=-1)
+                elif self.config.occupancy_pixel_query == 2:
                     statistics = pixel_query_centre(statistics)
                 elif self.config.occupancy_pixel_query in (4, 5):
                     statistics = torch.cat((statistics, pixel_query_neighbours(
