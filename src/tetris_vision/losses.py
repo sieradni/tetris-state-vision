@@ -737,6 +737,58 @@ def quantile_anchor_term(output, target):
     return total/qualifying if qualifying else total
 
 
+# Declared symmetric ordering lever (M26): the M25 term charged one direction of every pair, and it failed by being paid
+# cheaply - the read's empties were lifted toward the occupied mode (99.93% positive share, precision 0.119). This term
+# charges a pair by the *closer* of its two directional violations, so it is the same charge whichever class is called
+# occupied, it is exactly zero only when the pair is separated by the declared margin, and collapsing the two modes
+# together charges both sides at once. Constants are fixed here, before any receipt, at the record's declared unit margin
+# and the same half-occupancy weight the other auxiliary statements on this read carry.
+OCCUPANCY_PAIR_GAP_ARMS = (0, 1)
+PAIR_GAP_MARGIN = 1.0
+PAIR_GAP_WEIGHT = .5
+
+
+def require_occupancy_pair_gap(value, summary):
+    """One declaration of the admission join for the symmetric within-board pair margin."""
+    if (type(value) is not int or value not in OCCUPANCY_PAIR_GAP_ARMS or
+            summary.get("arguments", {}).get("occupancy_pair_gap", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_pair_gap", 0) != value):
+        raise ValueError("occupancy pair gap differs from resource admission")
+
+
+def pair_gap_term(output, target):
+    """Declared symmetric pair margin: a cross-class pair is charged unless it is separated by the declared margin.
+
+    For every board carrying both classes among its *known* visible cells, each occupied/empty pair contributes
+    `min(relu(margin - (occupied - empty)), relu(margin + (occupied - empty)))`, which is the smaller of the two
+    directional violations, i.e. `relu(margin - |occupied - empty|)`. Written as the minimum of the two hinges rather
+    than as an absolute value so the gradient is the gradient of a hinge on either side of the gap.
+
+    What this buys over M25's one-sided form: the charge is symmetric in the two classes, so an arm cannot lower it by
+    calling one mode the other, and pulling the two modes together raises both directional charges at once - the collapse
+    that M25 measured at a 99.93% positive share is charged the full margin on every pair. What it costs, and is stated
+    here rather than discovered later: a symmetric charge is blind to which side is occupied, so it cannot teach the read
+    the orientation exactness needs - an inverted board separated by the margin is charged nothing. It is therefore a
+    guard on the pair gap, not an orientation term, and this pass measures exactly that.
+
+    It reads differences inside a board only, so a constant added to every cell leaves it unchanged (no board-level
+    component), `unknown` cells are excluded from both sides, and the window is the labelled visible board, so a spawn row
+    is never scored.
+    """
+    logits = visible_window(output["occupancy"], target, "occupancy")
+    occupied = target["occupied"].bool() & target["known"].bool()
+    empty = (target["occupied"] == 0) & target["known"].bool()
+    total = logits.sum()*0.0
+    qualifying = 0
+    for index in range(logits.shape[0]):
+        high, low = logits[index][occupied[index]], logits[index][empty[index]]
+        if high.numel() and low.numel():
+            gap = high[:, None]-low[None, :]
+            total = total+torch.minimum(F.relu(PAIR_GAP_MARGIN-gap), F.relu(PAIR_GAP_MARGIN+gap)).mean()
+            qualifying += 1
+    return total/qualifying if qualifying else total
+
+
 def pair_rank_term(output, target):
     """Declared ordering supervision: every occupied/empty pair on a board, one direction each.
 
@@ -766,7 +818,7 @@ def pair_rank_term(output, target):
 def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupancy_factor=1,
                positive_weight=1, occupancy_placed=0, occupancy_margin_hinge=0, occupancy_anchor=0,
                occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-               occupancy_pair_rank=0):
+               occupancy_pair_rank=0, occupancy_pair_gap=0):
     error = geometry_error(output["lattice"], target["lattice"])
     geometry = masked_mean(F.smooth_l1_loss(error, torch.zeros_like(error), reduction="none").mean((1, 2)), target["registered"])
     occupancy = balanced_occupancy(visible_window(output["occupancy"], target, "occupancy"),
@@ -837,6 +889,12 @@ def stage_loss(output, target, identity_factor=1, endpoint_term="joint", occupan
         # Declared ordering supervision: exactness is a property of the pairs, not of the boundary, so the read is told
         # about the pairs themselves.
         result["pair"] = pair_rank_term(output, target)
+    check(type(occupancy_pair_gap) is int and occupancy_pair_gap in OCCUPANCY_PAIR_GAP_ARMS,
+          "occupancy pair gap must be 0 (unsupervised pair gap) or 1 (declared symmetric pair margin)")
+    if occupancy_pair_gap:
+        # Declared symmetric ordering supervision: the pair is charged by whichever of its two directional violations is
+        # closer, so the two modes cannot be collapsed into each other to lower the charge.
+        result["gap"] = pair_gap_term(output, target)
     check(type(occupancy_midpoint) is int and occupancy_midpoint in OCCUPANCY_MIDPOINT_ARMS,
           "occupancy midpoint must be 0 (unconstrained location) or 1 (declared midpoint at the boundary)")
     if occupancy_midpoint:
@@ -855,7 +913,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                positive_weight=1, geometry_final_only=0, box_extent_weight=0.0,
                support_anchor_weight=0.0, occupancy_placed=0, occupancy_margin_hinge=0,
                occupancy_anchor=0, occupancy_quantile_anchor=0, occupancy_dense_hinge=0, occupancy_midpoint=0,
-               occupancy_pair_rank=0):
+               occupancy_pair_rank=0, occupancy_pair_gap=0):
     check(type(geometry_final_only) is int and geometry_final_only in GEOMETRY_STAGE_POLICIES,
           "geometry stage policy must be0 or1")
     check(type(box_extent_weight) is float and box_extent_weight in BOX_EXTENT_WEIGHTS,
@@ -865,7 +923,7 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
     per_stage = [stage_loss(stage, target, identity_factor, endpoint_term, occupancy_factor,
                             positive_weight, occupancy_placed, occupancy_margin_hinge, occupancy_anchor,
                             occupancy_quantile_anchor, occupancy_dense_hinge, occupancy_midpoint,
-                            occupancy_pair_rank=occupancy_pair_rank)
+                            occupancy_pair_rank=occupancy_pair_rank, occupancy_pair_gap=occupancy_pair_gap)
                  for stage in outputs["stages"]]
     terms = {key: sum(stage[key] for stage in per_stage)/len(per_stage) for key in per_stage[0]}
     if geometry_final_only:
@@ -895,7 +953,8 @@ def joint_loss(outputs, target, identity_factor=1, endpoint_term="joint", occupa
                "quantile": ANCHOR_WEIGHT*occupancy_quantile_anchor,
                "dense": ANCHOR_WEIGHT*occupancy_dense_hinge,
                "midpoint": ANCHOR_WEIGHT*occupancy_midpoint,
-               "pair": PAIR_RANK_WEIGHT*occupancy_pair_rank}
+               "pair": PAIR_RANK_WEIGHT*occupancy_pair_rank,
+               "gap": PAIR_GAP_WEIGHT*occupancy_pair_gap}
     total = sum(weights[key]*value for key, value in terms.items())
     return total, terms
 

@@ -23,7 +23,21 @@ the fit gate is FALSE. The pilot is not
 selected as the release model. No complete screenshot parser or real-image
 accuracy is claimed.
 
-Latest: **the pair-order lever fails: exact stays 0, the ordering barely moves and the boundary pays for it**
+Latest: **the symmetric pair margin avoids the collapse, improves the bare read, regresses the record-best read, and
+closes the pair-supervision axis** ([M26_GAP_MARGIN.md](M26_GAP_MARGIN.md), `docs/evidence/m26-gap-r1/scope.json`). The
+M25 charge was replaced by one that charges a pair by the closer of its two directional violations
+(`min(relu(1 - gap), relu(1 + gap))`, margin `1.0`, weight `.5`, both declared before the receipt). On the bare free
+channel it is a real gain: `0.866499` AUC against control's `0.8226433610683003` (**+0.043856**) and an inversion rate of
+`0.202031` against `0.224302` (**-0.022271**), with the boundary's positive share at 59.36% instead of M25's collapse to
+99.93%. On the record-best read the composition **regresses**: `0.881989` AUC against stencil's `0.9170200020605955`
+(**-0.035031**) and F1@0 `0.403049` against `0.480776`, with the boundary pushed from 27.94% to 46.66%. Strict exact is
+**0 / 28 in every arm**, and `gap-stencil`'s inversion rate (`0.190075`) is stencil's (`0.189525`) to within a thousandth.
+The symmetric charge is orientation-blind by construction - proven in `tests/test_pair_gap.py`, and its exact tie is a
+symmetric saddle with zero slope - so it cannot supply the ordering exactness needs. The pair-supervision axis is closed:
+both readings have been measured, neither clears, and further variants would tune a definition that excludes the quantity.
+Record-best remains `stencil`.
+
+Previous: **the pair-order lever fails: exact stays 0, the ordering barely moves and the boundary pays for it**
 ([M25_PAIR_ORDER.md](M25_PAIR_ORDER.md), `docs/evidence/m25-rank-r1/scope.json`). The one lever M24's decomposition left
 standing - a declared within-board pairwise ordering term, `mean(relu(1 - (occupied - empty)))` over the complete
 cross-class product, weight `.5`, both constants fixed before the receipt - was built, proved and measured under the

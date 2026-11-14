@@ -46,7 +46,7 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m20-two-path-[a-z0-9-]{1,40}"
                                r"|m21-level-[a-z0-9-]{1,40}"
                                r"|m22-stencil-[a-z0-9-]{1,40}"
-                               r"|m23-contrast-[a-z0-9-]{1,40}|m25-rank-[a-z0-9-]{1,40})")
+                               r"|m23-contrast-[a-z0-9-]{1,40}|m25-rank-[a-z0-9-]{1,40}|m26-gap-[a-z0-9-]{1,40})")
 
 
 def require_owned_run(name):

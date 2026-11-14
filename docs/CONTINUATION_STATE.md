@@ -1,5 +1,28 @@
 # Contributor handoff — 2026-10-30
 
+## The symmetric pair margin works on the bare read, fails on the record-best read, and closes the axis (M26)
+
+[M26_GAP_MARGIN.md](M26_GAP_MARGIN.md): `pair_gap_term` charges each cross-class pair by the closer of its two directional
+violations, so the two modes cannot be collapsed into each other to lower it. Margin `1.0`, weight `.5`, both fixed before
+the receipt; the curator and launch script are shared with M25 (`--family m26-gap`), receipt `runs/m26-curate-r1-job.json`.
+
+| arm | AUC | F1@0 | exact | row error | stage share | within-board AUC | inversion rate |
+|---|---|---|---|---|---|---|---|
+| repro (published control) | 0.822643 | 0.381640 | 0 / 28 | +7.819 | 49.95% | 0.775698 | 0.224302 |
+| gap (free + symmetric margin) | 0.866499 | 0.332749 | 0 / 28 | +9.040 | 59.36% | 0.797969 | 0.202031 |
+| gap-stencil (free + envelope + stencil + symmetric margin) | 0.881989 | 0.403049 | 0 / 28 | +1.403 | 46.66% | 0.818553 | 0.190075 |
+
+Reading: on the bare read the symmetric charge is the strongest single-arm gain since the stencil (**+0.043856** AUC over
+control, inversion rate **-0.022271**, no collapse - 59.36% share). On the record-best read it is a regression
+(**-0.035031** AUC, F1@0 `0.403049` against `0.480776`), and exactness does not move (inversion rate `0.190075` against
+stencil's `0.189525`).
+
+The axis is closed. The symmetric charge is orientation-blind by construction - an inverted-but-separated board is free -
+so it cannot teach the ordering exactness needs; `tests/test_pair_gap.py` pins both consequences (the exact tie is a
+symmetric saddle with zero slope; the two charges coincide on boards with no inversion). Further variants of this family
+would be tuning a lever whose definition excludes the quantity. Record-best remains `stencil`
+(`0.9170200020605955` / `0.480776`), and the residual stays where M24 put it: within-board discrimination.
+
 ## The pair-order lever fails, and its failure mode is mechanical (2026-11-13, M25)
 
 [M25_PAIR_ORDER.md](M25_PAIR_ORDER.md) builds the lever M24 left standing: `pair_rank_term`, the complete cross-class
