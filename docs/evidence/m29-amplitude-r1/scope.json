@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "instrument": "m29-amplitude-r1",
+  "run": "m28-pixelread-lever-r1",
+  "checkpoint": "runs/m28-pixelread-lever-r1/checkpoint/weights.pt",
+  "tensors": {
+    "projection": "occupancy_pixel_query.weight",
+    "head": "occupancy.weight"
+  },
+  "projection_weight_norm": 0.795252,
+  "projection_bias_norm": 0.035453,
+  "head_weight_norm": 0.404851,
+  "statistics_to_logit_gain_norm": 0.284829,
+  "relative_gain": 0.703541,
+  "amplitude_floor": 0.05,
+  "starved": false,
+  "reading": "the statistics reach the logit at a comparable fraction of the head's own gain, so amplitude cannot explain a collapse",
+  "job_name": "Local\\TetrisStateVision-bb33c7266a8644abb221aa0cace347ba",
+  "scope": "Read-only tensor comparison from one committed checkpoint; no forward pass, no training and no weight change."
+}

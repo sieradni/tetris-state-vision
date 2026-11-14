@@ -75,3 +75,88 @@ the probes `runs/m29-pixelform-*-r1-registration-r1` (36 forwards, 640 MiB), and
   starvation but cannot by itself show the block would have moved at a longer budget.
 - No protocol, population, metric, threshold or gate is changed; the control and reference arms are
   the committed ones and are not retrained.
+
+## Measured
+
+Receipts: `docs/evidence/m29-pixel-form-r2/scope.json` (this read, 128 MiB, one work item),
+`docs/evidence/m29-amplitude-r1/scope.json` (the checkpoint-tensor diagnostic, 640 MiB, one work
+item), and the three variant probes `runs/m29-pixelform-{centred-r3,hidden-r2,neighbours-r2}-registration-*`
+(36 forwards each, 640 MiB). Studies: `runs/m29-pixelform-{centred-r3,hidden-r2,neighbours-r2}-job.json`,
+64 steps each at the unchanged protocol, peaks 1,050,759,168 / 1,008,046,080 / 994,127,872 bytes
+inside the 1,152 MiB ceiling. No retraining of the control or reference arms, and no change to the
+population, metric, threshold or gate.
+
+### Amplitude is excluded before any variant is read
+
+The committed form-1 checkpoint carries a projection of weight norm `0.795252`
+and bias norm `0.035453` against the occupancy head's `0.404851`.
+Composed, the statistics reach the logit with gain `0.284829`, which is
+`0.703541` of the head's own gain - far above the predeclared `0.05`
+floor. The statistics reach the logit at a comparable fraction of the head's own gain, so amplitude cannot explain a collapse. Gradient starvation and optimizer starvation of the block are
+therefore **excluded by measurement**, not by argument.
+
+### Every variant on the identical 2,986-cell population
+
+Same rows, same two fixed label vectors, unchanged control (`m28-pixelread-base-r1`, best
+`0.219626`)
+and reference (`m3-occscale-lever-r1`, best `0.543974`).
+
+| variant | F1 at `0.0` | AUC | best swept F1 | delta vs form 1 | delta vs control |
+|---|---|---|---|---|---|
+| form 1, raw single layer (anchor) | 0.282638 | 0.898191 | 0.425703 | -- | +0.206077 |
+| form 2, centred inputs | 0.223739 | 0.882089 | 0.413158 | -0.012545 | +0.193532 |
+| form 3, 64-wide hidden layer | 0.291464 | 0.946604 | 0.610101 | +0.184398 | +0.390475 |
+| form 4, neighbourhood statistics | 0.193578 | 0.914689 | 0.462131 | +0.036428 | +0.242505 |
+| pixel read-out, same cells | 0.974763 | 0.999195 | 0.987179 | -- | -- |
+| reference arm, own lattice | 0.439024 | 0.933138 | 0.543974 | -- | -- |
+
+### Decision
+
+`cause = form:hidden-r2`. Confirmed: `hidden-r2`. Excluded:
+`centred-r3, neighbours-r2`.
+
+- **capacity is confirmed**: the hidden-layer form gains `+0.184398`
+  best swept F1 over the raw single layer, clears the `0.05` floor, and reaches
+  `0.610101` - above the reference arm's `0.543974` on the
+  same cells. A single `Linear(30, 192)` cannot express what the same inputs support with one
+  hidden layer; that, not placement and not the features, is the collapse.
+- **scale/offset mismatch is excluded**: putting the statistics on the encoder's own convention
+  (`2x-1`) changes the read by `-0.012545`, below the floor and
+  in the wrong direction.
+- **receptive field / local context is excluded**: adding the four-neighbour mean gains
+  `+0.036428`, below the `0.05` floor. The
+  per-cell feature class is sufficient, as the pixel ceiling already implied.
+- **supervision/attribution was excluded before the run**: form 1 moved the deciding read by
+  `+0.206077` over its control, so the loss reaches the block.
+
+### Gates re-evaluated on the winning form, and the re-derived split
+
+Span `0.987179 - 0.543974 = 0.443205`, both endpoints on the matched 2,986-cell population.
+For the hidden-layer form the three terms are
+`+0.066127` closed (`+0.149202` of span),
+`-0.089852` placement (`-0.202732`),
+`+0.466930` representation
+(`+1.053530`); they sum to the span in points and to one in
+fractions, asserted in code before the receipt was written. This is the **first positive span
+closure** against the `0.543974` reference in the campaign.
+
+| gate | bar | hidden-layer form | result |
+|---|---|---|---|
+| per-cell F1 at `0.0` | `>= 0.70` | `0.291464` | fail |
+| ranking (AUC `>= 0.90` and best `>= 0.70`) | `0.90` / `0.70` | `0.946604` / `0.610101` | AUC pass, best fail |
+| attribution over the unchanged control | `>= 0.05` | `+0.390475` | pass |
+
+So the lever is **still not cleared** - two of three gates fail - but the mechanism is now known and
+the fix is real: capacity alone recovers `+0.184398` best swept F1
+over the same features, the same placement and the same budget. The remaining shortfall is an
+operating-point problem (F1 at `0.0` `0.291464` against `0.70`),
+not an information or placement problem.
+
+### What this establishes, and what it does not
+
+- The collapse of the M28 read was a **capacity** collapse: the single zero-initialized projection
+  was amplitude-healthy (`0.703541` of the head's gain) and could not express the
+  mapping its own inputs support.
+- Not shown: whether a wider or deeper block continues to improve, whether the operating point can
+  be fixed by anything other than a decision rule, and any real-image or generalization claim. One
+  seed, 64 steps, training-fit boards.

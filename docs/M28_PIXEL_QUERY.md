@@ -245,3 +245,15 @@ any verdict here.
   deciding-population claim rests on it.
 - Not shown: a longer or wider block, a different budget, another seed, real images, or that the
   representation is sufficient at any budget. One seed, training-fit boards, no generalization claim.
+
+## M29 update: the form-1 verdict is superseded as the campaign's best read
+
+`docs/M29_PIXEL_QUERY_FORM.md` and `docs/evidence/m29-pixel-form-r2/scope.json` separate the causes
+of this arm's `0.425703` own read. Amplitude is excluded (`0.703541` of the head's gain),
+scale/offset is excluded (`-0.012545`), local context is excluded
+(`+0.036428`), and **capacity is confirmed**: the same
+statistics through a 64-wide hidden layer reach `0.610101` best swept F1 and
+`0.946604` AUC on the same 2,986 cells, `+0.184398`
+over this arm and above the `0.543974` reference. The form-1 numbers above remain the record of this
+arm; they are no longer the campaign's best read of the pixel-query design, and the `0.149202`
+positive span closure now belongs to form 3.

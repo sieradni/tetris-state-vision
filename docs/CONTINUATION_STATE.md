@@ -3512,19 +3512,20 @@ Once clustering is respected the 0.90 bar is no longer excluded, so the claim ho
 
 Closing the gap at the current design would need four times the cells for +/-0.010: 144 images in 48 groups under independence, or about 4384 images in 1461 groups at the measured design effect (roughly 122x the present sweep). That is not feasible at 12-group granularity: the instrument needs a group-level evaluation (group-mean AUC with a bootstrap over groups) over about 1461 independent groups, which this pass does not build.
 
-M28 is closed on its deciding population: the per-cell pixel-statistics read-out is instrumented,
-tested before its run, trained at the unchanged 64-step protocol against a matched zero-flag
-control, and refused by two of its three predeclared gates on the fixed 2,986-cell M27 population
-(`docs/evidence/m28-pixel-query-deciding-r3/scope.json`, M28_PIXEL_QUERY.md, ROADMAP M28).
-Own lattice `0.219626 -> 0.425703` best swept F1 and `0.574178 -> 0.898191` AUC over the control, a
-`0.464970` closure of the `0.5440 -> 0.9872` span; per-cell F1 `0.282638` against `0.70` and AUC
-`0.898191` against `0.90` still fail, while attribution (`+0.206077`) passes. The split is
-`-0.118271` closed, `-0.002900` placement, `+0.564376` representation, summing to the `0.443205`
-span by construction: the features are present at the arm's own placement (pixel `0.987179` there),
-so the next lever changes what the read-out computes - capacity, receptive field or supervision of
-the projection - not registration or sampling.
-Reference provenance is pinned in `docs/evidence/m28-reference-provenance-r1/scope.json` (V-151):
-`0.5440` / `0.7626` / `0.9872` are matched-2,986 figures, `0.3791` is the reference arm's
-full-5,600 own-lattice read and not the control's, whose own full-population value is `0.284833`.
-The first M28 verdict scored each arm on its own 3,316-cell set and is retained as a labelled
-secondary read only (V-150).
+M29 closes the question M28 opened. On the same fixed 2,986-cell population the pixel-query
+read-out's collapse is **capacity**, not placement, not scale and not amplitude: the committed form-1
+projection reaches the logit at `0.703541` of the head's gain (starved is false), centring
+the inputs moves `-0.012545` and adding neighbourhood context
+`+0.036428`, while the same statistics through a 64-wide hidden
+layer reach `0.610101` best swept F1 and `0.946604` AUC -
+`+0.184398` over form 1 and above the `0.543974` reference
+(`docs/evidence/m29-pixel-form-r2/scope.json`, M29_PIXEL_QUERY_FORM.md, ROADMAP M29). Span closure is
+`+0.149202`, placement `-0.202732`,
+representation `+1.053530`, summing to the `0.443205`
+span by construction. The predeclared gates still fail on the operating point only (F1 at `0.0`
+`0.291464` against `0.70`; best `0.610101` against
+`0.70`; attribution passes at `+0.390475`), so the lever is not
+cleared and the next lever targets the threshold the read lands on, not its inputs.
+M28's own record stands as measured: form 1 at `0.425703` best swept F1, per-arm 3,316-cell read kept
+as the labelled secondary (V-150), reference provenance pinned in
+`docs/evidence/m28-reference-provenance-r1/scope.json` (V-151).

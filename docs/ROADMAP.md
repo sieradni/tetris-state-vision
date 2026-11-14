@@ -1345,3 +1345,19 @@ The baselines carry their own populations (V-151, `docs/evidence/m28-reference-p
 while `0.3791` is the reference arm's own-lattice read on the full 5,600-cell set and was never the
 control's value - the control's own full-population read is `0.284833`. The earlier per-arm
 3,316-cell verdict is retained as a labelled secondary read (V-150).
+
+## M29 - the pixel-query collapse is capacity, and a hidden layer fixes most of it
+
+A predeclared four-mechanism instrument ([M29_PIXEL_QUERY_FORM.md](M29_PIXEL_QUERY_FORM.md),
+`docs/evidence/m29-pixel-form-r2/scope.json`) separates the causes on one fixed 2,986-cell
+population. Amplitude is excluded from the committed checkpoint (`0.703541` of the head's
+gain), centring the inputs is excluded (`-0.012545`), neighbourhood
+context is excluded (`+0.036428`), and capacity is confirmed:
+the same 30 statistics through a 64-wide hidden layer reach `0.610101` best swept
+F1 and `0.946604` AUC, `+0.184398` over the
+form-1 arm and above the `0.543974` reference arm. Span closure is `+0.149202`
+(placement `-0.202732`, representation `+1.053530`).
+The gates still fail on the operating point (F1 at `0.0` `0.291464`
+against `0.70`; best `0.610101` against `0.70`), so the lever is not cleared, but
+the read-out's remaining deficit is no longer representation of the features: it is the threshold the
+read lands on.

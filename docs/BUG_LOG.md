@@ -3072,3 +3072,29 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `representation-limited-partial-gain`. The superseded deciding receipts `m28-pixel-query-deciding-r1/r2` and
   the per-arm `m28-pixel-query-r2` remain on record; r1 and r2 are unregistered/registered as history, r2's
   numbers are unchanged and re-issued in r3.
+
+## V-152 - CLOSED: the pixel-query collapse was read as a representation deficit when it was capacity
+
+- Symptom: the M28 arm converted 30 statistics that a fixed read scores at `0.987179` into `0.425703`
+  best swept F1 on the deciding population, and the campaign recorded the residue as "representation" -
+  a term that conflated the read-out's inputs, its placement and the expressivity of a single
+  `Linear(30, 192)`.
+- Root cause: one zero-initialized linear projection. Measured on its committed checkpoint, the block's
+  amplitude was healthy (statistics-to-logit gain `0.703541` of the head's own), so neither
+  starvation nor scale explained the collapse; the single layer simply cannot represent the mapping its
+  inputs support. The campaign had no instrument that could tell those apart, so the attribution defaulted
+  to the coarsest available term.
+- Change: `scripts/m29_pixel_form_read.py` scores one declared single-change form per candidate mechanism
+  on the identical 2,986 rows with fixed label vectors, and `scripts/m29_pixel_amplitude.py` reads the
+  committed projection's gain against the head's. Centring (`-0.012545`)
+  and neighbourhood context (`+0.036428`) are excluded; the hidden-layer
+  form is confirmed at `+0.184398` over form 1, with span closure
+  `+0.149202`.
+- Detection class: analysis-instrument.
+- Instrument: the fixed-population joins (control `0.219626`, reference `0.543974`, pixel `0.987179`), the
+  fraction-sum and point-sum asserts, the amplitude floor, and `tests/test_m29_pixel_form.py`.
+- Named green runs: `runs/m29-pixel-form-r2-job.json` (passed, 1 work item, 128 MiB) writing
+  `docs/evidence/m29-pixel-form-r2/scope.json`, and `runs/m29-amplitude-r2-job.json` (passed, 640 MiB)
+  writing `docs/evidence/m29-amplitude-r1/scope.json`; studies `runs/m29-pixelform-{centred-r3,hidden-r2,neighbours-r2}-job.json`
+  (peaks 1,050,759,168 / 1,008,046,080 / 994,127,872 bytes). First launches destroyed by a host
+  disconnect are preserved as `runs/m29-pixelform-*-r1*` and `runs/m29-pixelform-centred-r2-job.json`.

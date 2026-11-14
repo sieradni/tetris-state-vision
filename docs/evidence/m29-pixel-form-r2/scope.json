@@ -1,0 +1,449 @@
+{
+  "status": "passed",
+  "instrument": "m29-pixel-form-r1",
+  "predeclaration": "docs/M29_PIXEL_QUERY_FORM.md",
+  "population": {
+    "fixed_cells": 2986,
+    "occupied_identity": 214,
+    "occupied_anchored": 309,
+    "boards": 28,
+    "anchoring_receipt": "C:\\Users\\micha\\Code\\tetris-state-vision\\docs\\evidence\\m28-pixel-query-deciding-r3\\scope.json"
+  },
+  "anchors": {
+    "form_one_best": 0.425703,
+    "control_best": 0.219626,
+    "reference_own_best": 0.543974,
+    "pixel_best": 0.987179,
+    "span": 0.443205
+  },
+  "amplitude": {
+    "relative_gain": 0.703541,
+    "starved": false,
+    "reading": "the statistics reach the logit at a comparable fraction of the head's own gain, so amplitude cannot explain a collapse",
+    "amplitude_floor": 0.05,
+    "projection_weight_norm": 0.795252,
+    "projection_bias_norm": 0.035453,
+    "head_weight_norm": 0.404851,
+    "statistics_to_logit_gain_norm": 0.284829,
+    "run": "m28-pixelread-lever-r1",
+    "checkpoint": "runs/m28-pixelread-lever-r1/checkpoint/weights.pt",
+    "tensors": {
+      "projection": "occupancy_pixel_query.weight",
+      "head": "occupancy.weight"
+    },
+    "job_name": "Local\\TetrisStateVision-bb33c7266a8644abb221aa0cace347ba"
+  },
+  "variants": {
+    "centred-r3": {
+      "form": 2,
+      "run": "m29-pixelform-centred-r3",
+      "weights_sha256": "7246dfe1fcccc129e292f9cedf00f6505447455e10a452f137e6c1dbf5793df0",
+      "own": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.8820885760138096,
+        "f1_at_zero": 0.22373949579831934,
+        "counts_at_zero": {
+          "true_positive": 213,
+          "false_positive": 1477,
+          "false_negative": 1
+        },
+        "precision_at_zero": 0.12603550295857988,
+        "recall_at_zero": 0.9953271028037384,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.4131578947368421,
+          "precision": 0.2875457875457875,
+          "counts": {
+            "true_positive": 157,
+            "false_positive": 389,
+            "false_negative": 57,
+            "f1": 0.4131578947368421,
+            "precision": 0.2875457875457875,
+            "recall": 0.7336448598130841
+          }
+        }
+      },
+      "anchored": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.7460302492888601,
+        "f1_at_zero": 0.23711855927963982,
+        "counts_at_zero": {
+          "true_positive": 237,
+          "false_positive": 1453,
+          "false_negative": 72
+        },
+        "precision_at_zero": 0.14023668639053255,
+        "recall_at_zero": 0.7669902912621359,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.3883040935672515,
+          "precision": 0.304029304029304,
+          "counts": {
+            "true_positive": 166,
+            "false_positive": 380,
+            "false_negative": 143,
+            "f1": 0.3883040935672515,
+            "precision": 0.304029304029304,
+            "recall": 0.5372168284789643
+          }
+        }
+      },
+      "full": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.8317953834759085,
+        "f1_at_zero": 0.3215667311411992,
+        "counts_at_zero": {
+          "true_positive": 665,
+          "false_positive": 2804,
+          "false_negative": 2
+        },
+        "precision_at_zero": 0.19169789564716055,
+        "recall_at_zero": 0.9970014992503748,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.4175824175824176,
+          "precision": 0.3295750216825672,
+          "counts": {
+            "true_positive": 380,
+            "false_positive": 773,
+            "false_negative": 287,
+            "f1": 0.4175824175824176,
+            "precision": 0.3295750216825672,
+            "recall": 0.5697151424287856
+          }
+        }
+      },
+      "own_best": 0.413158,
+      "gain_over_form_one": -0.012545,
+      "gain_over_control": 0.193532,
+      "auc_gain_over_control": 0.307911,
+      "f1_gain_over_control": 0.093869,
+      "span_points": -0.130816,
+      "placement_points": -0.024854,
+      "representation_points": 0.598875,
+      "span_closed_fraction": -0.295159,
+      "placement_fraction": -0.056077,
+      "representation_fraction": 1.351237,
+      "fractions_sum_to_one": true,
+      "residual": "representation",
+      "peak_bytes": 1050759168,
+      "job_name": "Local\\TetrisStateVision-3432f64ea8fa440e9eda472522412837"
+    },
+    "hidden-r2": {
+      "form": 3,
+      "run": "m29-pixelform-hidden-r2",
+      "weights_sha256": "dd5d42b8c77126576917dfb37facb26166da2b5fc75e7813c31a384866059bfc",
+      "own": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.9466038893608987,
+        "f1_at_zero": 0.2914642609299098,
+        "counts_at_zero": {
+          "true_positive": 210,
+          "false_positive": 1017,
+          "false_negative": 4
+        },
+        "precision_at_zero": 0.17114914425427874,
+        "recall_at_zero": 0.9813084112149533,
+        "best": {
+          "threshold": 3.75,
+          "f1": 0.6101010101010101,
+          "precision": 0.5373665480427047,
+          "counts": {
+            "true_positive": 151,
+            "false_positive": 130,
+            "false_negative": 63,
+            "f1": 0.6101010101010101,
+            "precision": 0.5373665480427047,
+            "recall": 0.705607476635514
+          }
+        }
+      },
+      "anchored": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.8456780944713024,
+        "f1_at_zero": 0.3411458333333333,
+        "counts_at_zero": {
+          "true_positive": 262,
+          "false_positive": 965,
+          "false_negative": 47
+        },
+        "precision_at_zero": 0.21352893235533824,
+        "recall_at_zero": 0.8478964401294499,
+        "best": {
+          "threshold": 3.45,
+          "f1": 0.5202492211838006,
+          "precision": 0.5015015015015015,
+          "counts": {
+            "true_positive": 167,
+            "false_positive": 166,
+            "false_negative": 142,
+            "f1": 0.5202492211838006,
+            "precision": 0.5015015015015015,
+            "recall": 0.540453074433657
+          }
+        }
+      },
+      "full": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.8756175328107282,
+        "f1_at_zero": 0.3724331926863572,
+        "counts_at_zero": {
+          "true_positive": 662,
+          "false_positive": 2226,
+          "false_negative": 5
+        },
+        "precision_at_zero": 0.22922437673130194,
+        "recall_at_zero": 0.992503748125937,
+        "best": {
+          "threshold": 2.4,
+          "f1": 0.48541947061462537,
+          "precision": 0.34635083226632524,
+          "counts": {
+            "true_positive": 541,
+            "false_positive": 1021,
+            "false_negative": 126,
+            "f1": 0.48541947061462537,
+            "precision": 0.34635083226632524,
+            "recall": 0.8110944527736131
+          }
+        }
+      },
+      "own_best": 0.610101,
+      "gain_over_form_one": 0.184398,
+      "gain_over_control": 0.390475,
+      "auc_gain_over_control": 0.372426,
+      "f1_gain_over_control": 0.161594,
+      "span_points": 0.066127,
+      "placement_points": -0.089852,
+      "representation_points": 0.46693,
+      "span_closed_fraction": 0.149202,
+      "placement_fraction": -0.202732,
+      "representation_fraction": 1.05353,
+      "fractions_sum_to_one": true,
+      "residual": "representation",
+      "peak_bytes": 1008046080,
+      "job_name": "Local\\TetrisStateVision-5134a8f8d0cb4289a18b61546a5f752d"
+    },
+    "neighbours-r2": {
+      "form": 4,
+      "run": "m29-pixelform-neighbours-r2",
+      "weights_sha256": "cf90f9b0c44798301491b044fec98a99fb8bde2e4e0ab99e357a3647dc861248",
+      "own": {
+        "cells": 2986,
+        "occupied": 214,
+        "empty": 2772,
+        "auc": 0.9146892826799369,
+        "f1_at_zero": 0.19357798165137616,
+        "counts_at_zero": {
+          "true_positive": 211,
+          "false_positive": 1755,
+          "false_negative": 3
+        },
+        "precision_at_zero": 0.10732451678535096,
+        "recall_at_zero": 0.985981308411215,
+        "best": {
+          "threshold": 2.1,
+          "f1": 0.4621309370988447,
+          "precision": 0.3185840707964602,
+          "counts": {
+            "true_positive": 180,
+            "false_positive": 385,
+            "false_negative": 34,
+            "f1": 0.4621309370988447,
+            "precision": 0.3185840707964602,
+            "recall": 0.8411214953271028
+          }
+        }
+      },
+      "anchored": {
+        "cells": 2986,
+        "occupied": 309,
+        "empty": 2677,
+        "auc": 0.7756569506753563,
+        "f1_at_zero": 0.23648351648351648,
+        "counts_at_zero": {
+          "true_positive": 269,
+          "false_positive": 1697,
+          "false_negative": 40
+        },
+        "precision_at_zero": 0.1368260427263479,
+        "recall_at_zero": 0.8705501618122977,
+        "best": {
+          "threshold": 2.25,
+          "f1": 0.4427672955974843,
+          "precision": 0.36213991769547327,
+          "counts": {
+            "true_positive": 176,
+            "false_positive": 310,
+            "false_negative": 133,
+            "f1": 0.4427672955974843,
+            "precision": 0.36213991769547327,
+            "recall": 0.56957928802589
+          }
+        }
+      },
+      "full": {
+        "cells": 5600,
+        "occupied": 667,
+        "empty": 4933,
+        "auc": 0.8610711874956501,
+        "f1_at_zero": 0.2635135135135135,
+        "counts_at_zero": {
+          "true_positive": 663,
+          "false_positive": 3702,
+          "false_negative": 4
+        },
+        "precision_at_zero": 0.15189003436426116,
+        "recall_at_zero": 0.9940029985007496,
+        "best": {
+          "threshold": 2.1,
+          "f1": 0.4765687053216839,
+          "precision": 0.3241491085899514,
+          "counts": {
+            "true_positive": 600,
+            "false_positive": 1251,
+            "false_negative": 67,
+            "f1": 0.4765687053216839,
+            "precision": 0.3241491085899514,
+            "recall": 0.8995502248875562
+          }
+        }
+      },
+      "own_best": 0.462131,
+      "gain_over_form_one": 0.036428,
+      "gain_over_control": 0.242505,
+      "auc_gain_over_control": 0.340511,
+      "f1_gain_over_control": 0.063708,
+      "span_points": -0.081843,
+      "placement_points": -0.019364,
+      "representation_points": 0.544412,
+      "span_closed_fraction": -0.184662,
+      "placement_fraction": -0.04369,
+      "representation_fraction": 1.228352,
+      "fractions_sum_to_one": true,
+      "residual": "representation",
+      "peak_bytes": 994127872,
+      "job_name": "Local\\TetrisStateVision-e6f9cdeda44a4c87aae66fdc7bbebe13"
+    }
+  },
+  "control": {
+    "run": "m28-pixelread-base-r1",
+    "own": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.574178028617281,
+      "f1_at_zero": 0.12987012987012986,
+      "counts_at_zero": {
+        "true_positive": 100,
+        "false_positive": 1226,
+        "false_negative": 114
+      },
+      "precision_at_zero": 0.07541478129713423,
+      "recall_at_zero": 0.4672897196261682,
+      "best": {
+        "threshold": 3.3,
+        "f1": 0.21962616822429906,
+        "precision": 0.21962616822429906,
+        "counts": {
+          "true_positive": 47,
+          "false_positive": 167,
+          "false_negative": 167,
+          "f1": 0.21962616822429906,
+          "precision": 0.21962616822429906,
+          "recall": 0.21962616822429906
+        }
+      }
+    },
+    "own_best": 0.219626,
+    "job_name": "Local\\TetrisStateVision-f68e65391d024272a9590d1e53cdaaf5"
+  },
+  "reference": {
+    "run": "m3-occscale-registration-r2",
+    "own": {
+      "cells": 2986,
+      "occupied": 214,
+      "empty": 2772,
+      "auc": 0.9331381235586843,
+      "f1_at_zero": 0.43902439024390244,
+      "counts_at_zero": {
+        "true_positive": 207,
+        "false_positive": 522,
+        "false_negative": 7
+      },
+      "precision_at_zero": 0.2839506172839506,
+      "recall_at_zero": 0.9672897196261683,
+      "best": {
+        "threshold": 2.1,
+        "f1": 0.5439739413680782,
+        "precision": 0.4175,
+        "counts": {
+          "true_positive": 167,
+          "false_positive": 233,
+          "false_negative": 47,
+          "f1": 0.5439739413680782,
+          "precision": 0.4175,
+          "recall": 0.780373831775701
+        }
+      }
+    }
+  },
+  "pixel": {
+    "cells": 2986,
+    "occupied": 309,
+    "empty": 2677,
+    "auc": 0.9991954719152604,
+    "f1_at_zero": 0.9747634069400631,
+    "counts_at_zero": {
+      "true_positive": 309,
+      "false_positive": 16,
+      "false_negative": 0
+    },
+    "precision_at_zero": 0.9507692307692308,
+    "recall_at_zero": 1.0,
+    "best": {
+      "threshold": 1.05,
+      "f1": 0.9871794871794872,
+      "precision": 0.9777777777777777,
+      "counts": {
+        "true_positive": 308,
+        "false_positive": 7,
+        "false_negative": 1,
+        "f1": 0.9871794871794872,
+        "precision": 0.9777777777777777,
+        "recall": 0.9967637540453075
+      }
+    }
+  },
+  "decision": {
+    "cause": "form:hidden-r2",
+    "gain_floor": 0.05,
+    "confirmed": [
+      "hidden-r2"
+    ],
+    "excluded": [
+      "centred-r3",
+      "neighbours-r2"
+    ],
+    "winner": "m29-pixelform-hidden-r2",
+    "gates": {
+      "per_cell_f1": false,
+      "ranking": false,
+      "attribution": true
+    },
+    "cleared": false
+  },
+  "scope": "Read-only mechanistic read of committed arms on one fixed population plus one checkpoint-tensor amplitude read; no forward pass, no training, no weight, threshold, gate or label change, and no accuracy, real-image or complete-state claim."
+}
