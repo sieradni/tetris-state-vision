@@ -68,6 +68,9 @@ def arguments(argv=None):
                         help="declared M32 distribution shaping: each board's predicted mass matches its own occupancy")
     parser.add_argument("--occupancy-read-level", type=int, choices=(0, 1), default=0,
                         help="declared M31 mechanism change: the board's own standardised read is the read")
+    parser.add_argument("--occupancy-support-crossing", type=int, choices=(0, 1), default=0,
+                        help="declared M42 decision rule: the raster's support sets each board's crossing "
+                             "level, with every sampled point left where the network put it")
     parser.add_argument("--occupancy-balance", type=int, choices=(0, 1), default=0,
                         help="declared M30 data-derived class budget in the occupancy loss")
     parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
@@ -632,6 +635,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_context, require_occupancy_pixel_query,
                                      require_pixel_query_level, require_occupancy_read_standardise,
                                      require_occupancy_balance, require_occupancy_read_level,
+                                     require_occupancy_support_crossing,
                                      require_occupancy_mass,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
@@ -657,6 +661,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_pixel_query_level(pixel_query_level, summary)
     require_occupancy_read_standardise(occupancy_read_standardise, summary)
     require_occupancy_read_level(occupancy_read_level, summary)
+    require_occupancy_support_crossing(occupancy_support_crossing, summary)
     require_occupancy_mass(occupancy_mass, summary)
     require_occupancy_balance(occupancy_balance, summary)
     require_occupancy_detail(occupancy_detail, summary)
@@ -944,6 +949,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      pixel_query_level=args.pixel_query_level,
                      occupancy_read_standardise=args.occupancy_read_standardise,
                      occupancy_read_level=args.occupancy_read_level,
+                     occupancy_support_crossing=args.occupancy_support_crossing,
                      occupancy_balance=args.occupancy_balance,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
@@ -982,6 +988,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            pixel_query_level=args.pixel_query_level,
                            occupancy_read_standardise=args.occupancy_read_standardise,
                            occupancy_read_level=args.occupancy_read_level,
+                           occupancy_support_crossing=args.occupancy_support_crossing,
                            occupancy_balance=args.occupancy_balance,
                            occupancy_mass=args.occupancy_mass,
                            occupancy_detail=args.occupancy_detail,
@@ -1027,6 +1034,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "occupancy_detail", "pixel_query_level",
                                                     "occupancy_read_standardise",
                                                     "occupancy_balance", "occupancy_read_level",
+                                                    "occupancy_support_crossing",
                                                     "occupancy_mass",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
@@ -1194,6 +1202,7 @@ occupancy_mass=args.occupancy_mass)
     recovery_contract["occupancy_read_standardise"] = args.occupancy_read_standardise
     recovery_contract["occupancy_mass"] = args.occupancy_mass
     recovery_contract["occupancy_read_level"] = args.occupancy_read_level
+    recovery_contract["occupancy_support_crossing"] = args.occupancy_support_crossing
     recovery_contract["occupancy_balance"] = args.occupancy_balance
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil

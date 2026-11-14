@@ -34,6 +34,7 @@ class ModelConfig:
     pixel_query_level: int = 0
     occupancy_read_standardise: int = 0
     occupancy_read_level: int = 0
+    occupancy_support_crossing: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -82,6 +83,8 @@ class ModelConfig:
               "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_read_level) is int and self.occupancy_read_level in (0, 1),
               "occupancy_read_level is 0 (off) or 1 (the board defines the read's level)")
+        check(type(self.occupancy_support_crossing) is int and self.occupancy_support_crossing in (0, 1),
+              "occupancy_support_crossing is 0 (off) or 1 (the support sets the board's crossing)")
         for name, value in (("pixel_query_level", self.pixel_query_level),
                             ("occupancy_read_standardise", self.occupancy_read_standardise),
                             ("occupancy_balance", self.occupancy_balance)):
@@ -691,6 +694,32 @@ def pixel_composed_lattice(lattice, valid, rows, columns, device, dtype,
                         blend(row, aligned_row)), 1)
 
 
+def support_crossing_shift(logits, lattice, valid, rows, columns, visible_rows):
+    """Declared M42 decision rule: the raster's support sets each board's crossing level.
+
+    Every arm that changed *where* the read samples lost ranking (M34, M40, M41). This changes the decision
+    instead: the read keeps sampling its own predicted lattice, and the valid support enters only as a
+    per-board vertical offset between the two boxes, expressed in the read's own rows. Each board's logits
+    then have one constant removed, chosen so that the crossing of `0.0` sits where the support puts the top
+    of the board. A constant per board cannot reorder cells inside that board, adds no parameter, fits
+    nothing, and moves no sample: the sampled geometry and the gradient path to it are untouched.
+    """
+    support = pixel_support_lattice(valid, rows, columns, logits.device, logits.dtype)
+    row_height = (-lattice[:, 2, 1]).clamp_min(1e-6)
+    predicted_top = lattice[:, 0, 1]+rows*lattice[:, 2, 1]
+    support_top = support[:, 0, 1]+rows*support[:, 2, 1]
+    offset = ((predicted_top-support_top)/row_height).clamp(-rows, rows)
+    profile = logits[:, :visible_rows].mean(dim=2)
+    height = (profile > 0).sum(dim=1).to(logits.dtype)
+    target = (height+offset).clamp(0, visible_rows-1)
+    lower = target.floor().long().clamp(0, visible_rows-1)
+    upper = (lower+1).clamp(max=visible_rows-1)
+    fraction = (target-lower.to(logits.dtype)).unsqueeze(1)
+    level = (profile.gather(1, lower[:, None])*(1-fraction)
+             +profile.gather(1, upper[:, None])*fraction).squeeze(1)
+    return logits-level[:, None, None]
+
+
 def pixel_query_neighbours(statistics, rows, columns):
     """Each cell's statistics beside the mean of its four in-board neighbours.
 
@@ -1256,6 +1285,9 @@ class TetrisStateNet(nn.Module):
                     gate = torch.tanh(self.occupancy_lattice_gate)
                     free_read = gate*channel
                     occupancy_logits = ((1-gate)*occupancy_logits+free_read)
+            if self.config.occupancy_support_crossing:
+                occupancy_logits = support_crossing_shift(occupancy_logits, lattice, valid, rows, columns,
+                                                         self.config.visible_rows)
             if self.config.occupancy_stack_monotone:
                 # Declared structural option: the read loses the freedom to scatter its per-column profile, so the
                 # crossing of `0.0` is the column's height rather than a level a term has to place.
