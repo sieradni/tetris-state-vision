@@ -73,8 +73,9 @@ class ModelConfig:
         check(type(self.layer_evidence) is bool, "layer evidence must be an explicit boolean")
         check(type(self.occupancy_context) is int and self.occupancy_context in (0, 1),
               "occupancy context is0 (published read-out) or1 (declared neighborhood read-out)")
-        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1),
-              "occupancy pixel query is 0 (published read-out) or 1 (declared per-cell pixel statistics)")
+        check(type(self.occupancy_pixel_query) is int and self.occupancy_pixel_query in (0, 1, 2, 3, 4),
+              "occupancy pixel query is 0 (off) or one of the four declared forms: 1 raw, 2 centred, "
+              "3 hidden layer, 4 neighbourhood statistics")
         check(type(self.occupancy_detail) is int and self.occupancy_detail in (0, 1),
               "occupancy detail is0 (published read-out) or1 (declared high-resolution detail tap)")
         check(type(self.occupancy_detail_stencil) is int and self.occupancy_detail_stencil in (0, 1),
@@ -557,6 +558,31 @@ PIXEL_QUERY_SAMPLES = 9
 PIXEL_QUERY_FEATURES = PIXEL_QUERY_SAMPLES*3+3
 
 
+def pixel_query_centre(statistics):
+    """The encoder's own input convention: colour in [-1, 1], spread doubled.
+
+    The raster reaches the encoder as `2*pixels-1`, so the declared form-2 variant puts the
+    statistics on the same scale and offset rather than leaving colour at [0, 1] with a +0.5
+    mean. Both sides are fixed constants: nothing is learned and nothing is fitted.
+    """
+    return torch.cat((2*statistics[..., :PIXEL_QUERY_SAMPLES*3]-1,
+                      2*statistics[..., PIXEL_QUERY_SAMPLES*3:]), dim=-1)
+
+
+def pixel_query_neighbours(statistics, rows, columns):
+    """Each cell's statistics beside the mean of its four in-board neighbours.
+
+    The declared form-4 variant gives the projection one cell of spatial context without moving
+    any sample; a zero field would give exactly the published read-out, and the neighbour mean is
+    a deterministic function of the same statistics.
+    """
+    grid = statistics.reshape(statistics.shape[0], rows, columns, -1).permute(0, 3, 1, 2)
+    padded = F.pad(grid, (1, 1, 1, 1), mode="replicate")
+    mean = (padded[:, :, :-2, 1:-1]+padded[:, :, 2:, 1:-1]+
+            padded[:, :, 1:-1, :-2]+padded[:, :, 1:-1, 2:])/4
+    return mean.permute(0, 2, 3, 1).reshape(statistics.shape[0], rows*columns, -1)
+
+
 def cell_pixel_statistics(pixels, lattice, coordinates, offsets):
     """Deterministic per-cell colour and contrast statistics at a lattice.
 
@@ -804,9 +830,19 @@ class TetrisStateNet(nn.Module):
             # computed at the model's own predicted lattice from the prepared raster only. The
             # projection is zero-initialised, so step zero is bit-identical to the published
             # function and the arm is strictly additive against its matched control.
-            self.occupancy_pixel_query = nn.Linear(PIXEL_QUERY_FEATURES, dimension)
-            nn.init.zeros_(self.occupancy_pixel_query.weight)
-            nn.init.zeros_(self.occupancy_pixel_query.bias)
+            features = PIXEL_QUERY_FEATURES*(2 if config.occupancy_pixel_query == 4 else 1)
+            if config.occupancy_pixel_query == 3:
+                # Declared form-3 variant: the same zero-initialized projection with one hidden
+                # layer, so only capacity changes. The output stays at zero, so step zero is the
+                # published function and the arm is strictly additive.
+                self.occupancy_pixel_query = nn.Sequential(
+                    nn.Linear(features, 64), nn.SiLU(), nn.Linear(64, dimension))
+                nn.init.zeros_(self.occupancy_pixel_query[2].weight)
+                nn.init.zeros_(self.occupancy_pixel_query[2].bias)
+            else:
+                self.occupancy_pixel_query = nn.Linear(features, dimension)
+                nn.init.zeros_(self.occupancy_pixel_query.weight)
+                nn.init.zeros_(self.occupancy_pixel_query.bias)
             x, y = torch.meshgrid(torch.tensor([-PIXEL_QUERY_EXTENT, 0., PIXEL_QUERY_EXTENT]),
                                   torch.tensor([-PIXEL_QUERY_EXTENT, 0., PIXEL_QUERY_EXTENT]),
                                   indexing="ij")
@@ -944,9 +980,14 @@ class TetrisStateNet(nn.Module):
                 # Declared representation lever: the read-out is given the raster at this stage's
                 # own placement, so the features exist exactly where the model believes the cell
                 # is. The projection is zero-initialized, so at step zero this adds exactly zero.
-                occupancy_features = occupancy_features+self.occupancy_pixel_query(
-                    cell_pixel_statistics(pixels, lattice, self.coordinates,
-                                          self.pixel_query_offsets))
+                statistics = cell_pixel_statistics(pixels, lattice, self.coordinates,
+                                                   self.pixel_query_offsets)
+                if self.config.occupancy_pixel_query == 2:
+                    statistics = pixel_query_centre(statistics)
+                elif self.config.occupancy_pixel_query == 4:
+                    statistics = torch.cat((statistics, pixel_query_neighbours(
+                        statistics, rows, columns)), dim=-1)
+                occupancy_features = occupancy_features+self.occupancy_pixel_query(statistics)
             occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
             occupancy_parts = None
             if self.occupancy_lattice_free is not None:

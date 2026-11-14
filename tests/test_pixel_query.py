@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"src"))
 
 from tetris_vision.model import (PIXEL_QUERY_FEATURES, ModelConfig,  # noqa: E402
-                                 TetrisStateNet, cell_pixel_statistics)
+                                 TetrisStateNet, cell_pixel_statistics,
+                                 pixel_query_centre, pixel_query_neighbours)
 
 SIDE = 64
 COORDINATES = torch.stack(torch.meshgrid(torch.arange(10), torch.arange(20), indexing="ij"), -1) \
@@ -71,7 +72,27 @@ class ZeroInitTest(unittest.TestCase):
 
     def test_the_configuration_refuses_an_undeclared_value(self):
         with self.assertRaises(ValueError):
-            replace(ModelConfig(), occupancy_pixel_query=2)
+            replace(ModelConfig(), occupancy_pixel_query=5)
+
+    def test_every_declared_form_keeps_step_zero_bit_identical(self):
+        pixels = torch.rand(1, 3, SIDE, SIDE)
+        valid = torch.ones(1, 1, SIDE, SIDE, dtype=torch.bool)
+        with torch.no_grad():
+            published = model(0)(pixels, valid)["final"]["occupancy"]
+        for form in (2, 3, 4):
+            base, lever = model(0), model(form)
+            lever.load_state_dict(base.state_dict(), strict=False)
+            with torch.no_grad():
+                arm = lever(pixels, valid)["final"]["occupancy"]
+            self.assertTrue(torch.equal(published, arm), form)
+
+    def test_the_hidden_layer_form_adds_only_its_output_projection(self):
+        base, lever = model(0), model(3)
+        added = set(lever.state_dict())-set(base.state_dict())
+        self.assertEqual(added, {"occupancy_pixel_query.0.weight", "occupancy_pixel_query.0.bias",
+                                 "occupancy_pixel_query.2.weight", "occupancy_pixel_query.2.bias"})
+        self.assertEqual(float(lever.occupancy_pixel_query[2].weight.abs().sum()), 0.0)
+        self.assertEqual(float(lever.occupancy_pixel_query[2].bias.abs().sum()), 0.0)
 
 
 class StatisticsTest(unittest.TestCase):
@@ -103,6 +124,21 @@ class StatisticsTest(unittest.TestCase):
         self.assertGreater(float(difference.max()), 0.0)
         self.assertGreater(int((difference > 0).sum()), 0)
         self.assertLess(int((difference > 0).sum()), 200)
+
+    def test_the_centre_form_matches_the_encoder_convention(self):
+        statistics = cell_pixel_statistics(raster(.5), LATTICE, COORDINATES, OFFSETS)
+        centred = pixel_query_centre(statistics)
+        self.assertTrue(torch.allclose(centred[..., :27], torch.zeros(1, 200, 27), atol=1e-6))
+        self.assertLess(float(centred[..., 27:].abs().max()), 1e-6)
+        highs = pixel_query_centre(cell_pixel_statistics(raster(1.), LATTICE, COORDINATES,
+                                                         OFFSETS))
+        self.assertTrue(torch.allclose(highs[..., :27], torch.ones(1, 200, 27), atol=1e-6))
+
+    def test_the_neighbour_form_doubles_the_width_and_keeps_a_uniform_board(self):
+        statistics = cell_pixel_statistics(raster(.5), LATTICE, COORDINATES, OFFSETS)
+        neighbours = pixel_query_neighbours(statistics, 10, 20)
+        self.assertEqual(neighbours.shape, statistics.shape)
+        self.assertTrue(torch.allclose(neighbours, statistics, atol=1e-6))
 
     def test_the_statistics_read_the_raster_not_the_model(self):
         base, lever = model(0), model(1)
