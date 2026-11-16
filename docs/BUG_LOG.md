@@ -3545,3 +3545,35 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   than by trusting the revert.
 - Named green runs: `tests/test_m45_receipt.py` at `14 tests OK`, and the re-run full suite in
   `runs/m45-suite-r2-job.json`.
+
+## V-176 - CLOSED: the edge gate's ratio returned noise at a uniform cell
+
+- Symptom: the arm's own invariance test asserted that a board-wide lift cancels in the gated feature, and it
+  failed at `0.0536`, at a cell whose contrast and in-cell spread are both at the numeric floor.
+- Root cause: the gate divided `relu(|k| - s)` by `|k| + s + 1e-6`; where `|k|` and `s` are both ~`1e-7`, float
+  rounding in the sampled values is larger than the numerator, so a uniform cell returned a gate of `0.054` instead
+  of `0`. The gate is then non-zero exactly where the arm's declaration says it must be zero.
+- Change: the read's own floor now appears in the numerator as well -
+  `relu(|k| - s - 1e-6) / (|k| + s + 1e-6)` - so a cell at the floor passes exactly `0`. Found before any scoring
+  run, in `tests/test_m46_edge_gate.py::GateRuleTest`, and the rule was amended in the predeclaration rather than
+  after a receipt.
+- Detection class: numeric-floor divide - first occurrence. The instrument is the arm's own stated property test:
+  every gated feature must be exactly zero on a flat raster, which is now asserted.
+- Named green runs: `tests/test_m46_edge_gate.py` (`11 tests OK`) and the full suite in `runs/m46-suite-r1-job.json`.
+
+## V-177 - CLOSED: host memory pressure refused the arm's admission
+
+- Symptom: `scripts/run_bounded.py` returned `status: memory_pressure`, `exit_code 125`, `elapsed_seconds 0.001`
+  with `reason: os_commit_reservation` - the host held `41.10 GB` of a `46.94 GB` commit limit against a
+  `42.24 GB` stop threshold, and the `1,152 MiB` reservation did not fit.
+- Root cause: an unrelated host process held ~`10 GB` of private commit; the runner's pressure guard was working as
+  designed and refused admission before any training started. Nothing in the repository was at fault.
+- Change: none in code and none in the declared ceiling. The driver's own bounded retry (fresh receipt name per
+  attempt, `60 s` apart) was admitted on the third attempt once the host freed commit; every refused attempt is
+  preserved as `runs/m46-*-profile-job.json` with its `memory_pressure` receipt, and the authoritative profile is
+  `m46-control-winner-config-profile-r3`.
+- Detection class: host pressure at admission - first occurrence. The instrument is the retry-with-fresh-name
+  pattern plus the recorded `system_at_admission` block, so a refusal is reported as environment, never as an arm
+  reading.
+- Named green runs: `runs/m46-control-winner-config-job.json`, `runs/m46-edge-gated-contrast-job.json`,
+  `runs/m46-edge-gated-contrast-registration-job.json`.

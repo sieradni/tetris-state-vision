@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`. All fail
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3753,3 +3753,20 @@ control with checkpoint `05ef2e09…`.
 precision deficit (M42 support decision, M43 column step, M44 boundary value, M45 interior contrast) all lost it.
 Additive raster statistics are closed as a shape: the next arm keeps the absolute cell reading and adds a raster
 term only where a local edge exists, declared as its own change.
+M46 acted on M45's measured mechanism directly - the ring contrast passes only where it exceeds the cell's own
+in-cell spread, the same statistic the standardised read divides by, with the threshold committed before the run -
+and is **harmful by a wider margin**: `docs/evidence/m46-edge-gated-contrast-r1/scope.json` records F1 at `0.0`
+`0.140733`, AUC `0.757500`, best swept `0.252362` (at `3.00`), deltas `-0.232148` / `-0.197029` /
+`-0.437413`, gates per-cell/ranking/attribution false, split closure `-0.291612` / placement `+0.004104` /
+representation `+0.730713`. Precision at `0.0` fell `0.230430` -> `0.075720` with recall rising (`213` true
+positives, `1` false negative), `2,600` of `2,772` empty cells positive, rows 10-19 `140` -> `1,513`. Measured
+mechanism: bias norm `0.063863` (small, so not an offset), per-column weight norms spread over all fifteen declared
+inputs, empty margin median `-0.529` -> `-0.160`, and an AUC loss no offset could produce. Control
+`m46-control-winner-config` reproduced `eddec1fd…` bit-exactly; the arm is `3,072` parameters above it, checkpoint
+`186734bd…`.
+
+**Where the campaign stands after M46:** the additive raster family is closed - three members at `-0.021` to
+`-0.197` AUC for `-0.068` to `-0.232` F1 at `0.0` - and the raster is not information-poor, because the committed
+ceiling read-out scores `0.974763` F1 at `0.0` on these cells from the same thirty statistics. The next arms are
+structural: a pixel-sole occupancy read, a frozen raster projection, and the ceiling read as the decision, ranked in
+`docs/M46_EDGE_GATE.md` with falsifiers and costs.

@@ -1706,6 +1706,15 @@ vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0
 points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
 parameter), and a learned per-board mixing weight was predeclared out of scope.
 
+**After M46 the additive raster family is closed, and the next step is structural.** Three measured members
+(M44 boundary value, M45 relative contrast, M46 spread-gated contrast) cost `-0.021` to `-0.197` AUC for `-0.068` to
+`-0.232` F1 at `0.0`, while the committed ceiling read-out proves the same thirty statistics carry `0.974763` F1 at
+`0.0` on the same cells. The open question is the route, not the evidence: an occupancy head that reads the thirty
+statistics directly (no latent route into that head), a frozen raster projection that separates optimisation freedom
+from information, and the ceiling read as the decision itself are the ranked candidates, each with its falsifier.
+Scope is unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps, a
+`64`-wide one-block head, the fixed global `0.0` boundary.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row

@@ -118,6 +118,102 @@ The predicted reading is *precision-moves-without-clearing* unless every element
 
 No branch is re-run for a better number.
 
+## Measured
+
+Recorded `docs/evidence/m46-edge-gated-contrast-r1/scope.json` and `diagnosis.json`, one seed, one run, `64` steps,
+after the predeclaration committed before it.
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| control = winner `m30-level-calibrate-r5` | `0.372881` | `0.954529` | `0.689775` |
+| **M46 `m46-edge-gated-contrast`** | **`0.140733`** | **`0.757500`** | **`0.252362`** (at `3.00`) |
+| delta | **`-0.232148`** | **`-0.197029`** | **`-0.437413`** |
+
+Gates per-cell / ranking / attribution: false / false / **false** (registration admitted the anchored vector the same
+way), `cleared` false, `short_stage` `closure`. Split against the `0.443205` span: closure `-0.291612`, placement
+`+0.004104`, representation `+0.730713` (fractions `-0.657963` / `+0.009259` / `+1.648703`, sum asserted `1.0`).
+
+**Verdict: `harmful`, and by a wider margin than the ungated form.**
+
+### Per-cell precision at the fixed crossing: it fell, and recall went up
+
+| at the fixed `0.0` boundary | control | M46 | change |
+|---|---|---|---|
+| true positives | `209` | `213` | `+4` |
+| false negatives | `5` | `1` | `-4` |
+| false positives | `698` | `2,600` | `+1,902` |
+| true negatives | `2,074` | `172` | `-1,902` |
+| precision | `0.230430` | `0.075720` | **`-0.154710`** |
+| recall | `0.976636` | `0.995327` | `+0.018691` |
+
+`2,600` of the `2,772` empty cells are positive at `0.0`: the fixed crossing sits inside the empty population rather
+than between the populations.
+
+### The late-row mass, reconciled and per row
+
+Baseline is the **control's `140` false positives in rows 10-19** (the bit-exact winner; M43's `173` and M44's `240`
+were those arms' own counts, and this pass compares against `140`). Per row, before -> now:
+
+| row | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| before | 0 | 18 | 45 | 107 | 58 | 119 | 64 | 39 | 81 | 27 | 0 | 0 | 0 | 0 | 1 | 111 | 2 | 26 | 0 | 0 |
+| now | 44 | 59 | 71 | 109 | 122 | 120 | 131 | 128 | 131 | 172 | 141 | 167 | 173 | 170 | 70 | 173 | 173 | 172 | 173 | 101 |
+
+Rows 10-19 went **`140` -> `1,513`**; rows 0-9 went `400` -> `1,087`. The per-column profile
+(`270`/`446`/`392`/`399`/`367`/`291`/`232`/`105`/`98`/`0`) shows the mass is not column-specific either.
+
+### Mechanism, measured
+
+- **Not an offset.** The projection's bias stayed small (`norm 0.063863`, mean `1.1e-4`) while its weight norm grew to
+  `0.394220`, against M45's `0.0418` / `0.2520`.
+- **Not one declared input.** Per-column weight norms are spread across the whole declared set - gated contrasts
+  `0.029` to `0.176`, the three gate values `0.089` to `0.091` - so no single statistic carries the change; the
+  effect is the projection's total output acting on the latent.
+- **The empty distribution moved toward and across the boundary.** The empty-cell margin median is `-0.160` (control
+  `-0.529`); only `172` empties remain below zero, and the positive cells sit at median `2.42` while true positives sit
+  at `4.29`.
+- **Ordering degraded, which a bias cannot do.** AUC is threshold-free: `-0.197029` says the read's ordering of empty
+  against occupied cells collapsed, and the split attributes almost all of that to the representation term
+  (`+0.730713` of the span, short stage `closure`).
+
+So the gate did what it was declared to do - contrast passes only where the contrast exceeds the cell's own in-cell
+spread - and the arm was still harmful: the optimiser spends the added projection on the empty region whatever its
+inputs are gated to, because the term enters the same latent the read decides on and the `4x` positive weight rewards
+lifting cells broadly.
+
+## Can this family raise fixed-crossing precision? The measured answer
+
+Three members of the additive raster family have now been measured against the same bit-exact control, on the same
+`2,986` cells, at the same fixed crossing, under the same `64`-step single-seed protocol:
+
+| arm | what the term is | F1 at `0.0` | AUC | precision at `0.0` | late rows 10-19 |
+|---|---|---|---|---|---|
+| control | - | `0.372881` | `0.954529` | `0.230430` | `140` |
+| M44 | absolute edge-midpoint value | `0.304665` | `0.934008` | `0.180484` | `240` |
+| M45 | edge value against the cell's interior | `0.183550` | `0.916312` | `0.101145` | `883` |
+| M46 | the same contrast, gated by the cell's own spread | `0.140733` | `0.757500` | `0.075720` | `1,513` |
+
+**No member of the family raises fixed-crossing precision, and the price is `-0.021` to `-0.197` AUC for `-0.068` to
+`-0.232` F1 at `0.0`.** The best member (M44, the plain boundary value) still costs `-0.068` F1 and `-0.021` AUC, and
+every step that made the statistic more like the thing the diagnosis asked for - relative, then edge-gated - lost
+more, not less. The family is closed as a per-cell precision lever.
+
+That closure is not the same as "the raster lacks the information": the committed pixel-ceiling read-out scores
+`0.974763` F1 at `0.0` on exactly these cells from the same thirty statistics. What the three arms show is that
+**adding raster evidence as a per-cell term to the read's latent does not let the read use it** - the joint objective
+spends the term on the empty region instead. The open question is therefore structural: whether the raster's evidence
+can be the decision rather than an addition to it.
+
+## Structurally different next steps, ranked
+
+| rank | next arm | headroom | cost | falsifier that retires it |
+|---|---|---|---|---|
+| 1 | **pixel-sole occupancy read**: the occupancy head reads the thirty statistics directly, with no decoder-latent route into that head | high - the same thirty numbers already score `0.974763` F1 at `0.0` in the committed ceiling read-out, so the information is present and only the route is in question | one head-input declaration, no new parameters, one `64`-step run | AUC `< 0.90` or F1 at `0.0` `< 0.30` - the trunk's latent context is required for ordering and the raster cannot be the decision |
+| 2 | **frozen raster projection**: declared fixed random initialisation, only the head and downstream trained | moderate - separates optimisation freedom from information; if the term cannot move, the lift cannot be learned | one flag, no new parameters, one run | no AUC recovery over M46: freedom is not the binding constraint, so the family's information is |
+| 3 | **the ceiling read as the decision**: the committed thirty-statistic read-out supplies the decision and only the boundary's level and registration are learned | high but possibly the ceiling itself | moderate - a new decision path, no raster training | F1 at `0.0` `< 0.95` or AUC `< 0.99` on this population - the ceiling's advantage is read- or population-specific |
+| 4 | **seed-spread replicate of the winner** (measurement, not an improvement) | it bounds what any future arm delta means | three runs at the same protocol | seed spread in AUC `> 0.02`: every sub-`0.02` delta in the record is unresolvable and the campaign must report intervals from then on |
+| R | **retired, must not be re-run**: every additive raster term (M44, M45, M46) and every radius/width/sample/gate variant of them; M42 support crossing; M43 column step; M16 board crossing; M14/M31 levels; M9-M13 objective level terms; M15/M17 monotone and skyline; M34-M41 geometry | closed by measurement | - | not offered |
+
 ## Receipts
 
 `runs/m46-control-winner-config{,-profile}`, `runs/m46-edge-gated-contrast{,-profile,-registration}`,
