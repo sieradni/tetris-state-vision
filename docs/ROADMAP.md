@@ -1763,6 +1763,19 @@ interior fit: keep this arm's box, correct the pitch by fitting the block edges 
 mean stays above `0.25` cells. Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors,
 the fixed `0.0` boundary, one read-only pass.
 
+**After M52 the pitch hypothesis is refuted, and the residual is located in the box.** Refitting each board's lattice
+from its own interior cell lines - sub-pixel boundary localisation, a declared missing-line rule, a Theil-Sen slope and
+an origin anchored to the box's pixel convention - tightens the scale to `0.001776` cells in width and `0.002611` in
+height (`3.9`x and `1.8`x tighter than M51) and moves the population mean only from `0.383358` to `0.380890`. The read
+gets **worse**, not better: `0.893268` F1 at `0.0` / `0.908824` AUC against M51's box `0.904376` / `0.933275`, and the
+median board moves `+0.008278` cells. So pitch was not what limited the read; per-board phase and location were, and the
+localiser's own `0.2997`-pixel sawtooth bias accounts for the size of the median cost. The falsifier is met
+(`0.380890 > 0.25`), the AUC leg passes by `0.008824`, the branch is `fit-under-specified`, and the no-regression rule
+fails on the same two boards as before (`training-20261031-v1` / `-v2`, `0.924144` -> `0.949682` / `0.949620`). The
+named next arm is **M53, a stack-anchored lattice fit**: the visible blocks' own cell-boundary edges used as absolute
+anchors, which is the one cell-boundary signal present on the two captures a local fit cannot reach. Scope unchanged:
+one fixed population (28 boards, 2,986 cells), both fixed label vectors, the fixed `0.0` boundary, one read-only pass.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row
@@ -1784,6 +1797,7 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M43 `m43-column-step` | each column decided at its own sharpest step | `0.270008` | `0.752899` | `0.272654` | fail |
 | M44 `m44-pixel-edge` | cell edge midpoints join the pixel read | `0.304665` | `0.934008` | `0.550622` | fail |
 | M51 `m51-board-box-read` | the committed read at a candidate-search board box (wall + cell-grid, one objective) | `0.904376` | `0.933275` | `0.908497` | fail: mean displacement `0.383358` > `0.25` (`repair-under-specified`) |
+| M52 `m52-lattice-fit-read` | the committed read at a lattice refitted from the interior cell lines | `0.893268` | `0.908824` | `0.896211` | fail: mean displacement `0.380890` > `0.25` (`fit-under-specified`) |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
@@ -1795,6 +1809,8 @@ M51 is a read-only transfer of the committed read-out, not a fitted arm of this 
 `+0.531495` / `-0.021254` / `+0.218722`, and against M50's board box (`0.979200` / `0.999150` / `0.985507`) it moves
 `-0.074824` / `-0.065875` / `-0.077010` - the read-side cost of a pitch that is `0.35` cells less tight on the median
 board even though the tail is shorter.
+M52 moves `+0.520387` / `-0.045705` / `+0.206436` against the winner and `-0.011108` / `-0.024451` / `-0.012286`
+against M51's box: a tighter pitch, a slightly better tail, and a worse read on both measures.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

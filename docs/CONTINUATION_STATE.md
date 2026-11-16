@@ -3838,6 +3838,16 @@ clear the falsifier: the population mean is `0.383358` cells against `0.25`, the
 the box, is binding. The named next arm is **M52, lattice refinement by interior fit** (falsified if the mean stays
 above `0.25` cells), with M50's box plus M51's pitch search as the cheaper fallback (M53).
 
+M52 ran M51's named successor - lattice refinement by interior fit - and landed **`fit-under-specified`**. The
+boundary localisation, missing-line rule, Theil-Sen pitch and box-anchored origin tighten the scale to `0.001776` /
+`0.002611` cells (M51 `0.006892` / `0.004720`) and move the population mean from `0.383358` to `0.380890`, but the read
+falls to `0.893268` F1 at `0.0` / `0.908824` AUC (M51's box `0.904376` / `0.933275`), the median board worsens by
+`0.008278` cells, and the same two boards stay outside the no-regression rule (`0.924144` -> `0.949682` / `0.949620`).
+The measured conclusion is that pitch was **not** the read's binding term; the `0.380890` mean is two gross box
+relocations and the median cost is the localiser's `0.2997`-pixel sawtooth bias. The named next arm is **M53, a
+stack-anchored lattice fit** (block edges as absolute anchors), falsified if the population mean stays above `0.25`
+cells or the AUC falls below `0.90`.
+
 **Where the campaign stands after M50:** the geometry axis is closed on the raster side - the ceiling is reachable
 without training, labels or fitted constants - and the remaining defect is two captures. The named next arm is the
 **detector repair on those two captures** (falsified if the population mean stays above `0.25` cells), and the arm

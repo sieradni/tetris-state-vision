@@ -451,6 +451,8 @@ def main():
                 for name in ("mean_magnitude", "median_magnitude", "p90_magnitude", "max_magnitude")}
     detector["median_of_medians"] = round(float(np.median(
         [row["displacement"]["median_magnitude"] for row in detection])), 6)
+    detector["mean_of_medians"] = round(float(np.mean(
+        [row["displacement"]["median_magnitude"] for row in detection])), 6)
     detector["max_of_maxima"] = round(float(np.max(
         [row["displacement"]["max_magnitude"] for row in detection])), 6)
     detector["boards_over_gate"] = int(sum(
@@ -463,8 +465,9 @@ def main():
         [row["error"]["height_error_cells"] for row in detection])), 6)
     predicates = {sample: displacement_cells(predicted, boards[sample])
                   for sample, (predicted, _box, _fit) in lattices.items()}
-    detector["box_mean_magnitude"] = round(float(np.mean(
-        [row["box_displacement"]["mean_magnitude"] for row in detection])), 6)
+    for name in ("mean_magnitude", "median_magnitude", "p90_magnitude", "max_magnitude"):
+        detector["box_"+name] = round(float(np.mean(
+            [row["box_displacement"][name] for row in detection])), 6)
     detector["box_median_of_medians"] = round(float(np.median(
         [row["box_displacement"]["median_magnitude"] for row in detection])), 6)
     detector["box_worst_board_mean"] = round(float(np.max(
@@ -475,12 +478,16 @@ def main():
     after = {row["sample_id"]: row["displacement"]["mean_magnitude"] for row in detection}
     boxes = {row["sample_id"]: row["box_displacement"]["mean_magnitude"] for row in detection}
 
-    def baseline(path):
+    def baseline(path, keys, reader):
         scope = read(path)
-        return {row["sample_id"]: row["mean_cells"] for row in scope["no_regression"]["boards"]}
+        for key in keys:
+            scope = scope[key]
+        return {row["sample_id"]: reader(row) for row in scope}
 
-    m50 = baseline(ROOT/"docs/evidence/m50-board-box-read/scope.json")
-    m51 = baseline(ROOT/"docs/evidence/m51-board-box-read/scope.json")
+    m50 = baseline(ROOT/"docs/evidence/m50-board-box-read/scope.json",
+                   ("geometry", "detection", "boards"), lambda row: row["displacement"]["mean_magnitude"])
+    m51 = baseline(ROOT/"docs/evidence/m51-board-box-read/scope.json",
+                   ("no_regression", "boards"), lambda row: row["m51_mean_cells"])
     named = ("training-20261031-v1", "training-20261031-v2")
 
     def table(before, label):

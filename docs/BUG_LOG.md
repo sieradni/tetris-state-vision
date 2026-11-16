@@ -3787,3 +3787,23 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Prevention: the build step parses the result (`ast.parse`) and the suite imports the module, so a broken splice fails
   immediately instead of at study time.
 - Detection class: tooling trap in the build path - first occurrence. Instrument: `ast.parse` on the generated file.
+
+## V-191 - a copied arm's receipt assembly assumed the previous arm's field names, and failed three times
+
+- Symptom: three consecutive scoring runs of `scripts/m52_lattice_fit_read.py` died before writing a receipt, each with
+  a different `KeyError`: `'no_regression'` (M50's scope has no such block), `('geometry', 'detection', 'boards')` (the
+  new baseline helper indexed a whole key path as one key), and `'box_median_magnitude'` (the comparison block asked for
+  four dispersion keys while only `box_mean_magnitude` had been computed). Each run cost about `28` s of a bounded job
+  and left an empty output directory behind.
+- Root cause: the arm was derived from M51's file, and its receipt assembly reads two historical scopes
+  (`m50-board-box-read`, `m51-board-box-read`) whose layouts differ from each other and from the new keys the arm adds
+  for its own box-vs-refined comparison. Nothing checked those layouts at build time.
+- Change: one `baseline(path, keys, reader)` helper walks a key path and adapts each scope's own field names
+  (`geometry.detection.boards` + `displacement.mean_magnitude` for M50, `no_regression.boards` + `m51_mean_cells` for
+  M51); the box dispersion block is generated from the same four names the refined block uses; and every failed output
+  directory was removed before the next launch so no receipt is ever a partial file.
+- Prevention: `tests/test_m52_receipt.py` asserts both baseline tables (`26` and `24` placed boards, all `28` rows) and
+  every detector field the receipt publishes, so a renamed or missing field fails in the focused test rather than after
+  a bounded scoring run.
+- Detection class: copied-instrument field-name drift - first occurrence of the *class* in this campaign, three
+  occurrences inside one arm. Instrument: the receipt tests plus the `28`-row table assertions.
