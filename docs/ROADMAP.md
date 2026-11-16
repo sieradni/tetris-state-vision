@@ -1526,6 +1526,28 @@ The predeclared branch that fired is **REPRODUCES** (its thresholds were AUC `<=
 swept, against `-0.071268` / `-0.303850` for the same swap at `30` inputs. **The overlap in the section below
 is attributable to its recorded confound, not to provenance failing to order anything.**
 
+## M43 - the per-column step crossing, and the level axis closed at every granularity
+
+[M43_COLUMN_STEP_CROSSING.md](M43_COLUMN_STEP_CROSSING.md) predeclared the one decision rule left that acts on the
+mass M42's diagnosis found - cells above each column's own step still reading moderately positive - and chose the
+step statistic over mass balance for the reason M17 already measured (an upper blob contributes mass and attracts
+a volume split). Each column is decided at its own sharpest row-to-row descent, one constant per column, no
+parameter, no annotation, no prevalence. `docs/evidence/m43-column-step-r1/scope.json`: F1 at `0.0` `0.270008`,
+AUC `0.752899`, best swept `0.272654` (at `-0.15`) - **not cleared**, gates per-cell/ranking false, attribution
+true, deltas `-0.102873` / `-0.201629` / `-0.417120`; branch **harmful**.
+
+The mass did not move the way the arm needed: false positives at `0.0` rose `698` -> `856`, and rows 10-19 went
+**`140` -> `173`**, with the movement column-shaped - rows 3, 4, 9, 10-14, 16, 17 emptied exactly while rows 0, 1,
+6, 7, 8 and 15 filled, because a column whose read has no sharp step still returns an `argmax`, often near its
+top, leaving the whole column positive. Ranking fell `0.201629` because a per-column shift reorders cells inside a
+board. Control `m43-control-winner-config` reproduced `m30-level-calibrate-r5`'s checkpoint bit-exactly
+(`eddec1fd…`), the arm differs in exactly `occupancy_column_step_crossing` at the same `8,023,562` parameters, and
+its checkpoint is `c5257239…`.
+
+With this the declared level axis is closed at every granularity proposed: board mean (M14), board crossing (M16),
+board standardisation (M31), raster support (M42), column step (M43) - and the two aimed at the diagnosed mass made
+it worse. The ranking is already `0.954529`; what is left is per-cell precision at a fixed crossing.
+
 ## M42 - the support as a decision rule, and geometry's role on both sides
 
 [M42_SUPPORT_CROSSING.md](M42_SUPPORT_CROSSING.md) predeclared and measured the one untested role for the
@@ -1647,7 +1669,12 @@ AUC and `-0.183426` F1 at `0.0` (branch: harmful), so geometry measured at match
 negative role on **both** sides - sampling (M41) and decision (M42). Nothing here changes the closure's claim,
 which is about this regression set as configured; what it adds is that no correctable placement prior was
 found on either side, and that a future decision-side arm has to beat a measured `-0.116317` AUC rather than
-merely avoid moving samples. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
+merely avoid moving samples.
+
+**After M43 the level axis is closed too.** Deciding each column at its own sharpest step lost `-0.102873` F1 at
+`0.0`, `-0.201629` AUC and raised the late-row false-positive mass (`140` -> `173`), so the recorded next step is
+not another level at any granularity: it is per-cell precision in the representation at the fixed crossing, which
+is the only quantity left with measured headroom. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
 vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured
 points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
 parameter), and a learned per-board mixing weight was predeclared out of scope.
@@ -1670,12 +1697,14 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M40 `m40-composed-r2` | predicted lattice blended half onto the support box | `0.260599` | `0.897918` | `0.439535` | fail |
 | M41 `m41-support-contrast` | M35's features sampled at the support lattice | `0.272073` | `0.819074` | `0.340000` | fail |
 | M42 `m42-support-crossing` | support sets each board's crossing level (decision side) | `0.189455` | `0.838212` | `0.374034` | fail |
+| M43 `m43-column-step` | each column decided at its own sharpest step | `0.270008` | `0.752899` | `0.272654` | fail |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
 M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`; M41
-`-0.100808` / `-0.135455` / `-0.349775`; M42 `-0.183426` / `-0.116317` / `-0.315741`.
+`-0.100808` / `-0.135455` / `-0.349775`; M42 `-0.183426` / `-0.116317` / `-0.315741`; M43
+`-0.102873` / `-0.201629` / `-0.417120`.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

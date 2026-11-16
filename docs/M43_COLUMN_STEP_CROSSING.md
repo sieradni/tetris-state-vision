@@ -109,7 +109,82 @@ mass down by at least a third. The reading is "level-moves-without-clearing" unl
 
 No branch is re-run to look for a better number, and a negative is reported as the result.
 
+## Measured (scored `m43-column-step-r1`)
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| control / winner `m30-level-calibrate-r5` (re-scored in the same pass) | `0.372881` | `0.954529` | `0.689775` |
+| **M43 `m43-column-step`** | **`0.270008`** | **`0.752899`** | **`0.272654`** (at `-0.15`) |
+| delta | `-0.102873` | `-0.201629` | `-0.417120` |
+| anchored variant | `0.231231` | `0.636025` | `0.259563` (at `-0.45`) |
+
+**Verdict: not cleared, and the branch that fired is harmful** - both falsifiers of the prediction were exceeded
+(`dF1@0 -0.102873 <= -0.010`, `dAUC -0.201629 < -0.005`). Per-cell and ranking gates false, attribution true (and
+false on the anchored variant). Split closure `-0.271320` / placement `-0.013092` / representation `+0.727616`
+(`-0.612176` / `-0.029538` / `+1.641715`), sum asserted, `short_stage: closure`. Peaks: control
+`1,060,073,472`, arm study `1,062,690,816` (against the declared `1,152` MiB), probe `560,947,200`, reader
+`45,105,152`.
+
+### The high-margin late-row mass did not fall - it rose
+
+Per row, false positives at `0.0` on the `2,986` fixed cells, control against arm (`comparison_to_m35.per_row`):
+
+| row | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0 | 18 | 45 | 107 | 58 | 119 | 64 | 39 | 81 | 27 |
+| arm | 43 | 59 | 71 | **0** | **0** | 120 | 131 | 128 | 131 | **0** |
+
+| row | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0 | 0 | 0 | 0 | 1 | 111 | 2 | 26 | 0 | 0 |
+| arm | **0** | **0** | **0** | **0** | **0** | 173 | **0** | **0** | 0 | 0 |
+
+Rows 10-19: **`140` before, `173` after** - the mass the arm was aimed at went *up*, and total false positives at `0.0`
+rose from `698` to `856` at a lower median margin (`1.633866` -> `0.653617`). The movement is a column-shaped
+signature, not a row-shaped one: whole columns were moved wholesale, so some rows emptied exactly (3, 4, 9, 10-14,
+16, 17 - every cell in them correctly negative) while others filled (0, 1, 6, 7, 8, 15) as entire columns stayed
+positive. Recall held up (`167` true positives, `47` false negatives) but precision at `0.0` collapsed to
+`0.163245` (`0.164569` even at the swept optimum).
+
+### Why it failed, as mechanism
+
+The rule needs a *step* to exist; where the read has no sharp one, `argmax` still returns a position, and a
+noisy or gradually-falling column puts that position near the top, leaving the whole column positive - the exact
+failure the identity guard was declared for cannot fire, because a noisy column always has *some* positive
+descent. That is the declared weakness ("a column whose spurious descent is sharper than the true one is cut in
+the wrong place") observed on the real population, and it is why the chosen statistic differs from the
+alternative: mass balance would have been attracted upward by the blob, and the step is attracted upward by the
+read's own softness. The second cost is ranking: a per-column shift moves cells *within* a board against each
+other, so AUC fell `0.201629` - far past the `0.005` the declaration accepted. Per-column decision is therefore
+strictly worse than the board-level read it replaced, on both quantities the campaign measures.
+
+### What it settles
+
+The level axis is now closed at every granularity that has been proposed, each by measurement: the board mean
+(M14), the board's exact crossing (M16), the board's own standardised level (M31), the raster's support (M42), and
+now the column's own step (M43). Two of these (M42, M43) were aimed at the diagnosed high-margin mass and both
+made it worse; the third route to it, mass imbalance inside the objective, was falsified five times (M9-M13). What
+remains is not a level question at all: the ranking is already `0.954529`, so the campaign's next arm has to raise
+per-cell precision *at a fixed crossing*, and this pass names no width, tie-break or smoothing variant of this
+rule - that would be the per-arm tuning the declaration forbids.
+
+## Isolation, as measured
+
+| assertion | measured |
+|---|---|
+| control's checkpoint | `eddec1fd…` - **bit-identical to `m30-level-calibrate-r5`'s**, so absent-is-zero is measured, not normalised |
+| parameter count, arm vs control | `8,023,562` = `8,023,562` |
+| differing recorded config fields | exactly `['occupancy_column_step_crossing']` |
+| arm's checkpoint | `c5257239888b…`, distinct from the control's |
+
+## Defect found and repaired in this pass
+
+`V-171`: the first implementation subtracted each column's level from the whole tensor, moving the spawn rows
+above the visible window - the rule's own contract says they pass through. Caught by
+`tests/test_m43_column_step.py::test_the_spawn_rows_pass_through` before any study ran, repaired by subtracting on
+the visible window only and concatenating the untouched remainder.
+
 ## Receipts
 
-To be filled by the run: `runs/m43-control-winner-config{,-profile}`, `runs/m43-column-step{,-profile,
--registration}`, `docs/evidence/m43-column-step-r1/{scope,diagnosis}.json`.
+`runs/m43-control-winner-config{,-profile}`, `runs/m43-column-step{,-profile,-registration}`,
+`runs/m43-column-step-r1-job.json`, `docs/evidence/m43-column-step-r1/{scope,diagnosis}.json`.

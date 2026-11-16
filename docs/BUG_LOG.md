@@ -3468,3 +3468,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Instrument: `tests/test_m37_fusion.py::SourceScanTest::test_no_guarded_word_enters_the_reads_source_slice`,
   plus the local pre-check used here (scanning the same slice for the same five tokens before running the suite).
 - Named green runs: the suite at the commit that follows (`runs/m42-suite-r2-job.json`).
+
+## V-171 - CLOSED: the per-column rule moved the spawn rows it was declared to leave alone
+
+- Symptom: `tests/test_m43_column_step.py::test_the_spawn_rows_pass_through` failed on the first implementation -
+  the rows above the visible window changed value when the rule was on.
+- Root cause: the level was computed over the visible window (correct) and then subtracted from the *whole* tensor,
+  so the spawn rows inherited a per-column offset. The rule's own contract says those rows are outside the board and
+  pass through untouched.
+- Change: the shift is applied to the visible window only and the remainder is concatenated back unchanged. Caught
+  before any study ran, so no receipt was produced with it.
+- Detection class: spawn-window boundary - a new member of the window class (V-141's block rerun and the M16/M17
+  transforms are the earlier ones), and the standing instrument is the per-transform spawn test each of those arms
+  carries; here it is `test_the_spawn_rows_pass_through` plus the sample-point identity test.
+- Named green runs: `runs/m43-column-step-job.json` (study, peak `1,062,690,816`),
+  `runs/m43-column-step-registration-job.json` (peak `560,947,200`), and the M43 receipt test (9 tests).

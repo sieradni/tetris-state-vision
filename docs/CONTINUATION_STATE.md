@@ -3633,8 +3633,8 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.0` / AUC / best swept): M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` /
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
-`0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`. All fail the
-gate; all sit below the winner.
+`0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
+M43 `0.270008` / `0.752899` / `0.272654`. All fail the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
 separated.** No exogenous correction to placement was learned at this depth by any composition tried: all
@@ -3689,7 +3689,22 @@ parameters, the same sampled points and a distinct checkpoint (`fa4a7b60…`).
 
 So geometry measured at matched configuration has a negative role on both sides - sampling (M41) and decision
 (M42) - and the closure's wording is unchanged because it describes this regression set as configured. What a
-future decision-side arm must beat is now a measured `-0.116317` AUC. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
+future decision-side arm must beat is now a measured `-0.116317` AUC.
+
+M43 then measured the last level granularity: each column decided at its own sharpest row-to-row descent, one
+constant per column, no parameter and no annotation. Recorded `docs/evidence/m43-column-step-r1/scope.json`: F1 at
+`0.0` `0.270008`, AUC `0.752899`, best swept `0.272654` - not cleared, gates per-cell/ranking false, attribution
+true, deltas `-0.102873` / `-0.201629` / `-0.417120`, branch **harmful**. False positives at `0.0` rose `698` ->
+`856` and rows 10-19 went `140` -> `173`: a column with no sharp step still returns an `argmax`, often near its top,
+so whole columns stayed positive (rows 3, 4, 9, 10-14, 16, 17 emptied; rows 0, 1, 6, 7, 8, 15 filled), and the
+per-column shift cost `0.201629` AUC. Control `m43-control-winner-config` reproduced the winner's checkpoint
+bit-exactly (`eddec1fd…`); the arm differs in exactly one recorded field at the same `8,023,562` parameters with
+checkpoint `c5257239…`.
+
+**Where the campaign stands:** the level axis is closed at every granularity (M14, M16, M31, M42, M43), the two
+arms aimed at the diagnosed high-margin mass made it worse, and the objective-side level terms were falsified five
+times (M9-M13). Ranking is `0.954529`. The next arm has to raise per-cell precision at a fixed crossing - a
+representation question - and no level, width, tie-break or smoothing variant of M43 is open. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
 population, both fixed label vectors, one seed, `64` steps, a `64`-wide one-block head, fixed global `0.0`,
 three measured points on the strength axis.
 
@@ -3703,3 +3718,7 @@ recorded next step is narrower: any further decision-side use of the support mus
 `-0.116317` AUC of the box-offset level, and the productive direction left is a level derived from the
 support's occupancy rather than from its box offset - untested, and the only decision-side question these
 receipts leave open.
+
+**M43 answered the column version of that question and closed it**: a per-column step crossing lost `-0.102873` F1
+and `-0.201629` AUC and pushed the late-row mass up, so the recorded next step is per-cell precision in the
+representation at the fixed crossing, not another level.
