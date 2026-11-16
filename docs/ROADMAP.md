@@ -1715,6 +1715,15 @@ from information, and the ceiling read as the decision itself are the ranked can
 Scope is unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps, a
 `64`-wide one-block head, the fixed global `0.0` boundary.
 
+**After M47 the question is the read-out itself, and answering it needs no training run.** Removing every
+latent path from the occupancy decision cost `-0.239131` F1 at `0.0` and `-0.094155` AUC, with every empty cell
+positive and the ordering itself worse, so neither the raster statistic nor its route is the binding constraint. The
+committed ceiling read-out (`0.974763` F1 at `0.0` on these cells from the same thirty statistics) is what any
+successor must explain: the decisive measurement is that read-out fitted on the statistics sampled at the model's
+predicted lattice, which separates sampling geometry from read-out training at the cost of one script. Scope is
+unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps, a `64`-wide
+one-block head, the fixed global `0.0` boundary.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row

@@ -3577,3 +3577,35 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   reading.
 - Named green runs: `runs/m46-control-winner-config-job.json`, `runs/m46-edge-gated-contrast-job.json`,
   `runs/m46-edge-gated-contrast-registration-job.json`.
+
+## V-178 - CLOSED: the arm's driver declared one ceiling for its profile and another for its study
+
+- Symptom: every study attempt exited `1` in under six seconds with
+  `ValueError: source/config/input/CPU/memory envelope differs from resource admission`, while the profile that
+  produced the admission summary had itself passed.
+- Root cause: the driver was written with `--memory-mib 1024` for the profile stage and `1152` for the study stage,
+  so `validate_admission` saw `summary["job_ceiling_bytes"] != ceiling` and refused by design. A second cause
+  compounded it: the interrupted relaunch left four driver processes alive that raced each other's receipt names, so
+  failures from one driver were read as failures of another (the V-173 class).
+- Change: the stage script now declares one `CEILING` for every stage (`runs/m47-stages.py`), the run is launched by
+  explicit stage names instead of a retry loop, and the registration probe keeps its own declared `640 MiB` ceiling.
+  Every refused receipt is preserved (`runs/m47-*-job.json`).
+- Detection class: harness envelope mismatch - first occurrence. The prevention is the single-ceiling constant plus
+  the admission join that caught it: the join is the instrument, and no arm reading was ever produced from a
+  mismatched stage.
+- Named green runs: `runs/m47-control-winner-config-profile-r3-job.json`,
+  `runs/m47-control-winner-config-r6-job.json`, `runs/m47-pixel-sole-job.json`,
+  `runs/m47-pixel-sole-registration-r2-job.json`.
+
+## V-179 - CLOSED: the runner restarted while a bounded poll held the shell
+
+- Symptom: one inspection command returned `Local operation outcome is unknown` and the turn moved to a new runner,
+  so the state of the staged jobs was not visible from that call.
+- Root cause: the poll held the shell for its whole `sleep` window; the runner restart landed on the poll, not on the
+  detached work, whose stages were already writing receipts atomically.
+- Change: none in code. State was re-derived from the files after the restart: all four stages had completed
+  (`m47-control-winner-config-r6` and `m47-pixel-sole` both `passed`, control bit-exact `eddec1fd…`,
+  `m47-pixel-sole-registration-r2` `passed`), so no stage was re-run. The standing instrument is to re-read receipts
+  and checkpoints after any interruption rather than to retry the interrupted command.
+- Detection class: runner restart - first occurrence.
+- Named green runs: the four receipts named in V-178 plus `runs/m47-pixel-sole-r1-job.json`.

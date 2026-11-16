@@ -121,6 +121,7 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M44": "m44-pixel-edge-r1",
         "M45": "m45-interior-contrast-r1",
         "M46": "m46-edge-gated-contrast-r1",
+        "M47": "m47-pixel-sole-r1",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
     MOVES = ("M34", "M40", "M39", "M41")

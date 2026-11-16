@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`. All fail
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3770,3 +3770,20 @@ inputs, empty margin median `-0.529` -> `-0.160`, and an AUC loss no offset coul
 ceiling read-out scores `0.974763` F1 at `0.0` on these cells from the same thirty statistics. The next arms are
 structural: a pixel-sole occupancy read, a frozen raster projection, and the ceiling read as the decision, ranked in
 `docs/M46_EDGE_GATE.md` with falsifiers and costs.
+M47 then ran the restriction M46's ranking named first - the occupancy head reading the raster projection alone with
+no latent path and no new parameter - and it is **harmful**: `docs/evidence/m47-pixel-sole-r1/scope.json` records F1
+at `0.0` `0.133750`, AUC `0.860374`, best swept `0.486957`, deltas `-0.239131` / `-0.094155` / `-0.202818`, gates
+per-cell/ranking false, attribution true, short stage `closure`. All `2,772` empty cells are positive at `0.0` with
+every margin positive (empty `0.151`-`2.264`, occupied `0.178`-`2.239`), so precision is `214/2,986`; rows 10-19 go
+`140` -> `1,685` and rows 0-9 `400` -> `1,087`. The projection's bias is small (`0.0564` norm against `1.6086` weight
+norm, winner `0.0550`/`1.2222`), and AUC fell `0.094155`, which no offset can do: the ordering itself is worse.
+Control `m47-control-winner-config` reproduced `eddec1fd…` bit-exactly; the arm carries the same `8,023,562`
+parameters with checkpoint `b6959ba7…`.
+
+**Where the campaign stands after M47:** four arms have now aimed at per-cell precision and none raised it - the
+additive raster family (`-0.068`, `-0.189`, `-0.232` F1 at `0.0`) and the routing restriction (`-0.239`, `-0.094`
+AUC). The committed ceiling read-out still scores `0.974763` F1 at `0.0` on the same cells from the same thirty
+statistics, so the binding constraint is the read-out itself. The cheapest decisive test needs no training run: fit
+that read-out on the statistics sampled at the model's **predicted** lattice - ceiling quality means the head's
+training is binding (frozen-trunk head-only read next), collapse means the sampling is (registration arm next). Ranked
+with falsifiers and costs in `docs/M47_PIXEL_SOLE.md`.
