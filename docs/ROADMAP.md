@@ -1526,6 +1526,27 @@ The predeclared branch that fired is **REPRODUCES** (its thresholds were AUC `<=
 swept, against `-0.071268` / `-0.303850` for the same swap at `30` inputs. **The overlap in the section below
 is attributable to its recorded confound, not to provenance failing to order anything.**
 
+## M44 - the pixel edge ring: boundary brightness is not the missing per-cell evidence
+
+[M44_PIXEL_EDGE.md](M44_PIXEL_EDGE.md) predeclared the first arm since M31 to add *information* rather than a
+level: the raster sampled on each cell's own four edge midpoints, half a cell out and outside the declared `+/-0.3`
+in-cell grid, through a zero-initialised projection of exactly `2,496` parameters. `docs/evidence/m44-pixel-edge-r1/
+scope.json`: F1 at `0.0` `0.304665`, AUC `0.934008`, best swept `0.550622` (at `3.15`) - **not cleared**, gates
+per-cell/ranking false, attribution true, deltas `-0.068217` / `-0.020521` / `-0.139153`; branch **harmful**.
+
+The error mix is the finding: true positives `209` and false negatives `5` are **identical to the control's**, and
+the whole delta is `251` extra false positives (`698` -> `949`) at a higher median margin, so precision at the fixed
+crossing fell `0.230430` -> `0.180484` (`-0.049946`) and rows 10-19 went **`140` -> `240`**, gaining cells in rows
+13, 14, 18 and 19 the control had clean. The mechanism is in the statistic: above a stack the cell's top edge
+coincides with the board's own background transition, so boundary brightness fires there too and the `4x`-weighted
+objective raises the empty region instead of lowering it. Control `m44-control-winner-config` reproduced
+`m30-level-calibrate-r5`'s checkpoint bit-exactly (`eddec1fd…`); the arm carries exactly the declared `2,496`
+parameters with checkpoint `d4ae2727…`.
+
+What the negative leaves standing is precise: the missing per-cell evidence must be *contrast against the cell's own
+interior* - which cancels the background transition - rather than the boundary value, and any such arm is a
+different feature to be declared on its own. No offset, width or sample-count variant of this ring is open.
+
 ## M43 - the per-column step crossing, and the level axis closed at every granularity
 
 [M43_COLUMN_STEP_CROSSING.md](M43_COLUMN_STEP_CROSSING.md) predeclared the one decision rule left that acts on the
@@ -1674,7 +1695,13 @@ merely avoid moving samples.
 **After M43 the level axis is closed too.** Deciding each column at its own sharpest step lost `-0.102873` F1 at
 `0.0`, `-0.201629` AUC and raised the late-row false-positive mass (`140` -> `173`), so the recorded next step is
 not another level at any granularity: it is per-cell precision in the representation at the fixed crossing, which
-is the only quantity left with measured headroom. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
+is the only quantity left with measured headroom.
+
+**After M44 that headroom is specified more sharply.** Boundary brightness added false positives only (true
+positives unchanged at `209`, precision `-0.049946`, late-row mass `140` -> `240`), because a cell's top edge
+coincides with the board's own background transition. The next arm on this axis therefore reads *interior contrast*
+- the cell against its own inside - which cancels that transition, rather than any boundary value or another
+level. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
 vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured
 points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
 parameter), and a learned per-board mixing weight was predeclared out of scope.
@@ -1698,13 +1725,14 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M41 `m41-support-contrast` | M35's features sampled at the support lattice | `0.272073` | `0.819074` | `0.340000` | fail |
 | M42 `m42-support-crossing` | support sets each board's crossing level (decision side) | `0.189455` | `0.838212` | `0.374034` | fail |
 | M43 `m43-column-step` | each column decided at its own sharpest step | `0.270008` | `0.752899` | `0.272654` | fail |
+| M44 `m44-pixel-edge` | cell edge midpoints join the pixel read | `0.304665` | `0.934008` | `0.550622` | fail |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
 M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`; M41
 `-0.100808` / `-0.135455` / `-0.349775`; M42 `-0.183426` / `-0.116317` / `-0.315741`; M43
-`-0.102873` / `-0.201629` / `-0.417120`.
+`-0.102873` / `-0.201629` / `-0.417120`; M44 `-0.068217` / `-0.020521` / `-0.139153`.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

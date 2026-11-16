@@ -3483,3 +3483,36 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   carries; here it is `test_the_spawn_rows_pass_through` plus the sample-point identity test.
 - Named green runs: `runs/m43-column-step-job.json` (study, peak `1,062,690,816`),
   `runs/m43-column-step-registration-job.json` (peak `560,947,200`), and the M43 receipt test (9 tests).
+
+## V-172 - CLOSED: the new zero-initialised projection was refused by the initial-source allowlist
+
+- Symptom: the M44 arm's first profile died with
+  `ValueError: initial-weight source tensors differ from the declared representation`, five times, before any
+  study ran.
+- Root cause: the arm adds one projection the published source checkpoint does not carry. The continuation check
+  permits added tensors only when their names are declared in `INITIAL_SOURCE_ADDED_PREFIXES` (the V-104
+  mechanism), and the new prefix was not declared, so a legitimate addition looked like a representation change.
+- Change: `occupancy_pixel_edge.` declared in that list. The zero initialisation is what makes it safe, and the
+  arm's own tests assert the step-zero identity bit for bit (`test_step_zero_is_the_published_function`) plus the
+  exact `2,496`-parameter difference.
+- Detection class: initial-source allowlist - the same class as V-104, and the declared-list mechanism it built is
+  the standing instrument; this is its first catch since.
+- Named green runs: `runs/m44-pixel-edge-profile-r2-job.json` (profile, peak `1,020,018,688`),
+  `runs/m44-pixel-edge-job.json` (study, peak `1,056,161,792`), `tests.test_m44_pixel_edge` (8 tests). The five
+  refused profiles are preserved as `runs/m44-pixel-edge-profile*-superseded-initial-source*`.
+
+## V-173 - CLOSED: two detached drivers raced the same arm name
+
+- Symptom: while the arm's first driver was still retrying after the allowlist repair, a second driver was started
+  for the same arm; both wrote toward `runs/m44-pixel-edge` and a duplicate study (`runs/m44-pixel-edge-r2`) began
+  before the collision was noticed.
+- Root cause: the runner treats an existing receipt or output directory as a refusal, so the second driver's first
+  attempt failed fast and moved to the next name instead of stopping the pair - two drivers, one arm, no lock
+  between them.
+- Change: none in code; the duplicate was stopped before it produced a checkpoint and is preserved as
+  `runs/m44-pixel-edge-r2-superseded-duplicate-driver*`. The authoritative run is the one whose receipt and
+  checkpoint agree (`m44-pixel-edge`, `d4ae2727…`, `passed`, `180.6 s`).
+- Detection class: concurrent launch - first occurrence. If it recurs twice more, a launch lock in the driver
+  pattern becomes the standing instrument; the receipt/collision refusal that caught it is recorded here so the
+  next driver reuse is written knowing it.
+- Named green runs: `runs/m44-pixel-edge-job.json` and `runs/m44-pixel-edge-registration-job.json`.

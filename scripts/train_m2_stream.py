@@ -581,7 +581,11 @@ INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_pixel_que
                                  # an arm without it is the same function, so a source checkpoint
                                  # that predates the field is a legitimate start.
                                  "occupancy_free_stencil.",
-                                 "lattice_board_refine.", "occupancy_column.")
+                                 "lattice_board_refine.", "occupancy_column.",
+                                 # M44: the edge ring is one declared, zero-initialised projection, so a source
+                                 # checkpoint that predates it starts the arm at exactly the published
+                                 # function; the arm's own test asserts that identity bit for bit.
+                                 "occupancy_pixel_edge.")
 
 
 def complete_recovery_contract(contract, config):

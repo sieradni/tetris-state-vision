@@ -3634,7 +3634,8 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`. All fail the gate; all sit below the winner.
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`. All fail
+the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
 separated.** No exogenous correction to placement was learned at this depth by any composition tried: all
@@ -3722,3 +3723,18 @@ receipts leave open.
 **M43 answered the column version of that question and closed it**: a per-column step crossing lost `-0.102873` F1
 and `-0.201629` AUC and pushed the late-row mass up, so the recorded next step is per-cell precision in the
 representation at the fixed crossing, not another level.
+
+M44 then took that step with the first arm since M31 that adds information rather than a level: the raster on each
+cell's four edge midpoints, half a cell out, through a zero-initialised projection of exactly `2,496` parameters.
+Recorded `docs/evidence/m44-pixel-edge-r1/scope.json`: F1 at `0.0` `0.304665`, AUC `0.934008`, best swept
+`0.550622` - not cleared, gates per-cell/ranking false, attribution true, deltas `-0.068217` / `-0.020521` /
+`-0.139153`, branch **harmful**. The error mix is what it settles: true positives `209` and false negatives `5` are
+identical to the control's, so recall was untouched and the entire change is `251` extra false positives
+(`698` -> `949`, precision `0.230430` -> `0.180484`) with rows 10-19 going `140` -> `240` - boundary brightness is
+confounded with the board's own background transition above the stack. Control `m44-control-winner-config`
+reproduced the winner bit-exactly (`eddec1fd…`); the arm is `8,026,058` parameters with checkpoint `d4ae2727…`.
+
+**Where the campaign stands:** recall at the fixed crossing is already `0.976636`; every remaining error is
+precision, and the two information arms aimed at it (M42's support, M44's boundary) both added false positives. The
+specific next direction the negative names is *interior contrast* - the cell measured against its own inside, which
+cancels the background transition - declared as its own arm.

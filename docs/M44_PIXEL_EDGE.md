@@ -84,7 +84,90 @@ re-place a level, so the prediction is *a real gain that does not clear the gate
 
 No branch is re-run for a better number. A negative is reported as the result.
 
+## Measured (scored `m44-pixel-edge-r1`)
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| control / winner `m30-level-calibrate-r5` (re-scored in the same pass) | `0.372881` | `0.954529` | `0.689775` |
+| **M44 `m44-pixel-edge`** | **`0.304665`** | **`0.934008`** | **`0.550622`** (at `3.15`) |
+| delta | `-0.068217` | `-0.020521` | `-0.139153` |
+| anchored variant | `0.312202` | `0.779490` | `0.486322` (at `3.15`) |
+
+**Verdict: not cleared, and the branch that fired is harmful** - both falsifiers were met (`dF1@0 -0.068217 <=
+-0.010`, `dAUC -0.020521`, below the declared `0.949529` minimum). Per-cell and ranking gates false, attribution
+true (and false on the anchored variant). Split closure `+0.006648` / placement `-0.064299` / representation
+`+0.500857` (`+0.014999` / `-0.145078` / `+1.130079`), sum asserted, `short_stage: placement`. Peaks: control
+`1,059,082,240`, arm study `1,056,161,792` (against the declared `1,152` MiB), profile `1,020,018,688`, probe
+`563,793,920`, reader `45,105,152`.
+
+### Per-cell precision did not rise: the arm added false positives only
+
+The error mix is exact and unambiguous. True positives are **`209` and false negatives `5` in both reads** -
+recall is `0.976636` on either side, so the ring added no true positive and lost none. What it added is `251` false
+positives (`698` -> `949`) at a slightly *higher* median margin (`1.633866` -> `1.695618`), so precision at the
+fixed crossing fell from `0.230430` to `0.180484` (**`-0.049946`**). The feature made the read hotter, not sharper.
+
+Per row, false positives at `0.0` on the `2,986` fixed cells (`comparison_to_m35.per_row`):
+
+| row | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0 | 18 | 45 | 107 | 58 | 119 | 64 | 39 | 81 | 27 |
+| arm | 40 | 50 | 59 | 89 | 76 | 114 | 88 | 80 | 86 | 27 |
+
+| row | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| control | 0 | 0 | 0 | 0 | 1 | 111 | 2 | 26 | 0 | 0 |
+| arm | 0 | 0 | 0 | 14 | 19 | 138 | 3 | 32 | 21 | 13 |
+
+Rows 10-19: **`140` -> `240`**. The high-margin late-row mass the arm was aimed at went *up* by `100`, and it
+gained cells in rows 13, 14, 18 and 19 that the control had entirely clean - the ring's positive evidence is
+strongest exactly where the raster is empty above the stack, because there the cell's top edge sits on the board's
+own background transition.
+
+### Why it failed, as mechanism
+
+The ring reads *brightness on the boundary*, and the read cannot distinguish "this edge is where a fill stops"
+from "this edge is where any contrast sits": above a stack the cell's top edge coincides with the board's own
+background edge, so the feature fires there too. Through a `4x`-weighted positive objective it therefore raises
+the read in the empty region above the stack rather than lowering it, which is why recall is untouched and the
+false positives are the only movement. The sample also moved the whole read's level up (`best swept` threshold
+unchanged at `3.15` but its value down `0.139`), and the one positive is small: the closure component is
+`+0.006648` over the control, the only stage that did not lose.
+
+### What it settles
+
+Boundary *brightness* is not the missing evidence: at this placement the cell's edge sample is confounded with the
+background transition that marks the top of the board, so it cannot separate "filled cell" from "empty cell beside
+a border". With recall already at `0.976636`, the remaining error is entirely precision at a fixed crossing, and
+this arm's contribution to it is negative. Per the declaration, no offset, width, sample-count or brightness
+variant of the ring is offered afterwards; what the negative leaves standing is that the missing per-cell evidence
+has to be *contrast against the cell's own interior* (which cancels the background transition) rather than the
+boundary value itself - and that is a different feature, to be declared as its own arm.
+
+## Isolation, as measured
+
+| assertion | measured |
+|---|---|
+| control's checkpoint | `eddec1fd…` - **bit-identical to `m30-level-calibrate-r5`'s**, with the new field present |
+| parameter count, arm vs control | `8,023,562` -> `8,026,058`, exactly the declared `12 x 192 + 192 = 2,496` |
+| differing recorded config fields | exactly `['occupancy_pixel_edge']` |
+| arm's checkpoint | `d4ae2727…`, distinct from the control's |
+
+## Defects found and repaired in this pass
+
+`V-172`: the arm's first profile was refused by the initial-source allowlist
+(`initial-weight source tensors differ from the declared representation`) because the new zero-initialised
+projection is not a tensor the source checkpoint carries. Repaired by declaring `occupancy_pixel_edge.` in
+`INITIAL_SOURCE_ADDED_PREFIXES`, the mechanism V-104 built for exactly this case, with the step-zero identity
+asserted bit for bit by the arm's own test. Five refused profiles are preserved as
+`runs/m44-pixel-edge-profile*-superseded-initial-source*`.
+
+`V-173`: two detached drivers ran the same arm concurrently, so a second study was launched into a name whose
+receipt already existed; it was stopped and preserved as
+`runs/m44-pixel-edge-r2-superseded-duplicate-driver*`. The authoritative run is the one whose receipt and
+checkpoint agree (`m44-pixel-edge`, `d4ae2727…`); the duplicate never reached a checkpoint.
+
 ## Receipts
 
-`runs/m44-control-winner-config{,-profile}`, `runs/m44-pixel-edge{,-profile,-registration}`,
+`runs/m44-control-winner-config{,-profile}`, `runs/m44-pixel-edge{,-profile-r2,-registration}`,
 `runs/m44-pixel-edge-r1-job.json`, `docs/evidence/m44-pixel-edge-r1/{scope,diagnosis}.json`.
