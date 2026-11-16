@@ -60,6 +60,8 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m52-lattice-fit-detect(?:-[a-z0-9-]{1,40})?"
                                r"|m53-stack-anchor-read(?:-[a-z0-9-]{1,40})?"
                                r"|m53-stack-anchor-detect(?:-[a-z0-9-]{1,40})?"
+                               r"|m54-floor-consensus-read(?:-[a-z0-9-]{1,40})?"
+                               r"|m54-floor-consensus-detect(?:-[a-z0-9-]{1,40})?"
                                r"|m42-control-winner-config(?:-[a-z0-9-]{1,40})?"
                                r"|m3-occextent-[a-z0-9-]{1,40}"
                                r"|m3-occgeocap-[a-z0-9-]{1,40}|m3-occlatres-[a-z0-9-]{1,40}|m3-occlatfree-[a-z0-9-]{1,40}|m3-occbref-[a-z0-9-]{1,40}|m3-occfit-[a-z0-9-]{1,40}"
