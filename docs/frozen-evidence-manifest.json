@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "8952fb36d04b45c25ed29979d0617e72ac424417",
+    "generated_at_commit": "6719112ebf5d770393497c615a9a2f1781bbe81f",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4543,7 +4543,7 @@
       }
     },
     "m48-geometry-read-r2": {
-      "record_commit": "",
+      "record_commit": "c674e9d04fd273d6010d4559ca1ea1f684c6509c",
       "files": {
         "diagnosis.json": "a1d16c51618bf8f89e85dcb90d897d1735f85ba692f25ffa58c4bfea0e5614a8",
         "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
@@ -4551,10 +4551,36 @@
       }
     },
     "m48-lattice-displacement": {
-      "record_commit": "",
+      "record_commit": "c674e9d04fd273d6010d4559ca1ea1f684c6509c",
       "files": {
         "progress.json": "da52dc330d5d1af2abffafd6538f2ae9a76ffa23118957f932b70589620786dd",
         "scope.json": "61eb8133b4f384cbcfaafc6a3f22ff67eb4bcf86b27e01a97e51fe4a6a0420a8"
+      }
+    },
+    "m49-frame-extent": {
+      "record_commit": "",
+      "files": {}
+    },
+    "m49-frame-extent-r1": {
+      "record_commit": "",
+      "files": {
+        "progress.json": "da52dc330d5d1af2abffafd6538f2ae9a76ffa23118957f932b70589620786dd",
+        "scope.json": "62f567d4fd6a96d25291ec2cd83571921f1c968cb0f0c7b45b5987be99a39aa4"
+      }
+    },
+    "m49-frame-extent-r2": {
+      "record_commit": "",
+      "files": {
+        "progress.json": "da52dc330d5d1af2abffafd6538f2ae9a76ffa23118957f932b70589620786dd",
+        "scope.json": "2070ff49aa8633a32cc38451057391e51ff11e2c425e3b80f7b84a8b28974d8d"
+      }
+    },
+    "m49-registration-read": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "4dbc7ee7263625e7a03709125e79686809e39acfd790f3dcd2da19235405388e",
+        "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
+        "scope.json": "af7498c7f0798265a95ac14e5d9cb5214763683b94ed4cd65a80f59dc7c88484"
       }
     },
     "m5-column-readout-r1": {
@@ -5176,7 +5202,7 @@
     }
   },
   "totals": {
-    "directories": 296,
-    "files": 3684
+    "directories": 300,
+    "files": 3691
   }
 }

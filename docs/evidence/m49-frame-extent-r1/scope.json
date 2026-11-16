@@ -1,0 +1,829 @@
+{
+  "status": "passed",
+  "instrument": "m49-frame-extent-r1",
+  "scope": "Read-only: the valid raster extent against the board's own box on the same twenty-eight boards, to say why the declared support registration is displaced. No forward, no label, no threshold.",
+  "population": {
+    "boards": 28
+  },
+  "extents": {
+    "valid_to_board_width_ratio": {
+      "mean": -1.124496,
+      "median": 3.428571,
+      "min": -38.8,
+      "max": 4.0
+    },
+    "valid_to_board_height_ratio": {
+      "mean": 0.003556,
+      "median": 0.003571,
+      "min": 0.00287,
+      "max": 0.004167
+    },
+    "registered_cell_width_ratio": {
+      "mean": -1.124496,
+      "max": 4.0
+    },
+    "registered_cell_height_ratio": {
+      "mean": 0.003556,
+      "max": 0.004167
+    },
+    "board_area_share_of_valid": {
+      "mean": 126.161948,
+      "median": 70.416667
+    },
+    "board_inside_valid_boards": 0
+  },
+  "boards": [
+    {
+      "sample_id": "training-20261026-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        112.811,
+        114.391,
+        286.367,
+        461.51
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 173.55555555555554,
+      "board_height": 347.1186440677966,
+      "cell_width": 17.355555555555554,
+      "cell_height": 17.35593220338983,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261027-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        95.0,
+        132.0,
+        235.0,
+        412.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261027-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        95.0,
+        132.0,
+        235.0,
+        412.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261027-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        95.0,
+        132.0,
+        235.0,
+        412.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261028-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        85.0,
+        105.0,
+        205.0,
+        345.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261028-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        85.0,
+        105.0,
+        205.0,
+        345.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261028-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        85.0,
+        105.0,
+        205.0,
+        345.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261029-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        32,
+        1
+      ],
+      "board_box": [
+        110.0,
+        139.0,
+        270.0,
+        459.0
+      ],
+      "valid_width": 32,
+      "valid_height": 1,
+      "board_width": 160.0,
+      "board_height": 320.0,
+      "cell_width": 16.0,
+      "cell_height": 16.0,
+      "registered_cell_width": 3.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261030-v0",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        94.676,
+        122.698,
+        268.88,
+        471.101
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 174.2037037037037,
+      "board_height": 348.40236686390534,
+      "cell_width": 17.42037037037037,
+      "cell_height": 17.420118343195266,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261030-v1",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        94.676,
+        122.698,
+        268.88,
+        471.101
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 174.2037037037037,
+      "board_height": 348.40236686390534,
+      "cell_width": 17.42037037037037,
+      "cell_height": 17.420118343195266,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261030-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        94.676,
+        122.698,
+        268.88,
+        471.101
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 174.2037037037037,
+      "board_height": 348.40236686390534,
+      "cell_width": 17.42037037037037,
+      "cell_height": 17.420118343195266,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261031-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        132.0,
+        138.0,
+        262.0,
+        398.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261031-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        132.0,
+        138.0,
+        262.0,
+        398.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261031-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        132.0,
+        138.0,
+        262.0,
+        398.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261032-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        87.975,
+        138.774,
+        251.85,
+        466.316
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 163.875,
+      "board_height": 327.54208754208753,
+      "cell_width": 16.3875,
+      "cell_height": 16.377104377104377,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261033-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        129.0,
+        113.0,
+        259.0,
+        373.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261033-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        129.0,
+        113.0,
+        259.0,
+        373.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261033-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        129.0,
+        113.0,
+        259.0,
+        373.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 130.0,
+      "board_height": 260.0,
+      "cell_width": 13.0,
+      "cell_height": 13.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261034-v0",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        -6208,
+        1
+      ],
+      "board_box": [
+        106.0,
+        126.0,
+        266.0,
+        446.0
+      ],
+      "valid_width": -6208,
+      "valid_height": 1,
+      "board_width": 160.0,
+      "board_height": 320.0,
+      "cell_width": 16.0,
+      "cell_height": 16.0,
+      "registered_cell_width": -620.8,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261034-v1",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        -6208,
+        1
+      ],
+      "board_box": [
+        106.0,
+        126.0,
+        266.0,
+        446.0
+      ],
+      "valid_width": -6208,
+      "valid_height": 1,
+      "board_width": 160.0,
+      "board_height": 320.0,
+      "cell_width": 16.0,
+      "cell_height": 16.0,
+      "registered_cell_width": -620.8,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261034-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        -6208,
+        1
+      ],
+      "board_box": [
+        106.0,
+        126.0,
+        266.0,
+        446.0
+      ],
+      "valid_width": -6208,
+      "valid_height": 1,
+      "board_width": 160.0,
+      "board_height": 320.0,
+      "cell_width": 16.0,
+      "cell_height": 16.0,
+      "registered_cell_width": -620.8,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261035-v2",
+      "raster": [
+        512,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        512,
+        1
+      ],
+      "board_box": [
+        98.469,
+        142.182,
+        263.781,
+        472.505
+      ],
+      "valid_width": 512,
+      "valid_height": 1,
+      "board_width": 165.3125,
+      "board_height": 330.3225806451613,
+      "cell_width": 16.53125,
+      "cell_height": 16.516129032258064,
+      "registered_cell_width": 51.2,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261036-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        133.0,
+        111.0,
+        273.0,
+        391.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261036-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        133.0,
+        111.0,
+        273.0,
+        391.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261036-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        133.0,
+        111.0,
+        273.0,
+        391.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 140.0,
+      "board_height": 280.0,
+      "cell_width": 14.0,
+      "cell_height": 14.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261037-v0",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        111.0,
+        95.0,
+        231.0,
+        335.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261037-v1",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        111.0,
+        95.0,
+        231.0,
+        335.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    },
+    {
+      "sample_id": "training-20261037-v2",
+      "raster": [
+        480,
+        1
+      ],
+      "valid_box": [
+        0,
+        0,
+        480,
+        1
+      ],
+      "board_box": [
+        111.0,
+        95.0,
+        231.0,
+        335.0
+      ],
+      "valid_width": 480,
+      "valid_height": 1,
+      "board_width": 120.0,
+      "board_height": 240.0,
+      "cell_width": 12.0,
+      "cell_height": 12.0,
+      "registered_cell_width": 48.0,
+      "registered_cell_height": 0.05,
+      "board_inside_valid": false
+    }
+  ],
+  "sources": {
+    "scripts/m49_frame_extent.py": "6a1ae1493c58d40dceb943da7921421eb77b376cfe528cbf80d9d5ec80475ac5",
+    "scripts/pixel_ceiling.py": "602ba3b9774d3b649e4ee1b90e5a1eda1abef1c0de1c5171df5770b8760e1a78",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/record_stream_run.py": "ff694d567aef9e3f4ec11fa582eafb5447090f5bb148b7fe9a564adc7605af19",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d"
+  },
+  "elapsed_seconds": 0.33633550000377
+}

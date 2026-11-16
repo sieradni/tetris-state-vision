@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`; M48 `0.037152` / `0.442341` / `0.037152`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`; M48 `0.037152` / `0.442341` / `0.037152`; M49 `0.000000` / `0.505163` / `0.000000`. All fail
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3801,3 +3801,18 @@ numbers alone. Four feature-side arms (M44-M47) were measured in front of a two-
 that half survives it is M47's pixel-sole head, trained at the displaced lattice (`0.860374` AUC). The named next arm
 is **registration-first** - the decision's statistics sampled at a support- or anchor-derived lattice - falsified if
 AUC stays under `0.93`.
+M49 ran M48's named next arm - registration first - and it failed as a geometry measurement, not as a scoring run: the
+same committed read-out at a lattice registered from the board's raster support scores **`0.000000` F1 at the fixed
+`0.0` crossing and `0.505163` AUC** (branch `registration-fails`), because the support recipe maps the board onto the
+capture's *valid extent*, which is `3.325530`x the board's width and `1.736611`x its height, putting the lattice a mean
+`8.256949` cells from the target one (median `7.873454`, p90 `14.337331`). Every cell is called empty; the classes sit
+at median margins `-10.145805` and `-10.034526`.
+
+The correction this forces on the campaign: M34's `-0.004778` support-lattice placement residual was a *paired*
+reading, so "placement is reducible" never meant the read was sampling the board. The frame is not the board.
+
+**Where the campaign stands after M49:** the ceiling is reachable only when the statistics are sampled at the board's
+own box (`0.974763` F1 at `0.0`), the model's own lattice is `2.479843` cells out, and the campaign's declared
+raster-only registration is `8.256949` cells out. The named next arm is **board-box registration** - label-free
+detection of the board's own box - falsified if its mean displacement exceeds `0.25` cells or its registered AUC stays
+under `0.90`; if it fails, placement is trained inside the model.

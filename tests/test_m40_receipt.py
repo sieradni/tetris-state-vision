@@ -123,6 +123,7 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M46": "m46-edge-gated-contrast-r1",
         "M47": "m47-pixel-sole-r1",
         "M48": "m48-geometry-read-r2",
+        "M49": "m49-registration-read",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
     MOVES = ("M34", "M40", "M39", "M41")
@@ -135,7 +136,8 @@ class ClosureConsistencyTest(unittest.TestCase):
             scope = json.loads((ROOT/"docs/evidence"/directory/"scope.json").read_text())
             # M48 is a read-only transfer of the committed read-out, so its own reading lives under the two
             # samplings it measured rather than in the fitted arms' `own` block.
-            own = scope.get("own") or scope["measured"]["predicted_lattice"]
+            own = (scope.get("own") or scope["measured"].get("registered_lattice")
+                   or scope["measured"]["predicted_lattice"])
             cls.metric[name] = (own["auc"], scope.get("own_best", own["best"]["f1"]))
 
     def auc(self, name):

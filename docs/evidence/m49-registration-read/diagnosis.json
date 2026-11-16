@@ -1,0 +1,64 @@
+{
+  "cells": 2986,
+  "errors_at_zero": {
+    "true_positive": {
+      "count": 0
+    },
+    "false_positive": {
+      "count": 0
+    },
+    "false_negative": {
+      "count": 309,
+      "margin_low": -65.407296,
+      "margin_median": -10.145805
+    },
+    "true_negative": {
+      "count": 2677,
+      "margin_low": -72.344708,
+      "margin_median": -10.034526
+    }
+  },
+  "precision_at_zero": 0.0,
+  "recall_at_zero": 0.0,
+  "occupied_cells": 309,
+  "false_positives_by_row": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 0,
+    "16": 0,
+    "17": 0,
+    "18": 0,
+    "19": 0
+  },
+  "false_positives_by_column": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0
+  },
+  "bands": {
+    "rows_0_4": 0,
+    "rows_5_9": 0,
+    "rows_10_14": 0,
+    "rows_15_19": 0
+  }
+}

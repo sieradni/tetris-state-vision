@@ -105,6 +105,93 @@ should sit close to the target lattice and the read should mostly return: regist
 
 No branch is re-run for a better number.
 
+## Measured
+
+`docs/evidence/m49-registration-read/scope.json` and its `diagnosis.json`: one execution, one pass, the committed
+read-out on the same `2,986` cells at three samplings, no training and no refit on this arm's inputs. The
+reconstruction reproduces the committed `pixel_logits` to `1.0924e-07`-scale tolerance (`max_abs_logit_difference`
+inside the declared `1e-6`), and every board's target-lattice statistics reproduce the committed `features_sha256`.
+
+| read (same 30 statistics, same cells, fixed `0.0`) | F1@0 | AUC | best swept |
+|---|---|---|---|
+| committed read-out at the **target** lattice | `0.974763` | `0.999195` | `0.987179` |
+| committed read-out at the **predicted** lattice (M48) | `0.037152` | `0.442341` | `0.037152` |
+| committed read-out at the **registered** lattice (this arm) | **`0.000000`** | **`0.505163`** | `0.000000` (grid edge `-6.00`) |
+| winner control (its own learned head) | `0.372881` | `0.954529` | `0.689775` |
+
+**Verdict: the declared branch `registration-fails` lands, and the declaration's own prediction
+(`registration-recovers`, `0.90`-`0.99` F1) was wrong.** The registered read is not merely worse than the ceiling -
+it is at chance ordering and it produces no positive at any swept threshold.
+
+### Complete contingency table at the fixed `0.0` crossing
+
+| at `0.0` | target | predicted | **registered** |
+|---|---|---|---|
+| true positives | `309` | `6` | **`0`** |
+| false negatives | `0` | `303` | **`309`** |
+| false positives | `16` | `8` | **`0`** |
+| true negatives | `2,661` | `2,669` | **`2,677`** |
+| precision | `0.950769` | `0.428571` | **`0.000000`** |
+| recall | `1.000000` | `0.019417` | **`0.000000`** |
+
+Per-row false positives: zero in every row, 0-9 and 10-19 alike. The late-count comparison to the control (`400` /
+`140` / `698`) is therefore vacuous by construction, and is stated that way rather than as a gain: the registered
+read never fires.
+
+### Decomposing the failure: chance ordering, no threshold anywhere
+
+- **Ordering**: AUC `0.505163`. A threshold change cannot move AUC, so no crossing could rescue this sampling, and
+  the best swept F1 (`0.000000`) sits at the sweep grid's own lower edge.
+- **Margins**: every false negative sits at median `-10.145805` and every true negative at `-10.034526` - the two
+  classes are indistinguishable in the read's own units, which is what chance ordering looks like after the committed
+  folds' standardisation saturates on out-of-distribution statistics.
+- **Where it is**: registered-vs-target displacement is a mean **`8.256949` cells** (median `7.873454`, p90
+  `14.337331`; `+3.807391` along the board's column axis and `+1.102127` along its row axis). The predicted lattice,
+  for comparison, is `2.479843` cells out. The registered lattice is more than three times further away than the
+  lattice M48 already failed on.
+
+### The cause, measured on the same boards
+
+`docs/evidence/m49-frame-extent-r2/scope.json` (read-only, no forward): the valid raster extent that
+`pixel_support_lattice` maps the board's rows and columns onto is **`3.325530`x** the board's own box in width (median
+`3.428571`, range `2.347826`-`4.0`) and **`1.736611`x** in height (median `1.714286`, range `1.469565`-`2.0`). The
+board occupies a mean `0.184788` of the valid area (median `0.170139`) and lies inside it on all `28` boards.
+
+So the registered lattice is not under-specified, it is **wrong**: every registered cell is `3.33` cells wide and
+`1.74` cells tall relative to the board's real cells, and its origin is the frame's bottom-left corner rather than the
+board's. The recipe's input - the valid mask - is the *capture's* extent, not the board's box, and on these captures
+the board is a minority of the frame.
+
+**This corrects a reading the campaign was carrying.** M34 recorded the support lattice's placement residual as
+`-0.004778` points and concluded placement was "reducible" by choosing where the statistics are sampled
+(`docs/M34_SUPPORT_LATTICE.md`). That placement term was a *paired* reading; measured unpaired, on the same boards, the
+same recipe is `8.256949` cells from the target lattice. The M34 arm's trained read could therefore never have been
+sampling the board, and the campaign should not read its `-0.004778` as geometric accuracy.
+
+## Re-ranked successors
+
+| rank | next arm | headroom | cost | falsifier |
+|---|---|---|---|---|
+| 1 | **board-box registration**: a label-free registration that locates the *board's* box from the raster's own content (the well and the stack), then re-runs this exact read unchanged | measured: the `3.33`x / `1.74`x scale error and the `8.26`-cell origin error are the entire defect, and the same read-out worth `0.974763` F1 at `0.0` sits on the other side of a correct box | one read-only detection pass plus one bounded read; no parameters | registered-vs-target displacement `> 0.25` cells mean **or** registered AUC `< 0.90`: raster-only registration is then closed for good and placement moves inside the model |
+| 2 | **placement inside the model**: supervise the model's own predicted lattice toward the board box (declared successor of the `registration-fails` branch) | the model's own lattice is `2.479843` cells out with no image-side correction available, and it is the geometry every read in the campaign has been paying for | one `64`-step run with a geometry term, one parameter-free target from the committed board box | predicted-vs-board displacement `>` `1.0` cell mean after training, or winner AUC `<` `0.954529`: the placement head cannot learn it |
+| 3 | head-only training at a registered geometry (M48's rank 2) | **moot until rank 1 or 2 produces a lattice within `0.25` cells** | - | not offered before a geometry exists |
+| R | **retired**: the valid-mask/frame-extent registration recipe (`pixel_support_lattice`) as a geometry source for the read, and the belief that its M34 placement residual implied geometric accuracy; every additive raster term (M44-M46); pixel-sole routing (M47) | closed by measurement | - | not offered |
+
+**Named next arm: board-box registration.** It is the only successor whose falsifier is open and whose cost is a
+read-only pass, and its target is now a measured quantity - the board box is `3.33`x narrower and `1.74`x shorter than
+the frame, so a detector that finds it can be checked against those numbers before any quality claim is made.
+
+## What this arm establishes, and what it does not
+
+- Established: the campaign's declared label-free support registration does not place the read (`0.000000` F1 at
+  `0.0`, `0.505163` AUC), because it maps the board onto the capture's valid extent - `8.256949` cells out, `3.33`x
+  too wide and `1.74`x too tall.
+- Established: M34's `-0.004778` placement residual was a paired reading and is not evidence of geometric accuracy.
+- Not established: that *no* raster-only registration can work - only that this recipe cannot. The board-box arm
+  above is the test that remains, with its falsifier declared here.
+- Not shown: any effect on the winner's own AUC (`0.954529`), which this arm did not touch, or on the training
+  population's generality (one seed, synthetic captures, training-fit boards).
+
 ## Receipts
 
 `runs/m49-registration-read-profile{,-job.json}`, `runs/m49-registration-read{,-job.json}`,

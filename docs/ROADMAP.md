@@ -1731,6 +1731,15 @@ measured in front of that displacement. The named next test is registration-firs
 at a support- or anchor-derived lattice, falsified if AUC stays under `0.93`. Scope unchanged: one fixed population
 (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a step is needed.
 
+**After M49 the placement axis needs a board box, and the frame no longer counts.** The declared label-free support
+registration maps the board onto the capture's valid extent, which is `3.325530`x wider and `1.736611`x taller than the
+board, so the same read-out that scores `0.974763` F1 at `0.0` at the target lattice scores `0.000000` there at a mean
+`8.256949`-cell displacement. M34's `-0.004778` placement residual was paired, not geometric, and is no longer read as
+accuracy. The named next test is board-box registration (label-free detection of the board's own box), falsified at a
+mean displacement above `0.25` cells or a registered AUC under `0.90`; if it fails, placement moves inside the model.
+Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a
+step is needed.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row

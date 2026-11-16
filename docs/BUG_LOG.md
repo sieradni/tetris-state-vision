@@ -3641,3 +3641,60 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
 - Detection class: receipt-name reuse - second occurrence (V-173's class is the same refusal rule). The standing
   instrument is that every retry takes a fresh name, which this pass did.
 - Named green runs: `runs/m48-geometry-read-r2-job.json` and `docs/evidence/m48-geometry-read-r2/scope.json`.
+
+## V-182 - CLOSED: a paired placement residual was read as geometric accuracy
+
+- Symptom: M49's registered read scored `0.000000` F1 at the fixed `0.0` crossing and `0.505163` AUC, with the
+  registered lattice a mean `8.256949` cells from the target lattice - more than three times the `2.479843` cells of
+  the predicted lattice that M48 had just failed on. M49's declaration had predicted `0.90`-`0.99` F1 because M34 had
+  recorded the same recipe's placement residual at `-0.004778` points, the campaign's smallest term.
+- Root cause: M34's placement term is computed through the oracle pairing (`registration_attribution.map_cells`),
+  which matches each sampled cell to a target cell and then measures the residual *in the paired frame*. A lattice
+  that is scaled by `3.33`x and translated off the board can still pair to nearby target cells, so `-0.004778` never
+  said the sampling geometry was near the board. The unpaired displacement - the quantity that decides whether a fixed
+  read-out can read the raster - was never measured, and M49's declaration inherited the wrong belief from the
+  document instead of from a measurement.
+- Change: M49 measures both, on the same boards, in the same receipt: `geometry_shift.registered_vs_target`
+  (`8.256949` cells) beside `geometry_shift.predicted_vs_target` (`2.479843` cells), and
+  `docs/evidence/m49-frame-extent-r2/scope.json` records the extent ratios (`3.325530`x width, `1.736611`x height,
+  board area share `0.184788`, board inside the valid box on `28`/`28`) that explain it.
+- Prevention: `tests/test_m49_receipt.py::CauseTest` and
+  `::MeasuredTest::test_the_registration_is_measurably_further_out_than_the_predicted_lattice` pin the unpaired
+  displacement and the extent ratios, so no future document can quote a paired placement residual as geometric
+  accuracy without a failing test. The standing instrument is that every geometry claim carries its unpaired
+  displacement in cells.
+- Detection class: paired-frame metric read as an absolute one - first occurrence in this class. The standing
+  instrument (unpaired displacement in the same receipt as every paired term) is adopted now rather than at the third
+  occurrence, because the campaign's ranking has already quoted the paired term.
+- Named green runs: `runs/m49-registration-read{,-job}.json`, `runs/m49-frame-extent-r2{,-job}.json`,
+  `docs/evidence/m49-registration-read/scope.json`, `docs/evidence/m49-frame-extent-r2/scope.json`.
+
+## V-183 - CLOSED: `PreparedImage.valid` is three-dimensional, so a bare mask index read the wrong axis
+
+- Symptom: the first frame-extent diagnostic died with `IndexError: tuple index out of range`; after subtracting one
+  dimension it ran and reported a `1`-pixel-tall valid mask and negative width ratios.
+- Root cause: `tetris_vision.preprocess.prepare_image` returns `valid` as `(1, height, width)`; the diagnostic took
+  `valid` whole (`(1, H, W)`) and read `shape[0]` as the height, so the mask was the batch axis and the extent ratios
+  were computed over a degenerate strip. The correct index is `valid[0]`.
+- Change: the mask is `prepared.valid[0]`, and the recorded extents now satisfy their own sanity relations
+  (`board_inside_valid_boards: 28`, width ratio `2.347826`-`4.0`).
+- Prevention: `tests/test_m49_receipt.py::CauseTest` asserts the board lies inside the valid box on every board and
+  that the area share is below `0.25`, which a degenerate mask cannot satisfy.
+- Detection class: channel-axis confusion on a batched mask - first occurrence. Instrument: the receipt's own
+  containment and share constraints.
+- Named green run: `docs/evidence/m49-frame-extent-r2/scope.json` (the failed `-r1` attempt kept its receipt).
+
+## V-184 - CLOSED: a restored guard file ran from cached bytecode
+
+- Symptom: after the M49 mutation round reported `readback_clean=True` for
+  `tests/test_m49_receipt.py`, the very next focused run still asserted the perturbed literal (`0.605163`), and the
+  file on disk contained only the correct one.
+- Root cause: the guard loop imports the test module in a child process immediately after copying the backup back; on
+  this host the child imported `tests/__pycache__/*.pyc` written for the mutated source, so the revert was real on
+  disk and invisible to the test run.
+- Change: `__pycache__` under `tests/` is cleared before the post-restore run, and the guard loop prints the readback
+  from the file rather than only its absence from the parsed module.
+- Prevention: the guard procedure is now copy, mutate, run, copy back, clear bytecode, run again - a revert that did
+  not reach the file fails loudly instead of passing on stale bytecode. Detection class: stale cache masking a revert -
+  first occurrence.
+- Named green runs: the post-restore focused runs and `runs/suite-m49-registration-read-job.json`.
