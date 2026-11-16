@@ -3609,3 +3609,35 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   and checkpoints after any interruption rather than to retry the interrupted command.
 - Detection class: runner restart - first occurrence.
 - Named green runs: the four receipts named in V-178 plus `runs/m47-pixel-sole-r1-job.json`.
+
+## V-180 - CLOSED: two frozen code trees put an older `tetris_vision` under the newer checkpoint
+
+- Symptom: the first M48 execution failed at once with
+  `TypeError: ModelConfig.__init__() got an unexpected keyword argument 'occupancy_pixel_query'`.
+- Root cause: the replay and its features must come from the committed sweep's frozen code (`m3-occstack-lever-r2`,
+  older) while the geometry must come from the committed model's frozen code (`m47-control-winner-config-r6`,
+  newer). Both trees were prepended to `sys.path`, but `tetris_vision` had already been imported from the older tree
+  by the replay path, so `load_checkpoint` built the newer checkpoint's config with the older class.
+- Change: the script purges every `tetris_vision` module between the two passes, imports the geometry source's model
+  explicitly, and asserts that the imported model file lives inside that run's own frozen tree
+  (`Path(model_module.__file__).is_relative_to(model_code)`) before any forward. Prevention: the assertion is the
+  test - a future script that mixes frozen trees fails loudly instead of silently loading the wrong architecture.
+- Detection class: frozen-tree cross-talk - second occurrence in this campaign (see V-014/V-018 provenance). The
+  standing instrument is the in-run provenance assertion, now required by any script that mixes two frozen trees.
+- Named green run: `docs/evidence/m48-geometry-read-r2/scope.json` with the four assertion-bearing receipts
+  `runs/m48-geometry-read-profile-job.json`, `runs/m48-geometry-read-r2-job.json`,
+  `runs/m48-lattice-displacement-profile-job.json`, `runs/m48-lattice-displacement-job.json`.
+
+## V-181 - CLOSED: a failed attempt consumed the arm's receipt name
+
+- Symptom: after repairing V-180, the scoring run refused with
+  `FileExistsError: [Errno 17] File exists: 'runs\\m48-geometry-read-r1-job.json'`.
+- Root cause: the runner writes `runs/<name>-job.json` and the arm writes `docs/evidence/<name>/`, so the name of a
+  failed attempt (which had created no evidence) could not be reused; the script derives its declared ceiling from
+  that receipt, so reusing the name was the only path and it was already taken.
+- Change: the measurement ran once under `-r2` with fresh receipt names, and the failed `-r1` attempt is preserved
+  rather than deleted. Prevention: a failed attempt's name is treated as consumed at launch time, exactly as the
+  runner's own refusal rule states - the driver pattern that already renames on refusal.
+- Detection class: receipt-name reuse - second occurrence (V-173's class is the same refusal rule). The standing
+  instrument is that every retry takes a fresh name, which this pass did.
+- Named green runs: `runs/m48-geometry-read-r2-job.json` and `docs/evidence/m48-geometry-read-r2/scope.json`.

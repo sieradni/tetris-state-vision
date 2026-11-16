@@ -1,0 +1,244 @@
+{
+  "status": "passed",
+  "instrument": "m48-geometry-read-r2",
+  "predeclaration": "docs/M48_GEOMETRY_READ.md",
+  "scope": "Read-only: the committed per-cell read-out applied to the same thirty statistics at two samplings, with no training, no refit on this arm's inputs and no weight change.",
+  "readout": {
+    "provenance": "m3-occpix-ceiling-r1-r2",
+    "statistic": "logistic, ridge 1.",
+    "features": 30,
+    "parameters_imported_unchanged": true,
+    "reconstruction": {
+      "max_abs_logit_difference": 4.98282851424392e-07,
+      "committed_logits_reproduced": true
+    },
+    "refit_note": "the committed artifact ships out-of-fold logits, not coefficients, so the read-out is reconstructed by running its own committed estimator on the committed features, labels and folds and is accepted only when it reproduces those logits to 1e-6; the same fitted folds then transform the predicted-lattice features, so no parameter is fitted on this arm's rows"
+  },
+  "geometry": {
+    "source": "m47-control-winner-config-r6",
+    "weights_sha256": "eddec1fd4af2ce189de62065a964436fd03f566126a95cfe10ad332689d3c7ea",
+    "stage": "final",
+    "boards": 28
+  },
+  "population": {
+    "cells": 2986,
+    "boards": 28,
+    "target_features_match": true
+  },
+  "measured": {
+    "target_lattice": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.9991954719152604,
+      "f1_at_zero": 0.9747634069400631,
+      "counts_at_zero": {
+        "true_positive": 309,
+        "false_positive": 16,
+        "false_negative": 0
+      },
+      "precision_at_zero": 0.9507692307692308,
+      "recall_at_zero": 1.0,
+      "best": {
+        "threshold": 1.05,
+        "f1": 0.9871794871794872,
+        "precision": 0.9777777777777777,
+        "counts": {
+          "true_positive": 308,
+          "false_positive": 7,
+          "false_negative": 1,
+          "f1": 0.9871794871794872,
+          "precision": 0.9777777777777777,
+          "recall": 0.9967637540453075
+        }
+      }
+    },
+    "predicted_lattice": {
+      "cells": 2986,
+      "occupied": 309,
+      "empty": 2677,
+      "auc": 0.44234054205004153,
+      "f1_at_zero": 0.03715170278637771,
+      "counts_at_zero": {
+        "true_positive": 6,
+        "false_positive": 8,
+        "false_negative": 303
+      },
+      "precision_at_zero": 0.42857142857142855,
+      "recall_at_zero": 0.019417475728155338,
+      "best": {
+        "threshold": -6.0,
+        "f1": 0.03715170278637771,
+        "precision": 0.42857142857142855,
+        "counts": {
+          "true_positive": 6,
+          "false_positive": 8,
+          "false_negative": 303,
+          "f1": 0.03715170278637771,
+          "precision": 0.42857142857142855,
+          "recall": 0.019417475728155338
+        }
+      }
+    }
+  },
+  "anchors": {
+    "pixel_best": 0.987179,
+    "pixel_auc": 0.999195,
+    "pixel_f1_at_zero": 0.974763,
+    "control_auc": 0.954529,
+    "control_f1_at_zero": 0.372881,
+    "control_precision_at_zero": 0.23043
+  },
+  "branch": {
+    "verdict": "geometry-binds",
+    "cell_gate_f1_at_zero": 0.7,
+    "control_floor_f1_at_zero": 0.382881,
+    "reading": "geometry-binds: at the predicted lattice the evidence no longer separates, so sampling geometry is the binding constraint"
+  },
+  "diagnosis": {
+    "target_lattice": {
+      "cells": 2986,
+      "errors_at_zero": {
+        "true_positive": {
+          "count": 309,
+          "margin_low": 0.6157,
+          "margin_median": 6.411599
+        },
+        "false_positive": {
+          "count": 16,
+          "margin_low": 0.311084,
+          "margin_median": 1.013546
+        },
+        "false_negative": {
+          "count": 0
+        },
+        "true_negative": {
+          "count": 2661,
+          "margin_low": -58.78379,
+          "margin_median": -11.596236
+        }
+      },
+      "precision_at_zero": 0.950769,
+      "recall_at_zero": 1.0,
+      "occupied_cells": 309,
+      "false_positives_by_row": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 1,
+        "16": 10,
+        "17": 3,
+        "18": 1,
+        "19": 1
+      },
+      "false_positives_by_column": {
+        "0": 0,
+        "1": 3,
+        "2": 6,
+        "3": 0,
+        "4": 0,
+        "5": 3,
+        "6": 0,
+        "7": 1,
+        "8": 1,
+        "9": 2
+      },
+      "bands": {
+        "rows_0_4": 0,
+        "rows_5_9": 0,
+        "rows_10_14": 0,
+        "rows_15_19": 16
+      }
+    },
+    "predicted_lattice": {
+      "cells": 2986,
+      "errors_at_zero": {
+        "true_positive": {
+          "count": 6,
+          "margin_low": 1.823356,
+          "margin_median": 2.820802
+        },
+        "false_positive": {
+          "count": 8,
+          "margin_low": 1.823356,
+          "margin_median": 2.168406
+        },
+        "false_negative": {
+          "count": 303,
+          "margin_low": -71.91628,
+          "margin_median": -50.568729
+        },
+        "true_negative": {
+          "count": 2669,
+          "margin_low": -72.860813,
+          "margin_median": -18.93726
+        }
+      },
+      "precision_at_zero": 0.428571,
+      "recall_at_zero": 0.019417,
+      "occupied_cells": 309,
+      "false_positives_by_row": {
+        "0": 1,
+        "1": 0,
+        "2": 4,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 3,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        "13": 0,
+        "14": 0,
+        "15": 0,
+        "16": 0,
+        "17": 0,
+        "18": 0,
+        "19": 0
+      },
+      "false_positives_by_column": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 4,
+        "6": 0,
+        "7": 0,
+        "8": 3,
+        "9": 1
+      },
+      "bands": {
+        "rows_0_4": 5,
+        "rows_5_9": 3,
+        "rows_10_14": 0,
+        "rows_15_19": 0
+      }
+    }
+  },
+  "elapsed_seconds": 27.563449699999182,
+  "sources": {
+    "scripts/m48_geometry_read.py": "007c21bba170e708ca6ceb3fd5f4a8165bbeb84fffd3556268bdc1699e4754a9",
+    "scripts/pixel_ceiling.py": "602ba3b9774d3b649e4ee1b90e5a1eda1abef1c0de1c5171df5770b8760e1a78",
+    "scripts/oracle_pairing_read.py": "272b4410f9988c227ecf69436e09764ba5815661fab05c2246b20eaa78c680c0",
+    "scripts/pixel_query_deciding_read.py": "c993612690543b72f83eee3108327efc2b75924e22b595a22ad88a4ca2e1363b",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d",
+    "scripts/record_stream_run.py": "e876216785833f6f19fdb76a5ef81dd211f243fec665dba350eaf6aa0cd1e707"
+  }
+}

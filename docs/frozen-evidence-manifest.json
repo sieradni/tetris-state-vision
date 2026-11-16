@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "80923d3bc3de08a51f1459a5e29ba2ddafedf893",
+    "generated_at_commit": "8952fb36d04b45c25ed29979d0617e72ac424417",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4536,10 +4536,25 @@
       }
     },
     "m47-pixel-sole-r1": {
-      "record_commit": "",
+      "record_commit": "90ddee278ea5cce82f55e0c5815ecbe97e659326",
       "files": {
         "diagnosis.json": "7050fe17e4e62187b15c90e2c2b5e9b77841b8b90f94bba85b4b64bf470c429d",
         "scope.json": "5189050863637b54944702698eafb7f40f2bd2a0ca2e5ba0f12d23aa7896d233"
+      }
+    },
+    "m48-geometry-read-r2": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "a1d16c51618bf8f89e85dcb90d897d1735f85ba692f25ffa58c4bfea0e5614a8",
+        "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
+        "scope.json": "6b2e576404963ebce913d810875973f1eeceb4c6fbfb66d3a3d762bdb395d180"
+      }
+    },
+    "m48-lattice-displacement": {
+      "record_commit": "",
+      "files": {
+        "progress.json": "da52dc330d5d1af2abffafd6538f2ae9a76ffa23118957f932b70589620786dd",
+        "scope.json": "61eb8133b4f384cbcfaafc6a3f22ff67eb4bcf86b27e01a97e51fe4a6a0420a8"
       }
     },
     "m5-column-readout-r1": {
@@ -5161,7 +5176,7 @@
     }
   },
   "totals": {
-    "directories": 294,
-    "files": 3679
+    "directories": 296,
+    "files": 3684
   }
 }

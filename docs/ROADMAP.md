@@ -1724,6 +1724,13 @@ predicted lattice, which separates sampling geometry from read-out training at t
 unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps, a `64`-wide
 one-block head, the fixed global `0.0` boundary.
 
+**After M48 the binding term is registration, and it is measured.** The committed read-out scores `0.974763` F1
+at `0.0` at the target lattice and `0.037152` at the predicted one, with a mean `2.479843`-cell displacement and
+`0.764765` standard deviations of feature drift between them. Every feature-side arm of the last four passes was
+measured in front of that displacement. The named next test is registration-first: the decision's statistics sampled
+at a support- or anchor-derived lattice, falsified if AUC stays under `0.93`. Scope unchanged: one fixed population
+(28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a step is needed.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row

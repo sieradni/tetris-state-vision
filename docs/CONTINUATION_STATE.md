@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`; M48 `0.037152` / `0.442341` / `0.037152`. All fail
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3787,3 +3787,17 @@ statistics, so the binding constraint is the read-out itself. The cheapest decis
 that read-out on the statistics sampled at the model's **predicted** lattice - ceiling quality means the head's
 training is binding (frozen-trunk head-only read next), collapse means the sampling is (registration arm next). Ranked
 with falsifiers and costs in `docs/M47_PIXEL_SOLE.md`.
+M48 then answered the question M47 left: it applied the campaign's committed per-cell read-out unchanged to the same
+thirty statistics at the target lattice and at the lattice the committed model predicts. The reconstruction
+reproduces the committed artifact exactly (`0.974763` F1 at `0.0`, `0.999195` AUC, logits within `4.98e-07` of the
+committed ones), and at the predicted lattice the same read-out scores **`0.037152` F1 at `0.0`, `0.442341` AUC** -
+below chance - with `303` of `309` occupied cells called empty and false-negative margins at median `-50.57`. Branch
+**`geometry-binds`**. The cause is measured on the same boards: the committed model's final lattice sits a mean
+`2.479843` cells (median `2.048453`, p90 `5.050841`) from the target lattice, almost all vertical, and the thirty
+statistics drift `0.764765` standard deviations with three features beyond `3` sigma.
+
+**Where the campaign stands after M48:** the ceiling is a property of *where the numbers are sampled*, not of the
+numbers alone. Four feature-side arms (M44-M47) were measured in front of a two-cell registration error; the one read
+that half survives it is M47's pixel-sole head, trained at the displaced lattice (`0.860374` AUC). The named next arm
+is **registration-first** - the decision's statistics sampled at a support- or anchor-derived lattice - falsified if
+AUC stays under `0.93`.

@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "instrument": "m48-lattice-displacement",
+  "scope": "Read-only lattice diagnostic for docs/M48_GEOMETRY_READ.md: displacement of the committed model's predicted lattice from the target lattice, and the drift of the thirty statistics between the two samplings. No training, no label, no threshold.",
+  "geometry": {
+    "source": "m47-control-winner-config-r6",
+    "weights_sha256": "eddec1fd4af2ce189de62065a964436fd03f566126a95cfe10ad332689d3c7ea",
+    "boards": 28
+  },
+  "population": {
+    "boards": 28,
+    "cells": 5600
+  },
+  "displacement_cells": {
+    "mean_magnitude": 2.479843,
+    "median_magnitude": 2.048453,
+    "p90_magnitude": 5.050841,
+    "mean_columns": -0.129167,
+    "mean_rows": -1.116965,
+    "std_columns": 1.739314,
+    "std_rows": 2.206458
+  },
+  "feature_drift": {
+    "mean_shift_in_target_std": 0.764765,
+    "max_shift_in_target_std": 9.459996,
+    "features_over_three_std": 3
+  },
+  "sources": {
+    "scripts/m48_lattice_displacement.py": "c2bbbf4547d2337f8361bef7637d6538d7b77966034fe93c6f693cd06204d5dc",
+    "scripts/pixel_ceiling.py": "602ba3b9774d3b649e4ee1b90e5a1eda1abef1c0de1c5171df5770b8760e1a78",
+    "scripts/probe_model.py": "46fcd1bfb3bcca496864a4cb9c4939f47f3bcc36b01467ae9c420f6cbd486c10",
+    "scripts/record_stream_run.py": "32578a09db08caf2ec3c10f0a3063848f08547793caf198f66d0abe3bbc6f5dd",
+    "scripts/source_snapshot.py": "18208520011f7583c8c9098385d72afc374ad00b7865d921d25396a5ca9bac2d"
+  },
+  "elapsed_seconds": 24.80132389999926
+}

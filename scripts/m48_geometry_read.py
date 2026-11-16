@@ -217,7 +217,30 @@ def main():
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     torch.use_deterministic_algorithms(True)
-    from tetris_vision.checkpoint import load_checkpoint
+
+    # the replay and its features come from the committed sweep's frozen code; the geometry comes from the
+    # committed model's own frozen code. The two trees carry different `tetris_vision` versions, so the module is
+    # purged between the passes rather than letting one silently stand in for the other.
+    args.output.mkdir(parents=True, exist_ok=False)
+    known = {row["sample_id"]: row for row in committed["cases"]}
+    if len(known) != NONEMPTY_CASES:
+        raise ValueError("the committed read-out did not ship the twenty-eight nonempty boards")
+    collected, matrices, labels, groups = [], [], [], []
+    for row in cases:
+        record, matrix, case, prepared = target_features(row)
+        if not any(row["occupied"]):
+            continue
+        if record["features_sha256"] != known[row["sample_id"]]["features_sha256"]:
+            raise ValueError(f"{row['sample_id']}: target-lattice features differ from the committed artifact")
+        collected.append({"record": record, "case": case, "pixels": prepared.pixels[None].clone(),
+                          "valid": prepared.valid[None].clone(), "width": prepared.pixels.shape[-1],
+                          "height": prepared.pixels.shape[-2]})
+        matrices.append(matrix)
+        labels.extend(row["occupied"])
+        groups.extend([row["group_id"]]*len(row["occupied"]))
+        (args.output/"progress.json").write_text(json.dumps({"cases": len(collected)})+chr(10))
+    for name in [module for module in list(sys.modules) if module.split(".")[0] == "tetris_vision"]:
+        del sys.modules[name]
     model_run = ROOT/"runs"/args.model
     model_summary = read(model_run/"summary.json")
     model_manifest = read(model_run/"checkpoint/manifest.json")
@@ -225,38 +248,26 @@ def main():
         raise ValueError("the geometry source is not the committed winner checkpoint")
     model_code = model_run/"code"
     sys.path[:0] = [str(model_code/"scripts"), str(model_code)]
+    import importlib
+    model_module = importlib.import_module("tetris_vision.model")
+    if not Path(model_module.__file__).resolve().is_relative_to(model_code):
+        raise ValueError("the geometry source model implementation is not the committed one")
+    from tetris_vision.checkpoint import load_checkpoint
     model, loaded = load_checkpoint(model_run/"checkpoint")
     if loaded["weights_sha256"] != model_summary["checkpoint_sha256"]:
         raise ValueError("the loaded geometry source differs from its run")
     model.eval()
     weights = {name: value.clone() for name, value in model.state_dict().items()}
-
-    args.output.mkdir(parents=True, exist_ok=False)
-    known = {row["sample_id"]: row for row in committed["cases"]}
-    if len(known) != NONEMPTY_CASES:
-        raise ValueError("the committed read-out did not ship the twenty-eight nonempty boards")
-    records, matrices, predicted_rows, labels, groups = [], [], [], [], []
-    for row in cases:
-        record, matrix, case, prepared = target_features(row)
-        if not any(row["occupied"]):
-            continue
-        if record["features_sha256"] != known[row["sample_id"]]["features_sha256"]:
-            raise ValueError(f"{row['sample_id']}: target-lattice features differ from the committed artifact")
+    predicted_rows = []
+    for entry in collected:
         with torch.no_grad():
-            output = model(prepared.pixels[None], prepared.valid[None])
-        stage = output["final"]
-        lattice = stage["lattice"][0].detach().cpu().tolist()
-        height, width = raster(case.frame.image).shape[:2]
-        predicted = Lattice([lattice[0][0]*width, lattice[0][1]*height],
-                            [lattice[1][0]*width, lattice[1][1]*height],
-                            [lattice[2][0]*width, lattice[2][1]*height])
-        matrix_predicted = cell_features(raster(case.frame.image), predicted)
-        records.append(record)
-        matrices.append(matrix)
-        predicted_rows.append(matrix_predicted)
-        labels.extend(row["occupied"])
-        groups.extend([row["group_id"]]*len(row["occupied"]))
-        (args.output/"progress.json").write_text(json.dumps({"cases": len(records)})+"\n")
+            output = model(entry["pixels"], entry["valid"])
+        lattice = output["final"]["lattice"][0].detach().cpu().tolist()
+        predicted = Lattice([lattice[0][0]*entry["width"], lattice[0][1]*entry["height"]],
+                            [lattice[1][0]*entry["width"], lattice[1][1]*entry["height"]],
+                            [lattice[2][0]*entry["width"], lattice[2][1]*entry["height"]])
+        predicted_rows.append(cell_features(raster(entry["case"].frame.image), predicted))
+    records = [entry["record"] for entry in collected]
     if (len(records), sum(labels), len(labels)-sum(labels)) != (NONEMPTY_CASES, OCCUPIED_CELLS, EMPTY_CELLS):
         raise ValueError("the measured population differs from the predeclaration")
     features = np.vstack(matrices)
