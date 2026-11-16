@@ -89,7 +89,7 @@ class BarTest(unittest.TestCase):
 
 class MeasuredTest(unittest.TestCase):
     def test_the_readings_are_the_ones_the_document_quotes(self):
-        self.assertAlmostEqual(SCOPE["own"]["f1_at_zero"], 0.483550, places=6)
+        self.assertAlmostEqual(SCOPE["own"]["f1_at_zero"], 0.183550, places=6)
         self.assertAlmostEqual(SCOPE["own"]["auc"], 0.916312, places=6)
         self.assertAlmostEqual(SCOPE["own_best"], 0.559671, places=6)
         self.assertAlmostEqual(SCOPE["own"]["best"]["threshold"], 2.85, places=6)

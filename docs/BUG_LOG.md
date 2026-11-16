@@ -3531,3 +3531,17 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   rather than by holding a `sleep` in the command, which is the standing instrument from here.
 - Named green runs: `runs/m45-interior-contrast-drive.py` log `runs/m45-interior-contrast.log`, receipt
   `runs/m45-interior-contrast-r1-job.json`, and the full suite in `runs/m45-suite-r1-job.json`.
+
+## V-175 - CLOSED: a mutation reverted with `git checkout` on an untracked test file reached the commit
+
+- Symptom: the sensitivity check that perturbs the new receipt test's F1 expectation proved the guard fires, but
+  the revert (`git checkout -- tests/test_m45_receipt.py`) failed with `pathspec ... did not match any file(s) known
+  to git` because the file was still untracked, so the perturbed `0.483550` was staged and committed.
+- Root cause: `git checkout --` restores tracked paths only, and the command's exit status was not part of the
+  revert step; the check reported "guard fires" correctly and the restore silently did nothing.
+- Change: the assertion is restored to the measured `0.183550`; the standing instrument is a readback after every
+  mutation revert (`grep` the perturbed literal and require zero matches), not the revert command's silence.
+- Detection class: unverified revert - first occurrence. Caught by reading the file back after the commit rather
+  than by trusting the revert.
+- Named green runs: `tests/test_m45_receipt.py` at `14 tests OK`, and the re-run full suite in
+  `runs/m45-suite-r2-job.json`.
