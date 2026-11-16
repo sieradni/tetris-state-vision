@@ -44,13 +44,12 @@ READS = ("target_lattice", "predicted_lattice", "detected_box")
 
 # the detector's declared constants: fixed in the declaration and never fitted to this arm's rows
 from box_search import CONSTANTS as DETECTOR_CONSTANTS, detect_box  # noqa: E402
-CLUSTER = 6
 
 DETECTION_GATE_CELLS = 0.25
 AUC_GATE = 0.90
 EOF_F1_GATE = 0.70
 CONTROL_FLOOR = 0.382881
-REGRESSION_SLACK = 0.10
+DETECTION_SLACK = 0.10
 
 
 def branch_for(displacement_cells, median_cells, f1_at_zero, auc):
@@ -203,7 +202,7 @@ def main():
     parser.add_argument("--pixel-ceiling", default="m3-occpix-ceiling-r1-r2")
     parser.add_argument("--model", default="m47-control-winner-config-r6")
     parser.add_argument("--reference", default="m3-occscale-registration-r2")
-    parser.add_argument("--predeclaration", default="docs/M50_BOARD_BOX.md")
+    parser.add_argument("--predeclaration", default="docs/M51_DETECTOR_REPAIR.md")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--maximum-cases", type=int, default=DECIDING_CASES)
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -297,6 +296,8 @@ def main():
         import numpy as np
         summary_block = {name: round(float(np.mean([row["displacement"][name] for row in readings])), 6)
                          for name in ("mean_magnitude", "median_magnitude", "p90_magnitude", "max_magnitude")}
+        summary_block["boards_over_gate"] = int(sum(
+            1 for row in readings if row["displacement"]["mean_magnitude"] > DETECTION_GATE_CELLS))
         summary_block["median_of_medians"] = round(float(np.median(
             [row["displacement"]["median_magnitude"] for row in readings])), 6)
         summary_block["max_of_maxima"] = round(float(np.max(
@@ -446,11 +447,11 @@ def main():
     after = {row["sample_id"]: row["displacement"]["mean_magnitude"] for row in detection}
     good = sorted(sample for sample, value in before.items() if value <= DETECTION_GATE_CELLS)
     breaches = [sample for sample in good
-                if after[sample] > max(DETECTION_GATE_CELLS, before[sample]+REGRESSION_SLACK)]
+                if after[sample] > max(DETECTION_GATE_CELLS, before[sample]+DETECTION_SLACK)]
     no_regression = {
         "rule": ("every board M50 placed within the declared gate must stay within it (or within its own previous "
                  "value plus the declared slack) after the repair"),
-        "previously_good_boards": len(good), "regression_slack_cells": REGRESSION_SLACK,
+        "previously_good_boards": len(good), "declared_slack_cells": DETECTION_SLACK,
         "breaches": breaches, "cleared": not breaches,
         "boards": [{"sample_id": sample, "m50_mean_cells": round(before[sample], 6),
                     "m51_mean_cells": round(after[sample], 6)} for sample in sorted(before)],
@@ -483,11 +484,8 @@ def main():
                                    "and predicted features, so no parameter is fitted on this arm's rows")},
         "geometry": {"source": args.model, "weights_sha256": model_manifest["weights_sha256"],
                      "stage": "final", "boards": len(records),
-                     "detection": {"recipe": "bright-frame interior of the captured well",
-                                   "constants": {"edge": EDGE, "wall_share": WALL_SHARE, "cluster": CLUSTER,
-                                                 "min_width": MIN_WIDTH, "max_width": MAX_WIDTH,
-                                                 "aspect_slack": ASPECT_SLACK,
-                                                 "share_floor": SHARE_FLOOR, "share_step": SHARE_STEP},
+                     "detection": {"recipe": "single-objective search over wall and grid candidates",
+                                   "constants": DETECTOR_CONSTANTS,
                                    "label_free": True, "boards": detection}},
         "population": {"cells": 2986, "boards": len(records), "target_features_match": True},
         "measured": measured,

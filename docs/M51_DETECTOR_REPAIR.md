@@ -141,3 +141,115 @@ here, before scoring, because it is exactly the cost the leakage disclosure warn
 degrading two previously-good boards.
 
 The prediction above is made from this table, not from the study.
+
+## Measured
+
+Run: `scripts/m51_board_box_read.py --admission runs/m51-board-box-read-profile --output
+docs/evidence/m51-board-box-read`, receipt `runs/m51-board-box-read-job.json` (`status: passed`, peak job commit
+`738,164,736` B against the `848` MiB ceiling of `1,024` MiB), `28` boards, `2,986` cells, the fixed `0.0` crossing.
+The declaration above is unchanged: the prediction is judged against it, not restated to fit it.
+
+### The four reads, one pass, same cells and folds
+
+| read | F1 @ `0.0` | AUC | best swept | TP / FN / FP / TN at `0.0` | precision | recall |
+| --- | --- | --- | --- | --- | --- | --- |
+| `target_lattice` (ceiling) | `0.974763` | `0.999195` | `0.987179` @ `1.05` | `309 / 0 / 16 / 2,661` | `0.950769` | `1.000000` |
+| `detected_box` (this arm) | **`0.904376`** | **`0.933275`** | `0.908497` @ `0.90` | `279 / 30 / 29 / 2,648` | `0.905844` | `0.902913` |
+| `predicted_lattice` (M48) | `0.037152` | `0.442341` | `0.037152` | `6 / 303 / 8 / 2,669` | `0.428571` | `0.019417` |
+| winner control `m30-level-calibrate-r5` | `0.372881` | `0.954529` | `0.689775` | - | `0.230430` | - |
+
+The detected box beats M48's predicted lattice by `0.491` AUC and by `0.867` F1 at `0.0`, and beats the winner's own
+learned head by `0.531` F1 at `0.0` - but sits `0.021` AUC **below** that head's `0.954529`. M50 was above the head on
+both measures; this arm is not, which is the read-side cost of the pitch error.
+
+### Per-row profiles at the fixed crossing
+
+False positives by row (`detected_box`): `0: 4, 1: 0, 2: 1, 3: 5, 4: 2, 5: 2, 6: 4, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0,
+12: 0, 13: 0, 14: 0, 15: 2, 16: 7, 17: 2, 18: 0, 19: 0` - bands `rows_0_4 = 12`, `rows_5_9 = 6`, `rows_10_14 = 0`,
+`rows_15_19 = 11`. M50's late concentration is gone (M50 had `0` above row 15 and `10` at row 16); this arm's errors
+are spread into the early rows, which is the signature of a pitch error accumulating across the board rather than a
+box placed elsewhere.
+
+### Margin distributions at the fixed crossing
+
+| class | count | lowest margin | median margin |
+| --- | --- | --- | --- |
+| true positive | `279` | `0.8524` | `6.4116` |
+| false positive | `29` | `0.7073` | `2.8208` |
+| false negative | `30` | `-40.9902` | `-11.9338` |
+| true negative | `2,648` | `-58.9322` | `-11.6612` |
+
+### Detected-vs-target displacement, all 28 boards
+
+Population mean **`0.383358`** cells, median `0.383519`, p90 `0.414955`, worst `0.429169`; median of the per-board
+medians `0.066438`; worst single-cell displacement `5.432274`; **`4` boards above the `0.25`-cell gate**. Per-board
+values are in the receipt under `no_regression.boards` (every board, with its M50 value beside it) and in
+`geometry.detection.boards` (with each board's chosen candidate and objective terms).
+
+The two captures M50 named, as this arm measures them: `training-20261035-v2` **`1.9285`** cells (M50 `13.509043`) and
+`training-20261030-v1` **`5.2098`** cells (M50 `7.389043`).
+
+### Scale and tightness
+
+Mean width error **`0.006892`** cells and height error **`0.004720`** cells (M50 `0.043312` / `0.017508`) - a factor of
+`6.3` and `3.7` tighter. Against the frame-extent recipe M49 measured, whose registered lattice is `3.325530`x the
+board's width and `1.736611`x its height, this arm's boxes are the board itself to within `0.7 %` of a cell, so the
+scale failure M49 landed is repaired by both M50's and this arm's geometry; what separates the two arms is *tightness
+of the pitch*, not box size.
+
+### Falsifier, judged on the full population
+
+The inherited falsifier is **met**: the population mean registered-vs-target displacement is `0.383358` cells, above
+the declared `0.25`. The AUC leg (`0.933275 >= 0.90`) is not met. The branch is therefore **`repair-under-specified`**,
+exactly as predicted: the median board is placed (median of per-board means `0.383519`, median of per-board medians
+`0.066438`) and the population mean is dragged over the gate by four boards, while the read itself falls from M50's
+`0.979200` F1 / `0.999150` AUC to `0.904376` / `0.933275`.
+
+### No-regression check on the 26 boards M50 placed
+
+The declared rule is **not cleared**: `training-20261031-v1` and `training-20261031-v2` move from `0.0588` to `0.9241`
+cells, above `max(0.25, 0.0588 + 0.10)`. The other `24` boards stay inside their own M50 value plus the declared
+slack. This is the cost the leakage disclosure anticipated, and it is reported rather than excused.
+
+### What the verdict rules out, and what it does not
+
+**Not `wrong`**: the candidate search is not mis-locating boards wholesale - the median board lands at `0.066438` cells
+of median error and the width error is `0.7 %` of a cell.
+
+**Not `registration-failing`** in M49's sense: the AUC leg is far above the gate and the displacement is `21`x
+smaller than M49's registered `8.256949` and `2.1`x smaller than M50's `0.802227`.
+
+**`under-specified` is what holds.** The binding constraint is the *cell pitch*, not the presence of a box. Both
+generators recover the box's extent; on four boards the pitch the contrast score prefers is not the capture's pitch,
+and a pitch error of a few percent accumulates across ten columns into a fraction of a cell at the far edge - which is
+also why the read drops (`0.904` F1) while the box is nearly the right size. The declared objective has no term that
+measures pitch *consistency* across the whole box, only line contrast over interior lines, so on a board whose
+interior lines are faint it can prefer a neighbouring pitch.
+
+**Ruled out for the next arm**: more candidate generators, more objective terms, or a re-weighting of this objective.
+The budget of generators is not the problem - the wall search, the grid search and their sum already find boxes of the
+right *size* on every board; what is missing is a lattice-refinement stage that uses the *interior* content (block
+edges at cell pitch) to correct the pitch once the box is known. That is the arm this one names, and it is a different
+kind of instrument: a fit, not a search.
+
+### Re-ranked successors
+
+| rank | next arm | headroom | cost | falsifier |
+|---|---|---|---|---|
+| 1 | **M52, lattice refinement by interior fit**: keep this arm's candidate search for the box, then correct the pitch by fitting the block edges inside the box (per-column and per-row edge phase at the candidate pitch), so the lattice is a fit rather than a search | the box is right to `0.7 %` of a cell and the median board lands at `0.066438` cells; the read lost `0.075` F1 to pitch error alone, and `4` boards carry `0.383358` mean displacement | one read-only pass, no forward, no read | population mean displacement `> 0.25` cells after the refinement: the pitch is not recoverable from the interior, and the raster side of the geometry axis is closed at whatever M50 reached |
+| 2 | **give the decision the detected box**: the winner's own head at M50's detected lattice (`0.802227` mean cells, `26`/`28` boards inside the gate) instead of its predicted one | the winner reads `0.372881` F1 at `0.0` against the ceiling's `0.974763`, and M50's lattice is already within a quarter cell on `26` boards | one `64`-step run, or a read-only re-score first | head F1 at `0.0` `< 0.382881` or AUC `< 0.954529` at the detected geometry |
+| 3 | **M53, pitch-only repair of M50's detector**: keep M50's wall box and add M51's pitch-contrast search inside it, without M51's candidate competition | M50's box is already `0.043` cells in width; only its `2` outliers and M51's `2` breaches remain | one read-only detection pass | population mean `> 0.25` cells |
+| R | **retired**: more candidate generators or objective terms (this arm: the generator budget is not binding); the valid-mask/frame-extent registration (M49); every additive raster term (M44-M46) | closed by measurement | - | not offered |
+
+**Named next arm: M52, lattice refinement by interior fit.** This arm measured what is left: the box is found on every
+board to within `0.7 %` of a cell in width, and what is missing is the pitch. A fit over the block edges inside the
+found box is a different instrument from a search over candidates, which is exactly what the failure mode calls for.
+
+**Did the clean number come from a general mechanism?** No clean number was produced. Where this arm improved, the
+improvement is general (the pitch-contrast score and the span-based line candidates are label-free and applied
+identically to all 28 boards); where it degraded - the two `20261031` boards and the read as a whole - the degradation
+is the honest cost of the objective that was declared before the run, not a tuning artefact that a reader has to
+discount.
+
+**no training**, **no threshold fitting**, **no new learned parameter**: this arm applies the committed read-out at a
+lattice the raster defines, and nothing is fitted on its rows.

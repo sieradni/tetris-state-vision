@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "ca14954bc65f40ba94266ebb9e4f323d7e8df7db",
+    "generated_at_commit": "bd0d7948a73a3a8ae31798855f7e29135a854f42",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4596,11 +4596,19 @@
       }
     },
     "m50-board-box-read": {
-      "record_commit": "",
+      "record_commit": "fefa075489d7f39c431edac86e42472db32d1298",
       "files": {
         "diagnosis.json": "e978eb9127c66a566306e56c47dc20c5bf5cae23df212dc5b3672be449eebba1",
         "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
         "scope.json": "50319af44d8a953103a584c87316e20c314c2c50e3e6cb84d8ccd1c83856302a"
+      }
+    },
+    "m51-board-box-read": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "97628e8639e86646fc9cd1d67187d7ce228becbeef2d284b4c876fa434da6d1b",
+        "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
+        "scope.json": "fb3d531e9c6f2104ada4198014fc884cd62b460de939c12d79339fb2fed2b017"
       }
     },
     "m6-row-offset-r1": {
@@ -5210,7 +5218,7 @@
     }
   },
   "totals": {
-    "directories": 301,
-    "files": 3694
+    "directories": 302,
+    "files": 3697
   }
 }

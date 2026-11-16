@@ -1749,6 +1749,20 @@ test is the detector repair on those two captures; the arm after it gives the wi
 unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a step is
 needed.
 
+**After M51 the detector repair is measured, and it is under-specified rather than wrong.** Replacing M50's wall-run
+generator with one declared objective over wall and cell-grid candidates - scored by wall support, grid alignment,
+cell uniformity and stack containment, applied identically to all 28 boards - finds a box of the right *size* on every
+capture: width error `0.006892` cells and height error `0.004720`, against M50's `0.043312` / `0.017508`, with both
+former outliers cut (`training-20261035-v2` `13.509043` -> `1.9285`, `training-20261030-v1` `7.389043` -> `5.2098`).
+The falsifier still fires: the population mean displacement is `0.383358` cells against the declared `0.25`, and the
+read falls to `0.904376` F1 at `0.0` / `0.933275` AUC - above the winner's learned head on F1 (`0.372881`) and now
+`0.021254` AUC *below* it, which M50 was not. Two boards M50 placed (`training-20261031-v1` / `-v2`, `0.0588` ->
+`0.9241`) break the declared no-regression rule, so the repair bought the two outliers at a measured price. The
+binding constraint is the cell *pitch*, not the presence of a box. The named next test is lattice refinement by
+interior fit: keep this arm's box, correct the pitch by fitting the block edges inside it, falsified if the population
+mean stays above `0.25` cells. Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors,
+the fixed `0.0` boundary, one read-only pass.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row
@@ -1769,6 +1783,7 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M42 `m42-support-crossing` | support sets each board's crossing level (decision side) | `0.189455` | `0.838212` | `0.374034` | fail |
 | M43 `m43-column-step` | each column decided at its own sharpest step | `0.270008` | `0.752899` | `0.272654` | fail |
 | M44 `m44-pixel-edge` | cell edge midpoints join the pixel read | `0.304665` | `0.934008` | `0.550622` | fail |
+| M51 `m51-board-box-read` | the committed read at a candidate-search board box (wall + cell-grid, one objective) | `0.904376` | `0.933275` | `0.908497` | fail: mean displacement `0.383358` > `0.25` (`repair-under-specified`) |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
@@ -1776,6 +1791,10 @@ M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0
 M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`; M41
 `-0.100808` / `-0.135455` / `-0.349775`; M42 `-0.183426` / `-0.116317` / `-0.315741`; M43
 `-0.102873` / `-0.201629` / `-0.417120`; M44 `-0.068217` / `-0.020521` / `-0.139153`.
+M51 is a read-only transfer of the committed read-out, not a fitted arm of this family: against the winner it moves
+`+0.531495` / `-0.021254` / `+0.218722`, and against M50's board box (`0.979200` / `0.999150` / `0.985507`) it moves
+`-0.074824` / `-0.065875` / `-0.077010` - the read-side cost of a pitch that is `0.35` cells less tight on the median
+board even though the tail is shorter.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

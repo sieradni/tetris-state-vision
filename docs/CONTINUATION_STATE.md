@@ -3828,6 +3828,16 @@ detected-vs-target displacement is `0.802227` cells against the declared `0.25`,
 The median board sits at `0.061328` cells and the detector's scale error is `0.043312` cells in width where M49's
 frame-extent recipe was `3.325530`x.
 
+M51 ran M50's named successor - the detector repair - and it landed **`repair-under-specified`**. The declared
+single-objective candidate search (wall and cell-grid candidates, scored by wall support, grid alignment, cell
+uniformity and stack containment, identical on all 28 boards) makes the box *size* right everywhere: width error
+`0.006892` cells, height error `0.004720`, and both former outliers cut to `1.9285` and `5.2098` cells. It does not
+clear the falsifier: the population mean is `0.383358` cells against `0.25`, the read is `0.904376` F1 at `0.0` /
+`0.933275` AUC (below the winner head's `0.954529` on AUC, which M50 was not), and two boards M50 placed move from
+`0.0588` to `0.9241` cells, breaking the declared no-regression rule. The measured diagnosis is that the *pitch*, not
+the box, is binding. The named next arm is **M52, lattice refinement by interior fit** (falsified if the mean stays
+above `0.25` cells), with M50's box plus M51's pitch search as the cheaper fallback (M53).
+
 **Where the campaign stands after M50:** the geometry axis is closed on the raster side - the ceiling is reachable
 without training, labels or fitted constants - and the remaining defect is two captures. The named next arm is the
 **detector repair on those two captures** (falsified if the population mean stays above `0.25` cells), and the arm
