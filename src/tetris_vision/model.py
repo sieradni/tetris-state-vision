@@ -39,6 +39,7 @@ class ModelConfig:
     occupancy_pixel_edge: int = 0
     occupancy_pixel_contrast: int = 0
     occupancy_pixel_edge_gate: int = 0
+    occupancy_pixel_sole: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -101,6 +102,14 @@ class ModelConfig:
               "occupancy_pixel_edge_gate is 0 (off) or 1 (contrast passes only where the cell has an edge)")
         check(not self.occupancy_pixel_edge_gate or self.occupancy_pixel_query,
               "the edge gate needs the declared pixel read to place it")
+        check(type(self.occupancy_pixel_sole) is int and self.occupancy_pixel_sole in (0, 1),
+              "occupancy_pixel_sole is 0 (off) or 1 (the head reads the raster statistics alone)")
+        check(not self.occupancy_pixel_sole or self.occupancy_pixel_query,
+              "the sole read needs the declared pixel read it replaces the latent with")
+        check(not (self.occupancy_pixel_sole and (self.occupancy_pixel_contrast
+                                                  or self.occupancy_pixel_edge
+                                                  or self.occupancy_pixel_edge_gate)),
+              "the sole read is the whole declaration, so no additive raster term runs with it")
         check(not (self.occupancy_pixel_edge_gate and self.occupancy_pixel_contrast),
               "the gated form replaces the ungated contrast, so the two never run together")
         check(not self.occupancy_pixel_edge or self.occupancy_pixel_query,
@@ -1330,6 +1339,14 @@ class TetrisStateNet(nn.Module):
                     projected = ((1+torch.tanh(self.pixel_query_level[0]))*projected
                                  +self.pixel_query_level[1])
                 occupancy_features = occupancy_features+projected
+                if self.config.occupancy_pixel_sole:
+                    # declared m47 routing: the restriction work has been measuring, not a new
+                    # feature. the occupancy head's input becomes the raster projection itself, so
+                    # no decoder-latent path reaches the decision and the thirty declared
+                    # statistics alone must order the cells. no tensor is added, created or
+                    # zeroed: the arm carries exactly the published parameter set, and it is not
+                    # the published function at step zero - that is the point of the arm.
+                    occupancy_features = projected
                 if self.occupancy_pixel_contrast is not None:
                     # declared m45 representation: each of the cell's four edge midpoints minus the
                     # cell's own interior mean for that channel, so a board-wide background

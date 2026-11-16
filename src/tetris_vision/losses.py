@@ -438,6 +438,14 @@ def require_occupancy_support_crossing(value, summary):
         raise ValueError("occupancy support crossing differs from resource admission")
 
 
+def require_occupancy_pixel_sole(value, summary):
+    """One declaration of the admission join for the pixel-sole read."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_pixel_sole", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_pixel_sole", 0) != value):
+        raise ValueError("occupancy pixel sole read differs from resource admission")
+
+
 def require_occupancy_pixel_edge_gate(value, summary):
     """One declaration of the admission join for the edge-gated contrast read."""
     if (type(value) is not int or value not in (0, 1) or
