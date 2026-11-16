@@ -1,0 +1,107 @@
+{
+  "cells": 2986,
+  "boards": 28,
+  "errors_at_zero": {
+    "true_positive": {
+      "count": 212,
+      "margin_low": 0.048825,
+      "margin_median": 1.803286,
+      "margin_high": 4.359179
+    },
+    "false_positive": {
+      "count": 1812,
+      "margin_low": 0.000404,
+      "margin_median": 0.835996,
+      "margin_high": 3.059735
+    },
+    "false_negative": {
+      "count": 2,
+      "margin_low": -0.687719,
+      "margin_median": -0.031599,
+      "margin_high": -0.031599
+    },
+    "true_negative": {
+      "count": 960,
+      "margin_low": -2.002912,
+      "margin_median": -0.416875,
+      "margin_high": 0.0
+    }
+  },
+  "false_positive_bands": {
+    "rows_0_4": {
+      "false_positives": 378,
+      "occupied_cells": 70,
+      "false_positives_per_occupied": 5.4
+    },
+    "rows_5_9": {
+      "false_positives": 486,
+      "occupied_cells": 141,
+      "false_positives_per_occupied": 3.446809
+    },
+    "rows_10_14": {
+      "false_positives": 473,
+      "occupied_cells": 2,
+      "false_positives_per_occupied": 236.5
+    },
+    "rows_15_19": {
+      "false_positives": 475,
+      "occupied_cells": 1,
+      "false_positives_per_occupied": 475.0
+    }
+  },
+  "false_positives_by_column": {
+    "0": 154,
+    "1": 397,
+    "2": 416,
+    "3": 229,
+    "4": 168,
+    "5": 223,
+    "6": 93,
+    "7": 37,
+    "8": 95,
+    "9": 0
+  },
+  "precision_at_zero": 0.104743,
+  "recall_at_zero": 0.990654,
+  "occupied_cells": 214,
+  "worst_false_positive": [
+    [
+      6,
+      3,
+      3.113172
+    ],
+    [
+      1,
+      2,
+      3.059735
+    ],
+    [
+      6,
+      3,
+      3.036672
+    ],
+    [
+      1,
+      2,
+      3.031706
+    ],
+    [
+      6,
+      3,
+      3.014263
+    ]
+  ],
+  "closest_false_negative": [
+    [
+      7,
+      3,
+      -0.031599
+    ],
+    [
+      14,
+      3,
+      -0.687719
+    ]
+  ],
+  "note": "Margins are the read's own logits at the scored cell, so they show whether the error is a boundary placement (large but wrong-signed margins) or a ranking overlap (errors packed near zero). Truth here is the fixed identity vector used for the per-cell condition."
+}

@@ -167,6 +167,12 @@ arm that keeps the predicted lattice and M41 is the worst-ranked arm measured, a
 fact except geometry. So the contrast features do not compensate for a displaced geometry - they amplify the
 cost - and no feature-side rescue of the support lattice is available to a future arm.
 
+**Followed by M42** (`docs/M42_SUPPORT_CROSSING.md`), which measured the decision side this pass left
+open: with the support setting each board's crossing level and no sample moved, the arm lost `-0.116317`
+AUC and `-0.183426` F1 at `0.0` (predeclared branch: harmful) at a literal one-field isolation. Geometry
+therefore has a measured negative role on both sides; the decision-side question this document left open
+is answered for the box-offset rule, and only a support-occupancy-derived level remains untested.
+
 ## Propagation
 
 Swept for sentences that read as stale once this arm landed (`git grep` over `open question`, `confound`,

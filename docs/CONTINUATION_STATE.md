@@ -3633,7 +3633,8 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.0` / AUC / best swept): M34 `0.274869` / `0.883260` / `0.385925`; M35 `0.277778` / `0.945596` /
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
-`0.439535`; M41 `0.272073` / `0.819074` / `0.340000`. All fail the gate; all sit below the winner.
+`0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`. All fail the
+gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
 separated.** No exogenous correction to placement was learned at this depth by any composition tried: all
@@ -3673,7 +3674,22 @@ So the overlap is a cross-configuration effect - M36's `60`-input features and o
 `30`-input feature set, and M38's wider head against M40's - and the corrected closure keeps its wording. M41
 is also the worst-ranked arm measured while M35 is the best arm that keeps the predicted lattice, and they
 differ in one recorded fact: the contrast features amplify a displaced geometry rather than compensating for
-it, so no feature-side rescue is available. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
+it, so no feature-side rescue is available.
+
+M42 then measured the one role left - decision side. The winner's configuration gained exactly one field
+(`occupancy_support_crossing`): each board's own support-box offset sets that board's crossing level as a
+single constant inside the head, with every sampled point left where the network put it. Recorded
+`docs/evidence/m42-support-crossing-r1/scope.json`: F1 at `0.0` `0.189455`, AUC `0.838212`, best swept
+`0.374034` (at `1.65`) - not cleared, gate per-cell/ranking false, attribution true, deltas `-0.183426` /
+`-0.116317` / `-0.315741`, split closure `-0.169940` / placement `-0.050224` / representation `+0.663369`. The
+predeclared branch that fired is **NOT CLEARS - harmful**, and the isolation is literal: a matched control
+trained under current code (`m42-control-winner-config`) reproduces the winner's checkpoint bit-exactly
+(`eddec1fd…`), and against it the arm differs in exactly one config field, has the same `8,023,562`
+parameters, the same sampled points and a distinct checkpoint (`fa4a7b60…`).
+
+So geometry measured at matched configuration has a negative role on both sides - sampling (M41) and decision
+(M42) - and the closure's wording is unchanged because it describes this regression set as configured. What a
+future decision-side arm must beat is now a measured `-0.116317` AUC. Capacity is excluded (M38 at width `128` refused; M40 adds no parameter). Scope: one
 population, both fixed label vectors, one seed, `64` steps, a `64`-wide one-block head, fixed global `0.0`,
 three measured points on the strength axis.
 
@@ -3682,4 +3698,8 @@ every sampled point where the network puts it - M41 shows replacing any of the g
 feature sets, and that the contrast features amplify rather than repair it - and make the *decision*
 support-aware instead: a declared per-board term that uses the support only to set the board's own crossing
 level, which is a decision rule rather than a change of sampling geometry. Judge it against the winner and the
-predeclared bar, not against an arm family.
+predeclared bar, not against an arm family. **That arm is now M42 and it was refused** (harmful branch), so the
+recorded next step is narrower: any further decision-side use of the support must beat the measured
+`-0.116317` AUC of the box-offset level, and the productive direction left is a level derived from the
+support's occupancy rather than from its box offset - untested, and the only decision-side question these
+receipts leave open.

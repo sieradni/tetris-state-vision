@@ -1526,6 +1526,28 @@ The predeclared branch that fired is **REPRODUCES** (its thresholds were AUC `<=
 swept, against `-0.071268` / `-0.303850` for the same swap at `30` inputs. **The overlap in the section below
 is attributable to its recorded confound, not to provenance failing to order anything.**
 
+## M42 - the support as a decision rule, and geometry's role on both sides
+
+[M42_SUPPORT_CROSSING.md](M42_SUPPORT_CROSSING.md) predeclared and measured the one untested role for the
+raster's support: instead of the winner's calibrated crossing, each board's own support-box offset sets that
+board's crossing level, applied inside the head as one constant per board, while every sampled point stays
+where the network put it. `docs/evidence/m42-support-crossing-r1/scope.json`: F1 at `0.0` `0.189455`, AUC
+`0.838212`, best swept `0.374034` (at `1.65`) - **not cleared**, gate per-cell/ranking false, attribution
+true, deltas `-0.183426` / `-0.116317` / `-0.315741`; split closure `-0.169940` / placement `-0.050224` /
+representation `+0.663369`, sum asserted.
+
+The predeclared branch that fired is **NOT CLEARS - harmful** (both falsifiers for the neutral branch exceeded:
+`dAUC -0.116317`, `dF1@0 -0.183426`). The rule was not inert - it moved every board's crossing and reordered
+the boards against each other - and false positives rose to `1812` at median margin `0.835996`, with `473` in
+rows 10-14 and `475` in rows 15-19 against M35's `11` and `144`.
+
+**The isolation is literal, not normalised.** The winner's own manifest predates `occupancy_read_level`, so
+this pass trained a matched control under current code (`m42-control-winner-config`) whose checkpoint is
+**bit-identical to the winner's** (`eddec1fd…`). Against that control the arm differs in exactly one recorded
+config field (`occupancy_support_crossing`), has an identical parameter count (`8,023,562`), identical
+sampled points and a distinct checkpoint (`fa4a7b60…`), so the contrast cannot be explained by features,
+width, the monotone rule, dimension, blocks, standardise, curriculum, initial weights or step count.
+
 ## The campaign's remaining empirical question: answered in the negative, measured but not cleanly separated
 
 **Can an exogenous correction to placement be learned at this depth by any composition with the predicted
@@ -1617,7 +1639,15 @@ about *cross-configuration* comparisons, which this regression set is full of, a
 inert: the overlap's ordering comes from the feature count and decision rule that came with each arm. M41 is
 also the worst-ranked arm measured while M35 is the best arm that keeps the predicted lattice, and they differ
 in one recorded fact - so the contrast features amplify rather than repair a displaced geometry, and no
-feature-side rescue of the support lattice is available to a future arm. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
+feature-side rescue of the support lattice is available to a future arm.
+
+**M42 extends the same reading to the decision side, and the closure sentence still stands.** With the sampled
+placement left untouched and the support allowed to set each board's crossing level, the arm lost `-0.116317`
+AUC and `-0.183426` F1 at `0.0` (branch: harmful), so geometry measured at matched configuration now has a
+negative role on **both** sides - sampling (M41) and decision (M42). Nothing here changes the closure's claim,
+which is about this regression set as configured; what it adds is that no correctable placement prior was
+found on either side, and that a future decision-side arm has to beat a measured `-0.116317` AUC rather than
+merely avoid moving samples. Scope: one fixed population (28 boards, 2,986 cells), both fixed label
 vectors, one seed, `64` steps, a `64`-wide one-block head, the fixed global `0.0` boundary, and three measured
 points on the strength axis. Capacity is excluded as an explanation (M38 refused at width `128`; M40 adds no
 parameter), and a learned per-board mixing weight was predeclared out of scope.
@@ -1639,12 +1669,13 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M39 `m39-dual` | both placements in one read (60 inputs) | `0.246228` | `0.836907` | `0.351779` | fail |
 | M40 `m40-composed-r2` | predicted lattice blended half onto the support box | `0.260599` | `0.897918` | `0.439535` | fail |
 | M41 `m41-support-contrast` | M35's features sampled at the support lattice | `0.272073` | `0.819074` | `0.340000` | fail |
+| M42 `m42-support-crossing` | support sets each board's crossing level (decision side) | `0.189455` | `0.838212` | `0.374034` | fail |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
 M37 `-0.102785` / `-0.035016` / `-0.100489`; M38 `-0.099799` / `-0.059488` / `-0.226223`;
 M39 `-0.126653` / `-0.117621` / `-0.337996`; M40 `-0.112283` / `-0.056611` / `-0.250240`; M41
-`-0.100808` / `-0.135455` / `-0.349775`.
+`-0.100808` / `-0.135455` / `-0.349775`; M42 `-0.183426` / `-0.116317` / `-0.315741`.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 
@@ -1678,6 +1709,13 @@ crossing level, leaving every sampled point exactly where the network puts it. T
 than a sampled geometry - the one axis the evidence has not closed - and it must be judged against the winner
 and the predeclared bar, not against an arm family, since cross-configuration comparisons are exactly what
 this set cannot read as provenance.
+
+**After M42 the decision side is measured too.** The support-as-crossing-level rule lost `-0.116317` AUC and
+`-0.183426` F1 at `0.0` at a literal one-field isolation, so the claim that the sampled lattice must stay the
+predicted one is now joined by a second, decision-side finding of the same sign. What remains open is not
+whether *the* support box offset helps (it does not) but whether some other decision-side use of the support
+could: this arm tested the declared box-offset level and nothing else, and one harmful rule does not exclude
+all decision rules.
 
 ## The next structural step this pass superseded (recorded, measured, refused)
 

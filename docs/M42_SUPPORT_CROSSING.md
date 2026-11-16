@@ -96,6 +96,90 @@ be offered; the arm adds no parameter.
 
 ## Receipts
 
-`runs/m42-support-crossing{,-profile,-registration}` and
-`docs/evidence/m42-support-crossing-r1/{scope,diagnosis}.json`. Refused attempts keep their receipts; only
-completed runs are quoted.
+`runs/m42-support-crossing{,-profile,-registration}`,
+`runs/m42-control-winner-config`, and `docs/evidence/m42-support-crossing-r1/{scope,diagnosis}.json`. Refused
+and interrupted attempts keep their receipts; only completed runs are quoted.
+
+## Measured (scored `m42-support-crossing-r1`)
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| `m30-level-calibrate-r5` (winner, re-scored in the same pass) | `0.372881` | `0.954529` | `0.689775` (at `3.6`) |
+| **M42 `m42-support-crossing`** | **`0.189455`** | **`0.838212`** | **`0.374034`** (at `1.65`) |
+| delta vs winner | `-0.183426` | `-0.116317` | `-0.315741` |
+| anchored variant | `0.249464` | `0.750854` | `0.323810` (at `2.10`) |
+
+**Verdict: not cleared** on the predeclared bar, per-cell/ranking gate false, attribution true; split closure
+`-0.169940` / placement `-0.050224` / representation `+0.663369` (`-0.383434` / `-0.113321` / `+1.496755`),
+sum asserted, `short_stage: closure`. Peak `1,056,350,208` (study, against `1,152` MiB), probe `559,472,640`,
+reader `44,130,304`; checkpoint `fa4a7b60…`.
+
+**Branch that fired: NOT CLEARS - harmful** (`dAUC < -0.005` or `dF1@0 < -0.010`; both, `-0.116317` and
+`-0.183426`). The rule is not inert - it changed the read, reordered the boards relative to each other and
+shifted every board's crossing upward by roughly a logit (median absolute shift `-1.14` at step zero on a
+synthetic board), which is the wrong direction: false positives rise from the winner's `698`-class level to
+`1812` at median margin `0.835996`, with `473` of them in rows 10-14 and `475` in rows 15-19 against M35's `11`
+and `144`. `textured_empty_separated: false`; weakest true positive `0.048825`.
+
+### The isolation, made literal
+
+The winner's own manifest predates `occupancy_read_level`, so comparing against it directly leaves two
+recorded fields differing in *representation* (`null` against `0`) even though the effective configs match.
+This pass therefore trained a matched control under today's code - `m42-control-winner-config`, the winner's
+recorded configuration and nothing else - and the isolation is now asserted against that control:
+
+| assertion | measured |
+|---|---|
+| parameter count, arm vs control | `8,023,562` = `8,023,562` |
+| differing recorded config fields, arm vs control | exactly `['occupancy_support_crossing']` |
+| control's checkpoint | `eddec1fd…` - **bit-identical to the winner's**, so the control is the winner's configuration recorded under current code |
+| arm's checkpoint | `fa4a7b60…`, distinct from both |
+| sampled points, arm vs control at equal weights | bit-identical |
+| within-board ordering, arm vs control | unchanged (one constant per board) |
+
+So the predeclared contrast cannot be explained by feature count, head width, the monotone rule, dimension,
+blocks, the standardise flag, the curriculum, the initial weights or the step count: none of them differs.
+
+### What it settles, in both directions
+
+- **It did not clear, so decision-side geometry carries no value here:** letting the support set each board's
+  crossing level is *worse than letting the read set it*, by `0.183426` F1 at the operative boundary and
+  `0.116317` AUC. Combined with M41 (`-0.126522` AUC from the same replacement on the sampling side), geometry
+  measured at matched configuration now has a **negative role on both sides** - sampling and decision - which is
+  the strongest statement the campaign's evidence supports and is consistent with the closure as worded.
+- **The closure wording is untouched and its scope is now stated positively:** it was always about the
+  regression set as configured; with M41 and M42 both isolated, what it leaves standing is that the winner's
+  advantage lives in its own read and its own geometry, not in a correctable placement prior. A future arm that
+  wants decision-side geometry to help has to beat this measured `-0.116317` AUC, not merely avoid moving
+  samples.
+- **What it does not settle:** whether *some other* decision-side use of the support - a level derived from
+  the support's occupancy rather than from its box offset, say - could carry value. This arm tested the
+  declared box-offset level and nothing else, and the honest reading of one harmful rule is "that rule is
+  harmful", not "no decision rule can work".
+
+## Defect found and repaired in this pass
+
+`V-168`: the matched control's probe was refused with `ValueError: owned finite run name required`, because a
+new run name must be registered in `scripts/record_stream_run.py`'s owned families before the registration
+probe will read it. Repaired by registering `m42-control-winner-config` in that family list; the control's
+checkpoint was already complete and its comparison does not depend on the probe. Two interrupted control
+attempts and the earlier admission-refused arm attempts are preserved on disk and labelled
+`-superseded-interrupted` / `-superseded-admission`.
+
+## Propagation
+
+Sentences swept for staleness after this arm (`git grep` over `open question`, `confound`, `decision`, the
+closure's vocabulary, across tracked markdown and python, excluding the frozen `docs/evidence` tree):
+
+- `docs/ROADMAP.md` - new M42 section and regression row, a closure addendum stating the both-sides result
+  without touching the closure wording, and a new recorded next step;
+- `docs/CONTINUATION_STATE.md` - M42 paragraph, regression set, and the answered decision-side question;
+- `docs/M41_SUPPORT_CONTRAST.md` - its "what is untested is the decision side" pointer now references M42's
+  answer;
+- `docs/BUG_LOG.md` - V-168 recorded with its instrument and named green run;
+- `tests/test_m40_receipt.py` - the arm set extended with M42, the pinned overlap sets unchanged;
+- `tests/test_m42_receipt.py` - new, pinning the isolation against the control, the bar, the harmful branch
+  and the diagnosis.
+
+M40's evidence directory, receipts, predeclared bar, verdict and gap-section numbers are untouched, and no
+prior arm was re-scored.

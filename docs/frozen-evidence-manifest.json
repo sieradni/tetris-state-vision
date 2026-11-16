@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "fc8bff933477b97deab559737ce331bd614182a1",
+    "generated_at_commit": "e268bc07d7b50937525f67e743dcb19867d3152d",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4494,10 +4494,17 @@
       }
     },
     "m41-support-contrast-r1": {
-      "record_commit": "",
+      "record_commit": "03cb75e5e8e39c730fb57ca5ab535fb866e4a36c",
       "files": {
         "diagnosis.json": "2c5e20e46a505ac440f1636e117a4e6fd9a17138ee6fc57d93746d5304db860c",
         "scope.json": "ed395c379c0ee2f9e4eca5e934c3b77c1506685887356aacc0cf544ba60e6ef9"
+      }
+    },
+    "m42-support-crossing-r1": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "726e4cbdacc8a30dd3c4bbd8e7dea40889b360245f7930c9a935bd45997893f8",
+        "scope.json": "a08f6755308ec167749c316636a936b997e143ac4bc598abc61dcfd3f7824d38"
       }
     },
     "m5-column-readout-r1": {
@@ -5119,7 +5126,7 @@
     }
   },
   "totals": {
-    "directories": 288,
-    "files": 3667
+    "directories": 289,
+    "files": 3669
   }
 }

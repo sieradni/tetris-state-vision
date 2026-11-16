@@ -3416,3 +3416,40 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   a statement about two numbers, not about arm families), and `docs/M40_COMPOSED_ALIGNMENT.md`'s "not a
   family boundary" (the corrected negation). The three maintained closures are the only files the
   consistency test guards, and all three now name the overlap.
+
+## V-168 - CLOSED: a new control run's probe was refused because its name was not an owned family
+
+- Symptom: the matched control trained in the M42 pass completed its checkpoint, then its registration probe
+  died with `ValueError: owned finite run name required`; the driver retried it four times and failed each time.
+- Root cause: `scripts/record_stream_run.py` owns a closed list of run-name families, and every new arm name has
+  to be added to it before `probe_registration_attribution.py` will read that run. M42's arm name was added at
+  predeclaration time; the control's name, minted later in the same pass, was not.
+- Change: `m42-control-winner-config` registered in that family list. No guard, threshold, protocol or existing
+  receipt was touched; the control's checkpoint was already complete and the isolation comparison does not
+  depend on the probe.
+- Detection class: owned-family registration - first occurrence in this campaign (the earlier members of the
+  launch-ownership class are about preflight and pid locks, not the name list).
+- Instrument: the refusal itself is fail-closed and names the condition, so a missing registration cannot pass
+  silently; `tests.test_m42_receipt.IsolationTest` now pins the control's manifest, which is the artifact the
+  probe would have read.
+- Named green runs: `runs/m42-control-winner-config-job.json` (study, peak `1,063,223,296`, checkpoint
+  `eddec1fd…` identical to the winner's), `tests.test_m42_receipt` (10 tests, OK).
+- Preserved while getting there, never deleted: `runs/m42-support-crossing-superseded-admission*` and
+  `-r2-superseded-admission*` (the admission-join signature defect, V-169 below) and
+  `runs/m42-control-winner-config-superseded-interrupted*` (two runner restarts that killed the control partway).
+
+## V-169 - CLOSED: the new flag was passed to validate_admission before the signature declared it
+
+- Symptom: the first two M42 study attempts died in admission with
+  `TypeError: validate_admission() got an unexpected keyword argument 'occupancy_support_crossing'`.
+- Root cause: the flag was plumbed through the two config constructions, the admission call site and the
+  recovery contract, but the function's own keyword list was not extended, so the call could not bind.
+- Change: `occupancy_support_crossing=0` added to the `validate_admission` signature beside its siblings. No
+  guard or threshold was touched.
+- Detection class: admission-join plumbing - first occurrence for a new lever, same family as the earlier
+  admission-join entries.
+- Instrument: the refusal is a hard `TypeError` at admission, before any training step, and the admission join
+  (`require_occupancy_support_crossing`) now checks the recorded argument and recovery contract against the
+  live flag.
+- Named green runs: `runs/m42-support-crossing-job.json` (study, peak `1,056,350,208`),
+  `runs/m42-support-crossing-r1-job.json` (score, 128 MiB).

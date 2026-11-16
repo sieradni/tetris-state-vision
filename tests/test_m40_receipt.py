@@ -116,6 +116,7 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M39": "m39-dual-placement-r1",
         "M40": "m40-composed-alignment-r6",
         "M41": "m41-support-contrast-r1",
+        "M42": "m42-support-crossing-r1",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
     MOVES = ("M34", "M40", "M39", "M41")
