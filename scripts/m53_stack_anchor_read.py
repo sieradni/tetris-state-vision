@@ -418,12 +418,14 @@ def main():
         lattices[entry["record"]["sample_id"]] = (predicted, lattice_box, lattice_refined)
         detection.append({"sample_id": entry["record"]["sample_id"], "detected": found, "refined": fitted,
                           "anchored": anchored,
-                          "error": box_error(fitted, boards[entry["record"]["sample_id"]]),
-                          "displacement": displacement_cells(lattice_refined,
+                          "error": box_error(anchored, boards[entry["record"]["sample_id"]]),
+                          "displacement": displacement_cells(lattice_anchored,
                                                              boards[entry["record"]["sample_id"]]),
+                          "refined_displacement": displacement_cells(lattice_refined,
+                                                                     boards[entry["record"]["sample_id"]]),
                           "box_displacement": displacement_cells(lattice_box,
                                                                  boards[entry["record"]["sample_id"]]),
-                          "fit": fitted["fit"]})
+                          "fit": anchored["fit"]})
     records = [entry["record"] for entry in collected]
     if (len(records), sum(labels), len(labels)-sum(labels)) != (NONEMPTY_CASES, OCCUPIED_CELLS, EMPTY_CELLS):
         raise ValueError("the measured population differs from the predeclaration")

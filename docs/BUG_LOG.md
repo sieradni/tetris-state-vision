@@ -3807,3 +3807,21 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   a bounded scoring run.
 - Detection class: copied-instrument field-name drift - first occurrence of the *class* in this campaign, three
   occurrences inside one arm. Instrument: the receipt tests plus the `28`-row table assertions.
+
+## V-192 - the study path reported M52's geometry under M53's name
+
+- Symptom: `scripts/m53_stack_anchor_read.py --admission ... --output docs/evidence/m53-stack-anchor-read` died with
+  `KeyError: 'refined_displacement'` after `63` s, having written nothing; the detect-only path ran fine with the same
+  module.
+- Root cause: the arm was derived from M52's file, and the builder added `refined_displacement` to the *detect-only*
+  readings and to the comparison blocks that consume it, but the study loop's `detection.append({...})` still carried
+  only M52's keys - and it still computed `displacement`, `error` and `fit` from the **refined** lattice. Had the key
+  been added without moving those three fields, the receipt would have reported M52's geometry in M53's columns and the
+  branch would have been computed on it.
+- Change: the study row now computes `displacement`, `error` and `fit` from the stack-anchored lattice, reports M52's
+  refinement under `refined_displacement`, and keeps both means side by side in the summary.
+- Prevention: `tests/test_m53_receipt.py` asserts that `geometry_shift.anchored_vs_target` is the anchored detector
+  block, that every board row carries all three displacements, and that `fit` holds the anchoring report, so the two
+  paths can no longer drift apart unnoticed.
+- Detection class: copied-arm field drift - second occurrence of the shape recorded as V-191, and the first on a field
+  that would have silently swapped the measurement's subject rather than merely crashed.

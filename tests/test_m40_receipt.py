@@ -127,6 +127,7 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M50": "m50-board-box-read",
         "M51": "m51-board-box-read",
         "M52": "m52-lattice-fit-read",
+        "M53": "m53-stack-anchor-read",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
     MOVES = ("M34", "M40", "M39", "M41")
@@ -150,7 +151,7 @@ class ClosureConsistencyTest(unittest.TestCase):
     def best(self, name):
         return self.metric[name][1]
 
-    READ_ONLY_TRANSFERS = ("M48", "M49", "M50", "M51", "M52")
+    READ_ONLY_TRANSFERS = ("M48", "M49", "M50", "M51", "M52", "M53")
 
     def test_the_winner_is_above_every_fitted_arm_on_both_measures(self):
         # M48-M50 are read-only transfers of the committed ceiling read-out, not fitted arms of this family; M50

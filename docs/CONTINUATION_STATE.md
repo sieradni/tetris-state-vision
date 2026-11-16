@@ -1,5 +1,32 @@
 # Contributor handoff — 2026-10-30
 
+## The stack anchors are the first geometry that places the two unreachable boards, and they cost six others (M53, 2026-11-16)
+
+[M53_STACK_ANCHOR.md](M53_STACK_ANCHOR.md) applies the committed read at a lattice anchored to the visible blocks' own
+cell-boundary edges: pitch as a median over edge spacings, the vertical origin the stack's floor moved by whole cells
+(guarded to `FLOOR_TOLERANCE = 1.0` pitch), the horizontal origin M51's box snapped to the anchors' phase, and M51's box
+kept per axis wherever anchors are too few. Same `2,986` cells, `28` boards, `30` statistics, same folds, threshold
+`0.0`. Receipt `docs/evidence/m53-stack-anchor-read/scope.json` (bounded run passed, `63.419` s, `736,555,008` B of the
+declared `1024` MiB); declaration committed as `c9a5f82`, strictly before the measurement.
+
+| sampling | F1@0 | AUC | TP / FP / FN |
+|---|---|---|---|
+| target lattice | `0.974763` | `0.999195` | 309 / 16 / 0 |
+| M51 detected box | `0.904376` | `0.933275` | 279 / 29 / 30 |
+| M52 interior fit | `0.893268` | `0.908824` | 272 / 28 / 37 |
+| **M53 stack anchor** | **`0.919192`** | `0.910164` | 273 / 12 / 36 |
+
+Verdict `anchor-worse`: mean displacement `0.470531` cells (`8` of `28` boards over the gate, worst board `4.112968` at
+`training-20261030-v1`), six no-regression breaches against M50, M51 and M52, and an AUC above `0.90` but below M51's.
+Two facts are worth carrying forward. **First**, the anchors put `training-20261031-v1` and `-v2` at `0.000000` cells
+each - the two boards M51 and M52 both degraded to `0.92`-`0.95` - so those captures' blocks are demonstrably visible at
+the right place. **Second**, the read's F1 at `0.0` is the highest of any geometry arm while its displacement is the
+worst: the fixed crossing and the rank statistic disagree about this geometry, and the arm's own best F1 (`0.923858` at
+`1.5`) sits above its `0.0` F1, which no earlier arm's did. The located cause of the six one-cell misses is that the
+lowest visible block edge is the floor only when the stack's bottom row is occupied. Named next: **M54, floor consensus
+by block count** (`MIN_FLOOR_BLOCKS = 2` components agreeing within `0.15` cells on the modal bottom), targeting the
+`20261031` pair at `0.000000`, the six breaches at `<= 0.10`, and the population mean at `<= 0.25`.
+
 ## The occupancy deficit is two first-order factors, and the gate was unreachable one lever at a time (M27, 2026-11-14)
 
 [M27_THREE_FACTOR.md](M27_THREE_FACTOR.md) reads two committed receipts together - the registration-attribution

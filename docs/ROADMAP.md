@@ -1776,6 +1776,23 @@ named next arm is **M53, a stack-anchored lattice fit**: the visible blocks' own
 anchors, which is the one cell-boundary signal present on the two captures a local fit cannot reach. Scope unchanged:
 one fixed population (28 boards, 2,986 cells), both fixed label vectors, the fixed `0.0` boundary, one read-only pass.
 
+**After M53 the anchors place the two unreachable boards exactly, and lose the population.** Taking the visible blocks'
+own cell-boundary edges as absolute anchors - the pitch a median over edge spacings, the vertical origin the stack's
+floor moved by whole cells, the horizontal origin M51's box snapped to the anchors' phase - places
+`training-20261031-v1` and `-v2` at **`0.000000` cells, both of them**, where M51's box sits at `0.924144` and M52's fit
+at `0.949682` / `0.949620`, and it lifts the read to the **highest F1 at `0.0` of any geometry arm** (`0.919192` against
+M51's `0.904376` and M52's `0.893268`, precision `0.957895` with twelve false positives against twenty-nine). It also
+breaks six boards by exactly one whole cell, so the population mean rises to `0.470531` (`8` of `28` over the `0.25`
+gate) and the no-regression rule fails against M50, M51 and M52 alike, while AUC `0.910164` clears `0.90` but misses
+M51's `0.933275`. The branch is `anchor-worse` - as predeclared - and the located cause is that the lowest visible block
+edge is the floor only when the stack's bottom row is occupied: on the `20261031` pair the box was one row high and the
+correction was right, on `training-20261027-v2` and the `20261033` trio the box was right and the bottom row was empty.
+The named next arm is **M54, floor consensus by block count**: require at least `MIN_FLOOR_BLOCKS = 2` components to
+agree on the floor bottom within `0.15` cells and take the modal bottom rather than the maximum, keeping the `20261031`
+pair at `0.000000`, restoring the six boards to `<= 0.10` and bringing the population mean to `<= 0.25` with `<= 2`
+boards over the gate. Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, the
+fixed `0.0` boundary, one read-only pass.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row
@@ -1798,6 +1815,7 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M44 `m44-pixel-edge` | cell edge midpoints join the pixel read | `0.304665` | `0.934008` | `0.550622` | fail |
 | M51 `m51-board-box-read` | the committed read at a candidate-search board box (wall + cell-grid, one objective) | `0.904376` | `0.933275` | `0.908497` | fail: mean displacement `0.383358` > `0.25` (`repair-under-specified`) |
 | M52 `m52-lattice-fit-read` | the committed read at a lattice refitted from the interior cell lines | `0.893268` | `0.908824` | `0.896211` | fail: mean displacement `0.380890` > `0.25` (`fit-under-specified`) |
+| M53 `m53-stack-anchor-read` | the committed read at a lattice anchored to the stacks' own cell edges | `0.919192` | `0.910164` | `0.923858` | fail: mean displacement `0.470531` > `0.25` (`anchor-worse`); six no-regression breaches, but the highest F1 at `0.0` of any geometry arm |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
@@ -1811,6 +1829,9 @@ M51 is a read-only transfer of the committed read-out, not a fitted arm of this 
 board even though the tail is shorter.
 M52 moves `+0.520387` / `-0.045705` / `+0.206436` against the winner and `-0.011108` / `-0.024451` / `-0.012286`
 against M51's box: a tighter pitch, a slightly better tail, and a worse read on both measures.
+M53 moves `+0.546311` / `-0.044365` / `+0.234083` against the winner and `+0.014816` / `-0.023111` / `+0.015361`
+against M51's box and `+0.025924` / `+0.001341` / `+0.027647` against M52's fit: the best F1 at the fixed crossing of any
+geometry arm, a population mean `0.087173` cells worse than the box, and six boards moved by one whole cell.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

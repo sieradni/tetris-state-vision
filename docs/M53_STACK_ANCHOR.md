@@ -124,3 +124,188 @@ median-of-medians in `[0.06, 0.10]` cells**, and therefore the branch **`anchor-
 The instrument check already shows what the study will confirm: the anchors lower the worst board (`5.21` -> `4.11`)
 and raise the population mean (`0.383358` -> `0.470500`), with eight boards over the gate instead of four. The
 prediction above is made from this table, not from the study.
+## Measured
+
+Receipt: `docs/evidence/m53-stack-anchor-read/scope.json` (status `passed`, `elapsed_seconds` `63.419`), bounded run
+`runs/m53-stack-anchor-read-job.json` (status `passed`, `peak_job_commit_bytes` `736555008`), profile
+`runs/m53-stack-anchor-read-profile` (`job_ceiling_bytes` `1024` MiB, `target_features_match` true on both reads).
+
+**Verdict: `anchor-worse`.** The anchors lose to M51's box on the population (`0.470531` cells against `0.383358`) and
+break the no-regression rule on six boards, so stack-anchored placement is ruled out as the geometry source for this
+population - exactly the branch the declaration predicted. The read nevertheless lands the **highest F1 at the fixed
+`0.0` crossing of any geometry arm (`0.919192`)**, which is a real, and unpredicted, gain.
+
+### The read
+
+| sampling | F1 at `0.0` | AUC | TP | FP | FN | precision | recall |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| target lattice | `0.974763` | `0.999195` | 309 | 16 | 0 | `0.950769` | `1.000000` |
+| M48 predicted lattice | `0.037152` | `0.442341` | 6 | 8 | 303 | `0.428571` | `0.019417` |
+| M51 detected box | `0.904376` | `0.933275` | 279 | 29 | 30 | `0.905844` | `0.902913` |
+| M52 interior fit | `0.893268` | `0.908824` | 272 | 28 | 37 | `0.906667` | `0.880259` |
+| **M53 stack anchor** | **`0.919192`** | `0.910164` | 273 | 12 | 36 | `0.957895` | `0.883495` |
+| winner head (`m30-level-calibrate-r5`) | `0.372881` | `0.954529` | - | - | - | `0.230430` | - |
+
+On the declared bars: the inherited falsifier is **missed** - the population mean is `0.470531` cells, above the `0.25`
+gate, though the AUC gate (`>= 0.90`) is cleared at `0.910164`. The declared predecessor bars are **split**: F1 at `0.0`
+beats M51's `0.904376` by `+0.014816` and M52's `0.893268` by `+0.025924`; AUC beats M52's `0.908824` by
+`+0.001341` but **misses** M51's `0.933275` by `0.023111`; the population mean is worse than both
+(`0.383358` / `0.380890`). So this is **not a win**: the anchor moves twenty-nine false positives down to twelve and
+pays for it with six displaced boards, and the fixed crossing sees the gain while the rank statistic sees the loss.
+
+The anchored read's own best operating point is `1.5` at F1 `0.923858` (precision `0.968085`, recall `0.883495`) - the
+only arm in the campaign whose best F1 is above its `0.0` F1, i.e. the anchored statistics separate the classes more
+cleanly but sit at a slightly higher offset at `0.0`.
+
+### Displacement, all 28 boards
+
+Gate `0.25` cells: per-board mean displacement of the anchored sampling against the target lattice, with M51's box and
+M52's fit beside it.
+
+| board | M53 anchored | M51 box | M52 refined | rows corrected | floor consistent |
+| --- | --- | --- | --- | --- | --- |
+| `training-20261026-v2` | `0.033800` | `0.065500` | `0.041600` | 0 | yes |
+| `training-20261027-v0` | `0.654800` | `0.101000` | `0.067300` | 0 | no |
+| `training-20261027-v1` | `0.654800` | `0.054600` | `0.051100` | 0 | no |
+| `training-20261027-v2` | `1.071400` | `0.054600` | `0.094400` | +1 | yes |
+| `training-20261028-v0` | `0.083300` | `0.118700` | `0.074900` | 0 | yes |
+| `training-20261028-v1` | `0.083300` | `0.063700` | `0.106300` | 0 | yes |
+| `training-20261028-v2` | `0.083300` | `0.063700` | `0.083200` | 0 | yes |
+| `training-20261029-v2` | `0.062500` | `0.047800` | `0.065200` | 0 | no |
+| `training-20261030-v0` | `0.087900` | `0.059200` | `0.026800` | 0 | no |
+| `training-20261030-v1` | `4.113000` | `5.209784` | `5.177659` | +1 | yes |
+| `training-20261030-v2` | `0.088800` | `0.059200` | `0.025700` | 0 | no |
+| `training-20261031-v0` | `0.153800` | `0.091100` | `0.092900` | 0 | yes |
+| `training-20261031-v1` | **`0.000000`** | `0.924144` | `0.949682` | +1 | yes |
+| `training-20261031-v2` | **`0.000000`** | `0.924144` | `0.949620` | +1 | yes |
+| `training-20261032-v2` | `0.080900` | `0.065300` | `0.060600` | 0 | no |
+| `training-20261033-v0` | `1.076900` | `0.058800` | `0.026400` | +1 | yes |
+| `training-20261033-v1` | `1.076900` | `0.058800` | `0.079500` | +1 | yes |
+| `training-20261033-v2` | `1.076900` | `0.058800` | `0.073200` | +1 | yes |
+| `training-20261034-v0` | `0.062500` | `0.088400` | `0.096900` | 0 | yes |
+| `training-20261034-v1` | `0.062500` | `0.047800` | `0.048500` | 0 | yes |
+| `training-20261034-v2` | `0.062500` | `0.088400` | `0.096800` | 0 | yes |
+| `training-20261035-v2` | `2.034900` | `1.928500` | `1.926000` | 0 | no |
+| `training-20261036-v0` | `0.072200` | `0.101000` | `0.076200` | 0 | yes |
+| `training-20261036-v1` | `0.072200` | `0.054600` | `0.070600` | 0 | yes |
+| `training-20261036-v2` | `0.075500` | `0.101000` | `0.075500` | 0 | no |
+| `training-20261037-v0` | `0.083300` | `0.117900` | `0.095500` | 0 | yes |
+| `training-20261037-v1` | `0.083300` | `0.063700` | `0.066400` | 0 | yes |
+| `training-20261037-v2` | `0.083300` | `0.063700` | `0.066400` | 0 | yes |
+
+Population: mean `0.470531`, mean of per-board medians `0.469082`, median of per-board means `0.469082`, **median of
+per-board medians `0.083333`**, `p90` `0.522702`, worst board `4.112968` (`training-20261030-v1`), **`8` of `28`
+boards over the gate**, and **`28` of `28` boards kept by the fit on both axes** - the fallback branch fired on no
+board, because every capture pins at least two block edges per axis; the floor guard, not the fallback, is what
+declined the correction on eight boards.
+
+Pitch and extent, against both predecessors:
+
+| dispersion | M53 anchored | M51 box | M52 refined |
+| --- | --- | --- | --- |
+| mean width error (cells) | `0.005696` | `0.006892` | `0.001776` |
+| mean height error (cells) | `0.006134` | `0.004720` | `0.002611` |
+| mean displacement (cells) | `0.470531` | `0.383358` | `0.380890` |
+| median of per-board medians | `0.083333` | `0.066438` | `0.074716` |
+| worst board | `4.112968` | `5.209784` | `5.177659` |
+
+### No-regression, both predecessors and the named pair
+
+Rule, fixed in the declaration: every board an earlier arm placed within the gate must stay within it, or within its
+own previous value plus `0.10` cells. Judged against all three baselines - M50, M51 and M52 - **`cleared`: false**,
+with the same six breaches in every table: `training-20261027-v0`, `training-20261027-v1`, `training-20261027-v2`,
+`training-20261033-v0`, `training-20261033-v1`, `training-20261033-v2`.
+
+| board | M50 | M51 | M52 | M53 anchored |
+| --- | --- | --- | --- | --- |
+| `training-20261027-v0` | `0.058827` | `0.101000` | `0.067300` | `0.654800` |
+| `training-20261027-v1` | `0.058827` | `0.054600` | `0.051100` | `0.654800` |
+| `training-20261027-v2` | `0.058827` | `0.054600` | `0.094400` | `1.071400` |
+| `training-20261033-v0` | `0.058827` | `0.058800` | `0.026400` | `1.076900` |
+| `training-20261033-v1` | `0.058827` | `0.058800` | `0.079500` | `1.076900` |
+| `training-20261033-v2` | `0.058827` | `0.058800` | `0.073200` | `1.076900` |
+
+The declared named pair, judged explicitly against M50:
+
+| board | M50 | M51 | M52 refined | M53 box | **M53 anchored** |
+| --- | --- | --- | --- | --- | --- |
+| `training-20261031-v1` | `0.058827` | `0.924144` | `0.949682` | `0.924144` | **`0.000000`** |
+| `training-20261031-v2` | `0.058827` | `0.924144` | `0.949620` | `0.924144` | **`0.000000`** |
+
+**The two boards that M51 and M52 both degraded to `0.92`-`0.95` cells are placed exactly by the anchors: `0.000000`
+cells on both, to the pixel.** The motivating claim is confirmed in the strongest possible form: those captures'
+blocks are visible at the right place, a box-relative geometry can never reach them, and a stack anchor lands on them.
+
+### What the misses prove
+
+The six breaches are all **one whole cell, from a `+1` row correction or a one-cell x snap**, on boards whose box was
+already correct. The `rows_corrected = +1` boards are `training-20261027-v2`, `training-20261031-v1`,
+`training-20261031-v2` and the `training-20261033` trio; on the trio and `20261027-v2` that correction is wrong, on the
+`20261031` pair it is right. The distinction this rule cannot make is:
+
+- **`20261031-v1/-v2`**: the box's bottom is one row *high*, so the stack's floor edge sits one pitch below it, and the
+  lowest block edge really is the floor. Correct.
+- **`20261027-v2`, `20261033-*`**: the box's bottom is right, but the stack's bottom row is **empty**, so the lowest
+  visible block edge sits one pitch *above* the floor. The lowest block edge is *not* the floor.
+
+Both look identical to a single lowest-edge anchor. The remedy is multiplicity: a real floor is pinned by *several*
+blocks sharing the same bottom y, while an empty bottom row leaves at most one bounding-box edge there. The arm already
+holds the components; it needs to count them against the floor instead of trusting the single maximum.
+
+`training-20261035-v2` (`1.928500` -> `2.034900`) is unaffected by that: its floor anchor is inconsistent
+(`floor_consistent` false), so the vertical axis keeps M51's box, and its remaining error is the box's *horizontal*
+phase, which the x snap narrows but does not remove.
+
+### Prediction, judged in both directions
+
+| quantity | predicted | measured | outcome |
+| --- | --- | --- | --- |
+| F1 at `0.0` | `[0.80, 0.90]` | `0.919192` | **missed high** - the anchors beat both predecessors' F1 |
+| AUC | `[0.85, 0.93]` | `0.910164` | hit |
+| population mean displacement | `[0.42, 0.55]` cells | `0.470531` | hit |
+| median of per-board medians | `[0.06, 0.10]` cells | `0.083333` | hit |
+| branch | `anchor-worse` | `anchor-worse` | hit |
+
+The one band the declaration got wrong, it got wrong in the arm's favour: I predicted the anchors would cost the read
+as well as the geometry, and they did not - they raised F1 at `0.0` above every predecessor. The declared predecessor
+bar (F1 above M51's `0.904376`) is therefore **met**; the inherited falsifier (mean `<= 0.25`) is **not**, and the
+branch stays `anchor-worse` by the arithmetic fixed before the run. Both statements stand as written.
+
+## Successors this arm names
+
+1. **M54 - floor consensus by block count.** Keep the whole-cell correction, but require the floor to be *pinned*: at
+   least `MIN_FLOOR_BLOCKS = 2` components whose bottom edges agree within `0.15` cells, and take the modal bottom over
+   all components rather than the maximum. That separates the two cases above by construction. Targets, in this
+   receipt's shape: keep `training-20261031-v1/-v2` at `0.000000`, restore `training-20261027-v2` and the `20261033`
+   trio to `<= 0.10`, bring the population mean from `0.470531` to `<= 0.25` with `<= 2` boards over the gate, and hold
+   anchored F1 above `0.91` while beating M51's `0.904376` / `0.933275`.
+2. **M55 - x phase from column occupancy.** The x snap moves boards by a column because the circular median is taken
+   over block *edges*, which are sparse and asymmetric. Counting occupied columns per phase bin over the whole stack
+   and snapping to the bin with maximum occupancy is M54's floor consensus on the horizontal axis, and is the direct
+   remedy for `training-20261035-v2`'s remaining `2.03` cells.
+3. **M56 - the fixed-crossing question.** M53 is the first arm whose geometry is *worse* while its F1 at `0.0` is
+   *better*, and whose best F1 (`0.923858` at `1.5`) is above its `0.0` F1. The read's offset at the fixed crossing is
+   now measurably a function of geometry, not of the classifier: recalibrating on M53's own margins would tell whether
+   `0.0` is the right crossing for geometry arms at all.
+
+## Files this arm touches
+
+- `scripts/stack_anchor.py` - the instrument.
+- `scripts/m53_stack_anchor_read.py` - the arm; `scripts/record_stream_run.py` - the two accepted run families.
+- `runs/m53_build.py` - the builder that derived the arm from M52's, asserting every anchor it replaced.
+- `docs/evidence/m53-stack-anchor-read/` - the receipt (`scope.json`, `diagnosis.json`, `progress.json`).
+- `tests/test_m53_stack_anchor.py`, `tests/test_m53_receipt.py` - the synthetic-stack and receipt controls.
+
+### Instrument limitation this run exposed
+
+The pitch estimator pools *all* block edges per axis - tops with bottoms, lefts with rights - so on the drawn blocks
+(with their inset) the spacings it sees mix one cell with one cell minus twice the inset. The median is still the pitch
+on this population (mean width error `0.005696` cells, height `0.006134`), but it is `1.9`x and `2.3`x looser than M52's
+interior fit, and the synthetic controls had to draw blocks flush to the cell boundary to recover the pitch exactly.
+Same-side edges, or M52's line localiser inside each block, would remove that bias - it is part of why this arm's scale
+is not where its improvement lives.
+
+## Verification this landing carries
+
+- full suite: `scripts/run_bounded.py --memory-mib 1024 --wall-seconds 1800 --work-items 1990`, status `passed`, `584.299` s, peak `628,793,344` B, `Ran 2017 tests`, `OK`; receipt committed at `docs/evidence/m53-stack-anchor-read/suite-job.json` (log `runs/suite-m53.log`).
+- mutation guards: four fired, each with the restored file byte-identical and the literal read back (`FLOOR_TOLERANCE` `1.0` -> `5.0`; the floor guard line; `MIN_PAIRS` -> `0`; `BOX_MEAN_CELLS` `0.383358` -> `1.5`).
