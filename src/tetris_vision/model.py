@@ -38,6 +38,7 @@ class ModelConfig:
     occupancy_column_step_crossing: int = 0
     occupancy_pixel_edge: int = 0
     occupancy_pixel_contrast: int = 0
+    occupancy_pixel_edge_gate: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -96,6 +97,12 @@ class ModelConfig:
               "occupancy_pixel_contrast is 0 (off) or 1 (the cell is read against its own ring)")
         check(not self.occupancy_pixel_contrast or self.occupancy_pixel_query,
               "the interior contrast needs the declared pixel read to place it")
+        check(type(self.occupancy_pixel_edge_gate) is int and self.occupancy_pixel_edge_gate in (0, 1),
+              "occupancy_pixel_edge_gate is 0 (off) or 1 (contrast passes only where the cell has an edge)")
+        check(not self.occupancy_pixel_edge_gate or self.occupancy_pixel_query,
+              "the edge gate needs the declared pixel read to place it")
+        check(not (self.occupancy_pixel_edge_gate and self.occupancy_pixel_contrast),
+              "the gated form replaces the ungated contrast, so the two never run together")
         check(not self.occupancy_pixel_edge or self.occupancy_pixel_query,
               "the edge ring needs the declared pixel read to place it")
         for name, value in (("pixel_query_level", self.pixel_query_level),
@@ -634,6 +641,11 @@ PIXEL_QUERY_SAMPLES = 9
 # another interior summary of it.
 PIXEL_QUERY_EDGE_SAMPLES = 4
 PIXEL_QUERY_EDGE_FEATURES = PIXEL_QUERY_EDGE_SAMPLES*3
+# declared m46 edge-gated form: the same twelve ring contrasts, each multiplied by the cell's own
+# edge gate, plus the three per-channel gate values themselves so the read can see how much of its
+# evidence passed. The gate is the contrast's excess over the cell's own in-cell spread - the same
+# spread statistic the standardised read divides by - so no threshold is chosen from any scored row.
+PIXEL_QUERY_GATE_FEATURES = PIXEL_QUERY_EDGE_FEATURES+3
 # Declared m40 correction strength: the sampled geometry is this fraction of the fully aligned
 # lattice and the rest the predicted lattice itself. A fixed constant, not a learned weight.
 PIXEL_COMPOSED_WEIGHT = 0.5
@@ -1085,6 +1097,20 @@ class TetrisStateNet(nn.Module):
             ring = torch.tensor([[-.5, 0.], [.5, 0.], [0., -.5], [0., .5]]).reshape(
                 1, 1, PIXEL_QUERY_EDGE_SAMPLES, 2)
             self.register_buffer("pixel_query_contrast_offsets", ring, persistent=False)
+        # declared m46 edge-gated contrast: the same ring contrasts, passed only in proportion to how far
+        # each channel's contrast exceeds that cell's own in-cell spread. Where a cell and its ring are both
+        # plain background the spread is small and the contrast is smaller still, so the gate closes and the
+        # absolute statistics - the level evidence M45 spent - remain the only evidence. Where a local edge
+        # exists the excess is positive and the contrast passes. Zero-initialized projection, so step zero is
+        # the published function; the ring offsets are the declared half-cell midpoints, held out of the state.
+        self.occupancy_pixel_edge_gate = None
+        if config.occupancy_pixel_edge_gate:
+            self.occupancy_pixel_edge_gate = nn.Linear(PIXEL_QUERY_GATE_FEATURES, dimension)
+            nn.init.zeros_(self.occupancy_pixel_edge_gate.weight)
+            nn.init.zeros_(self.occupancy_pixel_edge_gate.bias)
+            gated_ring = torch.tensor([[-.5, 0.], [.5, 0.], [0., -.5], [0., .5]]).reshape(
+                1, 1, PIXEL_QUERY_EDGE_SAMPLES, 2)
+            self.register_buffer("pixel_query_gate_offsets", gated_ring, persistent=False)
         self.occupancy_pixel_edge = None
         if config.occupancy_pixel_edge:
             self.occupancy_pixel_edge = nn.Linear(PIXEL_QUERY_EDGE_FEATURES, dimension)
@@ -1318,6 +1344,30 @@ class TetrisStateNet(nn.Module):
                     contrast = (ring-interior[:, :, None, :]).reshape(
                         ring.shape[0], ring.shape[1], -1)
                     occupancy_features = occupancy_features+self.occupancy_pixel_contrast(contrast)
+                if self.occupancy_pixel_edge_gate is not None:
+                    # declared m46 representation: the ring contrast passes only where it exceeds the
+                    # cell's own in-cell spread, and the gate is graded rather than binary so the
+                    # read keeps how far past its own floor the edge is. the spread is the same
+                    # statistic the standardised read already divides by, and the floor below is the
+                    # constant that division already uses - nothing is chosen from a scored row.
+                    # zero-initialized projection, so step zero is the published function.
+                    interior_samples = sample_features(pixels, placement, self.coordinates,
+                                                      self.pixel_query_offsets)[0]
+                    interior = interior_samples.mean(dim=2)
+                    spread = interior_samples.std(dim=2, unbiased=False)
+                    ring = sample_features(pixels, placement, self.coordinates,
+                                           self.pixel_query_gate_offsets)[0]
+                    contrast = ring-interior[:, :, None, :]
+                    strength = contrast.abs()
+                    # the read's own floor appears in the numerator too, so a cell whose contrast and
+                    # spread are both at that floor passes exactly nothing instead of amplifying float
+                    # noise through the division.
+                    gate = ((strength-spread[:, :, None, :]-1e-6).clamp_min(0)
+                            / (strength+spread[:, :, None, :]+1e-6)).clamp_max(1.0)
+                    gated = torch.cat((
+                        (contrast*gate).reshape(ring.shape[0], ring.shape[1], -1),
+                        gate.mean(dim=2)), dim=-1)
+                    occupancy_features = occupancy_features+self.occupancy_pixel_edge_gate(gated)
                 if self.occupancy_pixel_edge is not None:
                     # declared m44 representation: the raster's value on each of this cell's four
                     # edge midpoints, so the read can see whether the fill stops at this cell's

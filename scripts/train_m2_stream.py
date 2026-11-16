@@ -71,6 +71,10 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-support-crossing", type=int, choices=(0, 1), default=0,
                         help="declared M42 decision rule: the raster's support sets each board's crossing "
                              "level, with every sampled point left where the network put it")
+    parser.add_argument("--occupancy-pixel-edge-gate", type=int, choices=(0, 1), default=0,
+                        help="declared M46 representation: the ring contrast joins the pixel read only "
+                             "where it exceeds the cell's own in-cell spread, so featureless cells keep "
+                             "the absolute statistics M45's negative showed are the level evidence")
     parser.add_argument("--occupancy-pixel-contrast", type=int, choices=(0, 1), default=0,
                         help="declared M45 representation: each of the cell's four edge midpoints "
                              "expressed against the cell's own interior mean per channel, so a "
@@ -594,7 +598,11 @@ INITIAL_SOURCE_ADDED_PREFIXES = ("occupancy_neighborhood.", "occupancy_pixel_que
                                  # M45: the contrast read is one declared, zero-initialised
                                  # projection over the same ring, so a source checkpoint that
                                  # predates it starts the arm at the published function.
-                                 "occupancy_pixel_contrast.")
+                                 "occupancy_pixel_contrast.",
+                                 # M46: the gated contrast is one declared, zero-initialised
+                                 # projection over the same ring, so a source checkpoint that
+                                 # predates it starts the arm at the published function.
+                                 "occupancy_pixel_edge_gate.")
 
 
 def complete_recovery_contract(contract, config):
@@ -624,7 +632,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_read_level=0, occupancy_support_crossing=0, occupancy_column_step_crossing=0, occupancy_pixel_edge=0, occupancy_pixel_contrast=0, occupancy_balance=0, occupancy_mass=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_read_level=0, occupancy_support_crossing=0, occupancy_column_step_crossing=0, occupancy_pixel_edge=0, occupancy_pixel_contrast=0, occupancy_pixel_edge_gate=0, occupancy_balance=0, occupancy_mass=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
                    lattice_board_refine=0, occupancy_pair_rank=0, occupancy_pair_gap=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
@@ -662,6 +670,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_occupancy_column_step_crossing,
                                      require_occupancy_pixel_edge,
                                      require_occupancy_pixel_contrast,
+                                     require_occupancy_pixel_edge_gate,
                                      require_occupancy_mass,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
@@ -691,6 +700,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_column_step_crossing(occupancy_column_step_crossing, summary)
     require_occupancy_pixel_edge(occupancy_pixel_edge, summary)
     require_occupancy_pixel_contrast(occupancy_pixel_contrast, summary)
+    require_occupancy_pixel_edge_gate(occupancy_pixel_edge_gate, summary)
     require_occupancy_mass(occupancy_mass, summary)
     require_occupancy_balance(occupancy_balance, summary)
     require_occupancy_detail(occupancy_detail, summary)
@@ -982,6 +992,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_column_step_crossing=args.occupancy_column_step_crossing,
                      occupancy_pixel_edge=args.occupancy_pixel_edge,
                      occupancy_pixel_contrast=args.occupancy_pixel_contrast,
+                     occupancy_pixel_edge_gate=args.occupancy_pixel_edge_gate,
                      occupancy_balance=args.occupancy_balance,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
@@ -1024,6 +1035,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_column_step_crossing=args.occupancy_column_step_crossing,
                            occupancy_pixel_edge=args.occupancy_pixel_edge,
                            occupancy_pixel_contrast=args.occupancy_pixel_contrast,
+                           occupancy_pixel_edge_gate=args.occupancy_pixel_edge_gate,
                            occupancy_balance=args.occupancy_balance,
                            occupancy_mass=args.occupancy_mass,
                            occupancy_detail=args.occupancy_detail,
@@ -1073,6 +1085,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "occupancy_column_step_crossing",
                                                     "occupancy_pixel_edge",
                                                     "occupancy_pixel_contrast",
+                                                    "occupancy_pixel_edge_gate",
                                                     "occupancy_mass",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
@@ -1244,6 +1257,7 @@ occupancy_mass=args.occupancy_mass)
     recovery_contract["occupancy_column_step_crossing"] = args.occupancy_column_step_crossing
     recovery_contract["occupancy_pixel_edge"] = args.occupancy_pixel_edge
     recovery_contract["occupancy_pixel_contrast"] = args.occupancy_pixel_contrast
+    recovery_contract["occupancy_pixel_edge_gate"] = args.occupancy_pixel_edge_gate
     recovery_contract["occupancy_balance"] = args.occupancy_balance
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil
