@@ -44,6 +44,7 @@ OWNED_RUN_PATTERN = re.compile(r"(?:m[23]-stream-[a-z0-9-]{1,40}|accumulation-ar
                                r"|m41-support-contrast(?:-[a-z0-9-]{1,40})?"
                                r"|m42-support-crossing(?:-[a-z0-9-]{1,40})?"
                                r"|m43-column-step(?:-[a-z0-9-]{1,40})?"
+                               r"|m44-pixel-edge(?:-[a-z0-9-]{1,40})?"
                                r"|m42-control-winner-config(?:-[a-z0-9-]{1,40})?"
                                r"|m3-occextent-[a-z0-9-]{1,40}"
                                r"|m3-occgeocap-[a-z0-9-]{1,40}|m3-occlatres-[a-z0-9-]{1,40}|m3-occlatfree-[a-z0-9-]{1,40}|m3-occbref-[a-z0-9-]{1,40}|m3-occfit-[a-z0-9-]{1,40}"

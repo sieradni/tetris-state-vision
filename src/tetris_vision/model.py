@@ -36,6 +36,7 @@ class ModelConfig:
     occupancy_read_level: int = 0
     occupancy_support_crossing: int = 0
     occupancy_column_step_crossing: int = 0
+    occupancy_pixel_edge: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -88,6 +89,10 @@ class ModelConfig:
               "occupancy_support_crossing is 0 (off) or 1 (the support sets the board's crossing)")
         check(type(self.occupancy_column_step_crossing) is int and self.occupancy_column_step_crossing in (0, 1),
               "occupancy_column_step_crossing is 0 (off) or 1 (each column is decided at its own step)")
+        check(type(self.occupancy_pixel_edge) is int and self.occupancy_pixel_edge in (0, 1),
+              "occupancy_pixel_edge is 0 (off) or 1 (the four edge midpoints join the pixel read)")
+        check(not self.occupancy_pixel_edge or self.occupancy_pixel_query,
+              "the edge ring needs the declared pixel read to place it")
         for name, value in (("pixel_query_level", self.pixel_query_level),
                             ("occupancy_read_standardise", self.occupancy_read_standardise),
                             ("occupancy_balance", self.occupancy_balance)):
@@ -618,6 +623,12 @@ def sample_features(features, lattice, coordinates, offsets):
 
 PIXEL_QUERY_EXTENT = .3
 PIXEL_QUERY_SAMPLES = 9
+# declared m44 edge ring: four samples, one on each of the cell's own edge midpoints, in cell
+# units, read as the three colour channels each. They sit at +/- half a cell, outside the
+# declared in-cell grid of +/-0.3, so the projection is handed the boundary itself instead of
+# another interior summary of it.
+PIXEL_QUERY_EDGE_SAMPLES = 4
+PIXEL_QUERY_EDGE_FEATURES = PIXEL_QUERY_EDGE_SAMPLES*3
 # Declared m40 correction strength: the sampled geometry is this fraction of the fully aligned
 # lattice and the rest the predicted lattice itself. A fixed constant, not a learned weight.
 PIXEL_COMPOSED_WEIGHT = 0.5
@@ -1053,6 +1064,18 @@ class TetrisStateNet(nn.Module):
             self.register_buffer("pixel_query_offsets",
                                  torch.stack((x, y), -1).reshape(1, 1, PIXEL_QUERY_SAMPLES, 2),
                                  persistent=False)
+        # declared m44 edge ring: the cell's own four edge midpoints at pixel resolution through a
+        # zero-initialized projection, so step zero is the published function and the arm is strictly
+        # additive. The offsets are exactly half a cell outwards, which the declared in-cell grid never
+        # reaches; nothing is learned about where they sit and no annotation is read.
+        self.occupancy_pixel_edge = None
+        if config.occupancy_pixel_edge:
+            self.occupancy_pixel_edge = nn.Linear(PIXEL_QUERY_EDGE_FEATURES, dimension)
+            nn.init.zeros_(self.occupancy_pixel_edge.weight)
+            nn.init.zeros_(self.occupancy_pixel_edge.bias)
+            edges = torch.tensor([[-.5, 0.], [.5, 0.], [0., -.5], [0., .5]]).reshape(
+                1, 1, PIXEL_QUERY_EDGE_SAMPLES, 2)
+            self.register_buffer("pixel_query_edge_offsets", edges, persistent=False)
         # Declared level freedom (M30): a strictly positive scale (1+tanh) and a bias on the
         # declared projection, both exactly identity at step zero, so step zero stays bit-identical
         # and the ordering can only change if the scale crossed zero, which the form precludes.
@@ -1264,6 +1287,17 @@ class TetrisStateNet(nn.Module):
                     projected = ((1+torch.tanh(self.pixel_query_level[0]))*projected
                                  +self.pixel_query_level[1])
                 occupancy_features = occupancy_features+projected
+                if self.occupancy_pixel_edge is not None:
+                    # declared m44 representation: the raster's value on each of this cell's four
+                    # edge midpoints, so the read can see whether the fill stops at this cell's
+                    # boundary instead of inferring that from interior statistics alone. the edges
+                    # are read at the same declared placement, nothing is fitted about where they
+                    # sit, and the zero-initialized projection keeps step zero the published
+                    # function.
+                    edges = sample_features(pixels, placement, self.coordinates,
+                                            self.pixel_query_edge_offsets)[0]
+                    occupancy_features = occupancy_features+self.occupancy_pixel_edge(
+                        edges.reshape(edges.shape[0], edges.shape[1], -1))
             occupancy_logits = self.occupancy(occupancy_features).reshape(batch, rows, columns)
             if self.read_calibration is not None:
                 occupancy_logits = standardise_board(occupancy_logits, self.config.visible_rows,
