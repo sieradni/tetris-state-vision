@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`. All fail
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3738,3 +3738,18 @@ reproduced the winner bit-exactly (`eddec1fd…`); the arm is `8,026,058` parame
 precision, and the two information arms aimed at it (M42's support, M44's boundary) both added false positives. The
 specific next direction the negative names is *interior contrast* - the cell measured against its own inside, which
 cancels the background transition - declared as its own arm.
+M45 built the feature that negative named - the cell's edge midpoints read against its own interior mean, so the
+background transition cancels - and it is **also harmful**: `docs/evidence/m45-interior-contrast-r1/scope.json`
+records F1 at `0.0` `0.183550`, AUC `0.916312`, best swept `0.559671`, deltas `-0.189332` / `-0.038217` /
+`-0.130104`, gates per-cell/ranking false, attribution true. Per-cell precision at the fixed crossing fell
+`0.230430` -> `0.101145` and the late-row mass went `140` -> `883` (baseline reconciled to the control's own `140`;
+M43's `173` and M44's `240` were those arms' counts). The mechanism is measured: the bias stayed small and the
+empty-cell median margin barely moved, but the tail below zero lost `1,186` cells, because a featureless background
+cell and its ring are equal by construction - contrast spends the level evidence that made far-empty cells easy.
+Control `m45-control-winner-config` reproduced `eddec1fd…` bit-exactly; the arm is `2,496` parameters above the
+control with checkpoint `05ef2e09…`.
+
+**Where the campaign stands after M45:** recall `0.990654`, precision `0.101145`, and four arms aimed at the
+precision deficit (M42 support decision, M43 column step, M44 boundary value, M45 interior contrast) all lost it.
+Additive raster statistics are closed as a shape: the next arm keeps the absolute cell reading and adds a raster
+term only where a local edge exists, declared as its own change.

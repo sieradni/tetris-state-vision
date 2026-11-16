@@ -99,6 +99,70 @@ above is met.
 
 No branch is re-run for a better number. A negative or neutral result is reported as the result.
 
+## Measured
+
+Recorded `docs/evidence/m45-interior-contrast-r1/scope.json` and `diagnosis.json`, one seed, one run, `64` steps,
+after the predeclaration at `a9fd8f5`.
+
+| read | F1 at `0.0` | AUC | best swept |
+|---|---|---|---|
+| control = winner `m30-level-calibrate-r5` | `0.372881` | `0.954529` | `0.689775` |
+| **M45 `m45-interior-contrast`** | **`0.183550`** | **`0.916312`** | **`0.559671`** (at `2.85`) |
+| delta | **`-0.189332`** | **`-0.038217`** | **`-0.130104`** |
+
+Gates per-cell / ranking / attribution: false / false / true (anchored registration the same), `cleared` false, and
+`short_stage` `placement`. Split against the `0.443205` span: closure `+0.015697`, placement `-0.070858`,
+representation `+0.498367` (fractions `+0.035417` / `-0.159877` / `+1.124461`, sum asserted `1.0`).
+
+**Verdict: `harmful`.** Both predeclared harmful falsifiers fired - F1 at `0.0` lost far more than `0.010`, and AUC
+is below the `0.949529` floor, let alone the `0.954529` reference. The arm is recorded and is not re-run at another
+radius, sample count or offset.
+
+### Per-cell precision at the fixed crossing: it fell
+
+| at the fixed `0.0` boundary | control | M45 | change |
+|---|---|---|---|
+| true positives | `209` | `212` | `+3` |
+| false negatives | `5` | `2` | `-3` |
+| false positives | `698` | `1,884` | `+1,186` |
+| true negatives | `2,074` | `888` | `-1,186` |
+| precision | `0.230430` | `0.101145` | **`-0.129285`** |
+| recall | `0.976636` | `0.990654` | `+0.014018` |
+
+So the answer to the axis's question is explicit: **per-cell precision at the fixed crossing did not rise, it fell
+by `0.129285`**. Recall rose by three cells, which is not the quantity the axis was about.
+
+### The high-margin late-row mass, reconciled and per row
+
+The comparison is against the **control's `140` false positives in rows 10-19** (the bit-exact winner's own count,
+re-measured as `140` in M44 too); M43's `173` was that arm's count and M44's `240` was its own arm's - neither is
+this pass's baseline. Per row, before -> now:
+
+| row | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| before | 0 | 18 | 45 | 107 | 58 | 119 | 64 | 39 | 81 | 27 | 0 | 0 | 0 | 0 | 1 | 111 | 2 | 26 | 0 | 0 |
+| now | 44 | 59 | 71 | 109 | 122 | 120 | 131 | 128 | 131 | 86 | 35 | 12 | 58 | 82 | 22 | 169 | 85 | 159 | 153 | 108 |
+
+Rows 10-19 went **`140` -> `883`** (`+743`), and it is not a late-row effect: every band rose, including rows
+`0-9` (`400` -> `1,001`) and the column profile (`0`/`1`/`2`... `187`/`314`/`308`, falling to `0` at column `9`).
+
+### Mechanism, measured rather than assumed
+
+The projection's bias did not acquire a large offset (`bias` norm `0.0418`, mean `1.4e-4`; `weight` norm `0.2520`),
+so the lift is the feature's own consequence, not a shifted operating point. The empty-cell margin median barely
+moved - `1.633866` for the control, `1.662931` for the arm - while the **tail below zero lost `1,186` cells**: the
+arm converts the control's most confidently negative cells (deep, featureless background) into positive ones. That
+is intrinsic to a pure contrast statistic: where a cell and its ring are both plain background the difference is
+near zero, so the feature carries almost no evidence exactly where the control's read was most confident, and the
+`4x`-weighted objective spends that lost information by raising the empty region. Contrast *removes the level
+information* that made far-empty cells easy, at the same time as it removes the background confound; at this budget
+the loss dominates the gain.
+
+**What that leaves standing:** interior contrast is not sufficient alone as a per-cell precision lever, and additive
+raster features at fixed budget have now cost precision twice (M44 boundary value, M45 contrast). An arm that wants
+this signal must keep the absolute cell reading (which supplies the level) and use contrast only as a *conditional*
+addition where a local edge exists, and that is a different declared change, not a variant of this one.
+
 ## Receipts
 
 `runs/m45-control-winner-config{,-profile}`, `runs/m45-interior-contrast{,-profile,-registration}`,

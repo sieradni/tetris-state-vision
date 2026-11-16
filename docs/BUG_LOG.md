@@ -3516,3 +3516,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   pattern becomes the standing instrument; the receipt/collision refusal that caught it is recorded here so the
   next driver reuse is written knowing it.
 - Named green runs: `runs/m44-pixel-edge-job.json` and `runs/m44-pixel-edge-registration-job.json`.
+
+## V-174 - CLOSED: an interrupted inspection command reported an unknown outcome beside a live driver
+
+- Symptom: one `sleep`-based inspection command returned `Local operation outcome is unknown` and was interrupted
+  while the detached M45 driver was still running, so neither the inspection nor the driver's state was visible
+  from that call.
+- Root cause: the inspection held the shell for its whole `sleep` window, so the interruption landed on the
+  inspection rather than on the work being inspected; the driver itself was detached and unaffected.
+- Change: none in code. The driver's own log and receipts were read instead, and they show it completed every stage
+  (`m45-control-winner-config`, `m45-interior-contrast-profile`, `m45-interior-contrast`,
+  `m45-interior-contrast-registration`, all exit `0`), with the control's checkpoint bit-exact (`eddec1fd…`).
+- Detection class: interrupted instrumentation - first occurrence. Long waits are inspected by polling the log
+  rather than by holding a `sleep` in the command, which is the standing instrument from here.
+- Named green runs: `runs/m45-interior-contrast-drive.py` log `runs/m45-interior-contrast.log`, receipt
+  `runs/m45-interior-contrast-r1-job.json`, and the full suite in `runs/m45-suite-r1-job.json`.
