@@ -3825,3 +3825,21 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   paths can no longer drift apart unnoticed.
 - Detection class: copied-arm field drift - second occurrence of the shape recorded as V-191, and the first on a field
   that would have silently swapped the measurement's subject rather than merely crashed.
+
+## V-193 - the consensus floor took the topmost row because the bottoms were sorted ascending
+
+- Symptom: the first `--detect-only` run of M54's instrument reported a population mean of `3.741565` cells with `11`
+  boards over the gate (`runs/m54-floor-consensus-detect-r1`), and the second `9.994000` with `24` over
+  (`runs/m54-floor-consensus-detect-r2`), both far worse than the M53 arm they extend.
+- Root cause: two errors in the same decision. The first build chose the **modal** bottom, which is usually a tall
+  occupied row and not the floor. The second fixed that by taking the first cluster in the list - but the bottoms are
+  sorted ascending in image coordinates, so index `0` is the **topmost** row, and the frame was moved up by up to
+  seventeen cells. Neither build wrote a receipt, because the detect-only path stops before scoring.
+- Change: the floor is the lowest *pinned* row (`clusters[-1]` among those with at least `MIN_FLOOR_BLOCKS` members),
+  and the correction is one-sided - `floor_consensus.row_correction` refuses any row above the box's bottom and records
+  the reason, which is exactly what separates the `20261031` case from the `20261027`/`20261033` case.
+- Prevention: `tests/test_m54_floor_consensus.py` pins the direction explicitly (agreement, pinned-below, pinned-above,
+  unpinned, gridless) and its lattice tests assert that a corrected origin lands on the known floor; the bounded
+  `--detect-only` pass is the instrument that caught both builds before a scoring run was spent.
+- Detection class: coordinate-sense error in a geometric instrument - first occurrence; instrument: the detect-only pass
+  plus the synthetic-stack tests.

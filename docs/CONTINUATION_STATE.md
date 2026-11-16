@@ -1,5 +1,32 @@
 # Contributor handoff — 2026-10-30
 
+## A floor the blocks agree on is the best geometry yet, and the gate is now blocked by two snaps and two boxes (M54, 2026-11-16)
+
+[M54_FLOOR_CONSENSUS.md](M54_FLOOR_CONSENSUS.md) keeps M53's stack anchors and replaces one decision: the row correction
+comes from the bottom row pinned by at least `MIN_FLOOR_BLOCKS = 2` components within `FLOOR_AGREEMENT = 0.15` cells,
+applied **one-sided** (pinned ink below the box's bottom means the box stopped short; a pinned row above it is an empty
+bottom row and moves nothing), with an unpinned floor keeping M51's box. Same `2,986` cells, `28` boards, `30`
+statistics, same folds, threshold `0.0`. Receipt `docs/evidence/m54-floor-consensus-read/scope.json` (bounded run passed,
+`63.453` s, `725,991,424` B of the declared `1024` MiB); declaration committed as `e706fa3`, strictly before the
+measurement.
+
+| sampling | F1@0 | AUC | TP / FP / FN |
+|---|---|---|---|
+| target lattice | `0.974763` | `0.999195` | 309 / 16 / 0 |
+| M51 detected box | `0.904376` | `0.933275` | 279 / 29 / 30 |
+| M52 interior fit | `0.893268` | `0.908824` | 272 / 28 / 37 |
+| M53 stack anchor | `0.919192` | `0.910164` | 273 / 12 / 36 |
+| **M54 consensus floor** | **`0.944724`** | `0.922077` | 282 / 6 / 27 |
+
+Verdict `floor-fallback`, as predeclared: mean displacement `0.363060` cells (best of any arm, `4` of `28` over the gate,
+worst `5.103766`), no-regression cleared **against M53** and failing only on `training-20261027-v0/-v1`, whose damage is
+the unchanged horizontal snap. Both `training-20261031` boards stay at `0.000000`. The falsifier is missed
+(`0.363060 > 0.25`) and the four boards carrying it are named with their causes: two horizontal snaps (`0.654800` each)
+and `training-20261030-v1` / `training-20261035-v2` (`5.103766` / `2.034900`), whose boxes are wrong and whose blocks pin
+no floor at all. Named next: **M55, x phase from column occupancy** (two snap boards to `<= 0.10`, mean to `0.316000`),
+then **M56, a well-frame fit** for the two captures no cell-level anchor can reach (`<= 0.22` mean, `0.25` gate cleared;
+M57 is the fixed-crossing recalibration).
+
 ## The stack anchors are the first geometry that places the two unreachable boards, and they cost six others (M53, 2026-11-16)
 
 [M53_STACK_ANCHOR.md](M53_STACK_ANCHOR.md) applies the committed read at a lattice anchored to the visible blocks' own
