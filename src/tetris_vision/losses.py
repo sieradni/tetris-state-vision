@@ -438,6 +438,14 @@ def require_occupancy_support_crossing(value, summary):
         raise ValueError("occupancy support crossing differs from resource admission")
 
 
+def require_occupancy_pixel_contrast(value, summary):
+    """One declaration of the admission join for the interior-contrast read."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_pixel_contrast", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_pixel_contrast", 0) != value):
+        raise ValueError("occupancy pixel contrast differs from resource admission")
+
+
 def require_occupancy_pixel_edge(value, summary):
     """One declaration of the admission join for the pixel edge ring."""
     if (type(value) is not int or value not in (0, 1) or

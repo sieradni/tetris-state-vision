@@ -37,6 +37,7 @@ class ModelConfig:
     occupancy_support_crossing: int = 0
     occupancy_column_step_crossing: int = 0
     occupancy_pixel_edge: int = 0
+    occupancy_pixel_contrast: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -91,6 +92,10 @@ class ModelConfig:
               "occupancy_column_step_crossing is 0 (off) or 1 (each column is decided at its own step)")
         check(type(self.occupancy_pixel_edge) is int and self.occupancy_pixel_edge in (0, 1),
               "occupancy_pixel_edge is 0 (off) or 1 (the four edge midpoints join the pixel read)")
+        check(type(self.occupancy_pixel_contrast) is int and self.occupancy_pixel_contrast in (0, 1),
+              "occupancy_pixel_contrast is 0 (off) or 1 (the cell is read against its own ring)")
+        check(not self.occupancy_pixel_contrast or self.occupancy_pixel_query,
+              "the interior contrast needs the declared pixel read to place it")
         check(not self.occupancy_pixel_edge or self.occupancy_pixel_query,
               "the edge ring needs the declared pixel read to place it")
         for name, value in (("pixel_query_level", self.pixel_query_level),
@@ -1068,6 +1073,18 @@ class TetrisStateNet(nn.Module):
         # zero-initialized projection, so step zero is the published function and the arm is strictly
         # additive. The offsets are exactly half a cell outwards, which the declared in-cell grid never
         # reaches; nothing is learned about where they sit and no annotation is read.
+        # declared m45 interior contrast: the same four edge midpoints, expressed against the cell's
+        # own interior mean per channel, so a board-wide background transition lifts both sides and
+        # cancels in the difference. Zero-initialized, so step zero is the published function; the ring
+        # offsets are exactly half a cell out and the interior is the declared in-cell grid.
+        self.occupancy_pixel_contrast = None
+        if config.occupancy_pixel_contrast:
+            self.occupancy_pixel_contrast = nn.Linear(PIXEL_QUERY_EDGE_FEATURES, dimension)
+            nn.init.zeros_(self.occupancy_pixel_contrast.weight)
+            nn.init.zeros_(self.occupancy_pixel_contrast.bias)
+            ring = torch.tensor([[-.5, 0.], [.5, 0.], [0., -.5], [0., .5]]).reshape(
+                1, 1, PIXEL_QUERY_EDGE_SAMPLES, 2)
+            self.register_buffer("pixel_query_contrast_offsets", ring, persistent=False)
         self.occupancy_pixel_edge = None
         if config.occupancy_pixel_edge:
             self.occupancy_pixel_edge = nn.Linear(PIXEL_QUERY_EDGE_FEATURES, dimension)
@@ -1287,6 +1304,20 @@ class TetrisStateNet(nn.Module):
                     projected = ((1+torch.tanh(self.pixel_query_level[0]))*projected
                                  +self.pixel_query_level[1])
                 occupancy_features = occupancy_features+projected
+                if self.occupancy_pixel_contrast is not None:
+                    # declared m45 representation: each of the cell's four edge midpoints minus the
+                    # cell's own interior mean for that channel, so a board-wide background
+                    # transition - which lifts the interior and the ring together - cancels in the
+                    # difference and only the cell's own step against its surroundings remains.
+                    # nothing is fitted about where either sample sits, and the projection is
+                    # zero-initialized, so step zero is the published function.
+                    interior = sample_features(pixels, placement, self.coordinates,
+                                              self.pixel_query_offsets)[0].mean(dim=2)
+                    ring = sample_features(pixels, placement, self.coordinates,
+                                           self.pixel_query_contrast_offsets)[0]
+                    contrast = (ring-interior[:, :, None, :]).reshape(
+                        ring.shape[0], ring.shape[1], -1)
+                    occupancy_features = occupancy_features+self.occupancy_pixel_contrast(contrast)
                 if self.occupancy_pixel_edge is not None:
                     # declared m44 representation: the raster's value on each of this cell's four
                     # edge midpoints, so the read can see whether the fill stops at this cell's
