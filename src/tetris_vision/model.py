@@ -711,10 +711,10 @@ def support_crossing_shift(logits, lattice, valid, rows, columns, visible_rows):
     offset = ((predicted_top-support_top)/row_height).clamp(-rows, rows)
     profile = logits[:, :visible_rows].mean(dim=2)
     height = (profile > 0).sum(dim=1).to(logits.dtype)
-    target = (height+offset).clamp(0, visible_rows-1)
-    lower = target.floor().long().clamp(0, visible_rows-1)
+    crossing_row = (height+offset).clamp(0, visible_rows-1)
+    lower = crossing_row.floor().long().clamp(0, visible_rows-1)
     upper = (lower+1).clamp(max=visible_rows-1)
-    fraction = (target-lower.to(logits.dtype)).unsqueeze(1)
+    fraction = (crossing_row-lower.to(logits.dtype)).unsqueeze(1)
     level = (profile.gather(1, lower[:, None])*(1-fraction)
              +profile.gather(1, upper[:, None])*fraction).squeeze(1)
     return logits-level[:, None, None]

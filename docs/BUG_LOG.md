@@ -3453,3 +3453,18 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   live flag.
 - Named green runs: `runs/m42-support-crossing-job.json` (study, peak `1,056,350,208`),
   `runs/m42-support-crossing-r1-job.json` (score, 128 MiB).
+
+## V-170 - CLOSED: a local variable name in the new rule tripped the read's source scan
+
+- Symptom: `test_no_guarded_word_enters_the_reads_source_slice` failed with `'target' unexpectedly found in`
+  the scanned `Model.forward` slice, at the suite run after the arm landed.
+- Root cause: the rule interpolates the crossing height along the column profile, and the obvious name for the
+  interpolated row was one of the guard's five tokens. The guard is deliberately token-based and conservative -
+  it cannot tell a variable named after the scoring vocabulary from a leak - so it was right to fail.
+- Change: the variable is now `crossing_row`; behaviour is unchanged (same tensors, same numbers, verified by
+  `tests.test_m42_support_crossing` and re-green by the suite).
+- Detection class: source-slice vocabulary - the same class as V-157 and V-164, and this is the standing
+  instrument's third catch. It fired before the failing run reached any receipt, so nothing was measured with it.
+- Instrument: `tests/test_m37_fusion.py::SourceScanTest::test_no_guarded_word_enters_the_reads_source_slice`,
+  plus the local pre-check used here (scanning the same slice for the same five tokens before running the suite).
+- Named green runs: the suite at the commit that follows (`runs/m42-suite-r2-job.json`).
