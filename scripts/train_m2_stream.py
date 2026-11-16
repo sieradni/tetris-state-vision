@@ -71,6 +71,11 @@ def arguments(argv=None):
     parser.add_argument("--occupancy-support-crossing", type=int, choices=(0, 1), default=0,
                         help="declared M42 decision rule: the raster's support sets each board's crossing "
                              "level, with every sampled point left where the network put it")
+    parser.add_argument("--occupancy-column-step-crossing", type=int, choices=(0, 1), default=0,
+                        help="declared M43 decision rule: each column is decided at its own sharpest "
+                             "row-to-row descent - one constant per column, no parameter, no annotation "
+                             "and no prevalence - so the cells above a column's run lose the offset that "
+                             "made them read positive")
     parser.add_argument("--occupancy-balance", type=int, choices=(0, 1), default=0,
                         help="declared M30 data-derived class budget in the occupancy loss")
     parser.add_argument("--occupancy-context", type=int, choices=(0, 1), default=0,
@@ -601,7 +606,7 @@ def owned_initial_source(source, *, output):
     return source
 
 
-def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_read_level=0, occupancy_support_crossing=0, occupancy_balance=0, occupancy_mass=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
+def validate_admission(summary, job, *, catalogue, model, config, ceiling, development_groups, supervisor_sha, curriculum="stream-v1", type_head_rate_factor=1, identity_factor=1, endpoint_term="joint", occupancy_factor=1, positive_weight=1, accumulation_policy=None, profile_work_items=2, freeze_backbone=False, init_weights_from=None, max_side=512, occupancy_context=0, occupancy_pixel_query=0, pixel_query_level=0, occupancy_read_standardise=0, occupancy_read_level=0, occupancy_support_crossing=0, occupancy_column_step_crossing=0, occupancy_balance=0, occupancy_mass=0, occupancy_detail=0, occupancy_detail_stencil=0, occupancy_resolution=0, occupancy_deform=0, geometry_final_only=0, lattice_support=0, box_extent_weight=0.0, support_anchor_weight=0.0,
                    lattice_residual=0, occupancy_lattice_free=0, occupancy_free_stencil=0,
                    lattice_board_refine=0, occupancy_pair_rank=0, occupancy_pair_gap=0,
                    occupancy_placed=0, occupancy_column=0, occupancy_offset_rows=0,
@@ -636,6 +641,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
                                      require_pixel_query_level, require_occupancy_read_standardise,
                                      require_occupancy_balance, require_occupancy_read_level,
                                      require_occupancy_support_crossing,
+                                     require_occupancy_column_step_crossing,
                                      require_occupancy_mass,
                                      require_occupancy_detail, require_occupancy_detail_stencil,
                                      require_occupancy_resolution, require_occupancy_factor,
@@ -662,6 +668,7 @@ def validate_admission(summary, job, *, catalogue, model, config, ceiling, devel
     require_occupancy_read_standardise(occupancy_read_standardise, summary)
     require_occupancy_read_level(occupancy_read_level, summary)
     require_occupancy_support_crossing(occupancy_support_crossing, summary)
+    require_occupancy_column_step_crossing(occupancy_column_step_crossing, summary)
     require_occupancy_mass(occupancy_mass, summary)
     require_occupancy_balance(occupancy_balance, summary)
     require_occupancy_detail(occupancy_detail, summary)
@@ -950,6 +957,7 @@ def main(argv=None, *, _archive=None, _started=None):
                      occupancy_read_standardise=args.occupancy_read_standardise,
                      occupancy_read_level=args.occupancy_read_level,
                      occupancy_support_crossing=args.occupancy_support_crossing,
+                     occupancy_column_step_crossing=args.occupancy_column_step_crossing,
                      occupancy_balance=args.occupancy_balance,
                      occupancy_detail=args.occupancy_detail,
                      occupancy_detail_stencil=args.occupancy_detail_stencil,
@@ -989,6 +997,7 @@ def main(argv=None, *, _archive=None, _started=None):
                            occupancy_read_standardise=args.occupancy_read_standardise,
                            occupancy_read_level=args.occupancy_read_level,
                            occupancy_support_crossing=args.occupancy_support_crossing,
+                           occupancy_column_step_crossing=args.occupancy_column_step_crossing,
                            occupancy_balance=args.occupancy_balance,
                            occupancy_mass=args.occupancy_mass,
                            occupancy_detail=args.occupancy_detail,
@@ -1035,6 +1044,7 @@ def main(argv=None, *, _archive=None, _started=None):
                                                     "occupancy_read_standardise",
                                                     "occupancy_balance", "occupancy_read_level",
                                                     "occupancy_support_crossing",
+                                                    "occupancy_column_step_crossing",
                                                     "occupancy_mass",
                                                     "occupancy_detail_stencil",
                                                     "occupancy_resolution", "occupancy_deform",
@@ -1203,6 +1213,7 @@ occupancy_mass=args.occupancy_mass)
     recovery_contract["occupancy_mass"] = args.occupancy_mass
     recovery_contract["occupancy_read_level"] = args.occupancy_read_level
     recovery_contract["occupancy_support_crossing"] = args.occupancy_support_crossing
+    recovery_contract["occupancy_column_step_crossing"] = args.occupancy_column_step_crossing
     recovery_contract["occupancy_balance"] = args.occupancy_balance
     recovery_contract["occupancy_detail"] = args.occupancy_detail
     recovery_contract["occupancy_detail_stencil"] = args.occupancy_detail_stencil

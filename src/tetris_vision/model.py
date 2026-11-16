@@ -35,6 +35,7 @@ class ModelConfig:
     occupancy_read_standardise: int = 0
     occupancy_read_level: int = 0
     occupancy_support_crossing: int = 0
+    occupancy_column_step_crossing: int = 0
     occupancy_balance: int = 0
     occupancy_detail: int = 0
     occupancy_detail_stencil: int = 0
@@ -85,6 +86,8 @@ class ModelConfig:
               "occupancy_read_level is 0 (off) or 1 (the board defines the read's level)")
         check(type(self.occupancy_support_crossing) is int and self.occupancy_support_crossing in (0, 1),
               "occupancy_support_crossing is 0 (off) or 1 (the support sets the board's crossing)")
+        check(type(self.occupancy_column_step_crossing) is int and self.occupancy_column_step_crossing in (0, 1),
+              "occupancy_column_step_crossing is 0 (off) or 1 (each column is decided at its own step)")
         for name, value in (("pixel_query_level", self.pixel_query_level),
                             ("occupancy_read_standardise", self.occupancy_read_standardise),
                             ("occupancy_balance", self.occupancy_balance)):
@@ -284,6 +287,49 @@ def otsu_board(logits, visible_rows):
     if level.shape != (batch,):
         raise ValueError("the crossing level must be one number per board")
     return logits-level[:, None, None]
+
+
+COLUMN_STEP_EPSILON = 1e-4
+
+
+def column_step_crossing(logits, visible_rows):
+    """Decide each column at the sharpest step its own read shows, one column at a time.
+
+    The M42 diagnosis located the remaining mass: at the fixed `0.0` boundary the read puts moderate positive
+    values on cells *above* each column's step, so the board's vertical structure is close while the level of
+    every column sits too low. That mass is per column - a column's own run ends somewhere, and everything above
+    that end carries the same small positive offset - so a board-wide level cannot remove it without also removing
+    each column's genuine top cells.
+
+    Two annotation-free statistics were available for a per-column level. Mass balance - the split that equalises the
+    read's sum on both sides, which is the M17 emission maximised per column - is attracted *upward* by exactly
+    the spurious upper blob this rule exists to remove, because a blob contributes mass. The step is the other
+    statistic: a locked stack is a step function, so the column's own sharpest row-to-row descent is its own
+    statement about where it ends, and an upper blob whose own end is softer does not move it. This rule takes
+    `argmax_h (read[h-1] - read[h])` over the visible rows (bottom-first) and subtracts the midpoint of that pair,
+    so `0.0` downstream is that column's own step.
+
+    It reads no annotation, no class frequency, no search grid, no fitted weight and no parameter; it is one constant
+    per column, so the order of cells inside a column is untouched and it is fully deterministic (ties resolve to
+    the lowest row). A column whose largest difference is not a descent - a flat or rising column - has no step to
+    find and is returned exactly as it was, which is the declared identity rather than a guess.
+    """
+    batch, rows, columns = logits.shape
+    if rows < visible_rows or columns < 1:
+        raise ValueError("the column step rule needs a board tensor")
+    if visible_rows < 2:
+        return logits
+    visible = logits[:, :visible_rows]
+    descent = visible[:, :-1]-visible[:, 1:]
+    position = descent.argmax(dim=1)
+    best = descent.gather(1, position[:, None]).squeeze(1)
+    lower = visible.gather(1, position[:, None]).squeeze(1)
+    upper = visible.gather(1, (position+1)[:, None]).squeeze(1)
+    level = torch.where(best > 0, (lower+upper)/2.0, torch.zeros_like(best))
+    if level.shape != (batch, columns):
+        raise ValueError("the column step rule must produce one level per column")
+    shifted = visible-level[:, None, :]
+    return torch.cat((shifted, logits[:, visible_rows:]), 1)
 
 
 SKYLINE_PENALTY = 1.0
@@ -1288,6 +1334,11 @@ class TetrisStateNet(nn.Module):
             if self.config.occupancy_support_crossing:
                 occupancy_logits = support_crossing_shift(occupancy_logits, lattice, valid, rows, columns,
                                                          self.config.visible_rows)
+            if self.config.occupancy_column_step_crossing:
+                # declared m43 decision rule: each column is decided at its own sharpest step, one
+                # constant per column, so the cells above a column's run lose the offset they were
+                # carrying without any sample moving and without touching the order inside a column.
+                occupancy_logits = column_step_crossing(occupancy_logits, self.config.visible_rows)
             if self.config.occupancy_stack_monotone:
                 # Declared structural option: the read loses the freedom to scatter its per-column profile, so the
                 # crossing of `0.0` is the column's height rather than a level a term has to place.

@@ -89,6 +89,8 @@ def diagnose(probe, fixed):
         "cells": len(cells), "boards": len({sample for sample, *_ in cells}),
         "errors_at_zero": {key: summary(points) for key, points in errors.items()},
         "false_positive_bands": bands,
+        "false_positives_by_row": {str(row): sum(1 for r, _, _ in errors["false_positive"] if r == row)
+                                   for row in range(20)},
         "false_positives_by_column": {str(column): sum(1 for _, col, _ in errors["false_positive"]
                                                     if col == column) for column in range(10)},
         "precision_at_zero": round(counted["true_positive"]/max(counted["true_positive"] +
@@ -169,7 +171,19 @@ def main():
     was = earlier["errors_at_zero"]["false_positive"]
     now = diagnosis["errors_at_zero"]["false_positive"]
     weakest_positive = diagnosis["errors_at_zero"]["true_positive"].get("margin_low")
+    anchor_diagnosis = diagnose(anchor_probe, fixed)
+    anchor_rows = anchor_diagnosis["false_positives_by_row"]
+    arm_rows = diagnosis["false_positives_by_row"]
+    late = [str(row) for row in range(10, 20)]
     comparison = {
+        "anchor_false_positives": anchor_diagnosis["errors_at_zero"]["false_positive"]["count"],
+        "anchor_false_positive_median": anchor_diagnosis["errors_at_zero"]["false_positive"].get("margin_median"),
+        "anchor_false_positives_by_row": anchor_rows,
+        "arm_false_positives_by_row": arm_rows,
+        "per_row": {row: {"before": anchor_rows[row], "now": arm_rows[row]}
+                    for row in sorted(anchor_rows, key=int)},
+        "late_rows_10_19_before": sum(anchor_rows[row] for row in late),
+        "late_rows_10_19_now": sum(arm_rows[row] for row in late),
         "earlier_receipt": str(args.m35_diagnosis.relative_to(ROOT)).replace("\\", "/"),
         "false_positives_before": was["count"],
         "false_positives_now": now["count"],
@@ -246,7 +260,9 @@ def main():
                       "bar_met": result["bar"]["met"], "short_stage": result["short_stage"],
                       "split": [result["span_points"], result["placement_points"],
                                 result["representation_points"]],
-                      "comparison": comparison,
+                      "comparison": {key: comparison[key] for key in
+                                     ("anchor_false_positives", "late_rows_10_19_before",
+                                      "late_rows_10_19_now", "per_row")},
                       "diagnosis": {"errors": diagnosis["errors_at_zero"],
                                     "precision": diagnosis["precision_at_zero"],
                                     "recall": diagnosis["recall_at_zero"],

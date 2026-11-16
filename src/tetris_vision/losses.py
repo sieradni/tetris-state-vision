@@ -438,6 +438,14 @@ def require_occupancy_support_crossing(value, summary):
         raise ValueError("occupancy support crossing differs from resource admission")
 
 
+def require_occupancy_column_step_crossing(value, summary):
+    """One declaration of the admission join for the per-column step crossing."""
+    if (type(value) is not int or value not in (0, 1) or
+            summary.get("arguments", {}).get("occupancy_column_step_crossing", 0) != value or
+            summary.get("recovery_contract", {}).get("occupancy_column_step_crossing", 0) != value):
+        raise ValueError("occupancy column step crossing differs from resource admission")
+
+
 def require_occupancy_read_standardise(value, summary):
     """One declaration of the admission join for the label-free read standardisation."""
     if (type(value) is not int or value not in (0, 1) or
