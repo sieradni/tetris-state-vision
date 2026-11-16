@@ -125,6 +125,121 @@ boards that are detected: detected-box F1 at `0.0` `0.70`-`0.90`, AUC `0.93`-`0.
 
 No branch is re-run for a better number.
 
+## Measured
+
+`docs/evidence/m50-board-box-read/scope.json` and its `diagnosis.json`: one execution, one pass, the committed
+read-out on the same `2,986` cells at three samplings, no training and no refit on this arm's inputs. The
+reconstruction reproduces the committed `pixel_logits` to `4.98e-07`, and every board's target-lattice statistics
+reproduce the committed `features_sha256`.
+
+| read (same 30 statistics, same cells, fixed `0.0`) | F1@0 | AUC | best swept |
+|---|---|---|---|
+| committed read-out at the **target** lattice | `0.974763` | `0.999195` | `0.987179` |
+| committed read-out at the **predicted** lattice (M48) | `0.037152` | `0.442341` | `0.037152` |
+| committed read-out at the **detected board box** (this arm) | **`0.979200`** | **`0.999150`** | `0.985507` (at `0.90`) |
+| winner control (its own learned head) | `0.372881` | `0.954529` | `0.689775` |
+
+**Verdict: the declared branch `box-partial` lands, as predicted, and the reason is the displacement gate alone.** The
+read is not partially recovered - it is fully recovered and slightly ahead of the target lattice at the fixed
+crossing (`0.979200` against `0.974763`), with AUC within `0.000045` of it. What misses is the population **mean**
+detected-vs-target displacement (`0.802227` cells against the declared `0.25`), and that mean is two captures.
+
+### Complete contingency table at the fixed `0.0` crossing
+
+| at `0.0` | target | predicted | **detected box** |
+|---|---|---|---|
+| true positives | `309` | `6` | **`306`** |
+| false negatives | `0` | `303` | **`3`** |
+| false positives | `16` | `8` | **`10`** |
+| true negatives | `2,661` | `2,669` | **`2,667`** |
+| precision | `0.950769` | `0.428571` | **`0.968354`** |
+| recall | `1.000000` | `0.019417` | **`0.990291`** |
+
+### The late-count profile, reconciled to the control
+
+| row band | control (its own head) | detected-box read-out |
+|---|---|---|
+| rows 0-9 false positives | `400` | `0` |
+| rows 10-19 false positives | `140` | `10` |
+| total false positives | `698` | `10` |
+
+Per row: `8` at row 16, `2` at row 17, zero elsewhere. Unlike M49 this is a like-for-like reading - the arm predicts
+positively on `306` of `309` occupied cells - so the late band's ten false positives are real errors, not the shadow of
+an arm that never fires, and they are `92.9%` below the control's `140`.
+
+### Margin distributions
+
+| class | count | median margin | lowest margin |
+|---|---|---|---|
+| true positive | `306` | `+6.411599` | `+1.564623` |
+| false positive | `10` | `+2.532209` | `+0.707313` |
+| false negative | `3` | `-8.792206` | `-8.792206` |
+| true negative | `2,667` | `-11.661230` | `-68.717728` |
+
+The `3` false negatives sit at `-8.79`, far below the crossing rather than beside it: they are cells sampled outside the
+board, which is what the two mis-detected captures do.
+
+### The detector, measured on the same boards
+
+| statistic | value |
+|---|---|
+| mean detected-vs-target displacement (population, cells) | `0.802227` |
+| median board's median displacement (cells) | `0.061328` |
+| worst board's mean displacement (cells) | `13.509043` |
+| p90 of the pooled per-cell displacement (cells) | `0.988148` |
+| mean width / height scale error (cells) | `0.043312` / `0.017508` |
+
+Against M49's measured frame-extent error (`3.325530`x width, `1.736611`x height, `8.256949` cells), the box detector
+removes both errors: the scale error falls to `0.043312` cells in width and `0.017508` in height, and the mean
+displacement falls from `8.256949` to `0.802227` cells - `89.7%` of it, and `99.1%` of the *median* removed.
+
+The residual is concentrated, exactly where the instrument check said it would be: `training-20261035-v2`
+(`13.509043` cells) and `training-20261030-v1` (`7.389043` cells). Both are captures whose well is drawn without a
+usable pair of full-height bright walls - one's walls fall below the candidate share, the other's left wall is dim
+enough to fall below `EDGE` - so the detector selects a panel-plus-wall rectangle instead. Every other board is
+placed to a fraction of a cell.
+
+**Label defect, recorded rather than rewritten.** The frozen receipt's `geometry.detection.recipe` string reads
+`bright-frame interior of the captured well` - the label of the detector's first draft, which the declared recipe in
+this document replaced (`tallest ten-by-twenty wall rectangle in the capture`). The evidence was produced by the
+wall-run detector, and the receipt pins that code by digest in `sources`; the string is stale, the numbers are not.
+It is logged as V-187 rather than edited into the frozen receipt.
+
+## Answering the campaign's question
+
+**A board-box lattice buys the read back.** The same thirty statistics and the same committed read-out score
+`0.979200` F1 at the fixed `0.0` crossing and `0.999150` AUC when sampled at a label-free detection of each capture's
+own well - against `0.974763` / `0.999195` at the target lattice, `0.037152` / `0.442341` at the model's predicted
+lattice, and `0.372881` / `0.954529` for the winner's own learned head. The geometry axis is closed on the raster side:
+the ceiling is reachable from the raster alone, with no training, no label and no fitted constant, and the
+`0.25`-cell gate the campaign set for itself is missed only by two named captures.
+
+## Re-ranked successors
+
+| rank | next arm | headroom | cost | falsifier |
+|---|---|---|---|---|
+| 1 | **detector repair on the two named captures**: a wall-free fallback (grid-periodic spacing or a stack-containment constraint) for captures whose well has no usable wall pair | the read already measures `0.979200` F1 at `0.0`; the only remaining geometry defect is `2` of `28` boards, and repairing them is the difference between a `0.802227` and a `~0.06`-cell population mean | one read-only detection pass, no forward, no read | population mean displacement `> 0.25` cells after the repair: the detector family cannot cover these captures and the box axis is closed at `26`/`28` |
+| 2 | **give the decision the detected box**: the winner's own head reads at the detected lattice instead of its predicted one, no new parameter | the winner's read is `0.372881` F1 at `0.0` against the ceiling's `0.974763`, and the geometry that reaches it is now available per board, label-free | one `64`-step run, or a read-only re-score first | head F1 at `0.0` `< 0.382881` or AUC `< 0.954529` at the detected geometry: the head cannot use a correct lattice and placement moves inside the model |
+| 3 | placement inside the model (M49's declared successor) | unchanged, and now strictly worse than rank 2 because the raster side already supplies the geometry | one `64`-step run | as declared in M49 |
+| R | **retired**: the valid-mask/frame-extent registration (M49); every additive raster term (M44-M46); pixel-sole routing (M47); M42/M43 decision-side levels; M34-M41 geometry variants as *training* recipes | closed by measurement | - | not offered |
+
+**Named next arm: detector repair on the two named captures.** It is the only open falsifier that costs a read-only
+pass, and its target - a `0.25`-cell population mean - is now the sole obstacle between the campaign and a geometry it
+can trust on every board. The step after it is rank 2, the first arm in this campaign whose geometry is not the
+model's own.
+
+## What this arm establishes, and what it does not
+
+- Established: a label-free board box exists in these captures and it places the thirty statistics well enough that
+  the committed read-out returns to `0.979200` F1 at `0.0` / `0.999150` AUC, slightly ahead of the target lattice at
+  the fixed crossing.
+- Established: the scale error M49 measured (`3.325530`x) is a property of the frame-extent recipe, not of the raster:
+  the box detector's own scale error is `0.043312` cells in width.
+- Not established: that the detector covers every capture - it misses two, and their failure modes are named with
+  numbers.
+- Not shown: any effect on the winner's own head (`0.954529` AUC untouched), or generality beyond these synthetic
+  captures, one seed and the training-fit boards.
+
 ## Receipts
 
 `runs/m50-board-box-read-profile{,-job.json}`, `runs/m50-board-box-read{,-job.json}`,

@@ -124,6 +124,7 @@ class ClosureConsistencyTest(unittest.TestCase):
         "M47": "m47-pixel-sole-r1",
         "M48": "m48-geometry-read-r2",
         "M49": "m49-registration-read",
+        "M50": "m50-board-box-read",
     }
     KEEPS = ("M35", "M37", "M38", "M36")
     MOVES = ("M34", "M40", "M39", "M41")
@@ -136,7 +137,8 @@ class ClosureConsistencyTest(unittest.TestCase):
             scope = json.loads((ROOT/"docs/evidence"/directory/"scope.json").read_text())
             # M48 is a read-only transfer of the committed read-out, so its own reading lives under the two
             # samplings it measured rather than in the fitted arms' `own` block.
-            own = (scope.get("own") or scope["measured"].get("registered_lattice")
+            own = (scope.get("own") or scope["measured"].get("detected_box")
+                   or scope["measured"].get("registered_lattice")
                    or scope["measured"]["predicted_lattice"])
             cls.metric[name] = (own["auc"], scope.get("own_best", own["best"]["f1"]))
 
@@ -146,10 +148,22 @@ class ClosureConsistencyTest(unittest.TestCase):
     def best(self, name):
         return self.metric[name][1]
 
-    def test_the_winner_is_above_every_arm_on_both_measures(self):
+    READ_ONLY_TRANSFERS = ("M48", "M49", "M50")
+
+    def test_the_winner_is_above_every_fitted_arm_on_both_measures(self):
+        # M48-M50 are read-only transfers of the committed ceiling read-out, not fitted arms of this family; M50
+        # samples that read-out at a label-free board box and beats the winner, which the next test states.
+        fitted = [name for name in self.ARMS if name not in self.READ_ONLY_TRANSFERS]
         winner_auc, winner_best = SCOPE["anchors"]["anchor_auc"], SCOPE["anchors"]["anchor_best"]
-        self.assertLess(max(self.auc(name) for name in self.ARMS), winner_auc)
-        self.assertLess(max(self.best(name) for name in self.ARMS), winner_best)
+        self.assertLess(max(self.auc(name) for name in fitted), winner_auc)
+        self.assertLess(max(self.best(name) for name in fitted), winner_best)
+
+    def test_the_board_box_transfer_arm_now_exceeds_the_winner(self):
+        winner_auc, winner_best = SCOPE["anchors"]["anchor_auc"], SCOPE["anchors"]["anchor_best"]
+        self.assertGreater(self.auc("M50"), winner_auc)
+        self.assertGreater(self.best("M50"), winner_best)
+        self.assertGreater(self.auc("M50"), self.auc("M48"))
+        self.assertGreater(self.auc("M50"), self.auc("M49"))
 
     def test_the_strength_axis_is_monotone_in_both_measures(self):
         # same read, same head, only the support's share of the sampled geometry changes

@@ -1,0 +1,68 @@
+{
+  "cells": 2986,
+  "errors_at_zero": {
+    "true_positive": {
+      "count": 306,
+      "margin_low": 1.564623,
+      "margin_median": 6.411599
+    },
+    "false_positive": {
+      "count": 10,
+      "margin_low": 0.707313,
+      "margin_median": 2.532209
+    },
+    "false_negative": {
+      "count": 3,
+      "margin_low": -8.792206,
+      "margin_median": -8.792206
+    },
+    "true_negative": {
+      "count": 2667,
+      "margin_low": -68.717728,
+      "margin_median": -11.66123
+    }
+  },
+  "precision_at_zero": 0.968354,
+  "recall_at_zero": 0.990291,
+  "occupied_cells": 309,
+  "false_positives_by_row": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 0,
+    "16": 8,
+    "17": 2,
+    "18": 0,
+    "19": 0
+  },
+  "false_positives_by_column": {
+    "0": 0,
+    "1": 2,
+    "2": 2,
+    "3": 0,
+    "4": 0,
+    "5": 3,
+    "6": 0,
+    "7": 1,
+    "8": 0,
+    "9": 2
+  },
+  "bands": {
+    "rows_0_4": 0,
+    "rows_5_9": 0,
+    "rows_10_14": 0,
+    "rows_15_19": 10
+  }
+}

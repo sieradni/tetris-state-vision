@@ -1740,6 +1740,15 @@ mean displacement above `0.25` cells or a registered AUC under `0.90`; if it fai
 Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a
 step is needed.
 
+**After M50 the geometry axis is closed on the raster side.** A label-free detection of each capture's own well walls
+places the thirty statistics well enough that the committed read-out scores `0.979200` F1 at the fixed `0.0` crossing and
+`0.999150` AUC, slightly ahead of the target lattice on the crossing and within `0.000045` on the ranking, against
+`0.037152` / `0.442341` at the model's predicted lattice. The declared `0.25`-cell population displacement gate is missed
+by two named captures (`13.509043` and `7.389043` cells) while the median board sits at `0.061328` cells. The named next
+test is the detector repair on those two captures; the arm after it gives the winner's own head this lattice. Scope
+unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, one seed, `64` steps where a step is
+needed.
+
 ## The measured regression set (maintained)
 
 The current best arm is **`m30-level-calibrate-r5`** and nothing in M34-M40 has overtaken it. Every row

@@ -3634,7 +3634,7 @@ Current best arm: `m30-level-calibrate-r5` - `0.372881` / `0.954529` / `0.689775
 `0.570048`; M36 `0.313667` / `0.886350` / `0.420935`; M37 `0.270096` / `0.919512` / `0.589286`; M38
 `0.273082` / `0.895041` / `0.463551`; M39 `0.246228` / `0.836907` / `0.351779`; M40 `0.260599` / `0.897918` /
 `0.439535`; M41 `0.272073` / `0.819074` / `0.340000`; M42 `0.189455` / `0.838212` / `0.374034`;
-M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`; M48 `0.037152` / `0.442341` / `0.037152`; M49 `0.000000` / `0.505163` / `0.000000`. All fail
+M43 `0.270008` / `0.752899` / `0.272654`; M44 `0.304665` / `0.934008` / `0.550622`; M45 `0.183550` / `0.916312` / `0.559671`; M46 `0.140733` / `0.757500` / `0.252362`; M47 `0.133750` / `0.860374` / `0.486957`; M48 `0.037152` / `0.442341` / `0.037152`; M49 `0.000000` / `0.505163` / `0.000000`; M50 `0.979200` / `0.999150` / `0.985507`. One partial
 the gate; all sit below the winner.
 
 **The campaign's remaining empirical question is answered in the negative, and measured but not cleanly
@@ -3816,3 +3816,19 @@ own box (`0.974763` F1 at `0.0`), the model's own lattice is `2.479843` cells ou
 raster-only registration is `8.256949` cells out. The named next arm is **board-box registration** - label-free
 detection of the board's own box - falsified if its mean displacement exceeds `0.25` cells or its registered AUC stays
 under `0.90`; if it fails, placement is trained inside the model.
+M50 ran M49's named successor - a label-free board box - and it bought the ceiling back. With the same thirty
+statistics read by the same committed read-out at a lattice detected from each capture's own well walls, the arm scores
+**`0.979200` F1 at the fixed `0.0` crossing and `0.999150` AUC** (best swept `0.985507`), against the target lattice's
+`0.974763` / `0.999195`, M48's predicted lattice's `0.037152` / `0.442341` and the winner control's `0.372881` /
+`0.954529`. Contingency `306` TP / `3` FN / `10` FP / `2,667` TN; all ten false positives sit in rows 15-19.
+
+The declared branch is **`box-partial`**, and the only gate it misses is displacement: the population mean
+detected-vs-target displacement is `0.802227` cells against the declared `0.25`, dragged by two named captures
+(`training-20261035-v2` at `13.509043`, `training-20261030-v1` at `7.389043`) that draw no usable full-height wall.
+The median board sits at `0.061328` cells and the detector's scale error is `0.043312` cells in width where M49's
+frame-extent recipe was `3.325530`x.
+
+**Where the campaign stands after M50:** the geometry axis is closed on the raster side - the ceiling is reachable
+without training, labels or fitted constants - and the remaining defect is two captures. The named next arm is the
+**detector repair on those two captures** (falsified if the population mean stays above `0.25` cells), and the arm
+after it gives the winner's own head this lattice, the campaign's first non-model geometry.

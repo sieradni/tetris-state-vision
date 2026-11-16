@@ -3698,3 +3698,53 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   not reach the file fails loudly instead of passing on stale bytecode. Detection class: stale cache masking a revert -
   first occurrence.
 - Named green runs: the post-restore focused runs and `runs/suite-m49-registration-read-job.json`.
+
+## V-185 - CLOSED: an arm's instrument run was refused its own receipt name
+
+- Symptom: M50's detection-only run died at once with `ValueError: owned finite run name required`, and the arm's
+  own instrument check could not be recorded under any name the runner would accept.
+- Root cause: `record_stream_run.require_owned_run` matches an explicit list of arm name patterns, and M50's declared
+  family covered only `m50-board-box-read`; the instrument pass needs its own name (`m50-board-box-detect`), which is
+  not the arm's scoring name.
+- Change: both names are registered as owned families, so an arm's read-only instrument pass has a receipt name that is
+  distinct from the scoring run's and still cannot be confused with another arm's.
+- Prevention: the arm doc's receipt list names both, and the scoring run is required to read the profile's own
+  `-job.json`, so a missing family fails at launch rather than silently reusing a scoring name.
+- Detection class: name-family coverage for instrument passes - first occurrence. Instrument: the launch-time refusal.
+- Named green runs: `runs/m50-board-box-read-profile{,-job}.json`, `runs/m50-board-box-detect-r9{,-job}.json`,
+  `runs/m50-board-box-read{,-job}.json`.
+
+## V-186 - CLOSED: a detector that aborts on an ambiguous capture cannot be measured
+
+- Symptom: the first three board-box detectors each ended the whole 28-board detection pass with an exception
+  (`the capture does not bracket the board`, `the capture's walls do not bracket a ten-by-twenty board`), so no
+  per-board error distribution existed to judge the instrument by.
+- Root cause: every failure mode raised from inside `detect_box`, and the pass had no per-board fallback, so one
+  ambiguous capture erased the other twenty-seven boards' readings.
+- Change: the candidate share is relaxed in declared `0.05` steps down to a declared floor, the strict ten-by-twenty
+  aspect has a declared best-effort fallback, and the two captures that defeat both are *measured* and named in the
+  receipt (`13.509043` and `7.389043` cells) instead of aborting the pass.
+- Prevention: `tests/test_m50_board_box.py::DetectorTest` pins the detector's behaviour on synthetic wells, short
+  panels and flat captures, and the receipt carries the per-board displacement so a residual failure is a number
+  rather than a crash.
+- Detection class: all-or-nothing instrument failure - first occurrence. Instrument: the per-board displacement table.
+- Named green run: `docs/evidence/m50-board-box-read/scope.json`.
+
+## V-187 - OPEN, recorded not rewritten: a frozen receipt carries a stale detector label
+
+- Symptom: `docs/evidence/m50-board-box-read/scope.json` records
+  `geometry.detection.recipe = "bright-frame interior of the captured well"`, while the declaration
+  (`docs/M50_BOARD_BOX.md`) fixes the recipe as `tallest ten-by-twenty wall rectangle in the capture` and the code that
+  ran is the wall-run detector.
+- Root cause: the recipe string was written into the scope by the detector's first draft and one of the two literal
+  replacements in the instrument pass matched only the first occurrence, so the final build kept the draft's label.
+  The numbers, the constants block and the `sources` digests all come from the wall-run detector.
+- Change: none to the frozen evidence - a receipt is never edited after the fact. The declaration, the arm doc's
+  measured section and `tests/test_m50_receipt.py` state the recorded label verbatim and pair it with the source
+  digest that identifies the executing code.
+- Prevention: the arm's tests compare the recorded label *and* the `sources` digest, so a future arm that relabels a
+  detector without changing the code fails, and the scope's constants are asserted against the module's declared
+  constants.
+- Detection class: stale literal in a frozen receipt - first occurrence. Instrument: `sources` digests plus the
+  constants assertion.
+- Status: open by design; the receipt is correct in every quantity and mislabelled in one string.
