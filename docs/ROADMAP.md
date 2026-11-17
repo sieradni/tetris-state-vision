@@ -1808,6 +1808,27 @@ from column occupancy**: snap the columns to the heaviest occupied phase bin ins
 the two `20261027` boards at `<= 0.10` and the mean at `0.316000`, ahead of **M56**, a well-frame fit for the two
 captures no cell-level anchor can reach (`<= 0.22` mean). Scope unchanged: one fixed population (28 boards, 2,986 cells),
 both fixed label vectors, the fixed `0.0` boundary, one read-only pass.
+**After M55 the columns are certified, not placed, and the gate is two boards wide.** Reading M54's table line by line
+showed the two `training-20261027` boards had **two components** each and an anchored pitch of `13.666667` px against the
+box's `14.0` / `13.9`: their `0.654800` was a *scale* artifact, not a phase error. M55 therefore refuses any pitch fitted
+from edges spanning fewer than `MIN_PITCH_SPAN_CELLS = 3.0` cells, certifies the columns when at least
+`MIN_COLUMN_BLOCKS = 2` components agree on both edge phases within `COLUMN_TOLERANCE = 0.15` inside the drawing band
+`COLUMN_INSET_MAX = 0.20`, and **never shifts the horizontal frame**, because a stack's columns are unknown and every
+horizontal observable is invariant under sliding it. The result: `training-20261027-v0/-v1` return to their boxes
+(`0.101015` / `0.054625` from `0.654811`), the `20261031` pair holds `0.000000`, the population mean falls from M54's
+`0.363060` to **`0.329292`** - the best of any arm - with **`2` of `28` boards over the gate**, and the height error
+tightens `5.3`x (`0.006134` -> `0.001159`). The read is the campaign's best outside the target: **F1 at `0.0` `0.946309`**
+(`282` / `5` / `27`) and AUC `0.922746`, above M54's `0.944724` / `0.922077`, M53's `0.919192` / `0.910164` and M52's
+`0.893268` / `0.908824`, still below M51's `0.933275` AUC. It is the **first arm to clear the no-regression rule against
+every baseline at once** (M50, M51, M52, M53, M54), paying eight small regressions inside the declared `0.10` allowance
+for the two repairs. The verdict is `column-fallback`, as predeclared; the falsifier is missed (`0.329292 > 0.25`) and the
+leftover is **two boards and nothing else**: `training-20261030-v1` `5.085774` and `training-20261035-v2` `1.974197`
+carry `0.252142` of the mean, and both are box failures no cell-level anchor can reach. The named next arm **reshapes
+M56** rather than replacing it - a well-frame fit that must now supply **both** axes, since block edges cannot place the
+horizontal one: with those two boards at `<= 0.4` and `<= 0.2` the mean becomes
+`(9.220176 - 7.059971 + 0.6)/28 = 0.098579` and the inherited `0.25`/`0.90` falsifier clears for the first time on
+geometry alone. Scope unchanged: one fixed population (28 boards, 2,986 cells), both fixed label vectors, the fixed `0.0`
+boundary, one read-only pass.
 
 ## The measured regression set (maintained)
 
@@ -1833,6 +1854,7 @@ the fixed global `0.0` boundary; the numbers are the receipts' own fields.
 | M52 `m52-lattice-fit-read` | the committed read at a lattice refitted from the interior cell lines | `0.893268` | `0.908824` | `0.896211` | fail: mean displacement `0.380890` > `0.25` (`fit-under-specified`) |
 | M53 `m53-stack-anchor-read` | the committed read at a lattice anchored to the stacks' own cell edges | `0.919192` | `0.910164` | `0.923858` | fail: mean displacement `0.470531` > `0.25` (`anchor-worse`); six no-regression breaches, but the highest F1 at `0.0` of any geometry arm |
 | M54 `m54-floor-consensus-read` | the committed read at M53's anchors with the row decided by a pinned floor | `0.944724` | `0.922077` | `0.949495` | fail: mean displacement `0.363060` > `0.25` (`floor-fallback`); best geometry mean and best F1 of any arm outside the target, two `20261027` x-snap breaches |
+| M55 `m55-column-consensus-read` | the committed read where the blocks certify the columns and never shift them | `0.946309` | `0.922746` | `0.952703` | fail: mean displacement `0.329292` > `0.25` (`column-fallback`); best mean, best F1, first arm to clear no-regression against every baseline |
 
 Deltas against the winner (F1 at `0.0` / AUC / best swept): M34 `-0.098012` / `-0.071268` / `-0.303850`;
 M35 `-0.095104` / `-0.008933` / `-0.119726`; M36 `-0.059214` / `-0.068178` / `-0.268839`;
@@ -1853,6 +1875,10 @@ M54 moves `+0.571843` / `-0.032452` / `+0.259720` against the winner, `+0.040348
 M51's box, `+0.051456` / `+0.013253` / `+0.053284` against M52's fit and `+0.025532` / `+0.011913` / `+0.025637`
 against M53's anchors: the best F1 at the fixed crossing outside the target, six false positives, and a population
 mean `0.020298` cells better than M51's box.
+M55 moves `+0.573428` / `-0.031783` / `+0.262928` against the winner, `+0.041933` / `-0.010529` / `+0.044206` against
+M51's box, `+0.053041` / `+0.013922` / `+0.056492` against M52's fit, `+0.027117` / `+0.012582` / `+0.028845`
+against M53's anchors and `+0.001585` / `+0.000669` / `+0.003208` against M54's floor: the best mean and the best
+F1 of any arm outside the target, five false positives, and a population mean `0.054066` cells better than M51's box.
 
 ## What the evidence settles (narrowed by M40 - superseded as an ordering claim)
 

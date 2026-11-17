@@ -1,5 +1,34 @@
 # Contributor handoff — 2026-10-30
 
+## The columns are certified, not placed, and the 0.25 gate is two boards wide (M55, 2026-11-16)
+
+[M55_COLUMN_CONSENSUS.md](M55_COLUMN_CONSENSUS.md) keeps M54's consensus floor and adds the horizontal counterpart: the
+pitch is used only where the anchors span at least `MIN_PITCH_SPAN_CELLS = 3.0` cells, the box's columns are *certified*
+when at least `MIN_COLUMN_BLOCKS = 2` components agree on both edge phases within `COLUMN_TOLERANCE = 0.15` inside the
+drawing band (`COLUMN_INSET_MAX = 0.20`), and the horizontal frame is never shifted, because a stack's columns are
+unknown. Same `2,986` cells, `28` boards, `30` statistics, same folds, threshold `0.0`. Receipt
+`docs/evidence/m55-column-consensus-read/scope.json` (bounded run passed, `56.989` s, `761,819,136` B of the declared
+`1024` MiB); declaration committed as `7fec6ec`, strictly before the measurement.
+
+| sampling | F1@0 | AUC | TP / FP / FN |
+|---|---|---|---|
+| target lattice | `0.974763` | `0.999195` | 309 / 16 / 0 |
+| M51 detected box | `0.904376` | `0.933275` | 279 / 29 / 30 |
+| M52 interior fit | `0.893268` | `0.908824` | 272 / 28 / 37 |
+| M53 stack anchor | `0.919192` | `0.910164` | 273 / 12 / 36 |
+| M54 consensus floor | `0.944724` | `0.922077` | 282 / 6 / 27 |
+| **M55 column consensus** | **`0.946309`** | `0.922746` | 282 / 5 / 27 |
+
+Verdict `column-fallback`, as predeclared. Mean displacement **`0.329292`** cells (best of any arm; `2` of `28` boards
+over the gate, worst `5.085774`), height error `0.001159` cells (`5.3`x tighter than M54), and the **first arm to clear
+no-regression against every baseline at once** (M50, M51, M52, M53, M54). `training-20261027-v0/-v1` return to their boxes
+(`0.101015` / `0.054625` from `0.654811`) because their `14.0`-px box carried a `13.666667`-px pitch fitted from two
+components; both `20261031` boards stay at `0.000000`. The falsifier is still missed (`0.329292 > 0.25`) and the leftover
+is exactly two boards: `training-20261030-v1` `5.085774` and `training-20261035-v2` `1.974197`, both box failures no
+cell-level anchor can reach. Named next: **M56, a well-frame fit supplying both axes** (those two at `<= 0.4` / `<= 0.2`
+gives mean `0.098579`, clearing the `0.25` gate), then M57 for the rows the floor cannot pin and M58 for the fixed
+crossing.
+
 ## A floor the blocks agree on is the best geometry yet, and the gate is now blocked by two snaps and two boxes (M54, 2026-11-16)
 
 [M54_FLOOR_CONSENSUS.md](M54_FLOOR_CONSENSUS.md) keeps M53's stack anchors and replaces one decision: the row correction

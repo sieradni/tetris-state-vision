@@ -3843,3 +3843,24 @@ directories are preserved under `runs/attempts/` as `-attempt1` and `-attempt2`.
   `--detect-only` pass is the instrument that caught both builds before a scoring run was spent.
 - Detection class: coordinate-sense error in a geometric instrument - first occurrence; instrument: the detect-only pass
   plus the synthetic-stack tests.
+
+## V-194 - a pitch fitted from two components silently stretched the whole frame
+
+- Symptom: M53 and M54 both report `training-20261027-v0` and `-v1` at `0.654800` / `0.654811` cells while their boxes
+  sit at `0.101015` / `0.054625`, and M53's receipt attributes it to the horizontal phase snap. M54's own table shows the
+  boards have **two components** and an anchored pitch of `13.666667` px against the box's `14.0` / `13.9`.
+- Root cause: `stack_anchor.pitch_from` accepts any median over `MIN_PAIRS = 3` candidates, and two components supply six
+  candidate spacings between four edge positions. A `2.4%` pitch error over the well's twenty rows is `0.65` of a cell on
+  its own, so the frame is stretched about the origin rather than mis-shifted. Nothing in M53/M54 checked how far the
+  anchor set spanned, and the phase snap then added a second, smaller error on top.
+- Change: M55's `scripts/column_consensus.py` refuses any pitch fitted from edges spanning fewer than
+  `MIN_PITCH_SPAN_CELLS = 3.0` cells on either axis and keeps the box's pitch there; the horizontal origin is never
+  shifted at all, since a stack's columns are unknown. On the declared run those two boards return to `0.101015` /
+  `0.054625` and the population height error falls from `0.006134` to `0.001159` cells.
+- Prevention: `tests/test_m55_column_consensus.py` pins the span rule (`test_a_narrow_stack_cannot_pin_the_pitch`,
+  `test_a_wide_stack_pins_the_pitch_it_fits`) and asserts the horizontal frame equals M51's on every synthetic board;
+  `tests/test_m55_receipt.py` asserts the four refused boards by name and that their span is below the constant. The
+  `--detect-only` instrument check is what surfaced the effect, exactly as it did for V-193.
+- Detection class: an estimator trusted outside the support its inputs can justify - second occurrence of the
+  "sparse-evidence" shape (V-193 was coordinate sense), and the first where the defect sat in an earlier arm's shipped
+  instrument rather than in the current build.

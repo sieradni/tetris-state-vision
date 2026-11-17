@@ -3,7 +3,7 @@
   "what_this_is": "Recorded state of every committed evidence directory under docs/evidence/: the full relative file listing and each file's sha256, keyed to the commit that last recorded that directory, plus the loose files at the evidence root. An evidence directory is an atomic record keyed by its name (the recorders refuse an existing evidence path), so its file set is part of the record: a file must never be planted in, moved out of, or edited inside a recorded directory (V-041). tools/check_frozen_evidence.py enforces this.",
   "digest": "sha256 over content with CRLF normalized to LF, so a checkout's line-ending policy is not drift while every content change still fails.",
   "derivation": {
-    "generated_at_commit": "e706fa3b70ef2be87c005ef23465636c982f6c55",
+    "generated_at_commit": "7fec6ec39d260f1a2287c47bf054c441c92e3df5",
     "method": "walk docs/evidence/<name>/; sha256 each file with CRLF->LF normalization; key the directory to `git log -1 --format=%H -- docs/evidence/<name>`; do the same for loose files at the evidence root",
     "regeneration": "Regenerate only as a reviewed commit that adds a new record or repairs the manifest; the checker never writes it, so re-baselining cannot happen silently."
   },
@@ -4629,12 +4629,21 @@
       }
     },
     "m54-floor-consensus-read": {
-      "record_commit": "",
+      "record_commit": "c5b72f529c9b7ffac4915ae9d8b7c0e65d52bd69",
       "files": {
         "diagnosis.json": "a08a8095cb9e31796afce1a45f3ebf050acea962d7124f6d0469aae94d5687c5",
         "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
         "scope.json": "67d89aed3f5cc34640a2d89244ccf4e2f3d363462d3ec3a0780980ff09229fcd",
         "suite-job.json": "5e9b085ba6f363cbc26317ef6fc9271dfdacbf1216c048ffda98bc0626f6a319"
+      }
+    },
+    "m55-column-consensus-read": {
+      "record_commit": "",
+      "files": {
+        "diagnosis.json": "c5534ad9832960f5737ce67aa299bbdd5632df2ff702f876f1c2872962b41643",
+        "progress.json": "9c1f94346c8a54a26860a34930ebc86745f130ebb446f9a79fdc9aab8c794ba1",
+        "scope.json": "3fa1a6f713c1afaf81e610e54460a4072d8bca70f1b527797bf22fd1c5cf294b",
+        "suite-job.json": "70442c0d3334fe303cd13de0187b9c9e0567fc098e9a8d9e2da77ca929a458ec"
       }
     },
     "m6-row-offset-r1": {
@@ -5244,7 +5253,7 @@
     }
   },
   "totals": {
-    "directories": 305,
-    "files": 3708
+    "directories": 306,
+    "files": 3712
   }
 }
